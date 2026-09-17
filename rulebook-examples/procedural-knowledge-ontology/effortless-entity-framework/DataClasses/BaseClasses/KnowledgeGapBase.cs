@@ -135,11 +135,44 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         }
 
         public string? SemanticTypeIri { get; set; }
+        public string? GapCause { get; set; }
+        public bool? HolderDeclinedToShare { get; set; }
+        public string? SiloedWithin { get; set; }
+        // Formula IsKnownAndUnresolved (rulebook: =AND({{IdentifiedAt}} <> "", {{IsOpen}}))
+        [NotMapped]
+        public bool? IsKnownAndUnresolved
+        {
+            get => F.AsBool(F.Memo(this, "IsKnownAndUnresolved", () => F.And(F.Bool3(F.IsNotBlank(F.Of(this.IdentifiedAt))), F.Bool3(F.Of(this.IsOpen))))); set { }
+        }
+
+        // Formula IsGatekeepingOrSabotage (rulebook: =OR({{GapCause}} = "Gatekeeping", {{GapCause}} = "Sabotage"))
+        [NotMapped]
+        public bool? IsGatekeepingOrSabotage
+        {
+            get => F.AsBool(F.Memo(this, "IsGatekeepingOrSabotage", () => F.Or(F.Bool3(F.Eq(F.Nullif(F.Of(this.GapCause)), F.S("Gatekeeping"))), F.Bool3(F.Eq(F.Nullif(F.Of(this.GapCause)), F.S("Sabotage")))))); set { }
+        }
+
+        // Formula IsUnattributedGatekeeping (rulebook: =AND({{HolderDeclinedToShare}}, NOT({{IsGatekeepingOrSabotage}})))
+        [NotMapped]
+        public bool? IsUnattributedGatekeeping
+        {
+            get => F.AsBool(F.Memo(this, "IsUnattributedGatekeeping", () => F.And(F.IsTrueV(F.Of(this.HolderDeclinedToShare)), F.Bool3(F.Not(F.Bool3(F.Of(this.IsGatekeepingOrSabotage))))))); set { }
+        }
+
+        // Formula IsRequiredGatekeptUncodified (rulebook: =AND({{IsGatekeepingOrSabotage}}, {{BlockingKind}} = "Blocking", {{CodifiedAsFragment}} = ""))
+        [NotMapped]
+        public bool? IsRequiredGatekeptUncodified
+        {
+            get => F.AsBool(F.Memo(this, "IsRequiredGatekeptUncodified", () => F.And(F.Bool3(F.Of(this.IsGatekeepingOrSabotage)), F.Bool3(F.Eq(F.Nullif(F.Of(this.BlockingKind)), F.S("Blocking"))), F.Bool3(F.IsBlank(F.Of(this.CodifiedAsFragment)))))); set { }
+        }
+
 
         public string? ProcedureVersion { get; set; }
         public string? Step { get; set; }
         public string? OwnerRole { get; set; }
         public string? EvaluationContext { get; set; }
+        public string? DrawnOutBySession { get; set; }
+        public string? CodifiedAsFragment { get; set; }
 
         private ProcedureVersion _procedureVersionRef;
 
@@ -317,6 +350,259 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             }
         }
 
+        private ElicitationSession _elicitationSession;
+
+        [ForeignKey("DrawnOutBySession")]
+        public virtual ElicitationSession ElicitationSession
+        {
+            get
+            {
+                if (_elicitationSession == null && !string.IsNullOrEmpty(DrawnOutBySession))
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access ElicitationSession - no database context is set. DrawnOutBySession: " + DrawnOutBySession + ".");
+                        }
+                        return null;
+                    }
+                    _elicitationSession = base.SoAContext.ElicitationSessions.Find(DrawnOutBySession);
+                    if (_elicitationSession != null)
+                    {
+                        base.SoAContext.Attach(_elicitationSession);
+                    }
+                }
+                return _elicitationSession;
+            }
+            set
+            {
+                if (_elicitationSession != value)
+                {
+                    _elicitationSession = value;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_elicitationSession != null)
+                    {
+                        DrawnOutBySession = _elicitationSession.ElicitationSessionId;
+                    }
+                }
+            }
+        }
+
+        private KnowledgeFragment _knowledgeFragment;
+
+        [ForeignKey("CodifiedAsFragment")]
+        public virtual KnowledgeFragment KnowledgeFragment
+        {
+            get
+            {
+                if (_knowledgeFragment == null && !string.IsNullOrEmpty(CodifiedAsFragment))
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access KnowledgeFragment - no database context is set. CodifiedAsFragment: " + CodifiedAsFragment + ".");
+                        }
+                        return null;
+                    }
+                    _knowledgeFragment = base.SoAContext.KnowledgeFragments.Find(CodifiedAsFragment);
+                    if (_knowledgeFragment != null)
+                    {
+                        base.SoAContext.Attach(_knowledgeFragment);
+                    }
+                }
+                return _knowledgeFragment;
+            }
+            set
+            {
+                if (_knowledgeFragment != value)
+                {
+                    _knowledgeFragment = value;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_knowledgeFragment != null)
+                    {
+                        CodifiedAsFragment = _knowledgeFragment.KnowledgeFragmentId;
+                    }
+                }
+            }
+        }
+
+        private ObservableCollection<ModelAnnotation> _modelAnnotations;
+
+        [InverseProperty("KnowledgeGap")]
+        public virtual ObservableCollection<ModelAnnotation> ModelAnnotations
+        {
+            get
+            {
+                if (_modelAnnotations == null)
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access ModelAnnotations - no database context is set. KnowledgeGapId: " + this.KnowledgeGapId + ".");
+                        }
+                        _modelAnnotations = new ObservableCollection<ModelAnnotation>();
+                    }
+                    else
+                    {
+                        var items = base.SoAContext.ModelAnnotations.Where(x => x.RaisedKnowledgeGap == this.KnowledgeGapId).ToList<ModelAnnotation>();
+                        _modelAnnotations = new ObservableCollection<ModelAnnotation>(items);
+                        if (items.Any())
+                        {
+                            base.SoAContext.AttachRange(items);
+                        }
+                    }
+                    _modelAnnotations.CollectionChanged += ModelAnnotations_CollectionChanged;
+                }
+                return _modelAnnotations;
+            }
+            private set
+            {
+                if (_modelAnnotations != null)
+                {
+                    _modelAnnotations.CollectionChanged -= ModelAnnotations_CollectionChanged;
+                }
+                _modelAnnotations = value;
+                if (_modelAnnotations != null)
+                {
+                    _modelAnnotations.CollectionChanged += ModelAnnotations_CollectionChanged;
+                }
+            }
+        }
+
+        private void ModelAnnotations_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems != null)
+            {
+                foreach (var item in e.NewItems.Cast<ModelAnnotation>())
+                {
+                    item.RaisedKnowledgeGap = this.KnowledgeGapId;
+                }
+            }
+        }
+
+        private ObservableCollection<KnowledgeSearchEvent> _knowledgeSearchEvents;
+
+        [InverseProperty("KnowledgeGap")]
+        public virtual ObservableCollection<KnowledgeSearchEvent> KnowledgeSearchEvents
+        {
+            get
+            {
+                if (_knowledgeSearchEvents == null)
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access KnowledgeSearchEvents - no database context is set. KnowledgeGapId: " + this.KnowledgeGapId + ".");
+                        }
+                        _knowledgeSearchEvents = new ObservableCollection<KnowledgeSearchEvent>();
+                    }
+                    else
+                    {
+                        var items = base.SoAContext.KnowledgeSearchEvents.Where(x => x.LinkedKnowledgeGap == this.KnowledgeGapId).ToList<KnowledgeSearchEvent>();
+                        _knowledgeSearchEvents = new ObservableCollection<KnowledgeSearchEvent>(items);
+                        if (items.Any())
+                        {
+                            base.SoAContext.AttachRange(items);
+                        }
+                    }
+                    _knowledgeSearchEvents.CollectionChanged += KnowledgeSearchEvents_CollectionChanged;
+                }
+                return _knowledgeSearchEvents;
+            }
+            private set
+            {
+                if (_knowledgeSearchEvents != null)
+                {
+                    _knowledgeSearchEvents.CollectionChanged -= KnowledgeSearchEvents_CollectionChanged;
+                }
+                _knowledgeSearchEvents = value;
+                if (_knowledgeSearchEvents != null)
+                {
+                    _knowledgeSearchEvents.CollectionChanged += KnowledgeSearchEvents_CollectionChanged;
+                }
+            }
+        }
+
+        private void KnowledgeSearchEvents_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems != null)
+            {
+                foreach (var item in e.NewItems.Cast<KnowledgeSearchEvent>())
+                {
+                    item.LinkedKnowledgeGap = this.KnowledgeGapId;
+                }
+            }
+        }
+
+        private ObservableCollection<KnowledgeAuditItem> _knowledgeAuditItems;
+
+        [InverseProperty("KnowledgeGap")]
+        public virtual ObservableCollection<KnowledgeAuditItem> KnowledgeAuditItems
+        {
+            get
+            {
+                if (_knowledgeAuditItems == null)
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access KnowledgeAuditItems - no database context is set. KnowledgeGapId: " + this.KnowledgeGapId + ".");
+                        }
+                        _knowledgeAuditItems = new ObservableCollection<KnowledgeAuditItem>();
+                    }
+                    else
+                    {
+                        var items = base.SoAContext.KnowledgeAuditItems.Where(x => x.NamedKnowledgeGap == this.KnowledgeGapId).ToList<KnowledgeAuditItem>();
+                        _knowledgeAuditItems = new ObservableCollection<KnowledgeAuditItem>(items);
+                        if (items.Any())
+                        {
+                            base.SoAContext.AttachRange(items);
+                        }
+                    }
+                    _knowledgeAuditItems.CollectionChanged += KnowledgeAuditItems_CollectionChanged;
+                }
+                return _knowledgeAuditItems;
+            }
+            private set
+            {
+                if (_knowledgeAuditItems != null)
+                {
+                    _knowledgeAuditItems.CollectionChanged -= KnowledgeAuditItems_CollectionChanged;
+                }
+                _knowledgeAuditItems = value;
+                if (_knowledgeAuditItems != null)
+                {
+                    _knowledgeAuditItems.CollectionChanged += KnowledgeAuditItems_CollectionChanged;
+                }
+            }
+        }
+
+        private void KnowledgeAuditItems_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems != null)
+            {
+                foreach (var item in e.NewItems.Cast<KnowledgeAuditItem>())
+                {
+                    item.NamedKnowledgeGap = this.KnowledgeGapId;
+                }
+            }
+        }
+
 
         protected override void LazyLoadProperties()
         {
@@ -324,6 +610,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             _ = this.StepRef;
             _ = this.Role;
             _ = this.EvaluationContextRef;
+            _ = this.ElicitationSession;
+            _ = this.KnowledgeFragment;
+            _ = this.ModelAnnotations;
+            _ = this.KnowledgeSearchEvents;
+            _ = this.KnowledgeAuditItems;
         }
 
         public override string ToString()

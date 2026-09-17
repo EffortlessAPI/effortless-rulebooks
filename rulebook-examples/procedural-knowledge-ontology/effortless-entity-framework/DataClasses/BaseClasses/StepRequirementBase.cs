@@ -86,6 +86,13 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             get => F.AsString(F.Memo(this, "UnexercisedBindingRequirementKey", () => (F.Truthy(F.Bool3(F.Of(this.IsUnexercisedBlockingBinding))) ? F.Of(this.Requirement) : F.S("")))); set { }
         }
 
+        // Formula RequirementIsRegulatory (rulebook: =INDEX(Requirements!{{IsRegulatoryRequirement}}, MATCH({{Requirement}}, Requirements!{{RequirementId}}, 0)))
+        [NotMapped]
+        public bool? RequirementIsRegulatory
+        {
+            get => F.AsBool(F.Memo(this, "RequirementIsRegulatory", () => F.Lookup<Requirement>(this, "Requirements", "RequirementId", __c => __c.Requirements, __r => F.Of(__r.RequirementId), F.Of(this.Requirement), __r => F.Of(__r.IsRegulatoryRequirement), () => F.Of(new Requirement().IsRegulatoryRequirement)))); set { }
+        }
+
 
         public string? Step { get; set; }
         public string? Requirement { get; set; }

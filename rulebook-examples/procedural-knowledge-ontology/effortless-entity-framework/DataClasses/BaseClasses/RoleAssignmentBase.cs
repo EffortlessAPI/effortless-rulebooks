@@ -356,6 +356,69 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         }
 
         public string? SemanticTypeIri { get; set; }
+        // Formula ScopedVersionStatus (rulebook: =INDEX(ProcedureVersions!{{Status}}, MATCH({{ForProcedureVersion}}, ProcedureVersions!{{ProcedureVersionId}}, 0)))
+        [NotMapped]
+        public string? ScopedVersionStatus
+        {
+            get => F.AsString(F.Memo(this, "ScopedVersionStatus", () => F.Lookup<ProcedureVersion>(this, "ProcedureVersions", "ProcedureVersionId", __c => __c.ProcedureVersions, __r => F.Of(__r.ProcedureVersionId), F.Of(this.ForProcedureVersion), __r => F.Of(__r.Status), () => F.Of(new ProcedureVersion().Status)))); set { }
+        }
+
+        // Formula IsScopedToRetiredVersion (rulebook: =AND({{IsCurrent}}, OR({{ScopedVersionStatus}} = "Deprecated", {{ScopedVersionStatus}} = "Archived")))
+        [NotMapped]
+        public bool? IsScopedToRetiredVersion
+        {
+            get => F.AsBool(F.Memo(this, "IsScopedToRetiredVersion", () => F.And(F.Bool3(F.Of(this.IsCurrent)), F.Bool3(F.Or(F.Bool3(F.Eq(F.Of(this.ScopedVersionStatus), F.S("Deprecated"))), F.Bool3(F.Eq(F.Of(this.ScopedVersionStatus), F.S("Archived")))))))); set { }
+        }
+
+        // Formula PredecessorValidTo (rulebook: =INDEX(RoleAssignments!{{ValidTo}}, MATCH({{SupersedesAssignment}}, RoleAssignments!{{RoleAssignmentId}}, 0)))
+        [NotMapped]
+        public DateTimeOffset? PredecessorValidTo
+        {
+            get => F.AsDateTime(F.Memo(this, "PredecessorValidTo", () => F.Lookup<RoleAssignment>(this, "RoleAssignments", "RoleAssignmentId", __c => __c.RoleAssignments, __r => F.Of(__r.RoleAssignmentId), F.Of(this.SupersedesAssignment), __r => F.Of(__r.ValidTo), () => F.Of(new RoleAssignment().ValidTo)))); set { }
+        }
+
+        // Formula PredecessorLacksValidityEnd (rulebook: =AND({{SupersedesAssignment}} <> "", {{PredecessorValidTo}} = ""))
+        [NotMapped]
+        public bool? PredecessorLacksValidityEnd
+        {
+            get => F.AsBool(F.Memo(this, "PredecessorLacksValidityEnd", () => F.And(F.Bool3(F.IsNotBlank(F.Of(this.SupersedesAssignment))), F.Bool3(F.IsBlank(F.Of(this.PredecessorValidTo)))))); set { }
+        }
+
+        // Formula AgentVersionKey (rulebook: =INDEX(Agents!{{VersionOrEmploymentKey}}, MATCH({{Agent}}, Agents!{{AgentId}}, 0)))
+        [NotMapped]
+        public string? AgentVersionKey
+        {
+            get => F.AsString(F.Memo(this, "AgentVersionKey", () => F.Lookup<Agent>(this, "Agents", "AgentId", __c => __c.Agents, __r => F.Of(__r.AgentId), F.Of(this.Agent), __r => F.Of(__r.VersionOrEmploymentKey), () => F.Of(new Agent().VersionOrEmploymentKey)))); set { }
+        }
+
+        // Formula AgentRolePairKey (rulebook: ={{Agent}} & "|" & {{Role}})
+        [NotMapped]
+        public string? AgentRolePairKey
+        {
+            get => F.AsString(F.Memo(this, "AgentRolePairKey", () => F.Concat(F.Text(F.Of(this.Agent)), F.S("|"), F.Text(F.Of(this.Role))))); set { }
+        }
+
+        // Formula IsOpenEnded (rulebook: ={{ValidTo}} = "")
+        [NotMapped]
+        public bool? IsOpenEnded
+        {
+            get => F.AsBool(F.Memo(this, "IsOpenEnded", () => F.IsBlank(F.Of(this.ValidTo)))); set { }
+        }
+
+        // Formula RoleApprovalStepCount (rulebook: =INDEX(Roles!{{ApprovalStepCount}}, MATCH({{Role}}, Roles!{{RoleId}}, 0)))
+        [NotMapped]
+        public int? RoleApprovalStepCount
+        {
+            get => F.AsInt(F.Memo(this, "RoleApprovalStepCount", () => F.Integer(F.Lookup<Role>(this, "Roles", "RoleId", __c => __c.Roles, __r => F.Of(__r.RoleId), F.Of(this.Role), __r => F.Of(__r.ApprovalStepCount), () => F.Of(new Role().ApprovalStepCount))))); set { }
+        }
+
+        // Formula ReceivesApprovalNoticesNow (rulebook: =AND({{CoversNow}}, {{RoleApprovalStepCount}} > 0))
+        [NotMapped]
+        public bool? ReceivesApprovalNoticesNow
+        {
+            get => F.AsBool(F.Memo(this, "ReceivesApprovalNoticesNow", () => F.And(F.Bool3(F.Of(this.CoversNow)), F.Bool3(F.Cmp(F.Of(this.RoleApprovalStepCount), ">", F.I(0)))))); set { }
+        }
+
 
         public string? Role { get; set; }
         public string? Agent { get; set; }
@@ -363,6 +426,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string? SupersedesAssignment { get; set; }
         public string? ApprovingAuthorityRole { get; set; }
         public string? AuthorizingChangeRequest { get; set; }
+        public string? ForProcedureVersion { get; set; }
 
         private Role _roleRef;
 
@@ -628,6 +692,50 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             }
         }
 
+        private ProcedureVersion _procedureVersion;
+
+        [ForeignKey("ForProcedureVersion")]
+        public virtual ProcedureVersion ProcedureVersion
+        {
+            get
+            {
+                if (_procedureVersion == null && !string.IsNullOrEmpty(ForProcedureVersion))
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access ProcedureVersion - no database context is set. ForProcedureVersion: " + ForProcedureVersion + ".");
+                        }
+                        return null;
+                    }
+                    _procedureVersion = base.SoAContext.ProcedureVersions.Find(ForProcedureVersion);
+                    if (_procedureVersion != null)
+                    {
+                        base.SoAContext.Attach(_procedureVersion);
+                    }
+                }
+                return _procedureVersion;
+            }
+            set
+            {
+                if (_procedureVersion != value)
+                {
+                    _procedureVersion = value;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_procedureVersion != null)
+                    {
+                        ForProcedureVersion = _procedureVersion.ProcedureVersionId;
+                    }
+                }
+            }
+        }
+
         private ObservableCollection<RoleAssignment> _roleAssignments;
 
         [InverseProperty("RoleAssignment")]
@@ -738,6 +846,226 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             }
         }
 
+        private ObservableCollection<SnapshotAssertion> _snapshotAssertions;
+
+        [InverseProperty("RoleAssignment")]
+        public virtual ObservableCollection<SnapshotAssertion> SnapshotAssertions
+        {
+            get
+            {
+                if (_snapshotAssertions == null)
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access SnapshotAssertions - no database context is set. RoleAssignmentId: " + this.RoleAssignmentId + ".");
+                        }
+                        _snapshotAssertions = new ObservableCollection<SnapshotAssertion>();
+                    }
+                    else
+                    {
+                        var items = base.SoAContext.SnapshotAssertions.Where(x => x.SourceRoleAssignment == this.RoleAssignmentId).ToList<SnapshotAssertion>();
+                        _snapshotAssertions = new ObservableCollection<SnapshotAssertion>(items);
+                        if (items.Any())
+                        {
+                            base.SoAContext.AttachRange(items);
+                        }
+                    }
+                    _snapshotAssertions.CollectionChanged += SnapshotAssertions_CollectionChanged;
+                }
+                return _snapshotAssertions;
+            }
+            private set
+            {
+                if (_snapshotAssertions != null)
+                {
+                    _snapshotAssertions.CollectionChanged -= SnapshotAssertions_CollectionChanged;
+                }
+                _snapshotAssertions = value;
+                if (_snapshotAssertions != null)
+                {
+                    _snapshotAssertions.CollectionChanged += SnapshotAssertions_CollectionChanged;
+                }
+            }
+        }
+
+        private void SnapshotAssertions_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems != null)
+            {
+                foreach (var item in e.NewItems.Cast<SnapshotAssertion>())
+                {
+                    item.SourceRoleAssignment = this.RoleAssignmentId;
+                }
+            }
+        }
+
+        private ObservableCollection<AssignmentInstantCheck> _assignmentInstantChecks;
+
+        [InverseProperty("RoleAssignmentRef")]
+        public virtual ObservableCollection<AssignmentInstantCheck> AssignmentInstantChecks
+        {
+            get
+            {
+                if (_assignmentInstantChecks == null)
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access AssignmentInstantChecks - no database context is set. RoleAssignmentId: " + this.RoleAssignmentId + ".");
+                        }
+                        _assignmentInstantChecks = new ObservableCollection<AssignmentInstantCheck>();
+                    }
+                    else
+                    {
+                        var items = base.SoAContext.AssignmentInstantChecks.Where(x => x.RoleAssignment == this.RoleAssignmentId).ToList<AssignmentInstantCheck>();
+                        _assignmentInstantChecks = new ObservableCollection<AssignmentInstantCheck>(items);
+                        if (items.Any())
+                        {
+                            base.SoAContext.AttachRange(items);
+                        }
+                    }
+                    _assignmentInstantChecks.CollectionChanged += AssignmentInstantChecks_CollectionChanged;
+                }
+                return _assignmentInstantChecks;
+            }
+            private set
+            {
+                if (_assignmentInstantChecks != null)
+                {
+                    _assignmentInstantChecks.CollectionChanged -= AssignmentInstantChecks_CollectionChanged;
+                }
+                _assignmentInstantChecks = value;
+                if (_assignmentInstantChecks != null)
+                {
+                    _assignmentInstantChecks.CollectionChanged += AssignmentInstantChecks_CollectionChanged;
+                }
+            }
+        }
+
+        private void AssignmentInstantChecks_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems != null)
+            {
+                foreach (var item in e.NewItems.Cast<AssignmentInstantCheck>())
+                {
+                    item.RoleAssignment = this.RoleAssignmentId;
+                }
+            }
+        }
+
+        private ObservableCollection<RoleAssignmentUpdateTask> _endingAssignmentRoleAssignmentUpdateTasks;
+
+        [InverseProperty("RoleAssignment")]
+        public virtual ObservableCollection<RoleAssignmentUpdateTask> EndingAssignmentRoleAssignmentUpdateTasks
+        {
+            get
+            {
+                if (_endingAssignmentRoleAssignmentUpdateTasks == null)
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access EndingAssignmentRoleAssignmentUpdateTasks - no database context is set. RoleAssignmentId: " + this.RoleAssignmentId + ".");
+                        }
+                        _endingAssignmentRoleAssignmentUpdateTasks = new ObservableCollection<RoleAssignmentUpdateTask>();
+                    }
+                    else
+                    {
+                        var items = base.SoAContext.RoleAssignmentUpdateTasks.Where(x => x.EndingAssignment == this.RoleAssignmentId).ToList<RoleAssignmentUpdateTask>();
+                        _endingAssignmentRoleAssignmentUpdateTasks = new ObservableCollection<RoleAssignmentUpdateTask>(items);
+                        if (items.Any())
+                        {
+                            base.SoAContext.AttachRange(items);
+                        }
+                    }
+                    _endingAssignmentRoleAssignmentUpdateTasks.CollectionChanged += EndingAssignmentRoleAssignmentUpdateTasks_CollectionChanged;
+                }
+                return _endingAssignmentRoleAssignmentUpdateTasks;
+            }
+            private set
+            {
+                if (_endingAssignmentRoleAssignmentUpdateTasks != null)
+                {
+                    _endingAssignmentRoleAssignmentUpdateTasks.CollectionChanged -= EndingAssignmentRoleAssignmentUpdateTasks_CollectionChanged;
+                }
+                _endingAssignmentRoleAssignmentUpdateTasks = value;
+                if (_endingAssignmentRoleAssignmentUpdateTasks != null)
+                {
+                    _endingAssignmentRoleAssignmentUpdateTasks.CollectionChanged += EndingAssignmentRoleAssignmentUpdateTasks_CollectionChanged;
+                }
+            }
+        }
+
+        private void EndingAssignmentRoleAssignmentUpdateTasks_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems != null)
+            {
+                foreach (var item in e.NewItems.Cast<RoleAssignmentUpdateTask>())
+                {
+                    item.EndingAssignment = this.RoleAssignmentId;
+                }
+            }
+        }
+
+        private ObservableCollection<RoleAssignmentUpdateTask> _replacementAssignmentRoleAssignmentUpdateTasks;
+
+        [InverseProperty("RoleAssignmentRef")]
+        public virtual ObservableCollection<RoleAssignmentUpdateTask> ReplacementAssignmentRoleAssignmentUpdateTasks
+        {
+            get
+            {
+                if (_replacementAssignmentRoleAssignmentUpdateTasks == null)
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access ReplacementAssignmentRoleAssignmentUpdateTasks - no database context is set. RoleAssignmentId: " + this.RoleAssignmentId + ".");
+                        }
+                        _replacementAssignmentRoleAssignmentUpdateTasks = new ObservableCollection<RoleAssignmentUpdateTask>();
+                    }
+                    else
+                    {
+                        var items = base.SoAContext.RoleAssignmentUpdateTasks.Where(x => x.ReplacementAssignment == this.RoleAssignmentId).ToList<RoleAssignmentUpdateTask>();
+                        _replacementAssignmentRoleAssignmentUpdateTasks = new ObservableCollection<RoleAssignmentUpdateTask>(items);
+                        if (items.Any())
+                        {
+                            base.SoAContext.AttachRange(items);
+                        }
+                    }
+                    _replacementAssignmentRoleAssignmentUpdateTasks.CollectionChanged += ReplacementAssignmentRoleAssignmentUpdateTasks_CollectionChanged;
+                }
+                return _replacementAssignmentRoleAssignmentUpdateTasks;
+            }
+            private set
+            {
+                if (_replacementAssignmentRoleAssignmentUpdateTasks != null)
+                {
+                    _replacementAssignmentRoleAssignmentUpdateTasks.CollectionChanged -= ReplacementAssignmentRoleAssignmentUpdateTasks_CollectionChanged;
+                }
+                _replacementAssignmentRoleAssignmentUpdateTasks = value;
+                if (_replacementAssignmentRoleAssignmentUpdateTasks != null)
+                {
+                    _replacementAssignmentRoleAssignmentUpdateTasks.CollectionChanged += ReplacementAssignmentRoleAssignmentUpdateTasks_CollectionChanged;
+                }
+            }
+        }
+
+        private void ReplacementAssignmentRoleAssignmentUpdateTasks_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems != null)
+            {
+                foreach (var item in e.NewItems.Cast<RoleAssignmentUpdateTask>())
+                {
+                    item.ReplacementAssignment = this.RoleAssignmentId;
+                }
+            }
+        }
+
 
         protected override void LazyLoadProperties()
         {
@@ -747,8 +1075,13 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             _ = this.RoleAssignment;
             _ = this.RoleRefRef;
             _ = this.ChangeRequest;
+            _ = this.ProcedureVersion;
             _ = this.RoleAssignments;
             _ = this.AgentDecisionRecords;
+            _ = this.SnapshotAssertions;
+            _ = this.AssignmentInstantChecks;
+            _ = this.EndingAssignmentRoleAssignmentUpdateTasks;
+            _ = this.ReplacementAssignmentRoleAssignmentUpdateTasks;
         }
 
         public override string ToString()

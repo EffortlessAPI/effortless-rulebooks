@@ -1,0 +1,44 @@
+# Theme H (loop-13, provenance): 42 claims
+
+pkm1-c30	Concept	Semantic Ecosystems and Process	Provenance: a knowledge item's origin, the route by which it was produced, and who confirmed it.
+pkm1-c32	Concept	Its Not Easy, But it's Worth It	Knowledge acquisition as costly work in which domain experts pull knowledge out of practice, often without semantic-technology skills.
+pkm1-p25	Prescription	Its Not Easy, But it's Worth It	Mining event logs misses tacit expertise, so it must be complemented by capture from experienced workers.
+pkm1-p26	Prescription	Its Not Easy, But it's Worth It	Models inferred from event logs record what happened, not what was intended, and must stay distinguishable from intended process logic.
+pkm1-p29	Prescription	Its Not Easy, But it's Worth It	When stakeholders legitimately disagree about a process, the system keeps each view with its source rather than forcing one agreed version.
+pkm1-q08	CompetencyQuestion	Semantic Ecosystems and Process	Where did this knowledge item come from, how was it produced, and who confirmed it?
+pkm1-q09	CompetencyQuestion	Its Not Easy, But it's Worth It	Which stakeholder perspectives on this process conflict, and where does each come from?
+pkm1-q13	CompetencyQuestion	Its Not Easy, But it's Worth It	Where does behavior mined from event logs depart from the intended process logic?
+pkm1-s05	Standard	Its Not Easy, But it's Worth It	Process mining over event logs as a partial aid to knowledge acquisition.
+pkm2-c19	Concept	Process Mining	The actual flow of a process rebuilt from system event logs.
+pkm2-c20	Concept	Process Mining	Deviations between the documented procedure and the process reconstructed from event logs.
+pkm2-c21	Concept	Process Mining	Bottlenecks revealed by mined process flows.
+pkm2-c22	Concept	Process Mining	Mined evidence covers only observable system interactions, holding neither the reasoning nor the tacit knowledge behind them.
+pkm2-c24	Concept	Document Analysis	Existing written material, such as operating procedures, training content, decision tables and system documentation, used as a source.
+pkm2-c25	Concept	Document Analysis	The difference between the prescribed, static version of a process in documents and the version people enact.
+pkm2-c26	Concept	Document Analysis	Documented sources falling behind how the work is currently done.
+pkm2-c102	Concept	Integration: Making Process Knowledge Work	Recurring collection occasions such as retrospectives, process reviews and improvement initiatives.
+pkm2-c103	Concept	Standards and Interoperability	How a piece of knowledge was derived.
+pkm2-c104	Concept	Standards and Interoperability	Who validated a piece of knowledge.
+pkm2-p13	Prescription	Document Analysis	Knowledge taken from documents is a starting point that later elicitation must validate.
+pkm2-p14	Prescription	Document Analysis	Later elicitation must also extend knowledge taken from documents.
+pkm2-p29	Prescription	Organizing Principles	Every process model traces to the collection activity it came from.
+pkm2-p30	Prescription	Organizing Principles	Every activity definition traces to the collection activity it came from.
+pkm2-p31	Prescription	Organizing Principles	Every constraint traces to the collection activity it came from.
+pkm2-p32	Prescription	Organizing Principles	A change to a source must reveal which organized knowledge depends on it.
+pkm2-p33	Prescription	Organizing Principles	Traceability makes it possible to check that organized knowledge faithfully represents its sources.
+pkm2-p56	Prescription	Integration: Making Process Knowledge Work	Capturing knowledge is built into everyday work.
+pkm2-p76	Prescription	Feedback Loops	Practitioner feedback flows back into tacit-knowledge discovery and collection.
+pkm2-q12	CompetencyQuestion	Organizing Principles	Which collection evidence does this step trace to?
+pkm2-q13	CompetencyQuestion	Organizing Principles	Has that source changed since the knowledge was taken from it?
+pkm2-q14	CompetencyQuestion	Organizing Principles	Which organized knowledge is affected by a change to this source?
+pkm2-q15	CompetencyQuestion	Process Mining	Where does the enacted process deviate from the documented one?
+pkm2-q16	CompetencyQuestion	Process Mining	Where are the bottlenecks in the mined process flow?
+pkm2-q38	CompetencyQuestion	Standards and Interoperability	How was this piece of knowledge derived?
+pkm2-q39	CompetencyQuestion	Standards and Interoperability	Who validated this piece of knowledge?
+pkm2-s14	Standard	Document Analysis	Document analysis of existing SOPs and materials.
+pkm2-s16	Standard	Process Mining	Process mining over enterprise event logs.
+pkm2-i11	Illustration	Organizing Principles	Trace targets: the interview that described a step, the observation that recorded a workaround, the log that showed real execution.
+pkm3-c15	Concept	From Engineering State to Lawyerly Society	An improvement cycle in which a failure is observed, recorded and fed into a redesign before the next build.
+pkm3-p04	Prescription	From Engineering State to Lawyerly Society	A procedure works only if the tacit knowledge behind it is captured; compliance-driven standardization does not supply it.
+pkm3-q11	CompetencyQuestion	From Engineering State to Lawyerly Society	How has this process failed before, how was each failure recorded, and what redesign followed?
+pkm4-q13	CompetencyQuestion	Before: Tacit Knowledge and Limitations	Which procedures are documented in a way that trails how they are actually performed?

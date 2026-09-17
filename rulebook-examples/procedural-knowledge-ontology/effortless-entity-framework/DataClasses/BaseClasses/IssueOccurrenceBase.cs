@@ -42,10 +42,60 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         }
 
         public string? SemanticTypeIri { get; set; }
+        // Formula ExecutedStep (rulebook: =INDEX(StepExecutions!{{Step}}, MATCH({{StepExecution}}, StepExecutions!{{StepExecutionId}}, 0)))
+        [NotMapped]
+        public string? ExecutedStep
+        {
+            get => F.AsString(F.Memo(this, "ExecutedStep", () => F.Lookup<StepExecution>(this, "StepExecutions", "StepExecutionId", __c => __c.StepExecutions, __r => F.Of(__r.StepExecutionId), F.Of(this.StepExecution), __r => F.Of(__r.Step), () => F.Of(new StepExecution().Step)))); set { }
+        }
+
+        // Formula FailedConditionCountOnRun (rulebook: =SUMIFS(StepExecutions!{{FailedPreconditionCount}}, StepExecutions!{{StepExecutionId}}, {{StepExecution}}))
+        [NotMapped]
+        public int? FailedConditionCountOnRun
+        {
+            get => F.AsInt(F.Memo(this, "FailedConditionCountOnRun", () => F.Integer((base.SoAContext == null ? F.Null : F.SumIfs(F.Rows<StepExecution>(base.SoAContext, "StepExecutions", __c => __c.StepExecutions), __r => F.CritField(F.Of(__r.StepExecutionId), F.Of(this.StepExecution)), __r => F.Of(__r.FailedPreconditionCount), null))))); set { }
+        }
+
+        // Formula CoincidedWithFailedCondition (rulebook: ={{FailedConditionCountOnRun}} > 0)
+        [NotMapped]
+        public bool? CoincidedWithFailedCondition
+        {
+            get => F.AsBool(F.Memo(this, "CoincidedWithFailedCondition", () => F.Cmp(F.Of(this.FailedConditionCountOnRun), ">", F.I(0)))); set { }
+        }
+
+        // Formula HasNoRecordedSolution (rulebook: ={{IssueSolution}} = "")
+        [NotMapped]
+        public bool? HasNoRecordedSolution
+        {
+            get => F.AsBool(F.Memo(this, "HasNoRecordedSolution", () => F.IsBlank(F.Of(this.IssueSolution)))); set { }
+        }
+
+        // Formula RedesignImplementedAt (rulebook: =INDEX(ChangeRequests!{{ImplementedAt}}, MATCH({{RedesignChangeRequest}}, ChangeRequests!{{ChangeRequestId}}, 0)))
+        [NotMapped]
+        public DateTimeOffset? RedesignImplementedAt
+        {
+            get => F.AsDateTime(F.Memo(this, "RedesignImplementedAt", () => F.Lookup<ChangeRequest>(this, "ChangeRequests", "ChangeRequestId", __c => __c.ChangeRequests, __r => F.Of(__r.ChangeRequestId), F.Of(this.RedesignChangeRequest), __r => F.Of(__r.ImplementedAt), () => F.Of(new ChangeRequest().ImplementedAt)))); set { }
+        }
+
+        // Formula IsFailureWithoutLandedRedesign (rulebook: =OR({{RedesignChangeRequest}} = "", {{RedesignImplementedAt}} = ""))
+        [NotMapped]
+        public bool? IsFailureWithoutLandedRedesign
+        {
+            get => F.AsBool(F.Memo(this, "IsFailureWithoutLandedRedesign", () => F.Or(F.Bool3(F.IsBlank(F.Of(this.RedesignChangeRequest))), F.Bool3(F.IsBlank(F.Of(this.RedesignImplementedAt)))))); set { }
+        }
+
+        // Formula ImprovementCyclePath (rulebook: =IF({{RedesignChangeRequest}} = "", "", "Observed at " & {{ExecutedStep}} & " by " & {{EncounteredByAgent}} & "; recorded as " & {{Error}} & " (" & {{IssueCause}} & "); redesigned by " & {{RedesignChangeRequest}}))
+        [NotMapped]
+        public string? ImprovementCyclePath
+        {
+            get => F.AsString(F.Memo(this, "ImprovementCyclePath", () => (F.Truthy(F.Bool3(F.IsBlank(F.Of(this.RedesignChangeRequest)))) ? F.S("") : F.Concat(F.S("Observed at "), F.Text(F.Of(this.ExecutedStep)), F.S(" by "), F.Text(F.Of(this.EncounteredByAgent)), F.S("; recorded as "), F.Text(F.Of(this.Error)), F.S(" ("), F.Text(F.Of(this.IssueCause)), F.S("); redesigned by "), F.Text(F.Of(this.RedesignChangeRequest)))))); set { }
+        }
+
 
         public string? StepExecution { get; set; }
         public string? Error { get; set; }
         public string? EncounteredByAgent { get; set; }
+        public string? RedesignChangeRequest { get; set; }
 
         private StepExecution _stepExecutionRef;
 
@@ -179,12 +229,57 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             }
         }
 
+        private ChangeRequest _changeRequest;
+
+        [ForeignKey("RedesignChangeRequest")]
+        public virtual ChangeRequest ChangeRequest
+        {
+            get
+            {
+                if (_changeRequest == null && !string.IsNullOrEmpty(RedesignChangeRequest))
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access ChangeRequest - no database context is set. RedesignChangeRequest: " + RedesignChangeRequest + ".");
+                        }
+                        return null;
+                    }
+                    _changeRequest = base.SoAContext.ChangeRequests.Find(RedesignChangeRequest);
+                    if (_changeRequest != null)
+                    {
+                        base.SoAContext.Attach(_changeRequest);
+                    }
+                }
+                return _changeRequest;
+            }
+            set
+            {
+                if (_changeRequest != value)
+                {
+                    _changeRequest = value;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_changeRequest != null)
+                    {
+                        RedesignChangeRequest = _changeRequest.ChangeRequestId;
+                    }
+                }
+            }
+        }
+
 
         protected override void LazyLoadProperties()
         {
             _ = this.StepExecutionRef;
             _ = this.ErrorRef;
             _ = this.Agent;
+            _ = this.ChangeRequest;
         }
 
         public override string ToString()

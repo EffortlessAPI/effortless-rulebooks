@@ -139,9 +139,147 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         }
 
         public string? SemanticTypeIri { get; set; }
+        public string? SeniorityLevel { get; set; }
+        public string? RoleFamily { get; set; }
+        // Formula SpecializedRoleFamily (rulebook: =INDEX(Roles!{{RoleFamily}}, MATCH({{SpecializesRole}}, Roles!{{RoleId}}, 0)))
+        [NotMapped]
+        public string? SpecializedRoleFamily
+        {
+            get => F.AsString(F.Memo(this, "SpecializedRoleFamily", () => F.Lookup<Role>(this, "Roles", "RoleId", __c => __c.Roles, __r => F.Of(__r.RoleId), F.Of(this.SpecializesRole), __r => F.Of(__r.RoleFamily), () => F.Of(new Role().RoleFamily)))); set { }
+        }
+
+        // Formula SpecializationCount (rulebook: =COUNTIFS(Roles!{{SpecializesRole}}, Roles!{{RoleId}}))
+        [NotMapped]
+        public int? SpecializationCount
+        {
+            get => F.AsInt(F.Memo(this, "SpecializationCount", () => F.Integer((base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<Role>(base.SoAContext, "Roles", __c => __c.Roles), __r => F.CritField(F.Of(__r.SpecializesRole), F.Of(this.RoleId))))))); set { }
+        }
+
+        // Formula HasSpecializations (rulebook: ={{SpecializationCount}} > 0)
+        [NotMapped]
+        public bool? HasSpecializations
+        {
+            get => F.AsBool(F.Memo(this, "HasSpecializations", () => F.Cmp(F.Of(this.SpecializationCount), ">", F.I(0)))); set { }
+        }
+
+        // Formula IsSeniorVariantNotSpecialization (rulebook: =AND({{SeniorityLevel}} = "Senior", OR({{SpecializesRole}} = "", {{SpecializedRoleFamily}} <> {{RoleFamily}})))
+        [NotMapped]
+        public bool? IsSeniorVariantNotSpecialization
+        {
+            get => F.AsBool(F.Memo(this, "IsSeniorVariantNotSpecialization", () => F.And(F.Bool3(F.Eq(F.Nullif(F.Of(this.SeniorityLevel)), F.S("Senior"))), F.Bool3(F.Or(F.Bool3(F.IsBlank(F.Of(this.SpecializesRole))), F.Bool3(F.Ne(F.Of(this.SpecializedRoleFamily), F.Nullif(F.Of(this.RoleFamily))))))))); set { }
+        }
+
+        // Formula OrganizationType (rulebook: =INDEX(Organizations!{{OrganizationType}}, MATCH({{Organization}}, Organizations!{{OrganizationId}}, 0)))
+        [NotMapped]
+        public string? OrganizationType
+        {
+            get => F.AsString(F.Memo(this, "OrganizationType", () => F.Lookup<Organization>(this, "Organizations", "OrganizationId", __c => __c.Organizations, __r => F.Of(__r.OrganizationId), F.Of(this.Organization), __r => F.Of(__r.OrganizationType), () => F.Of(new Organization().OrganizationType)))); set { }
+        }
+
+        // Formula IsNotHousedInDepartment (rulebook: ={{OrganizationType}} <> "Department")
+        [NotMapped]
+        public bool? IsNotHousedInDepartment
+        {
+            get => F.AsBool(F.Memo(this, "IsNotHousedInDepartment", () => F.Ne(F.Of(this.OrganizationType), F.S("Department")))); set { }
+        }
+
+        // Formula CapabilityTagCount (rulebook: =COUNTIFS(RoleCapabilityTags!{{Role}}, {{RoleId}}))
+        [NotMapped]
+        public int? CapabilityTagCount
+        {
+            get => F.AsInt(F.Memo(this, "CapabilityTagCount", () => F.Integer((base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<RoleCapabilityTag>(base.SoAContext, "RoleCapabilityTags", __c => __c.RoleCapabilityTags), __r => F.CritField(F.Of(__r.Role), F.Of(this.RoleId))))))); set { }
+        }
+
+        // Formula ComplianceReviewTagCount (rulebook: =COUNTIFS(RoleCapabilityTags!{{Role}}, {{RoleId}}, RoleCapabilityTags!{{CapabilityTerm}}, "vt-cap-compliance-review"))
+        [NotMapped]
+        public int? ComplianceReviewTagCount
+        {
+            get => F.AsInt(F.Memo(this, "ComplianceReviewTagCount", () => F.Integer((base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<RoleCapabilityTag>(base.SoAContext, "RoleCapabilityTags", __c => __c.RoleCapabilityTags), __r => F.CritField(F.Of(__r.Role), F.Of(this.RoleId)) && F.CritLiteral(F.Of(__r.CapabilityTerm), F.S("vt-cap-compliance-review"))))))); set { }
+        }
+
+        // Formula HasComplianceReviewCapability (rulebook: ={{ComplianceReviewTagCount}} > 0)
+        [NotMapped]
+        public bool? HasComplianceReviewCapability
+        {
+            get => F.AsBool(F.Memo(this, "HasComplianceReviewCapability", () => F.Cmp(F.Of(this.ComplianceReviewTagCount), ">", F.I(0)))); set { }
+        }
+
+        // Formula RoleMentionCount (rulebook: =COUNTIFS(SourceTermMentions!{{IntendedTermRole}}, {{RoleId}}))
+        [NotMapped]
+        public int? RoleMentionCount
+        {
+            get => F.AsInt(F.Memo(this, "RoleMentionCount", () => F.Integer((base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<SourceTermMention>(base.SoAContext, "SourceTermMentions", __c => __c.SourceTermMentions), __r => F.CritField(F.Of(__r.IntendedTermRole), F.Of(this.RoleId))))))); set { }
+        }
+
+        // Formula UnresolvedRoleMentionCount (rulebook: =COUNTIFS(SourceTermMentions!{{UnresolvedRoleKey}}, {{RoleId}}))
+        [NotMapped]
+        public int? UnresolvedRoleMentionCount
+        {
+            get => F.AsInt(F.Memo(this, "UnresolvedRoleMentionCount", () => F.Integer((base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<SourceTermMention>(base.SoAContext, "SourceTermMentions", __c => __c.SourceTermMentions), __r => F.CritField(F.Of(__r.UnresolvedRoleKey), F.Of(this.RoleId))))))); set { }
+        }
+
+        // Formula IsMissedByPhraseQuery (rulebook: ={{UnresolvedRoleMentionCount}} > 0)
+        [NotMapped]
+        public bool? IsMissedByPhraseQuery
+        {
+            get => F.AsBool(F.Memo(this, "IsMissedByPhraseQuery", () => F.Cmp(F.Of(this.UnresolvedRoleMentionCount), ">", F.I(0)))); set { }
+        }
+
+        public string? PreferredKnowledgeForm { get; set; }
+        // Formula CurrentHolderName (rulebook: =INDEX(Agents!{{DisplayName}}, MATCH({{CurrentAgent}}, Agents!{{AgentId}}, 0)))
+        [NotMapped]
+        public string? CurrentHolderName
+        {
+            get => F.AsString(F.Memo(this, "CurrentHolderName", () => F.Lookup<Agent>(this, "Agents", "AgentId", __c => __c.Agents, __r => F.Of(__r.AgentId), F.Of(this.CurrentAgent), __r => F.Of(__r.DisplayName), () => F.Of(new Agent().DisplayName)))); set { }
+        }
+
+        // Formula BackupRoleHolder (rulebook: =INDEX(Roles!{{CurrentAgent}}, MATCH({{EscalationBackupRole}}, Roles!{{RoleId}}, 0)))
+        [NotMapped]
+        public string? BackupRoleHolder
+        {
+            get => F.AsString(F.Memo(this, "BackupRoleHolder", () => F.Lookup<Role>(this, "Roles", "RoleId", __c => __c.Roles, __r => F.Of(__r.RoleId), F.Of(this.EscalationBackupRole), __r => F.Of(__r.CurrentAgent), () => F.Of(new Role().CurrentAgent)))); set { }
+        }
+
+        // Formula HasEscalationBackup (rulebook: ={{EscalationBackupRole}} <> "")
+        [NotMapped]
+        public bool? HasEscalationBackup
+        {
+            get => F.AsBool(F.Memo(this, "HasEscalationBackup", () => F.IsNotBlank(F.Of(this.EscalationBackupRole)))); set { }
+        }
+
+        // Formula HasUnfilledEscalationBackup (rulebook: =AND({{EscalationBackupRole}} <> "", {{BackupRoleHolder}} = ""))
+        [NotMapped]
+        public bool? HasUnfilledEscalationBackup
+        {
+            get => F.AsBool(F.Memo(this, "HasUnfilledEscalationBackup", () => F.And(F.Bool3(F.IsNotBlank(F.Of(this.EscalationBackupRole))), F.Bool3(F.IsBlank(F.Of(this.BackupRoleHolder)))))); set { }
+        }
+
+        // Formula ReleaseApprovalStepCount (rulebook: =COUNTIFS(Steps!{{AssignedRole}}, {{RoleId}}, Steps!{{IsReleaseApprovalGate}}, TRUE))
+        [NotMapped]
+        public int? ReleaseApprovalStepCount
+        {
+            get => F.AsInt(F.Memo(this, "ReleaseApprovalStepCount", () => F.Integer((base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<Step>(base.SoAContext, "Steps", __c => __c.Steps), __r => F.CritField(F.Of(__r.AssignedRole), F.Of(this.RoleId)) && F.CritLiteral(F.Of(__r.IsReleaseApprovalGate), F.B(true))))))); set { }
+        }
+
+        // Formula IsProductionReleaseApprover (rulebook: ={{ReleaseApprovalStepCount}} > 0)
+        [NotMapped]
+        public bool? IsProductionReleaseApprover
+        {
+            get => F.AsBool(F.Memo(this, "IsProductionReleaseApprover", () => F.Cmp(F.Of(this.ReleaseApprovalStepCount), ">", F.I(0)))); set { }
+        }
+
+        // Formula ApprovalStepCount (rulebook: =COUNTIFS(Steps!{{AssignedRole}}, {{RoleId}}, Steps!{{ControlKind}}, "Approval"))
+        [NotMapped]
+        public int? ApprovalStepCount
+        {
+            get => F.AsInt(F.Memo(this, "ApprovalStepCount", () => F.Integer((base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<Step>(base.SoAContext, "Steps", __c => __c.Steps), __r => F.CritField(F.Of(__r.AssignedRole), F.Of(this.RoleId)) && F.CritLiteral(F.Of(__r.ControlKind), F.S("Approval"))))))); set { }
+        }
+
 
         public string? Organization { get; set; }
         public string? CurrentAgent { get; set; }
+        public string? SpecializesRole { get; set; }
+        public string? EscalationBackupRole { get; set; }
 
         private Organization _organizationRef;
 
@@ -227,6 +365,204 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     {
                         CurrentAgent = _agent.AgentId;
                     }
+                }
+            }
+        }
+
+        private Role _role;
+
+        [ForeignKey("SpecializesRole")]
+        public virtual Role Role
+        {
+            get
+            {
+                if (_role == null && !string.IsNullOrEmpty(SpecializesRole))
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access Role - no database context is set. SpecializesRole: " + SpecializesRole + ".");
+                        }
+                        return null;
+                    }
+                    _role = base.SoAContext.Roles.Find(SpecializesRole);
+                    if (_role != null)
+                    {
+                        base.SoAContext.Attach(_role);
+                    }
+                }
+                return _role;
+            }
+            set
+            {
+                if (_role != value)
+                {
+                    _role = value;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_role != null)
+                    {
+                        SpecializesRole = _role.RoleId;
+                    }
+                }
+            }
+        }
+
+        private Role _roleRef;
+
+        [ForeignKey("EscalationBackupRole")]
+        public virtual Role RoleRef
+        {
+            get
+            {
+                if (_roleRef == null && !string.IsNullOrEmpty(EscalationBackupRole))
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access RoleRef - no database context is set. EscalationBackupRole: " + EscalationBackupRole + ".");
+                        }
+                        return null;
+                    }
+                    _roleRef = base.SoAContext.Roles.Find(EscalationBackupRole);
+                    if (_roleRef != null)
+                    {
+                        base.SoAContext.Attach(_roleRef);
+                    }
+                }
+                return _roleRef;
+            }
+            set
+            {
+                if (_roleRef != value)
+                {
+                    _roleRef = value;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_roleRef != null)
+                    {
+                        EscalationBackupRole = _roleRef.RoleId;
+                    }
+                }
+            }
+        }
+
+        private ObservableCollection<Role> _specializesRoleRoles;
+
+        [InverseProperty("Role")]
+        public virtual ObservableCollection<Role> SpecializesRoleRoles
+        {
+            get
+            {
+                if (_specializesRoleRoles == null)
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access SpecializesRoleRoles - no database context is set. RoleId: " + this.RoleId + ".");
+                        }
+                        _specializesRoleRoles = new ObservableCollection<Role>();
+                    }
+                    else
+                    {
+                        var items = base.SoAContext.Roles.Where(x => x.SpecializesRole == this.RoleId).ToList<Role>();
+                        _specializesRoleRoles = new ObservableCollection<Role>(items);
+                        if (items.Any())
+                        {
+                            base.SoAContext.AttachRange(items);
+                        }
+                    }
+                    _specializesRoleRoles.CollectionChanged += SpecializesRoleRoles_CollectionChanged;
+                }
+                return _specializesRoleRoles;
+            }
+            private set
+            {
+                if (_specializesRoleRoles != null)
+                {
+                    _specializesRoleRoles.CollectionChanged -= SpecializesRoleRoles_CollectionChanged;
+                }
+                _specializesRoleRoles = value;
+                if (_specializesRoleRoles != null)
+                {
+                    _specializesRoleRoles.CollectionChanged += SpecializesRoleRoles_CollectionChanged;
+                }
+            }
+        }
+
+        private void SpecializesRoleRoles_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems != null)
+            {
+                foreach (var item in e.NewItems.Cast<Role>())
+                {
+                    item.SpecializesRole = this.RoleId;
+                }
+            }
+        }
+
+        private ObservableCollection<Role> _escalationBackupRoleRoles;
+
+        [InverseProperty("RoleRef")]
+        public virtual ObservableCollection<Role> EscalationBackupRoleRoles
+        {
+            get
+            {
+                if (_escalationBackupRoleRoles == null)
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access EscalationBackupRoleRoles - no database context is set. RoleId: " + this.RoleId + ".");
+                        }
+                        _escalationBackupRoleRoles = new ObservableCollection<Role>();
+                    }
+                    else
+                    {
+                        var items = base.SoAContext.Roles.Where(x => x.EscalationBackupRole == this.RoleId).ToList<Role>();
+                        _escalationBackupRoleRoles = new ObservableCollection<Role>(items);
+                        if (items.Any())
+                        {
+                            base.SoAContext.AttachRange(items);
+                        }
+                    }
+                    _escalationBackupRoleRoles.CollectionChanged += EscalationBackupRoleRoles_CollectionChanged;
+                }
+                return _escalationBackupRoleRoles;
+            }
+            private set
+            {
+                if (_escalationBackupRoleRoles != null)
+                {
+                    _escalationBackupRoleRoles.CollectionChanged -= EscalationBackupRoleRoles_CollectionChanged;
+                }
+                _escalationBackupRoleRoles = value;
+                if (_escalationBackupRoleRoles != null)
+                {
+                    _escalationBackupRoleRoles.CollectionChanged += EscalationBackupRoleRoles_CollectionChanged;
+                }
+            }
+        }
+
+        private void EscalationBackupRoleRoles_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems != null)
+            {
+                foreach (var item in e.NewItems.Cast<Role>())
+                {
+                    item.EscalationBackupRole = this.RoleId;
                 }
             }
         }
@@ -1441,11 +1777,1170 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             }
         }
 
+        private ObservableCollection<VocabularyTerm> _vocabularyTerms;
+
+        [InverseProperty("Role")]
+        public virtual ObservableCollection<VocabularyTerm> VocabularyTerms
+        {
+            get
+            {
+                if (_vocabularyTerms == null)
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access VocabularyTerms - no database context is set. RoleId: " + this.RoleId + ".");
+                        }
+                        _vocabularyTerms = new ObservableCollection<VocabularyTerm>();
+                    }
+                    else
+                    {
+                        var items = base.SoAContext.VocabularyTerms.Where(x => x.RepresentsRole == this.RoleId).ToList<VocabularyTerm>();
+                        _vocabularyTerms = new ObservableCollection<VocabularyTerm>(items);
+                        if (items.Any())
+                        {
+                            base.SoAContext.AttachRange(items);
+                        }
+                    }
+                    _vocabularyTerms.CollectionChanged += VocabularyTerms_CollectionChanged;
+                }
+                return _vocabularyTerms;
+            }
+            private set
+            {
+                if (_vocabularyTerms != null)
+                {
+                    _vocabularyTerms.CollectionChanged -= VocabularyTerms_CollectionChanged;
+                }
+                _vocabularyTerms = value;
+                if (_vocabularyTerms != null)
+                {
+                    _vocabularyTerms.CollectionChanged += VocabularyTerms_CollectionChanged;
+                }
+            }
+        }
+
+        private void VocabularyTerms_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems != null)
+            {
+                foreach (var item in e.NewItems.Cast<VocabularyTerm>())
+                {
+                    item.RepresentsRole = this.RoleId;
+                }
+            }
+        }
+
+        private ObservableCollection<FailureMode> _failureModes;
+
+        [InverseProperty("Role")]
+        public virtual ObservableCollection<FailureMode> FailureModes
+        {
+            get
+            {
+                if (_failureModes == null)
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access FailureModes - no database context is set. RoleId: " + this.RoleId + ".");
+                        }
+                        _failureModes = new ObservableCollection<FailureMode>();
+                    }
+                    else
+                    {
+                        var items = base.SoAContext.FailureModes.Where(x => x.EscalateToRole == this.RoleId).ToList<FailureMode>();
+                        _failureModes = new ObservableCollection<FailureMode>(items);
+                        if (items.Any())
+                        {
+                            base.SoAContext.AttachRange(items);
+                        }
+                    }
+                    _failureModes.CollectionChanged += FailureModes_CollectionChanged;
+                }
+                return _failureModes;
+            }
+            private set
+            {
+                if (_failureModes != null)
+                {
+                    _failureModes.CollectionChanged -= FailureModes_CollectionChanged;
+                }
+                _failureModes = value;
+                if (_failureModes != null)
+                {
+                    _failureModes.CollectionChanged += FailureModes_CollectionChanged;
+                }
+            }
+        }
+
+        private void FailureModes_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems != null)
+            {
+                foreach (var item in e.NewItems.Cast<FailureMode>())
+                {
+                    item.EscalateToRole = this.RoleId;
+                }
+            }
+        }
+
+        private ObservableCollection<StepCue> _stepCues;
+
+        [InverseProperty("Role")]
+        public virtual ObservableCollection<StepCue> StepCues
+        {
+            get
+            {
+                if (_stepCues == null)
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access StepCues - no database context is set. RoleId: " + this.RoleId + ".");
+                        }
+                        _stepCues = new ObservableCollection<StepCue>();
+                    }
+                    else
+                    {
+                        var items = base.SoAContext.StepCues.Where(x => x.EscalateToRole == this.RoleId).ToList<StepCue>();
+                        _stepCues = new ObservableCollection<StepCue>(items);
+                        if (items.Any())
+                        {
+                            base.SoAContext.AttachRange(items);
+                        }
+                    }
+                    _stepCues.CollectionChanged += StepCues_CollectionChanged;
+                }
+                return _stepCues;
+            }
+            private set
+            {
+                if (_stepCues != null)
+                {
+                    _stepCues.CollectionChanged -= StepCues_CollectionChanged;
+                }
+                _stepCues = value;
+                if (_stepCues != null)
+                {
+                    _stepCues.CollectionChanged += StepCues_CollectionChanged;
+                }
+            }
+        }
+
+        private void StepCues_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems != null)
+            {
+                foreach (var item in e.NewItems.Cast<StepCue>())
+                {
+                    item.EscalateToRole = this.RoleId;
+                }
+            }
+        }
+
+        private ObservableCollection<BusinessOutcome> _businessOutcomes;
+
+        [InverseProperty("Role")]
+        public virtual ObservableCollection<BusinessOutcome> BusinessOutcomes
+        {
+            get
+            {
+                if (_businessOutcomes == null)
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access BusinessOutcomes - no database context is set. RoleId: " + this.RoleId + ".");
+                        }
+                        _businessOutcomes = new ObservableCollection<BusinessOutcome>();
+                    }
+                    else
+                    {
+                        var items = base.SoAContext.BusinessOutcomes.Where(x => x.OwnerRole == this.RoleId).ToList<BusinessOutcome>();
+                        _businessOutcomes = new ObservableCollection<BusinessOutcome>(items);
+                        if (items.Any())
+                        {
+                            base.SoAContext.AttachRange(items);
+                        }
+                    }
+                    _businessOutcomes.CollectionChanged += BusinessOutcomes_CollectionChanged;
+                }
+                return _businessOutcomes;
+            }
+            private set
+            {
+                if (_businessOutcomes != null)
+                {
+                    _businessOutcomes.CollectionChanged -= BusinessOutcomes_CollectionChanged;
+                }
+                _businessOutcomes = value;
+                if (_businessOutcomes != null)
+                {
+                    _businessOutcomes.CollectionChanged += BusinessOutcomes_CollectionChanged;
+                }
+            }
+        }
+
+        private void BusinessOutcomes_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems != null)
+            {
+                foreach (var item in e.NewItems.Cast<BusinessOutcome>())
+                {
+                    item.OwnerRole = this.RoleId;
+                }
+            }
+        }
+
+        private ObservableCollection<ProcessStage> _processStages;
+
+        [InverseProperty("Role")]
+        public virtual ObservableCollection<ProcessStage> ProcessStages
+        {
+            get
+            {
+                if (_processStages == null)
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access ProcessStages - no database context is set. RoleId: " + this.RoleId + ".");
+                        }
+                        _processStages = new ObservableCollection<ProcessStage>();
+                    }
+                    else
+                    {
+                        var items = base.SoAContext.ProcessStages.Where(x => x.OwnerRole == this.RoleId).ToList<ProcessStage>();
+                        _processStages = new ObservableCollection<ProcessStage>(items);
+                        if (items.Any())
+                        {
+                            base.SoAContext.AttachRange(items);
+                        }
+                    }
+                    _processStages.CollectionChanged += ProcessStages_CollectionChanged;
+                }
+                return _processStages;
+            }
+            private set
+            {
+                if (_processStages != null)
+                {
+                    _processStages.CollectionChanged -= ProcessStages_CollectionChanged;
+                }
+                _processStages = value;
+                if (_processStages != null)
+                {
+                    _processStages.CollectionChanged += ProcessStages_CollectionChanged;
+                }
+            }
+        }
+
+        private void ProcessStages_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems != null)
+            {
+                foreach (var item in e.NewItems.Cast<ProcessStage>())
+                {
+                    item.OwnerRole = this.RoleId;
+                }
+            }
+        }
+
+        private ObservableCollection<StakeholderLense> _stakeholderLenses;
+
+        [InverseProperty("Role")]
+        public virtual ObservableCollection<StakeholderLense> StakeholderLenses
+        {
+            get
+            {
+                if (_stakeholderLenses == null)
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access StakeholderLenses - no database context is set. RoleId: " + this.RoleId + ".");
+                        }
+                        _stakeholderLenses = new ObservableCollection<StakeholderLense>();
+                    }
+                    else
+                    {
+                        var items = base.SoAContext.StakeholderLenses.Where(x => x.ExemplarRole == this.RoleId).ToList<StakeholderLense>();
+                        _stakeholderLenses = new ObservableCollection<StakeholderLense>(items);
+                        if (items.Any())
+                        {
+                            base.SoAContext.AttachRange(items);
+                        }
+                    }
+                    _stakeholderLenses.CollectionChanged += StakeholderLenses_CollectionChanged;
+                }
+                return _stakeholderLenses;
+            }
+            private set
+            {
+                if (_stakeholderLenses != null)
+                {
+                    _stakeholderLenses.CollectionChanged -= StakeholderLenses_CollectionChanged;
+                }
+                _stakeholderLenses = value;
+                if (_stakeholderLenses != null)
+                {
+                    _stakeholderLenses.CollectionChanged += StakeholderLenses_CollectionChanged;
+                }
+            }
+        }
+
+        private void StakeholderLenses_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems != null)
+            {
+                foreach (var item in e.NewItems.Cast<StakeholderLense>())
+                {
+                    item.ExemplarRole = this.RoleId;
+                }
+            }
+        }
+
+        private ObservableCollection<RoleCapabilityTag> _roleCapabilityTags;
+
+        [InverseProperty("RoleRef")]
+        public virtual ObservableCollection<RoleCapabilityTag> RoleCapabilityTags
+        {
+            get
+            {
+                if (_roleCapabilityTags == null)
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access RoleCapabilityTags - no database context is set. RoleId: " + this.RoleId + ".");
+                        }
+                        _roleCapabilityTags = new ObservableCollection<RoleCapabilityTag>();
+                    }
+                    else
+                    {
+                        var items = base.SoAContext.RoleCapabilityTags.Where(x => x.Role == this.RoleId).ToList<RoleCapabilityTag>();
+                        _roleCapabilityTags = new ObservableCollection<RoleCapabilityTag>(items);
+                        if (items.Any())
+                        {
+                            base.SoAContext.AttachRange(items);
+                        }
+                    }
+                    _roleCapabilityTags.CollectionChanged += RoleCapabilityTags_CollectionChanged;
+                }
+                return _roleCapabilityTags;
+            }
+            private set
+            {
+                if (_roleCapabilityTags != null)
+                {
+                    _roleCapabilityTags.CollectionChanged -= RoleCapabilityTags_CollectionChanged;
+                }
+                _roleCapabilityTags = value;
+                if (_roleCapabilityTags != null)
+                {
+                    _roleCapabilityTags.CollectionChanged += RoleCapabilityTags_CollectionChanged;
+                }
+            }
+        }
+
+        private void RoleCapabilityTags_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems != null)
+            {
+                foreach (var item in e.NewItems.Cast<RoleCapabilityTag>())
+                {
+                    item.Role = this.RoleId;
+                }
+            }
+        }
+
+        private ObservableCollection<GroundingSnapshot> _groundingSnapshots;
+
+        [InverseProperty("Role")]
+        public virtual ObservableCollection<GroundingSnapshot> GroundingSnapshots
+        {
+            get
+            {
+                if (_groundingSnapshots == null)
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access GroundingSnapshots - no database context is set. RoleId: " + this.RoleId + ".");
+                        }
+                        _groundingSnapshots = new ObservableCollection<GroundingSnapshot>();
+                    }
+                    else
+                    {
+                        var items = base.SoAContext.GroundingSnapshots.Where(x => x.StewardRole == this.RoleId).ToList<GroundingSnapshot>();
+                        _groundingSnapshots = new ObservableCollection<GroundingSnapshot>(items);
+                        if (items.Any())
+                        {
+                            base.SoAContext.AttachRange(items);
+                        }
+                    }
+                    _groundingSnapshots.CollectionChanged += GroundingSnapshots_CollectionChanged;
+                }
+                return _groundingSnapshots;
+            }
+            private set
+            {
+                if (_groundingSnapshots != null)
+                {
+                    _groundingSnapshots.CollectionChanged -= GroundingSnapshots_CollectionChanged;
+                }
+                _groundingSnapshots = value;
+                if (_groundingSnapshots != null)
+                {
+                    _groundingSnapshots.CollectionChanged += GroundingSnapshots_CollectionChanged;
+                }
+            }
+        }
+
+        private void GroundingSnapshots_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems != null)
+            {
+                foreach (var item in e.NewItems.Cast<GroundingSnapshot>())
+                {
+                    item.StewardRole = this.RoleId;
+                }
+            }
+        }
+
+        private ObservableCollection<RetrievalSegment> _retrievalSegments;
+
+        [InverseProperty("Role")]
+        public virtual ObservableCollection<RetrievalSegment> RetrievalSegments
+        {
+            get
+            {
+                if (_retrievalSegments == null)
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access RetrievalSegments - no database context is set. RoleId: " + this.RoleId + ".");
+                        }
+                        _retrievalSegments = new ObservableCollection<RetrievalSegment>();
+                    }
+                    else
+                    {
+                        var items = base.SoAContext.RetrievalSegments.Where(x => x.AccountableRole == this.RoleId).ToList<RetrievalSegment>();
+                        _retrievalSegments = new ObservableCollection<RetrievalSegment>(items);
+                        if (items.Any())
+                        {
+                            base.SoAContext.AttachRange(items);
+                        }
+                    }
+                    _retrievalSegments.CollectionChanged += RetrievalSegments_CollectionChanged;
+                }
+                return _retrievalSegments;
+            }
+            private set
+            {
+                if (_retrievalSegments != null)
+                {
+                    _retrievalSegments.CollectionChanged -= RetrievalSegments_CollectionChanged;
+                }
+                _retrievalSegments = value;
+                if (_retrievalSegments != null)
+                {
+                    _retrievalSegments.CollectionChanged += RetrievalSegments_CollectionChanged;
+                }
+            }
+        }
+
+        private void RetrievalSegments_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems != null)
+            {
+                foreach (var item in e.NewItems.Cast<RetrievalSegment>())
+                {
+                    item.AccountableRole = this.RoleId;
+                }
+            }
+        }
+
+        private ObservableCollection<PromptTemplate> _promptTemplates;
+
+        [InverseProperty("Role")]
+        public virtual ObservableCollection<PromptTemplate> PromptTemplates
+        {
+            get
+            {
+                if (_promptTemplates == null)
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access PromptTemplates - no database context is set. RoleId: " + this.RoleId + ".");
+                        }
+                        _promptTemplates = new ObservableCollection<PromptTemplate>();
+                    }
+                    else
+                    {
+                        var items = base.SoAContext.PromptTemplates.Where(x => x.MaintainedByRole == this.RoleId).ToList<PromptTemplate>();
+                        _promptTemplates = new ObservableCollection<PromptTemplate>(items);
+                        if (items.Any())
+                        {
+                            base.SoAContext.AttachRange(items);
+                        }
+                    }
+                    _promptTemplates.CollectionChanged += PromptTemplates_CollectionChanged;
+                }
+                return _promptTemplates;
+            }
+            private set
+            {
+                if (_promptTemplates != null)
+                {
+                    _promptTemplates.CollectionChanged -= PromptTemplates_CollectionChanged;
+                }
+                _promptTemplates = value;
+                if (_promptTemplates != null)
+                {
+                    _promptTemplates.CollectionChanged += PromptTemplates_CollectionChanged;
+                }
+            }
+        }
+
+        private void PromptTemplates_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems != null)
+            {
+                foreach (var item in e.NewItems.Cast<PromptTemplate>())
+                {
+                    item.MaintainedByRole = this.RoleId;
+                }
+            }
+        }
+
+        private ObservableCollection<KnowledgeProjection> _knowledgeProjections;
+
+        [InverseProperty("Role")]
+        public virtual ObservableCollection<KnowledgeProjection> KnowledgeProjections
+        {
+            get
+            {
+                if (_knowledgeProjections == null)
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access KnowledgeProjections - no database context is set. RoleId: " + this.RoleId + ".");
+                        }
+                        _knowledgeProjections = new ObservableCollection<KnowledgeProjection>();
+                    }
+                    else
+                    {
+                        var items = base.SoAContext.KnowledgeProjections.Where(x => x.AudienceRole == this.RoleId).ToList<KnowledgeProjection>();
+                        _knowledgeProjections = new ObservableCollection<KnowledgeProjection>(items);
+                        if (items.Any())
+                        {
+                            base.SoAContext.AttachRange(items);
+                        }
+                    }
+                    _knowledgeProjections.CollectionChanged += KnowledgeProjections_CollectionChanged;
+                }
+                return _knowledgeProjections;
+            }
+            private set
+            {
+                if (_knowledgeProjections != null)
+                {
+                    _knowledgeProjections.CollectionChanged -= KnowledgeProjections_CollectionChanged;
+                }
+                _knowledgeProjections = value;
+                if (_knowledgeProjections != null)
+                {
+                    _knowledgeProjections.CollectionChanged += KnowledgeProjections_CollectionChanged;
+                }
+            }
+        }
+
+        private void KnowledgeProjections_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems != null)
+            {
+                foreach (var item in e.NewItems.Cast<KnowledgeProjection>())
+                {
+                    item.AudienceRole = this.RoleId;
+                }
+            }
+        }
+
+        private ObservableCollection<GovernedModel> _governedModels;
+
+        [InverseProperty("Role")]
+        public virtual ObservableCollection<GovernedModel> GovernedModels
+        {
+            get
+            {
+                if (_governedModels == null)
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access GovernedModels - no database context is set. RoleId: " + this.RoleId + ".");
+                        }
+                        _governedModels = new ObservableCollection<GovernedModel>();
+                    }
+                    else
+                    {
+                        var items = base.SoAContext.GovernedModels.Where(x => x.ToolingOwnerRole == this.RoleId).ToList<GovernedModel>();
+                        _governedModels = new ObservableCollection<GovernedModel>(items);
+                        if (items.Any())
+                        {
+                            base.SoAContext.AttachRange(items);
+                        }
+                    }
+                    _governedModels.CollectionChanged += GovernedModels_CollectionChanged;
+                }
+                return _governedModels;
+            }
+            private set
+            {
+                if (_governedModels != null)
+                {
+                    _governedModels.CollectionChanged -= GovernedModels_CollectionChanged;
+                }
+                _governedModels = value;
+                if (_governedModels != null)
+                {
+                    _governedModels.CollectionChanged += GovernedModels_CollectionChanged;
+                }
+            }
+        }
+
+        private void GovernedModels_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems != null)
+            {
+                foreach (var item in e.NewItems.Cast<GovernedModel>())
+                {
+                    item.ToolingOwnerRole = this.RoleId;
+                }
+            }
+        }
+
+        private ObservableCollection<ModelCharter> _stewardRoleModelCharters;
+
+        [InverseProperty("Role")]
+        public virtual ObservableCollection<ModelCharter> StewardRoleModelCharters
+        {
+            get
+            {
+                if (_stewardRoleModelCharters == null)
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access StewardRoleModelCharters - no database context is set. RoleId: " + this.RoleId + ".");
+                        }
+                        _stewardRoleModelCharters = new ObservableCollection<ModelCharter>();
+                    }
+                    else
+                    {
+                        var items = base.SoAContext.ModelCharters.Where(x => x.StewardRole == this.RoleId).ToList<ModelCharter>();
+                        _stewardRoleModelCharters = new ObservableCollection<ModelCharter>(items);
+                        if (items.Any())
+                        {
+                            base.SoAContext.AttachRange(items);
+                        }
+                    }
+                    _stewardRoleModelCharters.CollectionChanged += StewardRoleModelCharters_CollectionChanged;
+                }
+                return _stewardRoleModelCharters;
+            }
+            private set
+            {
+                if (_stewardRoleModelCharters != null)
+                {
+                    _stewardRoleModelCharters.CollectionChanged -= StewardRoleModelCharters_CollectionChanged;
+                }
+                _stewardRoleModelCharters = value;
+                if (_stewardRoleModelCharters != null)
+                {
+                    _stewardRoleModelCharters.CollectionChanged += StewardRoleModelCharters_CollectionChanged;
+                }
+            }
+        }
+
+        private void StewardRoleModelCharters_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems != null)
+            {
+                foreach (var item in e.NewItems.Cast<ModelCharter>())
+                {
+                    item.StewardRole = this.RoleId;
+                }
+            }
+        }
+
+        private ObservableCollection<ModelCharter> _authorityRoleModelCharters;
+
+        [InverseProperty("RoleRef")]
+        public virtual ObservableCollection<ModelCharter> AuthorityRoleModelCharters
+        {
+            get
+            {
+                if (_authorityRoleModelCharters == null)
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access AuthorityRoleModelCharters - no database context is set. RoleId: " + this.RoleId + ".");
+                        }
+                        _authorityRoleModelCharters = new ObservableCollection<ModelCharter>();
+                    }
+                    else
+                    {
+                        var items = base.SoAContext.ModelCharters.Where(x => x.AuthorityRole == this.RoleId).ToList<ModelCharter>();
+                        _authorityRoleModelCharters = new ObservableCollection<ModelCharter>(items);
+                        if (items.Any())
+                        {
+                            base.SoAContext.AttachRange(items);
+                        }
+                    }
+                    _authorityRoleModelCharters.CollectionChanged += AuthorityRoleModelCharters_CollectionChanged;
+                }
+                return _authorityRoleModelCharters;
+            }
+            private set
+            {
+                if (_authorityRoleModelCharters != null)
+                {
+                    _authorityRoleModelCharters.CollectionChanged -= AuthorityRoleModelCharters_CollectionChanged;
+                }
+                _authorityRoleModelCharters = value;
+                if (_authorityRoleModelCharters != null)
+                {
+                    _authorityRoleModelCharters.CollectionChanged += AuthorityRoleModelCharters_CollectionChanged;
+                }
+            }
+        }
+
+        private void AuthorityRoleModelCharters_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems != null)
+            {
+                foreach (var item in e.NewItems.Cast<ModelCharter>())
+                {
+                    item.AuthorityRole = this.RoleId;
+                }
+            }
+        }
+
+        private ObservableCollection<ChangeAuthorityRule> _permittedRoleChangeAuthorityRules;
+
+        [InverseProperty("Role")]
+        public virtual ObservableCollection<ChangeAuthorityRule> PermittedRoleChangeAuthorityRules
+        {
+            get
+            {
+                if (_permittedRoleChangeAuthorityRules == null)
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access PermittedRoleChangeAuthorityRules - no database context is set. RoleId: " + this.RoleId + ".");
+                        }
+                        _permittedRoleChangeAuthorityRules = new ObservableCollection<ChangeAuthorityRule>();
+                    }
+                    else
+                    {
+                        var items = base.SoAContext.ChangeAuthorityRules.Where(x => x.PermittedRole == this.RoleId).ToList<ChangeAuthorityRule>();
+                        _permittedRoleChangeAuthorityRules = new ObservableCollection<ChangeAuthorityRule>(items);
+                        if (items.Any())
+                        {
+                            base.SoAContext.AttachRange(items);
+                        }
+                    }
+                    _permittedRoleChangeAuthorityRules.CollectionChanged += PermittedRoleChangeAuthorityRules_CollectionChanged;
+                }
+                return _permittedRoleChangeAuthorityRules;
+            }
+            private set
+            {
+                if (_permittedRoleChangeAuthorityRules != null)
+                {
+                    _permittedRoleChangeAuthorityRules.CollectionChanged -= PermittedRoleChangeAuthorityRules_CollectionChanged;
+                }
+                _permittedRoleChangeAuthorityRules = value;
+                if (_permittedRoleChangeAuthorityRules != null)
+                {
+                    _permittedRoleChangeAuthorityRules.CollectionChanged += PermittedRoleChangeAuthorityRules_CollectionChanged;
+                }
+            }
+        }
+
+        private void PermittedRoleChangeAuthorityRules_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems != null)
+            {
+                foreach (var item in e.NewItems.Cast<ChangeAuthorityRule>())
+                {
+                    item.PermittedRole = this.RoleId;
+                }
+            }
+        }
+
+        private ObservableCollection<ChangeAuthorityRule> _approvalRoleChangeAuthorityRules;
+
+        [InverseProperty("RoleRef")]
+        public virtual ObservableCollection<ChangeAuthorityRule> ApprovalRoleChangeAuthorityRules
+        {
+            get
+            {
+                if (_approvalRoleChangeAuthorityRules == null)
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access ApprovalRoleChangeAuthorityRules - no database context is set. RoleId: " + this.RoleId + ".");
+                        }
+                        _approvalRoleChangeAuthorityRules = new ObservableCollection<ChangeAuthorityRule>();
+                    }
+                    else
+                    {
+                        var items = base.SoAContext.ChangeAuthorityRules.Where(x => x.ApprovalRole == this.RoleId).ToList<ChangeAuthorityRule>();
+                        _approvalRoleChangeAuthorityRules = new ObservableCollection<ChangeAuthorityRule>(items);
+                        if (items.Any())
+                        {
+                            base.SoAContext.AttachRange(items);
+                        }
+                    }
+                    _approvalRoleChangeAuthorityRules.CollectionChanged += ApprovalRoleChangeAuthorityRules_CollectionChanged;
+                }
+                return _approvalRoleChangeAuthorityRules;
+            }
+            private set
+            {
+                if (_approvalRoleChangeAuthorityRules != null)
+                {
+                    _approvalRoleChangeAuthorityRules.CollectionChanged -= ApprovalRoleChangeAuthorityRules_CollectionChanged;
+                }
+                _approvalRoleChangeAuthorityRules = value;
+                if (_approvalRoleChangeAuthorityRules != null)
+                {
+                    _approvalRoleChangeAuthorityRules.CollectionChanged += ApprovalRoleChangeAuthorityRules_CollectionChanged;
+                }
+            }
+        }
+
+        private void ApprovalRoleChangeAuthorityRules_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems != null)
+            {
+                foreach (var item in e.NewItems.Cast<ChangeAuthorityRule>())
+                {
+                    item.ApprovalRole = this.RoleId;
+                }
+            }
+        }
+
+        private ObservableCollection<ModelConsumer> _modelConsumers;
+
+        [InverseProperty("Role")]
+        public virtual ObservableCollection<ModelConsumer> ModelConsumers
+        {
+            get
+            {
+                if (_modelConsumers == null)
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access ModelConsumers - no database context is set. RoleId: " + this.RoleId + ".");
+                        }
+                        _modelConsumers = new ObservableCollection<ModelConsumer>();
+                    }
+                    else
+                    {
+                        var items = base.SoAContext.ModelConsumers.Where(x => x.OwnerRole == this.RoleId).ToList<ModelConsumer>();
+                        _modelConsumers = new ObservableCollection<ModelConsumer>(items);
+                        if (items.Any())
+                        {
+                            base.SoAContext.AttachRange(items);
+                        }
+                    }
+                    _modelConsumers.CollectionChanged += ModelConsumers_CollectionChanged;
+                }
+                return _modelConsumers;
+            }
+            private set
+            {
+                if (_modelConsumers != null)
+                {
+                    _modelConsumers.CollectionChanged -= ModelConsumers_CollectionChanged;
+                }
+                _modelConsumers = value;
+                if (_modelConsumers != null)
+                {
+                    _modelConsumers.CollectionChanged += ModelConsumers_CollectionChanged;
+                }
+            }
+        }
+
+        private void ModelConsumers_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems != null)
+            {
+                foreach (var item in e.NewItems.Cast<ModelConsumer>())
+                {
+                    item.OwnerRole = this.RoleId;
+                }
+            }
+        }
+
+        private ObservableCollection<KnowledgeWorkforcePosition> _knowledgeWorkforcePositions;
+
+        [InverseProperty("RoleRef")]
+        public virtual ObservableCollection<KnowledgeWorkforcePosition> KnowledgeWorkforcePositions
+        {
+            get
+            {
+                if (_knowledgeWorkforcePositions == null)
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access KnowledgeWorkforcePositions - no database context is set. RoleId: " + this.RoleId + ".");
+                        }
+                        _knowledgeWorkforcePositions = new ObservableCollection<KnowledgeWorkforcePosition>();
+                    }
+                    else
+                    {
+                        var items = base.SoAContext.KnowledgeWorkforcePositions.Where(x => x.Role == this.RoleId).ToList<KnowledgeWorkforcePosition>();
+                        _knowledgeWorkforcePositions = new ObservableCollection<KnowledgeWorkforcePosition>(items);
+                        if (items.Any())
+                        {
+                            base.SoAContext.AttachRange(items);
+                        }
+                    }
+                    _knowledgeWorkforcePositions.CollectionChanged += KnowledgeWorkforcePositions_CollectionChanged;
+                }
+                return _knowledgeWorkforcePositions;
+            }
+            private set
+            {
+                if (_knowledgeWorkforcePositions != null)
+                {
+                    _knowledgeWorkforcePositions.CollectionChanged -= KnowledgeWorkforcePositions_CollectionChanged;
+                }
+                _knowledgeWorkforcePositions = value;
+                if (_knowledgeWorkforcePositions != null)
+                {
+                    _knowledgeWorkforcePositions.CollectionChanged += KnowledgeWorkforcePositions_CollectionChanged;
+                }
+            }
+        }
+
+        private void KnowledgeWorkforcePositions_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems != null)
+            {
+                foreach (var item in e.NewItems.Cast<KnowledgeWorkforcePosition>())
+                {
+                    item.Role = this.RoleId;
+                }
+            }
+        }
+
+        private ObservableCollection<AssignmentUpdatePolicy> _assignmentUpdatePolicies;
+
+        [InverseProperty("Role")]
+        public virtual ObservableCollection<AssignmentUpdatePolicy> AssignmentUpdatePolicies
+        {
+            get
+            {
+                if (_assignmentUpdatePolicies == null)
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access AssignmentUpdatePolicies - no database context is set. RoleId: " + this.RoleId + ".");
+                        }
+                        _assignmentUpdatePolicies = new ObservableCollection<AssignmentUpdatePolicy>();
+                    }
+                    else
+                    {
+                        var items = base.SoAContext.AssignmentUpdatePolicies.Where(x => x.TriggerOwnerRole == this.RoleId).ToList<AssignmentUpdatePolicy>();
+                        _assignmentUpdatePolicies = new ObservableCollection<AssignmentUpdatePolicy>(items);
+                        if (items.Any())
+                        {
+                            base.SoAContext.AttachRange(items);
+                        }
+                    }
+                    _assignmentUpdatePolicies.CollectionChanged += AssignmentUpdatePolicies_CollectionChanged;
+                }
+                return _assignmentUpdatePolicies;
+            }
+            private set
+            {
+                if (_assignmentUpdatePolicies != null)
+                {
+                    _assignmentUpdatePolicies.CollectionChanged -= AssignmentUpdatePolicies_CollectionChanged;
+                }
+                _assignmentUpdatePolicies = value;
+                if (_assignmentUpdatePolicies != null)
+                {
+                    _assignmentUpdatePolicies.CollectionChanged += AssignmentUpdatePolicies_CollectionChanged;
+                }
+            }
+        }
+
+        private void AssignmentUpdatePolicies_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems != null)
+            {
+                foreach (var item in e.NewItems.Cast<AssignmentUpdatePolicy>())
+                {
+                    item.TriggerOwnerRole = this.RoleId;
+                }
+            }
+        }
+
+        private ObservableCollection<RoleAssignmentUpdateTask> _roleAssignmentUpdateTasks;
+
+        [InverseProperty("RoleRef")]
+        public virtual ObservableCollection<RoleAssignmentUpdateTask> RoleAssignmentUpdateTasks
+        {
+            get
+            {
+                if (_roleAssignmentUpdateTasks == null)
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access RoleAssignmentUpdateTasks - no database context is set. RoleId: " + this.RoleId + ".");
+                        }
+                        _roleAssignmentUpdateTasks = new ObservableCollection<RoleAssignmentUpdateTask>();
+                    }
+                    else
+                    {
+                        var items = base.SoAContext.RoleAssignmentUpdateTasks.Where(x => x.Role == this.RoleId).ToList<RoleAssignmentUpdateTask>();
+                        _roleAssignmentUpdateTasks = new ObservableCollection<RoleAssignmentUpdateTask>(items);
+                        if (items.Any())
+                        {
+                            base.SoAContext.AttachRange(items);
+                        }
+                    }
+                    _roleAssignmentUpdateTasks.CollectionChanged += RoleAssignmentUpdateTasks_CollectionChanged;
+                }
+                return _roleAssignmentUpdateTasks;
+            }
+            private set
+            {
+                if (_roleAssignmentUpdateTasks != null)
+                {
+                    _roleAssignmentUpdateTasks.CollectionChanged -= RoleAssignmentUpdateTasks_CollectionChanged;
+                }
+                _roleAssignmentUpdateTasks = value;
+                if (_roleAssignmentUpdateTasks != null)
+                {
+                    _roleAssignmentUpdateTasks.CollectionChanged += RoleAssignmentUpdateTasks_CollectionChanged;
+                }
+            }
+        }
+
+        private void RoleAssignmentUpdateTasks_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems != null)
+            {
+                foreach (var item in e.NewItems.Cast<RoleAssignmentUpdateTask>())
+                {
+                    item.Role = this.RoleId;
+                }
+            }
+        }
+
+        private ObservableCollection<StakeholderPerspectif> _stakeholderPerspectives;
+
+        [InverseProperty("Role")]
+        public virtual ObservableCollection<StakeholderPerspectif> StakeholderPerspectives
+        {
+            get
+            {
+                if (_stakeholderPerspectives == null)
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access StakeholderPerspectives - no database context is set. RoleId: " + this.RoleId + ".");
+                        }
+                        _stakeholderPerspectives = new ObservableCollection<StakeholderPerspectif>();
+                    }
+                    else
+                    {
+                        var items = base.SoAContext.StakeholderPerspectives.Where(x => x.HolderRole == this.RoleId).ToList<StakeholderPerspectif>();
+                        _stakeholderPerspectives = new ObservableCollection<StakeholderPerspectif>(items);
+                        if (items.Any())
+                        {
+                            base.SoAContext.AttachRange(items);
+                        }
+                    }
+                    _stakeholderPerspectives.CollectionChanged += StakeholderPerspectives_CollectionChanged;
+                }
+                return _stakeholderPerspectives;
+            }
+            private set
+            {
+                if (_stakeholderPerspectives != null)
+                {
+                    _stakeholderPerspectives.CollectionChanged -= StakeholderPerspectives_CollectionChanged;
+                }
+                _stakeholderPerspectives = value;
+                if (_stakeholderPerspectives != null)
+                {
+                    _stakeholderPerspectives.CollectionChanged += StakeholderPerspectives_CollectionChanged;
+                }
+            }
+        }
+
+        private void StakeholderPerspectives_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems != null)
+            {
+                foreach (var item in e.NewItems.Cast<StakeholderPerspectif>())
+                {
+                    item.HolderRole = this.RoleId;
+                }
+            }
+        }
+
 
         protected override void LazyLoadProperties()
         {
             _ = this.OrganizationRef;
             _ = this.Agent;
+            _ = this.Role;
+            _ = this.RoleRef;
+            _ = this.SpecializesRoleRoles;
+            _ = this.EscalationBackupRoleRoles;
             _ = this.RoleRoleAssignments;
             _ = this.ApprovingAuthorityRoleRoleAssignments;
             _ = this.CommunitiesOfPractice;
@@ -1468,6 +2963,27 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             _ = this.AppRoutes;
             _ = this.AccessPrincipals;
             _ = this.Vocabularies;
+            _ = this.VocabularyTerms;
+            _ = this.FailureModes;
+            _ = this.StepCues;
+            _ = this.BusinessOutcomes;
+            _ = this.ProcessStages;
+            _ = this.StakeholderLenses;
+            _ = this.RoleCapabilityTags;
+            _ = this.GroundingSnapshots;
+            _ = this.RetrievalSegments;
+            _ = this.PromptTemplates;
+            _ = this.KnowledgeProjections;
+            _ = this.GovernedModels;
+            _ = this.StewardRoleModelCharters;
+            _ = this.AuthorityRoleModelCharters;
+            _ = this.PermittedRoleChangeAuthorityRules;
+            _ = this.ApprovalRoleChangeAuthorityRules;
+            _ = this.ModelConsumers;
+            _ = this.KnowledgeWorkforcePositions;
+            _ = this.AssignmentUpdatePolicies;
+            _ = this.RoleAssignmentUpdateTasks;
+            _ = this.StakeholderPerspectives;
         }
 
         public override string ToString()

@@ -56,6 +56,22 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             get => F.AsBool(F.Memo(this, "IsSubstrateContested", () => F.Cmp(F.Of(this.DisagreeingSubstrateCount), ">", F.I(0)))); set { }
         }
 
+        public int? MeasuredSubstantiveCount { get; set; }
+        public int? MeasuredDistinctValueCount { get; set; }
+        // Formula HasMeasuredData (rulebook: ={{MeasuredSubstantiveCount}} > 0)
+        [NotMapped]
+        public bool? HasMeasuredData
+        {
+            get => F.AsBool(F.Memo(this, "HasMeasuredData", () => F.Cmp(F.Nullif(F.Of(this.MeasuredSubstantiveCount)), ">", F.I(0)))); set { }
+        }
+
+        // Formula IsDiscriminating (rulebook: ={{MeasuredDistinctValueCount}} >= 2)
+        [NotMapped]
+        public bool? IsDiscriminating
+        {
+            get => F.AsBool(F.Memo(this, "IsDiscriminating", () => F.Cmp(F.Nullif(F.Of(this.MeasuredDistinctValueCount)), ">=", F.I(2)))); set { }
+        }
+
         public string? SemanticTypeIri { get; set; }
 
         public string? InventedForQuestion { get; set; }
@@ -214,12 +230,124 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             }
         }
 
+        private ObservableCollection<ClaimEvidence> _claimEvidence;
+
+        [InverseProperty("RulebookFieldRef")]
+        public virtual ObservableCollection<ClaimEvidence> ClaimEvidence
+        {
+            get
+            {
+                if (_claimEvidence == null)
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access ClaimEvidence - no database context is set. RulebookFieldId: " + this.RulebookFieldId + ".");
+                        }
+                        _claimEvidence = new ObservableCollection<ClaimEvidence>();
+                    }
+                    else
+                    {
+                        var items = base.SoAContext.ClaimEvidence.Where(x => x.RulebookField == this.RulebookFieldId).ToList<ClaimEvidence>();
+                        _claimEvidence = new ObservableCollection<ClaimEvidence>(items);
+                        if (items.Any())
+                        {
+                            base.SoAContext.AttachRange(items);
+                        }
+                    }
+                    _claimEvidence.CollectionChanged += ClaimEvidence_CollectionChanged;
+                }
+                return _claimEvidence;
+            }
+            private set
+            {
+                if (_claimEvidence != null)
+                {
+                    _claimEvidence.CollectionChanged -= ClaimEvidence_CollectionChanged;
+                }
+                _claimEvidence = value;
+                if (_claimEvidence != null)
+                {
+                    _claimEvidence.CollectionChanged += ClaimEvidence_CollectionChanged;
+                }
+            }
+        }
+
+        private void ClaimEvidence_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems != null)
+            {
+                foreach (var item in e.NewItems.Cast<ClaimEvidence>())
+                {
+                    item.RulebookField = this.RulebookFieldId;
+                }
+            }
+        }
+
+        private ObservableCollection<ExpectedInferenceCheck> _expectedInferenceChecks;
+
+        [InverseProperty("RulebookField")]
+        public virtual ObservableCollection<ExpectedInferenceCheck> ExpectedInferenceChecks
+        {
+            get
+            {
+                if (_expectedInferenceChecks == null)
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access ExpectedInferenceChecks - no database context is set. RulebookFieldId: " + this.RulebookFieldId + ".");
+                        }
+                        _expectedInferenceChecks = new ObservableCollection<ExpectedInferenceCheck>();
+                    }
+                    else
+                    {
+                        var items = base.SoAContext.ExpectedInferenceChecks.Where(x => x.ExpectedField == this.RulebookFieldId).ToList<ExpectedInferenceCheck>();
+                        _expectedInferenceChecks = new ObservableCollection<ExpectedInferenceCheck>(items);
+                        if (items.Any())
+                        {
+                            base.SoAContext.AttachRange(items);
+                        }
+                    }
+                    _expectedInferenceChecks.CollectionChanged += ExpectedInferenceChecks_CollectionChanged;
+                }
+                return _expectedInferenceChecks;
+            }
+            private set
+            {
+                if (_expectedInferenceChecks != null)
+                {
+                    _expectedInferenceChecks.CollectionChanged -= ExpectedInferenceChecks_CollectionChanged;
+                }
+                _expectedInferenceChecks = value;
+                if (_expectedInferenceChecks != null)
+                {
+                    _expectedInferenceChecks.CollectionChanged += ExpectedInferenceChecks_CollectionChanged;
+                }
+            }
+        }
+
+        private void ExpectedInferenceChecks_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems != null)
+            {
+                foreach (var item in e.NewItems.Cast<ExpectedInferenceCheck>())
+                {
+                    item.ExpectedField = this.RulebookFieldId;
+                }
+            }
+        }
+
 
         protected override void LazyLoadProperties()
         {
             _ = this.RoleQuestion;
             _ = this.FieldGrants;
             _ = this.FieldDisagreements;
+            _ = this.ClaimEvidence;
+            _ = this.ExpectedInferenceChecks;
         }
 
         public override string ToString()

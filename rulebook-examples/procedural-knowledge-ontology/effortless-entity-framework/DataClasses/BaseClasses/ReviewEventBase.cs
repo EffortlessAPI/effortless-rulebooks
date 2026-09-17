@@ -91,6 +91,20 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         }
 
         public string? SemanticTypeIri { get; set; }
+        // Formula VersionModifiedAt (rulebook: =INDEX(ProcedureVersions!{{ModifiedAt}}, MATCH({{ProcedureVersion}}, ProcedureVersions!{{ProcedureVersionId}}, 0)))
+        [NotMapped]
+        public DateTimeOffset? VersionModifiedAt
+        {
+            get => F.AsDateTime(F.Memo(this, "VersionModifiedAt", () => F.Lookup<ProcedureVersion>(this, "ProcedureVersions", "ProcedureVersionId", __c => __c.ProcedureVersions, __r => F.Of(__r.ProcedureVersionId), F.Of(this.ProcedureVersion), __r => F.Of(__r.ModifiedAt), () => F.Of(new ProcedureVersion().ModifiedAt)))); set { }
+        }
+
+        // Formula ReviewDidNotRefreshModified (rulebook: =AND({{VersionModifiedAt}} <> "", {{ReviewedAt}} > {{VersionModifiedAt}}))
+        [NotMapped]
+        public bool? ReviewDidNotRefreshModified
+        {
+            get => F.AsBool(F.Memo(this, "ReviewDidNotRefreshModified", () => F.And(F.Bool3(F.IsNotBlank(F.Of(this.VersionModifiedAt))), F.Bool3(F.Cmp(F.Nullif(F.Of(this.ReviewedAt)), ">", F.Of(this.VersionModifiedAt)))))); set { }
+        }
+
 
         public string? ProcedureVersion { get; set; }
         public string? ReviewedByAgent { get; set; }

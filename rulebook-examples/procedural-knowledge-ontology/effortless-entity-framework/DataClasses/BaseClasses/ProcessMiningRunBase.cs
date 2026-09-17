@@ -92,6 +92,34 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         }
 
         public string? SemanticTypeIri { get; set; }
+        // Formula PeopleCaptureComplementCount (rulebook: =COUNTIFS(CollectedSourceMaterials!{{ComplementsMiningRun}}, {{ProcessMiningRunId}}, CollectedSourceMaterials!{{HoldsReasoningOrTacitKnowledge}}, TRUE))
+        [NotMapped]
+        public int? PeopleCaptureComplementCount
+        {
+            get => F.AsInt(F.Memo(this, "PeopleCaptureComplementCount", () => F.Integer((base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<CollectedSourceMaterial>(base.SoAContext, "CollectedSourceMaterials", __c => __c.CollectedSourceMaterials), __r => F.CritField(F.Of(__r.ComplementsMiningRun), F.Of(this.ProcessMiningRunId)) && F.CritLiteral(F.Of(__r.HoldsReasoningOrTacitKnowledge), F.B(true))))))); set { }
+        }
+
+        // Formula IsDeviationUnexplainedByPeople (rulebook: =AND({{DiscoveredVariantCount}} > {{ConformingVariantCount}}, {{PeopleCaptureComplementCount}} = 0))
+        [NotMapped]
+        public bool? IsDeviationUnexplainedByPeople
+        {
+            get => F.AsBool(F.Memo(this, "IsDeviationUnexplainedByPeople", () => F.And(F.Bool3(F.Cmp(F.Nullif(F.Of(this.DiscoveredVariantCount)), ">", F.Nullif(F.Of(this.ConformingVariantCount)))), F.Bool3(F.Eq(F.Of(this.PeopleCaptureComplementCount), F.I(0)))))); set { }
+        }
+
+        // Formula UndocumentedPathCount (rulebook: =COUNTIFS(MinedFlowEdges!{{ProcessMiningRun}}, {{ProcessMiningRunId}}, MinedFlowEdges!{{IsUndocumentedPath}}, TRUE))
+        [NotMapped]
+        public int? UndocumentedPathCount
+        {
+            get => F.AsInt(F.Memo(this, "UndocumentedPathCount", () => F.Integer((base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<MinedFlowEdge>(base.SoAContext, "MinedFlowEdges", __c => __c.MinedFlowEdges), __r => F.CritField(F.Of(__r.ProcessMiningRun), F.Of(this.ProcessMiningRunId)) && F.CritLiteral(F.Of(__r.IsUndocumentedPath), F.B(true))))))); set { }
+        }
+
+        // Formula HasUndocumentedEnactedPath (rulebook: ={{UndocumentedPathCount}} > 0)
+        [NotMapped]
+        public bool? HasUndocumentedEnactedPath
+        {
+            get => F.AsBool(F.Memo(this, "HasUndocumentedEnactedPath", () => F.Cmp(F.Of(this.UndocumentedPathCount), ">", F.I(0)))); set { }
+        }
+
 
         public string? ProcedureVersion { get; set; }
         public string? EvaluationContext { get; set; }
@@ -184,11 +212,123 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             }
         }
 
+        private ObservableCollection<CollectedSourceMaterial> _collectedSourceMaterials;
+
+        [InverseProperty("ProcessMiningRun")]
+        public virtual ObservableCollection<CollectedSourceMaterial> CollectedSourceMaterials
+        {
+            get
+            {
+                if (_collectedSourceMaterials == null)
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access CollectedSourceMaterials - no database context is set. ProcessMiningRunId: " + this.ProcessMiningRunId + ".");
+                        }
+                        _collectedSourceMaterials = new ObservableCollection<CollectedSourceMaterial>();
+                    }
+                    else
+                    {
+                        var items = base.SoAContext.CollectedSourceMaterials.Where(x => x.ComplementsMiningRun == this.ProcessMiningRunId).ToList<CollectedSourceMaterial>();
+                        _collectedSourceMaterials = new ObservableCollection<CollectedSourceMaterial>(items);
+                        if (items.Any())
+                        {
+                            base.SoAContext.AttachRange(items);
+                        }
+                    }
+                    _collectedSourceMaterials.CollectionChanged += CollectedSourceMaterials_CollectionChanged;
+                }
+                return _collectedSourceMaterials;
+            }
+            private set
+            {
+                if (_collectedSourceMaterials != null)
+                {
+                    _collectedSourceMaterials.CollectionChanged -= CollectedSourceMaterials_CollectionChanged;
+                }
+                _collectedSourceMaterials = value;
+                if (_collectedSourceMaterials != null)
+                {
+                    _collectedSourceMaterials.CollectionChanged += CollectedSourceMaterials_CollectionChanged;
+                }
+            }
+        }
+
+        private void CollectedSourceMaterials_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems != null)
+            {
+                foreach (var item in e.NewItems.Cast<CollectedSourceMaterial>())
+                {
+                    item.ComplementsMiningRun = this.ProcessMiningRunId;
+                }
+            }
+        }
+
+        private ObservableCollection<MinedFlowEdge> _minedFlowEdges;
+
+        [InverseProperty("ProcessMiningRunRef")]
+        public virtual ObservableCollection<MinedFlowEdge> MinedFlowEdges
+        {
+            get
+            {
+                if (_minedFlowEdges == null)
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access MinedFlowEdges - no database context is set. ProcessMiningRunId: " + this.ProcessMiningRunId + ".");
+                        }
+                        _minedFlowEdges = new ObservableCollection<MinedFlowEdge>();
+                    }
+                    else
+                    {
+                        var items = base.SoAContext.MinedFlowEdges.Where(x => x.ProcessMiningRun == this.ProcessMiningRunId).ToList<MinedFlowEdge>();
+                        _minedFlowEdges = new ObservableCollection<MinedFlowEdge>(items);
+                        if (items.Any())
+                        {
+                            base.SoAContext.AttachRange(items);
+                        }
+                    }
+                    _minedFlowEdges.CollectionChanged += MinedFlowEdges_CollectionChanged;
+                }
+                return _minedFlowEdges;
+            }
+            private set
+            {
+                if (_minedFlowEdges != null)
+                {
+                    _minedFlowEdges.CollectionChanged -= MinedFlowEdges_CollectionChanged;
+                }
+                _minedFlowEdges = value;
+                if (_minedFlowEdges != null)
+                {
+                    _minedFlowEdges.CollectionChanged += MinedFlowEdges_CollectionChanged;
+                }
+            }
+        }
+
+        private void MinedFlowEdges_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems != null)
+            {
+                foreach (var item in e.NewItems.Cast<MinedFlowEdge>())
+                {
+                    item.ProcessMiningRun = this.ProcessMiningRunId;
+                }
+            }
+        }
+
 
         protected override void LazyLoadProperties()
         {
             _ = this.ProcedureVersionRef;
             _ = this.EvaluationContextRef;
+            _ = this.CollectedSourceMaterials;
+            _ = this.MinedFlowEdges;
         }
 
         public override string ToString()

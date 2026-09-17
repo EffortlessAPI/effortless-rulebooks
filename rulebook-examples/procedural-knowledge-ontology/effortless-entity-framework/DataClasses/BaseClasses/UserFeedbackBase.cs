@@ -28,6 +28,30 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string? Disposition { get; set; }
         public string? ChangeRequestKey { get; set; }
         public string? SemanticTypeIri { get; set; }
+        public string? FeedbackOnProcedure { get; set; }
+        public string? FeedbackOnExecution { get; set; }
+        // Formula IsUnactionedProcedureCritique (rulebook: =AND({{FeedbackOnProcedure}} <> "", {{ChangeRequestKey}} = "", {{Disposition}} <> "Declined"))
+        [NotMapped]
+        public bool? IsUnactionedProcedureCritique
+        {
+            get => F.AsBool(F.Memo(this, "IsUnactionedProcedureCritique", () => F.And(F.Bool3(F.IsNotBlank(F.Of(this.FeedbackOnProcedure))), F.Bool3(F.IsBlank(F.Of(this.ChangeRequestKey))), F.Bool3(F.Ne(F.Nullif(F.Of(this.Disposition)), F.S("Declined")))))); set { }
+        }
+
+        public bool? RevealsTacitKnowledge { get; set; }
+        // Formula CollectionFollowUpCount (rulebook: =COUNTIFS(CollectedSourceMaterials!{{PromptedByFeedback}}, {{UserFeedbackId}}))
+        [NotMapped]
+        public int? CollectionFollowUpCount
+        {
+            get => F.AsInt(F.Memo(this, "CollectionFollowUpCount", () => F.Integer((base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<CollectedSourceMaterial>(base.SoAContext, "CollectedSourceMaterials", __c => __c.CollectedSourceMaterials), __r => F.CritField(F.Of(__r.PromptedByFeedback), F.Of(this.UserFeedbackId))))))); set { }
+        }
+
+        // Formula IsTacitSignalNotFedIntoCollection (rulebook: =AND({{RevealsTacitKnowledge}}, {{CollectionFollowUpCount}} = 0))
+        [NotMapped]
+        public bool? IsTacitSignalNotFedIntoCollection
+        {
+            get => F.AsBool(F.Memo(this, "IsTacitSignalNotFedIntoCollection", () => F.And(F.IsTrueV(F.Of(this.RevealsTacitKnowledge)), F.Bool3(F.Eq(F.Of(this.CollectionFollowUpCount), F.I(0)))))); set { }
+        }
+
 
         public string? ProcedureExecution { get; set; }
         public string? ProvidedByAgent { get; set; }
@@ -120,11 +144,67 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             }
         }
 
+        private ObservableCollection<CollectedSourceMaterial> _collectedSourceMaterials;
+
+        [InverseProperty("UserFeedback")]
+        public virtual ObservableCollection<CollectedSourceMaterial> CollectedSourceMaterials
+        {
+            get
+            {
+                if (_collectedSourceMaterials == null)
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access CollectedSourceMaterials - no database context is set. UserFeedbackId: " + this.UserFeedbackId + ".");
+                        }
+                        _collectedSourceMaterials = new ObservableCollection<CollectedSourceMaterial>();
+                    }
+                    else
+                    {
+                        var items = base.SoAContext.CollectedSourceMaterials.Where(x => x.PromptedByFeedback == this.UserFeedbackId).ToList<CollectedSourceMaterial>();
+                        _collectedSourceMaterials = new ObservableCollection<CollectedSourceMaterial>(items);
+                        if (items.Any())
+                        {
+                            base.SoAContext.AttachRange(items);
+                        }
+                    }
+                    _collectedSourceMaterials.CollectionChanged += CollectedSourceMaterials_CollectionChanged;
+                }
+                return _collectedSourceMaterials;
+            }
+            private set
+            {
+                if (_collectedSourceMaterials != null)
+                {
+                    _collectedSourceMaterials.CollectionChanged -= CollectedSourceMaterials_CollectionChanged;
+                }
+                _collectedSourceMaterials = value;
+                if (_collectedSourceMaterials != null)
+                {
+                    _collectedSourceMaterials.CollectionChanged += CollectedSourceMaterials_CollectionChanged;
+                }
+            }
+        }
+
+        private void CollectedSourceMaterials_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems != null)
+            {
+                foreach (var item in e.NewItems.Cast<CollectedSourceMaterial>())
+                {
+                    item.PromptedByFeedback = this.UserFeedbackId;
+                }
+            }
+        }
+
 
         protected override void LazyLoadProperties()
         {
             _ = this.ProcedureExecutionRef;
             _ = this.Agent;
+            _ = this.CollectedSourceMaterials;
         }
 
         public override string ToString()

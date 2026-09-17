@@ -75,11 +75,37 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         }
 
         public string? SemanticTypeIri { get; set; }
+        // Formula PointedHolder (rulebook: =INDEX(KnowHowCarriers!{{HolderAgent}}, MATCH({{PointsToKnowHow}}, KnowHowCarriers!{{KnowHowCarrierId}}, 0)))
+        [NotMapped]
+        public string? PointedHolder
+        {
+            get => F.AsString(F.Memo(this, "PointedHolder", () => F.Lookup<KnowHowCarrier>(this, "KnowHowCarriers", "KnowHowCarrierId", __c => __c.KnowHowCarriers, __r => F.Of(__r.KnowHowCarrierId), F.Of(this.PointsToKnowHow), __r => F.Of(__r.HolderAgent), () => F.Of(new KnowHowCarrier().HolderAgent)))); set { }
+        }
+
+        // Formula LocatesOtherHolder (rulebook: =AND({{PointsToKnowHow}} <> "", {{PointedHolder}} <> "", {{PointedHolder}} <> {{Broker}}))
+        [NotMapped]
+        public bool? LocatesOtherHolder
+        {
+            get => F.AsBool(F.Memo(this, "LocatesOtherHolder", () => F.And(F.Bool3(F.IsNotBlank(F.Of(this.PointsToKnowHow))), F.Bool3(F.IsNotBlank(F.Of(this.PointedHolder))), F.Bool3(F.Ne(F.Of(this.PointedHolder), F.Nullif(F.Of(this.Broker))))))); set { }
+        }
+
+        public string? SeekerWording { get; set; }
+        public string? HolderWording { get; set; }
+        // Formula TranslationBetweenVocabularies (rulebook: =IF(AND({{SeekerVocabulary}} <> "", {{HolderVocabulary}} <> "", {{SeekerVocabulary}} <> {{HolderVocabulary}}), CONCAT({{SeekerWording}}, " (", {{SeekerVocabulary}}, ") = ", {{HolderWording}}, " (", {{HolderVocabulary}}, ")"), ""))
+        [NotMapped]
+        public string? TranslationBetweenVocabularies
+        {
+            get => F.AsString(F.Memo(this, "TranslationBetweenVocabularies", () => (F.Truthy(F.Bool3(F.And(F.Bool3(F.IsNotBlank(F.Of(this.SeekerVocabulary))), F.Bool3(F.IsNotBlank(F.Of(this.HolderVocabulary))), F.Bool3(F.Ne(F.Nullif(F.Of(this.SeekerVocabulary)), F.Nullif(F.Of(this.HolderVocabulary))))))) ? F.Concat(F.Text(F.Of(this.SeekerWording)), F.S(" ("), F.Text(F.Of(this.SeekerVocabulary)), F.S(") = "), F.Text(F.Of(this.HolderWording)), F.S(" ("), F.Text(F.Of(this.HolderVocabulary)), F.S(")")) : F.S("")))); set { }
+        }
+
 
         public string? Seeker { get; set; }
         public string? Broker { get; set; }
         public string? Topic { get; set; }
         public string? EvaluationContext { get; set; }
+        public string? PointsToKnowHow { get; set; }
+        public string? SeekerVocabulary { get; set; }
+        public string? HolderVocabulary { get; set; }
 
         private Agent _agent;
 
@@ -257,6 +283,138 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             }
         }
 
+        private KnowHowCarrier _knowHowCarrier;
+
+        [ForeignKey("PointsToKnowHow")]
+        public virtual KnowHowCarrier KnowHowCarrier
+        {
+            get
+            {
+                if (_knowHowCarrier == null && !string.IsNullOrEmpty(PointsToKnowHow))
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access KnowHowCarrier - no database context is set. PointsToKnowHow: " + PointsToKnowHow + ".");
+                        }
+                        return null;
+                    }
+                    _knowHowCarrier = base.SoAContext.KnowHowCarriers.Find(PointsToKnowHow);
+                    if (_knowHowCarrier != null)
+                    {
+                        base.SoAContext.Attach(_knowHowCarrier);
+                    }
+                }
+                return _knowHowCarrier;
+            }
+            set
+            {
+                if (_knowHowCarrier != value)
+                {
+                    _knowHowCarrier = value;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_knowHowCarrier != null)
+                    {
+                        PointsToKnowHow = _knowHowCarrier.KnowHowCarrierId;
+                    }
+                }
+            }
+        }
+
+        private Vocabulary _vocabulary;
+
+        [ForeignKey("SeekerVocabulary")]
+        public virtual Vocabulary Vocabulary
+        {
+            get
+            {
+                if (_vocabulary == null && !string.IsNullOrEmpty(SeekerVocabulary))
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access Vocabulary - no database context is set. SeekerVocabulary: " + SeekerVocabulary + ".");
+                        }
+                        return null;
+                    }
+                    _vocabulary = base.SoAContext.Vocabularies.Find(SeekerVocabulary);
+                    if (_vocabulary != null)
+                    {
+                        base.SoAContext.Attach(_vocabulary);
+                    }
+                }
+                return _vocabulary;
+            }
+            set
+            {
+                if (_vocabulary != value)
+                {
+                    _vocabulary = value;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_vocabulary != null)
+                    {
+                        SeekerVocabulary = _vocabulary.VocabularyId;
+                    }
+                }
+            }
+        }
+
+        private Vocabulary _vocabularyRef;
+
+        [ForeignKey("HolderVocabulary")]
+        public virtual Vocabulary VocabularyRef
+        {
+            get
+            {
+                if (_vocabularyRef == null && !string.IsNullOrEmpty(HolderVocabulary))
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access VocabularyRef - no database context is set. HolderVocabulary: " + HolderVocabulary + ".");
+                        }
+                        return null;
+                    }
+                    _vocabularyRef = base.SoAContext.Vocabularies.Find(HolderVocabulary);
+                    if (_vocabularyRef != null)
+                    {
+                        base.SoAContext.Attach(_vocabularyRef);
+                    }
+                }
+                return _vocabularyRef;
+            }
+            set
+            {
+                if (_vocabularyRef != value)
+                {
+                    _vocabularyRef = value;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_vocabularyRef != null)
+                    {
+                        HolderVocabulary = _vocabularyRef.VocabularyId;
+                    }
+                }
+            }
+        }
+
 
         protected override void LazyLoadProperties()
         {
@@ -264,6 +422,9 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             _ = this.AgentRef;
             _ = this.VocabularyTerm;
             _ = this.EvaluationContextRef;
+            _ = this.KnowHowCarrier;
+            _ = this.Vocabulary;
+            _ = this.VocabularyRef;
         }
 
         public override string ToString()

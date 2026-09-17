@@ -1,0 +1,164 @@
+# Theme D (loop-09, encoding): 162 claims
+
+pkm1-c37	Concept	Conclusion	The lifecycle that makes process knowledge available to AI and reuse: collect, store, document, codify, encode, operationalize.
+pkm1-p07	Prescription	Process Knowledge Frameworks	Organizational process knowledge must be reachable, shareable between people and usable as a basis for action.
+pkm1-p10	Prescription	Process Knowledge Frameworks	Encoded process knowledge must spread consistently to the systems that consume it.
+pkm1-p11	Prescription	Process Knowledge Frameworks	Encoded process knowledge must support querying, validation and machine reasoning.
+pkm1-p12	Prescription	Process Knowledge Frameworks	Encoding strips nuance and situated judgment, so computation must support human expertise instead of standing in for it.
+pkm1-p13	Prescription	Semantic Ecosystems and Process	The representation must carry context and meaning beyond a fixed tabular schema.
+pkm1-p17	Prescription	Semantic Ecosystems and Process	Queries must be able to traverse both the ontology and the instance layer.
+pkm1-p18	Prescription	Semantic Ecosystems and Process	Process knowledge must be queryable across distributed knowledge bases without first consolidating them into one store.
+pkm1-p19	Prescription	Semantic Ecosystems and Process	Provenance must travel with knowledge as it propagates, because trust depends on it.
+pkm1-p20	Prescription	Foundation for AI Systems and Workfows	Insight that AI produces about a process must be represented, validated and folded back into the knowledge base.
+pkm1-p21	Prescription	Foundation for AI Systems and Workfows	An AI must not be trusted to track state across a multi-step workflow; the representation supplies the dependencies that keep it valid.
+pkm1-p22	Prescription	Foundation for AI Systems and Workfows	Whether an AI output meets its constraints must be checkable against a shared model of how the process should run.
+pkm1-p23	Prescription	Foundation for AI Systems and Workfows	A recommendation must be traceable to explicit process knowledge so stakeholders can judge it against organizational intent.
+pkm1-p24	Prescription	Foundation for AI Systems and Workfows	Recommended actions must be checked against the regulatory requirements that apply to them.
+pkm1-p31	Prescription	Integrated Process Intelligence	Infrastructure must link process-modeling tools, semantic repositories and AI platforms.
+pkm1-p41	Prescription	Conclusion	Process knowledge must convey how to carry out a task to both human and machine consumers.
+pkm1-p42	Prescription	Conclusion	AI that carries out ordered, knowledge-dependent tasks should rest on process knowledge structured with semantic context through ontologies.
+pkm1-q11	CompetencyQuestion	Foundation for AI Systems and Workfows	Which explicit process knowledge does this AI recommendation rest on?
+pkm1-q12	CompetencyQuestion	Foundation for AI Systems and Workfows	Which recommended actions conflict with an applicable regulatory requirement?
+pkm1-q15	CompetencyQuestion	Conclusion	Does this AI task follow ordered steps and depend on organizational knowledge, and so call for a process knowledge framework?
+pkm1-s01	Standard	Semantic Ecosystems and Process	RDF and OWL to structure knowledge with ontologies that support formal reasoning, inference and explicit semantics.
+pkm1-s02	Standard	Integrated Process Intelligence	SPARQL as the query language over the knowledge graph.
+pkm1-s03	Standard	Semantic Ecosystems and Process	BPMN as a conventional process vocabulary.
+pkm1-s04	Standard	Semantic Ecosystems and Process	PROV-O for provenance.
+pkm1-i03	Illustration	Foundation for AI Systems and Workfows	A recommendation system checking a proposed action against regulatory requirements.
+pkm1-i06	Illustration	Process Knowledge Frameworks	Content management, business process management systems and knowledge graphs as the technologies that shifted attention to encoded process knowledge.
+pkm1-i07	Illustration	Integrated Process Intelligence	Knowledge graph platforms combining reasoners, semantic storage, graph algorithms and machine learning, still immature.
+pkm2-c84	Concept	Encoding for AI Systems	Retrieval segments cut at activity or decision-point boundaries, not at character counts.
+pkm2-c85	Concept	Encoding for AI Systems	A segment's position within the larger process.
+pkm2-c86	Concept	Encoding for AI Systems	A segment's applicability conditions.
+pkm2-c87	Concept	Encoding for AI Systems	Links from a segment to related segments.
+pkm2-c93	Concept	Encoding for AI Systems	Tool use and agentic AI behavior represented as process knowledge in the process graph.
+pkm2-c94	Concept	Yeah—That Context Window Won’t Cut It	Prompts and system instructions as a lightweight, limited way of passing process knowledge to an AI.
+pkm2-c95	Concept	Yeah—That Context Window Won’t Cut It	Layered prompt structures: general framework guidance, with detailed procedures pulled in only when needed.
+pkm2-c96	Concept	Encoding for Communication and Collaboration	Visual encodings such as flowcharts and BPMN diagrams.
+pkm2-c97	Concept	Encoding for Communication and Collaboration	Narrative encodings: readable procedures in prose.
+pkm2-c98	Concept	Encoding for Communication and Collaboration	A stakeholder's preferred form for process knowledge: prose or diagrams.
+pkm2-c99	Concept	Encoding for Communication and Collaboration	Collaborative annotations: comments, questions, suggestions and alternative interpretations on the model.
+pkm2-c100	Concept	From Organization to Representation	Purely syntactic representations lose the context that gives process knowledge its value.
+pkm2-c105	Concept	Feedback Loops	Searches, and whether each one found something.
+pkm2-c106	Concept	Feedback Loops	Queries users abandon.
+pkm2-c107	Concept	Feedback Loops	Time users spend with the knowledge.
+pkm2-c108	Concept	Feedback Loops	AI failures.
+pkm2-c109	Concept	Feedback Loops	AI task completion rates.
+pkm2-c110	Concept	Feedback Loops	Documented inaccuracies in AI responses or workflows.
+pkm2-c111	Concept	Feedback Loops	Efficiency as a measured outcome.
+pkm2-c112	Concept	Feedback Loops	Error rates as a measured outcome.
+pkm2-c113	Concept	Feedback Loops	Customer satisfaction as a measured outcome.
+pkm2-c114	Concept	Feedback Loops	Friction practitioners report because some knowledge is missing.
+pkm2-c115	Concept	Conclusion	Adequacy: knowledge rich enough to guide AI.
+pkm2-c116	Concept	Conclusion	Adequacy: knowledge findable enough to support search.
+pkm2-c117	Concept	Conclusion	Adequacy: knowledge clear enough to support collaboration.
+pkm2-p39	Prescription	From Organization to Representation	Organized knowledge is encoded in a machine-interpretable form that supports search, reasoning and AI integration.
+pkm2-p40	Prescription	From Organization to Representation	Encoding keeps semantic richness and coherence while staying computationally tractable.
+pkm2-p41	Prescription	Encoding for AI Systems	Retrieval segments carry linked metadata, not float as isolated chunks.
+pkm2-p42	Prescription	Encoding for AI Systems	Embeddings treat near-synonyms such as approve and authorize as similar.
+pkm2-p43	Prescription	Encoding for AI Systems	Embeddings treat opposites such as approve and reject as opposed.
+pkm2-p44	Prescription	Encoding for AI Systems	Knowledge used to ground retrieval must be logically consistent.
+pkm2-p45	Prescription	Encoding for AI Systems	AI tool use must be represented in the process knowledge graph to guide multi-step operations.
+pkm2-p46	Prescription	Encoding for AI Systems	Conditions, invariants, failure modes and decision points for tool use are stored in forms an AI can parse, not as free prose.
+pkm2-p47	Prescription	Yeah—That Context Window Won’t Cut It	Knowledge held only in prompts or context windows is disconnected and does not scale.
+pkm2-p48	Prescription	Yeah—That Context Window Won’t Cut It	Process knowledge is managed as a foundation of AI strategy.
+pkm2-p49	Prescription	Yeah—That Context Window Won’t Cut It	Prompt-delivered guidance weighs completeness against token limits and leaves rarely needed detail out of the context.
+pkm2-p50	Prescription	Encoding for Communication and Collaboration	Diagrams are produced from the semantic model, so the picture people see and the data machines use cannot diverge.
+pkm2-p51	Prescription	Encoding for Communication and Collaboration	Narrative documentation is generated from the structured model.
+pkm2-p52	Prescription	Encoding for Communication and Collaboration	Stakeholders can access the narrative documentation.
+pkm2-p53	Prescription	Encoding for Communication and Collaboration	Comments and discussion are kept apart from the authoritative model, so they can never damage it.
+pkm2-p54	Prescription	Standards and Interoperability	Encoding lets knowledge move between systems instead of staying locked in a proprietary silo.
+pkm2-p57	Prescription	Integration: Making Process Knowledge Work	Gaps between the enacted and documented process are detected automatically and continuously.
+pkm2-p58	Prescription	Integration: Making Process Knowledge Work	Annotation interfaces let practitioners easily flag outdated guidance.
+pkm2-p59	Prescription	Integration: Making Process Knowledge Work	Practitioners can add new knowledge through annotation, not only flag old guidance.
+pkm2-p69	Prescription	Feedback Loops	Encoded knowledge is connected to operational outcomes.
+pkm2-p70	Prescription	Feedback Loops	AI system outcomes are measured early and often.
+pkm2-p71	Prescription	Feedback Loops	Usage signals are linked to the knowledge gaps and usability barriers they point to.
+pkm2-p72	Prescription	Feedback Loops	How AI systems engage with the knowledge is tracked as seriously as how people do.
+pkm2-p73	Prescription	Feedback Loops	Outcome measurements feed into how process knowledge is managed and where it gets investment.
+pkm2-p74	Prescription	Feedback Loops	Feedback identifies where encoded knowledge does not match reality.
+pkm2-p75	Prescription	Feedback Loops	Feedback identifies where missing knowledge creates friction.
+pkm2-p77	Prescription	Feedback Loops	Feedback is gathered at every stage of the knowledge lifecycle.
+pkm2-q32	CompetencyQuestion	Integration: Making Process Knowledge Work	Which guidance have practitioners flagged as outdated?
+pkm2-q33	CompetencyQuestion	Integration: Making Process Knowledge Work	Where has encoded knowledge drifted from current practice?
+pkm2-q40	CompetencyQuestion	Feedback Loops	What do users search for and fail to find?
+pkm2-q41	CompetencyQuestion	Feedback Loops	At what point do users give up on a query?
+pkm2-q42	CompetencyQuestion	Feedback Loops	Do teams with better access to process knowledge make fewer errors?
+pkm2-q43	CompetencyQuestion	Feedback Loops	Do teams with better access to process knowledge work more efficiently?
+pkm2-q44	CompetencyQuestion	Feedback Loops	Do teams with better access to process knowledge get higher customer satisfaction?
+pkm2-q45	CompetencyQuestion	Feedback Loops	Where does the AI fail?
+pkm2-q46	CompetencyQuestion	Feedback Loops	What is the AI's task completion rate?
+pkm2-s10	Standard	Standards and Interoperability	OWL.
+pkm2-s11	Standard	Standards and Interoperability	RDFS.
+pkm2-s13	Standard	Encoding for AI Systems	Retrieval-augmented generation grounded in a knowledge graph.
+pkm2-s19	Standard	Standards and Interoperability	RDF triples as the base data model.
+pkm2-s20	Standard	Standards and Interoperability	PROV-O for provenance.
+pkm2-s21	Standard	Standards and Interoperability	BPMN for workflow notation.
+pkm2-s24	Standard	Encoding for AI Systems	Embedding models chosen or tuned for process-domain meaning.
+pkm2-s25	Standard	Feedback Loops	Evaluations and benchmarks for language-model systems.
+pkm2-s26	Standard	Encoding for AI Systems	Formal constraint languages for encoding process constraints.
+pkm2-i03	Illustration	Encoding for AI Systems	An AI booking a meeting has to know which attendees' schedules count, how long it should be and which rooms are free.
+pkm2-i06	Illustration	Encoding for AI Systems	A model's accuracy on spatial tasks rose sharply once it was connected to a knowledge graph and generated database queries.
+pkm2-i13	Illustration	Conclusion	Organizations that never capture process knowledge see their AI initiatives fail for lack of context.
+pkm3-c32	Concept	Process Knowledge is Foundational Infrastructure	A workflow as the joining of people, processes and technology, which agentic AI success depends on redesigning end to end.
+pkm3-c33	Concept	Process Knowledge is Foundational Infrastructure	Procedural knowledge that exists only as unwritten understanding, with no formal representation to ground AI.
+pkm3-c39	Concept	Rebuilding Process Knowledge Infrastructure	Prompt libraries as a maintained asset.
+pkm3-c40	Concept	Rebuilding Process Knowledge Infrastructure	A central registry of agent integrations.
+pkm3-c41	Concept	Rebuilding Process Knowledge Infrastructure	A workflow as process plus procedure plus knowledge, making process knowledge the context AI requires instead of ad hoc runtime context.
+pkm3-p08	Prescription	Process Knowledge is Foundational Infrastructure	An agent running a multi-step process needs the required steps, sequence, conditions, resources and exception handling.
+pkm3-p09	Prescription	Process Knowledge is Foundational Infrastructure	AI reasoning and agent deployment must rest on formalized process knowledge; tacit-only work cannot be handed to an agent.
+pkm3-p10	Prescription	Process Knowledge is Foundational Infrastructure	A workflow must be understood and documented before it is redesigned for AI.
+pkm3-p23	Prescription	Rebuilding Process Knowledge Infrastructure	New systems, agentic AI included, are built with producing procedural knowledge as a leading goal.
+pkm3-p27	Prescription	Rebuilding Process Knowledge Infrastructure	Prompts are kept in maintained prompt libraries.
+pkm3-p28	Prescription	Rebuilding Process Knowledge Infrastructure	For AI context windows, develop ways to codify and condense knowledge instead of supplying context ad hoc.
+pkm3-p29	Prescription	Rebuilding Process Knowledge Infrastructure	Agent integrations are kept in a central registry.
+pkm3-p30	Prescription	Rebuilding Process Knowledge Infrastructure	Agent integrations share common pathways rather than one-off connections.
+pkm3-q08	CompetencyQuestion	Process Knowledge is Foundational Infrastructure	Which procedures intended for agent execution exist only as tacit knowledge?
+pkm3-s01	Standard	Rebuilding Process Knowledge Infrastructure	The Model Context Protocol and agent-to-agent integration protocols.
+pkm3-i10	Illustration	Process Knowledge is Foundational Infrastructure	Most firms use generative AI yet about as many report no meaningful bottom-line result.
+pkm3-i11	Illustration	Process Knowledge is Foundational Infrastructure	Firms that prompt a language model to optimize manufacturing fail for lack of formalized process knowledge, while knowledge-rich firms deploy agents.
+pkm4-c09	Concept	Practical Elicitation and Exploitation	An assistant that answers questions from the organization's own procedural knowledge graph.
+pkm4-c12	Concept	Why Do I Care About Industrial Processes?	Three kinds of knowledge an abundance of information leaves wanting: human judgment, uncovered tacit knowledge, and knowledge curated to a user and use case.
+pkm4-c17	Concept	Implications for AI Workflows	Operating constraints and the contextual wisdom veterans bring to execution, distinct from the list of steps.
+pkm4-p06	Prescription	The Problem PKO Addresses	Compliance exposure from unformalized procedural knowledge must be visible.
+pkm4-p07	Prescription	The Problem PKO Addresses	Execution mistakes must be visible so the benefit of formalizing can be shown.
+pkm4-p15	Prescription	Practical Elicitation and Exploitation	An assistant's answers must come from the organization's own procedural graph, not generic model output.
+pkm4-p16	Prescription	Practical Elicitation and Exploitation	Assistant answers must stay traceable to their source knowledge, as safety-critical use demands.
+pkm4-p17	Prescription	Why Do I Care About Industrial Processes?	Introduce partial automation, with expert review of its output, before handing a workflow to full automation.
+pkm4-p18	Prescription	Implications for AI Workflows	The knowledge layer deserves as much investment as the model layer.
+pkm4-p34	Prescription	Before: Tacit Knowledge and Limitations	AI support must be able to raise possible safety problems.
+pkm4-p35	Prescription	Before: Tacit Knowledge and Limitations	AI support must be able to guide a worker in real time while a procedure is under way.
+pkm4-p36	Prescription	Introduction	When a workflow changes, the knowledge model carries that change to machines so their picture matches the current workflow.
+pkm4-p37	Prescription	After: Explicit, Actionable Procedural Knowledge	Encoded procedural knowledge must be queryable, checkable for validity and open to automated reasoning.
+pkm4-p38	Prescription	Why Do I Care About Industrial Processes?	One shared body of procedural knowledge serves both human workers and AI consumers.
+pkm4-p39	Prescription	Implications for AI Workflows	Procedural knowledge reaches AI systems at run time through an integration that grounds their responses in it.
+pkm4-p40	Prescription	Implications for AI Workflows	Adoption runs in order: elicit tacit knowledge, encode it in reasoning-capable structures, then connect it to AI.
+pkm4-s12	Standard	Practical Elicitation and Exploitation	OWL and RDF as the languages the procedural knowledge graph is expressed in.
+pkm4-s14	Standard	Implications for AI Workflows	Knowledge-graph-empowered retrieval augmented generation.
+pkm4-i02	Illustration	Measured Impact: What the Evidence Shows	A quality-management knowledge graph that raised analysis efficiency, about product quality rather than procedures.
+pkm4-i05	Illustration	Measured Impact: What the Evidence Shows	Geospatial retrieval accuracy rising sharply once models were linked to a knowledge graph.
+ont4-c37	Concept	How AI Systems Consume an Ontology	A role that delegates to another role acting as its escalation backup.
+ont4-c51	Concept	RAG Over Structured Graphs	A workflow individual marked deprecated.
+ont4-c52	Concept	RAG Over Structured Graphs	A knowledge graph combining taxonomy, thesaurus, ontology, metadata schemas and a reasoner.
+ont4-p57	Prescription	The Relationship Has Two Directions	People lay down the seed model and first competency questions before AI is brought in to grow it.
+ont4-p58	Prescription	How AI Systems Consume an Ontology	Answers come from structured queries over the graph rather than from documents, to limit hallucination in compliance-sensitive use.
+ont4-p60	Prescription	How AI Systems Consume an Ontology	Logical soundness of what the AI is given is guaranteed by a reasoner; the language model is not relied on for it.
+ont4-p61	Prescription	How AI Systems Consume an Ontology	Before assertions are handed to a language model as context, the reasoner materializes everything they entail.
+ont4-p63	Prescription	How AI Systems Consume an Ontology	For accountability questions an agent's category is available as an inferred fact, not only as an explicit assignment.
+ont4-p78	Prescription	RAG Over Structured Graphs	AI systems are not deployed against the graph unless it is governed.
+ont4-p79	Prescription	RAG Over Structured Graphs	Each assertion served to AI carries provenance linking it back to where it came from.
+ont4-p80	Prescription	RAG Over Structured Graphs	The graph served to retrieval is kept free of stale role assignments.
+ont4-p81	Prescription	RAG Over Structured Graphs	The graph served to retrieval is kept free of deprecated workflow individuals presented as current.
+ont4-p82	Prescription	RAG Over Structured Graphs	Instance identifiers are readable and citable by a person or a generation model.
+ont4-p83	Prescription	RAG Over Structured Graphs	Every individual carries Dublin Core labels and descriptions.
+ont4-q01	CompetencyQuestion	How AI Systems Consume an Ontology	Which person currently holds the approving role for production releases?
+ont4-q02	CompetencyQuestion	How AI Systems Consume an Ontology	Which role, and which person in it, backs up that approver on escalation?
+ont4-s01	Standard	How AI Systems Consume an Ontology	An OWL-RL reasoner.
+ont4-s05	Standard	RAG Over Structured Graphs	Dublin Core metadata.
+ont4-s06	Standard	RAG Over Structured Graphs	Graph-based retrieval-augmented generation.
+ont4-i04	Illustration	The Relationship Has Two Directions	Ontologies and AI help each other in both directions; seeing only one direction wastes AI or yields models that fail under a reasoner.
+ont4-i06	Illustration	RAG Over Structured Graphs	Graph-based retrieval can be no more accurate than the graph it reads.
+ont4-i07	Illustration	Ontology as Organizational Memory	Knowledge is a human possession and responsibility that a machine cannot hold.
+ont4-i08	Illustration	Ontology as Organizational Memory	Approaching the model as a mere table design can produce something that looks valid but cannot be reasoned over, kept up or grown.
+ont4-i18	Illustration	How AI Systems Consume an Ontology	Division of labor: the language model handles natural language while the ontology and reasoner supply formal correctness.
+ont4-i25	Illustration	RAG Over Structured Graphs	A document passage about who approves production must be interpreted, whereas typed assertions linking gate, role and holder come back with certainty.

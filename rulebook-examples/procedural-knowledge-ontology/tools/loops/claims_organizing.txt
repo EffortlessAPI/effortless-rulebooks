@@ -1,0 +1,111 @@
+# Theme C (loop-08, organizing): 109 claims
+
+pkm1-c07	Concept	The Nature of Process Knowledge	The operational level: which task comes before which, what depends on what, and what must hold before work can continue.
+pkm1-c08	Concept	The Nature of Process Knowledge	The tactical level: allocating resources, spotting bottlenecks and adjusting the process.
+pkm1-c09	Concept	The Nature of Process Knowledge	The strategic level: tying a process to the organization's mission, with its rationale, the value it creates and its trade-offs.
+pkm1-c10	Concept	The Nature of Process Knowledge	Stages that group a process's steps, as a product manager handles them.
+pkm1-c11	Concept	The Nature of Process Knowledge	The stakeholder who owns each step or stage.
+pkm1-c12	Concept	The Nature of Process Knowledge	Outcomes measured for a process.
+pkm1-c13	Concept	The Nature of Process Knowledge	Interdependencies between processes, as an infrastructure engineer needs to see them.
+pkm1-c14	Concept	The Nature of Process Knowledge	High-level measures linking how a process performs to results the business cares about, as an executive needs.
+pkm1-c34	Concept	Its Not Easy, But it's Worth It	Context: a step's significance changes with the performer, the resources on hand and outside circumstances.
+pkm1-p02	Prescription	The Nature of Process Knowledge	Each level of abstraction needs its own strategy for capturing both its tacit and explicit knowledge.
+pkm1-p03	Prescription	The Nature of Process Knowledge	A knowledge system that does not serve process knowledge's many dimensions ends up privileging one stakeholder view over the rest.
+pkm1-p06	Prescription	Process Knowledge Frameworks	How knowledge is structured, linked and found must count as much as what it contains.
+pkm1-p14	Prescription	Semantic Ecosystems and Process	Rules on whether a relationship is direct or indirect must be enforced.
+pkm1-p15	Prescription	Semantic Ecosystems and Process	The expected datatype and format of values must be enforced.
+pkm1-p28	Prescription	Its Not Easy, But it's Worth It	Context-dependence must be captured through explicit scoping of where knowledge holds, without unmanageable complexity.
+pkm1-p40	Prescription	Integrated Process Intelligence	Controlled vocabularies must be developed and metadata managed for process knowledge.
+pkm1-q05	CompetencyQuestion	The Nature of Process Knowledge	Where are the bottlenecks in this process?
+pkm1-q06	CompetencyQuestion	The Nature of Process Knowledge	Why does this process exist, and what trade-offs does it make?
+pkm1-q07	CompetencyQuestion	The Nature of Process Knowledge	How does this process's performance connect to business outcomes?
+pkm1-s06	Standard	Its Not Easy, But it's Worth It	Named graphs, reification or contextualized knowledge bases to keep knowledge within the context where it holds.
+pkm1-i04	Illustration	The Nature of Process Knowledge	A chart contrasting explicit knowledge, which can be codified and stored, with tacit knowledge, which is experiential and passed on in person.
+pkm1-i05	Illustration	The Nature of Process Knowledge	A planning pyramid in which the strategic level answers who and why, the tactical what, and the operational how and where.
+pkm2-c40	Concept	From Collection to Structure	The raw material collection produces: transcripts, field notes, process maps, mined event traces and document excerpts.
+pkm2-c59	Concept	Levels of Organization	Each instance assigned to a suitable category.
+pkm2-c62	Concept	Levels of Organization	Thesauri alongside controlled vocabularies and taxonomies.
+pkm2-c63	Concept	Levels of Organization	A business unit in which a piece of process knowledge applies.
+pkm2-c64	Concept	Levels of Organization	A geography in which a piece of process knowledge applies.
+pkm2-c65	Concept	Levels of Organization	A customer segment in which a piece of process knowledge applies.
+pkm2-c66	Concept	Levels of Organization	A regulatory regime in which a piece of process knowledge applies.
+pkm2-c67	Concept	Levels of Organization	Situational variants: how experts adapt a standard process to the situation in front of them.
+pkm2-c68	Concept	Levels of Organization	Scoping annotations or conditional logic that mark where a piece of process knowledge stops applying.
+pkm2-c69	Concept	Organizing Principles	A customer service agent needs step-by-step guidance.
+pkm2-c70	Concept	Organizing Principles	A manager needs metrics.
+pkm2-c71	Concept	Organizing Principles	A manager needs exception handling.
+pkm2-c72	Concept	Organizing Principles	A compliance auditor needs compliance evidence.
+pkm2-c73	Concept	Organizing Principles	An AI system needs structured constraints.
+pkm2-c74	Concept	Taxonomies and Controlled Vocabularies	A process taxonomy by functional domain, such as operations, finance and human resources.
+pkm2-c75	Concept	Taxonomies and Controlled Vocabularies	Taxonomy levels below a functional domain that break it into narrower process types.
+pkm2-c76	Concept	Taxonomies and Controlled Vocabularies	An activity vocabulary with canonical preferred labels and alternative labels for variant wordings.
+pkm2-c77	Concept	Taxonomies and Controlled Vocabularies	A role hierarchy in which one role specializes another.
+pkm2-c78	Concept	Taxonomies and Controlled Vocabularies	Which departments contain which roles.
+pkm2-c79	Concept	Taxonomies and Controlled Vocabularies	The responsibilities each role carries, recorded in the role vocabulary.
+pkm2-c80	Concept	Taxonomies and Controlled Vocabularies	A definition on a controlled concept.
+pkm2-c81	Concept	Taxonomies and Controlled Vocabularies	A scope note on a controlled concept.
+pkm2-c82	Concept	Taxonomies and Controlled Vocabularies	Broader and narrower concepts.
+pkm2-c83	Concept	Taxonomies and Controlled Vocabularies	Associative relations between concepts.
+pkm2-p19	Prescription	From Collection to Structure	Organize collected knowledge before modeling it, so you know what you are modeling.
+pkm2-p20	Prescription	From Collection to Structure	The organizing structure holds many different kinds of knowledge in one frame.
+pkm2-p21	Prescription	Levels of Organization	The conditions under which a piece of process knowledge applies must be stated explicitly.
+pkm2-p23	Prescription	Organizing Principles	Organize around the terms practitioners actually use, even when they differ from the official structure.
+pkm2-p24	Prescription	Organizing Principles	Support multiple perspectives on one procedure without fragmenting it into disconnected silos.
+pkm2-p25	Prescription	Organizing Principles	Groupings reflect meaningful distinctions, not arbitrary or convenient ones.
+pkm2-p26	Prescription	Organizing Principles	The organizing structure is refined repeatedly as collection shows how practitioners think about the work.
+pkm2-p27	Prescription	Organizing Principles	Granularity is chosen to fit the use case.
+pkm2-p28	Prescription	Organizing Principles	Detail is weighted evenly, so granularity is not mixed within organized knowledge.
+pkm2-p34	Prescription	Taxonomies and Controlled Vocabularies	Establish vocabulary control before building complex ontology.
+pkm2-p35	Prescription	Taxonomies and Controlled Vocabularies	The taxonomy makes sure new processes are categorized and defined consistently.
+pkm2-p36	Prescription	Taxonomies and Controlled Vocabularies	Uncontrolled variant wordings of one activity must resolve to a canonical term.
+pkm2-p37	Prescription	Taxonomies and Controlled Vocabularies	Role vocabularies let a query find every process involving a role without exact phrase matching.
+pkm2-p38	Prescription	Taxonomies and Controlled Vocabularies	The taxonomy lets people and AI find the processes relevant to them by navigating it.
+pkm2-q09	CompetencyQuestion	Taxonomies and Controlled Vocabularies	List every process in which a compliance-review role takes part.
+pkm2-q21	CompetencyQuestion	Levels of Organization	Under which business unit, geography, customer segment or regulatory regime does this variant apply?
+pkm2-q28	CompetencyQuestion	Taxonomies and Controlled Vocabularies	Which departments contain which roles?
+pkm2-q29	CompetencyQuestion	Taxonomies and Controlled Vocabularies	Which roles are specializations of others?
+pkm2-q30	CompetencyQuestion	Taxonomies and Controlled Vocabularies	Which specific process types fall under a given functional domain?
+pkm2-q31	CompetencyQuestion	Organizing Principles	What does this process look like at step-level detail compared with category level?
+pkm2-s09	Standard	Taxonomies and Controlled Vocabularies	SKOS for controlled vocabularies.
+pkm2-s22	Standard	Organizing Principles	Faceted classification along several independent dimensions.
+pkm2-s23	Standard	Levels of Organization	Named graphs for scoping context.
+pkm2-i04	Illustration	Taxonomies and Controlled Vocabularies	The same review step appears under several different phrasings in different sources.
+pkm2-i05	Illustration	Taxonomies and Controlled Vocabularies	A more senior version of a role counts as a specialization of that role.
+pkm2-i10	Illustration	Organizing Principles	Training material needs step-level detail while strategic planning needs only broad process categories.
+pkm2-i14	Illustration	Standards and Interoperability	Organizations need not adopt every standard; the path runs from vocabularies to lightweight ontologies to process and decision modeling.
+pkm3-c22	Concept	Death of Apprenticeship and Institutional Memory	Knowledge of how operations in a value chain help or hinder one another, lost when parts of the chain are removed.
+pkm3-q04	CompetencyQuestion	Death of Apprenticeship and Institutional Memory	Which of our operations help each other, and which work against each other?
+pkm3-s02	Standard	Rebuilding Process Knowledge Infrastructure	Controlled vocabularies, taxonomies and ontologies as the formal representation of procedural knowledge.
+pkm4-i08	Illustration	Why Do I Care About Industrial Processes?	Engineering disciplines and product management share optimization, quality control, validation and data modeling, so procedural knowledge problems cut across domains.
+ont4-c04	Concept	Why Ontologies Decay	Terminological drift: a term keeps an old definition while the organization now means something else.
+ont4-c08	Concept	Why Ontologies Decay	The namespace a term belongs to, so a term can be moved from an external vocabulary into the local one.
+ont4-c09	Concept	Why Ontologies Decay	A globally unique identifier for every modeled thing.
+ont4-c10	Concept	Why Ontologies Decay	A record for each reused external standard, holding the version the model depends on.
+ont4-c11	Concept	Why Ontologies Decay	An external term marked deprecated by its source standard.
+ont4-c12	Concept	Why Ontologies Decay	A reconciliation relation stating that a local term is the same as a deprecated external term.
+ont4-c15	Concept	Versioning	A separate vocabulary layer holding controlled concept schemes.
+ont4-c32	Concept	How AI Systems Consume an Ontology	A controlled concept scheme for workflow status.
+ont4-c33	Concept	How AI Systems Consume an Ontology	A controlled concept scheme for artifact types.
+ont4-c34	Concept	How AI Systems Consume an Ontology	A controlled concept scheme for agent capabilities.
+ont4-c35	Concept	How AI Systems Consume an Ontology	A role carrying capability tags drawn from the controlled capability scheme.
+ont4-p01	Prescription	Why Ontologies Decay	A term's definition must be revised when the organization's meaning of it changes, since stale definitions give answers true only of the past.
+ont4-p03	Prescription	Why Ontologies Decay	When an external dependency deprecates a term, the alignment and documentation are updated even though the term still resolves.
+ont4-p04	Prescription	Why Ontologies Decay	A deprecated external term the model still needs is taken into the local namespace.
+ont4-p05	Prescription	Why Ontologies Decay	A re-homed term carries an identity assertion linking it to the external original.
+ont4-p06	Prescription	Why Ontologies Decay	Re-homing a term triggers a new model version.
+ont4-p07	Prescription	Why Ontologies Decay	Prefix and identifier changes are propagated so data stays consistent; otherwise dependent queries and APIs may fail.
+ont4-p59	Prescription	How AI Systems Consume an Ontology	Generated values are drawn from the governed vocabulary, never from ad hoc wordings.
+ont4-p62	Prescription	How AI Systems Consume an Ontology	Alternative labels resolve variant wordings to one canonical concept so downstream systems can normalize them.
+ont4-q26	CompetencyQuestion	Why Ontologies Decay	Which adopted external terms have since been deprecated by their source standard?
+ont4-s03	Standard	How AI Systems Consume an Ontology	SKOS concept schemes with preferred label, alternative label, definition and scheme membership.
+ont4-s08	Standard	Why Ontologies Decay	FOAF.
+ont4-s09	Standard	Why Ontologies Decay	DCAT.
+ont4-s10	Standard	Why Ontologies Decay	Schema.org.
+ont4-s11	Standard	AI Contributes to Ontology Development	RDFS label and comment annotations for term names and definitions.
+ont4-s12	Standard	Why Ontologies Decay	The OWL identity assertion as the reconciliation relation between a deprecated external term and its replacement.
+ont4-s14	Standard	Why Ontologies Decay	URIs as the unique identifier of every modeled thing.
+ont4-i09	Illustration	Why Ontologies Decay	Hypothetically, a deprecated personal-name term in a reused vocabulary could be moved into the local namespace and linked to the original.
+ont4-i12	Illustration	Why Ontologies Decay	What engineering meant by a release two years earlier differs structurally from what it means now.
+ont4-i13	Illustration	Why Ontologies Decay	Reused standards change at different rates: one untouched for over a decade, one that deprecates often, one that went through a major revision.
+ont4-i16	Illustration	How AI Systems Consume an Ontology	Without grounding a model labels workflow status with many synonyms; with the status scheme it returns only active, draft or deprecated.
+ont4-i17	Illustration	How AI Systems Consume an Ontology	Controlled-vocabulary grounding comes from library science; language models add scale if the vocabulary is formal and machine-accessible.

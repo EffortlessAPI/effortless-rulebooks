@@ -5,9 +5,14 @@ The catalog is a census of every field in this rulebook. It is DERIVED, never
 hand-maintained: this script walks the actual table schemas and rewrites the
 catalog rows to match.
 
-The one thing that is NOT derived is `InventedForQuestion` — that is authored
-provenance, recording which role question motivated a field's existence. It is
-preserved across reconciliation and re-attached by RulebookFieldId.
+Two kinds of column are NOT derived from the schemas and are preserved across
+reconciliation, re-attached by RulebookFieldId:
+
+- `InventedForQuestion` — authored provenance, recording which role question
+  motivated a field's existence.
+- `MeasuredSubstantiveCount` / `MeasuredDistinctValueCount` — Postgres measurements
+  written by tools/measure_catalog.py. A newly added field has none until the
+  next measurement, so it cannot count as article-coverage evidence yet.
 
 Fails loudly (exit 1) under --check if the catalog has drifted, so a stale
 catalog can never silently misreport what fields exist.
@@ -41,7 +46,11 @@ def table_names(rb: OrderedDict) -> list[str]:
     return [k for k, v in rb.items() if isinstance(v, dict) and "schema" in v]
 
 
-def build_rows(rb: OrderedDict, provenance: dict[str, str]) -> list[OrderedDict]:
+MEASURED = ("MeasuredSubstantiveCount", "MeasuredDistinctValueCount")
+
+
+def build_rows(rb: OrderedDict, provenance: dict[str, str],
+               measured: dict[str, dict] | None = None) -> list[OrderedDict]:
     """Walk every schema and emit one catalog row per field."""
     rows: list[OrderedDict] = []
     for table in table_names(rb):
@@ -59,6 +68,8 @@ def build_rows(rb: OrderedDict, provenance: dict[str, str]) -> list[OrderedDict]
                 ("InventedForQuestion", provenance.get(fid)),
                 ("SemanticTypeIri", EXTENSION_IRI),
             ]))
+            for col in MEASURED:
+                rows[-1][col] = (measured or {}).get(fid, {}).get(col)
     return rows
 
 
@@ -83,7 +94,10 @@ def main() -> int:
         if r.get("InventedForQuestion")
     }
 
-    fresh = build_rows(rb, provenance)
+    measured = {r["RulebookFieldId"]: {c: r.get(c) for c in MEASURED}
+                for r in rb[CATALOG].get("data", [])}
+
+    fresh = build_rows(rb, provenance, measured)
     current = rb[CATALOG].get("data", [])
 
     if args.check:

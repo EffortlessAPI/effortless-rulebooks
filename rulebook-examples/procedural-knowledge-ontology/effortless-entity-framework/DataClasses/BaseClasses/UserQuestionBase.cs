@@ -27,6 +27,13 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string? QuestionText { get; set; }
         public string? Status { get; set; }
         public string? SemanticTypeIri { get; set; }
+        // Formula IsUnaddressedQuestion (rulebook: =AND({{AddressedByResource}} = "", {{ResolvedByFaq}} = ""))
+        [NotMapped]
+        public bool? IsUnaddressedQuestion
+        {
+            get => F.AsBool(F.Memo(this, "IsUnaddressedQuestion", () => F.And(F.Bool3(F.IsBlank(F.Of(this.AddressedByResource))), F.Bool3(F.IsBlank(F.Of(this.ResolvedByFaq)))))); set { }
+        }
+
 
         public string? StepExecution { get; set; }
         public string? AskedByAgent { get; set; }

@@ -1,0 +1,9 @@
+# Theme I (loop-14, gaps): 7 claims
+
+pkm4-p23	Prescription	Building A Procedural Knowledge Infrastructure	Ontology work starts from real use cases.
+pkm4-p43	Prescription	Building A Procedural Knowledge Infrastructure	Domain experts stay involved throughout ontology work.
+pkm4-p45	Prescription	Building A Procedural Knowledge Infrastructure	Ontology work is refined through pilot implementations.
+pkm4-p25	Prescription	Building A Procedural Knowledge Infrastructure	LOT implementation builds the ontology and maps real data into RDF.
+pkm4-i06	Illustration	Building A Procedural Knowledge Infrastructure	Existing ontologies such as CIDOC CRM and Transmodel as what a reuse-first method builds on.
+ont4-i27	Illustration	Conclusion	The custom model is small on purpose and leans on reused standards.
+ont4-i31	Illustration	Conclusion	The pipeline runs from controlled vocabulary to taxonomy to thesaurus to ontology to knowledge graph.

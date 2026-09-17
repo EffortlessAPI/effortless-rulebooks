@@ -23,7 +23,6 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             get => F.AsString(F.Memo(this, "Name", () => F.Concat(F.Text(F.Of(this.ProcedureVersion)), F.S(" / "), F.Text(F.Of(this.Context))))); set { }
         }
 
-        public string? ExecutionStatus { get; set; }
         public DateTimeOffset? StartedAt { get; set; }
         public DateTimeOffset? EndedAt { get; set; }
         public string? Context { get; set; }
@@ -505,9 +504,109 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         }
 
         public string? SemanticTypeIri { get; set; }
+        public string? Title { get; set; }
+        public string? Description { get; set; }
+        public string? Shift { get; set; }
+        public string? Observations { get; set; }
+        public string? Outcome { get; set; }
+        // Formula ParticipantCount (rulebook: =COUNTIFS(ExecutionParticipants!{{ProcedureExecution}}, {{ProcedureExecutionId}}))
+        [NotMapped]
+        public int? ParticipantCount
+        {
+            get => F.AsInt(F.Memo(this, "ParticipantCount", () => F.Integer((base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<ExecutionParticipant>(base.SoAContext, "ExecutionParticipants", __c => __c.ExecutionParticipants), __r => F.CritField(F.Of(__r.ProcedureExecution), F.Of(this.ProcedureExecutionId))))))); set { }
+        }
+
+        // Formula DeviatingStepCount (rulebook: =COUNTIFS(StepExecutions!{{DeviationExecutionKey}}, {{ProcedureExecutionId}}))
+        [NotMapped]
+        public int? DeviatingStepCount
+        {
+            get => F.AsInt(F.Memo(this, "DeviatingStepCount", () => F.Integer((base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<StepExecution>(base.SoAContext, "StepExecutions", __c => __c.StepExecutions), __r => F.CritField(F.Of(__r.DeviationExecutionKey), F.Of(this.ProcedureExecutionId))))))); set { }
+        }
+
+        // Formula HasStepDeviation (rulebook: ={{DeviatingStepCount}} > 0)
+        [NotMapped]
+        public bool? HasStepDeviation
+        {
+            get => F.AsBool(F.Memo(this, "HasStepDeviation", () => F.Cmp(F.Of(this.DeviatingStepCount), ">", F.I(0)))); set { }
+        }
+
+        // Formula DeviatingFacilityKey (rulebook: =IF({{HasStepDeviation}}, {{Facility}}, ""))
+        [NotMapped]
+        public string? DeviatingFacilityKey
+        {
+            get => F.AsString(F.Memo(this, "DeviatingFacilityKey", () => (F.Truthy(F.Bool3(F.Of(this.HasStepDeviation))) ? F.Of(this.Facility) : F.S("")))); set { }
+        }
+
+        // Formula CleanFacilityKey (rulebook: =IF(AND({{Facility}} <> "", {{HasStepDeviation}} = FALSE), {{Facility}}, ""))
+        [NotMapped]
+        public string? CleanFacilityKey
+        {
+            get => F.AsString(F.Memo(this, "CleanFacilityKey", () => (F.Truthy(F.Bool3(F.And(F.Bool3(F.IsNotBlank(F.Of(this.Facility))), F.Bool3(F.Eq(F.Of(this.HasStepDeviation), F.B(false)))))) ? F.Of(this.Facility) : F.S("")))); set { }
+        }
+
+        // Formula DeviatingDayVersionKey (rulebook: =IF(AND({{HasStepDeviation}}, {{Shift}} = "Day"), {{ProcedureVersion}}, ""))
+        [NotMapped]
+        public string? DeviatingDayVersionKey
+        {
+            get => F.AsString(F.Memo(this, "DeviatingDayVersionKey", () => (F.Truthy(F.Bool3(F.And(F.Bool3(F.Of(this.HasStepDeviation)), F.Bool3(F.Eq(F.Nullif(F.Of(this.Shift)), F.S("Day")))))) ? F.Of(this.ProcedureVersion) : F.S("")))); set { }
+        }
+
+        // Formula DeviatingNightVersionKey (rulebook: =IF(AND({{HasStepDeviation}}, {{Shift}} = "Night"), {{ProcedureVersion}}, ""))
+        [NotMapped]
+        public string? DeviatingNightVersionKey
+        {
+            get => F.AsString(F.Memo(this, "DeviatingNightVersionKey", () => (F.Truthy(F.Bool3(F.And(F.Bool3(F.Of(this.HasStepDeviation)), F.Bool3(F.Eq(F.Nullif(F.Of(this.Shift)), F.S("Night")))))) ? F.Of(this.ProcedureVersion) : F.S("")))); set { }
+        }
+
+        // Formula StatusChangeCount (rulebook: =COUNTIFS(ProcedureStatusChanges!{{ProcedureExecution}}, {{ProcedureExecutionId}}))
+        [NotMapped]
+        public int? StatusChangeCount
+        {
+            get => F.AsInt(F.Memo(this, "StatusChangeCount", () => F.Integer((base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<ProcedureStatusChange>(base.SoAContext, "ProcedureStatusChanges", __c => __c.ProcedureStatusChanges), __r => F.CritField(F.Of(__r.ProcedureExecution), F.Of(this.ProcedureExecutionId))))))); set { }
+        }
+
+        // Formula ClaimsCompletionWithoutAllSteps (rulebook: =AND({{ExecutionStatus}} = "Completed", {{CompletedStepCount}} < {{ExpectedStepCount}}))
+        [NotMapped]
+        public bool? ClaimsCompletionWithoutAllSteps
+        {
+            get => F.AsBool(F.Memo(this, "ClaimsCompletionWithoutAllSteps", () => F.And(F.Bool3(F.Eq(F.Nullif(F.Of(this.ExecutionStatus)), F.S("Completed"))), F.Bool3(F.Cmp(F.Of(this.CompletedStepCount), "<", F.Of(this.ExpectedStepCount)))))); set { }
+        }
+
+        // Formula IsUnconfirmedCompletion (rulebook: =AND({{ExecutionStatus}} = "Completed", {{ConfirmedByAgent}} = ""))
+        [NotMapped]
+        public bool? IsUnconfirmedCompletion
+        {
+            get => F.AsBool(F.Memo(this, "IsUnconfirmedCompletion", () => F.And(F.Bool3(F.Eq(F.Nullif(F.Of(this.ExecutionStatus)), F.S("Completed"))), F.Bool3(F.IsBlank(F.Of(this.ConfirmedByAgent)))))); set { }
+        }
+
+        // Formula HasNoRecordedOutcome (rulebook: ={{Outcome}} = "")
+        [NotMapped]
+        public bool? HasNoRecordedOutcome
+        {
+            get => F.AsBool(F.Memo(this, "HasNoRecordedOutcome", () => F.IsBlank(F.Of(this.Outcome)))); set { }
+        }
+
+        // Formula FeedbackCount (rulebook: =COUNTIFS(UserFeedback!{{ProcedureExecution}}, {{ProcedureExecutionId}}))
+        [NotMapped]
+        public int? FeedbackCount
+        {
+            get => F.AsInt(F.Memo(this, "FeedbackCount", () => F.Integer((base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<UserFeedback>(base.SoAContext, "UserFeedback", __c => __c.UserFeedback), __r => F.CritField(F.Of(__r.ProcedureExecution), F.Of(this.ProcedureExecutionId))))))); set { }
+        }
+
+        // Formula IsUnreportedMistake (rulebook: =AND({{HasStepDeviation}}, {{FeedbackCount}} = 0))
+        [NotMapped]
+        public bool? IsUnreportedMistake
+        {
+            get => F.AsBool(F.Memo(this, "IsUnreportedMistake", () => F.And(F.Bool3(F.Of(this.HasStepDeviation)), F.Bool3(F.Eq(F.Of(this.FeedbackCount), F.I(0)))))); set { }
+        }
+
 
         public string? ProcedureVersion { get; set; }
+        public string? ExecutionStatus { get; set; }
         public string? ExecutedByAgent { get; set; }
+        public string? ConfirmedByAgent { get; set; }
+        public string? Facility { get; set; }
+        public string? ExecutedOnMachine { get; set; }
 
         private ProcedureVersion _procedureVersionRef;
 
@@ -553,6 +652,50 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             }
         }
 
+        private LifecycleStatuse _lifecycleStatuse;
+
+        [ForeignKey("ExecutionStatus")]
+        public virtual LifecycleStatuse LifecycleStatuse
+        {
+            get
+            {
+                if (_lifecycleStatuse == null && !string.IsNullOrEmpty(ExecutionStatus))
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access LifecycleStatuse - no database context is set. ExecutionStatus: " + ExecutionStatus + ".");
+                        }
+                        return null;
+                    }
+                    _lifecycleStatuse = base.SoAContext.LifecycleStatuses.Find(ExecutionStatus);
+                    if (_lifecycleStatuse != null)
+                    {
+                        base.SoAContext.Attach(_lifecycleStatuse);
+                    }
+                }
+                return _lifecycleStatuse;
+            }
+            set
+            {
+                if (_lifecycleStatuse != value)
+                {
+                    _lifecycleStatuse = value;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_lifecycleStatuse != null)
+                    {
+                        ExecutionStatus = _lifecycleStatuse.LifecycleStatusId;
+                    }
+                }
+            }
+        }
+
         private Agent _agent;
 
         [ForeignKey("ExecutedByAgent")]
@@ -593,6 +736,193 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     {
                         ExecutedByAgent = _agent.AgentId;
                     }
+                }
+            }
+        }
+
+        private Agent _agentRef;
+
+        [ForeignKey("ConfirmedByAgent")]
+        public virtual Agent AgentRef
+        {
+            get
+            {
+                if (_agentRef == null && !string.IsNullOrEmpty(ConfirmedByAgent))
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access AgentRef - no database context is set. ConfirmedByAgent: " + ConfirmedByAgent + ".");
+                        }
+                        return null;
+                    }
+                    _agentRef = base.SoAContext.Agents.Find(ConfirmedByAgent);
+                    if (_agentRef != null)
+                    {
+                        base.SoAContext.Attach(_agentRef);
+                    }
+                }
+                return _agentRef;
+            }
+            set
+            {
+                if (_agentRef != value)
+                {
+                    _agentRef = value;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_agentRef != null)
+                    {
+                        ConfirmedByAgent = _agentRef.AgentId;
+                    }
+                }
+            }
+        }
+
+        private Facility _facilityRef;
+
+        [ForeignKey("Facility")]
+        public virtual Facility FacilityRef
+        {
+            get
+            {
+                if (_facilityRef == null && !string.IsNullOrEmpty(Facility))
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access FacilityRef - no database context is set. Facility: " + Facility + ".");
+                        }
+                        return null;
+                    }
+                    _facilityRef = base.SoAContext.Facilities.Find(Facility);
+                    if (_facilityRef != null)
+                    {
+                        base.SoAContext.Attach(_facilityRef);
+                    }
+                }
+                return _facilityRef;
+            }
+            set
+            {
+                if (_facilityRef != value)
+                {
+                    _facilityRef = value;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_facilityRef != null)
+                    {
+                        Facility = _facilityRef.FacilityId;
+                    }
+                }
+            }
+        }
+
+        private Machine _machine;
+
+        [ForeignKey("ExecutedOnMachine")]
+        public virtual Machine Machine
+        {
+            get
+            {
+                if (_machine == null && !string.IsNullOrEmpty(ExecutedOnMachine))
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access Machine - no database context is set. ExecutedOnMachine: " + ExecutedOnMachine + ".");
+                        }
+                        return null;
+                    }
+                    _machine = base.SoAContext.Machines.Find(ExecutedOnMachine);
+                    if (_machine != null)
+                    {
+                        base.SoAContext.Attach(_machine);
+                    }
+                }
+                return _machine;
+            }
+            set
+            {
+                if (_machine != value)
+                {
+                    _machine = value;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_machine != null)
+                    {
+                        ExecutedOnMachine = _machine.MachineId;
+                    }
+                }
+            }
+        }
+
+        private ObservableCollection<ProcedureStatusChange> _procedureStatusChanges;
+
+        [InverseProperty("ProcedureExecutionRef")]
+        public virtual ObservableCollection<ProcedureStatusChange> ProcedureStatusChanges
+        {
+            get
+            {
+                if (_procedureStatusChanges == null)
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access ProcedureStatusChanges - no database context is set. ProcedureExecutionId: " + this.ProcedureExecutionId + ".");
+                        }
+                        _procedureStatusChanges = new ObservableCollection<ProcedureStatusChange>();
+                    }
+                    else
+                    {
+                        var items = base.SoAContext.ProcedureStatusChanges.Where(x => x.ProcedureExecution == this.ProcedureExecutionId).ToList<ProcedureStatusChange>();
+                        _procedureStatusChanges = new ObservableCollection<ProcedureStatusChange>(items);
+                        if (items.Any())
+                        {
+                            base.SoAContext.AttachRange(items);
+                        }
+                    }
+                    _procedureStatusChanges.CollectionChanged += ProcedureStatusChanges_CollectionChanged;
+                }
+                return _procedureStatusChanges;
+            }
+            private set
+            {
+                if (_procedureStatusChanges != null)
+                {
+                    _procedureStatusChanges.CollectionChanged -= ProcedureStatusChanges_CollectionChanged;
+                }
+                _procedureStatusChanges = value;
+                if (_procedureStatusChanges != null)
+                {
+                    _procedureStatusChanges.CollectionChanged += ProcedureStatusChanges_CollectionChanged;
+                }
+            }
+        }
+
+        private void ProcedureStatusChanges_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems != null)
+            {
+                foreach (var item in e.NewItems.Cast<ProcedureStatusChange>())
+                {
+                    item.ProcedureExecution = this.ProcedureExecutionId;
                 }
             }
         }
@@ -982,11 +1312,291 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             }
         }
 
+        private ObservableCollection<ExecutionParticipant> _executionParticipants;
+
+        [InverseProperty("ProcedureExecutionRef")]
+        public virtual ObservableCollection<ExecutionParticipant> ExecutionParticipants
+        {
+            get
+            {
+                if (_executionParticipants == null)
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access ExecutionParticipants - no database context is set. ProcedureExecutionId: " + this.ProcedureExecutionId + ".");
+                        }
+                        _executionParticipants = new ObservableCollection<ExecutionParticipant>();
+                    }
+                    else
+                    {
+                        var items = base.SoAContext.ExecutionParticipants.Where(x => x.ProcedureExecution == this.ProcedureExecutionId).ToList<ExecutionParticipant>();
+                        _executionParticipants = new ObservableCollection<ExecutionParticipant>(items);
+                        if (items.Any())
+                        {
+                            base.SoAContext.AttachRange(items);
+                        }
+                    }
+                    _executionParticipants.CollectionChanged += ExecutionParticipants_CollectionChanged;
+                }
+                return _executionParticipants;
+            }
+            private set
+            {
+                if (_executionParticipants != null)
+                {
+                    _executionParticipants.CollectionChanged -= ExecutionParticipants_CollectionChanged;
+                }
+                _executionParticipants = value;
+                if (_executionParticipants != null)
+                {
+                    _executionParticipants.CollectionChanged += ExecutionParticipants_CollectionChanged;
+                }
+            }
+        }
+
+        private void ExecutionParticipants_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems != null)
+            {
+                foreach (var item in e.NewItems.Cast<ExecutionParticipant>())
+                {
+                    item.ProcedureExecution = this.ProcedureExecutionId;
+                }
+            }
+        }
+
+        private ObservableCollection<CollectedSourceMaterial> _collectedSourceMaterials;
+
+        [InverseProperty("ProcedureExecution")]
+        public virtual ObservableCollection<CollectedSourceMaterial> CollectedSourceMaterials
+        {
+            get
+            {
+                if (_collectedSourceMaterials == null)
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access CollectedSourceMaterials - no database context is set. ProcedureExecutionId: " + this.ProcedureExecutionId + ".");
+                        }
+                        _collectedSourceMaterials = new ObservableCollection<CollectedSourceMaterial>();
+                    }
+                    else
+                    {
+                        var items = base.SoAContext.CollectedSourceMaterials.Where(x => x.CapturedDuringExecution == this.ProcedureExecutionId).ToList<CollectedSourceMaterial>();
+                        _collectedSourceMaterials = new ObservableCollection<CollectedSourceMaterial>(items);
+                        if (items.Any())
+                        {
+                            base.SoAContext.AttachRange(items);
+                        }
+                    }
+                    _collectedSourceMaterials.CollectionChanged += CollectedSourceMaterials_CollectionChanged;
+                }
+                return _collectedSourceMaterials;
+            }
+            private set
+            {
+                if (_collectedSourceMaterials != null)
+                {
+                    _collectedSourceMaterials.CollectionChanged -= CollectedSourceMaterials_CollectionChanged;
+                }
+                _collectedSourceMaterials = value;
+                if (_collectedSourceMaterials != null)
+                {
+                    _collectedSourceMaterials.CollectionChanged += CollectedSourceMaterials_CollectionChanged;
+                }
+            }
+        }
+
+        private void CollectedSourceMaterials_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems != null)
+            {
+                foreach (var item in e.NewItems.Cast<CollectedSourceMaterial>())
+                {
+                    item.CapturedDuringExecution = this.ProcedureExecutionId;
+                }
+            }
+        }
+
+        private ObservableCollection<RoleAssignmentUpdateTask> _roleAssignmentUpdateTasks;
+
+        [InverseProperty("ProcedureExecution")]
+        public virtual ObservableCollection<RoleAssignmentUpdateTask> RoleAssignmentUpdateTasks
+        {
+            get
+            {
+                if (_roleAssignmentUpdateTasks == null)
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access RoleAssignmentUpdateTasks - no database context is set. ProcedureExecutionId: " + this.ProcedureExecutionId + ".");
+                        }
+                        _roleAssignmentUpdateTasks = new ObservableCollection<RoleAssignmentUpdateTask>();
+                    }
+                    else
+                    {
+                        var items = base.SoAContext.RoleAssignmentUpdateTasks.Where(x => x.DependentExecution == this.ProcedureExecutionId).ToList<RoleAssignmentUpdateTask>();
+                        _roleAssignmentUpdateTasks = new ObservableCollection<RoleAssignmentUpdateTask>(items);
+                        if (items.Any())
+                        {
+                            base.SoAContext.AttachRange(items);
+                        }
+                    }
+                    _roleAssignmentUpdateTasks.CollectionChanged += RoleAssignmentUpdateTasks_CollectionChanged;
+                }
+                return _roleAssignmentUpdateTasks;
+            }
+            private set
+            {
+                if (_roleAssignmentUpdateTasks != null)
+                {
+                    _roleAssignmentUpdateTasks.CollectionChanged -= RoleAssignmentUpdateTasks_CollectionChanged;
+                }
+                _roleAssignmentUpdateTasks = value;
+                if (_roleAssignmentUpdateTasks != null)
+                {
+                    _roleAssignmentUpdateTasks.CollectionChanged += RoleAssignmentUpdateTasks_CollectionChanged;
+                }
+            }
+        }
+
+        private void RoleAssignmentUpdateTasks_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems != null)
+            {
+                foreach (var item in e.NewItems.Cast<RoleAssignmentUpdateTask>())
+                {
+                    item.DependentExecution = this.ProcedureExecutionId;
+                }
+            }
+        }
+
+        private ObservableCollection<AssignmentRoutedNotice> _assignmentRoutedNotices;
+
+        [InverseProperty("ProcedureExecutionRef")]
+        public virtual ObservableCollection<AssignmentRoutedNotice> AssignmentRoutedNotices
+        {
+            get
+            {
+                if (_assignmentRoutedNotices == null)
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access AssignmentRoutedNotices - no database context is set. ProcedureExecutionId: " + this.ProcedureExecutionId + ".");
+                        }
+                        _assignmentRoutedNotices = new ObservableCollection<AssignmentRoutedNotice>();
+                    }
+                    else
+                    {
+                        var items = base.SoAContext.AssignmentRoutedNotices.Where(x => x.ProcedureExecution == this.ProcedureExecutionId).ToList<AssignmentRoutedNotice>();
+                        _assignmentRoutedNotices = new ObservableCollection<AssignmentRoutedNotice>(items);
+                        if (items.Any())
+                        {
+                            base.SoAContext.AttachRange(items);
+                        }
+                    }
+                    _assignmentRoutedNotices.CollectionChanged += AssignmentRoutedNotices_CollectionChanged;
+                }
+                return _assignmentRoutedNotices;
+            }
+            private set
+            {
+                if (_assignmentRoutedNotices != null)
+                {
+                    _assignmentRoutedNotices.CollectionChanged -= AssignmentRoutedNotices_CollectionChanged;
+                }
+                _assignmentRoutedNotices = value;
+                if (_assignmentRoutedNotices != null)
+                {
+                    _assignmentRoutedNotices.CollectionChanged += AssignmentRoutedNotices_CollectionChanged;
+                }
+            }
+        }
+
+        private void AssignmentRoutedNotices_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems != null)
+            {
+                foreach (var item in e.NewItems.Cast<AssignmentRoutedNotice>())
+                {
+                    item.ProcedureExecution = this.ProcedureExecutionId;
+                }
+            }
+        }
+
+        private ObservableCollection<KnowledgeRepositoryEntry> _knowledgeRepositoryEntries;
+
+        [InverseProperty("ProcedureExecution")]
+        public virtual ObservableCollection<KnowledgeRepositoryEntry> KnowledgeRepositoryEntries
+        {
+            get
+            {
+                if (_knowledgeRepositoryEntries == null)
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access KnowledgeRepositoryEntries - no database context is set. ProcedureExecutionId: " + this.ProcedureExecutionId + ".");
+                        }
+                        _knowledgeRepositoryEntries = new ObservableCollection<KnowledgeRepositoryEntry>();
+                    }
+                    else
+                    {
+                        var items = base.SoAContext.KnowledgeRepositoryEntries.Where(x => x.FedFromExecution == this.ProcedureExecutionId).ToList<KnowledgeRepositoryEntry>();
+                        _knowledgeRepositoryEntries = new ObservableCollection<KnowledgeRepositoryEntry>(items);
+                        if (items.Any())
+                        {
+                            base.SoAContext.AttachRange(items);
+                        }
+                    }
+                    _knowledgeRepositoryEntries.CollectionChanged += KnowledgeRepositoryEntries_CollectionChanged;
+                }
+                return _knowledgeRepositoryEntries;
+            }
+            private set
+            {
+                if (_knowledgeRepositoryEntries != null)
+                {
+                    _knowledgeRepositoryEntries.CollectionChanged -= KnowledgeRepositoryEntries_CollectionChanged;
+                }
+                _knowledgeRepositoryEntries = value;
+                if (_knowledgeRepositoryEntries != null)
+                {
+                    _knowledgeRepositoryEntries.CollectionChanged += KnowledgeRepositoryEntries_CollectionChanged;
+                }
+            }
+        }
+
+        private void KnowledgeRepositoryEntries_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems != null)
+            {
+                foreach (var item in e.NewItems.Cast<KnowledgeRepositoryEntry>())
+                {
+                    item.FedFromExecution = this.ProcedureExecutionId;
+                }
+            }
+        }
+
 
         protected override void LazyLoadProperties()
         {
             _ = this.ProcedureVersionRef;
+            _ = this.LifecycleStatuse;
             _ = this.Agent;
+            _ = this.AgentRef;
+            _ = this.FacilityRef;
+            _ = this.Machine;
+            _ = this.ProcedureStatusChanges;
             _ = this.StepExecutions;
             _ = this.UserFeedback;
             _ = this.ObservedTransitions;
@@ -994,6 +1604,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             _ = this.SendIntents;
             _ = this.DeliveredCommunications;
             _ = this.Attestations;
+            _ = this.ExecutionParticipants;
+            _ = this.CollectedSourceMaterials;
+            _ = this.RoleAssignmentUpdateTasks;
+            _ = this.AssignmentRoutedNotices;
+            _ = this.KnowledgeRepositoryEntries;
         }
 
         public override string ToString()

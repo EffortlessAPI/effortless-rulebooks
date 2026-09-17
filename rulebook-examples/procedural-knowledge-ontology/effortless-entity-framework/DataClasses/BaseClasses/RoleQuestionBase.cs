@@ -299,6 +299,226 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             }
         }
 
+        private ObservableCollection<ClaimEvidence> _claimEvidence;
+
+        [InverseProperty("RoleQuestionRef")]
+        public virtual ObservableCollection<ClaimEvidence> ClaimEvidence
+        {
+            get
+            {
+                if (_claimEvidence == null)
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access ClaimEvidence - no database context is set. RoleQuestionId: " + this.RoleQuestionId + ".");
+                        }
+                        _claimEvidence = new ObservableCollection<ClaimEvidence>();
+                    }
+                    else
+                    {
+                        var items = base.SoAContext.ClaimEvidence.Where(x => x.RoleQuestion == this.RoleQuestionId).ToList<ClaimEvidence>();
+                        _claimEvidence = new ObservableCollection<ClaimEvidence>(items);
+                        if (items.Any())
+                        {
+                            base.SoAContext.AttachRange(items);
+                        }
+                    }
+                    _claimEvidence.CollectionChanged += ClaimEvidence_CollectionChanged;
+                }
+                return _claimEvidence;
+            }
+            private set
+            {
+                if (_claimEvidence != null)
+                {
+                    _claimEvidence.CollectionChanged -= ClaimEvidence_CollectionChanged;
+                }
+                _claimEvidence = value;
+                if (_claimEvidence != null)
+                {
+                    _claimEvidence.CollectionChanged += ClaimEvidence_CollectionChanged;
+                }
+            }
+        }
+
+        private void ClaimEvidence_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems != null)
+            {
+                foreach (var item in e.NewItems.Cast<ClaimEvidence>())
+                {
+                    item.RoleQuestion = this.RoleQuestionId;
+                }
+            }
+        }
+
+        private ObservableCollection<ModelChangeRequest> _modelChangeRequests;
+
+        [InverseProperty("RoleQuestion")]
+        public virtual ObservableCollection<ModelChangeRequest> ModelChangeRequests
+        {
+            get
+            {
+                if (_modelChangeRequests == null)
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access ModelChangeRequests - no database context is set. RoleQuestionId: " + this.RoleQuestionId + ".");
+                        }
+                        _modelChangeRequests = new ObservableCollection<ModelChangeRequest>();
+                    }
+                    else
+                    {
+                        var items = base.SoAContext.ModelChangeRequests.Where(x => x.MotivatingQuestion == this.RoleQuestionId).ToList<ModelChangeRequest>();
+                        _modelChangeRequests = new ObservableCollection<ModelChangeRequest>(items);
+                        if (items.Any())
+                        {
+                            base.SoAContext.AttachRange(items);
+                        }
+                    }
+                    _modelChangeRequests.CollectionChanged += ModelChangeRequests_CollectionChanged;
+                }
+                return _modelChangeRequests;
+            }
+            private set
+            {
+                if (_modelChangeRequests != null)
+                {
+                    _modelChangeRequests.CollectionChanged -= ModelChangeRequests_CollectionChanged;
+                }
+                _modelChangeRequests = value;
+                if (_modelChangeRequests != null)
+                {
+                    _modelChangeRequests.CollectionChanged += ModelChangeRequests_CollectionChanged;
+                }
+            }
+        }
+
+        private void ModelChangeRequests_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems != null)
+            {
+                foreach (var item in e.NewItems.Cast<ModelChangeRequest>())
+                {
+                    item.MotivatingQuestion = this.RoleQuestionId;
+                }
+            }
+        }
+
+        private ObservableCollection<StakeholderQuestion> _stakeholderQuestions;
+
+        [InverseProperty("RoleQuestion")]
+        public virtual ObservableCollection<StakeholderQuestion> StakeholderQuestions
+        {
+            get
+            {
+                if (_stakeholderQuestions == null)
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access StakeholderQuestions - no database context is set. RoleQuestionId: " + this.RoleQuestionId + ".");
+                        }
+                        _stakeholderQuestions = new ObservableCollection<StakeholderQuestion>();
+                    }
+                    else
+                    {
+                        var items = base.SoAContext.StakeholderQuestions.Where(x => x.AnsweringRoleQuestion == this.RoleQuestionId).ToList<StakeholderQuestion>();
+                        _stakeholderQuestions = new ObservableCollection<StakeholderQuestion>(items);
+                        if (items.Any())
+                        {
+                            base.SoAContext.AttachRange(items);
+                        }
+                    }
+                    _stakeholderQuestions.CollectionChanged += StakeholderQuestions_CollectionChanged;
+                }
+                return _stakeholderQuestions;
+            }
+            private set
+            {
+                if (_stakeholderQuestions != null)
+                {
+                    _stakeholderQuestions.CollectionChanged -= StakeholderQuestions_CollectionChanged;
+                }
+                _stakeholderQuestions = value;
+                if (_stakeholderQuestions != null)
+                {
+                    _stakeholderQuestions.CollectionChanged += StakeholderQuestions_CollectionChanged;
+                }
+            }
+        }
+
+        private void StakeholderQuestions_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems != null)
+            {
+                foreach (var item in e.NewItems.Cast<StakeholderQuestion>())
+                {
+                    item.AnsweringRoleQuestion = this.RoleQuestionId;
+                }
+            }
+        }
+
+        private ObservableCollection<CompetencyQuestionSetEntry> _competencyQuestionSetEntries;
+
+        [InverseProperty("RoleQuestionRef")]
+        public virtual ObservableCollection<CompetencyQuestionSetEntry> CompetencyQuestionSetEntries
+        {
+            get
+            {
+                if (_competencyQuestionSetEntries == null)
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access CompetencyQuestionSetEntries - no database context is set. RoleQuestionId: " + this.RoleQuestionId + ".");
+                        }
+                        _competencyQuestionSetEntries = new ObservableCollection<CompetencyQuestionSetEntry>();
+                    }
+                    else
+                    {
+                        var items = base.SoAContext.CompetencyQuestionSetEntries.Where(x => x.RoleQuestion == this.RoleQuestionId).ToList<CompetencyQuestionSetEntry>();
+                        _competencyQuestionSetEntries = new ObservableCollection<CompetencyQuestionSetEntry>(items);
+                        if (items.Any())
+                        {
+                            base.SoAContext.AttachRange(items);
+                        }
+                    }
+                    _competencyQuestionSetEntries.CollectionChanged += CompetencyQuestionSetEntries_CollectionChanged;
+                }
+                return _competencyQuestionSetEntries;
+            }
+            private set
+            {
+                if (_competencyQuestionSetEntries != null)
+                {
+                    _competencyQuestionSetEntries.CollectionChanged -= CompetencyQuestionSetEntries_CollectionChanged;
+                }
+                _competencyQuestionSetEntries = value;
+                if (_competencyQuestionSetEntries != null)
+                {
+                    _competencyQuestionSetEntries.CollectionChanged += CompetencyQuestionSetEntries_CollectionChanged;
+                }
+            }
+        }
+
+        private void CompetencyQuestionSetEntries_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems != null)
+            {
+                foreach (var item in e.NewItems.Cast<CompetencyQuestionSetEntry>())
+                {
+                    item.RoleQuestion = this.RoleQuestionId;
+                }
+            }
+        }
+
 
         protected override void LazyLoadProperties()
         {
@@ -307,6 +527,10 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             _ = this.RulebookFields;
             _ = this.TestCases;
             _ = this.AppRouteQuestions;
+            _ = this.ClaimEvidence;
+            _ = this.ModelChangeRequests;
+            _ = this.StakeholderQuestions;
+            _ = this.CompetencyQuestionSetEntries;
         }
 
         public override string ToString()

@@ -479,6 +479,32 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         }
 
         public string? SemanticTypeIri { get; set; }
+        public string? CognitiveBasis { get; set; }
+        public int? TacitnessDegree { get; set; }
+        public string? LostInTranslation { get; set; }
+        public string? EncodedAs { get; set; }
+        public string? StatedConditions { get; set; }
+        // Formula IsFlattenedToBrittleRule (rulebook: =AND(OR({{KnowledgeForm}} = "Tacit", {{KnowledgeForm}} = "SituatedJudgment"), {{EncodedAs}} = "HardRule", {{StatedConditions}} = ""))
+        [NotMapped]
+        public bool? IsFlattenedToBrittleRule
+        {
+            get => F.AsBool(F.Memo(this, "IsFlattenedToBrittleRule", () => F.And(F.Bool3(F.Or(F.Bool3(F.Eq(F.Nullif(F.Of(this.KnowledgeForm)), F.S("Tacit"))), F.Bool3(F.Eq(F.Nullif(F.Of(this.KnowledgeForm)), F.S("SituatedJudgment"))))), F.Bool3(F.Eq(F.Nullif(F.Of(this.EncodedAs)), F.S("HardRule"))), F.Bool3(F.IsBlank(F.Of(this.StatedConditions)))))); set { }
+        }
+
+        // Formula CorroborationCount (rulebook: =COUNTIFS(FragmentCorroborations!{{KnowledgeFragment}}, {{KnowledgeFragmentId}}, FragmentCorroborations!{{Agrees}}, TRUE))
+        [NotMapped]
+        public int? CorroborationCount
+        {
+            get => F.AsInt(F.Memo(this, "CorroborationCount", () => F.Integer((base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<FragmentCorroboration>(base.SoAContext, "FragmentCorroborations", __c => __c.FragmentCorroborations), __r => F.CritField(F.Of(__r.KnowledgeFragment), F.Of(this.KnowledgeFragmentId)) && F.CritLiteral(F.Of(__r.Agrees), F.B(true))))))); set { }
+        }
+
+        // Formula RestsOnSingleDataPoint (rulebook: =AND({{Status}} = "Approved", {{CorroborationCount}} = 0))
+        [NotMapped]
+        public bool? RestsOnSingleDataPoint
+        {
+            get => F.AsBool(F.Memo(this, "RestsOnSingleDataPoint", () => F.And(F.Bool3(F.Eq(F.Nullif(F.Of(this.Status)), F.S("Approved"))), F.Bool3(F.Eq(F.Of(this.CorroborationCount), F.I(0)))))); set { }
+        }
+
 
         public string? ProcedureVersion { get; set; }
         public string? Step { get; set; }
@@ -751,6 +777,61 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             }
         }
 
+        private ObservableCollection<KnowledgeGap> _knowledgeGaps;
+
+        [InverseProperty("KnowledgeFragment")]
+        public virtual ObservableCollection<KnowledgeGap> KnowledgeGaps
+        {
+            get
+            {
+                if (_knowledgeGaps == null)
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access KnowledgeGaps - no database context is set. KnowledgeFragmentId: " + this.KnowledgeFragmentId + ".");
+                        }
+                        _knowledgeGaps = new ObservableCollection<KnowledgeGap>();
+                    }
+                    else
+                    {
+                        var items = base.SoAContext.KnowledgeGaps.Where(x => x.CodifiedAsFragment == this.KnowledgeFragmentId).ToList<KnowledgeGap>();
+                        _knowledgeGaps = new ObservableCollection<KnowledgeGap>(items);
+                        if (items.Any())
+                        {
+                            base.SoAContext.AttachRange(items);
+                        }
+                    }
+                    _knowledgeGaps.CollectionChanged += KnowledgeGaps_CollectionChanged;
+                }
+                return _knowledgeGaps;
+            }
+            private set
+            {
+                if (_knowledgeGaps != null)
+                {
+                    _knowledgeGaps.CollectionChanged -= KnowledgeGaps_CollectionChanged;
+                }
+                _knowledgeGaps = value;
+                if (_knowledgeGaps != null)
+                {
+                    _knowledgeGaps.CollectionChanged += KnowledgeGaps_CollectionChanged;
+                }
+            }
+        }
+
+        private void KnowledgeGaps_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems != null)
+            {
+                foreach (var item in e.NewItems.Cast<KnowledgeGap>())
+                {
+                    item.CodifiedAsFragment = this.KnowledgeFragmentId;
+                }
+            }
+        }
+
         private ObservableCollection<AuthorityBoundary> _authorityBoundaries;
 
         [InverseProperty("KnowledgeFragment")]
@@ -806,6 +887,391 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             }
         }
 
+        private ObservableCollection<ModelAnnotation> _modelAnnotations;
+
+        [InverseProperty("KnowledgeFragment")]
+        public virtual ObservableCollection<ModelAnnotation> ModelAnnotations
+        {
+            get
+            {
+                if (_modelAnnotations == null)
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access ModelAnnotations - no database context is set. KnowledgeFragmentId: " + this.KnowledgeFragmentId + ".");
+                        }
+                        _modelAnnotations = new ObservableCollection<ModelAnnotation>();
+                    }
+                    else
+                    {
+                        var items = base.SoAContext.ModelAnnotations.Where(x => x.PromotedToFragment == this.KnowledgeFragmentId).ToList<ModelAnnotation>();
+                        _modelAnnotations = new ObservableCollection<ModelAnnotation>(items);
+                        if (items.Any())
+                        {
+                            base.SoAContext.AttachRange(items);
+                        }
+                    }
+                    _modelAnnotations.CollectionChanged += ModelAnnotations_CollectionChanged;
+                }
+                return _modelAnnotations;
+            }
+            private set
+            {
+                if (_modelAnnotations != null)
+                {
+                    _modelAnnotations.CollectionChanged -= ModelAnnotations_CollectionChanged;
+                }
+                _modelAnnotations = value;
+                if (_modelAnnotations != null)
+                {
+                    _modelAnnotations.CollectionChanged += ModelAnnotations_CollectionChanged;
+                }
+            }
+        }
+
+        private void ModelAnnotations_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems != null)
+            {
+                foreach (var item in e.NewItems.Cast<ModelAnnotation>())
+                {
+                    item.PromotedToFragment = this.KnowledgeFragmentId;
+                }
+            }
+        }
+
+        private ObservableCollection<CriticalIncident> _criticalIncidents;
+
+        [InverseProperty("KnowledgeFragment")]
+        public virtual ObservableCollection<CriticalIncident> CriticalIncidents
+        {
+            get
+            {
+                if (_criticalIncidents == null)
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access CriticalIncidents - no database context is set. KnowledgeFragmentId: " + this.KnowledgeFragmentId + ".");
+                        }
+                        _criticalIncidents = new ObservableCollection<CriticalIncident>();
+                    }
+                    else
+                    {
+                        var items = base.SoAContext.CriticalIncidents.Where(x => x.JudgmentFragment == this.KnowledgeFragmentId).ToList<CriticalIncident>();
+                        _criticalIncidents = new ObservableCollection<CriticalIncident>(items);
+                        if (items.Any())
+                        {
+                            base.SoAContext.AttachRange(items);
+                        }
+                    }
+                    _criticalIncidents.CollectionChanged += CriticalIncidents_CollectionChanged;
+                }
+                return _criticalIncidents;
+            }
+            private set
+            {
+                if (_criticalIncidents != null)
+                {
+                    _criticalIncidents.CollectionChanged -= CriticalIncidents_CollectionChanged;
+                }
+                _criticalIncidents = value;
+                if (_criticalIncidents != null)
+                {
+                    _criticalIncidents.CollectionChanged += CriticalIncidents_CollectionChanged;
+                }
+            }
+        }
+
+        private void CriticalIncidents_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems != null)
+            {
+                foreach (var item in e.NewItems.Cast<CriticalIncident>())
+                {
+                    item.JudgmentFragment = this.KnowledgeFragmentId;
+                }
+            }
+        }
+
+        private ObservableCollection<ObservedAction> _observedActions;
+
+        [InverseProperty("KnowledgeFragment")]
+        public virtual ObservableCollection<ObservedAction> ObservedActions
+        {
+            get
+            {
+                if (_observedActions == null)
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access ObservedActions - no database context is set. KnowledgeFragmentId: " + this.KnowledgeFragmentId + ".");
+                        }
+                        _observedActions = new ObservableCollection<ObservedAction>();
+                    }
+                    else
+                    {
+                        var items = base.SoAContext.ObservedActions.Where(x => x.CapturedAsFragment == this.KnowledgeFragmentId).ToList<ObservedAction>();
+                        _observedActions = new ObservableCollection<ObservedAction>(items);
+                        if (items.Any())
+                        {
+                            base.SoAContext.AttachRange(items);
+                        }
+                    }
+                    _observedActions.CollectionChanged += ObservedActions_CollectionChanged;
+                }
+                return _observedActions;
+            }
+            private set
+            {
+                if (_observedActions != null)
+                {
+                    _observedActions.CollectionChanged -= ObservedActions_CollectionChanged;
+                }
+                _observedActions = value;
+                if (_observedActions != null)
+                {
+                    _observedActions.CollectionChanged += ObservedActions_CollectionChanged;
+                }
+            }
+        }
+
+        private void ObservedActions_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems != null)
+            {
+                foreach (var item in e.NewItems.Cast<ObservedAction>())
+                {
+                    item.CapturedAsFragment = this.KnowledgeFragmentId;
+                }
+            }
+        }
+
+        private ObservableCollection<WorkflowViewDivergence> _workflowViewDivergences;
+
+        [InverseProperty("KnowledgeFragment")]
+        public virtual ObservableCollection<WorkflowViewDivergence> WorkflowViewDivergences
+        {
+            get
+            {
+                if (_workflowViewDivergences == null)
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access WorkflowViewDivergences - no database context is set. KnowledgeFragmentId: " + this.KnowledgeFragmentId + ".");
+                        }
+                        _workflowViewDivergences = new ObservableCollection<WorkflowViewDivergence>();
+                    }
+                    else
+                    {
+                        var items = base.SoAContext.WorkflowViewDivergences.Where(x => x.ReconciledIntoFragment == this.KnowledgeFragmentId).ToList<WorkflowViewDivergence>();
+                        _workflowViewDivergences = new ObservableCollection<WorkflowViewDivergence>(items);
+                        if (items.Any())
+                        {
+                            base.SoAContext.AttachRange(items);
+                        }
+                    }
+                    _workflowViewDivergences.CollectionChanged += WorkflowViewDivergences_CollectionChanged;
+                }
+                return _workflowViewDivergences;
+            }
+            private set
+            {
+                if (_workflowViewDivergences != null)
+                {
+                    _workflowViewDivergences.CollectionChanged -= WorkflowViewDivergences_CollectionChanged;
+                }
+                _workflowViewDivergences = value;
+                if (_workflowViewDivergences != null)
+                {
+                    _workflowViewDivergences.CollectionChanged += WorkflowViewDivergences_CollectionChanged;
+                }
+            }
+        }
+
+        private void WorkflowViewDivergences_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems != null)
+            {
+                foreach (var item in e.NewItems.Cast<WorkflowViewDivergence>())
+                {
+                    item.ReconciledIntoFragment = this.KnowledgeFragmentId;
+                }
+            }
+        }
+
+        private ObservableCollection<KnowledgeConversion> _knowledgeConversions;
+
+        [InverseProperty("KnowledgeFragment")]
+        public virtual ObservableCollection<KnowledgeConversion> KnowledgeConversions
+        {
+            get
+            {
+                if (_knowledgeConversions == null)
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access KnowledgeConversions - no database context is set. KnowledgeFragmentId: " + this.KnowledgeFragmentId + ".");
+                        }
+                        _knowledgeConversions = new ObservableCollection<KnowledgeConversion>();
+                    }
+                    else
+                    {
+                        var items = base.SoAContext.KnowledgeConversions.Where(x => x.ResultFragment == this.KnowledgeFragmentId).ToList<KnowledgeConversion>();
+                        _knowledgeConversions = new ObservableCollection<KnowledgeConversion>(items);
+                        if (items.Any())
+                        {
+                            base.SoAContext.AttachRange(items);
+                        }
+                    }
+                    _knowledgeConversions.CollectionChanged += KnowledgeConversions_CollectionChanged;
+                }
+                return _knowledgeConversions;
+            }
+            private set
+            {
+                if (_knowledgeConversions != null)
+                {
+                    _knowledgeConversions.CollectionChanged -= KnowledgeConversions_CollectionChanged;
+                }
+                _knowledgeConversions = value;
+                if (_knowledgeConversions != null)
+                {
+                    _knowledgeConversions.CollectionChanged += KnowledgeConversions_CollectionChanged;
+                }
+            }
+        }
+
+        private void KnowledgeConversions_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems != null)
+            {
+                foreach (var item in e.NewItems.Cast<KnowledgeConversion>())
+                {
+                    item.ResultFragment = this.KnowledgeFragmentId;
+                }
+            }
+        }
+
+        private ObservableCollection<KnowledgeHolding> _knowledgeHoldings;
+
+        [InverseProperty("KnowledgeFragment")]
+        public virtual ObservableCollection<KnowledgeHolding> KnowledgeHoldings
+        {
+            get
+            {
+                if (_knowledgeHoldings == null)
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access KnowledgeHoldings - no database context is set. KnowledgeFragmentId: " + this.KnowledgeFragmentId + ".");
+                        }
+                        _knowledgeHoldings = new ObservableCollection<KnowledgeHolding>();
+                    }
+                    else
+                    {
+                        var items = base.SoAContext.KnowledgeHoldings.Where(x => x.FormalizedAs == this.KnowledgeFragmentId).ToList<KnowledgeHolding>();
+                        _knowledgeHoldings = new ObservableCollection<KnowledgeHolding>(items);
+                        if (items.Any())
+                        {
+                            base.SoAContext.AttachRange(items);
+                        }
+                    }
+                    _knowledgeHoldings.CollectionChanged += KnowledgeHoldings_CollectionChanged;
+                }
+                return _knowledgeHoldings;
+            }
+            private set
+            {
+                if (_knowledgeHoldings != null)
+                {
+                    _knowledgeHoldings.CollectionChanged -= KnowledgeHoldings_CollectionChanged;
+                }
+                _knowledgeHoldings = value;
+                if (_knowledgeHoldings != null)
+                {
+                    _knowledgeHoldings.CollectionChanged += KnowledgeHoldings_CollectionChanged;
+                }
+            }
+        }
+
+        private void KnowledgeHoldings_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems != null)
+            {
+                foreach (var item in e.NewItems.Cast<KnowledgeHolding>())
+                {
+                    item.FormalizedAs = this.KnowledgeFragmentId;
+                }
+            }
+        }
+
+        private ObservableCollection<FragmentCorroboration> _fragmentCorroborations;
+
+        [InverseProperty("KnowledgeFragmentRef")]
+        public virtual ObservableCollection<FragmentCorroboration> FragmentCorroborations
+        {
+            get
+            {
+                if (_fragmentCorroborations == null)
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access FragmentCorroborations - no database context is set. KnowledgeFragmentId: " + this.KnowledgeFragmentId + ".");
+                        }
+                        _fragmentCorroborations = new ObservableCollection<FragmentCorroboration>();
+                    }
+                    else
+                    {
+                        var items = base.SoAContext.FragmentCorroborations.Where(x => x.KnowledgeFragment == this.KnowledgeFragmentId).ToList<FragmentCorroboration>();
+                        _fragmentCorroborations = new ObservableCollection<FragmentCorroboration>(items);
+                        if (items.Any())
+                        {
+                            base.SoAContext.AttachRange(items);
+                        }
+                    }
+                    _fragmentCorroborations.CollectionChanged += FragmentCorroborations_CollectionChanged;
+                }
+                return _fragmentCorroborations;
+            }
+            private set
+            {
+                if (_fragmentCorroborations != null)
+                {
+                    _fragmentCorroborations.CollectionChanged -= FragmentCorroborations_CollectionChanged;
+                }
+                _fragmentCorroborations = value;
+                if (_fragmentCorroborations != null)
+                {
+                    _fragmentCorroborations.CollectionChanged += FragmentCorroborations_CollectionChanged;
+                }
+            }
+        }
+
+        private void FragmentCorroborations_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems != null)
+            {
+                foreach (var item in e.NewItems.Cast<FragmentCorroboration>())
+                {
+                    item.KnowledgeFragment = this.KnowledgeFragmentId;
+                }
+            }
+        }
+
 
         protected override void LazyLoadProperties()
         {
@@ -815,7 +1281,15 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             _ = this.Agent;
             _ = this.Role;
             _ = this.EvaluationContextRef;
+            _ = this.KnowledgeGaps;
             _ = this.AuthorityBoundaries;
+            _ = this.ModelAnnotations;
+            _ = this.CriticalIncidents;
+            _ = this.ObservedActions;
+            _ = this.WorkflowViewDivergences;
+            _ = this.KnowledgeConversions;
+            _ = this.KnowledgeHoldings;
+            _ = this.FragmentCorroborations;
         }
 
         public override string ToString()

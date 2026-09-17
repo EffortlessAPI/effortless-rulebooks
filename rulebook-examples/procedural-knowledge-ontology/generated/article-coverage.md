@@ -1,0 +1,1842 @@
+# Article coverage
+
+Generated from Postgres (`vw_source_articles`, `vw_article_claims`, `vw_claim_evidence`). Do not edit; edit `tools/article_claims.py` or a theme's `tools/loops/evidence_*.py` and rebuild.
+
+**895 of 900 claims covered (99.4%).**
+
+| Article | Claims | Covered | Coverage | Agreed by every graded substrate |
+|---|---|---|---|---|
+| ont-4: Ontology Series, Part IV: Governance, Maintenance, and AI | 230 | 230 | 100.0% | 99.6% |
+| pkm-1: Process Knowledge Management, Part I: Accounting for How We Work | 110 | 108 | 98.2% | 97.3% |
+| pkm-2: Process Knowledge Management, Part II: Collection Development and Organizing Principles | 283 | 283 | 100.0% | 100.0% |
+| pkm-3: Process Knowledge Management, Part III: How We Lost Our Way | 99 | 99 | 100.0% | 100.0% |
+| pkm-4: Process Knowledge Management, Part IV: From Theory to Practice, The Procedural Knowledge Ontology | 178 | 175 | 98.3% | 98.3% |
+
+## ont-4: Ontology Series, Part IV: Governance, Maintenance, and AI
+
+
+### Covered (230)
+
+- **ont4-c01** (Concept, Governance, Maintenance, and AI): Drift: the gap that opens between a deployed model and the organization it describes.
+  - valid: Table `DriftObservations`. Each row records a gap observed between a deployed model and the organization it describes.
+- **ont4-c02** (Concept, Governance, Maintenance, and AI): A rule set stating which party may change which part of the model, when, and by what procedure.
+  - valid: Table `ChangeAuthorityRules`. One rule per model and layer stating which role may change it, who approves, when, and through which process.
+- **ont4-c03** (Concept, Governance, Maintenance, and AI): A defined response for when a change breaks the model.
+  - valid: Field `ChangeAuthorityRules.BreakageResponse`. Each rule states the defined response when a change of that kind breaks the model, such as rolling back to the prior-state commit and notifying every consumer.
+- **ont4-c04** (Concept, Why Ontologies Decay): Terminological drift: a term keeps an old definition while the organization now means something else.
+  - valid: Table `TermMeaningChanges`. Each row records that the organization's meaning of a controlled term changed (prior and new meaning, when); VocabularyTerms.HasStaleDefinition reads it against the term's definition, e.g. 'release' still defined the 2024 way.
+- **ont4-c05** (Concept, Why Ontologies Decay): Expansion: new workflows arrive that may or may not fit the existing schema.
+  - valid: Table `ModelExpansionRequests`. Requests from HR, the AI systems team and internal audit to model new workflows, with the decision on whether they fit the schema.
+- **ont4-c06** (Concept, Why Ontologies Decay): External dependency change: a reused external standard revises or deprecates terms.
+  - valid: Table `ExternalDependencyRevisions`. Revisions and deprecations published by reused standards (PROV-O errata, a DCAT term revision, a PKO patch) that the steward must track.
+- **ont4-c07** (Concept, Why Ontologies Decay): AI system turnover: the AI agents filling roles are replaced or upgraded to new model versions.
+  - valid: Field `RoleAssignments.SupersedesAssignment`. The risk classifier role's 2.4.1 assignment supersedes the 2.4.0 one: AI agents filling a role replaced by new model versions, kept as data.
+- **ont4-c08** (Concept, Why Ontologies Decay): The namespace a term belongs to, so a term can be moved from an external vocabulary into the local one.
+  - valid: Field `VocabularyTerms.NamespaceIri`. The namespace each concept belongs to; re-homed terms such as 'given name' carry the local urn:effortless:pko-extension# namespace in place of FOAF's.
+- **ont4-c09** (Concept, Why Ontologies Decay): A globally unique identifier for every modeled thing.
+  - valid: Field `VocabularyTerms.ConceptIri`. A globally unique IRI for every controlled concept, mapped to the RDF 1.1 IRI identifier.
+- **ont4-c10** (Concept, Why Ontologies Decay): A record for each reused external standard, holding the version the model depends on.
+  - valid: Field `OntologyProfiles.Version`. One record per reused external standard (SKOS, FOAF, schema.org, DCAT, PKO, ...) holding the version the model depends on, with its version IRI and namespace.
+- **ont4-c11** (Concept, Why Ontologies Decay): An external term marked deprecated by its source standard.
+  - valid: Field `ExternalStandardTerms.DeprecatedBySource`. TRUE for an adopted external term its source standard marks deprecated (foaf:givenname, schema:serviceAudience, schema:vendor), with DeprecatedAt and StillResolves.
+- **ont4-c12** (Concept, Why Ontologies Decay): A reconciliation relation stating that a local term is the same as a deprecated external term.
+  - valid: Field `VocabularyTerms.SameAsIri`. The reconciliation relation: the local concept asserts identity (owl:sameAs) with the deprecated external term, e.g. local 'given name' sameAs foaf:givenname.
+- **ont4-c13** (Concept, Why Ontologies Decay): AI agents as first-class individuals carrying a model version identifier.
+  - valid: Field `Agents.VersionOrEmploymentKey`. AI agents are individual Agents rows carrying their model version (risk classifier 2.4.0, 2.4.1, 2.5.0; ontology assistant 1.2.0).
+- **ont4-c14** (Concept, Versioning): A schema layer of classes, properties and axioms kept distinct from the instance layer.
+  - valid: Field `ModelChangeLogEntries.ChangeLayer`. Every logged change is typed as a schema, instance, vocabulary or documentation change, keeping the schema layer distinct from instance data.
+- **ont4-c15** (Concept, Versioning): A separate vocabulary layer holding controlled concept schemes.
+  - valid: Field `Vocabularies.ModelLayer`. Marks controlled concept schemes (status, artifact types, capabilities, activities, roles) as the VocabularyLayer, held apart from the ontology profiles.
+- **ont4-c16** (Concept, Versioning): The model's own current version identifier, declared in its metadata.
+  - valid: Field `GovernedModels.CurrentRelease`. The PKO rulebook declares the release it is currently at (pko-release-1.0.0) in its own governance metadata.
+- **ont4-c17** (Concept, Versioning): Semantic versioning: major, minor and patch releases.
+  - valid: Field `RulebookReleases.DeclaredScale`. Each release is declared a patch, minor or major release (or the initial cut), with its major, minor and patch numbers.
+- **ont4-c18** (Concept, Ownership): A steward responsible for the model's health.
+  - valid: Field `ModelCharters.StewardResponsibilities`. Each charter names a steward role responsible for the model's health and writes down that responsibility.
+- **ont4-c19** (Concept, Ownership): An authority empowered to approve changes to the schema, instance and vocabulary layers.
+  - valid: Field `ModelCharters.AuthorityApprovalScope`. Each charter names the authority role and states its approval scope over schema, vocabulary and instance changes, detailed per layer in ChangeAuthorityRules.
+- **ont4-c20** (Concept, Change Management): A change log entry: the change, its rationale, the motivating question, the terms affected, the release version and the date.
+  - valid: Table `ModelChangeLogEntries`. Change log rows carrying the change, its rationale, the motivating question (through its change request), terms affected, release version and date.
+- **ont4-c21** (Concept, Change Management): A change request that begins from a stated need.
+  - valid: Field `ModelChangeRequests.StatedNeed`. Every change request begins from a stated need.
+- **ont4-c22** (Concept, Change Management): A change request's motivating question typed as an existing question the model now fails or a new question the organization needs.
+  - valid: Field `ModelChangeRequests.MotivationKind`. Types the motivating question as an existing question the model now fails or a new question the organization needs.
+- **ont4-c23** (Concept, Change Management): An impact assessment of a proposed change.
+  - valid: Table `ChangeImpactFindings`. What each impact assessment found a change does to instance data, inferences, query results and coverage.
+- **ont4-c24** (Concept, Change Management): A domain coverage model consulted during impact assessment.
+  - valid: Table `DomainCoverageAreas`. The domain coverage model consulted during impact assessment: required areas and the table covering each.
+- **ont4-c25** (Concept, Change Management): A validation test suite of expected logical consequences.
+  - valid: Table `ExpectedInferenceChecks`. Expected logical consequences the validation suite checks: an inference chain, the field it lands in and the value it must produce.
+- **ont4-c26** (Concept, Change Management): Classifying a change as a data operation or a modeling change.
+  - valid: Field `ModelChangeRequests.Classification`. Each change is classified as a data operation or a modeling change.
+- **ont4-c27** (Concept, Change Management): Every workflow step typed as a provenance activity.
+  - valid: Field `StepExecutions.SemanticTypeIri`. Step executions are typed pko:StepExecution, a specialization of prov:Activity.
+- **ont4-c28** (Concept, Change Management): A superseded assignment kept either timestamped in a separate graph or as a versioned assertion with a validity period.
+  - valid: Field `RoleAssignments.ValidTo`. Superseded assignments are kept as versioned assertions with a validity period, such as risk classifier 2.4.0 ending on 2026-01-10.
+- **ont4-c29** (Concept, Competency Questions as a Governance Instrument): A periodic review of the competency question set.
+  - valid: Table `CompetencyQuestionReviews`. Periodic reviews of each model's competency question set with their outcomes.
+- **ont4-c30** (Concept, Competency Questions as a Governance Instrument): The original competency question set, kept as a fixed baseline apart from questions added later.
+  - valid: Field `CompetencyQuestionSetEntries.IsOriginalBaseline`. Marks the original competency questions as a fixed baseline, kept apart from questions added later (the documentation-lag question).
+- **ont4-c31** (Concept, Competency Questions as a Governance Instrument): A competency question marked as a candidate for deprecation.
+  - valid: Field `CompetencyQuestionSetEntries.Status`. A question can be marked DeprecationCandidate, as the CFO's outgrown close question is.
+- **ont4-c32** (Concept, How AI Systems Consume an Ontology): A controlled concept scheme for workflow status.
+  - valid: Field `LifecycleStatuses.WorkflowStatusConcept`. Maps every lifecycle status to a concept of the controlled workflow status scheme (active, draft, deprecated).
+- **ont4-c33** (Concept, How AI Systems Consume an Ontology): A controlled concept scheme for artifact types.
+  - valid: Field `Resources.ArtifactTypeConcept`. Types each resource by a concept of the controlled artifact-type scheme (standard operating procedure, engineering drawing, runbook, training media, register entry).
+- **ont4-c34** (Concept, How AI Systems Consume an Ontology): A controlled concept scheme for agent capabilities.
+  - valid: Field `Vocabularies.GovernedDimension`. Names what each scheme controls; voc-agent-capabilities is the AgentCapability scheme (compliance review, validation, risk scoring, automated deployment).
+- **ont4-c35** (Concept, How AI Systems Consume an Ontology): A role carrying capability tags drawn from the controlled capability scheme.
+  - valid: Table `RoleCapabilityTags`. Roles carry capability tags drawn from the capability scheme (the change risk classifier is tagged risk scoring), with IsTagOutsideCapabilityScheme catching a tag from another scheme.
+- **ont4-c36** (Concept, How AI Systems Consume an Ontology): The full transitive ordering chain over a workflow's step sequence.
+  - valid, disputed by a graded substrate: Field `Steps.ReachableStepCount`. Counts every step reachable from a step along the closure of the ordering chain.
+- **ont4-c37** (Concept, How AI Systems Consume an Ontology): A role that delegates to another role acting as its escalation backup.
+  - valid: Field `Roles.EscalationBackupRole`. A role names the role that backs it up on escalation: release manager to VP of Engineering, safety officer to the night-shift deputy.
+- **ont4-c38** (Concept, AI Contributes to Ontology Development): A class definition stating what the class includes, what it excludes, and where it sits among neighboring terms.
+  - valid: Field `TermDefinitions.Excludes`. Class definitions state what the class includes, what it excludes, and where it sits among neighboring terms.
+- **ont4-c39** (Concept, AI Contributes to Ontology Development): Candidates produced by AI versus commitments made by humans.
+  - valid: Field `ModelProposals.IsAiCandidate`. Distinguishes candidates an AI agent produced from human commitments; CommittedByAgent records who made the commitment.
+- **ont4-c40** (Concept, The NTWF Graph as an AI System Registry): AI agents typed as software agents, distinct from human persons.
+  - valid: Field `Agents.AgentKind`. Every agent is typed Human, AIAgent, AutomatedPipeline or Organization, and AI agents carry the prov:SoftwareAgent type while persons do not.
+- **ont4-c41** (Concept, The NTWF Graph as an AI System Registry): An external AI system registry supplying model versions to the graph.
+  - valid: Table `AiRegistryModelVersions`. Rows are model versions delivered by the acme-model-registry feed, each with its Dublin Core identifier, title, creator, date, version and description.
+- **ont4-c42** (Concept, The NTWF Graph as an AI System Registry): A deployment record for an AI system version.
+  - valid: Table `AiModelDeployments`. Rows are registry deployment records: which model version was deployed to which environment, when, and when retired.
+- **ont4-c43** (Concept, The NTWF Graph as an AI System Registry): An evaluation result for an AI system version.
+  - valid: Table `AiModelEvaluations`. Rows are registry evaluation results for model versions: suite, metric, score, threshold and whether it passed.
+- **ont4-c44** (Concept, The NTWF Graph as an AI System Registry): An artifact attributed to the agent that produced it.
+  - valid: Field `ExecutionEntities.AttributedToAgent`. For every generated entity, the agent that executed the step that generated it (prov:wasAttributedTo), e.g. risk reports attributed to risk-classifier-2-4-0 and 2-4-1.
+- **ont4-c45** (Concept, The NTWF Graph as an AI System Registry): A workflow step assigned to the role responsible for executing it.
+  - valid: Field `Steps.AssignedRole`. Each workflow step names the role responsible for executing it.
+- **ont4-c46** (Concept, The NTWF Graph as an AI System Registry): A downstream step that takes an artifact as one of its inputs.
+  - valid: Field `StepVariables.SourceStep`. On each input variable, the step whose output feeds it; the row's own step is the downstream step taking that artifact as an input.
+- **ont4-c47** (Concept, The NTWF Graph as an AI System Registry): An AI agent linked to the human person accountable for it.
+  - valid: Field `AiAgentAccountabilities.AccountableAgent`. Links an AI agent to the agent accountable for it over a validity period; risk-classifier-2-4-1 is accountable to Omar Haddad.
+- **ont4-c48** (Concept, The NTWF Graph as an AI System Registry): An agent upgrade's blast radius: its attributed artifacts, the downstream steps using them, the roles and agents responsible, and the workflows containing them.
+  - valid: Field `StepVariables.AiBlastRadiusPath`. For every input fed by an AI agent's artifact the value names the agent, the artifact, the downstream step consuming it, that step's role, the agent holding it and the workflow containing it, e.g. risk-classifier-2-4-1 produces Change risk classification for deploy-05; role site-reliability-engineer; agent (none); workflow deploy-v3.2.0.
+- **ont4-c49** (Concept, Ontology Is the Ground Truth): Roles decoupled from agents: a role is filled by an agent through one assignment.
+  - valid: Table `RoleAssignments`. A role is filled by an agent only through an assignment row with a validity period; steps name the role, never the agent.
+- **ont4-c50** (Concept, Ontology Is the Ground Truth): A service level for updating role assignments once operational systems read the model.
+  - valid: Field `AssignmentUpdatePolicies.UpdateSlaHours`. Each assignment-update policy for roles operational systems route from states the hours within which an update must be completed (24 for release approvers, 72 for AI agent fills, 0 where none is defined).
+- **ont4-c51** (Concept, RAG Over Structured Graphs): A workflow individual marked deprecated.
+  - valid: Field `ProcedureVersions.Status`. Workflow individuals carry a status, and lockout/tagout 1.0.0 is marked Deprecated.
+- **ont4-c52** (Concept, RAG Over Structured Graphs): A knowledge graph combining taxonomy, thesaurus, ontology, metadata schemas and a reasoner.
+  - valid: Field `KnowledgeConsumerSystems.SemanticLayerComponentCount`. Counts how many of taxonomy, thesaurus, ontology, metadata schemas and reasoner a knowledge system combines; the procedural knowledge graph combines all five.
+- **ont4-c53** (Concept, AI-Assisted Ontology Maintenance): A staleness query over last-modified dates.
+  - valid: Table `StalenessQueryRuns`. Runs of the staleness query over workflow last-modified dates, with threshold, result and whether it reached the steward.
+- **ont4-c54** (Concept, AI-Assisted Ontology Maintenance): Triage of unanswerable stakeholder questions into more data, a minor schema extension, or a structural change.
+  - valid: Field `StakeholderQuestions.TriageOutcome`. Unanswerable stakeholder questions are triaged into more data, a minor schema extension or a structural change.
+- **ont4-i01** (Illustration, Why Ontologies Decay): An unmaintained model decays, and that decay is harder to detect than a failing build.
+  - valid: Field `DriftObservations.WentUndetectedByPassingSuite`. Fires on the deployment drift: release 0.10.1 passed all its validation, yet the drift was found only by an expert's wrong answer. The resolved isolation-map drift caught by the suite reads false.
+- **ont4-i02** (Illustration, Competency Questions as a Governance Instrument): Without periodic review, degradation stays hidden until a domain expert notices a wrong answer.
+  - valid: Field `GovernedModels.DegradationHiddenUntilWrongAnswer`. Fires on the deployment family: its drift surfaced only when the release manager noticed a wrong answer, and its question set was never periodically reviewed.
+- **ont4-i03** (Illustration, Ownership): An ownerless model is predicted not to last about a year.
+  - valid: Field `GovernedModels.IsOwnerlessPastAYear`. Fires on the press-7 changeover family, registered in June 2024 and ownerless ever since; its procedure now exists only as a PDF and is being retired.
+- **ont4-i04** (Illustration, The Relationship Has Two Directions): Ontologies and AI help each other in both directions; seeing only one direction wastes AI or yields models that fail under a reasoner.
+  - valid: Field `ProcedureVersions.UsesAiInOneDirectionOnly`. Fires on a version where AI only consumes the knowledge (lockout 1.0.0 served, never improved) or only contributes to it (conveyor maintenance and close receive AI insights but serve nothing to AI). Lockout 2.0.0 and deployment 3.2.0 are both served to AI and improved by AI insights, and do not fire.
+- **ont4-i05** (Illustration, Ontology Is the Ground Truth): Once the model is operational infrastructure, a stale assignment is an operational failure rather than an accuracy issue.
+  - valid: Field `RoleAssignmentUpdateTasks.StaleAssignmentBrokeRouting`. Separates a stale assignment that only made the model inaccurate from one that broke operations: it fires when the assignment was still stale at a run that needed it and that run's notice for the role reached the wrong person or nobody (the release manager and SRE departures before the 2026-07-14 hotfix), and not for the rollout operator's departure, equally stale at that run but routed nothing.
+- **ont4-i06** (Illustration, RAG Over Structured Graphs): Graph-based retrieval can be no more accurate than the graph it reads.
+  - valid: Field `AssistantAnswers.WrongBecauseGraphWasStale`. Fires when a graph-grounded answer was wrong because the grounding assertion was stale or deprecated: 'classifier 2.4.0' from a superseded assignment and 'lockout 1.0.0 is current' from a deprecated version. Graph answers grounded on current assertions were correct and do not fire.
+- **ont4-i07** (Illustration, Ontology as Organizational Memory): Knowledge is a human possession and responsibility that a machine cannot hold.
+  - valid: Field `RetrievalSegments.IsMachineHeldKnowledge`. Fires on knowledge written by software with no human role accountable for it: the summarizer's loto-04b bleed segment. Segments with an accountable human role do not fire. Knowledge nobody is responsible for is what a machine cannot hold.
+- **ont4-i08** (Illustration, Ontology as Organizational Memory): Approaching the model as a mere table design can produce something that looks valid but cannot be reasoned over, kept up or grown.
+  - valid: Field `ReasonerRuns.PassesSchemaButFailsReasoner`. Fires when an export that validates as a table design is found inconsistent by the reasoner: the June tabular export. Runs whose exports reason consistently, or that were never schema-validated, do not fire.
+- **ont4-i09** (Illustration, Why Ontologies Decay): Hypothetically, a deprecated personal-name term in a reused vocabulary could be moved into the local namespace and linked to the original.
+  - valid: Field `ExternalStandardTerms.RehomingKeptExternalNamespace`. Fires when a deprecated FOAF personal-name term said to be re-homed still sits in FOAF's namespace. The local copy of foaf:family_name kept http://xmlns.com/foaf/0.1/ as its namespace, so it fires; 'given name' was moved into urn:effortless:pko-extension# and linked to foaf:givenname, the illustration done correctly, and does not.
+- **ont4-i10** (Illustration, Why Ontologies Decay): HR wants to model its onboarding workflows with the same model.
+  - valid: Field `ModelExpansionRequests.IsCrossFunctionExpansion`. Fires on HR's request to model its onboarding workflows in the corporate model (and the AI team's), not on internal audit's request from the owning function.
+- **ont4-i11** (Illustration, Why Ontologies Decay): The AI systems team wants to model its evaluation pipeline for new model deployments.
+  - valid: Field `ModelExpansionRequests.RequiresSchemaExtension`. Fires on the AI systems team's evaluation pipeline, whose benchmark suite concept has no table (and on audit's severity scale); HR onboarding fits existing tables.
+- **ont4-i12** (Illustration, Why Ontologies Decay): What engineering meant by a release two years earlier differs structurally from what it means now.
+  - valid: Field `VocabularyTerms.HasStructuralSenseShiftAcrossYears`. Fires when what a term refers to changed shape after holding for about two years or more. 'release' meant an engineer copying a tagged build from January 2024 and, since January 2026, a risk-classified change through a human gate and a pipeline, so it fires; 'rollback', reworded within a year without structural change, does not.
+- **ont4-i13** (Illustration, Why Ontologies Decay): Reused standards change at different rates: one untouched for over a decade, one that deprecates often, one that went through a major revision.
+  - valid: Field `OntologyProfiles.IsReviewOverdueForChangeRate`. Reads each standard's change rate (ChangeRateProfile: FOAF Dormant since 2014, schema.org FrequentDeprecation with two deprecations in two years, DCAT RecentMajorRevision in 2024) and fires when a fast-changing one has not had our dependency reviewed in 180 days. schema.org, last reviewed September 2025, fires; DCAT, reviewed June 2026, and dormant FOAF do not.
+- **ont4-i14** (Illustration, Versioning): A model at 1.1.0 moves to 1.1.1 for a patch, 1.2.0 for a minor change and 2.0.0 for a major one.
+  - valid: Field `RulebookReleases.IsIncrementInconsistentWithScale`. Computes the expected next number from the previous release and the declared patch/minor/major scale (x.y.z+1, x.y+1.0, x+1.0.0) and fires on 0.10.1, declared minor but numbered as a patch.
+- **ont4-i15** (Illustration, Competency Questions as a Governance Instrument): Leadership's original questions were right at the start but are expected to be outgrown after a year of operation.
+  - valid: Field `CompetencyQuestionSetEntries.IsOutgrownBaselineQuestion`. Fires on two of leadership's original close questions from March 2025, found no longer relevant after more than a year; the CFO's sign-off question still fits.
+- **ont4-i16** (Illustration, How AI Systems Consume an Ontology): Without grounding a model labels workflow status with many synonyms; with the status scheme it returns only active, draft or deprecated.
+  - valid: Field `AiLabelingRuns.IsUngroundedSynonymSprawl`. Fires when an ungrounded run produced values outside the canonical scheme. The ungrounded status run returned 'live', 'shipped', 'work in progress' and 'retired', so it fires; the same notes grounded in the workflow status scheme returned only active, draft and deprecated, and do not.
+- **ont4-i17** (Illustration, How AI Systems Consume an Ontology): Controlled-vocabulary grounding comes from library science; language models add scale if the vocabulary is formal and machine-accessible.
+  - valid: Field `AiLabelingRuns.GroundedInNonMachineReadableScheme`. Fires when a model was grounded in a vocabulary that is not formal and machine-accessible. The support run was grounded in a PDF glossary and still produced 'looking into it', so it fires; the run grounded in the SKOS workflow status scheme does not. Grounding helps at scale only when the vocabulary is formal.
+- **ont4-i18** (Illustration, How AI Systems Consume an Ontology): Division of labor: the language model handles natural language while the ontology and reasoner supply formal correctness.
+  - valid: Field `AssistantAnswers.ModelDidTheReasoning`. Fires when an answer that needed inference had its logic produced by the language model rather than the reasoner or a structured query: the copilot's skip-verification and start-maintenance answers, the runbook-interpreted approver, the hotfix advice -- all wrong. The reasoner-derived approver-and-backup answer does not fire.
+- **ont4-i19** (Illustration, AI Contributes to Ontology Development): From an engineering handbook a model proposes candidate questions about escalation, artifact ownership and AI accountability.
+  - valid: Field `ModelProposals.AwaitsEngineerVetting`. Fires on the assistant's handbook-derived candidate question about who is escalated to when a release approval stalls, not yet vetted by an engineer.
+- **ont4-i20** (Illustration, AI Contributes to Ontology Development): A model suggests a custom class may specialize a provenance plan class.
+  - valid: Field `ModelProposals.IsPendingAlignmentDecision`. Fires on the assistant's suggestion that ProcedureVersions specialize p-plan:Plan, a provenance plan class, awaiting a person's modeling decision.
+- **ont4-i21** (Illustration, AI Contributes to Ontology Development): A misplaced domain declaration spreads wrong inferences into every query touching the affected assertions.
+  - valid: Field `ModelChangeRequests.DomainChangeSpreadWrongInferences`. Fires on the RoleAssignments domain narrowing, whose altered accountability inferences surfaced in deployment queries.
+- **ont4-i22** (Illustration, AI Contributes to Ontology Development): A disjointness axiom added on intuition can make legitimate individuals appear inconsistent.
+  - valid: Field `ModelChangeRequests.IntuitiveDisjointnessBrokeIndividuals`. Fires on the human/software disjointness axiom added with no motivating question, which made the plant organization agent inconsistent.
+- **ont4-i23** (Illustration, The NTWF Graph as an AI System Registry): A registry row noting a deployment is an isolated fact; the same agent linked to its role, steps and artifacts is a fact in context.
+  - valid: Field `AiModelDeployments.IsIsolatedRegistryFact`. Fires for a live production deployment whose agent fills no role and has no attributed artifact in the graph: the release-notes writer is a registry row and nothing more, while the live 2.4.1 classifier deployment is connected to its role assignment and risk reports.
+- **ont4-i24** (Illustration, Ontology Is the Ground Truth): A stale assignment sends an approval notice to the wrong person or to nobody.
+  - valid: Field `AssignmentRoutedNotices.ReachedWrongPersonOrNobody`. Fires when a notice went to someone who did not hold the step's role when it was sent, or to nobody: the hotfix approval notice went to Dmitri Volkov eleven days after he left, the hotfix health verification notice went to nobody, and the spreadsheet sent one to the VP; notices to Grace Holloway and to Leo Marchetti while he held the role do not fire.
+- **ont4-i25** (Illustration, RAG Over Structured Graphs): A document passage about who approves production must be interpreted, whereas typed assertions linking gate, role and holder come back with certainty.
+  - valid: Field `AssistantAnswers.DocumentInterpretationErred`. Fires when an authority question answered by interpreting a document passage came back wrong: the runbook's 'release lead' read as the VP. The same question answered from typed gate-role-holder assertions named Grace Holloway correctly and does not fire.
+- **ont4-i26** (Illustration, AI-Assisted Ontology Maintenance): A workflow newly written up in a wiki is parsed into proposed workflow, step and assignment assertions for the steward to approve.
+  - valid: Field `ModelProposals.AwaitsStewardApproval`. Fires on the hotfix workflow steps the wiki extractor parsed from a newly written wiki page, proposed and awaiting approval.
+- **ont4-i27** (Illustration, Conclusion): The custom model is small on purpose and leans on reused standards.
+  - valid: Field `SemanticMappings.ReinventsStandardTerm`. A deliberately small custom model leans on reused standards; this witness fires on custom terms that duplicate a reused standard's term, which is how a custom model grows beyond what it needs.
+- **ont4-i28** (Illustration, Ownership): The steward role naturally falls to whoever owns the knowledge-infrastructure tooling.
+  - valid: Field `ModelCharters.StewardIsOutsideTooling`. Fires on the first PKO rulebook charter, stewarded by People Operations; the model moved to the knowledge engineer, who owns the build and publication tooling.
+- **ont4-i29** (Illustration, Competency Questions as a Governance Instrument): Competency questions served in turn as scoping tool, acceptance criteria, test driver and governance instrument.
+  - valid: Field `CompetencyQuestionSetEntries.ServesEveryGovernanceUse`. Fires on questions that served as scoping tool, acceptance criterion, test driver and governance instrument in turn (the multi-step question, the CFO sign-off question).
+- **ont4-i30** (Illustration, Governance, Maintenance, and AI): A model that passed all its validation tests at deployment still starts drifting from that day.
+  - valid: Field `DriftObservations.DriftFollowsCleanRelease`. Fires on drift observed after releases that passed every acceptance validation (0.9.0, 0.10.1); drift after the failed 0.10.0 release and drift with no release reference read false.
+- **ont4-i31** (Illustration, Conclusion): The pipeline runs from controlled vocabulary to taxonomy to thesaurus to ontology to knowledge graph.
+  - valid: Field `Vocabularies.OntologyPrecededVocabularyControl`. The pipeline's point is that controlled vocabulary comes before ontology; this organizing-theme witness fires where an ontology was built before its vocabulary was controlled.
+- **ont4-p01** (Prescription, Why Ontologies Decay): A term's definition must be revised when the organization's meaning of it changes, since stale definitions give answers true only of the past.
+  - valid: Field `VocabularyTerms.HasStaleDefinition`. Fires when the organization's meaning of a term changed after its definition was last revised. 'release' changed in January 2026 to a risk-classified, gated, pipeline rollout while its definition still describes an engineer copying a build (revised 2024), so it fires; 'rollback' and 'zero-energy verification' were redefined when their meaning changed and do not.
+- **ont4-p02** (Prescription, Why Ontologies Decay): Governance decides whether new workflows fit the existing schema or need new or modified terms.
+  - valid: Field `ModelExpansionRequests.FitDecisionContradictsConceptFit`. Fires on internal audit's request, decided to fit the existing schema although its finding severity scale has no covering table; the HR request (every concept covered) and the AI pipeline request (decided to need new terms) read false.
+- **ont4-p03** (Prescription, Why Ontologies Decay): When an external dependency deprecates a term, the alignment and documentation are updated even though the term still resolves.
+  - valid: Field `ExternalStandardTerms.IsAlignmentStaleAfterDeprecation`. Fires when the source deprecated a term and our alignment and documentation were not updated afterwards, even though the IRI still resolves. schema:serviceAudience (deprecated September 2025, still mapped from StakeholderLenses) fires; schema:vendor, whose alignment was updated a month after deprecation, does not.
+- **ont4-p04** (Prescription, Why Ontologies Decay): A deprecated external term the model still needs is taken into the local namespace.
+  - valid: Field `ExternalStandardTerms.IsNeededDeprecatedTermNotRehomed`. Fires when the model still needs a deprecated external term and has not taken it into the local namespace. schema:vendor is still needed for supplier organizations and was not re-homed, so it fires; the FOAF name terms were re-homed and serviceAudience is no longer needed, so they do not.
+- **ont4-p05** (Prescription, Why Ontologies Decay): A re-homed term carries an identity assertion linking it to the external original.
+  - valid: Field `ExternalStandardTerms.IsRehomedWithoutIdentityLink`. Fires when a re-homed local concept does not assert identity with the external original. Local 'surname' carries no sameAs to foaf:surname, so it fires; 'given name' asserts sameAs foaf:givenname and does not.
+- **ont4-p06** (Prescription, Why Ontologies Decay): Re-homing a term triggers a new model version.
+  - valid: Field `ExternalStandardTerms.IsRehomedWithoutNewRelease`. Fires when a term was re-homed without a model release, issued after the deprecation, that introduces it. The local 'has version' replacing dct:hasVersion names no release, so it fires; the FOAF name terms arrived in release 0.9.1 and do not.
+- **ont4-p07** (Prescription, Why Ontologies Decay): Prefix and identifier changes are propagated so data stays consistent; otherwise dependent queries and APIs may fail.
+  - valid: Field `ExternalStandardTerms.HasUnpropagatedIdentifierChange`. Fires when a standard changed a term's prefix or identifier and some mapping still uses the old one. schema.org moved from http to https; the Procedures mapping still targets http://schema.org/HowTo, so HowTo fires, while HowToStep's mapping was updated and does not. A query against the old IRI would silently find nothing.
+- **ont4-p08** (Prescription, Why Ontologies Decay): Each AI agent carries a model version identifier so upgrades and replacements can be absorbed as agents churn.
+  - valid: Field `Agents.IsAiAgentWithoutModelVersion`. Fires on the wiki extractor, an AI agent registered with no model version identifier; every other AI agent carries one.
+- **ont4-p09** (Prescription, Ownership): Governance starts by giving the model an owner, ahead of every other measure.
+  - valid: Field `ModelCharters.ControlsPrecedeOwnership`. Fires on the deployment family, whose change control policy was adopted in June 2025 while its first owner was named in February 2026; the other first charters were in place when controls began.
+- **ont4-p10** (Prescription, Ownership): Stewardship and authority are defined as distinct responsibilities, even when one person holds both.
+  - valid: Field `ModelCharters.ConflatesStewardAndAuthority`. Fires on the first lockout charter, which named the knowledge engineer role as both steward and authority so the two responsibilities were never defined apart; the superseding charter separates them.
+- **ont4-p11** (Prescription, Ownership): The steward watches for drift.
+  - valid: Field `ModelCharters.IsDriftWatchLapsed`. Fires on charters in force whose steward has not watched for drift in more than ninety days (deployment, close); stewards who watched recently read false.
+- **ont4-p12** (Prescription, Ownership): The steward follows updates to external dependencies.
+  - valid: Field `ExternalDependencyRevisions.IsUntrackedRevision`. Fires on the DCAT keyword guidance revision, untracked for over two months although the model maps to DCAT; the tracked PROV-O errata and the nine-day-old PKO patch read false.
+- **ont4-p13** (Prescription, Ownership): The steward answers questions from the model's users.
+  - valid: Field `StakeholderQuestions.IsUnansweredPastDue`. Fires on the safety officer's retrofit question, unanswered for a month; the other users' questions got a response within days.
+- **ont4-p14** (Prescription, Ownership): The steward keeps the documentation up to date.
+  - valid: Field `ModelDocuments.IsBehindCurrentRelease`. Fires on PKO-ALIGNMENT.md and the changelog, which still describe 0.10.x while the model is at 1.0.0; the README and loop documents are current.
+- **ont4-p15** (Prescription, Ownership): The steward keeps the validation suite in step with the model.
+  - valid: Field `RulebookReleases.SuiteLagsRelease`. Fires on releases that added schema with no validation-suite update by the steward (0.8.0, 0.10.1); 0.9.0 was accompanied by a suite update.
+- **ont4-p16** (Prescription, Ownership): Changes made by the steward are subject to authority review, apart from the minor changes the steward is authorized to approve.
+  - valid: Field `ModelChangeRequests.StewardOwnChangeUnreviewed`. Fires on the steward's own ControlKinds rename and disjointness change, beyond minor scope and never reviewed by the authority; the steward's additive property change is minor and reads false.
+- **ont4-p17** (Prescription, Ownership): A steward is named, with written responsibilities.
+  - valid: Field `ModelCharters.IsStewardUnwritten`. Fires on the deployment charter, whose steward has no written responsibilities; every other charter writes them down.
+- **ont4-p18** (Prescription, Ownership): An authority is named, with a stated scope of what it approves.
+  - valid: Field `ModelCharters.IsAuthorityScopeUnstated`. Fires on the first PKO rulebook charter, which named an authority with no stated approval scope; later charters state it.
+- **ont4-p19** (Prescription, Ownership): A change log records every schema and instance modification together with its rationale.
+  - valid: Field `ModelChangeLogEntries.IsUnexplainedModification`. Fires on schema and instance modifications logged with no rationale (the seeded close executions and the bulk-loaded property); other modifications carry their rationale.
+- **ont4-p20** (Prescription, Ownership): Authority over the model rests with the function that owns the domain being modeled.
+  - valid: Field `ModelCharters.IsAuthorityOutsideDomainOwner`. Fires when authority rests with a function other than the one owning the modeled domain (the first PKO charter's finance authority over a corporate model, the first lockout charter's corporate authority over the plant); superseding charters moved authority to the owning function.
+- **ont4-p21** (Prescription, Ownership): The steward and authority roles are actually exercised, not merely named.
+  - valid: Field `ModelCharters.IsNamedButUnexercised`. Fires on the deployment charter in force: its steward has recorded no activity. Charters whose stewards act and whose authorities decide read false.
+- **ont4-p22** (Prescription, Ownership): In a small organization one person may hold both the steward and the authority role without a committee.
+  - valid: Field `ModelCharters.IsSanctionedDualHolding`. True on the 35-person People Operations charter, where one person holds both distinct steward and authority roles without a committee; false where the roles are held by different people or merged into one role.
+- **ont4-p23** (Prescription, Ownership): The steward identifies that a change is needed; the authority decides how and where it is made.
+  - valid: Field `ModelChangeRequests.PlacementNotDecidedByAuthority`. Fires on the RoleAssignments narrowing, raised by the release manager but with how and where it is implemented decided by the steward instead of the authority; the class removal's placement was decided by the authority.
+- **ont4-p24** (Prescription, Versioning): A patch touches only documentation, labels and comments and leaves the logical model as it was.
+  - valid: Field `RulebookReleases.PatchAltersLogicalModel`. Fires on patch release 0.8.2, which widened a property range instead of touching only documentation, labels and comments; patch 0.8.1 changed only labels and data and reads false.
+- **ont4-p25** (Prescription, Versioning): A minor release is additive and backward compatible.
+  - valid: Field `RulebookReleases.MinorIsNotBackwardCompatible`. Fires on minor releases 0.10.0 (a class rename and an invalidating range change) and 0.10.1 (a disjointness axiom making individuals inconsistent); minor 0.9.0 was purely additive.
+- **ont4-p26** (Prescription, Versioning): Removing or renaming a class requires a major release.
+  - valid: Field `RulebookReleases.ClassRemovalWithoutMajor`. Fires on 0.10.0, which renamed a class in a minor release; 1.0.0 removed a class as a major release and reads false.
+- **ont4-p27** (Prescription, Versioning): A domain or range change that invalidates existing instance assertions requires a major release.
+  - valid: Field `RulebookReleases.InvalidatingDomainRangeWithoutMajor`. Fires on 0.10.0, whose RoleAssignments domain narrowing invalidated an existing assignment in a minor release; 1.0.0's invalidating status range change was major.
+- **ont4-p28** (Prescription, Versioning): A new disjointness axiom that makes existing individuals inconsistent requires a major release.
+  - valid: Field `RulebookReleases.InconsistentDisjointnessWithoutMajor`. Fires on 0.10.1, where the human/software disjointness axiom made the plant organization agent inconsistent in a minor release.
+- **ont4-p29** (Prescription, Versioning): Consumers of a major release are explicitly updated and re-validated.
+  - valid: Field `RulebookReleases.BreakingReleaseWithUnrevalidatedConsumers`. Fires on breaking releases that left consumers not re-validated: 0.10.0 (none) and 1.0.0 (the risk classifier's grounding context); 0.10.1 re-validated every consumer.
+- **ont4-p30** (Prescription, Versioning): A major release is handled as a significant engineering event with a migration plan.
+  - valid: Field `RulebookReleases.BreakingReleaseWithoutMigrationPlan`. Fires on breaking release 0.10.0, which shipped with no migration plan; 0.10.1 and 1.0.0 carry one.
+- **ont4-p31** (Prescription, Versioning): Each version change is recorded as an explicit, documented decision.
+  - valid: Field `RulebookReleases.IsUndocumentedVersionDecision`. Fires on 0.10.0, whose version increment records no rationale and no decider; the other releases document the versioning decision.
+- **ont4-p32** (Prescription, Versioning): Each version change is announced broadly to those who depend on the model.
+  - valid: Field `RulebookReleases.IsUnannouncedToDependents`. Fires on 0.8.2 (only two of four consumers told) and 0.10.2 (nobody told); other releases were announced to every dependent consumer.
+- **ont4-p33** (Prescription, Versioning): Instance data is versioned separately from the schema, because it changes far more often.
+  - valid: Field `ModelChangeLogEntries.IsInstanceChangeInSchemaRelease`. Fires on the seeded close executions shipped inside schema release 0.8.1; later instance loads were versioned as instance data versions and read false.
+- **ont4-p34** (Prescription, Versioning): Schema changes go through governance; instance changes go through data operations.
+  - valid: Field `ModelChangeRequests.IsMisrouted`. Compares each change's route with the rule for its layer: fires on the OperatingTemperature property, a schema change pushed through data operations; instance changes through data operations and schema changes through governance read false.
+- **ont4-p35** (Prescription, Versioning): Every schema change produces a semantic version increment.
+  - valid: Field `ModelChangeLogEntries.IsSchemaChangeWithoutIncrement`. Fires on the bulk-loaded schema property that shipped in no semantic version; every other schema change belongs to a release.
+- **ont4-p36** (Prescription, Versioning): A workflow's last-modified date is refreshed each time the workflow is reviewed.
+  - valid: Field `ReviewEvents.ReviewDidNotRefreshModified`. Fires on the close quarterly review held after the version's last-modified date without refreshing it; reviews that left the date current read false.
+- **ont4-p37** (Prescription, Change Management): Every schema change moves through a defined change process.
+  - valid: Field `ModelChangeLogEntries.SchemaChangeWithoutRequest`. Fires on schema changes made outside the change process with no change request (the initial load, the reviewer range widening and its revert); changes that went through a request read false.
+- **ont4-p38** (Prescription, Change Management): Every change request is tied to a competency question.
+  - valid: Field `ModelChangeRequests.LacksMotivatingQuestion`. Fires on the disjointness change and the orientation survey request, which name no competency question; the rest are tied to one.
+- **ont4-p39** (Prescription, Change Management): A change request with no competency question is returned to the requester for clarification.
+  - valid: Field `ModelChangeRequests.UnmotivatedAndNotReturned`. Fires on the disjointness change, which had no competency question and went ahead; the orientation survey request without a question was returned for clarification and reads false.
+- **ont4-p40** (Prescription, Change Management): Impact assessment identifies which existing instance data a change would make inconsistent.
+  - valid: Field `ModelChangeRequests.MissedInconsistentInstances`. Fires when instance data became inconsistent after deployment and the impact assessment identified none (the disjointness axiom, the status range restriction); the RoleAssignments narrowing's assessment did identify its inconsistent assignment.
+- **ont4-p41** (Prescription, Change Management): Impact assessment identifies which inferences a change would alter.
+  - valid: Field `ModelChangeRequests.MissedAlteredInferences`. Fires when inferences changed after deployment with none identified by the assessment (the rename, the domain narrowing); the lockout class model's assessment identified its altered inference.
+- **ont4-p42** (Prescription, Change Management): Impact assessment identifies which query results a change would alter.
+  - valid: Field `ModelChangeRequests.MissedAlteredQueryResults`. Fires on the ControlKinds rename, which emptied the Procedure Register's control filter with no assessment having identified it; the classifier swap and class removal identified their altered queries up front.
+- **ont4-p43** (Prescription, Change Management): Impact assessment checks the vocabulary layer and domain coverage model still hold everything required.
+  - valid: Field `ModelChangeRequests.LeavesCoverageUnchecked`. Fires on accepted modeling changes never checked against the vocabulary layer and coverage model (the rename, the classifier upgrade handled as modeling); the others record the check.
+- **ont4-p44** (Prescription, Change Management): Apply the proposed change in a test run of the validation suite and inspect the failures.
+  - valid: Field `ModelChangeRequests.AcceptedWithoutTestRun`. Fires on modeling changes accepted without the validation suite ever being run with the change applied; ChangeValidationRuns.HasUninspectedFailures separately flags a run whose failures nobody inspected.
+- **ont4-p45** (Prescription, Change Management): The steward can be authorized to approve and deploy minor changes.
+  - valid: Field `ModelChangeRequests.StewardApprovalOutOfBounds`. Fires when a steward who is not also the authority approved a change beyond minor scope (the rename, the disjointness axiom, the status range restriction); the steward's approval of an additive property and a data load stays within bounds.
+- **ont4-p46** (Prescription, Change Management): Changes that alter existing elements or vocabularies, or add disjointness constraints, need authority review.
+  - valid: Field `ModelChangeRequests.AuthorityReviewSkipped`. Fires on accepted changes that alter existing elements, retire a definition or add disjointness with no authority review; the domain narrowing, vocabulary term and class removal were reviewed.
+- **ont4-p47** (Prescription, Change Management): Swapping which AI agent fills a role is a data operation: one assignment changes and no term or inference changes.
+  - valid: Field `ModelChangeRequests.IsMisclassifiedAgentSwap`. Fires on the 2.4.0 to 2.4.1 classifier upgrade, handled as a modeling change; the 2.5.0 trial swap was handled as a data operation.
+- **ont4-p48** (Prescription, Change Management): Moving a step from AI to human execution is a data operation that carries compliance consequences.
+  - valid: Field `ModelChangeRequests.AiToHumanMoveWithoutComplianceReview`. Fires on moving production health verification to the SRE with no compliance consequences recorded; the night-shift verification move records them.
+- **ont4-p49** (Prescription, Change Management): Moving a step from AI to human execution needs an audit record of when and why.
+  - valid: Field `ModelChangeRequests.AiToHumanMoveUnaudited`. Fires on the night-shift verification move, which records why but not when it took effect; the health verification move records both.
+- **ont4-p50** (Prescription, Change Management): Old assignments are kept with their validity periods, since removing them loses the history of who acted.
+  - valid: Field `RoleAssignments.PredecessorLacksValidityEnd`. Fires on the ontology authority assignment that supersedes the interim holder's assignment whose validity period was never closed; the classifier 2.4.1 assignment supersedes a properly closed one.
+- **ont4-p51** (Prescription, Competency Questions as a Governance Instrument): A version that can no longer answer one of the original competency questions is flagged as a regression.
+  - valid: Field `CompetencyQuestionRuns.IsBaselineRegression`. Fires on the original agent-kind question, answerable at 0.9.0 and unanswerable at 0.10.0 after the domain narrowing: an original question the new version can no longer answer.
+- **ont4-p52** (Prescription, Competency Questions as a Governance Instrument): Competency question coverage is tracked version by version, in addition to element completeness.
+  - valid: Field `RulebookReleases.CqCoverageDeclined`. Tracks competency question coverage per release and fires on 0.10.0, which answered 67% of its questions against 100% for 0.9.0.
+- **ont4-p53** (Prescription, Competency Questions as a Governance Instrument): The competency question set is reviewed at least quarterly.
+  - valid: Field `GovernedModels.CqReviewOverdue`. Fires on models whose question set has gone more than 92 days without review (close, deployment, press); the PKO rulebook, lockout, policy and vocabulary are within a quarter.
+- **ont4-p54** (Prescription, Competency Questions as a Governance Instrument): A new question the model cannot answer becomes a scope change request.
+  - valid: Field `StakeholderQuestions.UnanswerableWithoutScopeRequest`. Fires on unanswerable questions that never became a scope change request (classifier benchmarks, machine retrofits); the orientation survey question became one.
+- **ont4-p55** (Prescription, Competency Questions as a Governance Instrument): A question no longer relevant becomes a deprecation candidate.
+  - valid: Field `CompetencyQuestionSetEntries.IrrelevantButStillActive`. Fires on the evidence-binding question review found no longer relevant but left active; the other outgrown close question was made a deprecation candidate.
+- **ont4-p56** (Prescription, Competency Questions as a Governance Instrument): A question the model should answer but answers wrongly is a defect that must be fixed.
+  - valid: Field `CompetencyQuestionRuns.IsUnfixedWrongAnswer`. Fires on the accountable-agent question answered wrongly at 1.0.0 with no defect raised; the documentation-lag question's wrong answer has a defect change request.
+- **ont4-p57** (Prescription, The Relationship Has Two Directions): People lay down the seed model and first competency questions before AI is brought in to grow it.
+  - valid: Field `AiInsightProposals.GrewModelWithoutHumanSeed`. Fires when an AI proposed extending the model where no human-authored seed exists: the summarizer's proposed forklift battery procedure, mined from logs with no seed version. Its proposal against the human-authored lockout 2.0.0 does not fire.
+- **ont4-p58** (Prescription, How AI Systems Consume an Ontology): Answers come from structured queries over the graph rather than from documents, to limit hallucination in compliance-sensitive use.
+  - valid: Field `AssistantAnswers.AnsweredComplianceQuestionFromDocuments`. Fires when an authority or safety question was answered from document passages rather than a structured query over the graph: 'who approves production releases?' from the runbook, and the checklist bot's mixer-2 isolation answer. Structured-query answers do not fire.
+- **ont4-p59** (Prescription, How AI Systems Consume an Ontology): Generated values are drawn from the governed vocabulary, never from ad hoc wordings.
+  - valid: Field `SourceTermMentions.IsNonCanonicalGeneratedValue`. Fires when an AI-generated value is not a preferred label of the governed scheme. The ungrounded run's 'live', 'shipped', 'work in progress' and 'retired' fire; the grounded run's 'active', 'draft' and 'deprecated' do not. Practitioner and document wordings are never flagged by it.
+- **ont4-p60** (Prescription, How AI Systems Consume an Ontology): Logical soundness of what the AI is given is guaranteed by a reasoner; the language model is not relied on for it.
+  - valid: Field `GroundingSnapshots.ServedWithoutConsistencyCheck`. Fires when a graph snapshot was served to AI with no reasoner run finding it consistent: the 2026-06-01 tabular export, whose only run found it inconsistent. The July snapshots were found consistent by the OWL 2 RL reasoner and do not fire.
+- **ont4-p61** (Prescription, How AI Systems Consume an Ontology): Before assertions are handed to a language model as context, the reasoner materializes everything they entail.
+  - valid: Field `GroundingSnapshots.ServedBeforeMaterialization`. Fires when a snapshot was served before a reasoner materialized its entailments: the June export (never materialized) and the 18 July hotfix rebuild (served 08:00, materialized 09:00). The 15 July snapshot, materialized at 05:00 and served at 06:00, does not fire.
+- **ont4-p62** (Prescription, How AI Systems Consume an Ontology): Alternative labels resolve variant wordings to one canonical concept so downstream systems can normalize them.
+  - valid: Field `TermLabelVariants.IsAmbiguousLabel`. Fires when one wording is a label of more than one concept in a scheme, so alternative labels cannot normalize it to one canonical concept. 'review' is an alternative label of both Release Approval Review and Change Risk Classification, so both fire; 'sign-off' resolves to exactly one concept and does not.
+- **ont4-p63** (Prescription, How AI Systems Consume an Ontology): For accountability questions an agent's category is available as an inferred fact, not only as an explicit assignment.
+  - valid: Field `Agents.CategoryNotAvailableAsInference`. Fires on an agent named in served accountability assertions whose category the graph never infers: the deployment pipeline and superseded classifier 2.4.0. Grace Holloway (inferred prov:Person) and classifier 2.4.1 (inferred prov:SoftwareAgent) do not fire.
+- **ont4-p64** (Prescription, AI Contributes to Ontology Development): AI may propose competency questions drawn from documents; an engineer vets each one before any is adopted.
+  - valid: Field `ModelProposals.AiQuestionAdoptedUnvetted`. Fires on an AI-proposed question drawn from the engineering handbook that was adopted with no engineer vetting it; the vetted handbook question reads false.
+- **ont4-p65** (Prescription, AI Contributes to Ontology Development): AI may draft labels and definitions, which a person then critically revises.
+  - valid: Field `TermDefinitions.AiDraftAdoptedUnrevised`. Fires on the AI-drafted DriftObservations definition no person revised (its excludes says 'Nothing'); the AI-drafted ModelCharters definition was revised by the steward.
+- **ont4-p66** (Prescription, AI Contributes to Ontology Development): AI may suggest alignments to external standards; the modeling decision stays with people.
+  - valid: Field `ModelProposals.AiAlignmentDecidedByAi`. Fires on the prov:Activity alignment the assistant suggested and then committed itself; the p-plan alignment still awaits a person's decision.
+- **ont4-p67** (Prescription, AI Contributes to Ontology Development): AI does not commit axioms, disjointness or domain and range without human review.
+  - valid: Field `ModelProposals.AiAxiomWithoutHumanReview`. Fires on the AI-proposed human/software disjointness axiom whose only review was by the assistant itself.
+- **ont4-p68** (Prescription, AI Contributes to Ontology Development): AI output is only ever a proposal; adopting it is a human act for which a person answers.
+  - valid: Field `ModelProposals.AdoptionNotAnsweredByPerson`. Fires on AI output adopted by software (the prov alignment, the drift definition), where no person answers for the adoption.
+- **ont4-p69** (Prescription, AI Contributes to Ontology Development): A human stays in the loop at every stage of ontology design and construction.
+  - valid: Field `ModelProposals.HasNoHumanTouchpoint`. Fires on contributions proposed, reviewed and committed with no person at any stage (the legacy import's domain/range assertion, the AI definition committed by the extractor).
+- **ont4-p70** (Prescription, The NTWF Graph as an AI System Registry): AI systems are registered as individuals in the graph itself.
+  - valid: Field `AiRegistryModelVersions.IsLiveButUnregisteredInGraph`. Fires for a model version running in production that no agent individual in the graph represents: release-notes-writer 1.1.0; the risk classifier versions and health checker are individuals, and the retired 2.3.0 is not live.
+- **ont4-p71** (Prescription, The NTWF Graph as an AI System Registry): An agent upgrade's blast radius is computed by graph traversal rather than by hand.
+  - valid: Field `AgentUpgradeAssessments.MissedTraversedImpact`. Fires when an upgrade assessment lists fewer affected steps than the traversal of the artifact-flow closure finds: the hand-written change ticket for 2.4.1 -> 2.5.0 listed only the release gate while traversal reaches deploy-03, deploy-04 and deploy-05; the traversal-based assessment does not fire.
+- **ont4-p72** (Prescription, The NTWF Graph as an AI System Registry): Agent records are filled from the external registry, with Dublin Core fields as the shared interface.
+  - valid: Field `Agents.IsAiAgentNotFilledFromRegistry`. Fires for an AI agent individual whose identifier and version are not supplied by a registry record through dct:identifier and dct:hasVersion: the 2.5.0 candidate typed in as 2.5.0 while the registry says 2.5.0-rc3, and two AI agents entered by hand; the 2.4.0, 2.4.1 and health-check individuals match the feed.
+- **ont4-p73** (Prescription, Ontology Is the Ground Truth): Governance names who is responsible for triggering an assignment update.
+  - valid: Field `RoleAssignmentUpdateTasks.LacksNamedTriggerOwner`. Fires when the governing policy names no role responsible for triggering an assignment update, or names one nobody holds: every update under the engineering operations policy, including the SRE departure nobody triggered; updates under the release approver and AI agent policies (owner: VP of engineering) do not fire.
+- **ont4-p74** (Prescription, Ontology Is the Ground Truth): Assignment updates are completed within a defined service level.
+  - valid: Field `RoleAssignmentUpdateTasks.ExceededUpdateSla`. Fires when no service level is defined or the update took longer than it allows: the hotfix release manager's departure was recorded 307 hours after he left against a 24-hour service level; the 2.4.1 classifier swap finished in 39 of 72 hours and does not fire.
+- **ont4-p75** (Prescription, Ontology Is the Ground Truth): Changing who fills a role alters one assignment and leaves every workflow and step untouched.
+  - valid: Field `RoleAssignmentUpdateTasks.ChangedRoleInsteadOfAssignment`. Fires when a change of who does the work replaced an assignment of one role with an assignment of a different role, so the steps had to be re-pointed: build and rollout moved from Hector Ruiz's Build and Release Engineer role to a new Deployment Automation role; the classifier swap and the AI-to-human SRE handover changed only the assignment.
+- **ont4-p76** (Prescription, Ontology Is the Ground Truth): Operational routing, such as who receives an approval notice, reads role assignments from the model rather than a separate list.
+  - valid: Field `AssignmentRoutedNotices.RoutedAroundModel`. Fires for a notice routed from a separately maintained list that reached someone the model's assignments did not name for the step's role when it was sent: the ops spreadsheet sent the 2026-03-01 health verification notice to the VP while Leo Marchetti held the SRE role; notices read from assignments do not fire.
+- **ont4-p77** (Prescription, Ontology Is the Ground Truth): When a person leaves a role, the assignment is updated before the next process run that depends on it.
+  - valid: Field `RoleAssignmentUpdateTasks.MissedNextDependentRun`. Fires when a run needing the role started after the person left and before the assignment change was recorded: the 2026-07-14 hotfix ran after Dmitri Volkov (release manager), Leo Marchetti (SRE) and Kwame Asante (rollout) left and before any of those updates; the classifier swap and the SRE handover were recorded before their next runs.
+- **ont4-p78** (Prescription, RAG Over Structured Graphs): AI systems are not deployed against the graph unless it is governed.
+  - valid: Field `AgentIntegrations.IsDeployedOnUngovernedGraph`. Fires when an AI agent is deployed against a snapshot with no steward or no review before serving: the segment summarizer on the June export. Integrations serving the stewarded, reviewed July snapshot do not fire.
+- **ont4-p79** (Prescription, RAG Over Structured Graphs): Each assertion served to AI carries provenance linking it back to where it came from.
+  - valid: Field `SnapshotAssertions.LacksProvenance`. Fires on a served assertion that links back to nothing -- no provenance URI, procedure version, step or role assignment: the blank-node comment 'approvals by the release lead'. Every other served assertion names its source and does not fire.
+- **ont4-p80** (Prescription, RAG Over Structured Graphs): The graph served to retrieval is kept free of stale role assignments.
+  - valid: Field `GroundingSnapshots.ServesStaleRoleAssignments`. Fires when retrieval serves an assertion resting on a role assignment that has ended: classifier 2.4.0's superseded assignment in the June export and again in the hotfix rebuild. The 15 July snapshot does not fire.
+- **ont4-p81** (Prescription, RAG Over Structured Graphs): The graph served to retrieval is kept free of deprecated workflow individuals presented as current.
+  - valid: Field `GroundingSnapshots.ServesDeprecatedAsCurrent`. Fires when retrieval presents a deprecated workflow individual as current: the June export states lockout 1.0.0's status as Current. The July snapshots do not fire.
+- **ont4-p82** (Prescription, RAG Over Structured Graphs): Instance identifiers are readable and citable by a person or a generation model.
+  - valid: Field `SnapshotAssertions.HasOpaqueIdentifier`. Fires on a served assertion whose subject is a UUID URN or blank node that no person or model can read or cite: the urn:uuid tool requirement and the _:b17 comment. Assertions about loto-06 or ra-release-grace do not fire.
+- **ont4-p83** (Prescription, RAG Over Structured Graphs): Every individual carries Dublin Core labels and descriptions.
+  - valid: Field `SnapshotAssertions.LacksDublinCore`. Fires on a served assertion whose subject lacks a Dublin Core title or description: loto-05 (no description) and the blank-node comment. The rest carry both and do not fire.
+- **ont4-p84** (Prescription, AI-Assisted Ontology Maintenance): AI may run the staleness query periodically and surface the results to the steward.
+  - valid: Field `StalenessQueryRuns.NotSurfacedToSteward`. Fires on the lockout staleness run that found the forklift inspection stale and never reached the steward; the PKO run's finding was surfaced the same day.
+- **ont4-p85** (Prescription, AI-Assisted Ontology Maintenance): AI may extract candidate instance data from documents, which the steward reviews before loading.
+  - valid: Field `ModelProposals.AiInstanceDataLoadedWithoutSteward`. Fires on the wiki-extracted hotfix assignment loaded after review by the release manager instead of the steward.
+- **ont4-p86** (Prescription, AI-Assisted Ontology Maintenance): AI may triage unanswerable questions so the right change process applies to each.
+  - valid: Field `StakeholderQuestions.IsMisroutedAfterTriage`. Fires on the contractor SMS consent question, triaged by the assistant as needing more data but sent through the governance route; the other triaged questions went to the process their outcome calls for.
+- **ont4-p87** (Prescription, AI-Assisted Ontology Maintenance): Only validation plus human judgment decides whether a schema change preserves the model's integrity; AI cannot.
+  - valid: Field `ModelChangeRequests.IntegrityDecidedWithoutHuman`. Fires on the disjointness change, whose integrity was checked only by the ontology assistant; schema changes with a person's integrity review read false.
+- **ont4-p88** (Prescription, AI-Assisted Ontology Maintenance): Integrity review of a schema change checks whether it introduces a disjointness violation.
+  - valid: Field `ModelChangeRequests.SkippedDisjointnessReview`. Fires on accepted schema changes never checked for disjointness violations (the rename, the bulk-loaded property).
+- **ont4-p89** (Prescription, AI-Assisted Ontology Maintenance): Integrity review of a schema change checks whether it produces an unintended domain inference.
+  - valid: Field `ModelChangeRequests.SkippedDomainInferenceReview`. Fires on accepted schema changes never checked for unintended domain inferences, including the disjointness change that had only a disjointness check.
+- **ont4-p90** (Prescription, AI-Assisted Ontology Maintenance): Integrity review of a schema change checks whether it creates a property range inconsistency.
+  - valid: Field `ModelChangeRequests.SkippedRangeReview`. Fires on accepted schema changes never checked for range inconsistencies, including the expected-duration properties checked for disjointness and domain but not range.
+- **ont4-p91** (Prescription, AI-Assisted Ontology Maintenance): A schema change is accepted only if the full validation suite still passes with it applied.
+  - valid: Field `ModelChangeRequests.AcceptedWithFailingSuite`. Fires on the RoleAssignments narrowing, accepted although its acceptance run failed two tests; changes whose full suite passed read false.
+- **ont4-p92** (Prescription, Conclusion): Classifying every agent as a person or a software agent lets accountability be answered from structure alone.
+  - valid: Field `Agents.IsUnclassifiedAgent`. Fires on the legacy import script, an agent classified as neither person nor software, so accountability for its commits cannot be answered from structure; every other agent is classified.
+- **ont4-p93** (Prescription, Conclusion): Validation tests confirm the model contains no logical inconsistency.
+  - valid: Field `ChangeValidationRuns.IsUnconfirmedConsistency`. Fires on validation runs that did not confirm the model free of logical inconsistency (two runs reporting inconsistency, one that never ran the check).
+- **ont4-p94** (Prescription, Conclusion): Validation tests confirm that each expected inference chain is actually produced.
+  - valid: Field `ChangeValidationRuns.MissesExpectedInference`. Fires on the expected-duration run, where the expected documentation-lag inference chain was not produced; the lockout class model's run produced both its expected chains.
+- **ont4-p95** (Prescription, Conclusion): The model aligns to external standards so systems that know nothing of it can still interpret it.
+  - valid: Field `RulebookTables.IsUnalignedToStandard`. Fires on tables with no exact or aligned mapping to any external standard, so outside systems cannot interpret them; tables mapped to PKO, PROV-O and the other reused standards read false.
+- **ont4-p96** (Prescription, Conclusion): Every breaking change can be traced to the versioning decision that introduced it.
+  - valid: Field `ModelChangeLogEntries.IsUntraceableBreakingChange`. Fires on the breaking changes in 0.10.0, whose versioning decision was never documented; breaking changes in 0.10.1 and 1.0.0 trace to a recorded decision.
+- **ont4-q01** (CompetencyQuestion, How AI Systems Consume an Ontology): Which person currently holds the approving role for production releases?
+  - valid: RoleQuestion `aq-ont4-q01`. The risk classifier's routing question; Roles.IsProductionReleaseApprover is TRUE only for the release manager, and CurrentHolderName gives Grace Holloway.
+- **ont4-q02** (CompetencyQuestion, How AI Systems Consume an Ontology): Which role, and which person in it, backs up that approver on escalation?
+  - valid: RoleQuestion `aq-ont4-q02`. The release manager's question; HasEscalationBackup and BackupRoleHolder give the VP of Engineering held by Omar Haddad, and HasUnfilledEscalationBackup fires on the safety officer whose night-shift backup is vacant.
+- **ont4-q03** (CompetencyQuestion, Change Management): Which AI agent version held this step's assignment on a specified past date?
+  - valid: RoleQuestion `aq-ont4-q03`. Answered by AssignmentInstantChecks.HeldStepAtInstant with the assignment's agent version: on 2026-01-05 classifier 2.4.0 held deploy-02, on 2026-03-01 classifier 2.4.1.
+- **ont4-q04** (CompetencyQuestion, The NTWF Graph as an AI System Registry): If this agent moves to a newer model version, what else is affected?
+  - valid: RoleQuestion `aq-ont4-q04`. Asks which steps are affected, transitively along the artifact flow, if the agent moves to a newer model version.
+- **ont4-q05** (CompetencyQuestion, AI-Assisted Ontology Maintenance): Which workflows have not been modified in more than twelve months?
+  - valid: RoleQuestion `aq-ont4-q05`. Answered by ProcedureVersions.IsUnmodifiedForTwelveMonths, which names the forklift inspection, unmodified since April 2025.
+- **ont4-q06** (CompetencyQuestion, Ontology Is the Ground Truth): To whom does the approval notice for a deployment go at present?
+  - valid: RoleQuestion `aq-ont4-q06`. Asks which current assignment covers a role that approval steps are assigned to, i.e. who approval notices go to now.
+- **ont4-q07** (CompetencyQuestion, How AI Systems Consume an Ontology): Which agent is accountable for this step?
+  - valid: RoleQuestion `aq-ont4-q07`. Asks which agent is accountable for each step right now.
+- **ont4-q08** (CompetencyQuestion, Conclusion): Is the agent accountable for this step a person or a software agent?
+  - valid: RoleQuestion `aq-ont4-q08`. Asks whether the accountable agent is a person, software or an organization.
+- **ont4-q09** (CompetencyQuestion, Change Management): Which existing instance data would this change make inconsistent?
+  - valid: RoleQuestion `aq-ont4-q09`. Answered by ChangeImpactFindings of kind InconsistentInstance at assessment, rolled up as ModelChangeRequests.WouldMakeInstancesInconsistent.
+- **ont4-q10** (CompetencyQuestion, Change Management): Which inferences would this change alter?
+  - valid: RoleQuestion `aq-ont4-q10`. Answered by assessment-stage AlteredInference findings, rolled up as ModelChangeRequests.WouldAlterInferences.
+- **ont4-q11** (CompetencyQuestion, Change Management): Which query results would this change alter?
+  - valid: RoleQuestion `aq-ont4-q11`. Answered by assessment-stage AlteredQueryResult findings, rolled up as ModelChangeRequests.WouldAlterQueryResults.
+- **ont4-q12** (CompetencyQuestion, Competency Questions as a Governance Instrument): Does this version still answer every original competency question, and which regressed?
+  - valid: RoleQuestion `aq-ont4-q12`. Answered by CompetencyQuestionRuns re-run per release against the original baseline, with RulebookReleases.HasBaselineRegression naming the version that regressed.
+- **ont4-q13** (CompetencyQuestion, AI-Assisted Ontology Maintenance): Which stakeholder questions can the model not answer today?
+  - valid: RoleQuestion `aq-ont4-q13`. Answered by StakeholderQuestions.IsUnanswerableToday: a stakeholder question no competency question of the model answers.
+- **ont4-q14** (CompetencyQuestion, AI-Assisted Ontology Maintenance): For each unanswerable question, is the fix more data, a small schema extension, or a structural change?
+  - valid: RoleQuestion `aq-ont4-q14`. Answered by StakeholderQuestions.TriageOutcome with NeedsStructuralChange and IsUntriagedUnanswerable.
+- **ont4-q15** (CompetencyQuestion, Ownership): Who is the model's steward?
+  - valid: RoleQuestion `aq-ont4-q15`. Answered by GovernedModels.CurrentStewardAgent through the charter in force, with HasNoCurrentSteward flagging models nobody stewards.
+- **ont4-q16** (CompetencyQuestion, Ownership): Who holds authority over the model?
+  - valid: RoleQuestion `aq-ont4-q16`. Answered by GovernedModels.CurrentAuthorityAgent, with HasNoCurrentAuthority flagging models nobody holds authority over.
+- **ont4-q17** (CompetencyQuestion, Change Management): Who approved this change?
+  - valid: RoleQuestion `aq-ont4-q17`. Answered by ModelChangeRequests.ApprovedByAgent, with IsAcceptedWithoutNamedApprover flagging accepted changes nobody approved on record.
+- **ont4-q18** (CompetencyQuestion, Ownership): What rationale was recorded for this change?
+  - valid: RoleQuestion `aq-ont4-q18`. Answered by ModelChangeLogEntries.Rationale and its motivating question, with RationaleWithoutQuestion flagging a rationale no question stands behind.
+- **ont4-q19** (CompetencyQuestion, Change Management): In which release version did this change ship?
+  - valid: RoleQuestion `aq-ont4-q19`. Answered by ModelChangeRequests.TargetRelease and the log's ReleaseVersion, with DeployedWithoutTargetRelease flagging a deployed schema change in no release.
+- **ont4-q20** (CompetencyQuestion, Change Management): When did this step move from AI to human execution, and why?
+  - valid: RoleQuestion `aq-ont4-q20`. Answered by ModelChangeRequests of operation MoveStepToHuman: EffectiveAt says when and StatedNeed says why, flagged by IsAiToHumanMove.
+- **ont4-q21** (CompetencyQuestion, The NTWF Graph as an AI System Registry): Which artifacts has this AI agent produced?
+  - valid: RoleQuestion `aq-ont4-q21`. Asks which generated artifacts are attributed to each agent.
+- **ont4-q22** (CompetencyQuestion, The NTWF Graph as an AI System Registry): Which downstream steps take this agent's artifacts as inputs?
+  - valid: RoleQuestion `aq-ont4-q22`. Asks which steps take as an input an artifact produced by an AI agent's step, naming the agent on each input.
+- **ont4-q23** (CompetencyQuestion, The NTWF Graph as an AI System Registry): Which roles and agents are responsible for those downstream steps?
+  - valid: RoleQuestion `aq-ont4-q23`. Asks which role and agent are responsible for each step consuming an AI agent's artifact, and whether any such role is held by nobody.
+- **ont4-q24** (CompetencyQuestion, The NTWF Graph as an AI System Registry): Which workflows contain the steps affected by an agent change?
+  - valid: RoleQuestion `aq-ont4-q24`. Asks which workflows contain steps consuming an AI agent's artifacts.
+- **ont4-q25** (CompetencyQuestion, Versioning): Which version is the model currently released at?
+  - valid: RoleQuestion `aq-ont4-q25`. Answered by RulebookReleases.IsDeclaredCurrentRelease against GovernedModels.CurrentRelease: the model is at 1.0.0.
+- **ont4-q26** (CompetencyQuestion, Why Ontologies Decay): Which adopted external terms have since been deprecated by their source standard?
+  - valid: RoleQuestion `aq-ont4-q26`. The knowledge engineer's question, answered by ExternalStandardTerms.IsAdoptedButDeprecated over DeprecatedBySource and the mappings and re-homings that adopt each term.
+- **ont4-q27** (CompetencyQuestion, The NTWF Graph as an AI System Registry): Which human is accountable for this AI agent?
+  - valid: RoleQuestion `aq-ont4-q27`. Asks which human person is currently accountable for each AI agent and flags AI agents with none.
+- **ont4-q28** (CompetencyQuestion, How AI Systems Consume an Ontology): Which steps come after this one anywhere along the workflow's ordering chain?
+  - valid: RoleQuestion `aq-ont4-q28`. Asks which steps come after a step anywhere along the ordering chain.
+- **ont4-q29** (CompetencyQuestion, Change Management): Would the proposed change leave the vocabulary layer and domain coverage model complete?
+  - valid: RoleQuestion `aq-ont4-q29`. Answered by CoverageGap findings against the DomainCoverageAreas model, rolled up as ModelChangeRequests.WouldLeaveCoverageIncomplete.
+- **ont4-q30** (CompetencyQuestion, Change Management): Which competency question motivated this change?
+  - valid: RoleQuestion `aq-ont4-q30`. Answered by ModelChangeRequests.MotivatingQuestion and MotivationKind, with MotivatedByFailingQuestion separating repairs from growth.
+- **ont4-s01** (Standard, How AI Systems Consume an Ontology): An OWL-RL reasoner.
+  - valid: KnowledgeMethod `OwlReasoning`. Applied by ma-owl-reasoning-0715 and ma-owl-reasoning-0718: the OWL 2 RL rule set checked and materialized the served snapshots (ReasonerRuns rr-0715-rl, rr-0718-rl).
+- **ont4-s02** (Standard, Versioning): Semantic versioning.
+  - valid: KnowledgeMethod `SemanticVersioning`. Applied by a MethodApplications row to RulebookReleases, whose declared patch/minor/major scale is checked against version numbers and change log contents.
+- **ont4-s03** (Standard, How AI Systems Consume an Ontology): SKOS concept schemes with preferred label, alternative label, definition and scheme membership.
+  - valid: OntologyProfile `skos`. SKOS concept schemes: mappings for skos:ConceptScheme, skos:Concept, prefLabel, altLabel, definition and inScheme on Vocabularies and VocabularyTerms.
+- **ont4-s04** (Standard, Change Management): PROV-O agents, activities and attribution.
+  - valid: OntologyProfile `prov-o`. PROV-O maps agents and activities throughout, and loop 10 aligns ModelChangeLogEntries to prov:Activity, ChangedByAgent to prov:wasAssociatedWith and ApprovedByAgent to prov:wasAttributedTo.
+- **ont4-s05** (Standard, RAG Over Structured Graphs): Dublin Core metadata.
+  - valid: OntologyProfile `dcterms`. The DCMI Terms profile, mapped to resource language, format, creator and step descriptions, and to the dcterms:title and dcterms:description of served assertions.
+- **ont4-s06** (Standard, RAG Over Structured Graphs): Graph-based retrieval-augmented generation.
+  - valid: KnowledgeMethod `GraphRetrieval`. Applied by ma-graph-retrieval-copilot: retrieval-augmented answers grounded in the served graph snapshot rather than document chunks.
+- **ont4-s07** (Standard, Change Management): SPARQL as the query language for impact assessment, retrieval and traversal.
+  - valid: OntologyProfile `spin-sparql`. Impact-assessment queries are stored as SPARQL text in ChangeImpactFindings.DetectedByQuery, mapped to sp:text.
+- **ont4-s08** (Standard, Why Ontologies Decay): FOAF.
+  - valid: OntologyProfile `foaf-0-99`. FOAF 0.99 is a recorded dependency with a mapping (Agents.DisplayName to foaf:name) and adopted terms in ExternalStandardTerms.
+- **ont4-s09** (Standard, Why Ontologies Decay): DCAT.
+  - valid: OntologyProfile `dcat-3`. DCAT 3 is a recorded dependency with semantic mappings (Resources.Keywords to dcat:keyword and others) and its major revision recorded.
+- **ont4-s10** (Standard, Why Ontologies Decay): Schema.org.
+  - valid: OntologyProfile `schema-org`. Schema.org is a recorded dependency with mappings (ProcedureLensViews to schema:HowTo, Steps to schema:HowToStep) and its deprecations tracked.
+- **ont4-s11** (Standard, AI Contributes to Ontology Development): RDFS label and comment annotations for term names and definitions.
+  - valid: OntologyProfile `rdfs-1-1`. RDF Schema mappings: ProcedureTypes.Label to rdfs:label and ProcedureTypes.Definition to rdfs:comment for term names and definitions.
+- **ont4-s12** (Standard, Why Ontologies Decay): The OWL identity assertion as the reconciliation relation between a deprecated external term and its replacement.
+  - valid: OntologyProfile `owl-2`. OWL 2 mapping of VocabularyTerms.SameAsIri to owl:sameAs, the identity assertion between a re-homed local term and the deprecated original.
+- **ont4-s13** (Standard, Versioning): The OWL version-info annotation carrying the model version.
+  - valid: OntologyProfile `owl-2-ontology-annotations`. RulebookReleases.RulebookVersion maps to owl:versionInfo, with owl:priorVersion and owl:versionIRI for the prior release and permanent identifier.
+- **ont4-s14** (Standard, Why Ontologies Decay): URIs as the unique identifier of every modeled thing.
+  - valid: OntologyProfile `rdf-1-1`. RDF 1.1 Concepts mapping of VocabularyTerms.ConceptIri: every concept is identified by a globally unique IRI.
+- **ont4-x01** (Scenario, How AI Systems Consume an Ontology): A production deployment gated by release approval: the release manager role is held by one person and delegates to a VP of engineering role held by another.
+  - valid: Procedure `production-deployment`. The deployment procedure has a release approval gate held by the release manager, with the VP of engineering as a separate role, and recorded executions.
+- **ont4-x02** (Scenario, The NTWF Graph as an AI System Registry): Assessing the blast radius of upgrading the risk classifier to its next minor model version.
+  - valid: Procedure `production-deployment`. The deployment procedure's AI risk classifier has a 2.5.0 candidate whose upgrade the model can assess against recorded executions.
+- **ont4-x03** (Scenario, Change Management): The risk classifier filling a step is replaced by its next patch version on a set date, and the earlier assignment is kept so a past-date question returns the agent then in force.
+  - valid: Procedure `production-deployment`. The classifier assignment moved from 2.4.0 to 2.4.1 on 2026-01-10 with the earlier assignment kept; recorded executions on 2026-01-05 and 2026-03-01 were run by the version then in force.
+- **ont4-x04** (Scenario, Change Management): An automated step is handed from an AI agent to a human, with an audit record of when and why.
+  - valid: Procedure `production-deployment`. The deployment procedure is the executed workflow on which a step's hand-off between AI and human execution is recorded.
+- **ont4-x05** (Scenario, Ontology Is the Ground Truth): The release manager leaves the role, and the assignment must be updated before the next deployment that needs that approval.
+  - valid: Procedure `production-deployment`. The deployment procedure's release gate depends on the release manager assignment that must be updated before the next recorded deployment.
+
+## pkm-1: Process Knowledge Management, Part I: Accounting for How We Work
+
+### Not covered (2)
+
+- **pkm1-i06** (Illustration, Process Knowledge Frameworks): Content management, business process management systems and knowledge graphs as the technologies that shifted attention to encoded process knowledge. Needs a discriminating witness invented for a role question.
+- **pkm1-s09** (Standard, Integrated Process Intelligence): Enterprise architecture practice as a precedent for process knowledge methodology. Needs a mapped ontology profile or an applied knowledge method.
+
+### Covered (108)
+
+- **pkm1-c01** (Concept, The Nature of Process Knowledge): Process knowledge reaches past written procedures and flow diagrams to a process's purpose and how it interacts with other processes.
+  - valid: Field `Procedures.CalledByStepCount`. Counts the steps of other procedures that invoke this one, so a procedure's interaction with other processes is recorded alongside its Purpose, not only its steps.
+- **pkm1-c02** (Concept, The Nature of Process Knowledge): Conditions that cause a process to depart from its usual path.
+  - valid: Field `StepTransitions.Condition`. Every alternative and fallback transition states the condition under which the procedure leaves its usual path.
+- **pkm1-c03** (Concept, The Nature of Process Knowledge): Criteria by which a process outcome counts as success or as failure.
+  - valid: Table `ProcedureOutcomeCriteria`. Each row is a success or failure criterion for a procedure, with its polarity and statement.
+- **pkm1-c04** (Concept, The Nature of Process Knowledge): Tacit knowledge lives in intuition, pattern-spotting and judgment; explicit knowledge can be articulated, codified and recorded.
+  - valid: Field `KnowledgeFragments.CognitiveBasis`. Each fragment records whether it rests on intuition, pattern recognition or judgment (tacit) or was articulated outright (explicit): the bleed cue is PatternRecognition, the retrofit zero-reading distrust is Intuition, the retyped manual note is Articulated.
+- **pkm1-c05** (Concept, The Nature of Process Knowledge): Standard operating procedures as documented guidance whose coverage of expert judgment is inherently incomplete.
+  - valid: Field `ProcedureVersions.JudgmentHeldOutsideSopCount`. Counts the version's unformalized knowledge that its written SOP says nothing about; the four-step loto-v1.0.0 SOP left four pieces of expert handling outside it, and even loto-v2.0.0 still leaves one.
+- **pkm1-c06** (Concept, The Nature of Process Knowledge): Veterans resolve exceptions and make discretionary decisions that written procedures never fully encode.
+  - valid: Field `KnowledgeHoldings.IsVeteranDiscretion`. TRUE where a veteran resolves an exception or discretionary decision that nothing written encodes: Tomas's bleed cue and Victor's twin-drive isolation before v2, and Tomas's distrust of zero readings on retrofits still today.
+- **pkm1-c07** (Concept, The Nature of Process Knowledge): The operational level: which task comes before which, what depends on what, and what must hold before work can continue.
+  - valid: Field `Steps.StatesOperationalKnowledge`. TRUE for a step that states the three operational-level facts together: it is reached through the transition order (what comes before), it names the step it depends on, and it has a precondition that must hold before work continues. loto-03, loto-07 and deploy-04 carry all three; steps missing any of them read FALSE.
+- **pkm1-c08** (Concept, The Nature of Process Knowledge): The tactical level: allocating resources, spotting bottlenecks and adjusting the process.
+  - valid: Table `TacticalResourceAllocations`. Each row is tactical knowledge: the capacity allocated to a step's resource, the demand on it, whether that makes a bottleneck, and the adjustment decided (order padlocks, fill the night deputy role).
+- **pkm1-c09** (Concept, The Nature of Process Knowledge): The strategic level: tying a process to the organization's mission, with its rationale, the value it creates and its trade-offs.
+  - valid: Table `ProcessStrategicAlignments`. Each row ties a procedure to the mission of the organization it serves and records its rationale, the value it creates and the trade-offs it makes, e.g. lockout's extra hour of downtime per job.
+- **pkm1-c10** (Concept, The Nature of Process Knowledge): Stages that group a process's steps, as a product manager handles them.
+  - valid: Table `ProcessStages`. Stages group a version's steps (Steps.Stage), in sequence, as a product manager runs the release process: build and classify, approve, roll out and verify.
+- **pkm1-c11** (Concept, The Nature of Process Knowledge): The stakeholder who owns each step or stage.
+  - valid: Field `ProcessStages.OwnerRole`. The stakeholder role that owns each stage (release manager owns Approve, site reliability engineer owns Roll out and verify); Steps.AssignedRole already names the owner of each step.
+- **pkm1-c12** (Concept, The Nature of Process Knowledge): Outcomes measured for a process.
+  - valid: Field `ProcessOutcomeMeasures.ObservedValue`. The measured value of each outcome of a procedure over a period against its target, e.g. change failure rate 33% against 5%, zero-energy first-pass rate 60% against 95%.
+- **pkm1-c13** (Concept, The Nature of Process Knowledge): Interdependencies between processes, as an infrastructure engineer needs to see them.
+  - valid: Table `ProcessInterdependencies`. Rows record how one operation requires, helps or hinders another and the mechanism, e.g. deployments during the close window restarting the ledger integration: the cross-process dependencies an infrastructure engineer needs.
+- **pkm1-c14** (Concept, The Nature of Process Knowledge): High-level measures linking how a process performs to results the business cares about, as an executive needs.
+  - valid: Field `ProcessOutcomeMeasures.BusinessOutcome`. Links each process measure to the business outcome it drives (change failure rate to platform availability, owned by the VP of engineering), with LinkRationale saying how.
+- **pkm1-c15** (Concept, Process Knowledge Frameworks): Process knowledge shifts between tacit and explicit forms through socialization, externalization, combination and internalization.
+  - valid: Field `KnowledgeConversions.ConversionMode`. Records each shift of the lockout bleed knowledge by mode: socialization (Ken learning beside Tomas), externalization (the cue stated in an interview), combination (merged into the v2 rulebook) and internalization (Aisha rehearsing it).
+- **pkm1-c16** (Concept, Process Knowledge Frameworks): Documents, training programs and mentoring as the traditional channels for passing on process knowledge.
+  - valid: Field `KnowledgeTransfers.IsTraditionalChannel`. TRUE for a recorded transfer that went through a document, a training program or mentoring: the release notes Grace documented for Leo, the lockout training Lin gave Aisha, and Walter's and Tomas's mentoring.
+- **pkm1-c17** (Concept, Semantic Ecosystems and Process): Process knowledge is relational: it links inputs to outputs, actors to actions, and circumstances to their effects.
+  - valid: Field `StepVariables.SourceVariable`. Links each input to the output of the step that produces it, so what a step takes in is tied to what another step puts out.
+- **pkm1-c18** (Concept, Semantic Ecosystems and Process): Process steps as a class of the process ontology.
+  - valid: Field `Steps.ProcedureVersion`. Steps is the process-step class; every row belongs to a procedure version.
+- **pkm1-c19** (Concept, Semantic Ecosystems and Process): Actors as a class of the process ontology.
+  - valid: Field `Agents.AgentKind`. Agents is the actor class, typed as human, AI agent, automated pipeline or organization.
+- **pkm1-c20** (Concept, Semantic Ecosystems and Process): Resources as a class of the process ontology.
+  - valid: Field `Resources.ResourceKind`. Resources is the resource class, typed as document, media, page, dataset and so on.
+- **pkm1-c21** (Concept, Semantic Ecosystems and Process): Conditions as a class of the process ontology.
+  - valid: Field `StepConditions.ConditionKind`. StepConditions is the condition class: preconditions, postconditions and invariants on steps.
+- **pkm1-c22** (Concept, Semantic Ecosystems and Process): Outcomes as a class of the process ontology.
+  - valid: Field `ProcedureExecutions.Outcome`. Each execution records how it turned out, the outcome class the ontology names.
+- **pkm1-c23** (Concept, Semantic Ecosystems and Process): A precedes relationship between process elements.
+  - valid: Field `StepTransitions.TransitionKind`. A Next transition is the precedes relationship between two steps.
+- **pkm1-c24** (Concept, Semantic Ecosystems and Process): A requires relationship between process elements.
+  - valid: Field `Steps.PrerequisiteStep`. A step names the step it requires to be complete first: the requires relationship.
+- **pkm1-c25** (Concept, Semantic Ecosystems and Process): A produces relationship between process elements.
+  - valid: Field `Steps.OutputVariableCount`. Counts the output variables a step produces: the produces relationship.
+- **pkm1-c26** (Concept, Semantic Ecosystems and Process): A governed-by relationship between process elements.
+  - valid: Table `StepRequirements`. Each row binds a step to a requirement that governs it: the governed-by relationship.
+- **pkm1-c27** (Concept, Semantic Ecosystems and Process): Descriptive attributes on processes and their parts, such as conditions on a process and characteristics of a step or stage.
+  - valid: Field `Steps.ExpertiseLevel`. A descriptive attribute on each step: the expertise level it is intended for, alongside its duration and control kind.
+- **pkm1-c28** (Concept, Semantic Ecosystems and Process): Knowledge held at a degree along the tacit-to-explicit spectrum rather than as a flat binary.
+  - valid: Field `KnowledgeFragments.TacitnessDegree`. Places each fragment on a 1-5 spectrum from fully articulated to not articulable instead of a binary: the manual note is 1, the shift hand-off 2, the twin-drive rule 3, the bleed cue 4, the retrofit zero-reading distrust 5.
+- **pkm1-c29** (Concept, Semantic Ecosystems and Process): An instance layer of one organization's actual processes, resources and relationships above the ontology.
+  - valid: Field `ProcedureExecutions.Facility`. Execution rows are the instance layer: one organization's actual runs at named facilities, above the procedure specifications.
+- **pkm1-c30** (Concept, Semantic Ecosystems and Process): Provenance: a knowledge item's origin, the route by which it was produced, and who confirmed it.
+  - valid: Field `KnowledgeTraces.ProvenanceStatement`. Every trace states in one line the material the item came from (origin), the derivation route and deriving agent (route), and the agent who confirmed it (confirmation), e.g. loto-04b from the press-7 drawing excerpt, paraphrased by the knowledge engineer, confirmed by the plant safety officer.
+- **pkm1-c31** (Concept, Foundation for AI Systems and Workfows): Deliverables that depend on completed prerequisites.
+  - valid: Field `StepExecutions.StepPrerequisite`. Each step execution carries the prerequisite its step depends on, which a deliverable must wait for.
+- **pkm1-c32** (Concept, Its Not Easy, But it's Worth It): Knowledge acquisition as costly work in which domain experts pull knowledge out of practice, often without semantic-technology skills.
+  - valid: Field `CollectedSourceMaterials.ExpertEffortHours`. Each capture records the hours of domain-expert time it consumed and whose (ContributingExpert): technicians and the release manager, not knowledge modelers, spent 0.5 to 3 hours per capture; Procedures.ExpertAcquisitionHours totals the cost per procedure.
+- **pkm1-c33** (Concept, Its Not Easy, But it's Worth It): The forces that keep processes changing: shifting requirements, new technology and competitive pressure.
+  - valid: Field `DriftObservations.DriftCause`. Each drift observation records what drove the process to change: a shifting requirement, a new technology (the press-7 retrofit) or competitive pressure (a faster close calendar).
+- **pkm1-c34** (Concept, Its Not Easy, But it's Worth It): Context: a step's significance changes with the performer, the resources on hand and outside circumstances.
+  - valid: Table `StepContextSensitivities`. One row per way a step's significance changes with context, typed by ContextFactor Performer, Resource or Circumstance: a deputy verifying on nights, padlocks running short, a press carrying an accumulator retrofit.
+- **pkm1-c35** (Concept, Integrated Process Intelligence): Roles and capabilities devoted specifically to process knowledge management.
+  - valid: Table `KnowledgeWorkforcePositions`. Each row is a position an organization budgets specifically for knowledge engineering, information architecture or ontology work: roles devoted to managing process knowledge.
+- **pkm1-c36** (Concept, Integrated Process Intelligence): Incentives that reward sharing knowledge.
+  - valid: Table `SharingRecognitions`. Each row is an incentive given for sharing knowledge: the plant's teaching award to Tomas for training apprentices and a cluster peer award to Joao for spreading servo timing practice.
+- **pkm1-c37** (Concept, Conclusion): The lifecycle that makes process knowledge available to AI and reuse: collect, store, document, codify, encode, operationalize.
+  - valid: Table `EncodingLifecycleStages`. One row per stage of the lifecycle that carries process knowledge to AI and reuse -- collect, store, document, codify, encode, operationalize -- in order, with the activity at each stage; feedback is recorded against these rows.
+- **pkm1-i01** (Illustration, Semantic Ecosystems and Process): A BPMN diagram of a recurring working-group routine: a weekly timer, a status check, and a decision that either sends the issue list and loops back or ends.
+  - valid, disputed by a graded substrate: Field `Steps.IsOnReworkLoop`. The weekly routine loops back on a decision; this loop-4 witness fires for steps a transition cycle returns to, which is how the model represents a decision that loops back.
+- **pkm1-i02** (Illustration, Foundation for AI Systems and Workfows): An AI drafting a project plan where some deliverables depend on completed prerequisites.
+  - valid: Field `StepExecutions.RanBeforePrerequisiteCompleted`. Fires for the hotfix rollout that ran before its approval prerequisite completed: a plan whose deliverable depended on an unmet prerequisite.
+- **pkm1-i03** (Illustration, Foundation for AI Systems and Workfows): A recommendation system checking a proposed action against regulatory requirements.
+  - valid: Field `AssistantAnswers.DeliveredDespiteConflict`. Witnesses the illustrated check of a proposed action against regulation doing its job: it fires when the check found the release assistant's hotfix recommendation in conflict with the change-control requirement and it was delivered anyway. The recommendation that complied does not fire.
+- **pkm1-i04** (Illustration, The Nature of Process Knowledge): A chart contrasting explicit knowledge, which can be codified and stored, with tacit knowledge, which is experiential and passed on in person.
+  - valid: Field `LevelCaptureStrategies.ContradictsKnowledgeForm`. Fires when tacit knowledge is to be passed on only as a stored document, or explicit knowledge only in person. The shift planners' tacit staffing heuristics were written up once as a wiki page, so it fires; shadowing veterans (tacit, in person) and encoding the SOP (explicit, codified) do not. It witnesses the chart's contrast: explicit knowledge is codified and stored, tacit knowledge is passed on in person.
+- **pkm1-i05** (Illustration, The Nature of Process Knowledge): A planning pyramid in which the strategic level answers who and why, the tactical what, and the operational how and where.
+  - valid: Field `ProcessLevelStatements.IsFiledAtWrongLevel`. Fires when a statement answers a question its level does not answer in the planning pyramid (LevelPyramidQuestions: strategic who and why, tactical what, operational how and where). The deployment's reason for gating releases (a why) was filed among operational statements, so it fires; the lockout statements filed by the pyramid do not.
+- **pkm1-i07** (Illustration, Integrated Process Intelligence): Knowledge graph platforms combining reasoners, semantic storage, graph algorithms and machine learning, still immature.
+  - valid: Field `KnowledgeConsumerSystems.IsImmatureGraphPlatform`. Fires on a knowledge graph platform missing one of reasoner, semantic storage, graph algorithms or machine learning: the procedural knowledge graph has no machine learning. The defect analysis graph combines all four and does not fire.
+- **pkm1-p01** (Prescription, The Nature of Process Knowledge): Making tacit knowledge explicit must not reduce it to brittle rules.
+  - valid: Field `KnowledgeFragments.IsFlattenedToBrittleRule`. Fires when tacit or situated knowledge was encoded as a hard rule with no conditions saying when it holds. It fires on 'Always isolate both drives of mixer 2', which reduced Victor's judgment about retrofits to one machine's name; it does not fire on the bleed cue, encoded as guidance with its conditions, nor on the explicit manual note.
+- **pkm1-p02** (Prescription, The Nature of Process Knowledge): Each level of abstraction needs its own strategy for capturing both its tacit and explicit knowledge.
+  - valid: Field `ProcessKnowledgeLevels.LacksCaptureStrategyForEitherForm`. Fires on a level that has no capture strategy for its tacit knowledge or none for its explicit knowledge. The strategic level has only strategy memos (explicit) and nothing for the executives' tacit judgment, so it fires; operational and tactical have both and do not. That is the prescription that each level needs its own strategy for both forms broken.
+- **pkm1-p03** (Prescription, The Nature of Process Knowledge): A knowledge system that does not serve process knowledge's many dimensions ends up privileging one stakeholder view over the rest.
+  - valid: Field `Procedures.PrivilegesSingleStakeholderView`. Fires when a procedure is organized for exactly one stakeholder lens. The press-7 die changeover is organized only as the trainer's view, so every other stakeholder (auditor, manager, executive) is unserved; lockout and deployment serve several lenses and do not fire. That is one stakeholder view privileged over the rest.
+- **pkm1-p04** (Prescription, The Nature of Process Knowledge): Process knowledge needs methods specific to its kind, carried out by people skilled at capturing and conveying it, not generic knowledge handling.
+  - valid: Field `ElicitationSessions.IsGenericOrUnskilledCapture`. Fires when a session captured knowledge with a method outside the elicitation family or without the organization's knowledge engineer running it. It fires on the three earlier sessions a finance analyst, a communications manager and a policy owner ran, and on none of the lockout sessions Sam Adeyemi ran with elicitation methods.
+- **pkm1-p05** (Prescription, The Nature of Process Knowledge): Because managing process is non-linear and spans tacit and explicit knowledge, capture must not rely on isolated data points alone.
+  - valid: Field `KnowledgeFragments.RestsOnSingleDataPoint`. Fires on approved knowledge that no second session or practitioner supports. It fires on the mixer 2 twin-drive rule, whose only other data point (Ken in think-aloud) disagrees, and on the retyped manual note; it does not fire on the bleed cue, corroborated by shadowing and by an incident, nor on the shift hand-off corroborated in the workshop.
+- **pkm1-p06** (Prescription, Process Knowledge Frameworks): How knowledge is structured, linked and found must count as much as what it contains.
+  - valid: Field `Resources.IsContentWithoutOrganization`. Fires when a resource has content (a description) but lacks structure (no type from the artifact-type scheme), findability (no keywords) or linkage (no procedure or step references it). The press-7 changeover PDF has content but no keywords, so it fires; the typed, keyworded, referenced 2019 lockout SOP does not. Content alone does not pass.
+- **pkm1-p07** (Prescription, Process Knowledge Frameworks): Organizational process knowledge must be reachable, shareable between people and usable as a basis for action.
+  - valid: Field `ProcedureVersions.IsUnreachableKnowledge`. Fires on a current version that no one can reach: no published document or diagram and no consuming system holds it, so it cannot be shared or acted on. Fires on the conveyor maintenance, close and policy versions; not on lockout 2.0.0, deployment 3.2.0 or press changeover, which are published or synced.
+- **pkm1-p08** (Prescription, Process Knowledge Frameworks): Documents, training and mentoring decay, so the system must detect stale documentation and knowledge held only by people who have left.
+  - valid: Field `Procedures.HasDecayedTransferChannel`. Detects both kinds of decay the claim names: TRUE when a procedure's repository entry is past its review interval or some of its know-how is held only by someone who left with nothing transferred or captured. It fires on production deployment (stale go/no-go notes and a departed SRE's health-check judgment) and customer incident response (a departed incident lead's triage heuristics), and is FALSE on the other eight procedures.
+- **pkm1-p09** (Prescription, Process Knowledge Frameworks): Encoded process knowledge must carry versions and be auditable.
+  - valid: Field `ModelChangeLogEntries.CannotBeAudited`. Fires on a change log entry that names no author or belongs to no schema release or instance data version: the bulk-loaded OperatingTemperature property and the hotfix-channel data load with no recorded author. Encoded knowledge that carries no version or no author is exactly what cannot be audited.
+- **pkm1-p10** (Prescription, Process Knowledge Frameworks): Encoded process knowledge must spread consistently to the systems that consume it.
+  - valid: Field `ConsumerSystemSyncs.IsBehindCanonicalVersion`. Fires when a consuming system holds a different version from the one the model says is current: the maintenance tablet still holds the deprecated lockout 1.0.0. The copilot, release bot and graph syncs hold the current version and do not fire. Encoded knowledge that has not spread consistently is exactly this.
+- **pkm1-p11** (Prescription, Process Knowledge Frameworks): Encoded process knowledge must support querying, validation and machine reasoning.
+  - valid: Field `ProcedureVersions.IsNotQueryValidateReasonReady`. Fires on a current version that no structured query reads, that never passed PKO profile validation, or that has no assertion in a snapshot a reasoner found consistent. Lockout 2.0.0 and deployment 3.2.0 pass all three; conveyor maintenance (failed validation, never queried or reasoned) and press changeover fire.
+- **pkm1-p12** (Prescription, Process Knowledge Frameworks): Encoding strips nuance and situated judgment, so computation must support human expertise instead of standing in for it.
+  - valid: Field `AssistantAnswers.ActedOnWithoutHumanJudgment`. Fires when an AI recommendation on a step that requires human confirmation was acted on with no expert review: the release assistant's advice to treat a chat message as the release approval was acted on. The risk classifier's recommendation reviewed by the release manager does not fire. Computation standing in for the judgment the step reserves to a person is the violation.
+- **pkm1-p13** (Prescription, Semantic Ecosystems and Process): The representation must carry context and meaning beyond a fixed tabular schema.
+  - valid: Field `RulebookTables.MeaningIsOnlyTabular`. Fires on a table with no semantic mapping to any ontology term, whose meaning is only its column layout (52 tables, e.g. ChangeRequests); the 101 mapped tables do not fire. It detects where the representation carries no context or meaning beyond the fixed schema.
+- **pkm1-p14** (Prescription, Semantic Ecosystems and Process): Rules on whether a relationship is direct or indirect must be enforced.
+  - valid: Field `TermRelations.AssertsIndirectLinkAsDirect`. Fires when a skos:broader link, which must be direct, is asserted from a concept to its grandparent. The SOP index linked accumulator bleed-down straight to lockout/tagout although it sits under energy isolation, so it fires; the associative relations do not. The rule that a direct relation cannot stand in for an indirect one is enforced.
+- **pkm1-p15** (Prescription, Semantic Ecosystems and Process): The expected datatype and format of values must be enforced.
+  - valid: Field `ExecutionEntities.ViolatesDeclaredDatatypeOrFormat`. Fires when a recorded value's datatype or media type differs from what its step variable declares. The 2026-07-14 hotfix recorded its risk report as a text/plain chat message where deploy-02 declares a RiskReport in application/json, so it fires; the conforming PDF verification record and JSON risk report do not. Expected datatype and format are enforced.
+- **pkm1-p16** (Prescription, Semantic Ecosystems and Process): Process models must rest on a formal ontology that can be extended for a domain; a conventional notation alone gives no semantic interoperability.
+  - valid: Field `ProcedureVersions.RestsOnNotationOnly`. Fires for a version whose steps came over from a diagram with no ontology type (the 2019 lockout checklist), where the notation alone gives nothing a reasoner can interpret.
+- **pkm1-p17** (Prescription, Semantic Ecosystems and Process): Queries must be able to traverse both the ontology and the instance layer.
+  - valid: Field `KnowledgeQueryDefinitions.MissesALayer`. Fires when a question that needs ontology and instance data together is answered by a query walking only one: 'is the accountable agent software?' was run as flat SQL over an agents export, which cannot see that a software agent is a kind of agent. The federated SPARQL approver query walks both and does not fire.
+- **pkm1-p18** (Prescription, Semantic Ecosystems and Process): Process knowledge must be queryable across distributed knowledge bases without first consolidating them into one store.
+  - valid: Field `KnowledgeQueryDefinitions.ConsolidatedDistributedSources`. Fires when a query over several knowledge systems only ran after copying them into one store: the plant-wide lockout query reads a nightly consolidated warehouse copy of the tablet and register. The approver query federates the graph and register without consolidation and does not fire.
+- **pkm1-p19** (Prescription, Semantic Ecosystems and Process): Provenance must travel with knowledge as it propagates, because trust depends on it.
+  - valid: Field `ConsumerSystemSyncs.DropsProvenanceInTransit`. Fires when a version had its author on record and the copy a consuming system received dropped that provenance: the procedural graph's copy of deployment 3.2.0. The other syncs carried provenance and do not fire.
+- **pkm1-p20** (Prescription, Foundation for AI Systems and Workfows): Insight that AI produces about a process must be represented, validated and folded back into the knowledge base.
+  - valid: Field `AiInsightProposals.IsUnvalidatedOrStrandedInsight`. Fires when an AI insight was folded into a change request with nobody validating it (the variance AI's timestamp pattern) or was validated and never folded back (the classifier's after-16:00 hotfix pattern). The copilot's gauge pattern, validated and carried into a change request, does not fire.
+- **pkm1-p21** (Prescription, Foundation for AI Systems and Workfows): An AI must not be trusted to track state across a multi-step workflow; the representation supplies the dependencies that keep it valid.
+  - valid: Field `AssistantAnswers.LostTrackOfState`. Fires when an assistant acted as if the execution were at a step the execution record shows never completed: the copilot assumed locks were on during a paused run, and the release assistant assumed the approval gate had run. The record of step executions, not the AI, holds the state; answers consistent with it do not fire.
+- **pkm1-p22** (Prescription, Foundation for AI Systems and Workfows): Whether an AI output meets its constraints must be checkable against a shared model of how the process should run.
+  - valid: Field `AssistantAnswers.ContradictsSharedModel`. Checks each AI answer's asserted next step against the procedure's transition graph and fires when no transition allows it: the copilot told a technician to go from applying locks (05) straight to maintenance (07). Answers whose next step the graph allows do not fire.
+- **pkm1-p23** (Prescription, Foundation for AI Systems and Workfows): A recommendation must be traceable to explicit process knowledge so stakeholders can judge it against organizational intent.
+  - valid: Field `AssistantAnswers.RecommendationRestsOnNothingExplicit`. Fires on a recommendation grounded in none of the organization's explicit process knowledge: the release assistant's hotfix advice rested on an external forum thread only. Recommendations grounded in the step-06 or approval-gate segments do not fire.
+- **pkm1-p24** (Prescription, Foundation for AI Systems and Workfows): Recommended actions must be checked against the regulatory requirements that apply to them.
+  - valid: Field `AssistantAnswers.IsUncheckedRegulatedRecommendation`. Fires on a recommendation acting on a step that carries a regulatory requirement which was never checked against it: the copilot's advice to skip the second zero-energy verification (hazardous energy standard). The two recommendations checked against the change-control requirement do not fire.
+- **pkm1-p25** (Prescription, Its Not Easy, But it's Worth It): Mining event logs misses tacit expertise, so it must be complemented by capture from experienced workers.
+  - valid: Field `ProcessMiningRuns.IsDeviationUnexplainedByPeople`. TRUE when a mining run found non-conforming variants and no capture from people that holds the reasoning behind them complements the run. It fires on the close cutoff-bypass run (3 of 8 variants conform, nobody asked why) and not on the deployment run, whose hotfix bypass Grace Holloway explained in an interview; a mining finding left uncomplemented is exactly the breach.
+- **pkm1-p26** (Prescription, Its Not Easy, But it's Worth It): Models inferred from event logs record what happened, not what was intended, and must stay distinguishable from intended process logic.
+  - valid: Field `MinedFlowEdges.IsMinedPathRecordedAsIntentWithoutDecision`. TRUE when a hand-off reconstructed from the event log is recorded as intended process logic with nobody having decided it should be. It fires on the deploy-05 -> deploy-04 retry loop, silently promoted from the log, and not on deploy-04 -> deploy-05 (decided by an engineer) or edges kept as Observed; the breach is mined behavior becoming indistinguishable from intent.
+- **pkm1-p27** (Prescription, Its Not Easy, But it's Worth It): Representations must be governed so they stay aligned with how the process runs; neglected ones degrade into artifacts AI cannot rely on.
+  - valid: Field `GovernedModels.IsNeglectedAndDrifting`. Fires on the production deployment family: no steward activity for over ninety days while an open practice mismatch is recorded. That is a representation left ungoverned while it degrades away from how the process runs.
+- **pkm1-p28** (Prescription, Its Not Easy, But it's Worth It): Context-dependence must be captured through explicit scoping of where knowledge holds, without unmanageable complexity.
+  - valid: Field `Steps.IsContextSensitiveButUnscoped`. Fires when a step's significance depends on context and a recorded dependency names no applicability scope. loto-03's dependence on the press-7 retrofit has no scope, so it fires; the night-shift and EU-freeze dependencies point at one compact ApplicabilityScopes row and do not. Context is captured by explicit scoping rather than by forking the procedure.
+- **pkm1-p29** (Prescription, Its Not Easy, But it's Worth It): When stakeholders legitimately disagree about a process, the system keeps each view with its source rather than forcing one agreed version.
+  - valid: Field `StakeholderPerspectives.IsDissentingViewNotKeptWithSource`. TRUE when a perspective that conflicts with another was overridden into one agreed version or is kept without the material it comes from. It fires on the release manager's hotfix view, overridden by the auditor's, and not on the technician and safety officer views of zero-energy verification, both retained with their sources.
+- **pkm1-p30** (Prescription, Its Not Easy, But it's Worth It): Process knowledge must stay aligned with how organizations adapt, so knowledge that no longer matches practice is detectable.
+  - valid: Field `GovernedModels.HasOpenPracticeDrift`. Makes knowledge that no longer matches practice detectable per model: true for production deployment (SRE verification not in the register) and lockout/tagout (night shift still using the 2019 shutdown step), false where drift was resolved or never observed.
+- **pkm1-p31** (Prescription, Integrated Process Intelligence): Infrastructure must link process-modeling tools, semantic repositories and AI platforms.
+  - valid: Field `KnowledgeConsumerSystems.IsUnlinkedToolchainComponent`. Fires on a process modeling tool, semantic repository or AI platform linked to neither the shared model nor any AI integration: the process modeling workbench. The procedure register and both AI platforms are linked and do not fire.
+- **pkm1-p32** (Prescription, Integrated Process Intelligence): Access to process knowledge must be controlled.
+  - valid: Field `RulebookTables.IsUnsecuredGovernanceRecord`. Fires on governance tables no access policy controls (every loop-10 governance table), and not on governance tables that carry row-level policies (Requirements, Exceptions, AuthorityBoundaries). Uncontrolled access to the records of who may change process knowledge is the breach.
+- **pkm1-p33** (Prescription, Integrated Process Intelligence): Modeling must follow stated modeling conventions.
+  - valid: Field `RulebookTables.LacksSemanticTypeConvention`. The model's stated convention is that every table carries a SemanticTypeIri column; this counts that column in the field census and fires on tables that break the convention (for example OntologyProfiles, SemanticMappings, RulebookReleases).
+- **pkm1-p34** (Prescription, Integrated Process Intelligence): Process knowledge must pass defined validation procedures.
+  - valid: Field `RulebookReleases.ReleasedDespiteFailedValidation`. Fires on release 0.10.0, which shipped the RoleAssignments domain narrowing although its acceptance validation run failed two tests; releases whose runs passed read false.
+- **pkm1-p35** (Prescription, Integrated Process Intelligence): Process knowledge must be under version control.
+  - valid: Field `RulebookReleases.IsUntaggedRelease`. Fires on release 0.8.2, which has no version-control commit or tag; every other governed release records its commit, so version control of the model is checked release by release.
+- **pkm1-p36** (Prescription, Integrated Process Intelligence): Stakeholders must be engaged in shaping process knowledge.
+  - valid: Field `Procedures.HasUnengagedStakeholder`. TRUE when a stakeholder department of a procedure was never engaged in shaping its knowledge. It fires on production deployment, whose compliance stakeholder was never engaged, and is FALSE on lockout/tagout, where maintenance and production were both engaged; an unengaged stakeholder is exactly the breach the prescription forbids.
+- **pkm1-p37** (Prescription, Integrated Process Intelligence): Expertise must be recognized and credited.
+  - valid: Field `KnowledgeRepositoryEntries.IsUncreditedExpertKnowHow`. TRUE when an entry records another person's expertise without crediting them. It fires on the lockout quick reference card Lin wrote from Ken's know-how without naming him, and is FALSE on entries that credit their source or record the author's own expertise.
+- **pkm1-p38** (Prescription, Integrated Process Intelligence): Disagreements over process knowledge must have a resolution practice.
+  - valid: Field `DepartmentProcessAccounts.IsUnresolvedDisagreement`. TRUE when two departments give contradicting accounts of the same process and no resolution practice was used. Engineering's and customer support's accounts of deployment rollback fire; the maintenance/production conflict over bleed time, settled by a timed joint walk-down, does not.
+- **pkm1-p39** (Prescription, Integrated Process Intelligence): Organizational memory must stay intact as staff come and go.
+  - valid: Field `Organizations.MemoryLeavesWithStaff`. TRUE when some know-how of people who left was neither transferred nor captured, so the organization's memory did not stay intact through turnover. acme-engineering fires (two of three departed carriers' know-how lost); acme-plant does not, because Walter's die-shim know-how passed to Ken before he retired.
+- **pkm1-p40** (Prescription, Integrated Process Intelligence): Controlled vocabularies must be developed and metadata managed for process knowledge.
+  - valid: Field `Procedures.LacksManagedControlledVocabulary`. Fires when a procedure with specified steps has no controlled vocabulary whose metadata (governing role, establishment date) is managed. Conveyor maintenance has only an ungoverned PDF glossary, so it fires; lockout, deployment, close and policy each have a governed scheme and do not.
+- **pkm1-p41** (Prescription, Conclusion): Process knowledge must convey how to carry out a task to both human and machine consumers.
+  - valid: Field `ProcedureVersions.ServesOnlyHumansOrOnlyMachines`. Fires on a current version that is conveyed to people or to machines but not both: press changeover reaches only the copilot's AI platform. Lockout 2.0.0 and deployment 3.2.0 reach technicians through published projections and AI through syncs and served assertions, and do not fire.
+- **pkm1-p42** (Prescription, Conclusion): AI that carries out ordered, knowledge-dependent tasks should rest on process knowledge structured with semantic context through ontologies.
+  - valid: Field `AiAdoptionInitiatives.AgentOnNotationOnlyProcedure`. Fires when an agentic AI carries out a procedure whose steps have no ontology type and so no semantic context: the checklist bot runs on the 2019 lockout transcription. Agents on typed versions do not fire.
+- **pkm1-q01** (CompetencyQuestion, Process Knowledge Frameworks): Which steps make up this process?
+  - valid: RoleQuestion `aq-pkm1-q01`. Asks which steps make up each process and which procedures exist only as a document.
+- **pkm1-q02** (CompetencyQuestion, Process Knowledge Frameworks): Which processes use this resource?
+  - valid: RoleQuestion `aq-pkm1-q02`. Asks which procedures and steps use each resource.
+- **pkm1-q03** (CompetencyQuestion, Process Knowledge Frameworks): Which conditions have tended to accompany past process failures?
+  - valid: RoleQuestion `aq-pkm1-q03`. Asks which issues coincided with a checked condition that did not hold.
+- **pkm1-q04** (CompetencyQuestion, The Nature of Process Knowledge): In what order do the tasks run, and what must hold before each can proceed?
+  - valid: RoleQuestion `aq-pkm1-q04`. Asks what must be complete before each step and whether any step ran first.
+- **pkm1-q05** (CompetencyQuestion, The Nature of Process Knowledge): Where are the bottlenecks in this process?
+  - valid: RoleQuestion `aq-pkm1-q05`. The operations manager's bottleneck question, answered by TacticalResourceAllocations.IsBottleneck and Steps.IsBottleneckStep: north-station padlocks and night verifier hours are demanded beyond capacity.
+- **pkm1-q06** (CompetencyQuestion, The Nature of Process Knowledge): Why does this process exist, and what trade-offs does it make?
+  - valid: RoleQuestion `aq-pkm1-q06`. The VP's question on why each procedure exists and what it trades off, answered by ProcessStrategicAlignments and Procedures.HasNoStatedReasonForExisting / ProcessStrategicAlignments.StatesNoTradeOff.
+- **pkm1-q07** (CompetencyQuestion, The Nature of Process Knowledge): How does this process's performance connect to business outcomes?
+  - valid: RoleQuestion `aq-pkm1-q07`. The VP's question on how performance connects to business outcomes, answered by ProcessOutcomeMeasures.BusinessOutcome and Procedures.MeasuresPerformanceWithoutBusinessLink (conveyor maintenance is measured but tied to nothing).
+- **pkm1-q08** (CompetencyQuestion, Semantic Ecosystems and Process): Where did this knowledge item come from, how was it produced, and who confirmed it?
+  - valid: RoleQuestion `aq-pkm1-q08`. The auditor's question is answered per knowledge item by ProvenanceStatement (origin, route, confirmation), and HasIncompleteProvenance flags the item missing one of the three: the deploy-02 definition the wiki extractor produced, which nobody confirmed.
+- **pkm1-q09** (CompetencyQuestion, Its Not Easy, But it's Worth It): Which stakeholder perspectives on this process conflict, and where does each come from?
+  - valid: RoleQuestion `aq-pkm1-q09`. The steward's question is answered by StakeholderPerspectives: IsInConflict marks the four views that conflict (zero-energy verification, hotfix approval), and SourceMaterial / SourceMaterialKind say which transcript, excerpt or interview each comes from.
+- **pkm1-q10** (CompetencyQuestion, Foundation for AI Systems and Workfows): Which deliverables are blocked because a prerequisite is not complete?
+  - valid: RoleQuestion `aq-pkm1-q10`. Asks which work is blocked because its prerequisite has not completed.
+- **pkm1-q11** (CompetencyQuestion, Foundation for AI Systems and Workfows): Which explicit process knowledge does this AI recommendation rest on?
+  - valid: RoleQuestion `aq-pkm1-q11`. The release manager's question; IsExplicitlyGroundedRecommendation reads, per recommendation, whether it names explicit process knowledge, and the AnswerGroundings rows list which segments and assertions each rests on.
+- **pkm1-q12** (CompetencyQuestion, Foundation for AI Systems and Workfows): Which recommended actions conflict with an applicable regulatory requirement?
+  - valid: RoleQuestion `aq-pkm1-q12`. The safety officer's question; ConflictsWithRegulation fires on the recommendation a requirement check found in conflict with the change-control requirement.
+- **pkm1-q13** (CompetencyQuestion, Its Not Easy, But it's Worth It): Where does behavior mined from event logs depart from the intended process logic?
+  - valid: RoleQuestion `aq-pkm1-q13`. IsUndocumentedPath on each mined hand-off answers where log behavior departs from intended logic: the hotfix path deploy-02 -> deploy-04 (no approval) and the deploy-05 -> deploy-04 retry, neither in StepTransitions.
+- **pkm1-q14** (CompetencyQuestion, Its Not Easy, But it's Worth It): Which formal process representations no longer match how the process runs today?
+  - valid: RoleQuestion `aq-pkm1-q14`. The process steward's question is answered by DriftObservations.IsOpenPracticeMismatch, which names each representation (procedure version) observed not to match how the process runs and still unresolved.
+- **pkm1-q15** (CompetencyQuestion, Conclusion): Does this AI task follow ordered steps and depend on organizational knowledge, and so call for a process knowledge framework?
+  - valid: RoleQuestion `aq-pkm1-q15`. The AI enablement lead's question; CallsForProcessKnowledgeFramework is TRUE for initiatives whose task follows ordered steps and depends on organizational knowledge, FALSE for the single-shot risk classification and the routing AI.
+- **pkm1-s01** (Standard, Semantic Ecosystems and Process): RDF and OWL to structure knowledge with ontologies that support formal reasoning, inference and explicit semantics.
+  - valid: OntologyProfile `owl-2`. The OWL 2 profile, whose mappings record that the generated ontology declares tables as owl:Class and relationships as owl:ObjectProperty in RDF.
+- **pkm1-s02** (Standard, Integrated Process Intelligence): SPARQL as the query language over the knowledge graph.
+  - valid: OntologyProfile `sparql-1-1`. The SPARQL 1.1 profile; its mapping records that the OWL substrate computes step reachability with the SPARQL property path leadsTo+.
+- **pkm1-s03** (Standard, Semantic Ecosystems and Process): BPMN as a conventional process vocabulary.
+  - valid: OntologyProfile `bpmn-2-0`. The BPMN 2.0 profile, mapping steps to bpmn:Task and transitions to bpmn:SequenceFlow for projected diagrams.
+- **pkm1-s04** (Standard, Semantic Ecosystems and Process): PROV-O for provenance.
+  - valid: OntologyProfile `prov-o`. The PROV-O profile, mapped to execution entities, participants, served-assertion provenance and answer derivations.
+- **pkm1-s05** (Standard, Its Not Easy, But it's Worth It): Process mining over event logs as a partial aid to knowledge acquisition.
+  - valid: KnowledgeMethod `ProcessMining`. Applied by MethodApplications ma13-process-mining-deploy to the CI/CD event log; its output is the mined event trace material and the MinedFlowEdges, and IsDeviationUnexplainedByPeople records that it is a partial aid that needs capture from people.
+- **pkm1-s06** (Standard, Its Not Easy, But it's Worth It): Named graphs, reification or contextualized knowledge bases to keep knowledge within the context where it holds.
+  - valid: OntologyProfile `sparql-11-sd`. SPARQL 1.1 Service Description's named graphs: ApplicabilityScopes maps to sd:NamedGraph and NamedGraphIri to sd:name, so knowledge scoped to a context is kept in the named graph where it holds.
+- **pkm1-s07** (Standard, Process Knowledge Frameworks): The SECI knowledge-conversion model.
+  - valid: KnowledgeMethod `SeciConversion`. Applied by method application ma7-loto-seci, which typed the lockout bleed knowledge's conversions by SECI mode in KnowledgeConversions.
+- **pkm1-s08** (Standard, The Nature of Process Knowledge): Polanyi's distinction between tacit and explicit knowledge.
+  - valid: KnowledgeMethod `PolanyiTacitExplicitDistinction`. Applied by method application ma7-loto-polanyi, which classified the lockout fragments and knowledge holdings as tacit or explicit before loto-v2.0.0 was encoded.
+
+## pkm-2: Process Knowledge Management, Part II: Collection Development and Organizing Principles
+
+
+### Covered (283)
+
+- **pkm2-c01** (Concept, The Challenge of Elicitation): Elicitation turns lived practice into explicit statements, and something is always lost along the way.
+  - valid: Field `KnowledgeFragments.LostInTranslation`. Records, for each elicited fragment, what its explicit statement fails to carry of the practice: the pitch change behind the bleed cue, Victor's reasons behind the twin-drive rule, what makes Tomas distrust a zero reading.
+- **pkm2-c02** (Concept, The Challenge of Elicitation): Expertise a practitioner holds but cannot put into words, recorded as a property of a knowledge source.
+  - valid: Field `PractitionerExpertise.UnstatedBasis`. Records, as a property of the practitioner holding the expertise, the basis they could not put into words: Tomas knows a bleed has not taken before the gauge settles and cannot say what in the sound tells him.
+- **pkm2-c03** (Concept, The Challenge of Elicitation): Every elicitation method gives up some accuracy for practicality, or some depth for reach.
+  - valid: Field `KnowledgeMethods.ElicitationTradeoff`. States for each elicitation method what it gives up and for what: interviews give up accuracy for practicality, shadowing gives up reach for depth, workshops give up depth for reach, critical incidents give up accuracy for practicality.
+- **pkm2-c04** (Concept, Collaborative Workshops): Practitioners who hold process knowledge.
+  - valid: Field `ElicitationParticipants.IsPractitioner`. TRUE for participants who hold the process knowledge by doing the work: Tomas Reyes and Rosa Delgado in the lockout workshop, Amina Yusuf in the policy workshop.
+- **pkm2-c05** (Concept, Collaborative Workshops): Subject matter experts.
+  - valid: Field `ElicitationParticipants.IsSubjectMatterExpert`. TRUE for the subject matter experts in the room: the plant safety officer and the operations manager in the lockout workshop, the people policy owner in the policy workshop.
+- **pkm2-c06** (Concept, The Anthropologist): Knowledge engineers who collect process knowledge.
+  - valid: Field `ElicitationParticipants.IsKnowledgeEngineer`. TRUE for Sam Adeyemi, the knowledge engineer collecting the process knowledge in the lockout workshop.
+- **pkm2-c07** (Concept, Collaborative Workshops): Knowledge producers.
+  - valid: Field `ElicitationParticipants.IsKnowledgeProducer`. TRUE for participants who produce the knowledge being collected, such as the technician Tomas Reyes.
+- **pkm2-c08** (Concept, Collaborative Workshops): Knowledge consumers.
+  - valid: Field `ElicitationParticipants.IsKnowledgeConsumer`. TRUE for participants who consume it, such as the operations manager and the knowledge engineer.
+- **pkm2-c09** (Concept, Elicitation Methodologies: Knowledge Collection): Why a practitioner makes a particular choice.
+  - valid: Field `InterviewProbes.WhyAnswer`. Holds the reason a practitioner gave when an interview asked why they make a choice: Tomas waits before bleeding again because the press 3 accumulator refills from the dryer.
+- **pkm2-c10** (Concept, Elicitation Methodologies: Knowledge Collection): What practitioners do when the standard procedure proves insufficient.
+  - valid: Field `InterviewProbes.ShortfallAnswer`. Holds what the practitioner does when the standard procedure proves insufficient: on a capacitor-bank retrofit Tomas waits five minutes and re-tests before anyone reaches in.
+- **pkm2-c100** (Concept, From Organization to Representation): Purely syntactic representations lose the context that gives process knowledge its value.
+  - valid: Field `ProcedureVersions.RestsOnNotationOnly`. TRUE for the 2019 lockout version, whose steps came over from a checklist diagram with no ontology type: a purely syntactic representation that carries none of the context a reasoner or reader outside the drawing needs.
+- **pkm2-c101** (Concept, Integration: Making Process Knowledge Work): Drift: encoded knowledge falling out of step with practice as processes appear and change.
+  - valid: Table `DriftObservations`. Each row is an observed case of encoded knowledge falling out of step with practice, with how it was detected, what caused it and whether it was resolved.
+- **pkm2-c102** (Concept, Integration: Making Process Knowledge Work): Recurring collection occasions such as retrospectives, process reviews and improvement initiatives.
+  - valid: Table `CollectionOccasions`. Recurring collection occasions with a cadence: the monthly release retrospective, the quarterly lockout process review and the close improvement initiative, with the materials each produced.
+- **pkm2-c103** (Concept, Standards and Interoperability): How a piece of knowledge was derived.
+  - valid: Field `KnowledgeTraces.DerivationRoute`. Every trace records how the knowledge was derived from its source: paraphrased from a runbook section, extracted by the wiki extractor from a transcript, mined from the event log, observed and written up.
+- **pkm2-c104** (Concept, Standards and Interoperability): Who validated a piece of knowledge.
+  - valid: Field `KnowledgeTraces.ValidatedByAgent`. Every trace records the agent who validated the derived knowledge (plant safety officer, release manager, auditor, senior technician), or blank when nobody has.
+- **pkm2-c105** (Concept, Feedback Loops): Searches, and whether each one found something.
+  - valid: Field `KnowledgeSearchEvents.FoundNothingUseful`. Each search is a row, and this field records whether it found something: the press-7 accumulator search and the mixer-2 search found nothing useful.
+- **pkm2-c106** (Concept, Feedback Loops): Queries users abandon.
+  - valid: Field `KnowledgeSearchEvents.WasAbandoned`. Records queries users abandoned (the press-7 and mixer-2 searches), with SecondsBeforeAbandoning beside it.
+- **pkm2-c107** (Concept, Feedback Loops): Time users spend with the knowledge.
+  - valid: Field `KnowledgeSearchEvents.DwellSeconds`. Records the time each searcher spent with what was found, from 1 second for an assistant retrieval to 240 seconds reading the runbook.
+- **pkm2-c108** (Concept, Feedback Loops): AI failures.
+  - valid: Field `AssistantAnswers.TaskOutcome`. Records each AI task as Completed or Failed; failures include the copilot telling a technician to start maintenance before zero energy was verified.
+- **pkm2-c109** (Concept, Feedback Loops): AI task completion rates.
+  - valid: Field `Agents.AiTaskCompletionPercent`. Each AI agent's task completion rate computed from its recorded answers: 42.9% for the plant copilot, 25% for the release assistant, 100% for the risk classifier.
+- **pkm2-c11** (Concept, Elicitation Methodologies: Knowledge Collection): Specific past episodes where a process went well, went badly, or had to be improvised.
+  - valid: Field `CriticalIncidents.Outcome`. Each collected episode is typed WentWell, WentBadly or Improvised: the mixer 2 second-drive restart went badly, the press 3 gauge episode was improvised, the conveyor 5 hand-off went well.
+- **pkm2-c110** (Concept, Feedback Loops): Documented inaccuracies in AI responses or workflows.
+  - valid: Field `AssistantAnswers.DocumentedInaccuracy`. The documented inaccuracy in each wrong AI response, e.g. 'Named the superseded classifier 2.4.0; 2.4.1 has held the role since January.'
+- **pkm2-c111** (Concept, Feedback Loops): Efficiency as a measured outcome.
+  - valid: Field `KnowledgeOutcomeMeasurements.MinutesPerRun`. Efficiency measured as an outcome: minutes per lockout run for each crew and AI initiative.
+- **pkm2-c112** (Concept, Feedback Loops): Error rates as a measured outcome.
+  - valid: Field `KnowledgeOutcomeMeasurements.ErrorRatePercent`. Error rate measured as an outcome for each crew and AI initiative (9% south night crew, 2.5% north day crew).
+- **pkm2-c113** (Concept, Feedback Loops): Customer satisfaction as a measured outcome.
+  - valid: Field `KnowledgeOutcomeMeasurements.SatisfactionScore`. Customer satisfaction measured as an outcome, on a 1-5 scale, for each crew's internal customers.
+- **pkm2-c114** (Concept, Feedback Loops): Friction practitioners report because some knowledge is missing.
+  - valid: Field `ModelAnnotations.AnnotationKind`. Practitioners report friction from missing knowledge as MissingKnowledge annotations, e.g. 'No isolation map exists for mixer 2's second drive.'
+- **pkm2-c115** (Concept, Conclusion): Adequacy: knowledge rich enough to guide AI.
+  - valid: Field `ProcedureVersions.IndexedSegmentCount`. Adequacy for AI: how many retrieval segments of the version are served to AI; zero for versions too thin to guide an assistant.
+- **pkm2-c116** (Concept, Conclusion): Adequacy: knowledge findable enough to support search.
+  - valid: Field `ProcedureVersions.SearchSuccessPercent`. Adequacy for search: the share of searches made while working with the version that found something useful (60% for lockout 2.0.0).
+- **pkm2-c117** (Concept, Conclusion): Adequacy: knowledge clear enough to support collaboration.
+  - valid: Field `ProcedureVersions.OpenQuestionAnnotationCount`. Adequacy for collaboration: open clarifying questions collaborators attached to the version, a direct measure of where it is unclear.
+- **pkm2-c12** (Concept, Elicitation Methodologies: Knowledge Collection): Judgment calls that written procedures hide, linked to the episode that brought them out.
+  - valid: Field `CriticalIncidents.JudgmentFragment`. Links each episode to the knowledge fragment recording the judgment call it brought out: the mixer 2 restart to the twin-drive isolation fragment, the press 3 gauge episode to the bleed cue.
+- **pkm2-c13** (Concept, Elicitation Methodologies: Knowledge Collection): Knowledge gaps caused by gatekeeping or knowledge sabotage, which also produce silos.
+  - valid: Field `KnowledgeGaps.IsGatekeepingOrSabotage`. TRUE for gaps caused by gatekeeping or knowledge sabotage, each recording the silo it created (SiloedWithin): the press 3 day crew withholding its bleed check, and the override card removed from the retrofit binder.
+- **pkm2-c14** (Concept, Elicitation Methodologies: Knowledge Collection): Each knowledge item classified as tacit or explicit.
+  - valid: Field `KnowledgeFragments.KnowledgeForm`. Every knowledge fragment is classified by form: Tacit, Explicit, Implicit or SituatedJudgment.
+- **pkm2-c15** (Concept, The Anthropologist): Observation, shadowing and legitimate peripheral participation.
+  - valid: Field `ElicitationSessions.ObserverStance`. Records how the observer took part: NonParticipantObservation in the close shadowing, Shadowing of Ken on press line 3, and LegitimatePeripheralParticipation when Sam fetched locks and staged tools for Tomas's crew while asking about each move.
+- **pkm2-c16** (Concept, The Anthropologist): The small choices made during actual practice.
+  - valid: Field `ObservedActions.IsSmallChoice`. TRUE for small choices seen during actual practice: Ken resting a hand on the valve body after a bleed, Devon rechecking the FX rate before posting.
+- **pkm2-c17** (Concept, The Anthropologist): Unofficial workarounds used in actual practice.
+  - valid: Field `ObservedActions.IsUnofficialWorkaround`. TRUE for unofficial workarounds seen in practice: Ken hanging a spare personal lock on the cart for a colleague.
+- **pkm2-c18** (Concept, The Anthropologist): Steps missing from a practitioner's own account because they seem too obvious or are not consciously reachable.
+  - valid: Field `ObservedActions.IsOmittedFromOwnAccount`. TRUE when observation saw an action the practitioner's own account left out, such as trying the start button after lockout, which 'everybody knows'.
+- **pkm2-c19** (Concept, Process Mining): The actual flow of a process rebuilt from system event logs.
+  - valid: Table `MinedFlowEdges`. One row per step-to-step hand-off rebuilt from the CI/CD event log by a mining run, with the cases that took it and their wait times: the actual flow of the deployment process.
+- **pkm2-c20** (Concept, Process Mining): Deviations between the documented procedure and the process reconstructed from event logs.
+  - valid: Field `MinedFlowEdges.IsUndocumentedPath`. TRUE for a reconstructed hand-off that no documented transition matches: the deviation between the documented deployment procedure and the flow rebuilt from its event log.
+- **pkm2-c21** (Concept, Process Mining): Bottlenecks revealed by mined process flows.
+  - valid: Field `MinedFlowEdges.IsBottleneck`. TRUE where mined cases wait more than four times the entered step's documented duration: cases sit a day (1440 minutes) before the fifteen-minute release approval gate.
+- **pkm2-c22** (Concept, Process Mining): Mined evidence covers only observable system interactions, holding neither the reasoning nor the tacit knowledge behind them.
+  - valid: Field `CollectedSourceMaterials.HoldsReasoningOrTacitKnowledge`. Each collected material records whether it holds the reasoning or tacit knowledge behind the actions. The mined deployment event trace reads FALSE (it holds only system events) while the interview and field-note captures read TRUE; the mining-complement witness counts only the latter.
+- **pkm2-c23** (Concept, Collaborative Workshops): Workshops that gather everyone who starts, carries out, or depends on the results of a process.
+  - valid: Field `ElicitationSessions.GathersWholeProcessChain`. TRUE for a workshop whose participants include people who start the process, carry it out and depend on its results: the lockout workshop had the safety officer, technicians, the operations manager and a material handler.
+- **pkm2-c24** (Concept, Document Analysis): Existing written material, such as operating procedures, training content, decision tables and system documentation, used as a source.
+  - valid: Field `CollectedSourceMaterials.SourceDocument`. Collected excerpts name the existing document they were taken from: the deployment runbook, the 2019 lockout SOP and the press-7 retrofit drawing notes.
+- **pkm2-c25** (Concept, Document Analysis): The difference between the prescribed, static version of a process in documents and the version people enact.
+  - valid: Field `KnowledgeTraces.PrescribedVersusEnacted`. For a trace where practice evidence contradicts a document, states what the document prescribes against what was enacted: the runbook requires recorded approval, the event log shows three hotfixes rolled out with no approval event.
+- **pkm2-c26** (Concept, Document Analysis): Documented sources falling behind how the work is currently done.
+  - valid: Field `Resources.IsBehindCurrentPractice`. TRUE for a document contradicted by practice evidence collected after its last revision: the deployment runbook, last revised 2026-01-02, contradicted by the event trace of 2026-07-18.
+- **pkm2-c27** (Concept, Capturing Tacit Knowledge): Mental models experts apply.
+  - valid: Field `ExpertCognitions.IsMentalModel`. TRUE for a mental model an expert applies: Tomas treats a machine as a set of energy reservoirs to drain, not a switch to turn off.
+- **pkm2-c28** (Concept, Capturing Tacit Knowledge): Decision heuristics experts apply automatically.
+  - valid: Field `ExpertCognitions.IsAutomaticHeuristic`. TRUE for decision heuristics experts apply without deliberating: 'lock a retrofitted machine out as two machines', 'trust zero only once the needle stops'.
+- **pkm2-c29** (Concept, Capturing Tacit Knowledge): Recordings of a practitioner's work that they review afterward to explain their reasoning.
+  - valid: Field `ElicitationSessions.IsReviewedRecording`. TRUE when a recording of the practitioner's work was reviewed by that practitioner afterward to explain their reasoning: Tomas's press 3 lockout recorded on 3 April and reviewed with him on 4 April.
+- **pkm2-c30** (Concept, Capturing Tacit Knowledge): A ladder connecting a concrete action upward to the goals and values it serves.
+  - valid: Table `ConceptLadderRungs`. Holds the ladder built from a concrete action: from bleeding the pneumatic supply up to the goal 'no trapped air can move the clamp' and the value 'nobody's hand is ever inside a machine that can move', and down to its subprocess and condition.
+- **pkm2-c31** (Concept, Capturing Tacit Knowledge): The dimensions experts use to tell situations apart, including ones they never state.
+  - valid: Field `RepertoryGridConstructs.IsNeverStatedDimension`. TRUE for a dimension an expert uses to tell situations apart that only the grid comparison brought out: 'retrofitted vs original drive' and 'audible vs silent bleed', which Tomas never named unprompted.
+- **pkm2-c32** (Concept, The Social Dimension of Collection Strategies): Individuals who bridge communities of practice.
+  - valid: Field `Agents.IsBoundarySpanner`. TRUE for a person who belongs to two or more communities of practice: Lin (maintenance guild and portal community), Ken (maintenance guild and Riverbend cluster) and Joao (Riverbend and Eastvale clusters).
+- **pkm2-c33** (Concept, The Social Dimension of Collection Strategies): Meta-knowledge about organizational processes that a broker holds and no single practitioner does.
+  - valid: Field `Agents.LocatedKnowHowCount`. Counts know-how held by someone else that a broker can point seekers to. Lin knows that the Press 7 bleed-down know-how lives with Tomas without holding it herself: meta-knowledge of where process knowledge sits.
+- **pkm2-c34** (Concept, The Social Dimension of Collection Strategies): Communities of practice, each with its own vocabulary and norms.
+  - valid: Field `CommunitiesOfPractice.HasOwnVocabularyAndNorms`. TRUE for a community that speaks its own vocabulary and states its own norms: the maintenance guild (lockout vocabulary; deviations talked through at the Friday huddle) and the release guild (release vocabulary; a written note for every rollback).
+- **pkm2-c35** (Concept, The Social Dimension of Collection Strategies): A broker's translation between the vocabularies of the communities they connect.
+  - valid: Field `KnowledgeBrokerLinks.TranslationBetweenVocabularies`. The broker's translation between the words of the two communities a link connects, e.g. production's 'line stop' (plant quality vocabulary) = maintenance's 'energy isolation' (lockout vocabulary), and support's 'outage' = release engineering's 'rollback'.
+- **pkm2-c36** (Concept, The Social Dimension of Collection Strategies): Information practitioners withhold to protect status or job security.
+  - valid: Field `SourceRelationships.WithholdingMotive`. Records why a source holds information back: Ken fears documenting his die-shim tricks makes him replaceable (job security); Grace guards the go/no-go judgment that gives her release authority (status).
+- **pkm2-c37** (Concept, The Social Dimension of Collection Strategies): Departments holding conflicting accounts of the same process, each shaped by its own interests.
+  - valid: Field `DepartmentProcessAccounts.ShapingInterest`. Each department's account of a process carries the interest that shapes it: maintenance's twenty-minute bleed is shaped by technician safety, production's five minutes by uptime targets; engineering's ten-minute rollback by release velocity, support's hour of errors by incident load.
+- **pkm2-c38** (Concept, The Social Dimension of Collection Strategies): The state of trust between the knowledge engineer and a knowledge source.
+  - valid: Field `SourceRelationships.TrustLevel`. The state of trust between the knowledge engineer and each source: Established with Tomas and Lin, Building with Grace, Low with Ken.
+- **pkm2-c39** (Concept, The Social Dimension of Collection Strategies): Power dynamics that shape what a source will share.
+  - valid: Field `SourceRelationships.PowerDynamic`. The power dynamic shaping what each source shares: Tomas outranks the engineer, Grace's sessions had a supervisor present, Ken's knowledge is threatened by automation, Lin's relationship is balanced.
+- **pkm2-c40** (Concept, From Collection to Structure): The raw material collection produces: transcripts, field notes, process maps, mined event traces and document excerpts.
+  - valid: Field `CollectedSourceMaterials.MaterialKind`. Each collected item is typed as Transcript, FieldNotes, ProcessMap, MinedEventTrace or DocumentExcerpt, the raw material collection produces, with when it was organized and modeled.
+- **pkm2-c41** (Concept, Levels of Organization): Organization happens at three separate levels: conceptual, structural and contextual.
+  - valid: Field `RulebookTables.OrganizationLevel`. Every catalogued table is classified as conceptual, structural or contextual, the three levels the article organizes knowledge at.
+- **pkm2-c42** (Concept, Levels of Organization): Processes or steps: activity sequences aimed at a goal.
+  - valid: Field `Steps.ProcedureVersion`. Steps are activity sequences within a procedure version aimed at the procedure's purpose.
+- **pkm2-c43** (Concept, Levels of Organization): Activities: discrete units of work.
+  - valid: Field `Steps.StepKind`. Atomic steps are the discrete units of work.
+- **pkm2-c44** (Concept, Levels of Organization): Actors: human or computational agents who perform activities.
+  - valid: Field `StepExecutions.ExecutedByAgent`. Every step execution names the human or computational agent that performed it.
+- **pkm2-c45** (Concept, Levels of Organization): Resources: inputs consumed or tools used.
+  - valid: Field `Steps.RequiredLockCount`. Counts the locks a step consumes as required resources; tools and protective equipment are recorded the same way.
+- **pkm2-c46** (Concept, Levels of Organization): Artifacts: outputs produced.
+  - valid: Field `StepExecutions.GeneratedEntityCount`. Counts the entities a step execution generated: the artifacts it produced.
+- **pkm2-c47** (Concept, Levels of Organization): Conditions: states that enable or constrain activities.
+  - valid: Field `StepConditions.Statement`. Each condition states a state that enables or constrains a step.
+- **pkm2-c48** (Concept, Levels of Organization): Outcomes: results that signal success or failure.
+  - valid: Field `ProcedureExecutions.Outcome`. Each execution records its outcome, the result that signals success or failure.
+- **pkm2-c49** (Concept, Levels of Organization): Ordering relations between activities: precedes and its inverse.
+  - valid: Field `StepTransitions.TransitionKind`. Next transitions order steps; the inverse reading is recorded in RelationTypes.
+- **pkm2-c50** (Concept, Levels of Organization): An overlaps relation between activities.
+  - valid: Field `ProcedureVersions.OverlapsRelationCount`. Counts overlaps relations among a version's steps; notifying staff overlaps the shutdown in lockout.
+- **pkm2-c51** (Concept, Levels of Organization): A part-of relation: an activity is part of a larger one.
+  - valid: Field `Steps.ParentStep`. A sub-step records the multi-step it is part of.
+- **pkm2-c52** (Concept, Levels of Organization): An enables relation.
+  - valid: Field `ProcedureVersions.EnablesRelationCount`. Counts enables relations; a verified zero-energy state enables maintenance.
+- **pkm2-c53** (Concept, Levels of Organization): A prevents relation.
+  - valid: Field `ProcedureVersions.PreventsRelationCount`. Counts prevents relations; an applied lock prevents anyone else restoring energy.
+- **pkm2-c54** (Concept, Levels of Organization): A requires relation.
+  - valid: Field `Steps.PrerequisiteStep`. A step names the step it requires.
+- **pkm2-c55** (Concept, Levels of Organization): A performed-by relation.
+  - valid: Field `StepExecutions.ExecutedByAgent`. Each step execution is performed by a named agent.
+- **pkm2-c56** (Concept, Levels of Organization): A responsible-for relation.
+  - valid: Field `Steps.AssignedRole`. Each step names the role responsible for it.
+- **pkm2-c57** (Concept, Levels of Organization): A governed-by relation.
+  - valid: Table `StepRequirements`. Each row binds a step to a requirement that governs it.
+- **pkm2-c58** (Concept, Levels of Organization): Instances: one organization's actual processes, activities and actors placed in the conceptual framework.
+  - valid: Field `ProcedureExecutions.ExecutedOnMachine`. Executions are instances placed in the framework: a specific run of a procedure on a specific machine by a specific agent.
+- **pkm2-c59** (Concept, Levels of Organization): Each instance assigned to a suitable category.
+  - valid: Field `Procedures.ProcedureType`. Each procedure instance is assigned a category of the process taxonomy (safety-procedure, software-release, support-runbook, ...); IsInconsistentlyCategorized checks the category is a suitable leaf.
+- **pkm2-c60** (Concept, Levels of Organization): Processes placed inside bigger processes.
+  - valid: Field `Procedures.CalledByStepCount`. Lockout runs inside conveyor maintenance; the count records how many steps nest this procedure.
+- **pkm2-c61** (Concept, Levels of Organization): Activities broken into smaller sub-activities.
+  - valid: Field `Steps.ChildStepCount`. Counts the sub-steps an activity is broken into; isolation has three.
+- **pkm2-c62** (Concept, Levels of Organization): Thesauri alongside controlled vocabularies and taxonomies.
+  - valid: Field `Vocabularies.SchemeKind`. Distinguishes thesauri (the lockout, release and role schemes, which carry broader and related relations) from plain controlled vocabularies; the process taxonomy is ProcedureTypes.
+- **pkm2-c63** (Concept, Levels of Organization): A business unit in which a piece of process knowledge applies.
+  - valid: Field `ApplicabilityScopes.BusinessUnit`. The business unit a scoped piece of knowledge applies in (acme-plant, acme-engineering).
+- **pkm2-c64** (Concept, Levels of Organization): A geography in which a piece of process knowledge applies.
+  - valid: Field `ApplicabilityScopes.Geography`. The geography a scoped piece of knowledge applies in (US-OH, EU).
+- **pkm2-c65** (Concept, Levels of Organization): A customer segment in which a piece of process knowledge applies.
+  - valid: Field `ApplicabilityScopes.CustomerSegment`. The customer segment a scoped piece of knowledge applies to (Enterprise tenants).
+- **pkm2-c66** (Concept, Levels of Organization): A regulatory regime in which a piece of process knowledge applies.
+  - valid: Field `ApplicabilityScopes.RegulatoryRegime`. The regulatory regime a scoped piece of knowledge applies under (hazardous energy control standard, change control policy).
+- **pkm2-c67** (Concept, Levels of Organization): Situational variants: how experts adapt a standard process to the situation in front of them.
+  - valid: Table `SituationalVariants`. Each row is how an expert adapts the standard procedure to a situation: the situation, the adaptation, the expert it came from and its scope, e.g. bleeding the press-7 accumulator first.
+- **pkm2-c68** (Concept, Levels of Organization): Scoping annotations or conditional logic that mark where a piece of process knowledge stops applying.
+  - valid: Field `ApplicabilityScopes.ExclusionCondition`. A scoping annotation that states where the knowledge stops applying, e.g. the night-shift scope stops applying once a second verifier is rostered.
+- **pkm2-c69** (Concept, Organizing Principles): A customer service agent needs step-by-step guidance.
+  - valid: Field `StakeholderLenses.NeedsStepGuidance`. TRUE for the customer service agent lens (and the trainer): they need step-by-step guidance.
+- **pkm2-c70** (Concept, Organizing Principles): A manager needs metrics.
+  - valid: Field `StakeholderLenses.NeedsMetrics`. TRUE for the operations manager lens (also product manager and executive): they need metrics.
+- **pkm2-c71** (Concept, Organizing Principles): A manager needs exception handling.
+  - valid: Field `StakeholderLenses.NeedsExceptionHandling`. TRUE for the operations manager lens: a manager needs exception handling.
+- **pkm2-c72** (Concept, Organizing Principles): A compliance auditor needs compliance evidence.
+  - valid: Field `StakeholderLenses.NeedsComplianceEvidence`. TRUE for the compliance auditor lens: an auditor needs compliance evidence.
+- **pkm2-c73** (Concept, Organizing Principles): An AI system needs structured constraints.
+  - valid: Field `StakeholderLenses.NeedsStructuredConstraints`. TRUE for the AI system lens, served a machine-readable step-level view: an AI system needs structured constraints.
+- **pkm2-c74** (Concept, Taxonomies and Controlled Vocabularies): A process taxonomy by functional domain, such as operations, finance and human resources.
+  - valid: Field `ProcedureTypes.TaxonomyRank`. Marks the top of the process taxonomy as FunctionalDomain nodes (Operations, Finance, Human Resources, Technology, Customer Service) with process groups and process types beneath.
+- **pkm2-c75** (Concept, Taxonomies and Controlled Vocabularies): Taxonomy levels below a functional domain that break it into narrower process types.
+  - valid: Field `ProcedureTypes.BroaderProcedureType`. Each process group and process type names its broader node, so a functional domain breaks down into narrower levels (Operations > Equipment Safety > Equipment Safety Procedure).
+- **pkm2-c76** (Concept, Taxonomies and Controlled Vocabularies): An activity vocabulary with canonical preferred labels and alternative labels for variant wordings.
+  - valid: Field `TermLabelVariants.LabelKind`. The activity thesauri record one row per wording as pref (the canonical label, e.g. 'release approval review') or alt (variants such as 'sign-off', 'go/no-go').
+- **pkm2-c77** (Concept, Taxonomies and Controlled Vocabularies): A role hierarchy in which one role specializes another.
+  - valid: Field `Roles.SpecializesRole`. One role specializes another: Senior Maintenance Technician specializes Maintenance Technician; the night safety deputy specializes the plant safety officer.
+- **pkm2-c78** (Concept, Taxonomies and Controlled Vocabularies): Which departments contain which roles.
+  - valid: Field `Roles.Organization`. Each role sits in an organization, and for departments (ACME Finance, People Operations, Legal) that records which department contains the role.
+- **pkm2-c79** (Concept, Taxonomies and Controlled Vocabularies): The responsibilities each role carries, recorded in the role vocabulary.
+  - valid: Field `Roles.Responsibility`. The responsibility each role carries, recorded on the role (e.g. confirms zero-energy states and receives escalated danger cues).
+- **pkm2-c80** (Concept, Taxonomies and Controlled Vocabularies): A definition on a controlled concept.
+  - valid: Field `VocabularyTerms.Definition`. Every controlled concept carries a definition, mapped to skos:definition.
+- **pkm2-c81** (Concept, Taxonomies and Controlled Vocabularies): A scope note on a controlled concept.
+  - valid: Field `VocabularyTerms.ScopeNote`. A SKOS scope note saying how a concept is to be used, e.g. zero-energy verification is for the check after isolation, not the restart try-out.
+- **pkm2-c82** (Concept, Taxonomies and Controlled Vocabularies): Broader and narrower concepts.
+  - valid: Field `VocabularyTerms.BroaderTerm`. The direct broader concept (skos:broader); narrower concepts are its inverse (Lockout/Tagout is broader than Energy Isolation).
+- **pkm2-c83** (Concept, Taxonomies and Controlled Vocabularies): Associative relations between concepts.
+  - valid: Table `TermRelations`. Associative relations between concepts (skos:related), e.g. change risk classification related to release approval review.
+- **pkm2-c84** (Concept, Encoding for AI Systems): Retrieval segments cut at activity or decision-point boundaries, not at character counts.
+  - valid: Field `RetrievalSegments.BoundaryKind`. Records whether a retrieval segment is cut at an Activity or DecisionPoint boundary or is a CharacterWindow chunk cut by length; the lockout segments are cut at steps and at the step-06 decision, the 2019 SOP chunk by character count.
+- **pkm2-c85** (Concept, Encoding for AI Systems): A segment's position within the larger process.
+  - valid: Field `RetrievalSegments.PositionInProcess`. Holds each segment's position in the larger process, e.g. 'Step 06 of Lockout/Tagout 2.0.0: after 05 apply locks, before 07 maintenance'.
+- **pkm2-c86** (Concept, Encoding for AI Systems): A segment's applicability conditions.
+  - valid: Field `RetrievalSegments.ApplicabilityCondition`. Holds when each segment applies, e.g. 'A reading above zero, a flicker, or a hiss' for the zero-energy decision segment.
+- **pkm2-c87** (Concept, Encoding for AI Systems): Links from a segment to related segments.
+  - valid: Field `RetrievalSegments.RelatedSegment`. Links a segment to a related segment: the step-06 verification segment links to its decision segment, which links to the escalation step.
+- **pkm2-c88** (Concept, Encoding for AI Systems): Pre-conditions of an activity.
+  - valid: Field `Steps.PreconditionCount`. Counts a step's preconditions.
+- **pkm2-c89** (Concept, Encoding for AI Systems): Post-conditions of an activity.
+  - valid: Field `Steps.PostconditionCount`. Counts a step's postconditions.
+- **pkm2-c90** (Concept, Encoding for AI Systems): Conditions that stay true for the whole duration of an activity.
+  - valid: Field `Steps.InvariantCount`. Counts the invariants that must hold throughout a step.
+- **pkm2-c91** (Concept, Encoding for AI Systems): Ways an activity can fail, and the response to each.
+  - valid: Field `FailureModes.Response`. Each failure mode states what goes wrong and the response to it.
+- **pkm2-c92** (Concept, Encoding for AI Systems): Choice points in a process, with the considerations that drive each choice.
+  - valid: Field `DecisionPoints.DecidingFactors`. Each decision point states its question and the factors that drive it.
+- **pkm2-c93** (Concept, Encoding for AI Systems): Tool use and agentic AI behavior represented as process knowledge in the process graph.
+  - valid: Table `AiToolInvocations`. Each row is a tool an AI agent invoked during a step execution, tied to the Function and StepExecution in the process graph, so tool use and agentic behaviour are process knowledge in the graph rather than a log outside it.
+- **pkm2-c94** (Concept, Yeah—That Context Window Won’t Cut It): Prompts and system instructions as a lightweight, limited way of passing process knowledge to an AI.
+  - valid: Table `PromptTemplates`. Prompts and system instructions that carry process knowledge to AI agents, recorded with their token budget and size, which is exactly the lightweight, size-limited channel the article describes.
+- **pkm2-c95** (Concept, Yeah—That Context Window Won’t Cut It): Layered prompt structures: general framework guidance, with detailed procedures pulled in only when needed.
+  - valid: Field `PromptTemplates.Layer`. Distinguishes the general Framework layer from the ProcedureDetail layers pulled into it (via ParentTemplate) and AdHocContext; the plant assistant's framework prompt has lockout and press-7 detail layers beneath it.
+- **pkm2-c96** (Concept, Encoding for Communication and Collaboration): Visual encodings such as flowcharts and BPMN diagrams.
+  - valid: Field `KnowledgeProjections.Notation`. Records the visual encoding of each diagram projection: BPMN 2.0, Mermaid flowchart, Visio flowchart.
+- **pkm2-c97** (Concept, Encoding for Communication and Collaboration): Narrative encodings: readable procedures in prose.
+  - valid: Field `KnowledgeProjections.ProjectionKind`. Marks projections that are Narrative encodings -- readable procedures in prose (Markdown procedure docs, RuleSpeak) -- as distinct from diagrams.
+- **pkm2-c98** (Concept, Encoding for Communication and Collaboration): A stakeholder's preferred form for process knowledge: prose or diagrams.
+  - valid: Field `Roles.PreferredKnowledgeForm`. Records for a stakeholder role whether its people prefer process knowledge as Prose or as a Diagram (technicians Diagram, safety officer Prose).
+- **pkm2-c99** (Concept, Encoding for Communication and Collaboration): Collaborative annotations: comments, questions, suggestions and alternative interpretations on the model.
+  - valid: Table `ModelAnnotations`. Comments, questions, suggestions and alternative interpretations practitioners attach to a procedure version or step, held in their own table with where each is stored.
+- **pkm2-i01** (Illustration, The Challenge of Elicitation): A claims adjuster sensing fraud, or a nurse detecting deterioration, knows more than they can say.
+  - valid: Field `PractitionerExpertise.KnowsMoreThanCanSay`. The plant's counterpart of the adjuster sensing fraud: fires when a practitioner reliably detects a condition whose basis they cannot state. It fires on Tomas, right fourteen times about a bleed that did not take; it does not fire on Aisha, who cannot say why either but has one reliable call, nor on Ken, who states his basis.
+- **pkm2-i02** (Illustration, The Challenge of Elicitation): A software architect senses a design will be costly to maintain without being able to spell out why.
+  - valid: Field `PractitionerExpertise.IsUnexplainedForesight`. The software architect case: fires when a design judgment later proved right although its holder could not say why. It fires on Ravi's sense that the shared build cache would be costly to maintain; it does not fire on Omar's confirmed canary judgment, whose basis he stated, nor on detection expertise.
+- **pkm2-i03** (Illustration, Encoding for AI Systems): An AI booking a meeting has to know which attendees' schedules count, how long it should be and which rooms are free.
+  - valid: Field `AiToolInvocations.ActedWithoutDeclaredContext`. The meeting-booking point in this domain: an AI must know the context a step declares before acting. Fires when the copilot reserved padlocks for loto-05 with one of the two declared inputs (the isolation list, not the lock inventory), and the crew was two locks short. Invocations supplied with every declared input do not fire.
+- **pkm2-i04** (Illustration, Taxonomies and Controlled Vocabularies): The same review step appears under several different phrasings in different sources.
+  - valid: Field `VocabularyTerms.HasUnreconciledVariantPhrasings`. Fires when one concept appears under several phrasings across sources and some are not reconciled to it. Release Approval Review appears as 'sign-off' (transcript), 'go/no-go' (transcript) and 'release gate check' (runbook), the last unreconciled, so it fires; Zero-Energy Verification's phrasings all resolve and it does not.
+- **pkm2-i05** (Illustration, Taxonomies and Controlled Vocabularies): A more senior version of a role counts as a specialization of that role.
+  - valid: Field `Roles.IsSeniorVariantNotSpecialization`. Fires when a senior version of a role is not recorded as a specialization of a role in its own family. Lead Release Manager specializes nothing, so it fires; Senior Maintenance Technician specializes Maintenance Technician and does not.
+- **pkm2-i06** (Illustration, Encoding for AI Systems): A model's accuracy on spatial tasks rose sharply once it was connected to a knowledge graph and generated database queries.
+  - valid: Field `AssistantBenchmarks.ShowsSpatialLiftFromGraphQueries`. Witnesses the illustrated effect on the organization's own recorded benchmarks: TRUE for the spatial press-7 reach benchmark whose graph-querying arm gained 47 points; FALSE for the same spatial task answered over document chunks (no queries, 7 points) and for other task families. It is a recorded result, not an AI run.
+- **pkm2-i07** (Illustration, Elicitation Methodologies: Knowledge Collection): A figure contrasts explicit carriers such as manuals and records with tacit forms such as experience and insight, tacit being the larger share.
+  - valid: Field `ProcedureVersions.TacitShareExceedsExplicit`. Compares tacit holdings (operator memory, departing staff, crew agreements) with explicit carriers (SOP, manual notes). It fires on loto-v1.0.0, where three of five holdings were tacit; it does not fire on loto-v2.0.0 after encoding.
+- **pkm2-i08** (Illustration, The Anthropologist): The knowledge engineer is compared to a field researcher studying the organization.
+  - valid: Field `ProcedureVersions.IsStudiedOnlyFromTheDesk`. The field-researcher comparison as a check: fires when the knowledge engineer elicited a version but never went where the work happens. It fires on deploy-v3.2.0, elicited by one remote interview; it does not fire on loto-v2.0.0, elicited on the plant floor.
+- **pkm2-i09** (Illustration, Collaborative Workshops): Recruiting experts to approve process representations is likened to recruiting them for AI evaluations.
+  - valid: Field `ProcedureVersions.ExpertsEvaluateAiNotRepresentation`. Fires when experts were recruited to evaluate AI output on a version but none to approve the representation it rests on: Ravi Menon, an affected platform engineer, rated the deployment AI's output while no affected expert approved deploy-v3.2.0. It does not fire on loto-v2.0.0, approved by its experts.
+- **pkm2-i10** (Illustration, Organizing Principles): Training material needs step-level detail while strategic planning needs only broad process categories.
+  - valid: Field `Procedures.IsMissingDemandedResolution`. Fires when a lens needs step-level detail the procedure lacks, or a category it is not classified into. The press-7 changeover has a trainer's view but no steps (training needs step detail), and forklift inspection has a strategic planner's view but no process-type category; both fire. Lockout serves step and category readers and does not.
+- **pkm2-i11** (Illustration, Organizing Principles): Trace targets: the interview that described a step, the observation that recorded a workaround, the log that showed real execution.
+  - valid: Field `KnowledgeTraces.IsAspectUnsupportedBySourceKind`. Enforces the illustrated trace targets: a workaround must trace to observation notes and actual execution to an event log. It fires on deploy-04's claim that rollout always follows approval, cited only to an interview, and not on the workaround traced to field notes or the hotfix execution traced to the log.
+- **pkm2-i12** (Illustration, Introduction): Process knowledge lives in experienced hands, in what SOPs leave unsaid, and in unspoken negotiation over how work gets done.
+  - valid: Field `ProcedureVersions.LivesInHandsSilenceAndNegotiation`. Fires when a version's knowledge lives at once in operators' memory, in what its SOP leaves unsaid, and in unspoken crew agreements. It fires on loto-v1.0.0 (Tomas's bleed cue, the manual margin note, the night crew's tag habit); it does not fire on loto-v2.0.0, where the crew agreement was settled and encoded.
+- **pkm2-i13** (Illustration, Conclusion): Organizations that never capture process knowledge see their AI initiatives fail for lack of context.
+  - valid: Field `Organizations.AiFailsForLackOfCapturedKnowledge`. Fires on an organization with a failed AI initiative that has captured no procedures: ACME Logistics' routing AI. The plant and engineering divisions also had failures but have captured procedures, and do not fire.
+- **pkm2-i14** (Illustration, Standards and Interoperability): Organizations need not adopt every standard; the path runs from vocabularies to lightweight ontologies to process and decision modeling.
+  - valid: Field `OntologyProfiles.SkipsAdoptionPath`. Fires when a later-stage standard was adopted before the earlier-stage standard it builds on. DMN (decision modeling, stage 3) was adopted in May 2025, before PKO (lightweight ontology, stage 2) in September, so it fires; PKO, DCAT, P-Plan, FOAF and schema.org follow SKOS and do not. Unadopted standards are not flagged.
+- **pkm2-i15** (Illustration, Collaborative Workshops): An infographic lists what process knowledge tests improve: competency gaps, process quality, efficiency, job satisfaction and consistency.
+  - valid: Field `KnowledgeTestOutcomes.IsImproved`. Measures each outcome the lockout knowledge tests were meant to improve, before and after: competency gaps, audit quality, minutes per lockout and consistency improved; job satisfaction did not move, and the field reads FALSE there.
+- **pkm2-p01** (Prescription, The Challenge of Elicitation): Tacit understanding must be drawn out without being flattened into oversimplified rules.
+  - valid: Field `ExpertCognitions.IsHeuristicOversimplified`. Fires when an expert said when a heuristic does not hold and the capture kept only the bare rule. It fires on Victor's 'lock a retrofitted machine out as two machines', whose stated exceptions were dropped; it does not fire on Ken's needle heuristic, captured with its press 3 exception, nor on a mental model.
+- **pkm2-p02** (Prescription, Elicitation Methodologies: Knowledge Collection): Several complementary elicitation methods should be combined to build a fuller picture of a process.
+  - valid: Field `ProcedureVersions.ReliesOnSingleMethod`. Fires when a version's knowledge was elicited with only one family of method. It fires on close-v1.1.0 (shadowing only) and deploy-v3.2.0 (one remote interview); it does not fire on loto-v2.0.0, elicited by interview, observation, workshop, protocols and incidents, nor on policy-v1.0.0 (interview and workshop).
+- **pkm2-p03** (Prescription, Elicitation Methodologies: Knowledge Collection): Interviews probe why a choice is made.
+  - valid: Field `ElicitationSessions.IsInterviewWithoutWhyProbe`. Fires on an interview that never asked why a choice is made: the policy interview, which has no probes; it does not fire on the lockout and deployment interviews, which both asked why.
+- **pkm2-p04** (Prescription, Elicitation Methodologies: Knowledge Collection): Interviews probe what happens when the procedure falls short.
+  - valid: Field `ElicitationSessions.IsInterviewWithoutShortfallProbe`. Fires on an interview that never asked what happens when the procedure falls short: the deployment interview and the policy interview; it does not fire on the lockout interview, which asked what Tomas does when the zero-energy check is not enough.
+- **pkm2-p05** (Prescription, Elicitation Methodologies: Knowledge Collection): Use critical incidents to surface the judgment calls documentation hides.
+  - valid: Field `ProcedureVersions.JudgmentUnprobedByIncidents`. Fires when a version relies on tacit or situated judgment yet no critical incident was collected to surface the judgment calls its documentation hides. It fires on close-v1.1.0 and policy-v1.0.0; it does not fire on loto-v2.0.0, whose incidents surfaced the twin-drive and gauge judgments, nor on versions with no tacit judgment.
+- **pkm2-p06** (Prescription, Elicitation Methodologies: Knowledge Collection): Gaps caused by gatekeeping or sabotage must be identified.
+  - valid: Field `KnowledgeGaps.IsUnattributedGatekeeping`. Fires when an elicitation recorded the holder declining to share, yet the gap is not identified as gatekeeping or sabotage: the night crew's tag-removal habit, left with no cause. It does not fire on the two gaps identified as gatekeeping and sabotage, nor on gaps with no refusal.
+- **pkm2-p07** (Prescription, Elicitation Methodologies: Knowledge Collection): Where gatekept knowledge is required, it must be drawn out and codified using methods such as critical incidents.
+  - valid: Field `KnowledgeGaps.IsRequiredGatekeptUncodified`. Fires on blocking (required) gatekept or sabotaged knowledge never drawn out and codified: the retrofit override card removed from the binder. It does not fire on the press 3 crew's gatekept bleed check, which a critical incident session drew out and codified as the bleed cue fragment.
+- **pkm2-p08** (Prescription, The Anthropologist): Observation must capture steps interviews miss, whether practitioners think them obvious or cannot consciously reach them.
+  - valid: Field `ObservedActions.IsMissedStepLeftUncaptured`. Fires when observation saw a step the practitioner's own account left out and it was never captured as knowledge: trying the start button after lockout. It does not fire on the hand-on-valve pause or the FX recheck, which were also missing from the accounts but were captured, nor on steps the practitioner mentioned.
+- **pkm2-p09** (Prescription, The Anthropologist): An observer questions as well as watches, and the reasons given are recorded against the observed action.
+  - valid: Field `ObservedActions.IsWatchedNotQuestioned`. Fires when a small choice or workaround was watched but no reason was asked for and recorded against it: the spare lock hung on the cart. It does not fire on the hand-on-valve pause or the FX recheck, whose reasons are recorded.
+- **pkm2-p10** (Prescription, Collaborative Workshops): Workshops must include participants who are normally not invited.
+  - valid: Field `ElicitationSessions.IsWorkshopWithoutUsualOutsiders`. Fires on a workshop in which nobody normally left out took part: the policy workshop of its usual invitees. It does not fire on the lockout workshop, which brought in Rosa Delgado, a material handler who depends on the lockouts.
+- **pkm2-p11** (Prescription, Collaborative Workshops): Subject matter experts must approve the representation of procedures that affect their work.
+  - valid: Field `ProcedureVersions.IsApprovedWithoutSmeSignoff`. Fires on an approved version no affected subject matter expert approved the representation of: deploy-v3.2.0 (approved only by the VP, who is not affected) and the other approved versions with no SME approval. It does not fire on loto-v2.0.0, approved by the technician and the safety officer whose work it governs.
+- **pkm2-p12** (Prescription, Collaborative Workshops): Workshops bring differing views of how work flows into the open and reconcile them.
+  - valid: Field `WorkflowViewDivergences.IsSurfacedButUnreconciled`. Fires when a workshop brought two differing views of how work flows into the open but never reconciled them: when operators are notified of a shutdown. It does not fire on the last-tag disagreement, settled and recorded as a fragment.
+- **pkm2-p13** (Prescription, Document Analysis): Knowledge taken from documents is a starting point that later elicitation must validate.
+  - valid: Field `KnowledgeTraces.IsDocumentStartNeverValidated`. TRUE when a step first taken from a document has no validation captured from people. It fires on deploy-01 and loto-04, taken from the runbook and the SOP and never confirmed, and not on deploy-03 or loto-04b, confirmed at the release retrospective and the quarterly review; document knowledge treated as final is the breach.
+- **pkm2-p14** (Prescription, Document Analysis): Later elicitation must also extend knowledge taken from documents.
+  - valid: Field `KnowledgeTraces.IsDocumentStartNeverExtended`. TRUE when a step first taken from a document has never been extended by capture from people. It fires on deploy-01, deploy-03 and loto-04, and not on loto-04b, extended by night-shift field notes with the accumulator bleed the drawing omits.
+- **pkm2-p15** (Prescription, The Social Dimension of Collection Strategies): Process knowledge is distributed across networks, so collection must attend to who holds it socially.
+  - valid: Field `KnowHowCarriers.IsOverlookedLivingHolder`. TRUE when uncaptured know-how is carried by someone still in a role whom no collection relationship has approached on that procedure. It fires on Tomas's improvised press setup, Ken's belt-drift diagnosis and Lin's forklift checks, and is FALSE on Tomas's bleed-down know-how, which a knowledge engineer is collecting from him: collection that follows documents rather than the social holder breaks the claim.
+- **pkm2-p16** (Prescription, The Social Dimension of Collection Strategies): Use network analysis to find people who connect groups, since they know things no individual practitioner does.
+  - valid: Field `Agents.IsUnidentifiedBoundarySpanner`. TRUE when a person who connects two communities was never identified by a social network analysis. The plant analysis found Lin, so she reads FALSE; Ken (maintenance guild and Riverbend cluster) and Joao (two clusters) connect groups and no analysis found them.
+- **pkm2-p17** (Prescription, The Social Dimension of Collection Strategies): Collection is conducted as a negotiation that attends to power dynamics.
+  - valid: Field `SourceRelationships.IsUnnegotiatedPowerGap`. TRUE when a power imbalance shapes a source relationship and nothing was negotiated about how the knowledge is collected and used. It fires on Ken, whose job is threatened by automation, and is FALSE on Tomas and Grace, where review rights and supervisor-free sessions were negotiated, and on Lin's balanced relationship.
+- **pkm2-p18** (Prescription, The Social Dimension of Collection Strategies): Collection builds trust with knowledge sources.
+  - valid: Field `SourceRelationships.IsExtractiveRelationship`. TRUE when trust with a source is not established and the engineer records no trust-building practice. It fires on Grace (trust still building, nothing done to build it) and is FALSE on Ken, whose low trust is being addressed by returning transcripts, and on the established relationships.
+- **pkm2-p19** (Prescription, From Collection to Structure): Organize collected knowledge before modeling it, so you know what you are modeling.
+  - valid: Field `CollectedSourceMaterials.IsModeledBeforeOrganized`. Fires when material was encoded into a procedure version before, or without, being organized into a scheme. The conveyor manual excerpt was imported into convmaint-v1.0.0 and never organized, so it fires; the lockout transcript and SOP excerpt were organized on 10 May and modeled on 12 May and do not.
+- **pkm2-p20** (Prescription, From Collection to Structure): The organizing structure holds many different kinds of knowledge in one frame.
+  - valid: Field `Vocabularies.IsSingleKindFrame`. Fires when a scheme organizes several materials but only one kind of knowledge. The conveyor glossary holds two document excerpts and nothing else, so it fires; the lockout thesaurus holds transcripts, field notes, a process map and SOP excerpts in one frame and does not.
+- **pkm2-p21** (Prescription, Levels of Organization): The conditions under which a piece of process knowledge applies must be stated explicitly.
+  - valid: Field `SituationalVariants.DivergesWithoutStatedConditions`. Fires when a variant departs from the standard procedure and nothing states when it applies or where it stops. The hotfix no-canary variant (scope with no conditions) and night self-verification (no scope) fire; the press-7 accumulator and EU-freeze variants state their conditions and do not.
+- **pkm2-p22** (Prescription, Levels of Organization): Instances are linked only through relationship types that have been defined.
+  - valid: Field `ActivityRelations.UsesUndefinedRelationType`. Fires for the relation linked by 'blocks', a type a technician proposed and nobody ratified, while every other relation uses a defined type.
+- **pkm2-p23** (Prescription, Organizing Principles): Organize around the terms practitioners actually use, even when they differ from the official structure.
+  - valid: Field `VocabularyTerms.IsOrganizedAroundOfficialTerm`. Fires when practitioners repeatedly use an alternative wording more than the preferred label the scheme is built around. Technicians said 'loto' three times and never 'lockout/tagout'; the release manager said 'sign-off' and 'go/no-go', never 'release approval review'. Zero-energy verification, used in its preferred wording, does not fire.
+- **pkm2-p24** (Prescription, Organizing Principles): Support multiple perspectives on one procedure without fragmenting it into disconnected silos.
+  - valid: Field `ProcedureLensViews.IsDisconnectedSilo`. Fires when a stakeholder view is not projected from the procedure's current version. The lockout executive table was built from the deprecated 2019 version and the deployment executive deck is free-standing, so both fire; the trainer, auditor and AI views project the current version and do not. Multiple perspectives stay one procedure.
+- **pkm2-p25** (Prescription, Organizing Principles): Groupings reflect meaningful distinctions, not arbitrary or convenient ones.
+  - valid: Field `ProcedureTypes.IsArbitraryGrouping`. Fires when a grouping names no distinguishing facet, or none of its members has the distinction it names. 'Customer-Facing Support Runbook' claims audience Customers but its one member is for support staff, so it fires; Equipment Safety Procedure's members all share hazard HazardousEnergy and it does not.
+- **pkm2-p26** (Prescription, Organizing Principles): The organizing structure is refined repeatedly as collection shows how practitioners think about the work.
+  - valid: Field `Vocabularies.IsFrozenDespiteNewCollection`. Fires when material was collected after a scheme was established and the scheme was never refined. The release thesaurus (December 2025) now organizes a July 2026 event trace with no refinement, so it fires; the lockout thesaurus was refined after the process map and the night field notes and does not.
+- **pkm2-p27** (Prescription, Organizing Principles): Granularity is chosen to fit the use case.
+  - valid: Field `ProcedureLensViews.IsGranularityMisfit`. Fires when a view's granularity differs from what its lens's use requires. The strategic planner was given lockout at step level, and the support agent got deployment only at category level, so both fire; the trainer's step view and the executive's category view do not.
+- **pkm2-p28** (Prescription, Organizing Principles): Detail is weighted evenly, so granularity is not mixed within organized knowledge.
+  - valid: Field `ProcedureVersions.MixesGranularityAtOneLevel`. Fires when one level of a version mixes whole activities with single actions. The 2019 lockout checklist puts 'Do the maintenance' (an Activity) beside 'Apply locks' and 'Disconnect power' (Actions), so it fires; loto-v2.0.0 keeps its actions as sub-steps and does not.
+- **pkm2-p29** (Prescription, Organizing Principles): Every process model traces to the collection activity it came from.
+  - valid: Field `ProcedureVersions.IsLiveModelUntraced`. TRUE when an executable process model has no origin trace to a collection activity. It fires on the live close, policy, conveyor, press-changeover and forklift models and not on the lockout and deployment models, which trace to the SOP and runbook excerpts.
+- **pkm2-p30** (Prescription, Organizing Principles): Every activity definition traces to the collection activity it came from.
+  - valid: Field `Steps.IsUntracedActivityInTracedModel`. TRUE when a step of a traced process model has no origin trace of its own definition. It fires on deploy-05 and nine lockout steps and not on deploy-01..04, loto-04, loto-04b or loto-06.
+- **pkm2-p31** (Prescription, Organizing Principles): Every constraint traces to the collection activity it came from.
+  - valid: Field `Requirements.IsUntracedBoundConstraint`. TRUE when a constraint bound to a step has no trace to a collection activity. It fires on the one-person-one-lock requirement and the close and policy constraints, and not on zero-energy verification or recorded release approval, traced to the SOP and runbook.
+- **pkm2-p32** (Prescription, Organizing Principles): A change to a source must reveal which organized knowledge depends on it.
+  - valid: Field `CollectedSourceMaterials.IsDependencyInvisibleToChange`. TRUE when a material was encoded into a model but no trace records which knowledge rests on it, so a change to it reveals nothing. It fires on the conveyor manual roller excerpt encoded into convmaint-v1.0.0 and not on the lockout and deployment materials, whose dependents HasKnowledgeAffectedBySourceChange reveals when their document is revised.
+- **pkm2-p33** (Prescription, Organizing Principles): Traceability makes it possible to check that organized knowledge faithfully represents its sources.
+  - valid: Field `KnowledgeTraces.IsUnfaithfulToSource`. Uses the trace to check the model against its source: TRUE when the modeled step's duration differs from the duration the source states. It fires on loto-06 (Tomas: twenty minutes; model: ten) and not on the five traces whose stated durations match.
+- **pkm2-p34** (Prescription, Taxonomies and Controlled Vocabularies): Establish vocabulary control before building complex ontology.
+  - valid: Field `Vocabularies.OntologyPrecededVocabularyControl`. Fires when ontology modeling for a domain began before its vocabulary control was established. Release modeling started 3 November 2025 and the release thesaurus was established 10 December, so it fires; lockout vocabulary (1 May) preceded its modeling (12 May) and does not.
+- **pkm2-p35** (Prescription, Taxonomies and Controlled Vocabularies): The taxonomy makes sure new processes are categorized and defined consistently.
+  - valid: Field `Procedures.IsInconsistentlyCategorized`. Fires when a procedure has no type, is filed at domain or group rank rather than a process type, or its type is undefined. The new forklift inspection was filed straight under the Operations domain, so it fires; its peers sit at defined process types and do not.
+- **pkm2-p36** (Prescription, Taxonomies and Controlled Vocabularies): Uncontrolled variant wordings of one activity must resolve to a canonical term.
+  - valid: Field `SourceTermMentions.IsUncontrolledWording`. Fires when a wording found in collected material resolves to no label in its scheme. The runbook's 'release gate check' (the same review as sign-off) fires; 'sign-off' and 'go/no-go' resolve through alternative labels to Release Approval Review and do not.
+- **pkm2-p37** (Prescription, Taxonomies and Controlled Vocabularies): Role vocabularies let a query find every process involving a role without exact phrase matching.
+  - valid: Field `Roles.IsMissedByPhraseQuery`. Fires when a role is mentioned in some process material in words the role vocabulary does not resolve, so a query through the vocabulary misses that process. The night field notes say 'the tech', so Maintenance Technician fires; 'release captain' resolves to Release Manager and 'safety lead' to Plant Safety Officer, which do not.
+- **pkm2-p38** (Prescription, Taxonomies and Controlled Vocabularies): The taxonomy lets people and AI find the processes relevant to them by navigating it.
+  - valid: Field `ProcedureTypes.IsUnreachableByNavigation`. Fires when navigating down from the functional domains never reaches a taxonomy node. The Metrology group hangs off no domain, so it and Instrument Calibration Procedure beneath it fire; every other node is reachable and does not.
+- **pkm2-p39** (Prescription, From Organization to Representation): Organized knowledge is encoded in a machine-interpretable form that supports search, reasoning and AI integration.
+  - valid: Field `ProcedureVersions.LacksMachineInterpretableEncoding`. Fires on a current version with no retrieval segments for search or no graph assertions for reasoning and AI integration: conveyor maintenance, press changeover, close and policy. Lockout 2.0.0 and deployment 3.2.0 are encoded both ways and do not fire.
+- **pkm2-p40** (Prescription, From Organization to Representation): Encoding keeps semantic richness and coherence while staying computationally tractable.
+  - valid: Field `ReasonerRuns.IsRichnessTractabilityFailure`. Fires when a reasoning run over the encoding either blew its time budget (the OWL 2 DL run, 3600s of 600) or stayed within budget only by dropping axioms (the RDFS run dropped 12). The OWL 2 RL runs kept every axiom within budget and do not fire.
+- **pkm2-p41** (Prescription, Encoding for AI Systems): Retrieval segments carry linked metadata, not float as isolated chunks.
+  - valid: Field `RetrievalSegments.IsIsolatedChunk`. Fires on a segment with no position, no applicability and no link to or from another segment: the 1000-character chunk of the 2019 SOP. Segments cut at lockout steps and decisions carry that metadata and do not fire.
+- **pkm2-p42** (Prescription, Encoding for AI Systems): Embeddings treat near-synonyms such as approve and authorize as similar.
+  - valid: Field `EmbeddingProbes.SynonymsNotSimilar`. Fires when an embedding model scores process near-synonyms below 0.7: the general model puts 'lock out' and 'isolate' at 0.52. The tuned model (0.88) and approve/authorize (0.91) do not fire. The similarities are recorded probe results; the model does not compute embeddings.
+- **pkm2-p43** (Prescription, Encoding for AI Systems): Embeddings treat opposites such as approve and reject as opposed.
+  - valid: Field `EmbeddingProbes.OppositesNotOpposed`. Fires when an embedding model scores process opposites above 0.3: the general model puts approve and reject at 0.83. The tuned model's 0.12 does not fire.
+- **pkm2-p44** (Prescription, Encoding for AI Systems): Knowledge used to ground retrieval must be logically consistent.
+  - valid: Field `RetrievalSegments.IsInconsistentGrounding`. Fires when retrieval serves two segments the consistency check found contradictory: the 2019 'apply locks, then disconnect power' segment is indexed alongside the 2.0.0 'isolate first, then lock' segment. Segments with no indexed contradiction do not fire.
+- **pkm2-p45** (Prescription, Encoding for AI Systems): AI tool use must be represented in the process knowledge graph to guide multi-step operations.
+  - valid: Field `AiToolInvocations.IsUndeclaredToolUse`. Fires when an AI agent invoked a tool the process graph does not declare on that step: the risk classifier called fetch-incident-history at deploy-02. Its declared classify-change-risk call and the copilot's declared padlock reservation do not fire.
+- **pkm2-p46** (Prescription, Encoding for AI Systems): Conditions, invariants, failure modes and decision points for tool use are stored in forms an AI can parse, not as free prose.
+  - valid: Field `Steps.ToolUseRulesOnlyInProse`. Fires on a step where an agent uses tools but no condition is stored as a machine expression and no decision as DMN: deploy-02, whose unscorable-change decision exists only as prose, and the close and policy tool steps. loto-05, whose padlock inventory invariant is a parseable expression, does not fire.
+- **pkm2-p47** (Prescription, Yeah—That Context Window Won’t Cut It): Knowledge held only in prompts or context windows is disconnected and does not scale.
+  - valid: Field `PromptTemplates.IsDisconnectedPromptKnowledge`. Fires on a prompt carrying procedure instructions that exist in no procedure version: the hotfix note typed into the release assistant. Prompts drawn from lockout 1.0.0 or 2.0.0 do not fire.
+- **pkm2-p48** (Prescription, Yeah—That Context Window Won’t Cut It): Process knowledge is managed as a foundation of AI strategy.
+  - valid: Field `AiAdoptionInitiatives.NotAnchoredInProcessKnowledge`. Fires on an AI initiative past proposal that is anchored to no modeled procedure: the warehouse routing AI. Every lockout and deployment initiative targets a procedure and does not fire.
+- **pkm2-p49** (Prescription, Yeah—That Context Window Won’t Cut It): Prompt-delivered guidance weighs completeness against token limits and leaves rarely needed detail out of the context.
+  - valid: Field `PromptTemplates.SpendsBudgetOnRareDetail`. Fires when a prompt inlines rarely needed detail and so exceeds its token budget: the press-7 detail layer with every retrofit note (3400 of 2500 tokens). The condensed lockout layer within budget does not fire.
+- **pkm2-p50** (Prescription, Encoding for Communication and Collaboration): Diagrams are produced from the semantic model, so the picture people see and the data machines use cannot diverge.
+  - valid: Field `KnowledgeProjections.DiagramCanDivergeFromModel`. Fires on a diagram drawn by hand or generated before the version last changed: the hand-drawn 2019 Visio flowchart and the Mermaid deployment flow generated before deployment 3.2.0's June change. The BPMN diagram generated after lockout 2.0.0's last change does not fire.
+- **pkm2-p51** (Prescription, Encoding for Communication and Collaboration): Narrative documentation is generated from the structured model.
+  - valid: Field `KnowledgeProjections.NarrativeNotGeneratedFromModel`. Fires on narrative documentation not generated from the model since its last change: the hand-maintained deployment runbook. The generated RuleSpeak and natural-language lockout documents do not fire.
+- **pkm2-p52** (Prescription, Encoding for Communication and Collaboration): Stakeholders can access the narrative documentation.
+  - valid: Field `KnowledgeProjections.NarrativeUnreachable`. Fires on narrative documentation published nowhere and never opened: the generated financial close SOPs. The published lockout documents and runbook do not fire.
+- **pkm2-p53** (Prescription, Encoding for Communication and Collaboration): Comments and discussion are kept apart from the authoritative model, so they can never damage it.
+  - valid: Field `ModelAnnotations.IsDiscussionInAuthoritativeModel`. Fires when a comment, question, suggestion or alternative reading was stored in the authoritative rulebook: the VP's hotfix-gate comment. The question and suggestion kept in the annotation layer do not fire.
+- **pkm2-p54** (Prescription, Standards and Interoperability): Encoding lets knowledge move between systems instead of staying locked in a proprietary silo.
+  - valid: Field `KnowledgeConsumerSystems.IsKnowledgeSilo`. Fires on a system holding procedures that exports no open format and receives nothing from the shared model: DocVault's proprietary binders. The modeling workbench (exports BPMN) and the tablet (synced) do not fire.
+- **pkm2-p55** (Prescription, Integration: Making Process Knowledge Work): Infrastructure and governance keep collection, organization and encoding running continuously.
+  - valid: Field `GovernedModels.PipelineNotContinuous`. Counts governance controls over collection, organization and encoding that run continuously; fires on the close family (encoding is a quarterly batch) and on deployment and press changeover, not on lockout/tagout or workforce policy where all three run continuously.
+- **pkm2-p56** (Prescription, Integration: Making Process Knowledge Work): Capturing knowledge is built into everyday work.
+  - valid: Field `Procedures.IsCaptureSeparateFromWork`. TRUE when knowledge about a procedure is collected but never in the course of executing it. It fires on production deployment and conveyor maintenance and not on lockout/tagout, whose field notes were written during the 07-09 night lockout.
+- **pkm2-p57** (Prescription, Integration: Making Process Knowledge Work): Gaps between the enacted and documented process are detected automatically and continuously.
+  - valid: Field `ProcedureVersions.LacksContinuousDriftDetection`. Fires on a current, executed version with no process-mining conformance run inside the freshness window: lockout 2.0.0 and the policy version. Deployment 3.2.0 (mined from the CI log on 18 July) and the close version do not fire.
+- **pkm2-p58** (Prescription, Integration: Making Process Knowledge Work): Annotation interfaces let practitioners easily flag outdated guidance.
+  - valid: Field `ModelAnnotations.FlagBypassedAnnotationInterface`. Fires when a practitioner had to flag outdated guidance outside the annotation interface: Ken emailed the steward about the retrofit bleed valve. His press-7 map flag entered through the panel does not fire.
+- **pkm2-p59** (Prescription, Integration: Making Process Knowledge Work): Practitioners can add new knowledge through annotation, not only flag old guidance.
+  - valid: Field `ModelAnnotations.IsLostNewKnowledge`. Fires when new knowledge a practitioner added was accepted but never became a knowledge fragment: Tomas's tap-the-gauge tip. The FX-lag tip promoted to a fragment does not fire.
+- **pkm2-p60** (Prescription, Integration: Making Process Knowledge Work): Collected knowledge passes quality standards before it enters the encoded repository.
+  - valid: Field `ModelProposals.EnteredWithoutQualityCheck`. Fires on candidates committed to the model without a passing quality check: the wiki-extracted hotfix assignment and the legacy import's domain/range assertion. Checked candidates read false.
+- **pkm2-p61** (Prescription, Integration: Making Process Knowledge Work): Proposed additions and edits become authoritative only after expert review.
+  - valid: Field `ModelProposals.CommittedWithoutExpertReview`. Fires when a proposed addition became authoritative with no human expert review: an AI competency question committed unreviewed, a disjointness axiom 'reviewed' only by the assistant, and two commits nobody reviewed.
+- **pkm2-p62** (Prescription, Integration: Making Process Knowledge Work): An automated check confirms the model is structurally consistent.
+  - valid: Field `ModelChangeRequests.AcceptedWithoutStructuralCheck`. Fires on modeling changes accepted with no passing automated structural consistency check (the ControlKinds rename and the classifier upgrade handled as a modeling change); changes whose validation runs passed the structural check read false.
+- **pkm2-p63** (Prescription, Integration: Making Process Knowledge Work): An automated check confirms the model uses only approved vocabulary.
+  - valid: Field `ModelChangeRequests.AcceptedWithoutVocabularyCheck`. Fires on modeling changes accepted without a passing automated approved-vocabulary check, including the disjointness change whose run skipped that check while passing the structural one.
+- **pkm2-p64** (Prescription, Integration: Making Process Knowledge Work): Every change is recorded over time.
+  - valid: Field `RulebookReleases.IsReleaseWithoutRecordedChanges`. Fires on release 0.10.2, which shipped with no change log entry, so what changed in it is not on record; every other release after the first has logged changes.
+- **pkm2-p65** (Prescription, Integration: Making Process Knowledge Work): Any change can be rolled back.
+  - valid: Field `ModelChangeLogEntries.CannotBeRolledBack`. Fires on the ControlKinds rename entry, which recorded no prior-state commit; the others record one, and entry le-16 shows a rollback of le-07 actually performed from its recorded state.
+- **pkm2-p66** (Prescription, Integration: Making Process Knowledge Work): Governance sets who may create, modify and retire process definitions.
+  - valid: Field `ModelChangeRequests.LifecycleChangeByUnauthorizedAgent`. Fires when a procedure definition is created, modified or retired on the approval of someone who is neither the model's steward nor its authority: the press-7 changeover retired by a technician. The mixer-2 variant created with the safety officer's approval reads false.
+- **pkm2-p67** (Prescription, Integration: Making Process Knowledge Work): Governance sets how conflicts between stakeholders are resolved.
+  - valid: Field `ModelChangeRequests.ApprovedOverUnresolvedObjection`. Fires on the human/software disjointness change, approved while the safety officer's objection remained unresolved; the RoleAssignments narrowing, whose objection was resolved by the authority first, reads false.
+- **pkm2-p68** (Prescription, Integration: Making Process Knowledge Work): Governance sets what approval controls publication.
+  - valid: Field `RulebookReleases.PublishedWithoutApproval`. Fires on release 0.8.2, published with no recorded approval; the other releases name their approver.
+- **pkm2-p69** (Prescription, Feedback Loops): Encoded knowledge is connected to operational outcomes.
+  - valid: Field `ProcedureVersions.IsDisconnectedFromOutcomes`. Fires on a current, executed version with no operational outcome measurement linked to it: the close and policy versions. Lockout 2.0.0 and deployment 3.2.0 have crew and AI outcome measurements and do not fire.
+- **pkm2-p70** (Prescription, Feedback Loops): AI system outcomes are measured early and often.
+  - valid: Field `AiAdoptionInitiatives.IsAiOutcomeUnmeasured`. Fires on a pilot or production AI never measured or not measured for over 30 days as of the evaluation instant: the release assistant, conveyor agent, routing AI and the checklist bot (last measured in March). The copilot and risk classifier, measured in July, do not fire.
+- **pkm2-p71** (Prescription, Feedback Loops): Usage signals are linked to the knowledge gaps and usability barriers they point to.
+  - valid: Field `KnowledgeSearchEvents.IsUnlinkedFailedSearch`. Fires on a search that found nothing useful and is linked to no knowledge gap and no usability barrier: Ken's press-7 accumulator search. The failed mixer-2 search is linked to a usability barrier and does not fire.
+- **pkm2-p72** (Prescription, Feedback Loops): How AI systems engage with the knowledge is tracked as seriously as how people do.
+  - valid: Field `Agents.IsUntrackedAiConsumer`. Fires on an AI agent that delivers answers from the knowledge but has no retrievals logged, while every technician's search is: the release assistant, risk classifier and checklist bot. The copilot's retrievals are logged and it does not fire.
+- **pkm2-p73** (Prescription, Feedback Loops): Outcome measurements feed into how process knowledge is managed and where it gets investment.
+  - valid: Field `KnowledgeOutcomeMeasurements.IsUnactedAdverseOutcome`. Fires when an outcome worse than tolerated fed no change request and no investment decision: the south night crew's 9% error rate and the checklist bot's 12%. The north night crew's measurement funded a second verifier and does not fire.
+- **pkm2-p74** (Prescription, Feedback Loops): Feedback identifies where encoded knowledge does not match reality.
+  - valid: Field `Steps.HasReportedRealityMismatch`. Fires on a step practitioners' open feedback says no longer matches how the work is done: loto-03 (press-7 map omits the accumulator) and loto-04b (retrofit valve needs a second bleed). It identifies where the encoded knowledge is wrong; other steps do not fire.
+- **pkm2-p75** (Prescription, Feedback Loops): Feedback identifies where missing knowledge creates friction.
+  - valid: Field `ModelAnnotations.IsFrictionWithoutGap`. Fires when a practitioner reported friction from missing knowledge and it was never recorded as a knowledge gap: the missing mixer-2 isolation map. The policy receipt question raised as a gap does not fire.
+- **pkm2-p76** (Prescription, Feedback Loops): Practitioner feedback flows back into tacit-knowledge discovery and collection.
+  - valid: Field `UserFeedback.IsTacitSignalNotFedIntoCollection`. TRUE when practitioner feedback that reveals tacit know-how prompted no collection. It fires on Grace Holloway's cache-warming remark and not on Tomas Reyes's hiss cue, which prompted a follow-up transcript.
+- **pkm2-p77** (Prescription, Feedback Loops): Feedback is gathered at every stage of the knowledge lifecycle.
+  - valid: Field `EncodingLifecycleStages.IsStageWithoutFeedback`. Fires on a lifecycle stage from which no feedback has come back: store and codify. Collect, document, encode and operationalize have annotations and do not fire.
+- **pkm2-p78** (Prescription, Conclusion): Managing process knowledge needs direct engagement with practitioners, not automation alone.
+  - valid: Field `Procedures.IsCapturedByAutomationAlone`. TRUE when a procedure's knowledge was captured by machine-authored entries and no practitioner relationship exists. Conveyor maintenance fires (only a copilot summary of vendor manuals); lockout/tagout, captured through relationships with Tomas and Lin, does not.
+- **pkm2-p79** (Prescription, Conclusion): Knowledge is kept current and its quality maintained over time.
+  - valid: Field `GovernedModels.IsNotKeptCurrent`. Fires on models that are unmaintained or whose documentation describes a release they are no longer at (the PKO rulebook's alignment and changelog documents, the unmaintained deployment, close and press families); lockout/tagout and workforce policy read false.
+- **pkm2-q01** (CompetencyQuestion, The Anthropologist): What reason is recorded for this observed action?
+  - valid: RoleQuestion `aq-pkm2-q01`. The knowledge engineer's question; ObservedActions.HasRecordedReason reads each observed action's recorded reason.
+- **pkm2-q02** (CompetencyQuestion, The Anthropologist): What did the practitioner say they would do if a condition were different?
+  - valid: RoleQuestion `aq-pkm2-q02`. The knowledge engineer's question; ObservedActions.HasCounterfactualAnswer reads what the practitioner said they would do under a different condition.
+- **pkm2-q03** (CompetencyQuestion, Capturing Tacit Knowledge): What goal or value does this action ultimately serve?
+  - valid: RoleQuestion `aq-pkm2-q03`. The safety officer's question; ConceptLadderRungs.IsUltimateGoal picks the top rung laddered up from each action.
+- **pkm2-q04** (CompetencyQuestion, Capturing Tacit Knowledge): According to the practitioner, which subprocesses and conditions make up this higher-level activity?
+  - valid: RoleQuestion `aq-pkm2-q04`. The knowledge engineer's question; ConceptLadderRungs.IsDecompositionRung picks the subprocess and condition rungs below an action.
+- **pkm2-q05** (CompetencyQuestion, Capturing Tacit Knowledge): Along which recorded dimensions do experts tell these situations apart?
+  - valid: RoleQuestion `aq-pkm2-q05`. The knowledge engineer's question; RepertoryGridConstructs.IsRecordedDiscriminatingDimension picks the recorded dimensions that split the compared situations.
+- **pkm2-q06** (CompetencyQuestion, The Social Dimension of Collection Strategies): Who holds which process knowledge?
+  - valid: RoleQuestion `aq-pkm2-q06`. A knowledge engineer asks who holds each piece of know-how; KnowHowCarriers.IsHeldByCurrentPractitioner answers it per carrier, TRUE for know-how carried by a person still in a role and FALSE for plants, systems and people who left.
+- **pkm2-q07** (CompetencyQuestion, The Social Dimension of Collection Strategies): Who knows where that knowledge is held?
+  - valid: RoleQuestion `aq-pkm2-q07`. A knowledge engineer asks who knows where know-how is held; KnowledgeBrokerLinks.LocatesOtherHolder is TRUE when a broker points a seeker to know-how someone else carries (Lin pointing Aisha to Tomas).
+- **pkm2-q08** (CompetencyQuestion, The Social Dimension of Collection Strategies): Which departments give conflicting accounts of the same process?
+  - valid: RoleQuestion `aq-pkm2-q08`. The steward asks which departments give conflicting accounts of one process; DepartmentProcessAccounts.IsConflictingAccount is TRUE for the maintenance/production and engineering/support pairs and FALSE for compliance's uncontested account.
+- **pkm2-q09** (CompetencyQuestion, Taxonomies and Controlled Vocabularies): List every process in which a compliance-review role takes part.
+  - valid: RoleQuestion `aq-pkm2-q09`. The auditor's request, answered by Procedures.InvolvesComplianceReviewRole over steps whose role carries the compliance-review capability tag (lockout, deployment, close).
+- **pkm2-q10** (CompetencyQuestion, Elicitation Methodologies: Knowledge Collection): Which knowledge gaps are known?
+  - valid: RoleQuestion `aq-pkm2-q10`. The knowledge authority's question; KnowledgeGaps.IsKnownAndUnresolved picks identified gaps still open.
+- **pkm2-q11** (CompetencyQuestion, Elicitation Methodologies: Knowledge Collection): Which gaps come from gatekeeping or sabotage?
+  - valid: RoleQuestion `aq-pkm2-q11`. The knowledge authority's question; KnowledgeGaps.IsGatekeepingOrSabotage picks gaps caused by gatekeeping or sabotage.
+- **pkm2-q12** (CompetencyQuestion, Organizing Principles): Which collection evidence does this step trace to?
+  - valid: RoleQuestion `aq-pkm2-q12`. KnowledgeTraces lists, for each step, the collected material it traces to and in what role; Steps.HasCollectionEvidence marks the seven steps that trace to any evidence and the 34 that trace to none.
+- **pkm2-q13** (CompetencyQuestion, Organizing Principles): Has that source changed since the knowledge was taken from it?
+  - valid: RoleQuestion `aq-pkm2-q13`. IsSourceChangedSinceTaken compares the source document's last revision with when the knowledge was taken: TRUE for the four traces from the runbook (revised after excerpting) and loto-04b (drawing revised 2026-07-15), FALSE for the 2019 SOP and the transcripts.
+- **pkm2-q14** (CompetencyQuestion, Organizing Principles): Which organized knowledge is affected by a change to this source?
+  - valid: RoleQuestion `aq-pkm2-q14`. HasKnowledgeAffectedBySourceChange marks the runbook excerpt and the press-7 drawing excerpt, and the traces with IsSourceChangedSinceTaken name the process model, steps and constraint each revision affects.
+- **pkm2-q15** (CompetencyQuestion, Process Mining): Where does the enacted process deviate from the documented one?
+  - valid: RoleQuestion `aq-pkm2-q15`. HasUndocumentedEnactedPath marks the deployment mining run, whose reconstructed flow contains two hand-offs the documented model lacks, and no other run.
+- **pkm2-q16** (CompetencyQuestion, Process Mining): Where are the bottlenecks in the mined process flow?
+  - valid: RoleQuestion `aq-pkm2-q16`. IsBottleneck on MinedFlowEdges marks the hand-off into the release approval gate, where cases wait 1440 minutes against a fifteen-minute step.
+- **pkm2-q17** (CompetencyQuestion, Elicitation Methodologies: Knowledge Collection): Which past episodes of this process went well, went badly or needed improvising?
+  - valid: RoleQuestion `aq-pkm2-q17`. The safety officer's question; CriticalIncidents.Outcome types each episode and IsAdverseOrImprovised picks the bad and improvised ones.
+- **pkm2-q18** (CompetencyQuestion, Elicitation Methodologies: Knowledge Collection): What judgment did each such episode reveal?
+  - valid: RoleQuestion `aq-pkm2-q18`. The safety officer's question; CriticalIncidents.RevealedJudgment and JudgmentFragment give each episode's judgment, HasSurfacedJudgment says whether it revealed one.
+- **pkm2-q19** (CompetencyQuestion, Levels of Organization): What sub-activities make up this process?
+  - valid: RoleQuestion `aq-pkm2-q19`. Asks what sub-activities make up a step.
+- **pkm2-q20** (CompetencyQuestion, Levels of Organization): What larger process does this activity belong to?
+  - valid: RoleQuestion `aq-pkm2-q20`. Asks what larger process a procedure runs inside.
+- **pkm2-q21** (CompetencyQuestion, Levels of Organization): Under which business unit, geography, customer segment or regulatory regime does this variant apply?
+  - valid: RoleQuestion `aq-pkm2-q21`. The auditor's question, answered by SituationalVariants through ApplicabilityScopes (business unit, geography, segment, regime) with HasNoApplicabilityDimension and DivergesWithoutStatedConditions.
+- **pkm2-q22** (CompetencyQuestion, Encoding for AI Systems): What are this step's pre-conditions?
+  - valid: RoleQuestion `aq-pkm2-q22`. Asks what must be true before a step and whether anyone proceeded when it was not.
+- **pkm2-q23** (CompetencyQuestion, Encoding for AI Systems): What are this step's post-conditions?
+  - valid: RoleQuestion `aq-pkm2-q23`. Asks what must hold after a step.
+- **pkm2-q24** (CompetencyQuestion, Encoding for AI Systems): What are this step's invariants?
+  - valid: RoleQuestion `aq-pkm2-q24`. Asks what must stay true throughout a step and whether it broke.
+- **pkm2-q25** (CompetencyQuestion, Encoding for AI Systems): What are this step's failure modes and the response to each?
+  - valid: RoleQuestion `aq-pkm2-q25`. Asks a step's failure modes and the response to each.
+- **pkm2-q26** (CompetencyQuestion, Encoding for AI Systems): What factors decide the choice at this decision point?
+  - valid: RoleQuestion `aq-pkm2-q26`. Asks what factors decide each decision point.
+- **pkm2-q27** (CompetencyQuestion, Encoding for AI Systems): In what order must this procedure's steps be carried out?
+  - valid: RoleQuestion `aq-pkm2-q27`. Asks the order steps must run in and whether it was followed.
+- **pkm2-q28** (CompetencyQuestion, Taxonomies and Controlled Vocabularies): Which departments contain which roles?
+  - valid: RoleQuestion `aq-pkm2-q28`. The steward's question, answered by Roles.Organization and OrganizationType, with IsNotHousedInDepartment for roles outside any department.
+- **pkm2-q29** (CompetencyQuestion, Taxonomies and Controlled Vocabularies): Which roles are specializations of others?
+  - valid: RoleQuestion `aq-pkm2-q29`. The steward's question, answered by Roles.SpecializesRole and HasSpecializations, with IsSeniorVariantNotSpecialization.
+- **pkm2-q30** (CompetencyQuestion, Taxonomies and Controlled Vocabularies): Which specific process types fall under a given functional domain?
+  - valid: RoleQuestion `aq-pkm2-q30`. The product manager's question, answered by ProcedureTypes.BroaderProcedureType, TaxonomyRank and HasNarrowerTypes.
+- **pkm2-q31** (CompetencyQuestion, Organizing Principles): What does this process look like at step-level detail compared with category level?
+  - valid: RoleQuestion `aq-pkm2-q31`. The product manager's question, answered by Procedures.HasStepAndCategoryResolutions and IsMissingDemandedResolution over step-level and category-level lens views.
+- **pkm2-q32** (CompetencyQuestion, Integration: Making Process Knowledge Work): Which guidance have practitioners flagged as outdated?
+  - valid: RoleQuestion `aq-pkm2-q32`. The technician's question; IsOpenOutdatedFlag fires on the two open flags (press-7 map, retrofit bleed valve) and Steps.HasReportedRealityMismatch places them at loto-03 and loto-04b.
+- **pkm2-q33** (CompetencyQuestion, Integration: Making Process Knowledge Work): Where has encoded knowledge drifted from current practice?
+  - valid: RoleQuestion `aq-pkm2-q33`. The steward's question; Steps.IsDriftedFromPractice fires where practice deviates repeatedly, or deviates at a step practitioners flagged outdated (loto-04b).
+- **pkm2-q34** (CompetencyQuestion, Integration: Making Process Knowledge Work): Who has authority to create, change or retire this process definition?
+  - valid: RoleQuestion `aq-pkm2-q34`. Answered by GovernedModels.IsProcedureWithoutChangeAuthority and the current authority lookups: it names who holds authority over each procedure family and flags the press-7 changeover, where nobody does.
+- **pkm2-q35** (CompetencyQuestion, Integration: Making Process Knowledge Work): Which knowledge is approved and which is only proposed?
+  - valid: RoleQuestion `aq-pkm2-q35`. Answered by ModelProposals.IsOnlyProposed, which separates committed knowledge from candidates still only proposed.
+- **pkm2-q36** (CompetencyQuestion, Integration: Making Process Knowledge Work): Who approved this knowledge?
+  - valid: RoleQuestion `aq-pkm2-q36`. Answered by ModelProposals.ReviewedByAgent with ApproverUnknown flagging committed knowledge no approver stands behind.
+- **pkm2-q37** (CompetencyQuestion, Integration: Making Process Knowledge Work): In which version was this knowledge approved?
+  - valid: RoleQuestion `aq-pkm2-q37`. Answered by ModelProposals.AdoptedInRelease / AdoptedInDataVersion, with CommittedOutsideAnyVersion flagging knowledge approved in no version.
+- **pkm2-q38** (CompetencyQuestion, Standards and Interoperability): How was this piece of knowledge derived?
+  - valid: RoleQuestion `aq-pkm2-q38`. DerivationRoute and DerivedByAgent answer how each item was derived; IsMachineDerived marks the deploy-02 definition extracted by the wiki extractor AI rather than paraphrased by a person.
+- **pkm2-q39** (CompetencyQuestion, Standards and Interoperability): Who validated this piece of knowledge?
+  - valid: RoleQuestion `aq-pkm2-q39`. ValidatedByAgent answers who validated each item; IsSelfValidated marks deploy-03, confirmed only by the knowledge engineer who derived it.
+- **pkm2-q40** (CompetencyQuestion, Feedback Loops): What do users search for and fail to find?
+  - valid: RoleQuestion `aq-pkm2-q40`. The steward's question; KnowledgeSearchEvents.FoundNothingUseful fires on the press-7 accumulator and mixer-2 searches, with each query text recorded.
+- **pkm2-q41** (CompetencyQuestion, Feedback Loops): At what point do users give up on a query?
+  - valid: RoleQuestion `aq-pkm2-q41`. The steward's question; GaveUpAfterSeeingResults fires on the mixer-2 search abandoned after 75 seconds with results on screen, and SecondsBeforeAbandoning gives the point of giving up.
+- **pkm2-q42** (CompetencyQuestion, Feedback Loops): Do teams with better access to process knowledge make fewer errors?
+  - valid: RoleQuestion `aq-pkm2-q42`. The safety officer's question; HigherAccessFewerErrors compares each crew with its lower-access baseline and is TRUE for both north crews against the south night crew.
+- **pkm2-q43** (CompetencyQuestion, Feedback Loops): Do teams with better access to process knowledge work more efficiently?
+  - valid: RoleQuestion `aq-pkm2-q43`. The safety officer's question; HigherAccessMoreEfficient is TRUE for the north day crew and FALSE for the north night crew, which is slower than its baseline.
+- **pkm2-q44** (CompetencyQuestion, Feedback Loops): Do teams with better access to process knowledge get higher customer satisfaction?
+  - valid: RoleQuestion `aq-pkm2-q44`. The safety officer's question; HigherAccessMoreSatisfied is TRUE for the north day crew and FALSE for the north night crew.
+- **pkm2-q45** (CompetencyQuestion, Feedback Loops): Where does the AI fail?
+  - valid: RoleQuestion `aq-pkm2-q45`. The AI enablement lead's question; Steps.IsAiFailurePoint fires on the steps where an AI task failed (loto-04b, loto-05, loto-06, deploy-02).
+- **pkm2-q46** (CompetencyQuestion, Feedback Loops): What is the AI's task completion rate?
+  - valid: RoleQuestion `aq-pkm2-q46`. The AI enablement lead's question; Agents.AiTaskCompletionPercent gives each agent's rate and IsBelowTaskCompletionTarget fires below 80%.
+- **pkm2-s01** (Standard, Elicitation Methodologies: Knowledge Collection): The critical incident technique.
+  - valid: KnowledgeMethod `CriticalIncidentTechnique`. Applied by session el7-loto-cit, which collected the mixer 2, press 3 and conveyor 5 incidents.
+- **pkm2-s02** (Standard, Capturing Tacit Knowledge): Think-aloud protocols.
+  - valid: KnowledgeMethod `ThinkAloudProtocol`. Applied by session el7-loto-thinkaloud: Ken verbalized his reasoning while locking out mixer 2.
+- **pkm2-s03** (Standard, Capturing Tacit Knowledge): Retrospective protocols.
+  - valid: KnowledgeMethod `RetrospectiveProtocol`. Applied by session el7-loto-retro: Tomas's recorded lockout reviewed with him the next day.
+- **pkm2-s04** (Standard, Capturing Tacit Knowledge): Concept laddering.
+  - valid: KnowledgeMethod `ConceptLaddering`. Applied by session el7-loto-ladder, which produced the ConceptLadderRungs rows.
+- **pkm2-s05** (Standard, Capturing Tacit Knowledge): Repertory grids.
+  - valid: KnowledgeMethod `RepertoryGrid`. Applied by session el7-loto-grid, which produced the RepertoryGridConstructs rows.
+- **pkm2-s06** (Standard, The Social Dimension of Collection Strategies): Social network analysis.
+  - valid: KnowledgeMethod `SocialNetworkAnalysis`. Applied by MethodApplications row ma12-sna-plant: a who-asks-whom network of Plant North that identified Lin as a connector between communities.
+- **pkm2-s07** (Standard, Collaborative Workshops): Process mapping.
+  - valid: KnowledgeMethod `ProcessMapping`. Applied by ma14-loto-process-map, which drew the lockout step by step with technicians and the safety officer before any value stream analysis.
+- **pkm2-s08** (Standard, Collaborative Workshops): Value stream analysis.
+  - valid: KnowledgeMethod `ValueStreamAnalysis`. Applied by ma7-loto-value-stream, which exposed the day-to-night hand-off and the wait on operator release.
+- **pkm2-s09** (Standard, Taxonomies and Controlled Vocabularies): SKOS for controlled vocabularies.
+  - valid: OntologyProfile `skos`. SKOS mappings: Vocabularies to skos:ConceptScheme, VocabularyTerms to skos:Concept with prefLabel, altLabel, definition, scopeNote, broader and inScheme; TermRelations to skos:related.
+- **pkm2-s10** (Standard, Standards and Interoperability): OWL.
+  - valid: OntologyProfile `owl-2`. The OWL 2 profile with mappings for the owl:Class and owl:ObjectProperty declarations of the generated ontology.
+- **pkm2-s11** (Standard, Standards and Interoperability): RDFS.
+  - valid: OntologyProfile `rdfs-1-1`. The RDF Schema profile; tables are rdfs:Class with rdfs:label/rdfs:comment and relationships carry rdfs:range.
+- **pkm2-s12** (Standard, Standards and Interoperability): DMN for decision logic.
+  - valid: OntologyProfile `dmn-1-3`. DMN is a declared profile; DecisionPoints map to dmn:Decision and carry a DMN decision key.
+- **pkm2-s13** (Standard, Encoding for AI Systems): Retrieval-augmented generation grounded in a knowledge graph.
+  - valid: KnowledgeMethod `GraphRetrieval`. Applied by MethodApplications row ma-graph-retrieval-copilot: the plant copilot's answers are grounded by structured retrieval over the 2026-07-15 graph snapshot.
+- **pkm2-s14** (Standard, Document Analysis): Document analysis of existing SOPs and materials.
+  - valid: KnowledgeMethod `DocumentAnalysis`. Applied by MethodApplications ma13-document-analysis-press7 to the press-7 retrofit drawing notes and the 2019 SOP; it produced the drawing excerpt that loto-04b traces to.
+- **pkm2-s15** (Standard, The Anthropologist): Shadowing and ethnographic observation.
+  - valid: KnowledgeMethod `Shadowing`. Applied by sessions el7-loto-shadow and el7-loto-lpp on press line 3 and by elicit-close-shadow.
+- **pkm2-s16** (Standard, Process Mining): Process mining over enterprise event logs.
+  - valid: KnowledgeMethod `ProcessMining`. Applied by MethodApplications ma13-process-mining-deploy to the enterprise CI/CD event log, producing the mined event trace and the reconstructed hand-offs in MinedFlowEdges.
+- **pkm2-s17** (Standard, Elicitation Methodologies: Knowledge Collection): Structured interviews.
+  - valid: KnowledgeMethod `PractitionerInterview`. The structured practitioner interview; applied by el7-loto-interview with typed why, what-if and shortfall probes.
+- **pkm2-s18** (Standard, Collaborative Workshops): Collaborative workshops with participants from different roles.
+  - valid: KnowledgeMethod `FacilitatedWorkshop`. Applied by el7-loto-workshop, whose participants span technicians, the safety officer, operations and a material handler.
+- **pkm2-s19** (Standard, Standards and Interoperability): RDF triples as the base data model.
+  - valid: OntologyProfile `rdf-1-1`. The RDF 1.1 profile; served assertions are rdf:Statement triples and relationships are emitted as RDF triples.
+- **pkm2-s20** (Standard, Standards and Interoperability): PROV-O for provenance.
+  - valid: OntologyProfile `prov-o`. The PROV-O profile, mapped to served-assertion provenance (prov:wasDerivedFrom) and answer groundings (prov:Derivation).
+- **pkm2-s21** (Standard, Standards and Interoperability): BPMN for workflow notation.
+  - valid: OntologyProfile `bpmn-2-0`. The BPMN 2.0 profile mapping steps and transitions to BPMN tasks and sequence flows.
+- **pkm2-s22** (Standard, Organizing Principles): Faceted classification along several independent dimensions.
+  - valid: KnowledgeMethod `FacetedClassification`. Applied by MethodApplications row ma8-faceted-procedure-types: procedure types are classified along four independent facets (ClassificationFacets: functional domain, hazard, audience, change type), each procedure carries a value per facet in ProcedureFacetAssignments, and ProcedureTypes.IsArbitraryGrouping checks members against the facet their grouping names.
+- **pkm2-s23** (Standard, Levels of Organization): Named graphs for scoping context.
+  - valid: OntologyProfile `sparql-11-sd`. Named graphs for scoping context: each ApplicabilityScopes row is mapped to sd:NamedGraph and carries its graph IRI (sd:name).
+- **pkm2-s24** (Standard, Encoding for AI Systems): Embedding models chosen or tuned for process-domain meaning.
+  - valid: KnowledgeMethod `ProcessDomainEmbeddingTuning`. Applied by ma9-embedding-tuning: procedure-embed-1 was tuned on the process vocabulary, and EmbeddingProbes records it separating approve from reject (0.12) where the general model does not (0.83).
+- **pkm2-s25** (Standard, Feedback Loops): Evaluations and benchmarks for language-model systems.
+  - valid: KnowledgeMethod `LlmEvaluationBenchmarks`. Applied by ma9-assistant-benchmarks: the plant copilot was evaluated on four recorded benchmarks (AssistantBenchmarks) with and without graph grounding.
+- **pkm2-s26** (Standard, Encoding for AI Systems): Formal constraint languages for encoding process constraints.
+  - valid: OntologyProfile `shacl`. The SHACL profile; mappings record the sh:maxCount cardinality shapes emitted in rules.shacl.ttl and parseable step conditions as SHACL SPARQL constraints.
+
+## pkm-3: Process Knowledge Management, Part III: How We Lost Our Way
+
+
+### Covered (99)
+
+- **pkm3-c01** (Concept, Why We Stopped Documenting): Process knowledge is the unformalized, lived grasp of how work gets done, in tacit, explicit or implicit form.
+  - valid: Field `KnowledgeHoldings.IsUnformalizedProcessKnowledge`. TRUE for lived, unformalized knowledge of how the lockout work gets done, whether tacit (Tomas's bleed cue), explicit (a manual margin note) or implicit (the night crew's unspoken tag agreement).
+- **pkm3-c02** (Concept, Why We Stopped Documenting): Procedural knowledge is process knowledge after it has been made formal and expressed in taxonomies, ontologies and structured metadata.
+  - valid: Field `KnowledgeHoldings.IsProceduralKnowledge`. TRUE once a holding is formalized as a typed fragment of the procedure ontology: the v2 bleed cue, twin-drive isolation and shift hand-off.
+- **pkm3-c03** (Concept, Rebuilding Process Knowledge Infrastructure): A workflow is a system for running recurring, ordered tasks, through which an organization produces value.
+  - valid: Field `StepTransitions.TransitionKind`. Transitions order the recurring tasks of a procedure whose Purpose states the value it produces.
+- **pkm3-c04** (Concept, Introduction): Feedback loops from doing the work, without which procedural knowledge cannot be captured or written down.
+  - valid: Field `KnowledgeRepositoryEntries.FedFromExecution`. Links a repository entry to the execution whose experience it wrote back: the 2026-07-14 lockout run into the isolation map, the 2026-01-05 deployment into the go/no-go notes, the Q2 close into the FX-timing retrospective.
+- **pkm3-c05** (Concept, Introduction): Communities of practice that generate and pass on process knowledge.
+  - valid: Table `CommunitiesOfPractice`. Communities that generate and pass on process knowledge, from the close guild to the plant maintenance guild and the Riverbend and Eastvale clusters; KnowledgeTransfers records know-how passing inside them.
+- **pkm3-c06** (Concept, The Great Unbundling): Business process outsourcing: routine transactional work sent to a provider.
+  - valid: Field `SourcingFunctions.IsBusinessProcessOutsourcing`. TRUE for a function a provider performs whose work is routine and transactional; it fires on accounts payable invoice processing sent to Harborline and on nothing expertise-heavy.
+- **pkm3-c07** (Concept, The Great Unbundling): Knowledge process outsourcing: expertise-heavy analytical work sent to a provider, the kind that generates deep process knowledge.
+  - valid: Field `SourcingFunctions.IsKnowledgeProcessOutsourcing`. TRUE for a function a provider performs whose work is expertise-heavy: appliance process engineering, safety regulatory research, acquisition due-diligence analysis, press overhaul and classifier training.
+- **pkm3-c08** (Concept, The Great Unbundling): Each function classified as retained core or sent out as execution, where execution is where process knowledge resides.
+  - valid: Field `SourcingFunctions.SourcingClass`. Every function carries its classification as RetainedCore or SentOutExecution, separately from who actually executes it.
+- **pkm3-c09** (Concept, The Great Unbundling): Process knowledge is inseparable from execution; knowing how cannot stay home while doing happens elsewhere.
+  - valid: Field `SourcingFunctions.ClaimsHowWithoutDoing`. The model records who holds the how of a function separately from who executes it, and flags a declaration that the client holds the method while a provider does the work: acme-engineering says it holds classifier training know-how while Northstar trains the model, and its own audit rates the in-house level 1 of the 3 needed.
+- **pkm3-c10** (Concept, Shenzhen and Process Knowledge): Practitioner know-how about which approaches succeed or fail, how to diagnose problems, improvise and refine a process.
+  - valid: Field `KnowHowCarriers.KnowHowKind`. Classifies practitioner know-how as what fails (which die shims crack), diagnosis (hearing a bled accumulator, belt drift), improvisation (press setup without the cart, servo timing) or refinement.
+- **pkm3-c11** (Concept, Shenzhen and Process Knowledge): Process knowledge held in two forms at once: written procedures and the trained skill of seasoned workers.
+  - valid: Field `KnowHowCarriers.IsHeldInBothForms`. TRUE when the same know-how is at once written into a procedure and carried as trained skill: Walter's die-shim know-how, Hector's hand-build method and Grace's go/no-go judgment.
+- **pkm3-c12** (Concept, Shenzhen and Process Knowledge): Personal relationships, collaboration, design-production iteration and people changing employers as channels process knowledge travels through.
+  - valid: Field `KnowledgeTransfers.IsSocialNetworkChannel`. TRUE for transfers through collaboration (Grace pairing with Ravi), design-production iteration (Joao and Petra) and people changing employers (Joao and Petra moving between firms).
+- **pkm3-c13** (Concept, Shenzhen and Process Knowledge): Related components and systems make their process knowledge an interconnected network that compounds when concentrated in one community.
+  - valid: Field `CommunitiesOfPractice.InterconnectedKnowHowCount`. Counts know-how in a community that builds on related know-how in the same community: in the maintenance guild the bleed-down diagnosis builds on the plant's isolation layout and the improvised setup on the die-shim know-how.
+- **pkm3-c14** (Concept, Shenzhen and Process Knowledge): A knowledge ecosystem spanning physical and digital work in which humans remain in the loop.
+  - valid: Field `CommunitiesOfPractice.SpansPhysicalAndDigitalWithHumans`. TRUE when a community's know-how spans physical and digital work and people still carry it: the maintenance guild holds press and valve know-how, PLC interlock logic, and technicians' skill.
+- **pkm3-c15** (Concept, From Engineering State to Lawyerly Society): An improvement cycle in which a failure is observed, recorded and fed into a redesign before the next build.
+  - valid: Field `IssueOccurrences.ImprovementCyclePath`. For a failure fed into a redesign, states where it was observed, how it was recorded and the redesign that followed: the residual-energy failure on the 07-09 night lockout, recorded as err-residual-energy, redesigned by cr13-loto2-accumulator-bleed, implemented 2026-07-13 before the next run on 07-14.
+- **pkm3-c16** (Concept, From Engineering State to Lawyerly Society): Standardized, dependable, repeatable procedures as the foundation improvement builds on.
+  - valid: Field `LifecycleStatuses.VersionUseCount`. Counts procedure versions in each status; approved versions are the standardized, repeatable procedures improvement builds on.
+- **pkm3-c17** (Concept, From Engineering State to Lawyerly Society): Document retention policies set for compliance and risk rather than for knowledge.
+  - valid: Field `RecordsRetentionPolicies.RetentionDriver`. Each retention rule states whether its period is set by compliance risk or by the value of the knowledge in the records.
+- **pkm3-c18** (Concept, From Engineering State to Lawyerly Society): The scope of a governance program: compliance only, or also data quality, information and knowledge management.
+  - valid: Field `CorporateGovernancePrograms.IsComplianceOnly`. Each governance programme records which of compliance, data quality, information management and knowledge management it covers; this field is TRUE for the programme whose scope is compliance alone.
+- **pkm3-c19** (Concept, Death of Apprenticeship and Institutional Memory): Apprenticeship: novices placed with seasoned practitioners so tacit skill is absorbed through watching, practice and guided correction.
+  - valid: Field `Mentorships.MentorshipForm`. Marks apprenticeships: Aisha and Bea placed with Tomas, and Ken with Walter, learning by watching, supervised practice and guided correction, as their learning objectives state.
+- **pkm3-c20** (Concept, Death of Apprenticeship and Institutional Memory): Institutional memory of how the organization's own products and processes are actually carried out.
+  - valid: Field `Organizations.CapturedOwnKnowHowCount`. Counts the organization's own know-how of how its processes are carried out that is kept in its repository: the plant's isolation layout, and engineering's hand-build method and go/no-go judgment.
+- **pkm3-c21** (Concept, Death of Apprenticeship and Institutional Memory): Continuity across generations of practitioners, with obligations between employer and worker that make training worth investing in.
+  - valid: Field `Mentorships.EmployerWorkerObligation`. Records the obligations that make training worth investing in across generations: a guaranteed post and paid certification against a commitment to stay, a retention bonus at completion.
+- **pkm3-c22** (Concept, Death of Apprenticeship and Institutional Memory): Knowledge of how operations in a value chain help or hinder one another, lost when parts of the chain are removed.
+  - valid: Field `ProcessInterdependencies.Effect`. Records whether one operation Helps, Hinders or Requires another in the value chain (a verified zero-energy record helps roller replacement; press-7 lockouts hinder the die changeover), the knowledge lost when parts of the chain go.
+- **pkm3-c23** (Concept, Why We Stopped Documenting): The split between what is to be built and how it is built, which different parties can hold.
+  - valid: Field `SourcingFunctions.IsWhatHowSplit`. Compares the party holding the specification of what is built with the party holding the method of how it is built, and is TRUE where different parties hold them.
+- **pkm3-c24** (Concept, Why We Stopped Documenting): A hollowed-out firm that keeps brand and customers but relies on outside providers for the knowledge to deliver its own products.
+  - valid: Field `Organizations.IsHollowedOutFirm`. TRUE for an organization every one of whose product-delivering functions depends on method knowledge a provider holds; ACME Home Brands keeps its brand, customers and specifications while Meridian holds how its appliances are assembled.
+- **pkm3-c25** (Concept, Why We Stopped Documenting): Documentation a provider produces stays with the provider as its own intellectual property and competitive asset.
+  - valid: Field `ProviderEngagements.DocumentationOwnership`. Records per engagement whether the documentation the provider produces stays the provider's intellectual property (ProviderIP) or belongs to the client.
+- **pkm3-c26** (Concept, Socio-technical Ethos): A durable record of design decisions and the reasons behind them.
+  - valid: Field `ProcessDesignDecisions.Rationale`. A durable record of each design decision behind a procedure commitment and the reason for it, such as capping zero-energy verification at two attempts.
+- **pkm3-c27** (Concept, Socio-technical Ethos): Documentation treated as part of the craft, written so later colleagues benefit rather than to satisfy compliance.
+  - valid: Field `KnowledgeRepositoryEntries.WrittenForAudience`. Records whether an entry was written for later colleagues as part of the craft (the bleed fix, the build runbook) or to satisfy compliance (the quick reference card, the copilot summary).
+- **pkm3-c28** (Concept, Socio-technical Ethos): Whether a provider engagement carries any duty to build up the client's knowledge.
+  - valid: Field `ProviderEngagements.KnowledgeDutyTerms`. States the duty, if any, an engagement puts on the provider to build up the client's knowledge, such as Baxter training two plant technicians per overhaul; blank where the engagement carries none.
+- **pkm3-c29** (Concept, Socio-technical Ethos): A provider's procedural know-how as its differentiator, giving it a reason to withhold it from clients.
+  - valid: Field `ProviderEngagements.ProviderTreatsKnowHowAsDifferentiator`. Records whether the provider positions its procedural know-how as its competitive differentiator, the incentive to withhold it from the client.
+- **pkm3-c30** (Concept, Socio-technical Ethos): Knowledge repositories in which captured procedural knowledge is kept so it outlives team turnover.
+  - valid: Field `KnowledgeRepositoryEntries.OutlivesAuthorTenure`. TRUE when an entry is still current after its author left: Hector's hand-build runbook remains in use since his departure at the end of 2024.
+- **pkm3-c31** (Concept, Socio-technical Ethos): Problems that were solved once and reappear because the fix was not retained.
+  - valid: Field `ProblemOccurrences.IsRelearnedSolvedProblem`. TRUE when a problem solved before came back and the earlier fix had not been recorded: stale CDN assets, fixed by a contractor in 2025 without a note, returned in May 2026 and had to be solved again.
+- **pkm3-c32** (Concept, Process Knowledge is Foundational Infrastructure): A workflow as the joining of people, processes and technology, which agentic AI success depends on redesigning end to end.
+  - valid: Table `AiAdoptionInitiatives`. Each initiative joins the people (sponsoring organization), the process and procedure it targets, and the AI technology, and records when the workflow redesign for AI started, which is the end-to-end workflow the article means.
+- **pkm3-c33** (Concept, Process Knowledge is Foundational Infrastructure): Procedural knowledge that exists only as unwritten understanding, with no formal representation to ground AI.
+  - valid: Field `Procedures.HasNoExplicitSteps`. TRUE for procedures such as the press-7 changeover and accumulator bleed-down that exist only as a title and documents, with no formal step representation to ground an AI.
+- **pkm3-c34** (Concept, Rebuilding Process Knowledge Infrastructure): Knowledge engineers, information architects and ontologists as dedicated roles.
+  - valid: Field `KnowledgeWorkforcePositions.Discipline`. Each dedicated position is typed KnowledgeEngineer, InformationArchitect or Ontologist, with the organization it serves and whether it is filled.
+- **pkm3-c35** (Concept, Rebuilding Process Knowledge Infrastructure): Processes that are strategically vital and expertise-heavy.
+  - valid: Field `SourcingFunctions.IsVitalExpertiseProcess`. TRUE for a function that is both strategically vital and expertise-heavy.
+- **pkm3-c36** (Concept, Rebuilding Process Knowledge Infrastructure): Knowledge dependencies: procedural knowledge the organization relies on but does not hold itself.
+  - valid: Field `KnowledgeAuditItems.IsKnowledgeDependency`. TRUE for an audited knowledge area where the organization holds less than it needs and relies on a provider that holds it at the needed level.
+- **pkm3-c37** (Concept, Rebuilding Process Knowledge Infrastructure): Coverage gaps: parts of an end-to-end process for which the organization holds no process knowledge.
+  - valid: Field `KnowledgeAuditItems.IsCoverageGap`. TRUE for an audited knowledge area where the organization falls short and no provider available to it holds the knowledge either, such as the isolation sequence for mixer 2's twin-drive conversion.
+- **pkm3-c38** (Concept, Rebuilding Process Knowledge Infrastructure): Knowledge hoarding versus knowledge transfer, including silos reinforced by single-team ownership.
+  - valid: Field `KnowledgeAuditItems.IsSingleTeamSilo`. Knowledge held at the needed level is classified by how many internal teams hold it; TRUE where exactly one team does (the standard-line isolation know-how), the silo single-team ownership creates, against areas already spread across two or three teams.
+- **pkm3-c39** (Concept, Rebuilding Process Knowledge Infrastructure): Prompt libraries as a maintained asset.
+  - valid: Field `PromptTemplates.LibraryStatus`. Records whether each prompt is a Maintained library asset (with MaintainedByRole) or Unmanaged, like the 2019 SOP pasted into the checklist bot.
+- **pkm3-c40** (Concept, Rebuilding Process Knowledge Infrastructure): A central registry of agent integrations.
+  - valid: Table `AgentIntegrations`. The central registry of agent integrations: agent, knowledge system, pathway, served snapshot, delivery mode and registry entry key.
+- **pkm3-c41** (Concept, Rebuilding Process Knowledge Infrastructure): A workflow as process plus procedure plus knowledge, making process knowledge the context AI requires instead of ad hoc runtime context.
+  - valid: Field `AgentIntegrations.ServesSnapshot`. Each integration hands its AI agent a governed snapshot of the process graph as its context, so the context comes from process knowledge rather than ad hoc runtime text.
+- **pkm3-c42** (Concept, Conclusion): Process knowledge builds up slowly inside communities of practice, so once lost it cannot be recruited back.
+  - valid: Field `KnowHowCarriers.LostAccumulationYears`. The years of practice lost when a departed person was the only carrier: 12.2 years of incident triage heuristics left with Dmitri. A new hire starts at zero, which is why such knowledge cannot be recruited back.
+- **pkm3-i01** (Illustration, The Great Unbundling): The core-competency push sent legal research, financial analysis, engineering design and R&D offshore, the very work that produces deep process knowledge.
+  - valid: Field `SourcingFunctions.IsVitalExpertiseClassedNonCore`. Fires for strategically vital, expertise-heavy work classified as execution to send out rather than retained core: safety regulatory research (legal research), acquisition due-diligence analysis (financial analysis), appliance process engineering, the press overhaul and heating element R&D, the work that builds deep process knowledge; routine invoice processing and retained functions do not fire.
+- **pkm3-i02** (Illustration, Why We Stopped Documenting): Firms kept specifications but offshored production and ended up designing goods they could not build while providers kept the documentation.
+  - valid: Field `SourcingFunctions.DesignsWhatItCannotBuild`. Fires where a firm keeps complete specification knowledge of a product it delivers, a provider performs the production and keeps the documentation as its property, and the firm's own method knowledge falls short: Home Brands designs the countertop range and cannot assemble it.
+- **pkm3-i03** (Illustration, From Engineering State to Lawyerly Society): Leadership culture moved from engineering to law, bringing risk-driven retention limits and compliance-led standardization.
+  - valid: Field `RecordsRetentionPolicies.IsLegalLedKnowledgeDestruction`. Fires where a programme sponsored by Legal set a compliance-risk retention period shorter than the useful life of the knowledge in the records: the 2016 rule keeping design history three years for a fifteen-year product; the earlier engineering-sponsored rule kept it twenty-five.
+- **pkm3-i04** (Illustration, Death of Apprenticeship and Institutional Memory): Manufacturing's training-and-retention cycle eroded in stages: facility investment, then engineer training, then upkeep of how-to-make knowledge.
+  - valid: Field `Organizations.ErodedInStages`. TRUE when facility investment declined, then engineer training after it, then upkeep of how-to-make knowledge after that. acme-plant fires (tooling budget frozen 2011, engineer rotation cut 2015, how-to-make binders abandoned 2020); acme-engineering's isolated training pause does not.
+- **pkm3-i05** (Illustration, Shenzhen and Process Knowledge): A manufacturing city became a community of engineering practice where people move between factories and specialists are close at hand.
+  - valid: Field `CommunitiesOfPractice.IsCrossFirmPracticeCluster`. TRUE when members from several firms share practice, know-how moves with people changing employers, and specialists are at hand. The Riverbend press cluster fires (members from two supplier firms, Joao's move, Petra as specialist); single-firm guilds do not.
+- **pkm3-i06** (Illustration, Socio-technical Ethos): Offshored software work: when the contractor team turned over, successors started over and fixed bugs came back.
+  - valid: Field `ProblemOccurrences.IsTurnoverRegression`. TRUE when a fix that was never recorded comes back after the person who made it left. The contractor who fixed stale CDN assets in 2025 left without a note, and the bug returned in May 2026; the Press 7 bleed stall, whose fix was recorded, does not fire.
+- **pkm3-i07** (Illustration, Death of Apprenticeship and Institutional Memory): A packaging-machinery cluster kept knowledge circulating through workers moving between firms, until young people shunned technical apprenticeships.
+  - valid: Field `CommunitiesOfPractice.IsCirculationEndingForLackOfApprentices`. TRUE when know-how circulates through people moving between firms but offered apprenticeship places have gone unfilled for three years. The Eastvale packaging cluster fires (Petra's move, four open places, last apprentice in 2014); Riverbend, with no unfilled places, does not.
+- **pkm3-i08** (Illustration, Shenzhen and Process Knowledge): A nineteenth-century economist on a trade settled in one place making its know-how ambient, absorbed even by children.
+  - valid: Field `CommunitiesOfPractice.HasAmbientTradeKnowHow`. TRUE when a trade concentrated in one place passes its know-how even to people who do not practise it. Riverbend fires: Nina, a school leaver with no role, absorbed servo timing by growing up among the works; no other community records such absorption.
+- **pkm3-i09** (Illustration, Shenzhen and Process Knowledge): A much larger manufacturing workforce holds how-to-build knowledge in the people, plants and systems doing the work.
+  - valid: Field `Organizations.HoldsKnowHowInPeoplePlantsAndSystems`. TRUE when an organization's how-to-build knowledge is carried at once by people, plants and systems. acme-plant fires (technicians, the Plant North isolation layout, the PLC interlock logic); acme-engineering, whose know-how is carried only by people, does not.
+- **pkm3-i10** (Illustration, Process Knowledge is Foundational Infrastructure): Most firms use generative AI yet about as many report no meaningful bottom-line result.
+  - valid: Field `AiAdoptionInitiatives.AdoptedWithoutBottomLineResult`. Witnesses the illustrated gap between adopting AI and seeing results: fires on AI in production with no measured bottom-line result (checklist bot, routing AI). The copilot and risk classifier in production with measured results do not fire.
+- **pkm3-i11** (Illustration, Process Knowledge is Foundational Infrastructure): Firms that prompt a language model to optimize manufacturing fail for lack of formalized process knowledge, while knowledge-rich firms deploy agents.
+  - valid: Field `AiAdoptionInitiatives.FailedWithoutFormalizedKnowledge`. Fires where prompting a model about work with no formalized steps failed: the press-7 changeover optimizer and the routing AI. The knowledge-rich lockout copilot and risk classifier, grounded in specified procedures, succeeded and do not fire.
+- **pkm3-p01** (Prescription, Introduction): A procedure whose execution feeds nothing back into its documentation has lost the means of capturing procedural knowledge.
+  - valid: Field `Procedures.IsExecutedWithoutFeedbackLoop`. TRUE when a procedure is executed and no repository entry wrote back what an execution taught. Workforce policy notification fires (executed, nothing fed back); lockout, deployment and the close each had an execution written back into their documentation and read FALSE.
+- **pkm3-p02** (Prescription, Why We Stopped Documenting): Turning process knowledge into procedural knowledge takes deliberate work: observing, interviewing, extracting and encoding.
+  - valid: Field `KnowledgeHoldings.IsFormalizedWithoutElicitationWork`. Fires when knowledge was formalized into a fragment that no observation, interview or other elicitation produced: the press 3 margin note retyped into the rulebook. It does not fire on the bleed cue, twin-drive or hand-off holdings, formalized through an interview, an incident session and a workshop.
+- **pkm3-p03** (Prescription, Why We Stopped Documenting): A client relying on a provider's documentation must plan for how that knowledge comes back to it.
+  - valid: Field `ProviderEngagements.IsUnplannedKnowledgeReturn`. Fires when an audit shows the client relies on a provider's knowledge, the provider keeps the documentation as its own property, and the engagement records no plan for how the knowledge comes back: Meridian, Quillstone and Northstar; it does not fire on Baxter, whose documentation is joint and whose return plan is recorded.
+- **pkm3-p04** (Prescription, From Engineering State to Lawyerly Society): A procedure works only if the tacit knowledge behind it is captured; compliance-driven standardization does not supply it.
+  - valid: Field `ProcedureVersions.IsStandardizedWithoutTacitCapture`. TRUE when a version standardized for compliance has no tacit knowledge fragment captured behind it. It fires on the forklift daily inspection and not on the compliance-driven close, which carries a tacit fragment, nor on versions standardized from practice.
+- **pkm3-p05** (Prescription, Socio-technical Ethos): Staff turnover must not wipe out knowledge; an incoming team should not have to relearn the work from nothing.
+  - valid: Field `OnboardingRecords.IsStartingFromNothing`. TRUE when a newcomer joins a procedure whose previous carriers left with nothing captured, so the work must be relearned from nothing. Leah's onboarding into customer incident response fires (Dmitri's triage heuristics left with him); starters on lockout and deployment, which have captured entries, read FALSE.
+- **pkm3-p06** (Prescription, Socio-technical Ethos): When a problem is solved, the solution is recorded as part of the work so later practitioners can reuse it.
+  - valid: Field `ProblemOccurrences.IsSolvedWithoutRecordedSolution`. TRUE when a problem was solved and the solution was not recorded as part of the work. The contractor's 2025 CDN cache fix fires; the 2026 cache fix and both Press 7 bleed fixes, each linked to a repository entry, do not.
+- **pkm3-p07** (Prescription, Socio-technical Ethos): A knowledge culture cannot be bought or mandated; it must grow from communities of practice where sharing is the norm.
+  - valid: Field `CommunitiesOfPractice.IsMandatedWithoutSharingNorm`. TRUE when a community was mandated or came with a purchased platform and no sharing takes place in it. The portal community created when the knowledge portal was licensed fires; the grassroots maintenance guild and clusters, where know-how is passed on, do not.
+- **pkm3-p08** (Prescription, Process Knowledge is Foundational Infrastructure): An agent running a multi-step process needs the required steps, sequence, conditions, resources and exception handling.
+  - valid: Field `AiAdoptionInitiatives.AgentOnUnderSpecifiedProcedure`. Fires when an agent is set to run a version that does not specify preconditions or exception handling: the conveyor maintenance agent, the checklist bot on the 2019 transcription, and the press-7 agent. The release and risk agents run deployment 3.2.0, which specifies both, and do not fire.
+- **pkm3-p09** (Prescription, Process Knowledge is Foundational Infrastructure): AI reasoning and agent deployment must rest on formalized process knowledge; tacit-only work cannot be handed to an agent.
+  - valid: Field `AiAdoptionInitiatives.HandsTacitProcedureToAgent`. Fires when an agent is assigned a procedure that exists only as tacit knowledge and documents: the proposed press-7 changeover agent. Agents on procedures with specified steps do not fire.
+- **pkm3-p10** (Prescription, Process Knowledge is Foundational Infrastructure): A workflow must be understood and documented before it is redesigned for AI.
+  - valid: Field `AiAdoptionInitiatives.RedesignedBeforeDocumented`. Fires when the workflow redesign for AI started before the workflow was documented as a version: the conveyor agent's redesign began 10 January, conveyor maintenance 1.0.0 was issued 1 February. Redesigns that started after the target version was issued do not fire.
+- **pkm3-p11** (Prescription, Rebuilding Process Knowledge Infrastructure): Organizations must first acknowledge a process knowledge deficit rather than treat it as a cost or efficiency problem.
+  - valid: Field `KnowledgeAudits.TreatsDeficitAsCostProblem`. Fires when an audit finds knowledge shortfalls but frames them as a cost and efficiency problem rather than a knowledge deficit: the 2025 Home Brands supplier review found two dependencies and filed them as cost; the plant and engineering audits acknowledge a deficit, and the 2024 corporate cost review found no shortfall.
+- **pkm3-p12** (Prescription, Rebuilding Process Knowledge Infrastructure): Audit the procedural knowledge actually held against what is needed.
+  - valid: Field `SourcingFunctions.IsUnauditedFunction`. Fires for an outsourced or strategically vital function that no audit has compared held against needed knowledge for: invoice processing at Harborline and the heating element R&D; audited functions do not fire.
+- **pkm3-p13** (Prescription, Rebuilding Process Knowledge Infrastructure): Name the knowledge gaps and dependencies the audit finds.
+  - valid: Field `KnowledgeAuditItems.IsUnnamedFinding`. Fires for an audit finding (gap or dependency) that no knowledge gap row names: the two Home Brands dependencies; the plant and engineering findings are each named as a knowledge gap.
+- **pkm3-p14** (Prescription, Rebuilding Process Knowledge Infrastructure): Hire knowledge engineers, information architects and ontologists to capture, organize and encode process knowledge.
+  - valid: Field `Organizations.HasKnowledgeFindingsWithoutKnowledgeStaff`. Fires for an organization whose audits found shortfalls while it has no filled knowledge engineer, information architect or ontologist position: ACME Home Brands, whose knowledge engineer position was never budgeted; the plant and engineering have filled positions.
+- **pkm3-p15** (Prescription, Rebuilding Process Knowledge Infrastructure): For outsourced processes and coverage gaps, pick the strategically vital, expertise-heavy ones and deliberately capture their knowledge.
+  - valid: Field `SourcingFunctions.IsUncapturedPriorityProcess`. Fires for a vital, expertise-heavy function that is outsourced or has a coverage gap and has no deliberate capture initiative: appliance assembly, safety research and classifier training; the press overhaul (shadowing), the lockout coverage gap (critical incidents) and deal analysis (practitioner pairing) have one.
+- **pkm3-p16** (Prescription, Rebuilding Process Knowledge Infrastructure): Organizations must secure access to the process knowledge needed to run outsourced operations without necessarily bringing the work in house.
+  - valid: Field `ProviderEngagements.IsKnowledgeAccessUnsecured`. Fires for a running engagement the client depends on for knowledge whose contract gives the client no access to that knowledge: Meridian and Northstar; Quillstone and Baxter depend on provider knowledge but grant access.
+- **pkm3-p17** (Prescription, Rebuilding Process Knowledge Infrastructure): Experienced practitioners must have time to mentor novices.
+  - valid: Field `Agents.LacksTimeToMentor`. TRUE when a mentor's protected weekly hours fall short of what their active mentorships need. Tomas has 4 protected hours against 12 needed for two apprentices; Devon's 3 hours cover his 2-hour mentorship.
+- **pkm3-p18** (Prescription, Rebuilding Process Knowledge Infrastructure): Sharing procedural knowledge must be expected, recognized and rewarded.
+  - valid: Field `Agents.IsUnrewardedSharer`. TRUE when someone has passed know-how on repeatedly and never been recognized for it. Grace documented and paired to pass on her go/no-go judgment with no recognition; Joao, who shares more, received a peer award and reads FALSE.
+- **pkm3-p19** (Prescription, Rebuilding Process Knowledge Infrastructure): Culture must value documentation and knowledge transfer.
+  - valid: Field `Organizations.TreatsKnowledgeWorkAsUnvalued`. TRUE when most of an organization's documentation and knowledge transfer is done outside allotted time, a culture that does not value it. acme-engineering fires (four of five pieces on people's own time); acme-plant, which gives time for entries and mentoring, does not.
+- **pkm3-p20** (Prescription, Rebuilding Process Knowledge Infrastructure): Relationships must require explicit knowledge management deliverables so knowledge moves rather than being hoarded.
+  - valid: Field `ProviderEngagements.LacksKnowledgeDeliverables`. Fires for a running engagement that requires no knowledge management deliverable at all: the Meridian assembly contract; an ended engagement does not fire.
+- **pkm3-p21** (Prescription, Rebuilding Process Knowledge Infrastructure): Learning must flow both ways between an organization and its providers.
+  - valid: Field `ProviderEngagements.IsOneWayLearning`. Fires for a running engagement with knowledge deliverables where knowledge has actually been delivered in only one direction: Quillstone (digests to the client only) and Northstar (change history to the provider only); Harborline, Baxter and Lattice deliver both ways.
+- **pkm3-p22** (Prescription, Rebuilding Process Knowledge Infrastructure): Providers are treated as long-term partners whose success depends on accumulating knowledge jointly.
+  - valid: Field `ProviderEngagements.IsShortTermWithoutJointKnowledge`. Fires for a running engagement contracted for under three years that builds no knowledge asset jointly, i.e. a provider treated transactionally rather than as a long-term partner: Meridian, Quillstone and Northstar; Baxter (60 months, shared failure-mode catalog) and Lattice (48 months, joint playbook) do not.
+- **pkm3-p23** (Prescription, Rebuilding Process Knowledge Infrastructure): New systems, agentic AI included, are built with producing procedural knowledge as a leading goal.
+  - valid: Field `AiAdoptionInitiatives.AgenticWithoutKnowledgeCapture`. Fires on an agentic system past proposal that has produced no procedural knowledge back into the model: the release assistant and the checklist bot. The risk classifier and conveyor agent each proposed insights and do not fire.
+- **pkm3-p24** (Prescription, Rebuilding Process Knowledge Infrastructure): Systems must capture the rationale behind process commitments.
+  - valid: Field `ProcessDesignDecisions.IsCommitmentWithoutRationale`. Fires on the lockout commitment to escalate night-shift residual energy to the deputy, recorded with no reason; the verification cap and the deployment risk gate carry their rationale and read false.
+- **pkm3-p25** (Prescription, Rebuilding Process Knowledge Infrastructure): Systems must record decisions alongside the process.
+  - valid: Field `ProcedureVersions.IsLiveWithoutRecordedDecisions`. Fires on live procedure versions with no design decision recorded alongside them (close, policy, conveyor maintenance, press changeover, forklift inspection); lockout 2.0.0 and deployment 3.2.0 have decisions recorded with the procedure and read false.
+- **pkm3-p26** (Prescription, Rebuilding Process Knowledge Infrastructure): Systems must hold explicit representations of how processes work.
+  - valid: Field `Procedures.HasNoExplicitSteps`. Fires for the press die changeover, a procedure that exists only as a PDF with no specified step, while every other procedure has an explicit representation.
+- **pkm3-p27** (Prescription, Rebuilding Process Knowledge Infrastructure): Prompts are kept in maintained prompt libraries.
+  - valid: Field `PromptTemplates.IsUnmanagedPromptInUse`. Fires on a prompt an agent uses that is not maintained in the prompt library: the 2019 SOP pasted into the checklist bot. Library prompts with a maintaining role do not fire.
+- **pkm3-p28** (Prescription, Rebuilding Process Knowledge Infrastructure): For AI context windows, develop ways to codify and condense knowledge instead of supplying context ad hoc.
+  - valid: Field `PromptTemplates.IsVerbatimDump`. Fires when a prompt pastes its source at 90% or more of its size instead of codifying and condensing it: the 2019 SOP dump (3900 of 4100 tokens). The lockout detail layer condensed to 13% of its source does not fire.
+- **pkm3-p29** (Prescription, Rebuilding Process Knowledge Infrastructure): Agent integrations are kept in a central registry.
+  - valid: Field `AgentIntegrations.IsShadowIntegration`. Fires on an integration in live use with no entry in the central registry: the release assistant's agent-to-agent connection that delivered the hotfix recommendation. Registered integrations do not fire.
+- **pkm3-p30** (Prescription, Rebuilding Process Knowledge Infrastructure): Agent integrations share common pathways rather than one-off connections.
+  - valid: Field `AgentIntegrations.IsOneOffConnection`. Fires on an integration whose pathway no other integration shares: the copilot's one-off export script and the checklist bot's pasted prompt. Integrations on the shared MCP server and agent-to-agent gateway do not fire.
+- **pkm3-p31** (Prescription, Conclusion): Managing work requires understanding it, and understanding requires that it was documented and absorbed into knowledge systems.
+  - valid: Field `GovernedModels.IsUnmanageableUndocumentedWork`. Fires on the press-7 changeover family, whose work exists only as a PDF with no specified steps; families documented into the register read false. Work never absorbed into the knowledge system cannot be managed.
+- **pkm3-p32** (Prescription, Conclusion): The procedural knowledge an organization needs is not found in public references and cannot be generated by AI.
+  - valid: Field `KnowHowCarriers.IsDelegatedToUnfitSource`. TRUE when the plan to replace know-how relies on public references or AI generation although the know-how is not in public references. Ken's belt-drift diagnosis, slated for AI generation, fires; Lin's forklift checklist, which really is the manufacturer's public checklist, does not.
+- **pkm3-q01** (CompetencyQuestion, Process Knowledge is Foundational Infrastructure): For a procedure, which steps does it need, in what sequence, under which conditions, with which resources, and how are exceptions dealt with?
+  - valid: RoleQuestion `aq-pkm3-q01`. Asks whether a procedure specifies steps, order, conditions and exception handling.
+- **pkm3-q02** (CompetencyQuestion, Rebuilding Process Knowledge Infrastructure): What procedural knowledge do we hold versus need, and where are the gaps and dependencies?
+  - valid: RoleQuestion `aq-pkm3-q02`. Asks, per audited knowledge area, what is needed against what is held, and whether a shortfall is a provider dependency or a coverage gap.
+- **pkm3-q03** (CompetencyQuestion, Rebuilding Process Knowledge Infrastructure): Which processes are strategically vital and expertise-heavy, and which of those are outsourced?
+  - valid: RoleQuestion `aq-pkm3-q03`. Asks which functions are strategically vital and expertise-heavy and which of those a provider performs.
+- **pkm3-q04** (CompetencyQuestion, Death of Apprenticeship and Institutional Memory): Which of our operations help each other, and which work against each other?
+  - valid: RoleQuestion `aq-pkm3-q04`. The infrastructure engineer's question, answered by ProcessInterdependencies.Effect and IsHinderingDependency and by Procedures.IsHinderedByAnotherOperation.
+- **pkm3-q05** (CompetencyQuestion, Socio-technical Ethos): Why was this decision made?
+  - valid: RoleQuestion `aq-pkm3-q05`. Answered by ProcessDesignDecisions.Rationale, with IsRecordedAfterTheFact flagging a decision whose why was written down weeks after it was made.
+- **pkm3-q06** (CompetencyQuestion, Socio-technical Ethos): Has this problem been solved before?
+  - valid: RoleQuestion `aq-pkm3-q06`. The release manager asks whether this problem was solved before; ProblemOccurrences.HasBeenSolvedBefore is TRUE when an earlier occurrence of the same problem was solved, and FALSE for first occurrences.
+- **pkm3-q07** (CompetencyQuestion, Why We Stopped Documenting): For a given process, who holds the knowledge of how it is really performed: the organization or an outside provider?
+  - valid: RoleQuestion `aq-pkm3-q07`. Asks, per function, whether the method knowledge of how it is really performed is held by the organization or by an outside provider.
+- **pkm3-q08** (CompetencyQuestion, Process Knowledge is Foundational Infrastructure): Which procedures intended for agent execution exist only as tacit knowledge?
+  - valid: RoleQuestion `aq-pkm3-q08`. The steward's question; Procedures.IsTacitOnlyAgentTarget fires on press changeover, which an agentic initiative targets and which has no specified steps.
+- **pkm3-q09** (CompetencyQuestion, Shenzhen and Process Knowledge): Who has handled a comparable problem, and which specialists can be consulted?
+  - valid: RoleQuestion `aq-pkm3-q09`. The release manager asks who handled a comparable problem and whether they can be consulted; ProblemOccurrences.HasConsultableSpecialist is TRUE when the earlier solver still holds a role.
+- **pkm3-q10** (CompetencyQuestion, Socio-technical Ethos): If the current team left, what procedural knowledge is captured for a successor, and what would have to be relearned?
+  - valid: RoleQuestion `aq-pkm3-q10`. The VP asks what would be relearned if the current team left; KnowHowCarriers.MustBeRelearnedIfHolderLeaves is TRUE for know-how carried by a serving person with nothing captured for a successor.
+- **pkm3-q11** (CompetencyQuestion, From Engineering State to Lawyerly Society): How has this process failed before, how was each failure recorded, and what redesign followed?
+  - valid: RoleQuestion `aq-pkm3-q11`. IssueOccurrences answer how the procedure failed and how it was recorded (Error, IssueCause, encountering agent); RedesignChangeRequest and ImprovementCyclePath give the redesign; IsFailureWithoutLandedRedesign marks the three failures with no landed redesign.
+- **pkm3-q12** (CompetencyQuestion, Rebuilding Process Knowledge Infrastructure): Does a given provider relationship oblige explicit knowledge deliverables and knowledge flowing back to us?
+  - valid: RoleQuestion `aq-pkm3-q12`. Asks, per provider engagement, whether it requires knowledge deliverables to the client and plans how the knowledge comes back.
+- **pkm3-s01** (Standard, Rebuilding Process Knowledge Infrastructure): The Model Context Protocol and agent-to-agent integration protocols.
+  - valid: KnowledgeMethod `AgentIntegrationProtocols`. Applied by ma9-mcp-copilot (the copilot reads the register through the shared MCP server) and ma9-a2a-risk-classifier (the classifier reads the graph through the agent-to-agent gateway); AgentIntegrations records both pathways.
+- **pkm3-s02** (Standard, Rebuilding Process Knowledge Infrastructure): Controlled vocabularies, taxonomies and ontologies as the formal representation of procedural knowledge.
+  - valid: KnowledgeMethod `LayeredVocabularyToOntology`. Applied by MethodApplications row ma8-layered-lockout: the lockout activity thesaurus (Vocabularies, VocabularyTerms with SKOS labels and relations) and the process taxonomy (ProcedureTypes) were established before the lockout procedure was aligned to the PKO 2.0.0 ontology; Vocabularies.OntologyPrecededVocabularyControl checks that order per domain.
+
+## pkm-4: Process Knowledge Management, Part IV: From Theory to Practice, The Procedural Knowledge Ontology
+
+### Not covered (3)
+
+- **pkm4-c12** (Concept, Why Do I Care About Industrial Processes?): Three kinds of knowledge an abundance of information leaves wanting: human judgment, uncovered tacit knowledge, and knowledge curated to a user and use case. Needs a table with rows or a field with data.
+- **pkm4-i07** (Illustration, Building A Procedural Knowledge Infrastructure): An EU project supporting ontology development in industry. Needs a discriminating witness invented for a role question.
+- **pkm4-s13** (Standard, Building A Procedural Knowledge Infrastructure): Linked Data principles for publishing terms. Needs a mapped ontology profile or an applied knowledge method.
+
+### Covered (175)
+
+- **pkm4-c01** (Concept, PKO's Architecture and Design): Procedures are abstract specifications and executions are concrete performances of them.
+  - valid: Field `StepExecutions.ExecutionVersion`. Executions link to the specification they enact while remaining separate rows from it.
+- **pkm4-c02** (Concept, After: Explicit, Actionable Procedural Knowledge): Every step records what it needs, what must hold before it starts, how long it should take and who is accountable, within an ordered sequence.
+  - valid: Field `Steps.PreconditionCount`. Steps record their preconditions alongside duration, required locks and equipment, and the accountable role, within the transition order.
+- **pkm4-c03** (Concept, After: Explicit, Actionable Procedural Knowledge): Fallbacks for when the usual method fails.
+  - valid: Field `ProcedureVersions.FallbackStep`. A version declares its fallback step; lockout falls back to escalation and re-isolation.
+- **pkm4-c04** (Concept, After: Explicit, Actionable Procedural Knowledge): Handling of unusually configured equipment.
+  - valid: Field `ProcedureTargets.HandlingFailureModeCount`. Counts the documented handling for an unusually configured machine target; press 7 has its accumulator handling.
+- **pkm4-c05** (Concept, After: Explicit, Actionable Procedural Knowledge): Danger cues that call for escalating at once.
+  - valid: Field `Steps.DangerCueCount`. Counts the cues on a step that call for escalating at once.
+- **pkm4-c06** (Concept, PKO's Architecture and Design): A core module covering procedures, steps, executions and related notions.
+  - valid: Field `OntologyProfiles.MappingCount`. The PKO core module is a declared profile whose semantic mappings cover procedures, steps and executions; its mapping count holds the number of model terms mapped to it.
+- **pkm4-c07** (Concept, PKO's Architecture and Design): An industry module for manufacturing covering machines, equipment, safety requirements and regulatory frameworks.
+  - valid: Table `Machines`. Machines, with their machine types, energy sources, locks, protective equipment and regulatory frameworks, are the industry module's manufacturing concepts; each maps to a pko-industry term.
+- **pkm4-c08** (Concept, PKO's Architecture and Design): An execution names who carried it out, the day, what they noticed and how it turned out.
+  - valid: Field `ProcedureExecutions.Observations`. Each execution records its executor, date, what was noticed and its outcome.
+- **pkm4-c09** (Concept, Practical Elicitation and Exploitation): An assistant that answers questions from the organization's own procedural knowledge graph.
+  - valid: Table `AssistantAnswers`. Records each answer the plant copilot, release assistant or risk classifier gave, with the organization's own assertions and segments it was grounded in (AnswerGroundings). The model records the assistant's answers; it does not run the assistant.
+- **pkm4-c10** (Concept, Measured Impact: What the Evidence Shows): Competency questions that guide the ontology's development.
+  - valid: Table `CompetencyQuestionSetEntries`. Each governed model's competency question set, the questions that guided its development, with the original baseline marked.
+- **pkm4-c11** (Concept, Measured Impact: What the Evidence Shows): Quality criteria for an ontology: accuracy, clarity, adaptability, completeness, efficiency, conciseness, consistency and organizational fitness.
+  - valid: Table `QualityCriteria`. The eight stated quality criteria: accuracy, clarity, adaptability, completeness, computational efficiency, conciseness, consistency and organizational fitness.
+- **pkm4-c13** (Concept, The Problem PKO Addresses): Procedural knowledge in tacit and explicit form and where each lives: operators' memory, formal documents, notes in outdated manuals and the memory of staff who may leave.
+  - valid: Field `KnowledgeHoldings.Carrier`. Records where each piece of lockout knowledge lives, before and after encoding: operators' memory, formal documents, notes in an outdated manual, the memory of a technician about to retire, and, after, the procedure rulebook.
+- **pkm4-c14** (Concept, Before: Tacit Knowledge and Limitations): The small judgments behind a documented step: indicators checked, sounds listened for, and how the step is confirmed to have taken effect.
+  - valid: Field `Steps.CueCount`. Counts the indicators, sounds and confirmations a practitioner reads during a step.
+- **pkm4-c15** (Concept, Before: Tacit Knowledge and Limitations): Procedures required by safety regulation, whose documentation exists for compliance separately from how the work is done.
+  - valid: Field `Resources.ComplianceRecordFor`. A document names the regulated procedure it is kept as a compliance record for, separate from that procedure's specified steps.
+- **pkm4-c16** (Concept, Practical Elicitation and Exploitation): Conditional logic inside a procedure: conditions under which a different path or action applies.
+  - valid: Field `DecisionPoints.Question`. Decision points record the conditions under which a different branch applies.
+- **pkm4-c17** (Concept, Implications for AI Workflows): Operating constraints and the contextual wisdom veterans bring to execution, distinct from the list of steps.
+  - valid: Table `KnowledgeFragments`. Records situated, tacit and implicit knowledge -- the judgment and operating constraints practitioners bring -- as its own rows attached to steps, separate from the Steps list itself.
+- **pkm4-c18** (Concept, Building A Procedural Knowledge Infrastructure): The ontology's development materials: requirements, versions, documentation and evaluation materials.
+  - valid: Field `ModelDocuments.DocumentKind`. The model's development materials, typed as requirements, version notes, documentation and evaluation materials.
+- **pkm4-c19** (Concept, Building A Procedural Knowledge Infrastructure): An issue channel where adopters record their use case and give feedback.
+  - valid: Field `StakeholderQuestions.UseCase`. Questions adopters raise through the model's issue tracker, each recording the adopter's use case (release audit, HR onboarding, AI evaluation pipeline) alongside the feedback.
+- **pkm4-c20** (Concept, PKO class diagram): A procedure type.
+  - valid: Field `Procedures.ProcedureType`. Every procedure has a type.
+- **pkm4-c21** (Concept, PKO class diagram): A procedure target: the thing a procedure is about.
+  - valid: Table `ProcedureTargets`. Each row is a thing a procedure is about: a machine, a data system, a population or a service.
+- **pkm4-c22** (Concept, PKO class diagram): Procedure templates, and procedures that instantiate a template.
+  - valid: Field `Procedures.TemplateProcedure`. Lockout instantiates the corporate lockout template.
+- **pkm4-c23** (Concept, PKO class diagram): The organizations that adopt a procedure.
+  - valid: Table `ProcedureAdoptions`. Each row is an organization adopting a procedure.
+- **pkm4-c24** (Concept, PKO class diagram): A version number on a procedure.
+  - valid: Field `ProcedureVersions.VersionNumber`. Every version carries a version number.
+- **pkm4-c25** (Concept, PKO class diagram): The motivation for creating a new procedure version.
+  - valid: Field `ProcedureVersions.NewVersionMotivation`. Versions record why they were created.
+- **pkm4-c26** (Concept, PKO class diagram): A changelog description on a procedure version.
+  - valid: Field `ProcedureVersions.ChangelogDescription`. Versions carry a changelog description.
+- **pkm4-c27** (Concept, PKO class diagram): Links to a procedure's previous and next versions.
+  - valid: Table `ProcedureVersionLinks`. Each row links a previous version to its next version.
+- **pkm4-c28** (Concept, PKO class diagram): The current version of a procedure.
+  - valid: Field `Procedures.CurrentVersionKey`. Each procedure names its current version.
+- **pkm4-c29** (Concept, PKO class diagram): Procedure status values: draft, validation, approval, approved and deprecated.
+  - valid: Field `LifecycleStatuses.IsPkoStatus`. The status scheme holds the PKO procedure statuses draft, validation, approval, approved, deprecated and archived.
+- **pkm4-c30** (Concept, PKO class diagram): A change of status recording the from-status and to-status.
+  - valid: Field `ProcedureStatusChanges.ToStatus`. Each change of status records the status it moved from and to.
+- **pkm4-c31** (Concept, PKO class diagram): A change of status is itself an activity that can attach to any entity, executions included.
+  - valid: Field `ProcedureStatusChanges.ProcedureExecution`. A change of status can attach to an execution; the paused lockout run records one.
+- **pkm4-c32** (Concept, PKO concept map): Kinds of status change: create, modify, extract, validate, approve and archive.
+  - valid: Field `ProcedureStatusChanges.ChangeKind`. Each change records its kind: create, modify, extract, validate, approve or archive.
+- **pkm4-c33** (Concept, PKO concept map): The agent who made a status change.
+  - valid: Field `ProcedureStatusChanges.ChangedByAgent`. Each change records the agent who made it.
+- **pkm4-c34** (Concept, PKO class diagram): Procedure statuses and execution statuses as specializations of one general status concept.
+  - valid: Field `LifecycleStatuses.BroaderStatus`. Procedure statuses and execution statuses both specialize the general Status concept.
+- **pkm4-c35** (Concept, PKO class diagram): Expected duration with a numeric value and a temporal unit.
+  - valid: Field `ProcedureVersions.ExpectedDurationUnit`. Versions carry an expected duration value with its temporal unit.
+- **pkm4-c36** (Concept, PKO class diagram): A procedure contains its steps and each step records the plan it belongs to.
+  - valid: Field `Steps.ProcedureVersion`. Every step records the procedure version (the plan) it belongs to.
+- **pkm4-c37** (Concept, PKO class diagram): A procedure's first step.
+  - valid: Field `ProcedureVersions.FirstStep`. Versions declare their first step.
+- **pkm4-c38** (Concept, PKO class diagram): A procedure's fallback step.
+  - valid: Field `ProcedureVersions.FallbackStep`. Versions declare their fallback step.
+- **pkm4-c39** (Concept, PKO class diagram): Step title, description and identifier.
+  - valid: Field `Steps.Description`. Steps carry a title, an identifier and a description.
+- **pkm4-c40** (Concept, PKO class diagram): A step number.
+  - valid: Field `Steps.StepNumber`. Steps carry a step number.
+- **pkm4-c41** (Concept, PKO class diagram): Minimum repetitions of a step.
+  - valid: Field `Steps.MinRepetitions`. Steps carry a minimum repetition count.
+- **pkm4-c42** (Concept, PKO class diagram): Maximum repetitions of a step.
+  - valid: Field `Steps.MaxRepetitions`. Steps carry a maximum repetition count.
+- **pkm4-c43** (Concept, PKO class diagram): Following and preceding steps.
+  - valid: Table `StepTransitions`. Transitions record each step's following and preceding step.
+- **pkm4-c44** (Concept, PKO class diagram): Following and preceding alternative steps.
+  - valid: Field `StepTransitions.IsRecoveryPath`. Identifies the alternative and fallback transitions, the alternative following and preceding steps.
+- **pkm4-c45** (Concept, PKO class diagram): A multi-step is itself a step, so groups of steps nest, and a step records the multi-step it sits in.
+  - valid: Field `Steps.ParentStep`. A sub-step records the multi-step it sits in, and a multi-step is itself a step row.
+- **pkm4-c46** (Concept, PKO class diagram): A multi-step's own first step.
+  - valid: Field `Steps.FirstChildStep`. A multi-step names its own first sub-step.
+- **pkm4-c47** (Concept, PKO class diagram): A step verification is itself a kind of step with title, description and identifier, pointing back to the step it checks.
+  - valid: Field `Steps.VerifiesStep`. A verification step is a step row that points back to the step it checks.
+- **pkm4-c48** (Concept, PKO class diagram): A step can require tools.
+  - valid: Table `StepTools`. Each row is a tool a step requires.
+- **pkm4-c49** (Concept, PKO class diagram): A step can require actions.
+  - valid: Table `StepActions`. Each row is an action a step requires.
+- **pkm4-c50** (Concept, PKO class diagram): A step can require functions.
+  - valid: Table `StepFunctions`. Each row is a function a step requires.
+- **pkm4-c51** (Concept, PKO class diagram): Steps declare input variables.
+  - valid: Field `Steps.InputVariableCount`. Counts the input variables a step declares.
+- **pkm4-c52** (Concept, PKO class diagram): Steps declare output variables.
+  - valid: Field `Steps.OutputVariableCount`. Counts the output variables a step declares.
+- **pkm4-c53** (Concept, PKO class diagram): Entities an execution used or produced correspond to the step's declared variables.
+  - valid: Field `ExecutionEntities.StepVariable`. Each used or generated entity names the declared variable it corresponds to.
+- **pkm4-c54** (Concept, PKO class diagram): The expertise level a step is intended for.
+  - valid: Field `Steps.ExpertiseLevel`. Steps name the expertise level they are intended for.
+- **pkm4-c55** (Concept, PKO class diagram): A step references the resources it relies on.
+  - valid: Table `StepResources`. Each row is a resource a step references.
+- **pkm4-c56** (Concept, PKO class diagram): A step can be the remedy for a specific error.
+  - valid: Field `Steps.RemedyForError`. Escalation and re-isolation is the remedy step for residual stored energy.
+- **pkm4-c57** (Concept, PKO class diagram): A procedure execution's status: in progress, completed, paused or cancelled.
+  - valid: Field `LifecycleStatuses.ExecutionUseCount`. Counts executions holding each PKO execution status; in progress, completed, paused and cancelled are all in use.
+- **pkm4-c58** (Concept, PKO class diagram): Execution start and end times.
+  - valid: Field `ProcedureExecutions.StartedAt`. Executions record their start and end times.
+- **pkm4-c59** (Concept, PKO class diagram): The agent who executed an execution and the other agents associated with it.
+  - valid: Field `ProcedureExecutions.ParticipantCount`. Counts the agents associated with an execution besides its executor.
+- **pkm4-c60** (Concept, PKO class diagram): The agent who confirmed an execution.
+  - valid: Field `ProcedureExecutions.ConfirmedByAgent`. Executions name the agent who confirmed them.
+- **pkm4-c61** (Concept, PKO class diagram): Procedure and step executions carry their own title, description and identifier.
+  - valid: Field `ProcedureExecutions.Title`. Executions carry their own title, description and identifier.
+- **pkm4-c62** (Concept, PKO class diagram): A procedure execution includes step executions, each linked to the step it executed.
+  - valid: Field `StepExecutions.Step`. Each step execution belongs to a procedure execution and names the step it executed.
+- **pkm4-c63** (Concept, PKO class diagram): Step executions ordered by previous and next step execution.
+  - valid: Field `StepExecutions.PreviousStepExecution`. Step executions name the step execution that ran before them.
+- **pkm4-c64** (Concept, PKO class diagram): Entities a step execution used.
+  - valid: Field `StepExecutions.UsedEntityCount`. Counts the entities a step execution used.
+- **pkm4-c65** (Concept, PKO class diagram): Entities a step execution generated.
+  - valid: Field `StepExecutions.GeneratedEntityCount`. Counts the entities a step execution generated.
+- **pkm4-c66** (Concept, PKO class diagram): Feedback occurrences recorded during an activity, with separate remarks on the procedure and on the execution, the giver and a timestamp.
+  - valid: Field `UserFeedback.FeedbackOnProcedure`. Feedback records separate remarks on the procedure and on the execution, with its giver and time.
+- **pkm4-c67** (Concept, PKO class diagram): Question occurrences with the asking agent, a timestamp and the resource that addresses the question.
+  - valid: Field `UserQuestions.AddressedByResource`. Question occurrences record the asker, the time and the resource that addresses the question.
+- **pkm4-c68** (Concept, PKO class diagram): Issue occurrences with cause, solution, the agent who hit them and a timestamp.
+  - valid: Field `IssueOccurrences.IssueCause`. Issue occurrences record cause, solution, the agent who hit them and when.
+- **pkm4-c69** (Concept, PKO class diagram): Errors with a code, a cause and a description, which an issue occurrence points to.
+  - valid: Field `Errors.ErrorCode`. Errors carry a code, a cause and a description, and issue occurrences point to them.
+- **pkm4-c70** (Concept, PKO class diagram): Agents, including organizations.
+  - valid: Field `Agents.IsOrganizationAgent`. An organization can act as an agent; the plant is recorded as one.
+- **pkm4-c71** (Concept, PKO concept map): Agents are persons or software.
+  - valid: Field `Agents.AgentKind`. Agents are typed as persons or as software (AI agents and automated pipelines).
+- **pkm4-c72** (Concept, PKO class diagram): A role held in time ties an agent to a named role, to the resource the role is held for, and to a period.
+  - valid: Field `RoleAssignments.ForProcedureVersion`. A role held in time ties an agent to a role, to the procedure version it is held for, and to a validity period.
+- **pkm4-c73** (Concept, PKO class diagram): A procedure is also a catalogued resource, inheriting resource metadata, creator, modifier and status.
+  - valid: Field `Resources.CatalogEntryFor`. The lockout procedure's catalog entry is a resource that names the procedure it catalogs and carries resource metadata.
+- **pkm4-c74** (Concept, PKO class diagram): Resource title, description and identifier.
+  - valid: Field `Resources.Description`. Resources carry a title, identifier and description.
+- **pkm4-c75** (Concept, PKO class diagram): Resource language.
+  - valid: Field `Resources.Language`. Resources carry their language.
+- **pkm4-c76** (Concept, PKO class diagram): Resource created and modified dates.
+  - valid: Field `Resources.CreatedAt`. Resources carry created and modified dates.
+- **pkm4-c77** (Concept, PKO class diagram): Resource keywords.
+  - valid: Field `Resources.Keywords`. Resources carry keywords.
+- **pkm4-c78** (Concept, PKO class diagram): Resource access URL.
+  - valid: Field `Resources.ExternalUri`. Resources carry their access URL.
+- **pkm4-c79** (Concept, PKO class diagram): Resource format or media type.
+  - valid: Field `Resources.Format`. Resources carry their media type.
+- **pkm4-c80** (Concept, PKO class diagram): A resource's creator and the agent who last modified it.
+  - valid: Field `Resources.ModifiedByAgent`. Resources record their creator and last modifier.
+- **pkm4-c81** (Concept, PKO class diagram): The resource a resource was extracted from.
+  - valid: Field `Resources.ExtractedFromResource`. The lockout specification records the SOP it was extracted from.
+- **pkm4-c82** (Concept, PKO concept map): Kinds of resource: document, media and page.
+  - valid: Field `Resources.ResourceKind`. Resources are typed as document, media and page, among others.
+- **pkm4-c83** (Concept, PKO class diagram): A procedure references resources.
+  - valid: Table `ProcedureResources`. Each row is a resource a procedure version references.
+- **pkm4-c84** (Concept, PKO class diagram): Frequently asked questions with a question and an answer.
+  - valid: Field `FAQs.Answer`. FAQs carry a question and an answer.
+- **pkm4-c85** (Concept, PKO class diagram): An FAQ category.
+  - valid: Table `FaqCategories`. Each row is an FAQ category.
+- **pkm4-c86** (Concept, PKO class diagram): An FAQ target.
+  - valid: Table `FaqTargets`. Each row is an FAQ target.
+- **pkm4-c87** (Concept, PKO class diagram): An FAQ is itself a resource and inherits resource metadata.
+  - valid: Field `FAQs.Resource`. An FAQ names its own catalog entry as a resource.
+- **pkm4-c88** (Concept, PKO class diagram): The ontology as a versioned published artifact with version info, prior version, dates, licence and publication status.
+  - valid: Field `RulebookReleases.PreviousRelease`. Each release row is the model as a versioned published artifact: version (RulebookVersion), prior version (PreviousRelease), issue date, licence, permanent identifier and publication status.
+- **pkm4-i01** (Illustration, The Problem PKO Addresses): CNC machine commissioning as a procedure the ontology was designed to represent.
+  - valid: Field `ProcedureTargets.IsUnhandledNonStandardTarget`. Machine procedures must carry equipment-specific handling; this fires for the converted mixer that no documented handling covers, and not for the press whose retrofit is handled.
+- **pkm4-i02** (Illustration, Measured Impact: What the Evidence Shows): A quality-management knowledge graph that raised analysis efficiency, about product quality rather than procedures.
+  - valid: Field `KnowledgeOutcomeMeasurements.IsGainOutsideProceduralScope`. Separates efficiency gains measured on non-procedural knowledge from procedural ones: TRUE for the defect analysis graph's 38% gain (product quality), FALSE for the lockout crews and copilot, so the illustrated gain is not counted as evidence about procedures.
+- **pkm4-i03** (Illustration, PKO's Architecture and Design): A lockout procedure for a conveyor set against one technician's lockout of it on a given day.
+  - valid: Field `StepExecutions.ExecutesStepOfOtherVersion`. A lockout specification set against one technician's lockout of it on a given night: the witness fires where that run strayed onto a different specification.
+- **pkm4-i04** (Illustration, Before: Tacit Knowledge and Limitations): A document line telling workers to cut main power while leaving out the small judgments a technician makes.
+  - valid: Field `Steps.HasInstructionOnly`. The document line that only says to cut power is a step with its instruction and none of the judgment; this fires for exactly such steps.
+- **pkm4-i05** (Illustration, Measured Impact: What the Evidence Shows): Geospatial retrieval accuracy rising sharply once models were linked to a knowledge graph.
+  - valid: Field `AssistantBenchmarks.ShowsGeospatialRetrievalLift`. Witnesses the illustrated effect on the organization's recorded benchmark: TRUE for plant-site station and muster-point retrieval, which gained 43 points once linked to the graph; FALSE for the other benchmarks. A recorded result, not an AI run.
+- **pkm4-i06** (Illustration, Building A Procedural Knowledge Infrastructure): Existing ontologies such as CIDOC CRM and Transmodel as what a reuse-first method builds on.
+  - valid: Field `SemanticMappings.ReinventsStandardTerm`. Building on CIDOC CRM or Transmodel illustrates reuse-first engineering; this witness fires on terms minted although a reused standard already defines them, which is reuse-first being broken.
+- **pkm4-i08** (Illustration, Why Do I Care About Industrial Processes?): Engineering disciplines and product management share optimization, quality control, validation and data modeling, so procedural knowledge problems cut across domains.
+  - valid: Field `TermLabelVariants.IsCrossSchemeDuplicatePref`. Fires when the same concern is defined as a separate preferred concept in more than one scheme instead of once and shared. 'quality control' is defined both in the shared agent-capability scheme and again in the plant's local quality terms, and the maintenance technician is tagged with the plant copy; both labels fire. 'validation', shared by the safety officer and the site reliability engineer across plant and engineering, does not. It witnesses that these problems cut across disciplines and must not be split by domain.
+- **pkm4-p01** (Prescription, PKO's Architecture and Design): Specifications and executions must stay separate and linked, never merged.
+  - valid: Field `StepExecutions.ExecutesStepOfOtherVersion`. Fires for the night-shift run that recorded a step from the 2019 specification inside an execution of version 2.0.0: specification and execution merged instead of linked.
+- **pkm4-p02** (Prescription, After: Explicit, Actionable Procedural Knowledge): The encoding must capture variations and exceptions, not only the normative procedure.
+  - valid: Field `ProcedureVersions.HasNoExceptionHandling`. Fires for versions that encode only the normative path, with no exception, fallback or alternative, such as the 2019 lockout checklist.
+- **pkm4-p03** (Prescription, Before: Tacit Knowledge and Limitations): Procedures kept only as static prose drift from practice; the representation must expose that drift.
+  - valid: Field `ProcedureVersions.DocumentLagsPractice`. Fires when the documents a version rests on have not changed through months of changes to the version: the deployment runbook lags the procedure by half a year.
+- **pkm4-p04** (Prescription, Before: Tacit Knowledge and Limitations): Shadowing alone does not scale; the system must expose where a wave of new starters or a departing veteran would leave know-how untransferred.
+  - valid: Field `Procedures.HasTransferShortfallExposure`. TRUE when a wave of three or more new starters meets untransferred veteran know-how, or a veteran about to leave carries untransferred know-how. Lockout/tagout fires on both counts: Aisha, Bea and Carlos started within 180 days and Tomas retires on 2026-09-30 with his bleed-down know-how untransferred. No other procedure is exposed.
+- **pkm4-p05** (Prescription, Before: Tacit Knowledge and Limitations): Passing know-how to newcomers must keep working even when the veterans who hold it are unavailable.
+  - valid: Field `KnowHowCarriers.TransferStopsWithoutVeteran`. TRUE when a serving veteran's know-how has only been passed person to person and nothing is captured, so the next newcomer still needs that veteran. Tomas's improvised press setup, taught only to Aisha, fires; Grace's go/no-go judgment, also written into the repository, does not.
+- **pkm4-p06** (Prescription, The Problem PKO Addresses): Compliance exposure from unformalized procedural knowledge must be visible.
+  - valid: Field `Procedures.IsRegulatedButUnformalized`. Makes compliance exposure visible: fires on a procedure a regulation requires that exists only as a title and documents, the press-7 accumulator bleed-down under the hazardous energy standard. Regulated procedures with specified steps do not fire.
+- **pkm4-p07** (Prescription, The Problem PKO Addresses): Execution mistakes must be visible so the benefit of formalizing can be shown.
+  - valid: Field `ProcedureExecutions.IsUnreportedMistake`. Fires on an execution that deviated from its steps with no feedback filed about it, so the mistake stays invisible beyond the raw record: the 14 July hotfix rolled out without approval. The 9 July press-7 run, which deviated and was reported, does not fire.
+- **pkm4-p08** (Prescription, The Problem PKO Addresses): Formalized knowledge must measurably ease training and onboarding of new staff.
+  - valid: Field `Procedures.FormalizationDoesNotEaseOnboarding`. TRUE when starters who learned from captured knowledge took at least as long to reach proficiency as those who did not. Production deployment fires (55 days with the stale go/no-go notes against 40 without); lockout/tagout, where captured knowledge cut onboarding from 70 to 21 days, does not.
+- **pkm4-p09** (Prescription, LOTO: Safety Procedures at Beko Europe): Inconsistent execution across shifts and facilities must be detectable.
+  - valid: Field `ProcedureVersions.IsInconsistentAcrossShifts`. Fires for lockout 2.0.0, which the day shift runs cleanly and the night shift ran with deviations.
+- **pkm4-p10** (Prescription, Implications for AI Workflows): An organization adopts the ontology as is, extends it with domain modules, or uses it as a reference, and the choice must be explicit.
+  - valid: Field `ProcedureAdoptions.IsAdoptionModeUnstated`. Fires for the plant's adoption of the deployment procedure, which nobody recorded as as-is, extended or reference.
+- **pkm4-p11** (Prescription, PKO Ontology Specifics): Reuse existing standards rather than inventing parallel vocabulary.
+  - valid: Field `SemanticMappings.ReinventsStandardTerm`. Fires on extension terms minted although a reused standard already has the term (TermDefinitions duplicates skos:definition, QualityCriteria duplicates dqv:Dimension); every other mapping reads false.
+- **pkm4-p12** (Prescription, After: Explicit, Actionable Procedural Knowledge): Elicitation combines workshops, structured interviews, observation and sessions that settle disagreements about how a procedure really runs.
+  - valid: Field `ProcedureVersions.MissesARequiredElicitationMode`. Fires for an elicited version lacking a workshop, a structured interview, observation, or a session that settled a disagreement. It fires on close-v1.1.0, policy-v1.0.0 and deploy-v3.2.0; it does not fire on loto-v2.0.0, which had all four, including the workshop that settled the last-tag disagreement.
+- **pkm4-p13** (Prescription, Practical Elicitation and Exploitation): Experts can author procedures without knowing the formal syntax.
+  - valid: Field `AuthoringSubmissions.IsExpertAuthoredConforming`. Fires for the veteran technician's capture-form submission that validated against the PKO profile without any ontology training; the knowledge engineer's submission does not count.
+- **pkm4-p14** (Prescription, Practical Elicitation and Exploitation): Expert-authored procedures must conform to the ontology's formal structure even though the expert never sees it.
+  - valid: Field `AuthoringSubmissions.IsNonConformingAccepted`. Fires for the conveyor maintenance submission that failed profile validation and was accepted anyway.
+- **pkm4-p15** (Prescription, Practical Elicitation and Exploitation): An assistant's answers must come from the organization's own procedural graph, not generic model output.
+  - valid: Field `AssistantAnswers.IsNotFromOwnKnowledge`. Fires on a delivered AI answer grounded in none of the organization's own assertions or segments: the release assistant's forum-sourced hotfix advice and the checklist bot's baked-in prompt answer. Answers grounded in the lockout graph and segments do not fire.
+- **pkm4-p16** (Prescription, Practical Elicitation and Exploitation): Assistant answers must stay traceable to their source knowledge, as safety-critical use demands.
+  - valid: Field `AssistantAnswers.IsUntraceableToSource`. Fires on a delivered answer that was grounded but showed the person none of its sources: the copilot's 'start the maintenance' answer and the release assistant's hotfix advice. Answers with cited groundings do not fire.
+- **pkm4-p17** (Prescription, Why Do I Care About Industrial Processes?): Introduce partial automation, with expert review of its output, before handing a workflow to full automation.
+  - valid: Field `AiAdoptionInitiatives.WentFullWithoutReviewedPartialStage`. Fires on full automation with no preceding partial stage whose outputs experts reviewed: the release assistant. The conveyor agent follows the copilot pilot and the proposed auto-approver follows the reviewed risk classifier; neither fires.
+- **pkm4-p18** (Prescription, Implications for AI Workflows): The knowledge layer deserves as much investment as the model layer.
+  - valid: Field `AiAdoptionInitiatives.UnderinvestsKnowledgeLayer`. Fires when an initiative spends less on eliciting, encoding and governing knowledge than on models: the release assistant (30k against 200k) and three others. The copilot and risk classifier invest more in the knowledge layer and do not fire.
+- **pkm4-p19** (Prescription, Measured Impact: What the Evidence Shows): Ontology quality is checked by machine consistency checking.
+  - valid: Field `RulebookReleases.ReleasedWithoutConsistencyCheck`. Fires on governed releases no machine consistency check confirmed consistent (0.8.x, 0.10.0 whose check reported inconsistency, 0.10.2); 0.9.0, 0.10.1 and 1.0.0 were confirmed and read false.
+- **pkm4-p20** (Prescription, Measured Impact: What the Evidence Shows): Ontology quality is scored against stated quality criteria.
+  - valid: Field `RulebookReleases.IsNotScoredAgainstCriteria`. Fires on releases not scored against every stated quality criterion; release 1.0.0 was scored on all eight and reads false.
+- **pkm4-p21** (Prescription, Measured Impact: What the Evidence Shows): Ontology quality is tested by running the competency questions as tasks.
+  - valid: Field `RulebookReleases.ReleasedWithoutCqTaskTest`. Fires on releases never tested by running their competency questions as tasks; 0.9.0, 0.10.0 and 1.0.0 were and read false.
+- **pkm4-p22** (Prescription, Measured Impact: What the Evidence Shows): The ontology must be shown to satisfy its stated requirements, not just to be well formed.
+  - valid: Field `RulebookReleases.WellFormedButRequirementsUnshown`. Fires on release 0.10.1, which passed its validation runs but was never shown to answer its requirement questions: well formed, not shown to satisfy requirements.
+- **pkm4-p23** (Prescription, Building A Procedural Knowledge Infrastructure): Ontology work starts from real use cases.
+  - valid: Field `GovernedModels.IsWithoutOriginatingUseCase`. Fires for the deployment and press-changeover models, which were modeled with no concrete use case behind them; the lockout model started from a conveyor near miss and reads false.
+- **pkm4-p24** (Prescription, Building A Procedural Knowledge Infrastructure): LOT requirements specification fixes the ontology's purpose, intended users and competency questions.
+  - valid: Field `GovernedModels.RequirementsSpecIncomplete`. Fires when a model's requirements specification lacks its purpose, its intended users or its competency questions (deployment, workforce policy, press, vocabulary); the PKO rulebook, lockout and close specifications are complete.
+- **pkm4-p25** (Prescription, Building A Procedural Knowledge Infrastructure): LOT implementation builds the ontology and maps real data into RDF.
+  - valid: Field `GovernedModels.IsImplementedWithoutRealData`. Fires for models never implemented by mapping the organization's real records into RDF: the policy model has only a synthetic mapping run, deployment and press have none. The lockout, close and register models were mapped from real data.
+- **pkm4-p26** (Prescription, Building A Procedural Knowledge Infrastructure): Publication gives each term a unique URI and links terms semantically.
+  - valid: Field `SemanticMappings.IsNonResolvableTermIri`. Fires on every extension term published under a urn: identifier that cannot be looked up or linked; terms mapped to HTTP IRIs read false. This witnesses the prescription failing for the model's own extension terms.
+- **pkm4-p27** (Prescription, Building A Procedural Knowledge Infrastructure): LOT maintenance keeps the ontology updated after release.
+  - valid: Field `GovernedModels.IsUnmaintained`. Fires on models with no maintenance activity for more than ninety days after release (deployment, close, press changeover); models the steward keeps updating read false.
+- **pkm4-p28** (Prescription, Building A Procedural Knowledge Infrastructure): Ontology work runs in short repeated cycles over the LOT activities, not in one pass.
+  - valid: Field `RulebookReleases.IsLongReleaseCycle`. Fires on release 0.8.1, which came 76 days after 0.8.0 instead of in a short cycle; the other releases followed within weeks.
+- **pkm4-p29** (Prescription, Building A Procedural Knowledge Infrastructure): Release the ontology openly under a stated licence at a permanent identifier.
+  - valid: Field `RulebookReleases.IsReleasedWithoutLicenceOrPermanentId`. Fires on release 0.8.0, published with no licence; every later release states its licence and permanent identifier.
+- **pkm4-p30** (Prescription, The Problem PKO Addresses): Governance must cover procedural knowledge at every stage: capture, stewardship, retrieval and use.
+  - valid: Field `GovernedModels.LacksLifecycleStageControl`. Fires on procedure families missing a governance control over capture, stewardship, retrieval or use (deployment has only collection and use; press has none); lockout, close and policy cover every stage.
+- **pkm4-p31** (Prescription, Procedural Knowlege Is Not Boring Afterall): Managing procedural knowledge never finishes; it is kept up as a standing capability.
+  - valid: Field `GovernedModels.GovernanceLapsed`. Fires on the close control categories vocabulary, which was chartered and whose governance then lapsed: management treated as a finished project instead of a standing capability.
+- **pkm4-p32** (Prescription, Procedural Knowlege Is Not Boring Afterall): Each organization fits these principles to its own procedures, legacy systems and constraints.
+  - valid: Field `ModelCharters.AdoptedTemplateWithoutAdaptation`. Fires on the deployment charter, copied from the corporate charter template with no local adaptation; the lockout charter used the same template and fitted it to shift-based work, so it reads false.
+- **pkm4-p33** (Prescription, Before: Tacit Knowledge and Limitations): An assistant must be able to confirm a procedure was carried through to the end.
+  - valid: Field `ProcedureExecutions.ClaimsCompletionWithoutAllSteps`. Fires for the hotfix deployment marked completed with the approval and health-check steps never run, which is what confirming completion must catch.
+- **pkm4-p34** (Prescription, Before: Tacit Knowledge and Limitations): AI support must be able to raise possible safety problems.
+  - valid: Field `AssistantAnswers.StayedSilentOnSafetyProblem`. Fires when a danger cue was on record, unescalated, for the step under way and the AI answer raised no safety concern: the copilot told Ken to carry on after the hiss at loto-04b. Answers on steps with no unescalated cue, or that raised the concern, do not fire. The answer is recorded data, not a live AI.
+- **pkm4-p35** (Prescription, Before: Tacit Knowledge and Limitations): AI support must be able to guide a worker in real time while a procedure is under way.
+  - valid: Field `AssistantAnswers.ArrivedAfterStepEnded`. Fires when step guidance arrived after the step had already ended, so it could not guide the worker in real time: the copilot's gauge guidance on 8 July. Guidance delivered while its step was under way does not fire.
+- **pkm4-p36** (Prescription, Introduction): When a workflow changes, the knowledge model carries that change to machines so their picture matches the current workflow.
+  - valid: Field `ConsumerSystemSyncs.PredatesVersionChange`. Fires when a machine holds the current version but took it before that version last changed, so its picture predates the workflow: the copilot platform's copy of press changeover (synced 1 June, changed 15 June). Syncs taken after the last change do not fire.
+- **pkm4-p37** (Prescription, After: Explicit, Actionable Procedural Knowledge): Encoded procedural knowledge must be queryable, checkable for validity and open to automated reasoning.
+  - valid: Field `ProcedureVersions.IsNotQueryValidateReasonReady`. The same prescription as pkm1-p11 in Part IV's words: fires on a current version not read by any structured query, never validated against the profile, or never checked by a reasoner (conveyor maintenance, press changeover); lockout 2.0.0 and deployment 3.2.0 do not fire.
+- **pkm4-p38** (Prescription, Why Do I Care About Industrial Processes?): One shared body of procedural knowledge serves both human workers and AI consumers.
+  - valid: Field `ConsumerSystemSyncs.IsAiFedFromForkedCopy`. Fires when a system read by AI is fed from a separate document instead of the shared model people use: the release bot platform reads the runbook. The copilot and graph syncs from the model do not fire.
+- **pkm4-p39** (Prescription, Implications for AI Workflows): Procedural knowledge reaches AI systems at run time through an integration that grounds their responses in it.
+  - valid: Field `Agents.LacksRuntimeKnowledgeIntegration`. Fires on an AI agent that answers people but receives no knowledge at run time through any integration: the checklist bot, whose SOP was pasted into its prompt once. The copilot and release assistant retrieve at run time and do not fire.
+- **pkm4-p40** (Prescription, Implications for AI Workflows): Adoption runs in order: elicit tacit knowledge, encode it in reasoning-capable structures, then connect it to AI.
+  - valid: Field `AiAdoptionInitiatives.BreaksElicitEncodeConnectOrder`. Fires when knowledge was connected to AI with no elicitation behind the target version, or before the version was encoded: the release assistant and risk classifier (deployment 3.2.0 was authored without expert elicitation), the checklist bot, press optimizer and routing AI. The copilot, connected after lockout 2.0.0 was elicited from Tomas and issued, does not fire.
+- **pkm4-p41** (Prescription, Before: Tacit Knowledge and Limitations): The encoding captures the checks and judgments behind a step, not only its one-line instruction.
+  - valid: Field `Steps.HasInstructionOnly`. Fires for steps that carry only their one-line instruction with no condition, cue, failure mode, decision or captured knowledge, and not for lockout's verification step.
+- **pkm4-p42** (Prescription, PKO's Architecture and Design): A single procedure can mix human steps with machine or software steps.
+  - valid: Field `ProcedureVersions.MixesHumanAndSoftwareSteps`. Fires for versions that mix human steps with software or AI steps, such as the deployment with its AI risk classifier and human release gate, and not for all-human lockout.
+- **pkm4-p43** (Prescription, Building A Procedural Knowledge Infrastructure): Domain experts stay involved throughout ontology work.
+  - valid: Field `GovernedModels.ExpertsNotInvolvedThroughout`. Fires for models where some LOT activity ran with no domain expert: the close model's maintenance, the deployment model's requirements and publication, the press model entirely. Lockout had its veteran technician in all four activities and reads false.
+- **pkm4-p44** (Prescription, Building A Procedural Knowledge Infrastructure): Ontology work reuses existing ontologies wherever possible.
+  - valid: Field `SemanticMappings.ReinventsStandardTerm`. Fires on extension terms minted although a reused standard already defines the term, which is ontology work failing to reuse an existing ontology; terms that reuse the standard read false.
+- **pkm4-p45** (Prescription, Building A Procedural Knowledge Infrastructure): Ontology work is refined through pilot implementations.
+  - valid: Field `GovernedModels.IsAdoptedWithoutPilot`. Fires for the policy, deployment and press models, adopted without ever being tried in a pilot; lockout was piloted in the north hall and changed as a result.
+- **pkm4-q01** (CompetencyQuestion, Practical Elicitation and Exploitation): Before starting this procedure, which steps does it involve, what must be on hand, and what safety points apply?
+  - valid: RoleQuestion `aq-pkm4-q01`. Asks which regulation requires a procedure, its compliance document and its regulatory requirements.
+- **pkm4-q02** (CompetencyQuestion, After: Explicit, Actionable Procedural Knowledge): Which danger cues during this procedure call for escalating at once?
+  - valid: RoleQuestion `aq-pkm4-q02`. Asks which danger cues call for escalation and whether each observed one was escalated.
+- **pkm4-q03** (CompetencyQuestion, After: Explicit, Actionable Procedural Knowledge): What is the fallback when the usual method fails, and how is unusually configured equipment handled?
+  - valid: RoleQuestion `aq-pkm4-q03`. Asks for the fallback and the handling of unusually configured equipment.
+- **pkm4-q04** (CompetencyQuestion, PKO's Architecture and Design): Who carried out this execution, when, and with what observations and outcomes?
+  - valid: RoleQuestion `aq-pkm4-q04`. Asks who ran an execution, who took part, and its observations and outcome.
+- **pkm4-q05** (CompetencyQuestion, Before: Tacit Knowledge and Limitations): Was this execution actually carried through to completion?
+  - valid: RoleQuestion `aq-pkm4-q05`. Asks whether an execution was completed and confirmed step by step.
+- **pkm4-q06** (CompetencyQuestion, PKO class diagram): What is the current version of this procedure, and what motivated it?
+  - valid: RoleQuestion `aq-pkm4-q06`. Asks for the current version and its motivation.
+- **pkm4-q07** (CompetencyQuestion, PKO class diagram): Which issues were encountered during this execution, and how were they solved?
+  - valid: RoleQuestion `aq-pkm4-q07`. Asks which issues occurred and whether they were solved.
+- **pkm4-q08** (CompetencyQuestion, PKO class diagram): Which resource addresses the question a user asked?
+  - valid: RoleQuestion `aq-pkm4-q08`. Asks which resource or FAQ addresses a practitioner's question.
+- **pkm4-q09** (CompetencyQuestion, LOTO: Safety Procedures at Beko Europe): Does execution of this procedure differ between shifts or facilities?
+  - valid: RoleQuestion `aq-pkm4-q09`. Asks whether execution differs between shifts or facilities.
+- **pkm4-q10** (CompetencyQuestion, Before: Tacit Knowledge and Limitations): For an execution under way, which step is next and what does it need?
+  - valid: RoleQuestion `aq-pkm4-q10`. Asks which step comes first and next and whether the declared first step matches the flow.
+- **pkm4-q11** (CompetencyQuestion, LOTO: Safety Procedures at Beko Europe): In what order should the parts of this procedure be approached to keep risk lowest?
+  - valid: RoleQuestion `aq-pkm4-q11`. Asks whether the specified order ever puts a step before the step it depends on.
+- **pkm4-q12** (CompetencyQuestion, LOTO: Safety Procedures at Beko Europe): What cues show that a step such as isolation was not fully achieved?
+  - valid: RoleQuestion `aq-pkm4-q12`. Asks which cues show a step did not fully take effect.
+- **pkm4-q13** (CompetencyQuestion, Before: Tacit Knowledge and Limitations): Which procedures are documented in a way that trails how they are actually performed?
+  - valid: RoleQuestion `aq-pkm4-q13`. IsDocumentedBehindPractice marks deploy-v3.2.0, whose runbook is contradicted by practice evidence collected after its last revision; PrescribedVersusEnacted says how.
+- **pkm4-q14** (CompetencyQuestion, Before: Tacit Knowledge and Limitations): Which know-how is held only by veterans who have not passed it on, and are any of them about to leave?
+  - valid: RoleQuestion `aq-pkm4-q14`. The plant operations manager asks which know-how only veterans hold unpassed, and whether they are leaving; KnowHowCarriers.IsUntransferredVeteranKnowHow and IsAtRiskOfImminentLoss answer it, TRUE for Tomas's bleed-down know-how (retiring in 73 days) and, without the departure, Lin's checks.
+- **pkm4-q15** (CompetencyQuestion, PKO class diagram): What status changes has this procedure gone through, when, and by whom?
+  - valid: RoleQuestion `aq-pkm4-q15`. Asks what status changes a procedure went through, when and by whom.
+- **pkm4-q16** (CompetencyQuestion, PKO class diagram): Which step is the remedy for a given error?
+  - valid: RoleQuestion `aq-pkm4-q16`. Asks which step remedies an error and which errors have none.
+- **pkm4-q17** (CompetencyQuestion, PKO class diagram): What tools, actions and functions does a step need, and which expertise level is it meant for?
+  - valid: RoleQuestion `aq-pkm4-q17`. Asks what tools, locks, protective equipment, actions and functions a step needs.
+- **pkm4-s01** (Standard, PKO's Architecture and Design): The Procedural Knowledge Ontology core.
+  - valid: OntologyProfile `pko-core-2.0.0`. PKO core 2.0.0 is a declared profile with exact mappings.
+- **pkm4-s02** (Standard, PKO's Architecture and Design): The PKO industry module.
+  - valid: OntologyProfile `pko-industry-2.0.0`. PKO industry 2.0.0 is a declared profile with exact mappings for machines, energy sources, locks and protective equipment.
+- **pkm4-s03** (Standard, PKO Ontology Specifics): P-Plan for plans and plan executions.
+  - valid: OntologyProfile `p-plan`. P-Plan is a declared profile; steps and variables map to it.
+- **pkm4-s04** (Standard, PKO Ontology Specifics): DCAT for resource metadata and versioning.
+  - valid: OntologyProfile `dcat-3`. DCAT is a declared profile; resource keywords map to dcat:keyword.
+- **pkm4-s05** (Standard, PKO Ontology Specifics): DCMI metadata terms.
+  - valid: OntologyProfile `dcterms`. DCMI terms is a declared profile; resource language, format, creator and step descriptions map to it.
+- **pkm4-s06** (Standard, PKO Ontology Specifics): OWL-Time for expected durations and their temporal units.
+  - valid: OntologyProfile `owl-time`. OWL-Time is a declared profile; expected duration value and unit map to it.
+- **pkm4-s07** (Standard, PKO class diagram): PRO for roles held in time.
+  - valid: OntologyProfile `pro`. PRO is a declared profile; roles held in time map to it.
+- **pkm4-s08** (Standard, PKO class diagram): Metadata4Ing for tools.
+  - valid: OntologyProfile `m4ing`. Metadata4Ing is a declared profile; tools map to it.
+- **pkm4-s09** (Standard, PKO class diagram): ADMS for status.
+  - valid: OntologyProfile `adms-2`. ADMS is a declared profile; procedure version status maps to adms:status.
+- **pkm4-s10** (Standard, Building A Procedural Knowledge Infrastructure): The Linked Open Terms ontology engineering methodology.
+  - valid: KnowledgeMethod `LinkedOpenTerms`. Applied through MethodApplications rows: the requirements specification of the PKO rulebook (purpose, users, competency question baseline) and its post-release maintenance.
+- **pkm4-s11** (Standard, PKO Ontology Specifics): PROV-O for provenance of agents, activities and entities.
+  - valid: OntologyProfile `prov-o`. PROV-O is a declared profile; execution entities and participants map to it.
+- **pkm4-s12** (Standard, Practical Elicitation and Exploitation): OWL and RDF as the languages the procedural knowledge graph is expressed in.
+  - valid: OntologyProfile `owl-2`. The OWL 2 profile; its mappings record the procedural knowledge graph's classes and properties as OWL declarations serialized in RDF.
+- **pkm4-s14** (Standard, Implications for AI Workflows): Knowledge-graph-empowered retrieval augmented generation.
+  - valid: KnowledgeMethod `GraphRetrieval`. Applied by ma-graph-retrieval-copilot: the copilot's answers are retrieved from the knowledge graph snapshot, which AnswerGroundings ties to each answer.
+- **pkm4-s15** (Standard, Building A Procedural Knowledge Infrastructure): Creative Commons Attribution 4.0 as the ontology licence.
+  - valid: OntologyProfile `pko-core-2.0.0`. The PKO core profile records its licence as CC BY 4.0 and carries the model's exact PKO mappings.
+- **pkm4-s16** (Standard, Building A Procedural Knowledge Infrastructure): A w3id permanent identifier for the ontology namespace.
+  - valid: OntologyProfile `pko-core-2.0.0`. The PKO core profile's version IRI is the w3id permanent identifier https://w3id.org/pko/2.0.0, and the profile carries the model's exact PKO mappings.
+- **pkm4-s17** (Standard, PKO class diagram): VANN for the ontology's preferred prefix and namespace.
+  - valid: OntologyProfile `vann`. VANN maps RulebookReleases.NamespacePrefix to vann:preferredNamespacePrefix.
+- **pkm4-s18** (Standard, PKO class diagram): BIBO for the ontology's publication status.
+  - valid: OntologyProfile `bibo`. BIBO maps RulebookReleases.Status to bibo:status.
+- **pkm4-s19** (Standard, PKO class diagram): schema.org for the ontology's funding and citation.
+  - valid: OntologyProfile `schema-org`. schema.org maps RulebookReleases.FundingNote to schema:funding.
+- **pkm4-x01** (Scenario, LOTO: Safety Procedures at Beko Europe): Lockout/tagout at an appliance plant: regulation-driven documents and veterans' know-how, then workshops, encoding with exceptions, recorded executions and a technician consulting a grounded assistant.
+  - valid: Procedure `lockout-tagout`. Lockout/tagout has a compliance SOP, a workshop-built version with exceptions and cues, and recorded executions by veteran, night-shift and new technicians.

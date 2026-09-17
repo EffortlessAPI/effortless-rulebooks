@@ -84,10 +84,66 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             }
         }
 
+        private ObservableCollection<AiToolInvocation> _aiToolInvocations;
+
+        [InverseProperty("FunctionRef")]
+        public virtual ObservableCollection<AiToolInvocation> AiToolInvocations
+        {
+            get
+            {
+                if (_aiToolInvocations == null)
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access AiToolInvocations - no database context is set. FunctionId: " + this.FunctionId + ".");
+                        }
+                        _aiToolInvocations = new ObservableCollection<AiToolInvocation>();
+                    }
+                    else
+                    {
+                        var items = base.SoAContext.AiToolInvocations.Where(x => x.Function == this.FunctionId).ToList<AiToolInvocation>();
+                        _aiToolInvocations = new ObservableCollection<AiToolInvocation>(items);
+                        if (items.Any())
+                        {
+                            base.SoAContext.AttachRange(items);
+                        }
+                    }
+                    _aiToolInvocations.CollectionChanged += AiToolInvocations_CollectionChanged;
+                }
+                return _aiToolInvocations;
+            }
+            private set
+            {
+                if (_aiToolInvocations != null)
+                {
+                    _aiToolInvocations.CollectionChanged -= AiToolInvocations_CollectionChanged;
+                }
+                _aiToolInvocations = value;
+                if (_aiToolInvocations != null)
+                {
+                    _aiToolInvocations.CollectionChanged += AiToolInvocations_CollectionChanged;
+                }
+            }
+        }
+
+        private void AiToolInvocations_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems != null)
+            {
+                foreach (var item in e.NewItems.Cast<AiToolInvocation>())
+                {
+                    item.Function = this.FunctionId;
+                }
+            }
+        }
+
 
         protected override void LazyLoadProperties()
         {
             _ = this.StepFunctions;
+            _ = this.AiToolInvocations;
         }
 
         public override string ToString()

@@ -1,0 +1,79 @@
+# Theme B (loop-07, collection): 77 claims
+
+pkm1-c04	Concept	The Nature of Process Knowledge	Tacit knowledge lives in intuition, pattern-spotting and judgment; explicit knowledge can be articulated, codified and recorded.
+pkm1-c05	Concept	The Nature of Process Knowledge	Standard operating procedures as documented guidance whose coverage of expert judgment is inherently incomplete.
+pkm1-c06	Concept	The Nature of Process Knowledge	Veterans resolve exceptions and make discretionary decisions that written procedures never fully encode.
+pkm1-c15	Concept	Process Knowledge Frameworks	Process knowledge shifts between tacit and explicit forms through socialization, externalization, combination and internalization.
+pkm1-c28	Concept	Semantic Ecosystems and Process	Knowledge held at a degree along the tacit-to-explicit spectrum rather than as a flat binary.
+pkm1-p01	Prescription	The Nature of Process Knowledge	Making tacit knowledge explicit must not reduce it to brittle rules.
+pkm1-p04	Prescription	The Nature of Process Knowledge	Process knowledge needs methods specific to its kind, carried out by people skilled at capturing and conveying it, not generic knowledge handling.
+pkm1-p05	Prescription	The Nature of Process Knowledge	Because managing process is non-linear and spans tacit and explicit knowledge, capture must not rely on isolated data points alone.
+pkm1-s07	Standard	Process Knowledge Frameworks	The SECI knowledge-conversion model.
+pkm1-s08	Standard	The Nature of Process Knowledge	Polanyi's distinction between tacit and explicit knowledge.
+pkm2-c01	Concept	The Challenge of Elicitation	Elicitation turns lived practice into explicit statements, and something is always lost along the way.
+pkm2-c02	Concept	The Challenge of Elicitation	Expertise a practitioner holds but cannot put into words, recorded as a property of a knowledge source.
+pkm2-c03	Concept	The Challenge of Elicitation	Every elicitation method gives up some accuracy for practicality, or some depth for reach.
+pkm2-c04	Concept	Collaborative Workshops	Practitioners who hold process knowledge.
+pkm2-c05	Concept	Collaborative Workshops	Subject matter experts.
+pkm2-c06	Concept	The Anthropologist	Knowledge engineers who collect process knowledge.
+pkm2-c07	Concept	Collaborative Workshops	Knowledge producers.
+pkm2-c08	Concept	Collaborative Workshops	Knowledge consumers.
+pkm2-c09	Concept	Elicitation Methodologies: Knowledge Collection	Why a practitioner makes a particular choice.
+pkm2-c10	Concept	Elicitation Methodologies: Knowledge Collection	What practitioners do when the standard procedure proves insufficient.
+pkm2-c11	Concept	Elicitation Methodologies: Knowledge Collection	Specific past episodes where a process went well, went badly, or had to be improvised.
+pkm2-c12	Concept	Elicitation Methodologies: Knowledge Collection	Judgment calls that written procedures hide, linked to the episode that brought them out.
+pkm2-c13	Concept	Elicitation Methodologies: Knowledge Collection	Knowledge gaps caused by gatekeeping or knowledge sabotage, which also produce silos.
+pkm2-c14	Concept	Elicitation Methodologies: Knowledge Collection	Each knowledge item classified as tacit or explicit.
+pkm2-c15	Concept	The Anthropologist	Observation, shadowing and legitimate peripheral participation.
+pkm2-c16	Concept	The Anthropologist	The small choices made during actual practice.
+pkm2-c17	Concept	The Anthropologist	Unofficial workarounds used in actual practice.
+pkm2-c18	Concept	The Anthropologist	Steps missing from a practitioner's own account because they seem too obvious or are not consciously reachable.
+pkm2-c23	Concept	Collaborative Workshops	Workshops that gather everyone who starts, carries out, or depends on the results of a process.
+pkm2-c27	Concept	Capturing Tacit Knowledge	Mental models experts apply.
+pkm2-c28	Concept	Capturing Tacit Knowledge	Decision heuristics experts apply automatically.
+pkm2-c29	Concept	Capturing Tacit Knowledge	Recordings of a practitioner's work that they review afterward to explain their reasoning.
+pkm2-c30	Concept	Capturing Tacit Knowledge	A ladder connecting a concrete action upward to the goals and values it serves.
+pkm2-c31	Concept	Capturing Tacit Knowledge	The dimensions experts use to tell situations apart, including ones they never state.
+pkm2-p01	Prescription	The Challenge of Elicitation	Tacit understanding must be drawn out without being flattened into oversimplified rules.
+pkm2-p02	Prescription	Elicitation Methodologies: Knowledge Collection	Several complementary elicitation methods should be combined to build a fuller picture of a process.
+pkm2-p03	Prescription	Elicitation Methodologies: Knowledge Collection	Interviews probe why a choice is made.
+pkm2-p04	Prescription	Elicitation Methodologies: Knowledge Collection	Interviews probe what happens when the procedure falls short.
+pkm2-p05	Prescription	Elicitation Methodologies: Knowledge Collection	Use critical incidents to surface the judgment calls documentation hides.
+pkm2-p06	Prescription	Elicitation Methodologies: Knowledge Collection	Gaps caused by gatekeeping or sabotage must be identified.
+pkm2-p07	Prescription	Elicitation Methodologies: Knowledge Collection	Where gatekept knowledge is required, it must be drawn out and codified using methods such as critical incidents.
+pkm2-p08	Prescription	The Anthropologist	Observation must capture steps interviews miss, whether practitioners think them obvious or cannot consciously reach them.
+pkm2-p09	Prescription	The Anthropologist	An observer questions as well as watches, and the reasons given are recorded against the observed action.
+pkm2-p10	Prescription	Collaborative Workshops	Workshops must include participants who are normally not invited.
+pkm2-p11	Prescription	Collaborative Workshops	Subject matter experts must approve the representation of procedures that affect their work.
+pkm2-p12	Prescription	Collaborative Workshops	Workshops bring differing views of how work flows into the open and reconcile them.
+pkm2-q01	CompetencyQuestion	The Anthropologist	What reason is recorded for this observed action?
+pkm2-q02	CompetencyQuestion	The Anthropologist	What did the practitioner say they would do if a condition were different?
+pkm2-q03	CompetencyQuestion	Capturing Tacit Knowledge	What goal or value does this action ultimately serve?
+pkm2-q04	CompetencyQuestion	Capturing Tacit Knowledge	According to the practitioner, which subprocesses and conditions make up this higher-level activity?
+pkm2-q05	CompetencyQuestion	Capturing Tacit Knowledge	Along which recorded dimensions do experts tell these situations apart?
+pkm2-q10	CompetencyQuestion	Elicitation Methodologies: Knowledge Collection	Which knowledge gaps are known?
+pkm2-q11	CompetencyQuestion	Elicitation Methodologies: Knowledge Collection	Which gaps come from gatekeeping or sabotage?
+pkm2-q17	CompetencyQuestion	Elicitation Methodologies: Knowledge Collection	Which past episodes of this process went well, went badly or needed improvising?
+pkm2-q18	CompetencyQuestion	Elicitation Methodologies: Knowledge Collection	What judgment did each such episode reveal?
+pkm2-s01	Standard	Elicitation Methodologies: Knowledge Collection	The critical incident technique.
+pkm2-s02	Standard	Capturing Tacit Knowledge	Think-aloud protocols.
+pkm2-s03	Standard	Capturing Tacit Knowledge	Retrospective protocols.
+pkm2-s04	Standard	Capturing Tacit Knowledge	Concept laddering.
+pkm2-s05	Standard	Capturing Tacit Knowledge	Repertory grids.
+pkm2-s07	Standard	Collaborative Workshops	Process mapping.
+pkm2-s08	Standard	Collaborative Workshops	Value stream analysis.
+pkm2-s15	Standard	The Anthropologist	Shadowing and ethnographic observation.
+pkm2-s17	Standard	Elicitation Methodologies: Knowledge Collection	Structured interviews.
+pkm2-s18	Standard	Collaborative Workshops	Collaborative workshops with participants from different roles.
+pkm2-i01	Illustration	The Challenge of Elicitation	A claims adjuster sensing fraud, or a nurse detecting deterioration, knows more than they can say.
+pkm2-i02	Illustration	The Challenge of Elicitation	A software architect senses a design will be costly to maintain without being able to spell out why.
+pkm2-i07	Illustration	Elicitation Methodologies: Knowledge Collection	A figure contrasts explicit carriers such as manuals and records with tacit forms such as experience and insight, tacit being the larger share.
+pkm2-i08	Illustration	The Anthropologist	The knowledge engineer is compared to a field researcher studying the organization.
+pkm2-i09	Illustration	Collaborative Workshops	Recruiting experts to approve process representations is likened to recruiting them for AI evaluations.
+pkm2-i12	Illustration	Introduction	Process knowledge lives in experienced hands, in what SOPs leave unsaid, and in unspoken negotiation over how work gets done.
+pkm2-i15	Illustration	Collaborative Workshops	An infographic lists what process knowledge tests improve: competency gaps, process quality, efficiency, job satisfaction and consistency.
+pkm3-c01	Concept	Why We Stopped Documenting	Process knowledge is the unformalized, lived grasp of how work gets done, in tacit, explicit or implicit form.
+pkm3-c02	Concept	Why We Stopped Documenting	Procedural knowledge is process knowledge after it has been made formal and expressed in taxonomies, ontologies and structured metadata.
+pkm3-p02	Prescription	Why We Stopped Documenting	Turning process knowledge into procedural knowledge takes deliberate work: observing, interviewing, extracting and encoding.
+pkm4-c13	Concept	The Problem PKO Addresses	Procedural knowledge in tacit and explicit form and where each lives: operators' memory, formal documents, notes in outdated manuals and the memory of staff who may leave.
+pkm4-p12	Prescription	After: Explicit, Actionable Procedural Knowledge	Elicitation combines workshops, structured interviews, observation and sessions that settle disagreements about how a procedure really runs.

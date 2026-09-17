@@ -323,6 +323,61 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             }
         }
 
+        private ObservableCollection<ModelConsumer> _modelConsumers;
+
+        [InverseProperty("ConformanceSubstrateRef")]
+        public virtual ObservableCollection<ModelConsumer> ModelConsumers
+        {
+            get
+            {
+                if (_modelConsumers == null)
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access ModelConsumers - no database context is set. ConformanceSubstrateId: " + this.ConformanceSubstrateId + ".");
+                        }
+                        _modelConsumers = new ObservableCollection<ModelConsumer>();
+                    }
+                    else
+                    {
+                        var items = base.SoAContext.ModelConsumers.Where(x => x.ConformanceSubstrate == this.ConformanceSubstrateId).ToList<ModelConsumer>();
+                        _modelConsumers = new ObservableCollection<ModelConsumer>(items);
+                        if (items.Any())
+                        {
+                            base.SoAContext.AttachRange(items);
+                        }
+                    }
+                    _modelConsumers.CollectionChanged += ModelConsumers_CollectionChanged;
+                }
+                return _modelConsumers;
+            }
+            private set
+            {
+                if (_modelConsumers != null)
+                {
+                    _modelConsumers.CollectionChanged -= ModelConsumers_CollectionChanged;
+                }
+                _modelConsumers = value;
+                if (_modelConsumers != null)
+                {
+                    _modelConsumers.CollectionChanged += ModelConsumers_CollectionChanged;
+                }
+            }
+        }
+
+        private void ModelConsumers_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems != null)
+            {
+                foreach (var item in e.NewItems.Cast<ModelConsumer>())
+                {
+                    item.ConformanceSubstrate = this.ConformanceSubstrateId;
+                }
+            }
+        }
+
 
         protected override void LazyLoadProperties()
         {
@@ -330,6 +385,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             _ = this.SubstrateRunScores;
             _ = this.TableConformance;
             _ = this.FieldDisagreements;
+            _ = this.ModelConsumers;
         }
 
         public override string ToString()

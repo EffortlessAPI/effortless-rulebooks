@@ -715,10 +715,181 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         }
 
         public string? SemanticTypeIri { get; set; }
+        public string? Description { get; set; }
+        // Formula PreviousExecutedStep (rulebook: =INDEX(StepExecutions!{{Step}}, MATCH({{PreviousStepExecution}}, StepExecutions!{{StepExecutionId}}, 0)))
+        [NotMapped]
+        public string? PreviousExecutedStep
+        {
+            get => F.AsString(F.Memo(this, "PreviousExecutedStep", () => F.Lookup<StepExecution>(this, "StepExecutions", "StepExecutionId", __c => __c.StepExecutions, __r => F.Of(__r.StepExecutionId), F.Of(this.PreviousStepExecution), __r => F.Of(__r.Step), () => F.Of(new StepExecution().Step)))); set { }
+        }
+
+        // Formula SpecifiedTransitionFromPreviousCount (rulebook: =COUNTIFS(StepTransitions!{{FromStep}}, {{PreviousExecutedStep}}, StepTransitions!{{ToStep}}, {{Step}}))
+        [NotMapped]
+        public int? SpecifiedTransitionFromPreviousCount
+        {
+            get => F.AsInt(F.Memo(this, "SpecifiedTransitionFromPreviousCount", () => F.Integer((base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<StepTransition>(base.SoAContext, "StepTransitions", __c => __c.StepTransitions), __r => F.CritField(F.Of(__r.FromStep), F.Of(this.PreviousExecutedStep)) && F.CritField(F.Of(__r.ToStep), F.Of(this.Step))))))); set { }
+        }
+
+        // Formula IsOutOfSpecifiedOrder (rulebook: =AND({{PreviousStepExecution}} <> "", {{SpecifiedTransitionFromPreviousCount}} = 0))
+        [NotMapped]
+        public bool? IsOutOfSpecifiedOrder
+        {
+            get => F.AsBool(F.Memo(this, "IsOutOfSpecifiedOrder", () => F.And(F.Bool3(F.IsNotBlank(F.Of(this.PreviousStepExecution))), F.Bool3(F.Eq(F.Of(this.SpecifiedTransitionFromPreviousCount), F.I(0)))))); set { }
+        }
+
+        // Formula ExecutionVersion (rulebook: =INDEX(ProcedureExecutions!{{ProcedureVersion}}, MATCH({{ProcedureExecution}}, ProcedureExecutions!{{ProcedureExecutionId}}, 0)))
+        [NotMapped]
+        public string? ExecutionVersion
+        {
+            get => F.AsString(F.Memo(this, "ExecutionVersion", () => F.Lookup<ProcedureExecution>(this, "ProcedureExecutions", "ProcedureExecutionId", __c => __c.ProcedureExecutions, __r => F.Of(__r.ProcedureExecutionId), F.Of(this.ProcedureExecution), __r => F.Of(__r.ProcedureVersion), () => F.Of(new ProcedureExecution().ProcedureVersion)))); set { }
+        }
+
+        // Formula ExecutesStepOfOtherVersion (rulebook: ={{VersionOfStep}} <> {{ExecutionVersion}})
+        [NotMapped]
+        public bool? ExecutesStepOfOtherVersion
+        {
+            get => F.AsBool(F.Memo(this, "ExecutesStepOfOtherVersion", () => F.Ne(F.Of(this.VersionOfStep), F.Of(this.ExecutionVersion)))); set { }
+        }
+
+        // Formula RepetitionCount (rulebook: =COUNTIFS(StepExecutions!{{Step}}, {{Step}}, StepExecutions!{{ProcedureExecution}}, {{ProcedureExecution}}))
+        [NotMapped]
+        public int? RepetitionCount
+        {
+            get => F.AsInt(F.Memo(this, "RepetitionCount", () => F.Integer((base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<StepExecution>(base.SoAContext, "StepExecutions", __c => __c.StepExecutions), __r => F.CritField(F.Of(__r.Step), F.Of(this.Step)) && F.CritField(F.Of(__r.ProcedureExecution), F.Of(this.ProcedureExecution))))))); set { }
+        }
+
+        // Formula StepMaxRepetitions (rulebook: =INDEX(Steps!{{MaxRepetitions}}, MATCH({{Step}}, Steps!{{StepId}}, 0)))
+        [NotMapped]
+        public int? StepMaxRepetitions
+        {
+            get => F.AsInt(F.Memo(this, "StepMaxRepetitions", () => F.Integer(F.Lookup<Step>(this, "Steps", "StepId", __c => __c.Steps, __r => F.Of(__r.StepId), F.Of(this.Step), __r => F.Of(__r.MaxRepetitions), () => F.Of(new Step().MaxRepetitions))))); set { }
+        }
+
+        // Formula ExceedsMaxRepetitions (rulebook: =AND({{StepMaxRepetitions}} > 0, {{RepetitionCount}} > {{StepMaxRepetitions}}))
+        [NotMapped]
+        public bool? ExceedsMaxRepetitions
+        {
+            get => F.AsBool(F.Memo(this, "ExceedsMaxRepetitions", () => F.And(F.Bool3(F.Cmp(F.Of(this.StepMaxRepetitions), ">", F.I(0))), F.Bool3(F.Cmp(F.Of(this.RepetitionCount), ">", F.Of(this.StepMaxRepetitions)))))); set { }
+        }
+
+        // Formula LacksRequiredConfirmation (rulebook: =AND({{StepRequiresHumanConfirmation}}, {{IsCompleted}}, {{ConfirmedByAgent}} = ""))
+        [NotMapped]
+        public bool? LacksRequiredConfirmation
+        {
+            get => F.AsBool(F.Memo(this, "LacksRequiredConfirmation", () => F.And(F.Bool3(F.Of(this.StepRequiresHumanConfirmation)), F.Bool3(F.Of(this.IsCompleted)), F.Bool3(F.IsBlank(F.Of(this.ConfirmedByAgent)))))); set { }
+        }
+
+        // Formula FailedPreconditionCount (rulebook: =COUNTIFS(ConditionChecks!{{FailedPreconditionExecutionKey}}, {{StepExecutionId}}))
+        [NotMapped]
+        public int? FailedPreconditionCount
+        {
+            get => F.AsInt(F.Memo(this, "FailedPreconditionCount", () => F.Integer((base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<ConditionCheck>(base.SoAContext, "ConditionChecks", __c => __c.ConditionChecks), __r => F.CritField(F.Of(__r.FailedPreconditionExecutionKey), F.Of(this.StepExecutionId))))))); set { }
+        }
+
+        // Formula ViolatedInvariantCount (rulebook: =COUNTIFS(ConditionChecks!{{ViolatedInvariantExecutionKey}}, {{StepExecutionId}}))
+        [NotMapped]
+        public int? ViolatedInvariantCount
+        {
+            get => F.AsInt(F.Memo(this, "ViolatedInvariantCount", () => F.Integer((base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<ConditionCheck>(base.SoAContext, "ConditionChecks", __c => __c.ConditionChecks), __r => F.CritField(F.Of(__r.ViolatedInvariantExecutionKey), F.Of(this.StepExecutionId))))))); set { }
+        }
+
+        // Formula ProceededDespiteFailedPrecondition (rulebook: =AND({{FailedPreconditionCount}} > 0, {{IsCompleted}}))
+        [NotMapped]
+        public bool? ProceededDespiteFailedPrecondition
+        {
+            get => F.AsBool(F.Memo(this, "ProceededDespiteFailedPrecondition", () => F.And(F.Bool3(F.Cmp(F.Of(this.FailedPreconditionCount), ">", F.I(0))), F.Bool3(F.Of(this.IsCompleted))))); set { }
+        }
+
+        // Formula UnescalatedDangerCueCount (rulebook: =COUNTIFS(CueObservations!{{UnescalatedExecutionKey}}, {{StepExecutionId}}))
+        [NotMapped]
+        public int? UnescalatedDangerCueCount
+        {
+            get => F.AsInt(F.Memo(this, "UnescalatedDangerCueCount", () => F.Integer((base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<CueObservation>(base.SoAContext, "CueObservations", __c => __c.CueObservations), __r => F.CritField(F.Of(__r.UnescalatedExecutionKey), F.Of(this.StepExecutionId))))))); set { }
+        }
+
+        // Formula IgnoredDangerCue (rulebook: ={{UnescalatedDangerCueCount}} > 0)
+        [NotMapped]
+        public bool? IgnoredDangerCue
+        {
+            get => F.AsBool(F.Memo(this, "IgnoredDangerCue", () => F.Cmp(F.Of(this.UnescalatedDangerCueCount), ">", F.I(0)))); set { }
+        }
+
+        // Formula UsedEntityCount (rulebook: =COUNTIFS(ExecutionEntities!{{UsedExecutionKey}}, {{StepExecutionId}}))
+        [NotMapped]
+        public int? UsedEntityCount
+        {
+            get => F.AsInt(F.Memo(this, "UsedEntityCount", () => F.Integer((base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<ExecutionEntity>(base.SoAContext, "ExecutionEntities", __c => __c.ExecutionEntities), __r => F.CritField(F.Of(__r.UsedExecutionKey), F.Of(this.StepExecutionId))))))); set { }
+        }
+
+        // Formula GeneratedEntityCount (rulebook: =COUNTIFS(ExecutionEntities!{{GeneratedExecutionKey}}, {{StepExecutionId}}))
+        [NotMapped]
+        public int? GeneratedEntityCount
+        {
+            get => F.AsInt(F.Memo(this, "GeneratedEntityCount", () => F.Integer((base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<ExecutionEntity>(base.SoAContext, "ExecutionEntities", __c => __c.ExecutionEntities), __r => F.CritField(F.Of(__r.GeneratedExecutionKey), F.Of(this.StepExecutionId))))))); set { }
+        }
+
+        // Formula StepInputVariableCount (rulebook: =INDEX(Steps!{{InputVariableCount}}, MATCH({{Step}}, Steps!{{StepId}}, 0)))
+        [NotMapped]
+        public int? StepInputVariableCount
+        {
+            get => F.AsInt(F.Memo(this, "StepInputVariableCount", () => F.Integer(F.Lookup<Step>(this, "Steps", "StepId", __c => __c.Steps, __r => F.Of(__r.StepId), F.Of(this.Step), __r => F.Of(__r.InputVariableCount), () => F.Of(new Step().InputVariableCount))))); set { }
+        }
+
+        // Formula RanWithoutDeclaredInputs (rulebook: =AND({{IsCompleted}}, {{StepInputVariableCount}} > 0, {{UsedEntityCount}} = 0))
+        [NotMapped]
+        public bool? RanWithoutDeclaredInputs
+        {
+            get => F.AsBool(F.Memo(this, "RanWithoutDeclaredInputs", () => F.And(F.Bool3(F.Of(this.IsCompleted)), F.Bool3(F.Cmp(F.Of(this.StepInputVariableCount), ">", F.I(0))), F.Bool3(F.Eq(F.Of(this.UsedEntityCount), F.I(0)))))); set { }
+        }
+
+        // Formula StepPrerequisite (rulebook: =INDEX(Steps!{{PrerequisiteStep}}, MATCH({{Step}}, Steps!{{StepId}}, 0)))
+        [NotMapped]
+        public string? StepPrerequisite
+        {
+            get => F.AsString(F.Memo(this, "StepPrerequisite", () => F.Lookup<Step>(this, "Steps", "StepId", __c => __c.Steps, __r => F.Of(__r.StepId), F.Of(this.Step), __r => F.Of(__r.PrerequisiteStep), () => F.Of(new Step().PrerequisiteStep)))); set { }
+        }
+
+        // Formula CompletedPrerequisiteRunCount (rulebook: =COUNTIFS(StepExecutions!{{Step}}, {{StepPrerequisite}}, StepExecutions!{{ProcedureExecution}}, {{ProcedureExecution}}, StepExecutions!{{ExecutionStatus}}, "Completed"))
+        [NotMapped]
+        public int? CompletedPrerequisiteRunCount
+        {
+            get => F.AsInt(F.Memo(this, "CompletedPrerequisiteRunCount", () => F.Integer((base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<StepExecution>(base.SoAContext, "StepExecutions", __c => __c.StepExecutions), __r => F.CritField(F.Of(__r.Step), F.Of(this.StepPrerequisite)) && F.CritField(F.Of(__r.ProcedureExecution), F.Of(this.ProcedureExecution)) && F.CritLiteral(F.Of(__r.ExecutionStatus), F.S("Completed"))))))); set { }
+        }
+
+        // Formula RanBeforePrerequisiteCompleted (rulebook: =AND({{StepPrerequisite}} <> "", {{CompletedPrerequisiteRunCount}} = 0))
+        [NotMapped]
+        public bool? RanBeforePrerequisiteCompleted
+        {
+            get => F.AsBool(F.Memo(this, "RanBeforePrerequisiteCompleted", () => F.And(F.Bool3(F.IsNotBlank(F.Of(this.StepPrerequisite))), F.Bool3(F.Eq(F.Of(this.CompletedPrerequisiteRunCount), F.I(0)))))); set { }
+        }
+
+        // Formula DeviationExecutionKey (rulebook: =IF({{HasDeviation}}, {{ProcedureExecution}}, ""))
+        [NotMapped]
+        public string? DeviationExecutionKey
+        {
+            get => F.AsString(F.Memo(this, "DeviationExecutionKey", () => (F.Truthy(F.Bool3(F.Of(this.HasDeviation))) ? F.Of(this.ProcedureExecution) : F.S("")))); set { }
+        }
+
+        // Formula BrokeInvariant (rulebook: ={{ViolatedInvariantCount}} > 0)
+        [NotMapped]
+        public bool? BrokeInvariant
+        {
+            get => F.AsBool(F.Memo(this, "BrokeInvariant", () => F.Cmp(F.Of(this.ViolatedInvariantCount), ">", F.I(0)))); set { }
+        }
+
+        // Formula IsBlockedByIncompletePrerequisite (rulebook: =AND({{StepPrerequisite}} <> "", {{CompletedPrerequisiteRunCount}} = 0, {{ExecutionStatus}} <> "Completed"))
+        [NotMapped]
+        public bool? IsBlockedByIncompletePrerequisite
+        {
+            get => F.AsBool(F.Memo(this, "IsBlockedByIncompletePrerequisite", () => F.And(F.Bool3(F.IsNotBlank(F.Of(this.StepPrerequisite))), F.Bool3(F.Eq(F.Of(this.CompletedPrerequisiteRunCount), F.I(0))), F.Bool3(F.Ne(F.Nullif(F.Of(this.ExecutionStatus)), F.S("Completed")))))); set { }
+        }
+
 
         public string? ProcedureExecution { get; set; }
         public string? Step { get; set; }
         public string? ExecutedByAgent { get; set; }
+        public string? PreviousStepExecution { get; set; }
+        public string? ConfirmedByAgent { get; set; }
 
         private ProcedureExecution _procedureExecutionRef;
 
@@ -848,6 +1019,149 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     {
                         ExecutedByAgent = _agent.AgentId;
                     }
+                }
+            }
+        }
+
+        private StepExecution _stepExecution;
+
+        [ForeignKey("PreviousStepExecution")]
+        public virtual StepExecution StepExecution
+        {
+            get
+            {
+                if (_stepExecution == null && !string.IsNullOrEmpty(PreviousStepExecution))
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access StepExecution - no database context is set. PreviousStepExecution: " + PreviousStepExecution + ".");
+                        }
+                        return null;
+                    }
+                    _stepExecution = base.SoAContext.StepExecutions.Find(PreviousStepExecution);
+                    if (_stepExecution != null)
+                    {
+                        base.SoAContext.Attach(_stepExecution);
+                    }
+                }
+                return _stepExecution;
+            }
+            set
+            {
+                if (_stepExecution != value)
+                {
+                    _stepExecution = value;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_stepExecution != null)
+                    {
+                        PreviousStepExecution = _stepExecution.StepExecutionId;
+                    }
+                }
+            }
+        }
+
+        private Agent _agentRef;
+
+        [ForeignKey("ConfirmedByAgent")]
+        public virtual Agent AgentRef
+        {
+            get
+            {
+                if (_agentRef == null && !string.IsNullOrEmpty(ConfirmedByAgent))
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access AgentRef - no database context is set. ConfirmedByAgent: " + ConfirmedByAgent + ".");
+                        }
+                        return null;
+                    }
+                    _agentRef = base.SoAContext.Agents.Find(ConfirmedByAgent);
+                    if (_agentRef != null)
+                    {
+                        base.SoAContext.Attach(_agentRef);
+                    }
+                }
+                return _agentRef;
+            }
+            set
+            {
+                if (_agentRef != value)
+                {
+                    _agentRef = value;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_agentRef != null)
+                    {
+                        ConfirmedByAgent = _agentRef.AgentId;
+                    }
+                }
+            }
+        }
+
+        private ObservableCollection<StepExecution> _stepExecutions;
+
+        [InverseProperty("StepExecution")]
+        public virtual ObservableCollection<StepExecution> StepExecutions
+        {
+            get
+            {
+                if (_stepExecutions == null)
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access StepExecutions - no database context is set. StepExecutionId: " + this.StepExecutionId + ".");
+                        }
+                        _stepExecutions = new ObservableCollection<StepExecution>();
+                    }
+                    else
+                    {
+                        var items = base.SoAContext.StepExecutions.Where(x => x.PreviousStepExecution == this.StepExecutionId).ToList<StepExecution>();
+                        _stepExecutions = new ObservableCollection<StepExecution>(items);
+                        if (items.Any())
+                        {
+                            base.SoAContext.AttachRange(items);
+                        }
+                    }
+                    _stepExecutions.CollectionChanged += StepExecutions_CollectionChanged;
+                }
+                return _stepExecutions;
+            }
+            private set
+            {
+                if (_stepExecutions != null)
+                {
+                    _stepExecutions.CollectionChanged -= StepExecutions_CollectionChanged;
+                }
+                _stepExecutions = value;
+                if (_stepExecutions != null)
+                {
+                    _stepExecutions.CollectionChanged += StepExecutions_CollectionChanged;
+                }
+            }
+        }
+
+        private void StepExecutions_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems != null)
+            {
+                foreach (var item in e.NewItems.Cast<StepExecution>())
+                {
+                    item.PreviousStepExecution = this.StepExecutionId;
                 }
             }
         }
@@ -1512,12 +1826,290 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             }
         }
 
+        private ObservableCollection<ExecutionEntity> _executionEntities;
+
+        [InverseProperty("StepExecutionRef")]
+        public virtual ObservableCollection<ExecutionEntity> ExecutionEntities
+        {
+            get
+            {
+                if (_executionEntities == null)
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access ExecutionEntities - no database context is set. StepExecutionId: " + this.StepExecutionId + ".");
+                        }
+                        _executionEntities = new ObservableCollection<ExecutionEntity>();
+                    }
+                    else
+                    {
+                        var items = base.SoAContext.ExecutionEntities.Where(x => x.StepExecution == this.StepExecutionId).ToList<ExecutionEntity>();
+                        _executionEntities = new ObservableCollection<ExecutionEntity>(items);
+                        if (items.Any())
+                        {
+                            base.SoAContext.AttachRange(items);
+                        }
+                    }
+                    _executionEntities.CollectionChanged += ExecutionEntities_CollectionChanged;
+                }
+                return _executionEntities;
+            }
+            private set
+            {
+                if (_executionEntities != null)
+                {
+                    _executionEntities.CollectionChanged -= ExecutionEntities_CollectionChanged;
+                }
+                _executionEntities = value;
+                if (_executionEntities != null)
+                {
+                    _executionEntities.CollectionChanged += ExecutionEntities_CollectionChanged;
+                }
+            }
+        }
+
+        private void ExecutionEntities_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems != null)
+            {
+                foreach (var item in e.NewItems.Cast<ExecutionEntity>())
+                {
+                    item.StepExecution = this.StepExecutionId;
+                }
+            }
+        }
+
+        private ObservableCollection<ConditionCheck> _conditionChecks;
+
+        [InverseProperty("StepExecutionRef")]
+        public virtual ObservableCollection<ConditionCheck> ConditionChecks
+        {
+            get
+            {
+                if (_conditionChecks == null)
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access ConditionChecks - no database context is set. StepExecutionId: " + this.StepExecutionId + ".");
+                        }
+                        _conditionChecks = new ObservableCollection<ConditionCheck>();
+                    }
+                    else
+                    {
+                        var items = base.SoAContext.ConditionChecks.Where(x => x.StepExecution == this.StepExecutionId).ToList<ConditionCheck>();
+                        _conditionChecks = new ObservableCollection<ConditionCheck>(items);
+                        if (items.Any())
+                        {
+                            base.SoAContext.AttachRange(items);
+                        }
+                    }
+                    _conditionChecks.CollectionChanged += ConditionChecks_CollectionChanged;
+                }
+                return _conditionChecks;
+            }
+            private set
+            {
+                if (_conditionChecks != null)
+                {
+                    _conditionChecks.CollectionChanged -= ConditionChecks_CollectionChanged;
+                }
+                _conditionChecks = value;
+                if (_conditionChecks != null)
+                {
+                    _conditionChecks.CollectionChanged += ConditionChecks_CollectionChanged;
+                }
+            }
+        }
+
+        private void ConditionChecks_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems != null)
+            {
+                foreach (var item in e.NewItems.Cast<ConditionCheck>())
+                {
+                    item.StepExecution = this.StepExecutionId;
+                }
+            }
+        }
+
+        private ObservableCollection<CueObservation> _cueObservations;
+
+        [InverseProperty("StepExecutionRef")]
+        public virtual ObservableCollection<CueObservation> CueObservations
+        {
+            get
+            {
+                if (_cueObservations == null)
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access CueObservations - no database context is set. StepExecutionId: " + this.StepExecutionId + ".");
+                        }
+                        _cueObservations = new ObservableCollection<CueObservation>();
+                    }
+                    else
+                    {
+                        var items = base.SoAContext.CueObservations.Where(x => x.StepExecution == this.StepExecutionId).ToList<CueObservation>();
+                        _cueObservations = new ObservableCollection<CueObservation>(items);
+                        if (items.Any())
+                        {
+                            base.SoAContext.AttachRange(items);
+                        }
+                    }
+                    _cueObservations.CollectionChanged += CueObservations_CollectionChanged;
+                }
+                return _cueObservations;
+            }
+            private set
+            {
+                if (_cueObservations != null)
+                {
+                    _cueObservations.CollectionChanged -= CueObservations_CollectionChanged;
+                }
+                _cueObservations = value;
+                if (_cueObservations != null)
+                {
+                    _cueObservations.CollectionChanged += CueObservations_CollectionChanged;
+                }
+            }
+        }
+
+        private void CueObservations_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems != null)
+            {
+                foreach (var item in e.NewItems.Cast<CueObservation>())
+                {
+                    item.StepExecution = this.StepExecutionId;
+                }
+            }
+        }
+
+        private ObservableCollection<AssistantAnswer> _assistantAnswers;
+
+        [InverseProperty("StepExecutionRef")]
+        public virtual ObservableCollection<AssistantAnswer> AssistantAnswers
+        {
+            get
+            {
+                if (_assistantAnswers == null)
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access AssistantAnswers - no database context is set. StepExecutionId: " + this.StepExecutionId + ".");
+                        }
+                        _assistantAnswers = new ObservableCollection<AssistantAnswer>();
+                    }
+                    else
+                    {
+                        var items = base.SoAContext.AssistantAnswers.Where(x => x.StepExecution == this.StepExecutionId).ToList<AssistantAnswer>();
+                        _assistantAnswers = new ObservableCollection<AssistantAnswer>(items);
+                        if (items.Any())
+                        {
+                            base.SoAContext.AttachRange(items);
+                        }
+                    }
+                    _assistantAnswers.CollectionChanged += AssistantAnswers_CollectionChanged;
+                }
+                return _assistantAnswers;
+            }
+            private set
+            {
+                if (_assistantAnswers != null)
+                {
+                    _assistantAnswers.CollectionChanged -= AssistantAnswers_CollectionChanged;
+                }
+                _assistantAnswers = value;
+                if (_assistantAnswers != null)
+                {
+                    _assistantAnswers.CollectionChanged += AssistantAnswers_CollectionChanged;
+                }
+            }
+        }
+
+        private void AssistantAnswers_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems != null)
+            {
+                foreach (var item in e.NewItems.Cast<AssistantAnswer>())
+                {
+                    item.StepExecution = this.StepExecutionId;
+                }
+            }
+        }
+
+        private ObservableCollection<AiToolInvocation> _aiToolInvocations;
+
+        [InverseProperty("StepExecutionRef")]
+        public virtual ObservableCollection<AiToolInvocation> AiToolInvocations
+        {
+            get
+            {
+                if (_aiToolInvocations == null)
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access AiToolInvocations - no database context is set. StepExecutionId: " + this.StepExecutionId + ".");
+                        }
+                        _aiToolInvocations = new ObservableCollection<AiToolInvocation>();
+                    }
+                    else
+                    {
+                        var items = base.SoAContext.AiToolInvocations.Where(x => x.StepExecution == this.StepExecutionId).ToList<AiToolInvocation>();
+                        _aiToolInvocations = new ObservableCollection<AiToolInvocation>(items);
+                        if (items.Any())
+                        {
+                            base.SoAContext.AttachRange(items);
+                        }
+                    }
+                    _aiToolInvocations.CollectionChanged += AiToolInvocations_CollectionChanged;
+                }
+                return _aiToolInvocations;
+            }
+            private set
+            {
+                if (_aiToolInvocations != null)
+                {
+                    _aiToolInvocations.CollectionChanged -= AiToolInvocations_CollectionChanged;
+                }
+                _aiToolInvocations = value;
+                if (_aiToolInvocations != null)
+                {
+                    _aiToolInvocations.CollectionChanged += AiToolInvocations_CollectionChanged;
+                }
+            }
+        }
+
+        private void AiToolInvocations_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems != null)
+            {
+                foreach (var item in e.NewItems.Cast<AiToolInvocation>())
+                {
+                    item.StepExecution = this.StepExecutionId;
+                }
+            }
+        }
+
 
         protected override void LazyLoadProperties()
         {
             _ = this.ProcedureExecutionRef;
             _ = this.StepRef;
             _ = this.Agent;
+            _ = this.StepExecution;
+            _ = this.AgentRef;
+            _ = this.StepExecutions;
             _ = this.RequirementSatisfactions;
             _ = this.IssueOccurrences;
             _ = this.UserQuestions;
@@ -1530,6 +2122,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             _ = this.SendingStepExecutionDeliveredCommunications;
             _ = this.AuthorizingStepExecutionDeliveredCommunications;
             _ = this.BindingObservations;
+            _ = this.ExecutionEntities;
+            _ = this.ConditionChecks;
+            _ = this.CueObservations;
+            _ = this.AssistantAnswers;
+            _ = this.AiToolInvocations;
         }
 
         public override string ToString()

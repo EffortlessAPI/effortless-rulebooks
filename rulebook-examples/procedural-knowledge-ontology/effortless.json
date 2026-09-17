@@ -45,8 +45,8 @@
       "RelativePath": "/rulespeak",
       "CommandLine": "rulebook-to-rulespeak -i ../effortless-rulebook/procedural-knowledge-ontology-rulebook.json",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.09.13.1044",
-      "LastUrl": "https://effortless-rulebook-to-rulespeak-v2026-09-13-1044-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
+      "LastVersionUsed": "v2026.09.17.0356",
+      "LastUrl": "https://effortless-rulebook-to-rulespeak-v2026-09-17-0356-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
       "Description": "Render the rulebook as plain-English RuleSpeak (HTML + Markdown)"
     },
     {
@@ -55,8 +55,8 @@
       "RelativePath": "/postgres-bootstrap",
       "CommandLine": "rulebook-to-postgres -i ../effortless-rulebook/procedural-knowledge-ontology-rulebook.json",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.09.14.2209",
-      "LastUrl": "https://effortless-rulebook-to-postgres-v2026-09-14-2209-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+      "LastVersionUsed": "v2026.09.17.0435",
+      "LastUrl": "https://effortless-rulebook-to-postgres-v2026-09-17-0435-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     },
     {
       "IsSSoTTranspiler": false,

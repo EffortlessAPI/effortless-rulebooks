@@ -485,6 +485,61 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             }
         }
 
+        private ObservableCollection<IssueOccurrence> _issueOccurrences;
+
+        [InverseProperty("ChangeRequest")]
+        public virtual ObservableCollection<IssueOccurrence> IssueOccurrences
+        {
+            get
+            {
+                if (_issueOccurrences == null)
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access IssueOccurrences - no database context is set. ChangeRequestId: " + this.ChangeRequestId + ".");
+                        }
+                        _issueOccurrences = new ObservableCollection<IssueOccurrence>();
+                    }
+                    else
+                    {
+                        var items = base.SoAContext.IssueOccurrences.Where(x => x.RedesignChangeRequest == this.ChangeRequestId).ToList<IssueOccurrence>();
+                        _issueOccurrences = new ObservableCollection<IssueOccurrence>(items);
+                        if (items.Any())
+                        {
+                            base.SoAContext.AttachRange(items);
+                        }
+                    }
+                    _issueOccurrences.CollectionChanged += IssueOccurrences_CollectionChanged;
+                }
+                return _issueOccurrences;
+            }
+            private set
+            {
+                if (_issueOccurrences != null)
+                {
+                    _issueOccurrences.CollectionChanged -= IssueOccurrences_CollectionChanged;
+                }
+                _issueOccurrences = value;
+                if (_issueOccurrences != null)
+                {
+                    _issueOccurrences.CollectionChanged += IssueOccurrences_CollectionChanged;
+                }
+            }
+        }
+
+        private void IssueOccurrences_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems != null)
+            {
+                foreach (var item in e.NewItems.Cast<IssueOccurrence>())
+                {
+                    item.RedesignChangeRequest = this.ChangeRequestId;
+                }
+            }
+        }
+
         private ObservableCollection<ReviewEvent> _reviewEvents;
 
         [InverseProperty("ChangeRequest")]
@@ -540,6 +595,116 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             }
         }
 
+        private ObservableCollection<KnowledgeOutcomeMeasurement> _knowledgeOutcomeMeasurements;
+
+        [InverseProperty("ChangeRequest")]
+        public virtual ObservableCollection<KnowledgeOutcomeMeasurement> KnowledgeOutcomeMeasurements
+        {
+            get
+            {
+                if (_knowledgeOutcomeMeasurements == null)
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access KnowledgeOutcomeMeasurements - no database context is set. ChangeRequestId: " + this.ChangeRequestId + ".");
+                        }
+                        _knowledgeOutcomeMeasurements = new ObservableCollection<KnowledgeOutcomeMeasurement>();
+                    }
+                    else
+                    {
+                        var items = base.SoAContext.KnowledgeOutcomeMeasurements.Where(x => x.InformedChangeRequest == this.ChangeRequestId).ToList<KnowledgeOutcomeMeasurement>();
+                        _knowledgeOutcomeMeasurements = new ObservableCollection<KnowledgeOutcomeMeasurement>(items);
+                        if (items.Any())
+                        {
+                            base.SoAContext.AttachRange(items);
+                        }
+                    }
+                    _knowledgeOutcomeMeasurements.CollectionChanged += KnowledgeOutcomeMeasurements_CollectionChanged;
+                }
+                return _knowledgeOutcomeMeasurements;
+            }
+            private set
+            {
+                if (_knowledgeOutcomeMeasurements != null)
+                {
+                    _knowledgeOutcomeMeasurements.CollectionChanged -= KnowledgeOutcomeMeasurements_CollectionChanged;
+                }
+                _knowledgeOutcomeMeasurements = value;
+                if (_knowledgeOutcomeMeasurements != null)
+                {
+                    _knowledgeOutcomeMeasurements.CollectionChanged += KnowledgeOutcomeMeasurements_CollectionChanged;
+                }
+            }
+        }
+
+        private void KnowledgeOutcomeMeasurements_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems != null)
+            {
+                foreach (var item in e.NewItems.Cast<KnowledgeOutcomeMeasurement>())
+                {
+                    item.InformedChangeRequest = this.ChangeRequestId;
+                }
+            }
+        }
+
+        private ObservableCollection<AiInsightProposal> _aiInsightProposals;
+
+        [InverseProperty("ChangeRequest")]
+        public virtual ObservableCollection<AiInsightProposal> AiInsightProposals
+        {
+            get
+            {
+                if (_aiInsightProposals == null)
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access AiInsightProposals - no database context is set. ChangeRequestId: " + this.ChangeRequestId + ".");
+                        }
+                        _aiInsightProposals = new ObservableCollection<AiInsightProposal>();
+                    }
+                    else
+                    {
+                        var items = base.SoAContext.AiInsightProposals.Where(x => x.FoldedIntoChangeRequest == this.ChangeRequestId).ToList<AiInsightProposal>();
+                        _aiInsightProposals = new ObservableCollection<AiInsightProposal>(items);
+                        if (items.Any())
+                        {
+                            base.SoAContext.AttachRange(items);
+                        }
+                    }
+                    _aiInsightProposals.CollectionChanged += AiInsightProposals_CollectionChanged;
+                }
+                return _aiInsightProposals;
+            }
+            private set
+            {
+                if (_aiInsightProposals != null)
+                {
+                    _aiInsightProposals.CollectionChanged -= AiInsightProposals_CollectionChanged;
+                }
+                _aiInsightProposals = value;
+                if (_aiInsightProposals != null)
+                {
+                    _aiInsightProposals.CollectionChanged += AiInsightProposals_CollectionChanged;
+                }
+            }
+        }
+
+        private void AiInsightProposals_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems != null)
+            {
+                foreach (var item in e.NewItems.Cast<AiInsightProposal>())
+                {
+                    item.FoldedIntoChangeRequest = this.ChangeRequestId;
+                }
+            }
+        }
+
 
         protected override void LazyLoadProperties()
         {
@@ -548,7 +713,10 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             _ = this.Role;
             _ = this.EvaluationContextRef;
             _ = this.RoleAssignments;
+            _ = this.IssueOccurrences;
             _ = this.ReviewEvents;
+            _ = this.KnowledgeOutcomeMeasurements;
+            _ = this.AiInsightProposals;
         }
 
         public override string ToString()

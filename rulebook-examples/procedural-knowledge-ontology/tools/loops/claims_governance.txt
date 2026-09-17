@@ -1,0 +1,192 @@
+# Theme E (loop-10, governance): 190 claims
+
+pkm1-c33	Concept	Its Not Easy, But it's Worth It	The forces that keep processes changing: shifting requirements, new technology and competitive pressure.
+pkm1-p09	Prescription	Process Knowledge Frameworks	Encoded process knowledge must carry versions and be auditable.
+pkm1-p27	Prescription	Its Not Easy, But it's Worth It	Representations must be governed so they stay aligned with how the process runs; neglected ones degrade into artifacts AI cannot rely on.
+pkm1-p30	Prescription	Its Not Easy, But it's Worth It	Process knowledge must stay aligned with how organizations adapt, so knowledge that no longer matches practice is detectable.
+pkm1-p32	Prescription	Integrated Process Intelligence	Access to process knowledge must be controlled.
+pkm1-p33	Prescription	Integrated Process Intelligence	Modeling must follow stated modeling conventions.
+pkm1-p34	Prescription	Integrated Process Intelligence	Process knowledge must pass defined validation procedures.
+pkm1-p35	Prescription	Integrated Process Intelligence	Process knowledge must be under version control.
+pkm1-q14	CompetencyQuestion	Its Not Easy, But it's Worth It	Which formal process representations no longer match how the process runs today?
+pkm1-s09	Standard	Integrated Process Intelligence	Enterprise architecture practice as a precedent for process knowledge methodology.
+pkm2-c101	Concept	Integration: Making Process Knowledge Work	Drift: encoded knowledge falling out of step with practice as processes appear and change.
+pkm2-p55	Prescription	Integration: Making Process Knowledge Work	Infrastructure and governance keep collection, organization and encoding running continuously.
+pkm2-p60	Prescription	Integration: Making Process Knowledge Work	Collected knowledge passes quality standards before it enters the encoded repository.
+pkm2-p61	Prescription	Integration: Making Process Knowledge Work	Proposed additions and edits become authoritative only after expert review.
+pkm2-p62	Prescription	Integration: Making Process Knowledge Work	An automated check confirms the model is structurally consistent.
+pkm2-p63	Prescription	Integration: Making Process Knowledge Work	An automated check confirms the model uses only approved vocabulary.
+pkm2-p64	Prescription	Integration: Making Process Knowledge Work	Every change is recorded over time.
+pkm2-p65	Prescription	Integration: Making Process Knowledge Work	Any change can be rolled back.
+pkm2-p66	Prescription	Integration: Making Process Knowledge Work	Governance sets who may create, modify and retire process definitions.
+pkm2-p67	Prescription	Integration: Making Process Knowledge Work	Governance sets how conflicts between stakeholders are resolved.
+pkm2-p68	Prescription	Integration: Making Process Knowledge Work	Governance sets what approval controls publication.
+pkm2-p79	Prescription	Conclusion	Knowledge is kept current and its quality maintained over time.
+pkm2-q34	CompetencyQuestion	Integration: Making Process Knowledge Work	Who has authority to create, change or retire this process definition?
+pkm2-q35	CompetencyQuestion	Integration: Making Process Knowledge Work	Which knowledge is approved and which is only proposed?
+pkm2-q36	CompetencyQuestion	Integration: Making Process Knowledge Work	Who approved this knowledge?
+pkm2-q37	CompetencyQuestion	Integration: Making Process Knowledge Work	In which version was this knowledge approved?
+pkm3-c26	Concept	Socio-technical Ethos	A durable record of design decisions and the reasons behind them.
+pkm3-p24	Prescription	Rebuilding Process Knowledge Infrastructure	Systems must capture the rationale behind process commitments.
+pkm3-p25	Prescription	Rebuilding Process Knowledge Infrastructure	Systems must record decisions alongside the process.
+pkm3-p31	Prescription	Conclusion	Managing work requires understanding it, and understanding requires that it was documented and absorbed into knowledge systems.
+pkm3-q05	CompetencyQuestion	Socio-technical Ethos	Why was this decision made?
+pkm4-c10	Concept	Measured Impact: What the Evidence Shows	Competency questions that guide the ontology's development.
+pkm4-c11	Concept	Measured Impact: What the Evidence Shows	Quality criteria for an ontology: accuracy, clarity, adaptability, completeness, efficiency, conciseness, consistency and organizational fitness.
+pkm4-c18	Concept	Building A Procedural Knowledge Infrastructure	The ontology's development materials: requirements, versions, documentation and evaluation materials.
+pkm4-c19	Concept	Building A Procedural Knowledge Infrastructure	An issue channel where adopters record their use case and give feedback.
+pkm4-c88	Concept	PKO class diagram	The ontology as a versioned published artifact with version info, prior version, dates, licence and publication status.
+pkm4-p11	Prescription	PKO Ontology Specifics	Reuse existing standards rather than inventing parallel vocabulary.
+pkm4-p19	Prescription	Measured Impact: What the Evidence Shows	Ontology quality is checked by machine consistency checking.
+pkm4-p20	Prescription	Measured Impact: What the Evidence Shows	Ontology quality is scored against stated quality criteria.
+pkm4-p21	Prescription	Measured Impact: What the Evidence Shows	Ontology quality is tested by running the competency questions as tasks.
+pkm4-p22	Prescription	Measured Impact: What the Evidence Shows	The ontology must be shown to satisfy its stated requirements, not just to be well formed.
+pkm4-p44	Prescription	Building A Procedural Knowledge Infrastructure	Ontology work reuses existing ontologies wherever possible.
+pkm4-p24	Prescription	Building A Procedural Knowledge Infrastructure	LOT requirements specification fixes the ontology's purpose, intended users and competency questions.
+pkm4-p26	Prescription	Building A Procedural Knowledge Infrastructure	Publication gives each term a unique URI and links terms semantically.
+pkm4-p27	Prescription	Building A Procedural Knowledge Infrastructure	LOT maintenance keeps the ontology updated after release.
+pkm4-p28	Prescription	Building A Procedural Knowledge Infrastructure	Ontology work runs in short repeated cycles over the LOT activities, not in one pass.
+pkm4-p29	Prescription	Building A Procedural Knowledge Infrastructure	Release the ontology openly under a stated licence at a permanent identifier.
+pkm4-p30	Prescription	The Problem PKO Addresses	Governance must cover procedural knowledge at every stage: capture, stewardship, retrieval and use.
+pkm4-p31	Prescription	Procedural Knowlege Is Not Boring Afterall	Managing procedural knowledge never finishes; it is kept up as a standing capability.
+pkm4-p32	Prescription	Procedural Knowlege Is Not Boring Afterall	Each organization fits these principles to its own procedures, legacy systems and constraints.
+pkm4-s10	Standard	Building A Procedural Knowledge Infrastructure	The Linked Open Terms ontology engineering methodology.
+pkm4-s13	Standard	Building A Procedural Knowledge Infrastructure	Linked Data principles for publishing terms.
+pkm4-s15	Standard	Building A Procedural Knowledge Infrastructure	Creative Commons Attribution 4.0 as the ontology licence.
+pkm4-s16	Standard	Building A Procedural Knowledge Infrastructure	A w3id permanent identifier for the ontology namespace.
+pkm4-s17	Standard	PKO class diagram	VANN for the ontology's preferred prefix and namespace.
+pkm4-s18	Standard	PKO class diagram	BIBO for the ontology's publication status.
+pkm4-s19	Standard	PKO class diagram	schema.org for the ontology's funding and citation.
+pkm4-i07	Illustration	Building A Procedural Knowledge Infrastructure	An EU project supporting ontology development in industry.
+ont4-c01	Concept	Governance, Maintenance, and AI	Drift: the gap that opens between a deployed model and the organization it describes.
+ont4-c02	Concept	Governance, Maintenance, and AI	A rule set stating which party may change which part of the model, when, and by what procedure.
+ont4-c03	Concept	Governance, Maintenance, and AI	A defined response for when a change breaks the model.
+ont4-c05	Concept	Why Ontologies Decay	Expansion: new workflows arrive that may or may not fit the existing schema.
+ont4-c06	Concept	Why Ontologies Decay	External dependency change: a reused external standard revises or deprecates terms.
+ont4-c07	Concept	Why Ontologies Decay	AI system turnover: the AI agents filling roles are replaced or upgraded to new model versions.
+ont4-c13	Concept	Why Ontologies Decay	AI agents as first-class individuals carrying a model version identifier.
+ont4-c14	Concept	Versioning	A schema layer of classes, properties and axioms kept distinct from the instance layer.
+ont4-c16	Concept	Versioning	The model's own current version identifier, declared in its metadata.
+ont4-c17	Concept	Versioning	Semantic versioning: major, minor and patch releases.
+ont4-c18	Concept	Ownership	A steward responsible for the model's health.
+ont4-c19	Concept	Ownership	An authority empowered to approve changes to the schema, instance and vocabulary layers.
+ont4-c20	Concept	Change Management	A change log entry: the change, its rationale, the motivating question, the terms affected, the release version and the date.
+ont4-c21	Concept	Change Management	A change request that begins from a stated need.
+ont4-c22	Concept	Change Management	A change request's motivating question typed as an existing question the model now fails or a new question the organization needs.
+ont4-c23	Concept	Change Management	An impact assessment of a proposed change.
+ont4-c24	Concept	Change Management	A domain coverage model consulted during impact assessment.
+ont4-c25	Concept	Change Management	A validation test suite of expected logical consequences.
+ont4-c26	Concept	Change Management	Classifying a change as a data operation or a modeling change.
+ont4-c28	Concept	Change Management	A superseded assignment kept either timestamped in a separate graph or as a versioned assertion with a validity period.
+ont4-c29	Concept	Competency Questions as a Governance Instrument	A periodic review of the competency question set.
+ont4-c30	Concept	Competency Questions as a Governance Instrument	The original competency question set, kept as a fixed baseline apart from questions added later.
+ont4-c31	Concept	Competency Questions as a Governance Instrument	A competency question marked as a candidate for deprecation.
+ont4-c38	Concept	AI Contributes to Ontology Development	A class definition stating what the class includes, what it excludes, and where it sits among neighboring terms.
+ont4-c39	Concept	AI Contributes to Ontology Development	Candidates produced by AI versus commitments made by humans.
+ont4-c53	Concept	AI-Assisted Ontology Maintenance	A staleness query over last-modified dates.
+ont4-c54	Concept	AI-Assisted Ontology Maintenance	Triage of unanswerable stakeholder questions into more data, a minor schema extension, or a structural change.
+ont4-p02	Prescription	Why Ontologies Decay	Governance decides whether new workflows fit the existing schema or need new or modified terms.
+ont4-p08	Prescription	Why Ontologies Decay	Each AI agent carries a model version identifier so upgrades and replacements can be absorbed as agents churn.
+ont4-p09	Prescription	Ownership	Governance starts by giving the model an owner, ahead of every other measure.
+ont4-p10	Prescription	Ownership	Stewardship and authority are defined as distinct responsibilities, even when one person holds both.
+ont4-p11	Prescription	Ownership	The steward watches for drift.
+ont4-p12	Prescription	Ownership	The steward follows updates to external dependencies.
+ont4-p13	Prescription	Ownership	The steward answers questions from the model's users.
+ont4-p14	Prescription	Ownership	The steward keeps the documentation up to date.
+ont4-p15	Prescription	Ownership	The steward keeps the validation suite in step with the model.
+ont4-p16	Prescription	Ownership	Changes made by the steward are subject to authority review, apart from the minor changes the steward is authorized to approve.
+ont4-p17	Prescription	Ownership	A steward is named, with written responsibilities.
+ont4-p18	Prescription	Ownership	An authority is named, with a stated scope of what it approves.
+ont4-p19	Prescription	Ownership	A change log records every schema and instance modification together with its rationale.
+ont4-p20	Prescription	Ownership	Authority over the model rests with the function that owns the domain being modeled.
+ont4-p21	Prescription	Ownership	The steward and authority roles are actually exercised, not merely named.
+ont4-p22	Prescription	Ownership	In a small organization one person may hold both the steward and the authority role without a committee.
+ont4-p23	Prescription	Ownership	The steward identifies that a change is needed; the authority decides how and where it is made.
+ont4-p24	Prescription	Versioning	A patch touches only documentation, labels and comments and leaves the logical model as it was.
+ont4-p25	Prescription	Versioning	A minor release is additive and backward compatible.
+ont4-p26	Prescription	Versioning	Removing or renaming a class requires a major release.
+ont4-p27	Prescription	Versioning	A domain or range change that invalidates existing instance assertions requires a major release.
+ont4-p28	Prescription	Versioning	A new disjointness axiom that makes existing individuals inconsistent requires a major release.
+ont4-p29	Prescription	Versioning	Consumers of a major release are explicitly updated and re-validated.
+ont4-p30	Prescription	Versioning	A major release is handled as a significant engineering event with a migration plan.
+ont4-p31	Prescription	Versioning	Each version change is recorded as an explicit, documented decision.
+ont4-p32	Prescription	Versioning	Each version change is announced broadly to those who depend on the model.
+ont4-p33	Prescription	Versioning	Instance data is versioned separately from the schema, because it changes far more often.
+ont4-p34	Prescription	Versioning	Schema changes go through governance; instance changes go through data operations.
+ont4-p35	Prescription	Versioning	Every schema change produces a semantic version increment.
+ont4-p36	Prescription	Versioning	A workflow's last-modified date is refreshed each time the workflow is reviewed.
+ont4-p37	Prescription	Change Management	Every schema change moves through a defined change process.
+ont4-p38	Prescription	Change Management	Every change request is tied to a competency question.
+ont4-p39	Prescription	Change Management	A change request with no competency question is returned to the requester for clarification.
+ont4-p40	Prescription	Change Management	Impact assessment identifies which existing instance data a change would make inconsistent.
+ont4-p41	Prescription	Change Management	Impact assessment identifies which inferences a change would alter.
+ont4-p42	Prescription	Change Management	Impact assessment identifies which query results a change would alter.
+ont4-p43	Prescription	Change Management	Impact assessment checks the vocabulary layer and domain coverage model still hold everything required.
+ont4-p44	Prescription	Change Management	Apply the proposed change in a test run of the validation suite and inspect the failures.
+ont4-p45	Prescription	Change Management	The steward can be authorized to approve and deploy minor changes.
+ont4-p46	Prescription	Change Management	Changes that alter existing elements or vocabularies, or add disjointness constraints, need authority review.
+ont4-p47	Prescription	Change Management	Swapping which AI agent fills a role is a data operation: one assignment changes and no term or inference changes.
+ont4-p48	Prescription	Change Management	Moving a step from AI to human execution is a data operation that carries compliance consequences.
+ont4-p49	Prescription	Change Management	Moving a step from AI to human execution needs an audit record of when and why.
+ont4-p50	Prescription	Change Management	Old assignments are kept with their validity periods, since removing them loses the history of who acted.
+ont4-p51	Prescription	Competency Questions as a Governance Instrument	A version that can no longer answer one of the original competency questions is flagged as a regression.
+ont4-p52	Prescription	Competency Questions as a Governance Instrument	Competency question coverage is tracked version by version, in addition to element completeness.
+ont4-p53	Prescription	Competency Questions as a Governance Instrument	The competency question set is reviewed at least quarterly.
+ont4-p54	Prescription	Competency Questions as a Governance Instrument	A new question the model cannot answer becomes a scope change request.
+ont4-p55	Prescription	Competency Questions as a Governance Instrument	A question no longer relevant becomes a deprecation candidate.
+ont4-p56	Prescription	Competency Questions as a Governance Instrument	A question the model should answer but answers wrongly is a defect that must be fixed.
+ont4-p64	Prescription	AI Contributes to Ontology Development	AI may propose competency questions drawn from documents; an engineer vets each one before any is adopted.
+ont4-p65	Prescription	AI Contributes to Ontology Development	AI may draft labels and definitions, which a person then critically revises.
+ont4-p66	Prescription	AI Contributes to Ontology Development	AI may suggest alignments to external standards; the modeling decision stays with people.
+ont4-p67	Prescription	AI Contributes to Ontology Development	AI does not commit axioms, disjointness or domain and range without human review.
+ont4-p68	Prescription	AI Contributes to Ontology Development	AI output is only ever a proposal; adopting it is a human act for which a person answers.
+ont4-p69	Prescription	AI Contributes to Ontology Development	A human stays in the loop at every stage of ontology design and construction.
+ont4-p84	Prescription	AI-Assisted Ontology Maintenance	AI may run the staleness query periodically and surface the results to the steward.
+ont4-p85	Prescription	AI-Assisted Ontology Maintenance	AI may extract candidate instance data from documents, which the steward reviews before loading.
+ont4-p86	Prescription	AI-Assisted Ontology Maintenance	AI may triage unanswerable questions so the right change process applies to each.
+ont4-p87	Prescription	AI-Assisted Ontology Maintenance	Only validation plus human judgment decides whether a schema change preserves the model's integrity; AI cannot.
+ont4-p88	Prescription	AI-Assisted Ontology Maintenance	Integrity review of a schema change checks whether it introduces a disjointness violation.
+ont4-p89	Prescription	AI-Assisted Ontology Maintenance	Integrity review of a schema change checks whether it produces an unintended domain inference.
+ont4-p90	Prescription	AI-Assisted Ontology Maintenance	Integrity review of a schema change checks whether it creates a property range inconsistency.
+ont4-p91	Prescription	AI-Assisted Ontology Maintenance	A schema change is accepted only if the full validation suite still passes with it applied.
+ont4-p92	Prescription	Conclusion	Classifying every agent as a person or a software agent lets accountability be answered from structure alone.
+ont4-p93	Prescription	Conclusion	Validation tests confirm the model contains no logical inconsistency.
+ont4-p94	Prescription	Conclusion	Validation tests confirm that each expected inference chain is actually produced.
+ont4-p95	Prescription	Conclusion	The model aligns to external standards so systems that know nothing of it can still interpret it.
+ont4-p96	Prescription	Conclusion	Every breaking change can be traced to the versioning decision that introduced it.
+ont4-q03	CompetencyQuestion	Change Management	Which AI agent version held this step's assignment on a specified past date?
+ont4-q05	CompetencyQuestion	AI-Assisted Ontology Maintenance	Which workflows have not been modified in more than twelve months?
+ont4-q09	CompetencyQuestion	Change Management	Which existing instance data would this change make inconsistent?
+ont4-q10	CompetencyQuestion	Change Management	Which inferences would this change alter?
+ont4-q11	CompetencyQuestion	Change Management	Which query results would this change alter?
+ont4-q12	CompetencyQuestion	Competency Questions as a Governance Instrument	Does this version still answer every original competency question, and which regressed?
+ont4-q13	CompetencyQuestion	AI-Assisted Ontology Maintenance	Which stakeholder questions can the model not answer today?
+ont4-q14	CompetencyQuestion	AI-Assisted Ontology Maintenance	For each unanswerable question, is the fix more data, a small schema extension, or a structural change?
+ont4-q15	CompetencyQuestion	Ownership	Who is the model's steward?
+ont4-q16	CompetencyQuestion	Ownership	Who holds authority over the model?
+ont4-q17	CompetencyQuestion	Change Management	Who approved this change?
+ont4-q18	CompetencyQuestion	Ownership	What rationale was recorded for this change?
+ont4-q19	CompetencyQuestion	Change Management	In which release version did this change ship?
+ont4-q20	CompetencyQuestion	Change Management	When did this step move from AI to human execution, and why?
+ont4-q25	CompetencyQuestion	Versioning	Which version is the model currently released at?
+ont4-q29	CompetencyQuestion	Change Management	Would the proposed change leave the vocabulary layer and domain coverage model complete?
+ont4-q30	CompetencyQuestion	Change Management	Which competency question motivated this change?
+ont4-s02	Standard	Versioning	Semantic versioning.
+ont4-s04	Standard	Change Management	PROV-O agents, activities and attribution.
+ont4-s07	Standard	Change Management	SPARQL as the query language for impact assessment, retrieval and traversal.
+ont4-s13	Standard	Versioning	The OWL version-info annotation carrying the model version.
+ont4-i01	Illustration	Why Ontologies Decay	An unmaintained model decays, and that decay is harder to detect than a failing build.
+ont4-i02	Illustration	Competency Questions as a Governance Instrument	Without periodic review, degradation stays hidden until a domain expert notices a wrong answer.
+ont4-i03	Illustration	Ownership	An ownerless model is predicted not to last about a year.
+ont4-i10	Illustration	Why Ontologies Decay	HR wants to model its onboarding workflows with the same model.
+ont4-i11	Illustration	Why Ontologies Decay	The AI systems team wants to model its evaluation pipeline for new model deployments.
+ont4-i14	Illustration	Versioning	A model at 1.1.0 moves to 1.1.1 for a patch, 1.2.0 for a minor change and 2.0.0 for a major one.
+ont4-i15	Illustration	Competency Questions as a Governance Instrument	Leadership's original questions were right at the start but are expected to be outgrown after a year of operation.
+ont4-i19	Illustration	AI Contributes to Ontology Development	From an engineering handbook a model proposes candidate questions about escalation, artifact ownership and AI accountability.
+ont4-i20	Illustration	AI Contributes to Ontology Development	A model suggests a custom class may specialize a provenance plan class.
+ont4-i21	Illustration	AI Contributes to Ontology Development	A misplaced domain declaration spreads wrong inferences into every query touching the affected assertions.
+ont4-i22	Illustration	AI Contributes to Ontology Development	A disjointness axiom added on intuition can make legitimate individuals appear inconsistent.
+ont4-i26	Illustration	AI-Assisted Ontology Maintenance	A workflow newly written up in a wiki is parsed into proposed workflow, step and assignment assertions for the steward to approve.
+ont4-i28	Illustration	Ownership	The steward role naturally falls to whoever owns the knowledge-infrastructure tooling.
+ont4-i29	Illustration	Competency Questions as a Governance Instrument	Competency questions served in turn as scoping tool, acceptance criteria, test driver and governance instrument.
+ont4-i30	Illustration	Governance, Maintenance, and AI	A model that passed all its validation tests at deployment still starts drifting from that day.

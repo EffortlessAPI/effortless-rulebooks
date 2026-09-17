@@ -56,7 +56,72 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             get => F.AsDecimal(F.Memo(this, "DisagreeingSubstrateCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<TableConformance>(base.SoAContext, "TableConformance", __c => __c.TableConformance), __r => F.CritField(F.Of(__r.ImperfectTableKey), F.Of(this.RulebookTableId)))))); set { }
         }
 
+        public int? MeasuredRowCount { get; set; }
+        // Formula HasMeasuredRows (rulebook: ={{MeasuredRowCount}} > 0)
+        [NotMapped]
+        public bool? HasMeasuredRows
+        {
+            get => F.AsBool(F.Memo(this, "HasMeasuredRows", () => F.Cmp(F.Nullif(F.Of(this.MeasuredRowCount)), ">", F.I(0)))); set { }
+        }
+
         public string? SemanticTypeIri { get; set; }
+        public string? OrganizationLevel { get; set; }
+        // Formula SemanticMappingCount (rulebook: =COUNTIFS(SemanticMappings!{{SourcePath}}, {{RulebookTableId}}))
+        [NotMapped]
+        public int? SemanticMappingCount
+        {
+            get => F.AsInt(F.Memo(this, "SemanticMappingCount", () => F.Integer((base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<SemanticMapping>(base.SoAContext, "SemanticMappings", __c => __c.SemanticMappings), __r => F.CritField(F.Of(__r.SourcePath), F.Of(this.RulebookTableId))))))); set { }
+        }
+
+        // Formula MeaningIsOnlyTabular (rulebook: ={{SemanticMappingCount}} = 0)
+        [NotMapped]
+        public bool? MeaningIsOnlyTabular
+        {
+            get => F.AsBool(F.Memo(this, "MeaningIsOnlyTabular", () => F.Eq(F.Of(this.SemanticMappingCount), F.I(0)))); set { }
+        }
+
+        // Formula ExactMappingCount (rulebook: =COUNTIFS(SemanticMappings!{{SourcePath}}, {{RulebookTableId}}, SemanticMappings!{{MappingRelation}}, "exact"))
+        [NotMapped]
+        public int? ExactMappingCount
+        {
+            get => F.AsInt(F.Memo(this, "ExactMappingCount", () => F.Integer((base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<SemanticMapping>(base.SoAContext, "SemanticMappings", __c => __c.SemanticMappings), __r => F.CritField(F.Of(__r.SourcePath), F.Of(this.RulebookTableId)) && F.CritLiteral(F.Of(__r.MappingRelation), F.S("exact"))))))); set { }
+        }
+
+        // Formula AlignedMappingCount (rulebook: =COUNTIFS(SemanticMappings!{{SourcePath}}, {{RulebookTableId}}, SemanticMappings!{{MappingRelation}}, "aligned"))
+        [NotMapped]
+        public int? AlignedMappingCount
+        {
+            get => F.AsInt(F.Memo(this, "AlignedMappingCount", () => F.Integer((base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<SemanticMapping>(base.SoAContext, "SemanticMappings", __c => __c.SemanticMappings), __r => F.CritField(F.Of(__r.SourcePath), F.Of(this.RulebookTableId)) && F.CritLiteral(F.Of(__r.MappingRelation), F.S("aligned"))))))); set { }
+        }
+
+        // Formula IsUnalignedToStandard (rulebook: =({{ExactMappingCount}} + {{AlignedMappingCount}}) = 0)
+        [NotMapped]
+        public bool? IsUnalignedToStandard
+        {
+            get => F.AsBool(F.Memo(this, "IsUnalignedToStandard", () => F.Eq(F.Add(F.Of(this.ExactMappingCount), F.Of(this.AlignedMappingCount)), F.I(0)))); set { }
+        }
+
+        // Formula SemanticTypeIriFieldCount (rulebook: =COUNTIFS(RulebookFields!{{TargetTable}}, {{RulebookTableId}}, RulebookFields!{{FieldName}}, "SemanticTypeIri"))
+        [NotMapped]
+        public int? SemanticTypeIriFieldCount
+        {
+            get => F.AsInt(F.Memo(this, "SemanticTypeIriFieldCount", () => F.Integer((base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<RulebookField>(base.SoAContext, "RulebookFields", __c => __c.RulebookFields), __r => F.CritField(F.Of(__r.TargetTable), F.Of(this.RulebookTableId)) && F.CritLiteral(F.Of(__r.FieldName), F.S("SemanticTypeIri"))))))); set { }
+        }
+
+        // Formula LacksSemanticTypeConvention (rulebook: ={{SemanticTypeIriFieldCount}} = 0)
+        [NotMapped]
+        public bool? LacksSemanticTypeConvention
+        {
+            get => F.AsBool(F.Memo(this, "LacksSemanticTypeConvention", () => F.Eq(F.Of(this.SemanticTypeIriFieldCount), F.I(0)))); set { }
+        }
+
+        // Formula IsUnsecuredGovernanceRecord (rulebook: =AND({{SubjectArea}} = "governance", {{PolicyCount}} = 0))
+        [NotMapped]
+        public bool? IsUnsecuredGovernanceRecord
+        {
+            get => F.AsBool(F.Memo(this, "IsUnsecuredGovernanceRecord", () => F.And(F.Bool3(F.Eq(F.Nullif(F.Of(this.SubjectArea)), F.S("governance"))), F.Bool3(F.Eq(F.Of(this.PolicyCount), F.I(0)))))); set { }
+        }
+
 
 
         private ObservableCollection<AccessPolicy> _accessPolicies;
@@ -279,6 +344,336 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             }
         }
 
+        private ObservableCollection<ClaimEvidence> _claimEvidence;
+
+        [InverseProperty("RulebookTableRef")]
+        public virtual ObservableCollection<ClaimEvidence> ClaimEvidence
+        {
+            get
+            {
+                if (_claimEvidence == null)
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access ClaimEvidence - no database context is set. RulebookTableId: " + this.RulebookTableId + ".");
+                        }
+                        _claimEvidence = new ObservableCollection<ClaimEvidence>();
+                    }
+                    else
+                    {
+                        var items = base.SoAContext.ClaimEvidence.Where(x => x.RulebookTable == this.RulebookTableId).ToList<ClaimEvidence>();
+                        _claimEvidence = new ObservableCollection<ClaimEvidence>(items);
+                        if (items.Any())
+                        {
+                            base.SoAContext.AttachRange(items);
+                        }
+                    }
+                    _claimEvidence.CollectionChanged += ClaimEvidence_CollectionChanged;
+                }
+                return _claimEvidence;
+            }
+            private set
+            {
+                if (_claimEvidence != null)
+                {
+                    _claimEvidence.CollectionChanged -= ClaimEvidence_CollectionChanged;
+                }
+                _claimEvidence = value;
+                if (_claimEvidence != null)
+                {
+                    _claimEvidence.CollectionChanged += ClaimEvidence_CollectionChanged;
+                }
+            }
+        }
+
+        private void ClaimEvidence_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems != null)
+            {
+                foreach (var item in e.NewItems.Cast<ClaimEvidence>())
+                {
+                    item.RulebookTable = this.RulebookTableId;
+                }
+            }
+        }
+
+        private ObservableCollection<ChangeImpactFinding> _changeImpactFindings;
+
+        [InverseProperty("RulebookTable")]
+        public virtual ObservableCollection<ChangeImpactFinding> ChangeImpactFindings
+        {
+            get
+            {
+                if (_changeImpactFindings == null)
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access ChangeImpactFindings - no database context is set. RulebookTableId: " + this.RulebookTableId + ".");
+                        }
+                        _changeImpactFindings = new ObservableCollection<ChangeImpactFinding>();
+                    }
+                    else
+                    {
+                        var items = base.SoAContext.ChangeImpactFindings.Where(x => x.AffectedTable == this.RulebookTableId).ToList<ChangeImpactFinding>();
+                        _changeImpactFindings = new ObservableCollection<ChangeImpactFinding>(items);
+                        if (items.Any())
+                        {
+                            base.SoAContext.AttachRange(items);
+                        }
+                    }
+                    _changeImpactFindings.CollectionChanged += ChangeImpactFindings_CollectionChanged;
+                }
+                return _changeImpactFindings;
+            }
+            private set
+            {
+                if (_changeImpactFindings != null)
+                {
+                    _changeImpactFindings.CollectionChanged -= ChangeImpactFindings_CollectionChanged;
+                }
+                _changeImpactFindings = value;
+                if (_changeImpactFindings != null)
+                {
+                    _changeImpactFindings.CollectionChanged += ChangeImpactFindings_CollectionChanged;
+                }
+            }
+        }
+
+        private void ChangeImpactFindings_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems != null)
+            {
+                foreach (var item in e.NewItems.Cast<ChangeImpactFinding>())
+                {
+                    item.AffectedTable = this.RulebookTableId;
+                }
+            }
+        }
+
+        private ObservableCollection<ExpansionConceptFit> _expansionConceptFits;
+
+        [InverseProperty("RulebookTable")]
+        public virtual ObservableCollection<ExpansionConceptFit> ExpansionConceptFits
+        {
+            get
+            {
+                if (_expansionConceptFits == null)
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access ExpansionConceptFits - no database context is set. RulebookTableId: " + this.RulebookTableId + ".");
+                        }
+                        _expansionConceptFits = new ObservableCollection<ExpansionConceptFit>();
+                    }
+                    else
+                    {
+                        var items = base.SoAContext.ExpansionConceptFits.Where(x => x.CoveringTable == this.RulebookTableId).ToList<ExpansionConceptFit>();
+                        _expansionConceptFits = new ObservableCollection<ExpansionConceptFit>(items);
+                        if (items.Any())
+                        {
+                            base.SoAContext.AttachRange(items);
+                        }
+                    }
+                    _expansionConceptFits.CollectionChanged += ExpansionConceptFits_CollectionChanged;
+                }
+                return _expansionConceptFits;
+            }
+            private set
+            {
+                if (_expansionConceptFits != null)
+                {
+                    _expansionConceptFits.CollectionChanged -= ExpansionConceptFits_CollectionChanged;
+                }
+                _expansionConceptFits = value;
+                if (_expansionConceptFits != null)
+                {
+                    _expansionConceptFits.CollectionChanged += ExpansionConceptFits_CollectionChanged;
+                }
+            }
+        }
+
+        private void ExpansionConceptFits_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems != null)
+            {
+                foreach (var item in e.NewItems.Cast<ExpansionConceptFit>())
+                {
+                    item.CoveringTable = this.RulebookTableId;
+                }
+            }
+        }
+
+        private ObservableCollection<TermDefinition> _termDefinitions;
+
+        [InverseProperty("RulebookTableRef")]
+        public virtual ObservableCollection<TermDefinition> TermDefinitions
+        {
+            get
+            {
+                if (_termDefinitions == null)
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access TermDefinitions - no database context is set. RulebookTableId: " + this.RulebookTableId + ".");
+                        }
+                        _termDefinitions = new ObservableCollection<TermDefinition>();
+                    }
+                    else
+                    {
+                        var items = base.SoAContext.TermDefinitions.Where(x => x.RulebookTable == this.RulebookTableId).ToList<TermDefinition>();
+                        _termDefinitions = new ObservableCollection<TermDefinition>(items);
+                        if (items.Any())
+                        {
+                            base.SoAContext.AttachRange(items);
+                        }
+                    }
+                    _termDefinitions.CollectionChanged += TermDefinitions_CollectionChanged;
+                }
+                return _termDefinitions;
+            }
+            private set
+            {
+                if (_termDefinitions != null)
+                {
+                    _termDefinitions.CollectionChanged -= TermDefinitions_CollectionChanged;
+                }
+                _termDefinitions = value;
+                if (_termDefinitions != null)
+                {
+                    _termDefinitions.CollectionChanged += TermDefinitions_CollectionChanged;
+                }
+            }
+        }
+
+        private void TermDefinitions_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems != null)
+            {
+                foreach (var item in e.NewItems.Cast<TermDefinition>())
+                {
+                    item.RulebookTable = this.RulebookTableId;
+                }
+            }
+        }
+
+        private ObservableCollection<DomainCoverageArea> _domainCoverageAreas;
+
+        [InverseProperty("RulebookTable")]
+        public virtual ObservableCollection<DomainCoverageArea> DomainCoverageAreas
+        {
+            get
+            {
+                if (_domainCoverageAreas == null)
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access DomainCoverageAreas - no database context is set. RulebookTableId: " + this.RulebookTableId + ".");
+                        }
+                        _domainCoverageAreas = new ObservableCollection<DomainCoverageArea>();
+                    }
+                    else
+                    {
+                        var items = base.SoAContext.DomainCoverageAreas.Where(x => x.CoveringTable == this.RulebookTableId).ToList<DomainCoverageArea>();
+                        _domainCoverageAreas = new ObservableCollection<DomainCoverageArea>(items);
+                        if (items.Any())
+                        {
+                            base.SoAContext.AttachRange(items);
+                        }
+                    }
+                    _domainCoverageAreas.CollectionChanged += DomainCoverageAreas_CollectionChanged;
+                }
+                return _domainCoverageAreas;
+            }
+            private set
+            {
+                if (_domainCoverageAreas != null)
+                {
+                    _domainCoverageAreas.CollectionChanged -= DomainCoverageAreas_CollectionChanged;
+                }
+                _domainCoverageAreas = value;
+                if (_domainCoverageAreas != null)
+                {
+                    _domainCoverageAreas.CollectionChanged += DomainCoverageAreas_CollectionChanged;
+                }
+            }
+        }
+
+        private void DomainCoverageAreas_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems != null)
+            {
+                foreach (var item in e.NewItems.Cast<DomainCoverageArea>())
+                {
+                    item.CoveringTable = this.RulebookTableId;
+                }
+            }
+        }
+
+        private ObservableCollection<ModelChangeLogEntry> _modelChangeLogEntries;
+
+        [InverseProperty("RulebookTable")]
+        public virtual ObservableCollection<ModelChangeLogEntry> ModelChangeLogEntries
+        {
+            get
+            {
+                if (_modelChangeLogEntries == null)
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access ModelChangeLogEntries - no database context is set. RulebookTableId: " + this.RulebookTableId + ".");
+                        }
+                        _modelChangeLogEntries = new ObservableCollection<ModelChangeLogEntry>();
+                    }
+                    else
+                    {
+                        var items = base.SoAContext.ModelChangeLogEntries.Where(x => x.AffectedTable == this.RulebookTableId).ToList<ModelChangeLogEntry>();
+                        _modelChangeLogEntries = new ObservableCollection<ModelChangeLogEntry>(items);
+                        if (items.Any())
+                        {
+                            base.SoAContext.AttachRange(items);
+                        }
+                    }
+                    _modelChangeLogEntries.CollectionChanged += ModelChangeLogEntries_CollectionChanged;
+                }
+                return _modelChangeLogEntries;
+            }
+            private set
+            {
+                if (_modelChangeLogEntries != null)
+                {
+                    _modelChangeLogEntries.CollectionChanged -= ModelChangeLogEntries_CollectionChanged;
+                }
+                _modelChangeLogEntries = value;
+                if (_modelChangeLogEntries != null)
+                {
+                    _modelChangeLogEntries.CollectionChanged += ModelChangeLogEntries_CollectionChanged;
+                }
+            }
+        }
+
+        private void ModelChangeLogEntries_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems != null)
+            {
+                foreach (var item in e.NewItems.Cast<ModelChangeLogEntry>())
+                {
+                    item.AffectedTable = this.RulebookTableId;
+                }
+            }
+        }
+
 
         protected override void LazyLoadProperties()
         {
@@ -286,6 +681,12 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             _ = this.RoleSchemaViews;
             _ = this.AccessDenialTests;
             _ = this.TableConformance;
+            _ = this.ClaimEvidence;
+            _ = this.ChangeImpactFindings;
+            _ = this.ExpansionConceptFits;
+            _ = this.TermDefinitions;
+            _ = this.DomainCoverageAreas;
+            _ = this.ModelChangeLogEntries;
         }
 
         public override string ToString()

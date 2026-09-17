@@ -20,6 +20,7 @@ Usage: tools/extract_computed_answers.py [--loop 1]
 from __future__ import annotations
 
 import argparse
+import os
 import json
 import re
 import subprocess
@@ -27,8 +28,8 @@ import sys
 from collections import OrderedDict
 from pathlib import Path
 
-RB = Path("effortless-rulebook/procedural-knowledge-ontology-rulebook.json")
-DB = "erb_procedural_knowledge_ontology"
+RB = Path(os.environ.get("PKO_RULEBOOK") or "effortless-rulebook/procedural-knowledge-ontology-rulebook.json")
+DB = os.environ.get("PGDATABASE") or "erb_procedural_knowledge_ontology"
 
 
 def snake(name: str) -> str:
@@ -59,28 +60,31 @@ def main() -> int:
             by_question.setdefault(qid, []).append(
                 (row["TargetTable"], row["FieldName"]))
 
-    # Which boolean witness columns actually exist in the substrate?
-    existing = set()
+    # Which boolean witness columns exist in the substrate? Views and columns are matched by
+    # normalized name (FAQs -> vw_faqs), the same way tools/measure_catalog.py matches them.
+    def norm(name: str) -> str:
+        return re.sub(r"[^a-z0-9]", "", name.lower())
+
+    existing: dict[tuple[str, str], tuple[str, str]] = {}
     for line in psql(
-        "SELECT table_name || '.' || column_name FROM information_schema.columns "
+        "SELECT table_name || '|' || column_name FROM information_schema.columns "
         "WHERE table_schema='public' AND table_name LIKE 'vw\\_%' "
-        "AND data_type='boolean'"
+        "AND table_name NOT LIKE '%\\_closure%' AND data_type='boolean'"
     ).splitlines():
         if line:
-            existing.add(line)
+            view, col = line.split("|")
+            existing[(norm(view[3:]), norm(col))] = (view, col)
 
     written = 0
     for q in rb["RoleQuestions"]["data"]:
         qid = q["RoleQuestionId"]
         readings = []
         for table, field in sorted(by_question.get(qid, [])):
-            key = f"vw_{snake(table)}.{snake(field)}"
-            if key not in existing:
+            hit = existing.get((norm(table), norm(field)))
+            if hit is None:
                 continue  # not a boolean witness; nothing to read
-            view, col = key.split(".")
-            res = psql(f"SELECT count(*) FILTER (WHERE {col}), count(*) FROM {view}")
-            if not res:
-                continue
+            view, col = hit
+            res = psql(f'SELECT count(*) FILTER (WHERE "{col}"), count(*) FROM {view}')
             fires, total = (int(x) for x in res.split("|"))
             readings.append(f"{table}.{field}={fires}/{total}")
 

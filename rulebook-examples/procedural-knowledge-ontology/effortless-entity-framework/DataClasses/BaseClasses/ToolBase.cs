@@ -83,10 +83,66 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             }
         }
 
+        private ObservableCollection<AuthoringSubmission> _authoringSubmissions;
+
+        [InverseProperty("Tool")]
+        public virtual ObservableCollection<AuthoringSubmission> AuthoringSubmissions
+        {
+            get
+            {
+                if (_authoringSubmissions == null)
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access AuthoringSubmissions - no database context is set. ToolId: " + this.ToolId + ".");
+                        }
+                        _authoringSubmissions = new ObservableCollection<AuthoringSubmission>();
+                    }
+                    else
+                    {
+                        var items = base.SoAContext.AuthoringSubmissions.Where(x => x.AuthoringTool == this.ToolId).ToList<AuthoringSubmission>();
+                        _authoringSubmissions = new ObservableCollection<AuthoringSubmission>(items);
+                        if (items.Any())
+                        {
+                            base.SoAContext.AttachRange(items);
+                        }
+                    }
+                    _authoringSubmissions.CollectionChanged += AuthoringSubmissions_CollectionChanged;
+                }
+                return _authoringSubmissions;
+            }
+            private set
+            {
+                if (_authoringSubmissions != null)
+                {
+                    _authoringSubmissions.CollectionChanged -= AuthoringSubmissions_CollectionChanged;
+                }
+                _authoringSubmissions = value;
+                if (_authoringSubmissions != null)
+                {
+                    _authoringSubmissions.CollectionChanged += AuthoringSubmissions_CollectionChanged;
+                }
+            }
+        }
+
+        private void AuthoringSubmissions_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems != null)
+            {
+                foreach (var item in e.NewItems.Cast<AuthoringSubmission>())
+                {
+                    item.AuthoringTool = this.ToolId;
+                }
+            }
+        }
+
 
         protected override void LazyLoadProperties()
         {
             _ = this.StepTools;
+            _ = this.AuthoringSubmissions;
         }
 
         public override string ToString()

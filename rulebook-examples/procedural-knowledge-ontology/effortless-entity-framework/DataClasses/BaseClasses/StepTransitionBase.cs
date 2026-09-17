@@ -148,6 +148,20 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         public string? LeadsWithoutHumanGateClosure { get; set; }
         public string? SemanticTypeIri { get; set; }
+        // Formula DecisionPointCount (rulebook: =COUNTIFS(DecisionPoints!{{GoverningTransition}}, {{StepTransitionId}}))
+        [NotMapped]
+        public int? DecisionPointCount
+        {
+            get => F.AsInt(F.Memo(this, "DecisionPointCount", () => F.Integer((base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<DecisionPoint>(base.SoAContext, "DecisionPoints", __c => __c.DecisionPoints), __r => F.CritField(F.Of(__r.GoverningTransition), F.Of(this.StepTransitionId))))))); set { }
+        }
+
+        // Formula IsUndocumentedBranch (rulebook: =AND({{TransitionKind}} <> "Next", {{DecisionPointCount}} = 0))
+        [NotMapped]
+        public bool? IsUndocumentedBranch
+        {
+            get => F.AsBool(F.Memo(this, "IsUndocumentedBranch", () => F.And(F.Bool3(F.Ne(F.Nullif(F.Of(this.TransitionKind)), F.S("Next"))), F.Bool3(F.Eq(F.Of(this.DecisionPointCount), F.I(0)))))); set { }
+        }
+
 
         public string? ProcedureVersion { get; set; }
         public string? FromStep { get; set; }
@@ -340,6 +354,61 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             }
         }
 
+        private ObservableCollection<DecisionPoint> _decisionPoints;
+
+        [InverseProperty("StepTransition")]
+        public virtual ObservableCollection<DecisionPoint> DecisionPoints
+        {
+            get
+            {
+                if (_decisionPoints == null)
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access DecisionPoints - no database context is set. StepTransitionId: " + this.StepTransitionId + ".");
+                        }
+                        _decisionPoints = new ObservableCollection<DecisionPoint>();
+                    }
+                    else
+                    {
+                        var items = base.SoAContext.DecisionPoints.Where(x => x.GoverningTransition == this.StepTransitionId).ToList<DecisionPoint>();
+                        _decisionPoints = new ObservableCollection<DecisionPoint>(items);
+                        if (items.Any())
+                        {
+                            base.SoAContext.AttachRange(items);
+                        }
+                    }
+                    _decisionPoints.CollectionChanged += DecisionPoints_CollectionChanged;
+                }
+                return _decisionPoints;
+            }
+            private set
+            {
+                if (_decisionPoints != null)
+                {
+                    _decisionPoints.CollectionChanged -= DecisionPoints_CollectionChanged;
+                }
+                _decisionPoints = value;
+                if (_decisionPoints != null)
+                {
+                    _decisionPoints.CollectionChanged += DecisionPoints_CollectionChanged;
+                }
+            }
+        }
+
+        private void DecisionPoints_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems != null)
+            {
+                foreach (var item in e.NewItems.Cast<DecisionPoint>())
+                {
+                    item.GoverningTransition = this.StepTransitionId;
+                }
+            }
+        }
+
 
         protected override void LazyLoadProperties()
         {
@@ -347,6 +416,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             _ = this.Step;
             _ = this.StepRef;
             _ = this.ObservedTransitions;
+            _ = this.DecisionPoints;
         }
 
         public override string ToString()

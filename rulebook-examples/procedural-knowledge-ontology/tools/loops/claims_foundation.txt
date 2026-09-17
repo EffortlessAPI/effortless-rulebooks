@@ -1,0 +1,194 @@
+# Theme A (loop-06, foundation): 192 claims
+
+pkm1-c01	Concept	The Nature of Process Knowledge	Process knowledge reaches past written procedures and flow diagrams to a process's purpose and how it interacts with other processes.
+pkm1-c02	Concept	The Nature of Process Knowledge	Conditions that cause a process to depart from its usual path.
+pkm1-c03	Concept	The Nature of Process Knowledge	Criteria by which a process outcome counts as success or as failure.
+pkm1-c17	Concept	Semantic Ecosystems and Process	Process knowledge is relational: it links inputs to outputs, actors to actions, and circumstances to their effects.
+pkm1-c18	Concept	Semantic Ecosystems and Process	Process steps as a class of the process ontology.
+pkm1-c19	Concept	Semantic Ecosystems and Process	Actors as a class of the process ontology.
+pkm1-c20	Concept	Semantic Ecosystems and Process	Resources as a class of the process ontology.
+pkm1-c21	Concept	Semantic Ecosystems and Process	Conditions as a class of the process ontology.
+pkm1-c22	Concept	Semantic Ecosystems and Process	Outcomes as a class of the process ontology.
+pkm1-c23	Concept	Semantic Ecosystems and Process	A precedes relationship between process elements.
+pkm1-c24	Concept	Semantic Ecosystems and Process	A requires relationship between process elements.
+pkm1-c25	Concept	Semantic Ecosystems and Process	A produces relationship between process elements.
+pkm1-c26	Concept	Semantic Ecosystems and Process	A governed-by relationship between process elements.
+pkm1-c27	Concept	Semantic Ecosystems and Process	Descriptive attributes on processes and their parts, such as conditions on a process and characteristics of a step or stage.
+pkm1-c29	Concept	Semantic Ecosystems and Process	An instance layer of one organization's actual processes, resources and relationships above the ontology.
+pkm1-c31	Concept	Foundation for AI Systems and Workfows	Deliverables that depend on completed prerequisites.
+pkm1-p16	Prescription	Semantic Ecosystems and Process	Process models must rest on a formal ontology that can be extended for a domain; a conventional notation alone gives no semantic interoperability.
+pkm1-q01	CompetencyQuestion	Process Knowledge Frameworks	Which steps make up this process?
+pkm1-q02	CompetencyQuestion	Process Knowledge Frameworks	Which processes use this resource?
+pkm1-q03	CompetencyQuestion	Process Knowledge Frameworks	Which conditions have tended to accompany past process failures?
+pkm1-q04	CompetencyQuestion	The Nature of Process Knowledge	In what order do the tasks run, and what must hold before each can proceed?
+pkm1-q10	CompetencyQuestion	Foundation for AI Systems and Workfows	Which deliverables are blocked because a prerequisite is not complete?
+pkm1-i01	Illustration	Semantic Ecosystems and Process	A BPMN diagram of a recurring working-group routine: a weekly timer, a status check, and a decision that either sends the issue list and loops back or ends.
+pkm1-i02	Illustration	Foundation for AI Systems and Workfows	An AI drafting a project plan where some deliverables depend on completed prerequisites.
+pkm2-c41	Concept	Levels of Organization	Organization happens at three separate levels: conceptual, structural and contextual.
+pkm2-c42	Concept	Levels of Organization	Processes or steps: activity sequences aimed at a goal.
+pkm2-c43	Concept	Levels of Organization	Activities: discrete units of work.
+pkm2-c44	Concept	Levels of Organization	Actors: human or computational agents who perform activities.
+pkm2-c45	Concept	Levels of Organization	Resources: inputs consumed or tools used.
+pkm2-c46	Concept	Levels of Organization	Artifacts: outputs produced.
+pkm2-c47	Concept	Levels of Organization	Conditions: states that enable or constrain activities.
+pkm2-c48	Concept	Levels of Organization	Outcomes: results that signal success or failure.
+pkm2-c49	Concept	Levels of Organization	Ordering relations between activities: precedes and its inverse.
+pkm2-c50	Concept	Levels of Organization	An overlaps relation between activities.
+pkm2-c51	Concept	Levels of Organization	A part-of relation: an activity is part of a larger one.
+pkm2-c52	Concept	Levels of Organization	An enables relation.
+pkm2-c53	Concept	Levels of Organization	A prevents relation.
+pkm2-c54	Concept	Levels of Organization	A requires relation.
+pkm2-c55	Concept	Levels of Organization	A performed-by relation.
+pkm2-c56	Concept	Levels of Organization	A responsible-for relation.
+pkm2-c57	Concept	Levels of Organization	A governed-by relation.
+pkm2-c58	Concept	Levels of Organization	Instances: one organization's actual processes, activities and actors placed in the conceptual framework.
+pkm2-c60	Concept	Levels of Organization	Processes placed inside bigger processes.
+pkm2-c61	Concept	Levels of Organization	Activities broken into smaller sub-activities.
+pkm2-c88	Concept	Encoding for AI Systems	Pre-conditions of an activity.
+pkm2-c89	Concept	Encoding for AI Systems	Post-conditions of an activity.
+pkm2-c90	Concept	Encoding for AI Systems	Conditions that stay true for the whole duration of an activity.
+pkm2-c91	Concept	Encoding for AI Systems	Ways an activity can fail, and the response to each.
+pkm2-c92	Concept	Encoding for AI Systems	Choice points in a process, with the considerations that drive each choice.
+pkm2-p22	Prescription	Levels of Organization	Instances are linked only through relationship types that have been defined.
+pkm2-q19	CompetencyQuestion	Levels of Organization	What sub-activities make up this process?
+pkm2-q20	CompetencyQuestion	Levels of Organization	What larger process does this activity belong to?
+pkm2-q22	CompetencyQuestion	Encoding for AI Systems	What are this step's pre-conditions?
+pkm2-q23	CompetencyQuestion	Encoding for AI Systems	What are this step's post-conditions?
+pkm2-q24	CompetencyQuestion	Encoding for AI Systems	What are this step's invariants?
+pkm2-q25	CompetencyQuestion	Encoding for AI Systems	What are this step's failure modes and the response to each?
+pkm2-q26	CompetencyQuestion	Encoding for AI Systems	What factors decide the choice at this decision point?
+pkm2-q27	CompetencyQuestion	Encoding for AI Systems	In what order must this procedure's steps be carried out?
+pkm2-s12	Standard	Standards and Interoperability	DMN for decision logic.
+pkm3-c03	Concept	Rebuilding Process Knowledge Infrastructure	A workflow is a system for running recurring, ordered tasks, through which an organization produces value.
+pkm3-c16	Concept	From Engineering State to Lawyerly Society	Standardized, dependable, repeatable procedures as the foundation improvement builds on.
+pkm3-p26	Prescription	Rebuilding Process Knowledge Infrastructure	Systems must hold explicit representations of how processes work.
+pkm3-q01	CompetencyQuestion	Process Knowledge is Foundational Infrastructure	For a procedure, which steps does it need, in what sequence, under which conditions, with which resources, and how are exceptions dealt with?
+pkm4-c01	Concept	PKO's Architecture and Design	Procedures are abstract specifications and executions are concrete performances of them.
+pkm4-c02	Concept	After: Explicit, Actionable Procedural Knowledge	Every step records what it needs, what must hold before it starts, how long it should take and who is accountable, within an ordered sequence.
+pkm4-c03	Concept	After: Explicit, Actionable Procedural Knowledge	Fallbacks for when the usual method fails.
+pkm4-c04	Concept	After: Explicit, Actionable Procedural Knowledge	Handling of unusually configured equipment.
+pkm4-c05	Concept	After: Explicit, Actionable Procedural Knowledge	Danger cues that call for escalating at once.
+pkm4-c06	Concept	PKO's Architecture and Design	A core module covering procedures, steps, executions and related notions.
+pkm4-c07	Concept	PKO's Architecture and Design	An industry module for manufacturing covering machines, equipment, safety requirements and regulatory frameworks.
+pkm4-c08	Concept	PKO's Architecture and Design	An execution names who carried it out, the day, what they noticed and how it turned out.
+pkm4-c14	Concept	Before: Tacit Knowledge and Limitations	The small judgments behind a documented step: indicators checked, sounds listened for, and how the step is confirmed to have taken effect.
+pkm4-c15	Concept	Before: Tacit Knowledge and Limitations	Procedures required by safety regulation, whose documentation exists for compliance separately from how the work is done.
+pkm4-c16	Concept	Practical Elicitation and Exploitation	Conditional logic inside a procedure: conditions under which a different path or action applies.
+pkm4-c20	Concept	PKO class diagram	A procedure type.
+pkm4-c21	Concept	PKO class diagram	A procedure target: the thing a procedure is about.
+pkm4-c22	Concept	PKO class diagram	Procedure templates, and procedures that instantiate a template.
+pkm4-c23	Concept	PKO class diagram	The organizations that adopt a procedure.
+pkm4-c24	Concept	PKO class diagram	A version number on a procedure.
+pkm4-c25	Concept	PKO class diagram	The motivation for creating a new procedure version.
+pkm4-c26	Concept	PKO class diagram	A changelog description on a procedure version.
+pkm4-c27	Concept	PKO class diagram	Links to a procedure's previous and next versions.
+pkm4-c28	Concept	PKO class diagram	The current version of a procedure.
+pkm4-c29	Concept	PKO class diagram	Procedure status values: draft, validation, approval, approved and deprecated.
+pkm4-c30	Concept	PKO class diagram	A change of status recording the from-status and to-status.
+pkm4-c31	Concept	PKO class diagram	A change of status is itself an activity that can attach to any entity, executions included.
+pkm4-c32	Concept	PKO concept map	Kinds of status change: create, modify, extract, validate, approve and archive.
+pkm4-c33	Concept	PKO concept map	The agent who made a status change.
+pkm4-c34	Concept	PKO class diagram	Procedure statuses and execution statuses as specializations of one general status concept.
+pkm4-c35	Concept	PKO class diagram	Expected duration with a numeric value and a temporal unit.
+pkm4-c36	Concept	PKO class diagram	A procedure contains its steps and each step records the plan it belongs to.
+pkm4-c37	Concept	PKO class diagram	A procedure's first step.
+pkm4-c38	Concept	PKO class diagram	A procedure's fallback step.
+pkm4-c39	Concept	PKO class diagram	Step title, description and identifier.
+pkm4-c40	Concept	PKO class diagram	A step number.
+pkm4-c41	Concept	PKO class diagram	Minimum repetitions of a step.
+pkm4-c42	Concept	PKO class diagram	Maximum repetitions of a step.
+pkm4-c43	Concept	PKO class diagram	Following and preceding steps.
+pkm4-c44	Concept	PKO class diagram	Following and preceding alternative steps.
+pkm4-c45	Concept	PKO class diagram	A multi-step is itself a step, so groups of steps nest, and a step records the multi-step it sits in.
+pkm4-c46	Concept	PKO class diagram	A multi-step's own first step.
+pkm4-c47	Concept	PKO class diagram	A step verification is itself a kind of step with title, description and identifier, pointing back to the step it checks.
+pkm4-c48	Concept	PKO class diagram	A step can require tools.
+pkm4-c49	Concept	PKO class diagram	A step can require actions.
+pkm4-c50	Concept	PKO class diagram	A step can require functions.
+pkm4-c51	Concept	PKO class diagram	Steps declare input variables.
+pkm4-c52	Concept	PKO class diagram	Steps declare output variables.
+pkm4-c53	Concept	PKO class diagram	Entities an execution used or produced correspond to the step's declared variables.
+pkm4-c54	Concept	PKO class diagram	The expertise level a step is intended for.
+pkm4-c55	Concept	PKO class diagram	A step references the resources it relies on.
+pkm4-c56	Concept	PKO class diagram	A step can be the remedy for a specific error.
+pkm4-c57	Concept	PKO class diagram	A procedure execution's status: in progress, completed, paused or cancelled.
+pkm4-c58	Concept	PKO class diagram	Execution start and end times.
+pkm4-c59	Concept	PKO class diagram	The agent who executed an execution and the other agents associated with it.
+pkm4-c60	Concept	PKO class diagram	The agent who confirmed an execution.
+pkm4-c61	Concept	PKO class diagram	Procedure and step executions carry their own title, description and identifier.
+pkm4-c62	Concept	PKO class diagram	A procedure execution includes step executions, each linked to the step it executed.
+pkm4-c63	Concept	PKO class diagram	Step executions ordered by previous and next step execution.
+pkm4-c64	Concept	PKO class diagram	Entities a step execution used.
+pkm4-c65	Concept	PKO class diagram	Entities a step execution generated.
+pkm4-c66	Concept	PKO class diagram	Feedback occurrences recorded during an activity, with separate remarks on the procedure and on the execution, the giver and a timestamp.
+pkm4-c67	Concept	PKO class diagram	Question occurrences with the asking agent, a timestamp and the resource that addresses the question.
+pkm4-c68	Concept	PKO class diagram	Issue occurrences with cause, solution, the agent who hit them and a timestamp.
+pkm4-c69	Concept	PKO class diagram	Errors with a code, a cause and a description, which an issue occurrence points to.
+pkm4-c70	Concept	PKO class diagram	Agents, including organizations.
+pkm4-c71	Concept	PKO concept map	Agents are persons or software.
+pkm4-c72	Concept	PKO class diagram	A role held in time ties an agent to a named role, to the resource the role is held for, and to a period.
+pkm4-c73	Concept	PKO class diagram	A procedure is also a catalogued resource, inheriting resource metadata, creator, modifier and status.
+pkm4-c74	Concept	PKO class diagram	Resource title, description and identifier.
+pkm4-c75	Concept	PKO class diagram	Resource language.
+pkm4-c76	Concept	PKO class diagram	Resource created and modified dates.
+pkm4-c77	Concept	PKO class diagram	Resource keywords.
+pkm4-c78	Concept	PKO class diagram	Resource access URL.
+pkm4-c79	Concept	PKO class diagram	Resource format or media type.
+pkm4-c80	Concept	PKO class diagram	A resource's creator and the agent who last modified it.
+pkm4-c81	Concept	PKO class diagram	The resource a resource was extracted from.
+pkm4-c82	Concept	PKO concept map	Kinds of resource: document, media and page.
+pkm4-c83	Concept	PKO class diagram	A procedure references resources.
+pkm4-c84	Concept	PKO class diagram	Frequently asked questions with a question and an answer.
+pkm4-c85	Concept	PKO class diagram	An FAQ category.
+pkm4-c86	Concept	PKO class diagram	An FAQ target.
+pkm4-c87	Concept	PKO class diagram	An FAQ is itself a resource and inherits resource metadata.
+pkm4-p01	Prescription	PKO's Architecture and Design	Specifications and executions must stay separate and linked, never merged.
+pkm4-p02	Prescription	After: Explicit, Actionable Procedural Knowledge	The encoding must capture variations and exceptions, not only the normative procedure.
+pkm4-p03	Prescription	Before: Tacit Knowledge and Limitations	Procedures kept only as static prose drift from practice; the representation must expose that drift.
+pkm4-p09	Prescription	LOTO: Safety Procedures at Beko Europe	Inconsistent execution across shifts and facilities must be detectable.
+pkm4-p10	Prescription	Implications for AI Workflows	An organization adopts the ontology as is, extends it with domain modules, or uses it as a reference, and the choice must be explicit.
+pkm4-p13	Prescription	Practical Elicitation and Exploitation	Experts can author procedures without knowing the formal syntax.
+pkm4-p14	Prescription	Practical Elicitation and Exploitation	Expert-authored procedures must conform to the ontology's formal structure even though the expert never sees it.
+pkm4-p33	Prescription	Before: Tacit Knowledge and Limitations	An assistant must be able to confirm a procedure was carried through to the end.
+pkm4-p41	Prescription	Before: Tacit Knowledge and Limitations	The encoding captures the checks and judgments behind a step, not only its one-line instruction.
+pkm4-p42	Prescription	PKO's Architecture and Design	A single procedure can mix human steps with machine or software steps.
+pkm4-q01	CompetencyQuestion	Practical Elicitation and Exploitation	Before starting this procedure, which steps does it involve, what must be on hand, and what safety points apply?
+pkm4-q02	CompetencyQuestion	After: Explicit, Actionable Procedural Knowledge	Which danger cues during this procedure call for escalating at once?
+pkm4-q03	CompetencyQuestion	After: Explicit, Actionable Procedural Knowledge	What is the fallback when the usual method fails, and how is unusually configured equipment handled?
+pkm4-q04	CompetencyQuestion	PKO's Architecture and Design	Who carried out this execution, when, and with what observations and outcomes?
+pkm4-q05	CompetencyQuestion	Before: Tacit Knowledge and Limitations	Was this execution actually carried through to completion?
+pkm4-q06	CompetencyQuestion	PKO class diagram	What is the current version of this procedure, and what motivated it?
+pkm4-q07	CompetencyQuestion	PKO class diagram	Which issues were encountered during this execution, and how were they solved?
+pkm4-q08	CompetencyQuestion	PKO class diagram	Which resource addresses the question a user asked?
+pkm4-q09	CompetencyQuestion	LOTO: Safety Procedures at Beko Europe	Does execution of this procedure differ between shifts or facilities?
+pkm4-q10	CompetencyQuestion	Before: Tacit Knowledge and Limitations	For an execution under way, which step is next and what does it need?
+pkm4-q11	CompetencyQuestion	LOTO: Safety Procedures at Beko Europe	In what order should the parts of this procedure be approached to keep risk lowest?
+pkm4-q12	CompetencyQuestion	LOTO: Safety Procedures at Beko Europe	What cues show that a step such as isolation was not fully achieved?
+pkm4-q15	CompetencyQuestion	PKO class diagram	What status changes has this procedure gone through, when, and by whom?
+pkm4-q16	CompetencyQuestion	PKO class diagram	Which step is the remedy for a given error?
+pkm4-q17	CompetencyQuestion	PKO class diagram	What tools, actions and functions does a step need, and which expertise level is it meant for?
+pkm4-s01	Standard	PKO's Architecture and Design	The Procedural Knowledge Ontology core.
+pkm4-s02	Standard	PKO's Architecture and Design	The PKO industry module.
+pkm4-s03	Standard	PKO Ontology Specifics	P-Plan for plans and plan executions.
+pkm4-s04	Standard	PKO Ontology Specifics	DCAT for resource metadata and versioning.
+pkm4-s05	Standard	PKO Ontology Specifics	DCMI metadata terms.
+pkm4-s06	Standard	PKO Ontology Specifics	OWL-Time for expected durations and their temporal units.
+pkm4-s07	Standard	PKO class diagram	PRO for roles held in time.
+pkm4-s08	Standard	PKO class diagram	Metadata4Ing for tools.
+pkm4-s09	Standard	PKO class diagram	ADMS for status.
+pkm4-s11	Standard	PKO Ontology Specifics	PROV-O for provenance of agents, activities and entities.
+pkm4-x01	Scenario	LOTO: Safety Procedures at Beko Europe	Lockout/tagout at an appliance plant: regulation-driven documents and veterans' know-how, then workshops, encoding with exceptions, recorded executions and a technician consulting a grounded assistant.
+pkm4-i01	Illustration	The Problem PKO Addresses	CNC machine commissioning as a procedure the ontology was designed to represent.
+pkm4-i03	Illustration	PKO's Architecture and Design	A lockout procedure for a conveyor set against one technician's lockout of it on a given day.
+pkm4-i04	Illustration	Before: Tacit Knowledge and Limitations	A document line telling workers to cut main power while leaving out the small judgments a technician makes.
+ont4-c27	Concept	Change Management	Every workflow step typed as a provenance activity.
+ont4-c36	Concept	How AI Systems Consume an Ontology	The full transitive ordering chain over a workflow's step sequence.
+ont4-c45	Concept	The NTWF Graph as an AI System Registry	A workflow step assigned to the role responsible for executing it.
+ont4-q07	CompetencyQuestion	How AI Systems Consume an Ontology	Which agent is accountable for this step?
+ont4-q08	CompetencyQuestion	Conclusion	Is the agent accountable for this step a person or a software agent?
+ont4-q28	CompetencyQuestion	How AI Systems Consume an Ontology	Which steps come after this one anywhere along the workflow's ordering chain?
+ont4-x01	Scenario	How AI Systems Consume an Ontology	A production deployment gated by release approval: the release manager role is held by one person and delegates to a VP of engineering role held by another.
+ont4-x02	Scenario	The NTWF Graph as an AI System Registry	Assessing the blast radius of upgrading the risk classifier to its next minor model version.
+ont4-x03	Scenario	Change Management	The risk classifier filling a step is replaced by its next patch version on a set date, and the earlier assignment is kept so a past-date question returns the agent then in force.
+ont4-x04	Scenario	Change Management	An automated step is handed from an AI agent to a human, with an audit record of when and why.
+ont4-x05	Scenario	Ontology Is the Ground Truth	The release manager leaves the role, and the assignment must be updated before the next deployment that needs that approval.

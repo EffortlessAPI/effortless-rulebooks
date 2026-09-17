@@ -31,6 +31,13 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             get => F.AsString(F.Memo(this, "RelationIri", () => (F.Truthy(F.Bool3(F.Eq(F.Nullif(F.Of(this.Relation)), F.S("wasExtractedFrom")))) ? F.S("https://w3id.org/pko#wasExtractedFrom") : F.S("http://purl.org/dc/terms/references")))); set { }
         }
 
+        // Formula ResourceModifiedAt (rulebook: =INDEX(Resources!{{ModifiedAt}}, MATCH({{Resource}}, Resources!{{ResourceId}}, 0)))
+        [NotMapped]
+        public DateTimeOffset? ResourceModifiedAt
+        {
+            get => F.AsDateTime(F.Memo(this, "ResourceModifiedAt", () => F.Lookup<Resource>(this, "Resources", "ResourceId", __c => __c.Resources, __r => F.Of(__r.ResourceId), F.Of(this.Resource), __r => F.Of(__r.ModifiedAt), () => F.Of(new Resource().ModifiedAt)))); set { }
+        }
+
 
         public string? ProcedureVersion { get; set; }
         public string? Resource { get; set; }

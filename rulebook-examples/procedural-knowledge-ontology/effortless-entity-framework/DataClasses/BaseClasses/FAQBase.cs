@@ -23,14 +23,29 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             get => F.AsString(F.Memo(this, "Name", () => F.Of(this.Question))); set { }
         }
 
-        public string? Category { get; set; }
-        public string? TargetKind { get; set; }
         public string? Question { get; set; }
         public string? Answer { get; set; }
         public string? SemanticTypeIri { get; set; }
+        // Formula ResolutionCount (rulebook: =COUNTIFS(UserQuestions!{{ResolvedByFaq}}, {{FaqId}}))
+        [NotMapped]
+        public int? ResolutionCount
+        {
+            get => F.AsInt(F.Memo(this, "ResolutionCount", () => F.Integer((base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<UserQuestion>(base.SoAContext, "UserQuestions", __c => __c.UserQuestions), __r => F.CritField(F.Of(__r.ResolvedByFaq), F.Of(this.FaqId))))))); set { }
+        }
+
+        // Formula IsUnusedFaq (rulebook: ={{ResolutionCount}} = 0)
+        [NotMapped]
+        public bool? IsUnusedFaq
+        {
+            get => F.AsBool(F.Memo(this, "IsUnusedFaq", () => F.Eq(F.Of(this.ResolutionCount), F.I(0)))); set { }
+        }
+
 
         public string? ProcedureVersion { get; set; }
         public string? Step { get; set; }
+        public string? Category { get; set; }
+        public string? TargetKind { get; set; }
+        public string? Resource { get; set; }
 
         private ProcedureVersion _procedureVersionRef;
 
@@ -120,6 +135,138 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             }
         }
 
+        private FaqCategory _faqCategory;
+
+        [ForeignKey("Category")]
+        public virtual FaqCategory FaqCategory
+        {
+            get
+            {
+                if (_faqCategory == null && !string.IsNullOrEmpty(Category))
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access FaqCategory - no database context is set. Category: " + Category + ".");
+                        }
+                        return null;
+                    }
+                    _faqCategory = base.SoAContext.FaqCategories.Find(Category);
+                    if (_faqCategory != null)
+                    {
+                        base.SoAContext.Attach(_faqCategory);
+                    }
+                }
+                return _faqCategory;
+            }
+            set
+            {
+                if (_faqCategory != value)
+                {
+                    _faqCategory = value;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_faqCategory != null)
+                    {
+                        Category = _faqCategory.FaqCategoryId;
+                    }
+                }
+            }
+        }
+
+        private FaqTarget _faqTarget;
+
+        [ForeignKey("TargetKind")]
+        public virtual FaqTarget FaqTarget
+        {
+            get
+            {
+                if (_faqTarget == null && !string.IsNullOrEmpty(TargetKind))
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access FaqTarget - no database context is set. TargetKind: " + TargetKind + ".");
+                        }
+                        return null;
+                    }
+                    _faqTarget = base.SoAContext.FaqTargets.Find(TargetKind);
+                    if (_faqTarget != null)
+                    {
+                        base.SoAContext.Attach(_faqTarget);
+                    }
+                }
+                return _faqTarget;
+            }
+            set
+            {
+                if (_faqTarget != value)
+                {
+                    _faqTarget = value;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_faqTarget != null)
+                    {
+                        TargetKind = _faqTarget.FaqTargetId;
+                    }
+                }
+            }
+        }
+
+        private Resource _resourceRef;
+
+        [ForeignKey("Resource")]
+        public virtual Resource ResourceRef
+        {
+            get
+            {
+                if (_resourceRef == null && !string.IsNullOrEmpty(Resource))
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access ResourceRef - no database context is set. Resource: " + Resource + ".");
+                        }
+                        return null;
+                    }
+                    _resourceRef = base.SoAContext.Resources.Find(Resource);
+                    if (_resourceRef != null)
+                    {
+                        base.SoAContext.Attach(_resourceRef);
+                    }
+                }
+                return _resourceRef;
+            }
+            set
+            {
+                if (_resourceRef != value)
+                {
+                    _resourceRef = value;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_resourceRef != null)
+                    {
+                        Resource = _resourceRef.ResourceId;
+                    }
+                }
+            }
+        }
+
         private ObservableCollection<UserQuestion> _userQuestions;
 
         [InverseProperty("FAQ")]
@@ -180,6 +327,9 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         {
             _ = this.ProcedureVersionRef;
             _ = this.StepRef;
+            _ = this.FaqCategory;
+            _ = this.FaqTarget;
+            _ = this.ResourceRef;
             _ = this.UserQuestions;
         }
 

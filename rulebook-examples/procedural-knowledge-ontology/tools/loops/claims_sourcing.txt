@@ -1,0 +1,63 @@
+# Theme F (loop-11, sourcing): 61 claims
+
+pkm3-c06	Concept	The Great Unbundling	Business process outsourcing: routine transactional work sent to a provider.
+pkm3-c07	Concept	The Great Unbundling	Knowledge process outsourcing: expertise-heavy analytical work sent to a provider, the kind that generates deep process knowledge.
+pkm3-c08	Concept	The Great Unbundling	Each function classified as retained core or sent out as execution, where execution is where process knowledge resides.
+pkm3-c09	Concept	The Great Unbundling	Process knowledge is inseparable from execution; knowing how cannot stay home while doing happens elsewhere.
+pkm3-c17	Concept	From Engineering State to Lawyerly Society	Document retention policies set for compliance and risk rather than for knowledge.
+pkm3-c18	Concept	From Engineering State to Lawyerly Society	The scope of a governance program: compliance only, or also data quality, information and knowledge management.
+pkm3-c23	Concept	Why We Stopped Documenting	The split between what is to be built and how it is built, which different parties can hold.
+pkm3-c24	Concept	Why We Stopped Documenting	A hollowed-out firm that keeps brand and customers but relies on outside providers for the knowledge to deliver its own products.
+pkm3-c25	Concept	Why We Stopped Documenting	Documentation a provider produces stays with the provider as its own intellectual property and competitive asset.
+pkm3-c28	Concept	Socio-technical Ethos	Whether a provider engagement carries any duty to build up the client's knowledge.
+pkm3-c29	Concept	Socio-technical Ethos	A provider's procedural know-how as its differentiator, giving it a reason to withhold it from clients.
+pkm3-c34	Concept	Rebuilding Process Knowledge Infrastructure	Knowledge engineers, information architects and ontologists as dedicated roles.
+pkm3-c35	Concept	Rebuilding Process Knowledge Infrastructure	Processes that are strategically vital and expertise-heavy.
+pkm3-c36	Concept	Rebuilding Process Knowledge Infrastructure	Knowledge dependencies: procedural knowledge the organization relies on but does not hold itself.
+pkm3-c37	Concept	Rebuilding Process Knowledge Infrastructure	Coverage gaps: parts of an end-to-end process for which the organization holds no process knowledge.
+pkm3-c38	Concept	Rebuilding Process Knowledge Infrastructure	Knowledge hoarding versus knowledge transfer, including silos reinforced by single-team ownership.
+pkm3-p03	Prescription	Why We Stopped Documenting	A client relying on a provider's documentation must plan for how that knowledge comes back to it.
+pkm3-p11	Prescription	Rebuilding Process Knowledge Infrastructure	Organizations must first acknowledge a process knowledge deficit rather than treat it as a cost or efficiency problem.
+pkm3-p12	Prescription	Rebuilding Process Knowledge Infrastructure	Audit the procedural knowledge actually held against what is needed.
+pkm3-p13	Prescription	Rebuilding Process Knowledge Infrastructure	Name the knowledge gaps and dependencies the audit finds.
+pkm3-p14	Prescription	Rebuilding Process Knowledge Infrastructure	Hire knowledge engineers, information architects and ontologists to capture, organize and encode process knowledge.
+pkm3-p15	Prescription	Rebuilding Process Knowledge Infrastructure	For outsourced processes and coverage gaps, pick the strategically vital, expertise-heavy ones and deliberately capture their knowledge.
+pkm3-p16	Prescription	Rebuilding Process Knowledge Infrastructure	Organizations must secure access to the process knowledge needed to run outsourced operations without necessarily bringing the work in house.
+pkm3-p20	Prescription	Rebuilding Process Knowledge Infrastructure	Relationships must require explicit knowledge management deliverables so knowledge moves rather than being hoarded.
+pkm3-p21	Prescription	Rebuilding Process Knowledge Infrastructure	Learning must flow both ways between an organization and its providers.
+pkm3-p22	Prescription	Rebuilding Process Knowledge Infrastructure	Providers are treated as long-term partners whose success depends on accumulating knowledge jointly.
+pkm3-q02	CompetencyQuestion	Rebuilding Process Knowledge Infrastructure	What procedural knowledge do we hold versus need, and where are the gaps and dependencies?
+pkm3-q03	CompetencyQuestion	Rebuilding Process Knowledge Infrastructure	Which processes are strategically vital and expertise-heavy, and which of those are outsourced?
+pkm3-q07	CompetencyQuestion	Why We Stopped Documenting	For a given process, who holds the knowledge of how it is really performed: the organization or an outside provider?
+pkm3-q12	CompetencyQuestion	Rebuilding Process Knowledge Infrastructure	Does a given provider relationship oblige explicit knowledge deliverables and knowledge flowing back to us?
+pkm3-i01	Illustration	The Great Unbundling	The core-competency push sent legal research, financial analysis, engineering design and R&D offshore, the very work that produces deep process knowledge.
+pkm3-i02	Illustration	Why We Stopped Documenting	Firms kept specifications but offshored production and ended up designing goods they could not build while providers kept the documentation.
+pkm3-i03	Illustration	From Engineering State to Lawyerly Society	Leadership culture moved from engineering to law, bringing risk-driven retention limits and compliance-led standardization.
+ont4-c40	Concept	The NTWF Graph as an AI System Registry	AI agents typed as software agents, distinct from human persons.
+ont4-c41	Concept	The NTWF Graph as an AI System Registry	An external AI system registry supplying model versions to the graph.
+ont4-c42	Concept	The NTWF Graph as an AI System Registry	A deployment record for an AI system version.
+ont4-c43	Concept	The NTWF Graph as an AI System Registry	An evaluation result for an AI system version.
+ont4-c44	Concept	The NTWF Graph as an AI System Registry	An artifact attributed to the agent that produced it.
+ont4-c46	Concept	The NTWF Graph as an AI System Registry	A downstream step that takes an artifact as one of its inputs.
+ont4-c47	Concept	The NTWF Graph as an AI System Registry	An AI agent linked to the human person accountable for it.
+ont4-c48	Concept	The NTWF Graph as an AI System Registry	An agent upgrade's blast radius: its attributed artifacts, the downstream steps using them, the roles and agents responsible, and the workflows containing them.
+ont4-c49	Concept	Ontology Is the Ground Truth	Roles decoupled from agents: a role is filled by an agent through one assignment.
+ont4-c50	Concept	Ontology Is the Ground Truth	A service level for updating role assignments once operational systems read the model.
+ont4-p70	Prescription	The NTWF Graph as an AI System Registry	AI systems are registered as individuals in the graph itself.
+ont4-p71	Prescription	The NTWF Graph as an AI System Registry	An agent upgrade's blast radius is computed by graph traversal rather than by hand.
+ont4-p72	Prescription	The NTWF Graph as an AI System Registry	Agent records are filled from the external registry, with Dublin Core fields as the shared interface.
+ont4-p73	Prescription	Ontology Is the Ground Truth	Governance names who is responsible for triggering an assignment update.
+ont4-p74	Prescription	Ontology Is the Ground Truth	Assignment updates are completed within a defined service level.
+ont4-p75	Prescription	Ontology Is the Ground Truth	Changing who fills a role alters one assignment and leaves every workflow and step untouched.
+ont4-p76	Prescription	Ontology Is the Ground Truth	Operational routing, such as who receives an approval notice, reads role assignments from the model rather than a separate list.
+ont4-p77	Prescription	Ontology Is the Ground Truth	When a person leaves a role, the assignment is updated before the next process run that depends on it.
+ont4-q04	CompetencyQuestion	The NTWF Graph as an AI System Registry	If this agent moves to a newer model version, what else is affected?
+ont4-q06	CompetencyQuestion	Ontology Is the Ground Truth	To whom does the approval notice for a deployment go at present?
+ont4-q21	CompetencyQuestion	The NTWF Graph as an AI System Registry	Which artifacts has this AI agent produced?
+ont4-q22	CompetencyQuestion	The NTWF Graph as an AI System Registry	Which downstream steps take this agent's artifacts as inputs?
+ont4-q23	CompetencyQuestion	The NTWF Graph as an AI System Registry	Which roles and agents are responsible for those downstream steps?
+ont4-q24	CompetencyQuestion	The NTWF Graph as an AI System Registry	Which workflows contain the steps affected by an agent change?
+ont4-q27	CompetencyQuestion	The NTWF Graph as an AI System Registry	Which human is accountable for this AI agent?
+ont4-i05	Illustration	Ontology Is the Ground Truth	Once the model is operational infrastructure, a stale assignment is an operational failure rather than an accuracy issue.
+ont4-i23	Illustration	The NTWF Graph as an AI System Registry	A registry row noting a deployment is an isolated fact; the same agent linked to its role, steps and artifacts is a fact in context.
+ont4-i24	Illustration	Ontology Is the Ground Truth	A stale assignment sends an approval notice to the wrong person or to nobody.

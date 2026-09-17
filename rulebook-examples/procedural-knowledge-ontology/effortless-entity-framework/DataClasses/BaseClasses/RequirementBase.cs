@@ -242,9 +242,31 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         }
 
         public string? SemanticTypeIri { get; set; }
+        // Formula IsRegulatoryRequirement (rulebook: ={{RegulatoryFramework}} <> "")
+        [NotMapped]
+        public bool? IsRegulatoryRequirement
+        {
+            get => F.AsBool(F.Memo(this, "IsRegulatoryRequirement", () => F.IsNotBlank(F.Of(this.RegulatoryFramework)))); set { }
+        }
+
+        // Formula ConstraintTraceCount (rulebook: =COUNTIFS(KnowledgeTraces!{{Requirement}}, {{RequirementId}}, KnowledgeTraces!{{TargetKind}}, "Constraint"))
+        [NotMapped]
+        public int? ConstraintTraceCount
+        {
+            get => F.AsInt(F.Memo(this, "ConstraintTraceCount", () => F.Integer((base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<KnowledgeTrace>(base.SoAContext, "KnowledgeTraces", __c => __c.KnowledgeTraces), __r => F.CritField(F.Of(__r.Requirement), F.Of(this.RequirementId)) && F.CritLiteral(F.Of(__r.TargetKind), F.S("Constraint"))))))); set { }
+        }
+
+        // Formula IsUntracedBoundConstraint (rulebook: =AND({{IsBoundToAnyStep}}, {{ConstraintTraceCount}} = 0))
+        [NotMapped]
+        public bool? IsUntracedBoundConstraint
+        {
+            get => F.AsBool(F.Memo(this, "IsUntracedBoundConstraint", () => F.And(F.Bool3(F.Of(this.IsBoundToAnyStep)), F.Bool3(F.Eq(F.Of(this.ConstraintTraceCount), F.I(0)))))); set { }
+        }
+
 
         public string? AccountableRole { get; set; }
         public string? ControlledTerm { get; set; }
+        public string? RegulatoryFramework { get; set; }
 
         private Role _role;
 
@@ -329,6 +351,50 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     if (_vocabularyTerm != null)
                     {
                         ControlledTerm = _vocabularyTerm.VocabularyTermId;
+                    }
+                }
+            }
+        }
+
+        private RegulatoryFramework _regulatoryFrameworkRef;
+
+        [ForeignKey("RegulatoryFramework")]
+        public virtual RegulatoryFramework RegulatoryFrameworkRef
+        {
+            get
+            {
+                if (_regulatoryFrameworkRef == null && !string.IsNullOrEmpty(RegulatoryFramework))
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access RegulatoryFrameworkRef - no database context is set. RegulatoryFramework: " + RegulatoryFramework + ".");
+                        }
+                        return null;
+                    }
+                    _regulatoryFrameworkRef = base.SoAContext.RegulatoryFrameworks.Find(RegulatoryFramework);
+                    if (_regulatoryFrameworkRef != null)
+                    {
+                        base.SoAContext.Attach(_regulatoryFrameworkRef);
+                    }
+                }
+                return _regulatoryFrameworkRef;
+            }
+            set
+            {
+                if (_regulatoryFrameworkRef != value)
+                {
+                    _regulatoryFrameworkRef = value;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_regulatoryFrameworkRef != null)
+                    {
+                        RegulatoryFramework = _regulatoryFrameworkRef.RegulatoryFrameworkId;
                     }
                 }
             }
@@ -499,14 +565,127 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             }
         }
 
+        private ObservableCollection<AnswerRequirementCheck> _answerRequirementChecks;
+
+        [InverseProperty("RequirementRef")]
+        public virtual ObservableCollection<AnswerRequirementCheck> AnswerRequirementChecks
+        {
+            get
+            {
+                if (_answerRequirementChecks == null)
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access AnswerRequirementChecks - no database context is set. RequirementId: " + this.RequirementId + ".");
+                        }
+                        _answerRequirementChecks = new ObservableCollection<AnswerRequirementCheck>();
+                    }
+                    else
+                    {
+                        var items = base.SoAContext.AnswerRequirementChecks.Where(x => x.Requirement == this.RequirementId).ToList<AnswerRequirementCheck>();
+                        _answerRequirementChecks = new ObservableCollection<AnswerRequirementCheck>(items);
+                        if (items.Any())
+                        {
+                            base.SoAContext.AttachRange(items);
+                        }
+                    }
+                    _answerRequirementChecks.CollectionChanged += AnswerRequirementChecks_CollectionChanged;
+                }
+                return _answerRequirementChecks;
+            }
+            private set
+            {
+                if (_answerRequirementChecks != null)
+                {
+                    _answerRequirementChecks.CollectionChanged -= AnswerRequirementChecks_CollectionChanged;
+                }
+                _answerRequirementChecks = value;
+                if (_answerRequirementChecks != null)
+                {
+                    _answerRequirementChecks.CollectionChanged += AnswerRequirementChecks_CollectionChanged;
+                }
+            }
+        }
+
+        private void AnswerRequirementChecks_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems != null)
+            {
+                foreach (var item in e.NewItems.Cast<AnswerRequirementCheck>())
+                {
+                    item.Requirement = this.RequirementId;
+                }
+            }
+        }
+
+        private ObservableCollection<KnowledgeTrace> _knowledgeTraces;
+
+        [InverseProperty("RequirementRef")]
+        public virtual ObservableCollection<KnowledgeTrace> KnowledgeTraces
+        {
+            get
+            {
+                if (_knowledgeTraces == null)
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access KnowledgeTraces - no database context is set. RequirementId: " + this.RequirementId + ".");
+                        }
+                        _knowledgeTraces = new ObservableCollection<KnowledgeTrace>();
+                    }
+                    else
+                    {
+                        var items = base.SoAContext.KnowledgeTraces.Where(x => x.Requirement == this.RequirementId).ToList<KnowledgeTrace>();
+                        _knowledgeTraces = new ObservableCollection<KnowledgeTrace>(items);
+                        if (items.Any())
+                        {
+                            base.SoAContext.AttachRange(items);
+                        }
+                    }
+                    _knowledgeTraces.CollectionChanged += KnowledgeTraces_CollectionChanged;
+                }
+                return _knowledgeTraces;
+            }
+            private set
+            {
+                if (_knowledgeTraces != null)
+                {
+                    _knowledgeTraces.CollectionChanged -= KnowledgeTraces_CollectionChanged;
+                }
+                _knowledgeTraces = value;
+                if (_knowledgeTraces != null)
+                {
+                    _knowledgeTraces.CollectionChanged += KnowledgeTraces_CollectionChanged;
+                }
+            }
+        }
+
+        private void KnowledgeTraces_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems != null)
+            {
+                foreach (var item in e.NewItems.Cast<KnowledgeTrace>())
+                {
+                    item.Requirement = this.RequirementId;
+                }
+            }
+        }
+
 
         protected override void LazyLoadProperties()
         {
             _ = this.Role;
             _ = this.VocabularyTerm;
+            _ = this.RegulatoryFrameworkRef;
             _ = this.StepRequirements;
             _ = this.RequirementSatisfactions;
             _ = this.AuthorityBoundaries;
+            _ = this.AnswerRequirementChecks;
+            _ = this.KnowledgeTraces;
         }
 
         public override string ToString()

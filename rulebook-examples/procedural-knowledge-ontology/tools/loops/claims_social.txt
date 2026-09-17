@@ -1,0 +1,62 @@
+# Theme G (loop-12, social): 60 claims
+
+pkm1-c16	Concept	Process Knowledge Frameworks	Documents, training programs and mentoring as the traditional channels for passing on process knowledge.
+pkm1-c35	Concept	Integrated Process Intelligence	Roles and capabilities devoted specifically to process knowledge management.
+pkm1-c36	Concept	Integrated Process Intelligence	Incentives that reward sharing knowledge.
+pkm1-p08	Prescription	Process Knowledge Frameworks	Documents, training and mentoring decay, so the system must detect stale documentation and knowledge held only by people who have left.
+pkm1-p36	Prescription	Integrated Process Intelligence	Stakeholders must be engaged in shaping process knowledge.
+pkm1-p37	Prescription	Integrated Process Intelligence	Expertise must be recognized and credited.
+pkm1-p38	Prescription	Integrated Process Intelligence	Disagreements over process knowledge must have a resolution practice.
+pkm1-p39	Prescription	Integrated Process Intelligence	Organizational memory must stay intact as staff come and go.
+pkm2-c32	Concept	The Social Dimension of Collection Strategies	Individuals who bridge communities of practice.
+pkm2-c33	Concept	The Social Dimension of Collection Strategies	Meta-knowledge about organizational processes that a broker holds and no single practitioner does.
+pkm2-c34	Concept	The Social Dimension of Collection Strategies	Communities of practice, each with its own vocabulary and norms.
+pkm2-c35	Concept	The Social Dimension of Collection Strategies	A broker's translation between the vocabularies of the communities they connect.
+pkm2-c36	Concept	The Social Dimension of Collection Strategies	Information practitioners withhold to protect status or job security.
+pkm2-c37	Concept	The Social Dimension of Collection Strategies	Departments holding conflicting accounts of the same process, each shaped by its own interests.
+pkm2-c38	Concept	The Social Dimension of Collection Strategies	The state of trust between the knowledge engineer and a knowledge source.
+pkm2-c39	Concept	The Social Dimension of Collection Strategies	Power dynamics that shape what a source will share.
+pkm2-p15	Prescription	The Social Dimension of Collection Strategies	Process knowledge is distributed across networks, so collection must attend to who holds it socially.
+pkm2-p16	Prescription	The Social Dimension of Collection Strategies	Use network analysis to find people who connect groups, since they know things no individual practitioner does.
+pkm2-p17	Prescription	The Social Dimension of Collection Strategies	Collection is conducted as a negotiation that attends to power dynamics.
+pkm2-p18	Prescription	The Social Dimension of Collection Strategies	Collection builds trust with knowledge sources.
+pkm2-p78	Prescription	Conclusion	Managing process knowledge needs direct engagement with practitioners, not automation alone.
+pkm2-q06	CompetencyQuestion	The Social Dimension of Collection Strategies	Who holds which process knowledge?
+pkm2-q07	CompetencyQuestion	The Social Dimension of Collection Strategies	Who knows where that knowledge is held?
+pkm2-q08	CompetencyQuestion	The Social Dimension of Collection Strategies	Which departments give conflicting accounts of the same process?
+pkm2-s06	Standard	The Social Dimension of Collection Strategies	Social network analysis.
+pkm3-c04	Concept	Introduction	Feedback loops from doing the work, without which procedural knowledge cannot be captured or written down.
+pkm3-c05	Concept	Introduction	Communities of practice that generate and pass on process knowledge.
+pkm3-c10	Concept	Shenzhen and Process Knowledge	Practitioner know-how about which approaches succeed or fail, how to diagnose problems, improvise and refine a process.
+pkm3-c11	Concept	Shenzhen and Process Knowledge	Process knowledge held in two forms at once: written procedures and the trained skill of seasoned workers.
+pkm3-c12	Concept	Shenzhen and Process Knowledge	Personal relationships, collaboration, design-production iteration and people changing employers as channels process knowledge travels through.
+pkm3-c13	Concept	Shenzhen and Process Knowledge	Related components and systems make their process knowledge an interconnected network that compounds when concentrated in one community.
+pkm3-c14	Concept	Shenzhen and Process Knowledge	A knowledge ecosystem spanning physical and digital work in which humans remain in the loop.
+pkm3-c19	Concept	Death of Apprenticeship and Institutional Memory	Apprenticeship: novices placed with seasoned practitioners so tacit skill is absorbed through watching, practice and guided correction.
+pkm3-c20	Concept	Death of Apprenticeship and Institutional Memory	Institutional memory of how the organization's own products and processes are actually carried out.
+pkm3-c21	Concept	Death of Apprenticeship and Institutional Memory	Continuity across generations of practitioners, with obligations between employer and worker that make training worth investing in.
+pkm3-c27	Concept	Socio-technical Ethos	Documentation treated as part of the craft, written so later colleagues benefit rather than to satisfy compliance.
+pkm3-c30	Concept	Socio-technical Ethos	Knowledge repositories in which captured procedural knowledge is kept so it outlives team turnover.
+pkm3-c31	Concept	Socio-technical Ethos	Problems that were solved once and reappear because the fix was not retained.
+pkm3-c42	Concept	Conclusion	Process knowledge builds up slowly inside communities of practice, so once lost it cannot be recruited back.
+pkm3-p01	Prescription	Introduction	A procedure whose execution feeds nothing back into its documentation has lost the means of capturing procedural knowledge.
+pkm3-p05	Prescription	Socio-technical Ethos	Staff turnover must not wipe out knowledge; an incoming team should not have to relearn the work from nothing.
+pkm3-p06	Prescription	Socio-technical Ethos	When a problem is solved, the solution is recorded as part of the work so later practitioners can reuse it.
+pkm3-p07	Prescription	Socio-technical Ethos	A knowledge culture cannot be bought or mandated; it must grow from communities of practice where sharing is the norm.
+pkm3-p17	Prescription	Rebuilding Process Knowledge Infrastructure	Experienced practitioners must have time to mentor novices.
+pkm3-p18	Prescription	Rebuilding Process Knowledge Infrastructure	Sharing procedural knowledge must be expected, recognized and rewarded.
+pkm3-p19	Prescription	Rebuilding Process Knowledge Infrastructure	Culture must value documentation and knowledge transfer.
+pkm3-p32	Prescription	Conclusion	The procedural knowledge an organization needs is not found in public references and cannot be generated by AI.
+pkm3-q06	CompetencyQuestion	Socio-technical Ethos	Has this problem been solved before?
+pkm3-q09	CompetencyQuestion	Shenzhen and Process Knowledge	Who has handled a comparable problem, and which specialists can be consulted?
+pkm3-q10	CompetencyQuestion	Socio-technical Ethos	If the current team left, what procedural knowledge is captured for a successor, and what would have to be relearned?
+pkm3-i04	Illustration	Death of Apprenticeship and Institutional Memory	Manufacturing's training-and-retention cycle eroded in stages: facility investment, then engineer training, then upkeep of how-to-make knowledge.
+pkm3-i05	Illustration	Shenzhen and Process Knowledge	A manufacturing city became a community of engineering practice where people move between factories and specialists are close at hand.
+pkm3-i06	Illustration	Socio-technical Ethos	Offshored software work: when the contractor team turned over, successors started over and fixed bugs came back.
+pkm3-i07	Illustration	Death of Apprenticeship and Institutional Memory	A packaging-machinery cluster kept knowledge circulating through workers moving between firms, until young people shunned technical apprenticeships.
+pkm3-i08	Illustration	Shenzhen and Process Knowledge	A nineteenth-century economist on a trade settled in one place making its know-how ambient, absorbed even by children.
+pkm3-i09	Illustration	Shenzhen and Process Knowledge	A much larger manufacturing workforce holds how-to-build knowledge in the people, plants and systems doing the work.
+pkm4-p04	Prescription	Before: Tacit Knowledge and Limitations	Shadowing alone does not scale; the system must expose where a wave of new starters or a departing veteran would leave know-how untransferred.
+pkm4-p05	Prescription	Before: Tacit Knowledge and Limitations	Passing know-how to newcomers must keep working even when the veterans who hold it are unavailable.
+pkm4-p08	Prescription	The Problem PKO Addresses	Formalized knowledge must measurably ease training and onboarding of new staff.
+pkm4-q14	CompetencyQuestion	Before: Tacit Knowledge and Limitations	Which know-how is held only by veterans who have not passed it on, and are any of them about to leave?

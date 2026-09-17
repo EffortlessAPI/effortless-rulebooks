@@ -27,7 +27,84 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string? ErrorCode { get; set; }
         public string? ErrorCause { get; set; }
         public string? SemanticTypeIri { get; set; }
+        public string? Description { get; set; }
+        // Formula RemedyStepCount (rulebook: =COUNTIFS(Steps!{{RemedyForError}}, {{ErrorId}}))
+        [NotMapped]
+        public int? RemedyStepCount
+        {
+            get => F.AsInt(F.Memo(this, "RemedyStepCount", () => F.Integer((base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<Step>(base.SoAContext, "Steps", __c => __c.Steps), __r => F.CritField(F.Of(__r.RemedyForError), F.Of(this.ErrorId))))))); set { }
+        }
 
+        // Formula OccurrenceCount (rulebook: =COUNTIFS(IssueOccurrences!{{Error}}, {{ErrorId}}))
+        [NotMapped]
+        public int? OccurrenceCount
+        {
+            get => F.AsInt(F.Memo(this, "OccurrenceCount", () => F.Integer((base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<IssueOccurrence>(base.SoAContext, "IssueOccurrences", __c => __c.IssueOccurrences), __r => F.CritField(F.Of(__r.Error), F.Of(this.ErrorId))))))); set { }
+        }
+
+        // Formula HasNoRemedyStep (rulebook: =AND({{OccurrenceCount}} > 0, {{RemedyStepCount}} = 0))
+        [NotMapped]
+        public bool? HasNoRemedyStep
+        {
+            get => F.AsBool(F.Memo(this, "HasNoRemedyStep", () => F.And(F.Bool3(F.Cmp(F.Of(this.OccurrenceCount), ">", F.I(0))), F.Bool3(F.Eq(F.Of(this.RemedyStepCount), F.I(0)))))); set { }
+        }
+
+
+
+        private ObservableCollection<Step> _steps;
+
+        [InverseProperty("Error")]
+        public virtual ObservableCollection<Step> Steps
+        {
+            get
+            {
+                if (_steps == null)
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access Steps - no database context is set. ErrorId: " + this.ErrorId + ".");
+                        }
+                        _steps = new ObservableCollection<Step>();
+                    }
+                    else
+                    {
+                        var items = base.SoAContext.Steps.Where(x => x.RemedyForError == this.ErrorId).ToList<Step>();
+                        _steps = new ObservableCollection<Step>(items);
+                        if (items.Any())
+                        {
+                            base.SoAContext.AttachRange(items);
+                        }
+                    }
+                    _steps.CollectionChanged += Steps_CollectionChanged;
+                }
+                return _steps;
+            }
+            private set
+            {
+                if (_steps != null)
+                {
+                    _steps.CollectionChanged -= Steps_CollectionChanged;
+                }
+                _steps = value;
+                if (_steps != null)
+                {
+                    _steps.CollectionChanged += Steps_CollectionChanged;
+                }
+            }
+        }
+
+        private void Steps_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems != null)
+            {
+                foreach (var item in e.NewItems.Cast<Step>())
+                {
+                    item.RemedyForError = this.ErrorId;
+                }
+            }
+        }
 
         private ObservableCollection<IssueOccurrence> _issueOccurrences;
 
@@ -87,6 +164,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         protected override void LazyLoadProperties()
         {
+            _ = this.Steps;
             _ = this.IssueOccurrences;
         }
 

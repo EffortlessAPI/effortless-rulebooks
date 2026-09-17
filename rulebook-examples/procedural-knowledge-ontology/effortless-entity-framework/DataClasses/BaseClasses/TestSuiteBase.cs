@@ -110,10 +110,66 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             }
         }
 
+        private ObservableCollection<ChangeValidationRun> _changeValidationRuns;
+
+        [InverseProperty("TestSuiteRef")]
+        public virtual ObservableCollection<ChangeValidationRun> ChangeValidationRuns
+        {
+            get
+            {
+                if (_changeValidationRuns == null)
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access ChangeValidationRuns - no database context is set. TestSuiteId: " + this.TestSuiteId + ".");
+                        }
+                        _changeValidationRuns = new ObservableCollection<ChangeValidationRun>();
+                    }
+                    else
+                    {
+                        var items = base.SoAContext.ChangeValidationRuns.Where(x => x.TestSuite == this.TestSuiteId).ToList<ChangeValidationRun>();
+                        _changeValidationRuns = new ObservableCollection<ChangeValidationRun>(items);
+                        if (items.Any())
+                        {
+                            base.SoAContext.AttachRange(items);
+                        }
+                    }
+                    _changeValidationRuns.CollectionChanged += ChangeValidationRuns_CollectionChanged;
+                }
+                return _changeValidationRuns;
+            }
+            private set
+            {
+                if (_changeValidationRuns != null)
+                {
+                    _changeValidationRuns.CollectionChanged -= ChangeValidationRuns_CollectionChanged;
+                }
+                _changeValidationRuns = value;
+                if (_changeValidationRuns != null)
+                {
+                    _changeValidationRuns.CollectionChanged += ChangeValidationRuns_CollectionChanged;
+                }
+            }
+        }
+
+        private void ChangeValidationRuns_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems != null)
+            {
+                foreach (var item in e.NewItems.Cast<ChangeValidationRun>())
+                {
+                    item.TestSuite = this.TestSuiteId;
+                }
+            }
+        }
+
 
         protected override void LazyLoadProperties()
         {
             _ = this.TestCases;
+            _ = this.ChangeValidationRuns;
         }
 
         public override string ToString()

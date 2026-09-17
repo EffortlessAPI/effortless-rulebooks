@@ -28,6 +28,21 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string? TargetIri { get; set; }
         public string? MappingRelation { get; set; }
         public string? Notes { get; set; }
+        public string? AvailableStandardIri { get; set; }
+        // Formula ReinventsStandardTerm (rulebook: =AND({{MappingRelation}} = "extension", {{AvailableStandardIri}} <> ""))
+        [NotMapped]
+        public bool? ReinventsStandardTerm
+        {
+            get => F.AsBool(F.Memo(this, "ReinventsStandardTerm", () => F.And(F.Bool3(F.Eq(F.Nullif(F.Of(this.MappingRelation)), F.S("extension"))), F.Bool3(F.IsNotBlank(F.Of(this.AvailableStandardIri)))))); set { }
+        }
+
+        // Formula IsNonResolvableTermIri (rulebook: =AND({{MappingRelation}} = "extension", LEFT({{TargetIri}}, 4) <> "http"))
+        [NotMapped]
+        public bool? IsNonResolvableTermIri
+        {
+            get => F.AsBool(F.Memo(this, "IsNonResolvableTermIri", () => F.And(F.Bool3(F.Eq(F.Nullif(F.Of(this.MappingRelation)), F.S("extension"))), F.Bool3(F.Ne(F.Left(F.Of(this.TargetIri), F.I(4)), F.S("http")))))); set { }
+        }
+
 
         public string? OntologyProfile { get; set; }
 
