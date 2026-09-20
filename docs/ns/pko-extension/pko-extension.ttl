@@ -1,0 +1,1030 @@
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix vann: <http://purl.org/vocab/vann/> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> a owl:Ontology ;
+    rdfs:label "ERB-PKO Enterprise Extension 1.0.0" ;
+    dcterms:description "Explicit extension for elicitation, tacit knowledge, governance, learning, operational bindings, and communication-channel policy." ;
+    owl:versionInfo "1.0.0" ;
+    vann:preferredNamespaceUri "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#" ;
+    dcterms:license <https://spdx.org/licenses/Apache-2.0> ;
+    owl:imports <https://w3id.org/pko> ;
+    owl:imports <https://w3id.org/pko/industry> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AbundantKnowledgeGap> a owl:Class ;
+    rdfs:label "AbundantKnowledgeGap" ;
+    rdfs:comment "One row of the AbundantKnowledgeGaps table in the knowledge area of the register. The register holds 3 of them, described by 9 fields. Added by loop-15; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AccessDenialTest> a owl:Class ;
+    rdfs:label "AccessDenialTest" ;
+    rdfs:comment "One row of the AccessDenialTests table in the access-control area of the register. The register holds 17 of them, described by 18 fields. Class its instances are typed with. Not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AccessPolicy> a owl:Class ;
+    rdfs:label "AccessPolicy" ;
+    rdfs:comment "One row of the AccessPolicies table in the access-control area of the register. The register holds 776 of them, described by 16 fields. Class its instances are typed with. Not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AccessPrincipal> a owl:Class ;
+    rdfs:label "AccessPrincipal" ;
+    rdfs:comment "One row of the AccessPrincipals table in the access-control area of the register. The register holds 20 of them, described by 15 fields. Class its instances are typed with. Not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ActivityRelation> a owl:Class ;
+    rdfs:label "ActivityRelation" ;
+    rdfs:comment "One row of the ActivityRelations table in the structure area of the register. The register holds 5 of them, described by 13 fields. Added by loop-06; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AgentDecisionRecord> a owl:Class ;
+    rdfs:label "AgentDecisionRecord" ;
+    rdfs:comment "One row of the AgentDecisionRecords table in the org area of the register. The register holds 3 of them, described by 40 fields. Class its instances are typed with. Not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AgentIntegration> a owl:Class ;
+    rdfs:label "AgentIntegration" ;
+    rdfs:comment "One row of the AgentIntegrations table in the encoding area of the register. The register holds 7 of them, described by 16 fields. Added by loop-09; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AgentUpgradeAssessment> a owl:Class ;
+    rdfs:label "AgentUpgradeAssessment" ;
+    rdfs:comment "One row of the AgentUpgradeAssessments table in the registry area of the register. The register holds 2 of them, described by 13 fields. Added by loop-11; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AiAdoptionInitiative> a owl:Class ;
+    rdfs:label "AiAdoptionInitiative" ;
+    rdfs:comment "One row of the AiAdoptionInitiatives table in the encoding area of the register. The register holds 9 of them, described by 46 fields. Added by loop-09; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AiAgentAccountability> a owl:Class ;
+    rdfs:label "AiAgentAccountability" ;
+    rdfs:comment "One row of the AiAgentAccountabilities table in the registry area of the register. The register holds 4 of them, described by 13 fields. Added by loop-11; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AiInsightProposal> a owl:Class ;
+    rdfs:label "AiInsightProposal" ;
+    rdfs:comment "One row of the AiInsightProposals table in the encoding area of the register. The register holds 6 of them, described by 15 fields. Added by loop-09; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AiLabelingRun> a owl:Class ;
+    rdfs:label "AiLabelingRun" ;
+    rdfs:comment "One row of the AiLabelingRuns table in the organizing area of the register. The register holds 3 of them, described by 12 fields. Added by loop-08; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AiModelDeployment> a owl:Class ;
+    rdfs:label "AiModelDeployment" ;
+    rdfs:comment "One row of the AiModelDeployments table in the registry area of the register. The register holds 6 of them, described by 14 fields. Added by loop-11; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AiModelEvaluation> a owl:Class ;
+    rdfs:label "AiModelEvaluation" ;
+    rdfs:comment "One row of the AiModelEvaluations table in the registry area of the register. The register holds 3 of them, described by 10 fields. Added by loop-11; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AiRegistryModelVersion> a owl:Class ;
+    rdfs:label "AiRegistryModelVersion" ;
+    rdfs:comment "One row of the AiRegistryModelVersions table in the registry area of the register. The register holds 6 of them, described by 14 fields. Added by loop-11; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AiToolInvocation> a owl:Class ;
+    rdfs:label "AiToolInvocation" ;
+    rdfs:comment "One row of the AiToolInvocations table in the encoding area of the register. The register holds 3 of them, described by 13 fields. Added by loop-09; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AnswerRequirementCheck> a owl:Class ;
+    rdfs:label "AnswerRequirementCheck" ;
+    rdfs:comment "One row of the AnswerRequirementChecks table in the encoding area of the register. The register holds 2 of them, described by 8 fields. Added by loop-09; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppAction> a owl:Class ;
+    rdfs:label "AppAction" ;
+    rdfs:comment "One row of the AppActions table in the application area of the register. The register holds 20 of them, described by 19 fields. Added by loop-15; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppActionField> a owl:Class ;
+    rdfs:label "AppActionField" ;
+    rdfs:comment "One row of the AppActionFields table in the application area of the register. The register holds 100 of them, described by 12 fields. Added by loop-15; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ApplicabilityScope> a owl:Class ;
+    rdfs:label "ApplicabilityScope" ;
+    rdfs:comment "One row of the ApplicabilityScopes table in the organizing area of the register. The register holds 5 of them, described by 13 fields. Class these instances are typed with, declared beside the aligned mapping to http://www.w3.org/ns/sparql-service-description#NamedGraph. Not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppNavGroup> a owl:Class ;
+    rdfs:label "AppNavGroup" ;
+    rdfs:comment "One row of the AppNavGroups table in the application area of the register. The register holds 23 of them, described by 5 fields. Left-navigation section headers for the role-navigated application." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoleProfile> a owl:Class ;
+    rdfs:label "AppRoleProfile" ;
+    rdfs:comment "One row of the AppRoleProfiles table in the org area of the register. The register holds 20 of them, described by 15 fields. How a role is presented in the application: accent colour, icon, login-card copy. Not a PKO concern — PKO models procedural knowledge, not the applications that display it." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute> a owl:Class ;
+    rdfs:label "AppRoute" ;
+    rdfs:comment "One row of the AppRoutes table in the application area of the register. The register holds 149 of them, described by 18 fields. One screen in the role-navigated application, addressed as /{role}/{dashboard}/{entity...}." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteQuestion> a owl:Class ;
+    rdfs:label "AppRouteQuestion" ;
+    rdfs:comment "One row of the AppRouteQuestions table in the application area of the register. The register holds 151 of them, described by 5 fields. Junction relating a route to the RoleQuestions it helps answer. Many-to-many by design." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference> a owl:Class ;
+    rdfs:label "AppRouteReference" ;
+    rdfs:comment "One row of the AppRouteReferences table in the application area of the register. The register holds 315 of them, described by 5 fields. Junction relating a route to other routes it links to: the navigation graph." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppUser> a owl:Class ;
+    rdfs:label "AppUser" ;
+    rdfs:comment "One row of the AppUsers table in the access-control area of the register. The register holds 20 of them, described by 13 fields. Class its instances are typed with. Not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ArticleClaim> a owl:Class ;
+    rdfs:label "ArticleClaim" ;
+    rdfs:comment "One row of the ArticleClaims table in the coverage area of the register. Article-coverage ledger; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ArtifactHandoff> a owl:Class ;
+    rdfs:label "ArtifactHandoff" ;
+    rdfs:comment "One row of the ArtifactHandoffs table in the sourcing area of the register. The register holds 12 of them, described by 10 fields. Added by loop-11; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AssignmentInstantCheck> a owl:Class ;
+    rdfs:label "AssignmentInstantCheck" ;
+    rdfs:comment "One row of the AssignmentInstantChecks table in the governance area of the register. The register holds 4 of them, described by 14 fields. Added by loop-10; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AssignmentRoutedNotice> a owl:Class ;
+    rdfs:label "AssignmentRoutedNotice" ;
+    rdfs:comment "One row of the AssignmentRoutedNotices table in the ground-truth area of the register. The register holds 6 of them, described by 18 fields. Added by loop-11; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AssignmentUpdatePolicy> a owl:Class ;
+    rdfs:label "AssignmentUpdatePolicy" ;
+    rdfs:comment "One row of the AssignmentUpdatePolicies table in the ground-truth area of the register. The register holds 3 of them, described by 8 fields. Added by loop-11; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AssistantAnswer> a owl:Class ;
+    rdfs:label "AssistantAnswer" ;
+    rdfs:comment "One row of the AssistantAnswers table in the encoding area of the register. The register holds 13 of them, described by 58 fields. Added by loop-09; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AssistantBenchmark> a owl:Class ;
+    rdfs:label "AssistantBenchmark" ;
+    rdfs:comment "One row of the AssistantBenchmarks table in the encoding area of the register. The register holds 4 of them, described by 14 fields. Added by loop-09; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AuthoringSubmission> a owl:Class ;
+    rdfs:label "AuthoringSubmission" ;
+    rdfs:comment "One row of the AuthoringSubmissions table in the structure area of the register. The register holds 3 of them, described by 14 fields. Added by loop-06; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AuthorityBoundary> a owl:Class ;
+    rdfs:label "AuthorityBoundary" ;
+    rdfs:comment "One row of the AuthorityBoundaries table in the governance area of the register. The register holds 3 of them, described by 33 fields. Class its instances are typed with. Not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#BusinessOutcome> a owl:Class ;
+    rdfs:label "BusinessOutcome" ;
+    rdfs:comment "One row of the BusinessOutcomes table in the organizing area of the register. The register holds 3 of them, described by 7 fields. Added by loop-08; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CapabilityDecline> a owl:Class ;
+    rdfs:label "CapabilityDecline" ;
+    rdfs:comment "One row of the CapabilityDeclines table in the social-knowledge area of the register. The register holds 4 of them, described by 11 fields. Added by loop-12; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement> a owl:Class ;
+    rdfs:label "CellDisagreement" ;
+    rdfs:comment "One row of the CellDisagreements table in the meta area of the register. The register holds 205 of them, described by 10 fields. Latest-run sampled failing cells. Not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ChangeAuthorityRule> a owl:Class ;
+    rdfs:label "ChangeAuthorityRule" ;
+    rdfs:comment "One row of the ChangeAuthorityRules table in the governance area of the register. The register holds 4 of them, described by 12 fields. Added by loop-10; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ChangeImpactFinding> a owl:Class ;
+    rdfs:label "ChangeImpactFinding" ;
+    rdfs:comment "One row of the ChangeImpactFindings table in the governance area of the register. The register holds 10 of them, described by 13 fields. Added by loop-10; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ChangeIntegrityCheck> a owl:Class ;
+    rdfs:label "ChangeIntegrityCheck" ;
+    rdfs:comment "One row of the ChangeIntegrityChecks table in the governance area of the register. The register holds 15 of them, described by 9 fields. Added by loop-10; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ChangeObjection> a owl:Class ;
+    rdfs:label "ChangeObjection" ;
+    rdfs:comment "One row of the ChangeObjections table in the governance area of the register. The register holds 2 of them, described by 11 fields. Added by loop-10; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ChangeRequest> a owl:Class ;
+    rdfs:label "ChangeRequest" ;
+    rdfs:comment "One row of the ChangeRequests table in the domain area of the register. The register holds 4 of them, described by 46 fields. Class its instances are typed with. Not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ChangeValidationRun> a owl:Class ;
+    rdfs:label "ChangeValidationRun" ;
+    rdfs:comment "One row of the ChangeValidationRuns table in the governance area of the register. The register holds 8 of them, described by 19 fields. Added by loop-10; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ClaimEvidence> a owl:Class ;
+    rdfs:label "ClaimEvidence" ;
+    rdfs:comment "One row of the ClaimEvidence table in the coverage area of the register. Article-coverage ledger; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ClassificationFacet> a owl:Class ;
+    rdfs:label "ClassificationFacet" ;
+    rdfs:comment "One row of the ClassificationFacets table in the organizing area of the register. The register holds 4 of them, described by 6 fields. Added by loop-08; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CollectedSourceMaterial> a owl:Class ;
+    rdfs:label "CollectedSourceMaterial" ;
+    rdfs:comment "One row of the CollectedSourceMaterials table in the organizing area of the register. The register holds 15 of them, described by 30 fields. Added by loop-08; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CollectionOccasion> a owl:Class ;
+    rdfs:label "CollectionOccasion" ;
+    rdfs:comment "One row of the CollectionOccasions table in the provenance area of the register. The register holds 3 of them, described by 14 fields. Added by loop-13." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CommunityMembership> a owl:Class ;
+    rdfs:label "CommunityMembership" ;
+    rdfs:comment "One row of the CommunityMemberships table in the social-knowledge area of the register. The register holds 9 of them, described by 10 fields. Added by loop-12; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CommunityOfPractice> a owl:Class ;
+    rdfs:label "CommunityOfPractice" ;
+    rdfs:comment "One row of the CommunitiesOfPractice table in the org area of the register. The register holds 7 of them, described by 29 fields. Class its instances are typed with. Not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CompetencyQuestionReview> a owl:Class ;
+    rdfs:label "CompetencyQuestionReview" ;
+    rdfs:comment "One row of the CompetencyQuestionReviews table in the governance area of the register. The register holds 4 of them, described by 9 fields. Added by loop-10; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CompetencyQuestionRun> a owl:Class ;
+    rdfs:label "CompetencyQuestionRun" ;
+    rdfs:comment "One row of the CompetencyQuestionRuns table in the governance area of the register. The register holds 10 of them, described by 14 fields. Added by loop-10; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CompetencyQuestionSetEntry> a owl:Class ;
+    rdfs:label "CompetencyQuestionSetEntry" ;
+    rdfs:comment "One row of the CompetencyQuestionSetEntries table in the governance area of the register. The register holds 8 of them, described by 20 fields. Added by loop-10; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ConceptLadderRung> a owl:Class ;
+    rdfs:label "ConceptLadderRung" ;
+    rdfs:comment "One row of the ConceptLadderRungs table in the elicitation area of the register. The register holds 5 of them, described by 11 fields. Added by loop-07; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ConditionCheck> a owl:Class ;
+    rdfs:label "ConditionCheck" ;
+    rdfs:comment "One row of the ConditionChecks table in the execution area of the register. The register holds 7 of them, described by 13 fields. Added by loop-06; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ConformanceRun> a owl:Class ;
+    rdfs:label "ConformanceRun" ;
+    rdfs:comment "One row of the ConformanceRuns table in the meta area of the register. The register holds 5 of them, described by 16 fields. Conformance harness executions. Not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ConformanceSubstrate> a owl:Class ;
+    rdfs:label "ConformanceSubstrate" ;
+    rdfs:comment "One row of the ConformanceSubstrates table in the meta area of the register. The register holds 8 of them, described by 20 fields. Substrates the conformance harness grades, and the answer-key author. Not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ConsumerRevalidation> a owl:Class ;
+    rdfs:label "ConsumerRevalidation" ;
+    rdfs:comment "One row of the ConsumerRevalidations table in the governance area of the register. The register holds 26 of them, described by 9 fields. Added by loop-10; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ConsumerSystemSync> a owl:Class ;
+    rdfs:label "ConsumerSystemSync" ;
+    rdfs:comment "One row of the ConsumerSystemSyncs table in the encoding area of the register. The register holds 6 of them, described by 19 fields. Added by loop-09; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CorporateGovernanceProgram> a owl:Class ;
+    rdfs:label "CorporateGovernanceProgram" ;
+    rdfs:comment "One row of the CorporateGovernancePrograms table in the sourcing area of the register. The register holds 3 of them, described by 12 fields. Added by loop-11; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CriticalIncident> a owl:Class ;
+    rdfs:label "CriticalIncident" ;
+    rdfs:comment "One row of the CriticalIncidents table in the elicitation area of the register. The register holds 3 of them, described by 14 fields. Added by loop-07; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CueObservation> a owl:Class ;
+    rdfs:label "CueObservation" ;
+    rdfs:comment "One row of the CueObservations table in the execution area of the register. The register holds 3 of them, described by 17 fields. Added by loop-06; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#DeliveredCommunication> a owl:Class ;
+    rdfs:label "DeliveredCommunication" ;
+    rdfs:comment "One row of the DeliveredCommunications table in the communication area of the register. The register holds 1 of them, described by 18 fields. Class its instances are typed with. Not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#DepartmentProcessAccount> a owl:Class ;
+    rdfs:label "DepartmentProcessAccount" ;
+    rdfs:comment "One row of the DepartmentProcessAccounts table in the social-knowledge area of the register. The register holds 5 of them, described by 16 fields. Added by loop-12; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#DomainCoverageArea> a owl:Class ;
+    rdfs:label "DomainCoverageArea" ;
+    rdfs:comment "One row of the DomainCoverageAreas table in the governance area of the register. The register holds 4 of them, described by 8 fields. Added by loop-10; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#DriftObservation> a owl:Class ;
+    rdfs:label "DriftObservation" ;
+    rdfs:comment "One row of the DriftObservations table in the governance area of the register. The register holds 4 of them, described by 18 fields. Added by loop-10; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ElicitationParticipant> a owl:Class ;
+    rdfs:label "ElicitationParticipant" ;
+    rdfs:comment "One row of the ElicitationParticipants table in the elicitation area of the register. The register holds 7 of them, described by 14 fields. Added by loop-07; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ElicitationSession> a owl:Class ;
+    rdfs:label "ElicitationSession" ;
+    rdfs:comment "One row of the ElicitationSessions table in the knowledge area of the register. The register holds 13 of them, described by 44 fields. Knowledge elicitation activity." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#EmbeddingProbe> a owl:Class ;
+    rdfs:label "EmbeddingProbe" ;
+    rdfs:comment "One row of the EmbeddingProbes table in the encoding area of the register. The register holds 6 of them, described by 11 fields. Added by loop-09; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#EncodingLifecycleStage> a owl:Class ;
+    rdfs:label "EncodingLifecycleStage" ;
+    rdfs:comment "One row of the EncodingLifecycleStages table in the encoding area of the register. The register holds 6 of them, described by 8 fields. Added by loop-09; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#EvaluationContext> a owl:Class ;
+    rdfs:label "EvaluationContext" ;
+    rdfs:comment "One row of the EvaluationContexts table in the meta area of the register. The register holds 1 of them, described by 7 fields. Class its instances are typed with. Not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#Exception> a owl:Class ;
+    rdfs:label "Exception" ;
+    rdfs:comment "One row of the Exceptions table in the governance area of the register. The register holds 4 of them, described by 11 fields. Class its instances are typed with. Not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ExceptionInvocation> a owl:Class ;
+    rdfs:label "ExceptionInvocation" ;
+    rdfs:comment "One row of the ExceptionInvocations table in the governance area of the register. The register holds 1 of them, described by 21 fields. Class its instances are typed with. Not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ExpansionConceptFit> a owl:Class ;
+    rdfs:label "ExpansionConceptFit" ;
+    rdfs:comment "One row of the ExpansionConceptFits table in the governance area of the register. The register holds 9 of them, described by 7 fields. Added by loop-10; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ExpectedInferenceCheck> a owl:Class ;
+    rdfs:label "ExpectedInferenceCheck" ;
+    rdfs:comment "One row of the ExpectedInferenceChecks table in the governance area of the register. The register holds 4 of them, described by 9 fields. Added by loop-10; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ExpertCognition> a owl:Class ;
+    rdfs:label "ExpertCognition" ;
+    rdfs:comment "One row of the ExpertCognitions table in the elicitation area of the register. The register holds 3 of them, described by 14 fields. Added by loop-07; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ExternalDependencyRevision> a owl:Class ;
+    rdfs:label "ExternalDependencyRevision" ;
+    rdfs:comment "One row of the ExternalDependencyRevisions table in the governance area of the register. The register holds 3 of them, described by 14 fields. Added by loop-10; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ExternalStandardTerm> a owl:Class ;
+    rdfs:label "ExternalStandardTerm" ;
+    rdfs:comment "One row of the ExternalStandardTerms table in the organizing area of the register. The register holds 9 of them, described by 29 fields. Added by loop-08; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#FailureMode> a owl:Class ;
+    rdfs:label "FailureMode" ;
+    rdfs:comment "One row of the FailureModes table in the structure area of the register. The register holds 5 of them, described by 12 fields. Added by loop-06; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#FieldDisagreement> a owl:Class ;
+    rdfs:label "FieldDisagreement" ;
+    rdfs:comment "One row of the FieldDisagreements table in the meta area of the register. The register holds 27 of them, described by 13 fields. Latest-run fields a substrate got wrong. Not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#FieldGrant> a owl:Class ;
+    rdfs:label "FieldGrant" ;
+    rdfs:comment "One row of the FieldGrants table in the access-control area of the register. The register holds 18272 of them, described by 14 fields. Class its instances are typed with. Not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#FragmentCorroboration> a owl:Class ;
+    rdfs:label "FragmentCorroboration" ;
+    rdfs:comment "One row of the FragmentCorroborations table in the elicitation area of the register. The register holds 4 of them, described by 7 fields. Added by loop-07; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#GovernanceStageControl> a owl:Class ;
+    rdfs:label "GovernanceStageControl" ;
+    rdfs:comment "One row of the GovernanceStageControls table in the governance area of the register. The register holds 20 of them, described by 8 fields. Added by loop-10; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#GovernedModel> a owl:Class ;
+    rdfs:label "GovernedModel" ;
+    rdfs:comment "One row of the GovernedModels table in the governance area of the register. The register holds 7 of them, described by 66 fields. Added by loop-10; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#GroundingSnapshot> a owl:Class ;
+    rdfs:label "GroundingSnapshot" ;
+    rdfs:comment "One row of the GroundingSnapshots table in the encoding area of the register. The register holds 3 of them, described by 20 fields. Added by loop-09; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#InstanceDataVersion> a owl:Class ;
+    rdfs:label "InstanceDataVersion" ;
+    rdfs:comment "One row of the InstanceDataVersions table in the governance area of the register. The register holds 2 of them, described by 8 fields. Added by loop-10; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#IntegrationPathway> a owl:Class ;
+    rdfs:label "IntegrationPathway" ;
+    rdfs:comment "One row of the IntegrationPathways table in the encoding area of the register. The register holds 4 of them, described by 6 fields. Added by loop-09; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#InterviewProbe> a owl:Class ;
+    rdfs:label "InterviewProbe" ;
+    rdfs:comment "One row of the InterviewProbes table in the elicitation area of the register. The register holds 4 of them, described by 10 fields. Added by loop-07; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#JwtClaimMapping> a owl:Class ;
+    rdfs:label "JwtClaimMapping" ;
+    rdfs:comment "One row of the JwtClaimMappings table in the access-control area of the register. The register holds 4 of them, described by 9 fields. Class its instances are typed with. Not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#KnowHowCarrier> a owl:Class ;
+    rdfs:label "KnowHowCarrier" ;
+    rdfs:comment "One row of the KnowHowCarriers table in the social-knowledge area of the register. The register holds 13 of them, described by 46 fields. Added by loop-12; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#KnowledgeAudit> a owl:Class ;
+    rdfs:label "KnowledgeAudit" ;
+    rdfs:comment "One row of the KnowledgeAudits table in the sourcing area of the register. The register holds 4 of them, described by 10 fields. Added by loop-11; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#KnowledgeAuditItem> a owl:Class ;
+    rdfs:label "KnowledgeAuditItem" ;
+    rdfs:comment "One row of the KnowledgeAuditItems table in the sourcing area of the register. The register holds 12 of them, described by 19 fields. Added by loop-11; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#KnowledgeBrokerLink> a owl:Class ;
+    rdfs:label "KnowledgeBrokerLink" ;
+    rdfs:comment "One row of the KnowledgeBrokerLinks table in the knowledge area of the register. The register holds 8 of them, described by 24 fields. An informal expertise-network edge — not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#KnowledgeCaptureInitiative> a owl:Class ;
+    rdfs:label "KnowledgeCaptureInitiative" ;
+    rdfs:comment "One row of the KnowledgeCaptureInitiatives table in the sourcing area of the register. The register holds 3 of them, described by 8 fields. Added by loop-11; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#KnowledgeConsumerSystem> a owl:Class ;
+    rdfs:label "KnowledgeConsumerSystem" ;
+    rdfs:comment "One row of the KnowledgeConsumerSystems table in the encoding area of the register. The register holds 8 of them, described by 29 fields. Added by loop-09; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#KnowledgeConversion> a owl:Class ;
+    rdfs:label "KnowledgeConversion" ;
+    rdfs:comment "One row of the KnowledgeConversions table in the elicitation area of the register. The register holds 5 of them, described by 11 fields. Added by loop-07; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#KnowledgeDeliverable> a owl:Class ;
+    rdfs:label "KnowledgeDeliverable" ;
+    rdfs:comment "One row of the KnowledgeDeliverables table in the sourcing area of the register. The register holds 10 of them, described by 9 fields. Added by loop-11; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#KnowledgeFragment> a owl:Class ;
+    rdfs:label "KnowledgeFragment" ;
+    rdfs:comment "One row of the KnowledgeFragments table in the knowledge area of the register. The register holds 12 of them, described by 89 fields. Tacit/implicit/explicit knowledge capture." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#KnowledgeGap> a owl:Class ;
+    rdfs:label "KnowledgeGap" ;
+    rdfs:comment "One row of the KnowledgeGaps table in the knowledge area of the register. The register holds 15 of them, described by 38 fields. Class its instances are typed with. Not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#KnowledgeHolding> a owl:Class ;
+    rdfs:label "KnowledgeHolding" ;
+    rdfs:comment "One row of the KnowledgeHoldings table in the elicitation area of the register. The register holds 10 of them, described by 20 fields. Added by loop-07; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#KnowledgeMethod> a owl:Class ;
+    rdfs:label "KnowledgeMethod" ;
+    rdfs:comment "One row of the KnowledgeMethods table in the knowledge area of the register. The register holds 26 of them, described by 12 fields. Article-coverage ledger; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#KnowledgeOutcomeMeasurement> a owl:Class ;
+    rdfs:label "KnowledgeOutcomeMeasurement" ;
+    rdfs:comment "One row of the KnowledgeOutcomeMeasurements table in the encoding area of the register. The register holds 7 of them, described by 28 fields. Added by loop-09; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#KnowledgeProjection> a owl:Class ;
+    rdfs:label "KnowledgeProjection" ;
+    rdfs:comment "One row of the KnowledgeProjections table in the encoding area of the register. The register holds 7 of them, described by 18 fields. Added by loop-09; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#KnowledgeQueryDefinition> a owl:Class ;
+    rdfs:label "KnowledgeQueryDefinition" ;
+    rdfs:comment "One row of the KnowledgeQueryDefinitions table in the encoding area of the register. The register holds 4 of them, described by 15 fields. Added by loop-09; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#KnowledgeQuerySource> a owl:Class ;
+    rdfs:label "KnowledgeQuerySource" ;
+    rdfs:comment "One row of the KnowledgeQuerySources table in the encoding area of the register. The register holds 6 of them, described by 5 fields. Added by loop-09; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#KnowledgeRepositoryEntry> a owl:Class ;
+    rdfs:label "KnowledgeRepositoryEntry" ;
+    rdfs:comment "One row of the KnowledgeRepositoryEntries table in the social-knowledge area of the register. The register holds 8 of them, described by 26 fields. Added by loop-12; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#KnowledgeSearchEvent> a owl:Class ;
+    rdfs:label "KnowledgeSearchEvent" ;
+    rdfs:comment "One row of the KnowledgeSearchEvents table in the encoding area of the register. The register holds 6 of them, described by 19 fields. Added by loop-09; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#KnowledgeTestOutcome> a owl:Class ;
+    rdfs:label "KnowledgeTestOutcome" ;
+    rdfs:comment "One row of the KnowledgeTestOutcomes table in the elicitation area of the register. The register holds 5 of them, described by 10 fields. Added by loop-07; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#KnowledgeTransfer> a owl:Class ;
+    rdfs:label "KnowledgeTransfer" ;
+    rdfs:comment "One row of the KnowledgeTransfers table in the social-knowledge area of the register. The register holds 9 of them, described by 15 fields. Added by loop-12; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#KnowledgeWorkforcePosition> a owl:Class ;
+    rdfs:label "KnowledgeWorkforcePosition" ;
+    rdfs:comment "One row of the KnowledgeWorkforcePositions table in the sourcing area of the register. The register holds 4 of them, described by 9 fields. Added by loop-11; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#LegacyStatus> a owl:Class ;
+    rdfs:label "LegacyStatus" ;
+    rdfs:comment "One row of the LifecycleStatuses table in the structure area of the register. The register holds 11 of them, described by 12 fields. Class these instances are typed with, declared beside the exact mapping to https://w3id.org/pko#Status. Not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#LevelCaptureStrategy> a owl:Class ;
+    rdfs:label "LevelCaptureStrategy" ;
+    rdfs:comment "One row of the LevelCaptureStrategies table in the organizing area of the register. The register holds 5 of them, described by 9 fields. Added by loop-08; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#LevelPyramidQuestion> a owl:Class ;
+    rdfs:label "LevelPyramidQuestion" ;
+    rdfs:comment "One row of the LevelPyramidQuestions table in the organizing area of the register. The register holds 5 of them, described by 5 fields. Added by loop-08; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#MachineEnergySource> a owl:Class ;
+    rdfs:label "MachineEnergySource" ;
+    rdfs:comment "One row of the MachineEnergySources table in the industry area of the register. The register holds 6 of them, described by 9 fields. Added by loop-06; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#Mentorship> a owl:Class ;
+    rdfs:label "Mentorship" ;
+    rdfs:comment "One row of the Mentorships table in the org area of the register. The register holds 5 of them, described by 18 fields. Class its instances are typed with. Not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#MessageDelivery> a owl:Class ;
+    rdfs:label "MessageDelivery" ;
+    rdfs:comment "One row of the MessageDeliveries table in the communication area of the register. The register holds 6 of them, described by 94 fields. Class its instances are typed with. Not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#MethodApplication> a owl:Class ;
+    rdfs:label "MethodApplication" ;
+    rdfs:comment "One row of the MethodApplications table in the knowledge area of the register. The register holds 20 of them, described by 9 fields. Class its instances are typed with. Not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#MinedFlowEdge> a owl:Class ;
+    rdfs:label "MinedFlowEdge" ;
+    rdfs:comment "One row of the MinedFlowEdges table in the provenance area of the register. The register holds 6 of them, described by 15 fields. Added by loop-13." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ModelActivityExpert> a owl:Class ;
+    rdfs:label "ModelActivityExpert" ;
+    rdfs:comment "One row of the ModelActivityExperts table in the governance area of the register. The register holds 16 of them, described by 6 fields. Added by loop-14; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ModelAnnotation> a owl:Class ;
+    rdfs:label "ModelAnnotation" ;
+    rdfs:comment "One row of the ModelAnnotations table in the encoding area of the register. The register holds 9 of them, described by 20 fields. Added by loop-09; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ModelChangeRequest> a owl:Class ;
+    rdfs:label "ModelChangeRequest" ;
+    rdfs:comment "One row of the ModelChangeRequests table in the governance area of the register. The register holds 17 of them, described by 87 fields. Added by loop-10; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ModelCharter> a owl:Class ;
+    rdfs:label "ModelCharter" ;
+    rdfs:comment "One row of the ModelCharters table in the governance area of the register. The register holds 8 of them, described by 39 fields. Added by loop-10; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ModelConsumer> a owl:Class ;
+    rdfs:label "ModelConsumer" ;
+    rdfs:comment "One row of the ModelConsumers table in the governance area of the register. The register holds 4 of them, described by 8 fields. Added by loop-10; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ModelDataMappingRun> a owl:Class ;
+    rdfs:label "ModelDataMappingRun" ;
+    rdfs:comment "One row of the ModelDataMappingRuns table in the governance area of the register. The register holds 4 of them, described by 7 fields. Added by loop-14; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ModelDocument> a owl:Class ;
+    rdfs:label "ModelDocument" ;
+    rdfs:comment "One row of the ModelDocuments table in the governance area of the register. The register holds 5 of them, described by 10 fields. Added by loop-10; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ModelExpansionRequest> a owl:Class ;
+    rdfs:label "ModelExpansionRequest" ;
+    rdfs:comment "One row of the ModelExpansionRequests table in the governance area of the register. The register holds 3 of them, described by 17 fields. Added by loop-10; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ModelPilot> a owl:Class ;
+    rdfs:label "ModelPilot" ;
+    rdfs:comment "One row of the ModelPilots table in the governance area of the register. The register holds 3 of them, described by 7 fields. Added by loop-14; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ModelProposal> a owl:Class ;
+    rdfs:label "ModelProposal" ;
+    rdfs:comment "One row of the ModelProposals table in the governance area of the register. The register holds 11 of them, described by 36 fields. Added by loop-10; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ObservedAction> a owl:Class ;
+    rdfs:label "ObservedAction" ;
+    rdfs:comment "One row of the ObservedActions table in the elicitation area of the register. The register holds 5 of them, described by 20 fields. Added by loop-07; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ObservedTransition> a owl:Class ;
+    rdfs:label "ObservedTransition" ;
+    rdfs:comment "One row of the ObservedTransitions table in the specification area of the register. The register holds 10 of them, described by 8 fields. Class its instances are typed with. Not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#OnboardingRecord> a owl:Class ;
+    rdfs:label "OnboardingRecord" ;
+    rdfs:comment "One row of the OnboardingRecords table in the social-knowledge area of the register. The register holds 7 of them, described by 17 fields. Added by loop-12; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#OntologySupportProgramme> a owl:Class ;
+    rdfs:label "OntologySupportProgramme" ;
+    rdfs:comment "One row of the OntologySupportProgrammes table in the governance area of the register. The register holds 2 of them, described by 21 fields. Added by loop-15; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#OperationalBinding> a owl:Class ;
+    rdfs:label "OperationalBinding" ;
+    rdfs:comment "One row of the OperationalBindings table in the domain area of the register. The register holds 5 of them, described by 22 fields. Live data binding." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#OutcomeCriterion> a owl:Class ;
+    rdfs:label "OutcomeCriterion" ;
+    rdfs:comment "One row of the ProcedureOutcomeCriteria table in the structure area of the register. The register holds 5 of them, described by 7 fields. Added by loop-06; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#PractitionerExpertise> a owl:Class ;
+    rdfs:label "PractitionerExpertise" ;
+    rdfs:comment "One row of the PractitionerExpertise table in the elicitation area of the register. The register holds 5 of them, described by 14 fields. Added by loop-07; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#PrincipalAssignment> a owl:Class ;
+    rdfs:label "PrincipalAssignment" ;
+    rdfs:comment "One row of the PrincipalAssignments table in the access-control area of the register. The register holds 22 of them, described by 11 fields. Class its instances are typed with. Not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ProblemOccurrence> a owl:Class ;
+    rdfs:label "ProblemOccurrence" ;
+    rdfs:comment "One row of the ProblemOccurrences table in the social-knowledge area of the register. The register holds 5 of them, described by 21 fields. Added by loop-12; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ProcedureAdoption> a owl:Class ;
+    rdfs:label "ProcedureAdoption" ;
+    rdfs:comment "One row of the ProcedureAdoptions table in the structure area of the register. The register holds 3 of them, described by 8 fields. Class its instances are typed with. Not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ProcedureFacetAssignment> a owl:Class ;
+    rdfs:label "ProcedureFacetAssignment" ;
+    rdfs:comment "One row of the ProcedureFacetAssignments table in the organizing area of the register. The register holds 12 of them, described by 6 fields. Added by loop-08; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ProcedureLensView> a owl:Class ;
+    rdfs:label "ProcedureLensView" ;
+    rdfs:comment "One row of the ProcedureLensViews table in the organizing area of the register. The register holds 15 of them, described by 15 fields. Class these instances are typed with, declared beside the aligned mapping to https://schema.org/HowTo. Not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ProcessDesignDecision> a owl:Class ;
+    rdfs:label "ProcessDesignDecision" ;
+    rdfs:comment "One row of the ProcessDesignDecisions table in the governance area of the register. The register holds 3 of them, described by 13 fields. Added by loop-10; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ProcessInterdependency> a owl:Class ;
+    rdfs:label "ProcessInterdependency" ;
+    rdfs:comment "One row of the ProcessInterdependencies table in the organizing area of the register. The register holds 4 of them, described by 10 fields. Added by loop-08; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ProcessKnowledgeLevel> a owl:Class ;
+    rdfs:label "ProcessKnowledgeLevel" ;
+    rdfs:comment "One row of the ProcessKnowledgeLevels table in the organizing area of the register. The register holds 3 of them, described by 8 fields. Added by loop-08; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ProcessLevelStatement> a owl:Class ;
+    rdfs:label "ProcessLevelStatement" ;
+    rdfs:comment "One row of the ProcessLevelStatements table in the organizing area of the register. The register holds 8 of them, described by 10 fields. Added by loop-08; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ProcessMiningRun> a owl:Class ;
+    rdfs:label "ProcessMiningRun" ;
+    rdfs:comment "One row of the ProcessMiningRuns table in the knowledge area of the register. The register holds 5 of them, described by 23 fields. Process-mining conformance evidence — not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ProcessOutcomeMeasure> a owl:Class ;
+    rdfs:label "ProcessOutcomeMeasure" ;
+    rdfs:comment "One row of the ProcessOutcomeMeasures table in the organizing area of the register. The register holds 5 of them, described by 12 fields. Added by loop-08; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ProcessStage> a owl:Class ;
+    rdfs:label "ProcessStage" ;
+    rdfs:comment "One row of the ProcessStages table in the organizing area of the register. The register holds 7 of them, described by 10 fields. Class these instances are typed with, declared beside the aligned mapping to http://purl.org/net/p-plan#MultiStep. Not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ProcessStrategicAlignment> a owl:Class ;
+    rdfs:label "ProcessStrategicAlignment" ;
+    rdfs:comment "One row of the ProcessStrategicAlignments table in the organizing area of the register. The register holds 4 of them, described by 10 fields. Added by loop-08; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#PromptTemplate> a owl:Class ;
+    rdfs:label "PromptTemplate" ;
+    rdfs:comment "One row of the PromptTemplates table in the encoding area of the register. The register holds 5 of them, described by 21 fields. Added by loop-09; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ProviderEngagement> a owl:Class ;
+    rdfs:label "ProviderEngagement" ;
+    rdfs:comment "One row of the ProviderEngagements table in the sourcing area of the register. The register holds 7 of them, described by 27 fields. Added by loop-11; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#QualityAssessment> a owl:Class ;
+    rdfs:label "QualityAssessment" ;
+    rdfs:comment "One row of the QualityAssessments table in the governance area of the register. The register holds 11 of them, described by 9 fields. Added by loop-10; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#QualityCriterion> a owl:Class ;
+    rdfs:label "QualityCriterion" ;
+    rdfs:comment "One row of the QualityCriteria table in the governance area of the register. The register holds 8 of them, described by 7 fields. Added by loop-10; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> ;
+    rdfs:seeAlso <http://www.w3.org/ns/dqv#Dimension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#Rationale> a owl:Class ;
+    rdfs:label "Rationale" ;
+    rdfs:comment "One row of the Rationales table in the governance area of the register. The register holds 4 of them, described by 9 fields. Class its instances are typed with. Not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ReasonerRun> a owl:Class ;
+    rdfs:label "ReasonerRun" ;
+    rdfs:comment "One row of the ReasonerRuns table in the encoding area of the register. The register holds 5 of them, described by 15 fields. Added by loop-09; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#Recipient> a owl:Class ;
+    rdfs:label "Recipient" ;
+    rdfs:comment "One row of the Recipients table in the communication area of the register. The register holds 5 of them, described by 15 fields. Class its instances are typed with. Not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RecordsRetentionPolicy> a owl:Class ;
+    rdfs:label "RecordsRetentionPolicy" ;
+    rdfs:comment "One row of the RecordsRetentionPolicies table in the sourcing area of the register. The register holds 4 of them, described by 10 fields. Added by loop-11; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RegulatoryFramework> a owl:Class ;
+    rdfs:label "RegulatoryFramework" ;
+    rdfs:comment "One row of the RegulatoryFrameworks table in the industry area of the register. The register holds 2 of them, described by 7 fields. Added by loop-06; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RelationType> a owl:Class ;
+    rdfs:label "RelationType" ;
+    rdfs:comment "One row of the RelationTypes table in the structure area of the register. The register holds 11 of them, described by 9 fields. Added by loop-06; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RepertoryGridConstruct> a owl:Class ;
+    rdfs:label "RepertoryGridConstruct" ;
+    rdfs:comment "One row of the RepertoryGridConstructs table in the elicitation area of the register. The register holds 3 of them, described by 13 fields. Added by loop-07; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RepresentationReview> a owl:Class ;
+    rdfs:label "RepresentationReview" ;
+    rdfs:comment "One row of the RepresentationReviews table in the elicitation area of the register. The register holds 4 of them, described by 9 fields. Added by loop-07; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RetrievalSegment> a owl:Class ;
+    rdfs:label "RetrievalSegment" ;
+    rdfs:comment "One row of the RetrievalSegments table in the encoding area of the register. The register holds 9 of them, described by 23 fields. Added by loop-09; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RoleAssignmentUpdateTask> a owl:Class ;
+    rdfs:label "RoleAssignmentUpdateTask" ;
+    rdfs:comment "One row of the RoleAssignmentUpdateTasks table in the ground-truth area of the register. The register holds 6 of them, described by 31 fields. Added by loop-11; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RoleCapabilityTag> a owl:Class ;
+    rdfs:label "RoleCapabilityTag" ;
+    rdfs:comment "One row of the RoleCapabilityTags table in the organizing area of the register. The register holds 9 of them, described by 7 fields. Added by loop-08; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RoleQuestion> a owl:Class ;
+    rdfs:label "RoleQuestion" ;
+    rdfs:comment "One row of the RoleQuestions table in the org area of the register. The register holds 435 of them, described by 11 fields. Class its instances are typed with. Not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RoleSchema> a owl:Class ;
+    rdfs:label "RoleSchema" ;
+    rdfs:comment "One row of the RoleSchemas table in the org area of the register. The register holds 20 of them, described by 9 fields. Class its instances are typed with. Not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RoleSchemaView> a owl:Class ;
+    rdfs:label "RoleSchemaView" ;
+    rdfs:comment "One row of the RoleSchemaViews table in the org area of the register. The register holds 757 of them, described by 14 fields. Class its instances are typed with. Not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RulebookField> a owl:Class ;
+    rdfs:label "RulebookField" ;
+    rdfs:comment "One row of the RulebookFields table in the access-control area of the register. The register holds 5154 of them, described by 18 fields. Class its instances are typed with. Not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RulebookTable> a owl:Class ;
+    rdfs:label "RulebookTable" ;
+    rdfs:comment "One row of the RulebookTables table in the meta area of the register. The register holds 264 of them, described by 27 fields. Class these instances are typed with, declared beside the aligned mapping to http://www.w3.org/2000/01/rdf-schema#Class. Not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#SchemeRefinement> a owl:Class ;
+    rdfs:label "SchemeRefinement" ;
+    rdfs:comment "One row of the SchemeRefinements table in the organizing area of the register. The register holds 2 of them, described by 7 fields. Added by loop-08; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#SendIntent> a owl:Class ;
+    rdfs:label "SendIntent" ;
+    rdfs:comment "One row of the SendIntents table in the communication area of the register. The register holds 7 of them, described by 100 fields. Class its instances are typed with. Not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#SharingRecognition> a owl:Class ;
+    rdfs:label "SharingRecognition" ;
+    rdfs:comment "One row of the SharingRecognitions table in the social-knowledge area of the register. The register holds 2 of them, described by 8 fields. Added by loop-12; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#SituationalVariant> a owl:Class ;
+    rdfs:label "SituationalVariant" ;
+    rdfs:comment "One row of the SituationalVariants table in the organizing area of the register. The register holds 4 of them, described by 13 fields. Added by loop-08; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#SourceArticle> a owl:Class ;
+    rdfs:label "SourceArticle" ;
+    rdfs:comment "One row of the SourceArticles table in the coverage area of the register. Article-coverage ledger; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#SourceRelationship> a owl:Class ;
+    rdfs:label "SourceRelationship" ;
+    rdfs:comment "One row of the SourceRelationships table in the social-knowledge area of the register. The register holds 4 of them, described by 16 fields. Added by loop-12; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#SourceTermMention> a owl:Class ;
+    rdfs:label "SourceTermMention" ;
+    rdfs:comment "One row of the SourceTermMentions table in the organizing area of the register. The register holds 25 of them, described by 17 fields. Added by loop-08; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#SourcingFunction> a owl:Class ;
+    rdfs:label "SourcingFunction" ;
+    rdfs:comment "One row of the SourcingFunctions table in the sourcing area of the register. The register holds 12 of them, described by 35 fields. Added by loop-11; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#StakeholderLens> a owl:Class ;
+    rdfs:label "StakeholderLens" ;
+    rdfs:comment "One row of the StakeholderLenses table in the organizing area of the register. The register holds 9 of them, described by 13 fields. Class its instances are typed with. Not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#StakeholderPerspective> a owl:Class ;
+    rdfs:label "StakeholderPerspective" ;
+    rdfs:comment "One row of the StakeholderPerspectives table in the provenance area of the register. The register holds 5 of them, described by 14 fields. Added by loop-13." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#StakeholderQuestion> a owl:Class ;
+    rdfs:label "StakeholderQuestion" ;
+    rdfs:comment "One row of the StakeholderQuestions table in the governance area of the register. The register holds 6 of them, described by 26 fields. Added by loop-10; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#StalenessQueryRun> a owl:Class ;
+    rdfs:label "StalenessQueryRun" ;
+    rdfs:comment "One row of the StalenessQueryRuns table in the governance area of the register. The register holds 3 of them, described by 12 fields. Added by loop-10; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#StepCondition> a owl:Class ;
+    rdfs:label "StepCondition" ;
+    rdfs:comment "One row of the StepConditions table in the structure area of the register. The register holds 7 of them, described by 15 fields. Added by loop-06; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#StepContextSensitivity> a owl:Class ;
+    rdfs:label "StepContextSensitivity" ;
+    rdfs:comment "One row of the StepContextSensitivities table in the organizing area of the register. The register holds 4 of them, described by 9 fields. Added by loop-08; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#StepCue> a owl:Class ;
+    rdfs:label "StepCue" ;
+    rdfs:comment "One row of the StepCues table in the structure area of the register. The register holds 4 of them, described by 17 fields. Added by loop-06; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#StepLockRequirement> a owl:Class ;
+    rdfs:label "StepLockRequirement" ;
+    rdfs:comment "One row of the StepLockRequirements table in the industry area of the register. The register holds 3 of them, described by 5 fields. Class its instances are typed with. Not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#StepProtectiveEquipment> a owl:Class ;
+    rdfs:label "StepProtectiveEquipment" ;
+    rdfs:comment "One row of the StepProtectiveEquipment table in the industry area of the register. The register holds 3 of them, described by 5 fields. Class its instances are typed with. Not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#StepResource> a owl:Class ;
+    rdfs:label "StepResource" ;
+    rdfs:comment "One row of the StepResources table in the structure area of the register. The register holds 2 of them, described by 6 fields. Added by loop-06; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#StewardActivity> a owl:Class ;
+    rdfs:label "StewardActivity" ;
+    rdfs:comment "One row of the StewardActivities table in the governance area of the register. The register holds 10 of them, described by 10 fields. Added by loop-10; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#StewardshipAssignment> a owl:Class ;
+    rdfs:label "StewardshipAssignment" ;
+    rdfs:comment "One row of the StewardshipAssignments table in the org area of the register. The register holds 2 of them, described by 14 fields. Stewardship and authority." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#SubstrateRunScore> a owl:Class ;
+    rdfs:label "SubstrateRunScore" ;
+    rdfs:comment "One row of the SubstrateRunScores table in the meta area of the register. The register holds 35 of them, described by 27 fields. Per-run, per-substrate grades. Not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#TableConformance> a owl:Class ;
+    rdfs:label "TableConformance" ;
+    rdfs:comment "One row of the TableConformance table in the meta area of the register. The register holds 623 of them, described by 19 fields. Latest-run grades per substrate and table. Not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#TacticalResourceAllocation> a owl:Class ;
+    rdfs:label "TacticalResourceAllocation" ;
+    rdfs:comment "One row of the TacticalResourceAllocations table in the organizing area of the register. The register holds 5 of them, described by 12 fields. Added by loop-08; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#TemplateApproval> a owl:Class ;
+    rdfs:label "TemplateApproval" ;
+    rdfs:comment "One row of the TemplateApprovals table in the communication area of the register. The register holds 2 of them, described by 15 fields. Class its instances are typed with. Not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#TermDefinition> a owl:Class ;
+    rdfs:label "TermDefinition" ;
+    rdfs:comment "One row of the TermDefinitions table in the governance area of the register. The register holds 3 of them, described by 13 fields. Added by loop-10; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> ;
+    rdfs:seeAlso <http://www.w3.org/2004/02/skos/core#definition> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#TermMeaningChange> a owl:Class ;
+    rdfs:label "TermMeaningChange" ;
+    rdfs:comment "One row of the TermMeaningChanges table in the organizing area of the register. The register holds 3 of them, described by 11 fields. Added by loop-08; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#TermRelation> a owl:Class ;
+    rdfs:label "TermRelation" ;
+    rdfs:comment "One row of the TermRelations table in the organizing area of the register. The register holds 4 of them, described by 9 fields. Class its instances are typed with. Not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#TestCase> a owl:Class ;
+    rdfs:label "TestCase" ;
+    rdfs:comment "One row of the TestCases table in the meta area of the register. The register holds 1794 of them, described by 20 fields. Class its instances are typed with. Not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#TestSuite> a owl:Class ;
+    rdfs:label "TestSuite" ;
+    rdfs:comment "One row of the TestSuites table in the meta area of the register. The register holds 6 of them, described by 8 fields. Class its instances are typed with. Not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#validatedBy> a owl:ObjectProperty ;
+    rdfs:label "validatedBy" ;
+    rdfs:comment "The ValidatedByAgent property of KnowledgeTraces, which names a Agents. Added by loop-13." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#VerificationOutcome> a owl:Class ;
+    rdfs:label "VerificationOutcome" ;
+    rdfs:comment "One row of the VerificationOutcomes table in the execution area of the register. The register holds 4 of them, described by 26 fields. Class its instances are typed with. Not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#Vocabulary> a owl:Class ;
+    rdfs:label "Vocabulary" ;
+    rdfs:comment "One row of the Vocabularies table in the knowledge area of the register. The register holds 12 of them, described by 31 fields. A controlled-vocabulary concept scheme — not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#VocabularyTerm> a owl:Class ;
+    rdfs:label "VocabularyTerm" ;
+    rdfs:comment "One row of the VocabularyTerms table in the knowledge area of the register. The register holds 44 of them, described by 32 fields. A SKOS-style controlled term — not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#WitnessLoop> a owl:Class ;
+    rdfs:label "WitnessLoop" ;
+    rdfs:comment "One row of the WitnessLoops table in the meta area of the register. The register holds 14 of them, described by 13 fields. Class its instances are typed with. Not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .
+
+<https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#WorkflowViewDivergence> a owl:Class ;
+    rdfs:label "WorkflowViewDivergence" ;
+    rdfs:comment "One row of the WorkflowViewDivergences table in the elicitation area of the register. The register holds 2 of them, described by 15 fields. Added by loop-07; not part of PKO 2.0.0." ;
+    rdfs:isDefinedBy <https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension> .

@@ -2430,6 +2430,126 @@
     "type": "raw",
     "nullable": true,
     "Description": "Extension class IRI."
+   },
+   {
+    "name": "ExplicitFragmentCount",
+    "datatype": "integer",
+    "type": "aggregation",
+    "nullable": true,
+    "Description": "Pieces of knowledge on record, judged at this instant, that are written down.",
+    "formula": "=COUNTIFS(KnowledgeFragments!{{KnowledgeForm}}, \"Explicit\")"
+   },
+   {
+    "name": "TacitFragmentCount",
+    "datatype": "integer",
+    "type": "aggregation",
+    "nullable": true,
+    "Description": "Pieces of knowledge on record that live in practiced hands and were drawn out of a person.",
+    "formula": "=COUNTIFS(KnowledgeFragments!{{KnowledgeForm}}, \"Tacit\")"
+   },
+   {
+    "name": "ImplicitFragmentCount",
+    "datatype": "integer",
+    "type": "aggregation",
+    "nullable": true,
+    "Description": "Pieces of knowledge on record that everybody acts on and nobody had ever stated.",
+    "formula": "=COUNTIFS(KnowledgeFragments!{{KnowledgeForm}}, \"Implicit\")"
+   },
+   {
+    "name": "SituatedJudgmentFragmentCount",
+    "datatype": "integer",
+    "type": "aggregation",
+    "nullable": true,
+    "Description": "Pieces of knowledge on record that are a judgment call for one situation.",
+    "formula": "=COUNTIFS(KnowledgeFragments!{{KnowledgeForm}}, \"SituatedJudgment\")"
+   },
+   {
+    "name": "ModelReasonedAnswerCount",
+    "datatype": "integer",
+    "type": "aggregation",
+    "nullable": true,
+    "Description": "Assistant answers on record where the language model did the reasoning itself.",
+    "formula": "=COUNTIFS(AssistantAnswers!{{ModelDidTheReasoning}}, TRUE)"
+   },
+   {
+    "name": "OtherwiseReasonedAnswerCount",
+    "datatype": "integer",
+    "type": "aggregation",
+    "nullable": true,
+    "Description": "Assistant answers on record where the reasoning was done by a query or a reasoner, or none was needed.",
+    "formula": "=COUNTIFS(AssistantAnswers!{{ModelDidTheReasoning}}, FALSE)"
+   },
+   {
+    "name": "AssistantAnswerCount",
+    "datatype": "integer",
+    "type": "calculated",
+    "nullable": true,
+    "Description": "Every assistant answer on record.",
+    "formula": "={{ModelReasonedAnswerCount}} + {{OtherwiseReasonedAnswerCount}}"
+   },
+   {
+    "name": "ModelReasonedFailedAnswerCount",
+    "datatype": "integer",
+    "type": "aggregation",
+    "nullable": true,
+    "Description": "Of the answers the language model reasoned out itself, how many of the tasks failed.",
+    "formula": "=COUNTIFS(AssistantAnswers!{{ModelReasonedAndTaskFailed}}, TRUE)"
+   },
+   {
+    "name": "OutOfOrderStepExecutionCount",
+    "datatype": "integer",
+    "type": "aggregation",
+    "nullable": true,
+    "Description": "Step executions on record that were carried out of the order the procedure specifies.",
+    "formula": "=COUNTIFS(StepExecutions!{{IsOutOfSpecifiedOrder}}, TRUE)"
+   },
+   {
+    "name": "InOrderStepExecutionCount",
+    "datatype": "integer",
+    "type": "aggregation",
+    "nullable": true,
+    "Description": "Step executions on record that followed the order the procedure specifies.",
+    "formula": "=COUNTIFS(StepExecutions!{{IsOutOfSpecifiedOrder}}, FALSE)"
+   },
+   {
+    "name": "StepExecutionCount",
+    "datatype": "integer",
+    "type": "calculated",
+    "nullable": true,
+    "Description": "Every step execution on record.",
+    "formula": "={{OutOfOrderStepExecutionCount}} + {{InOrderStepExecutionCount}}"
+   },
+   {
+    "name": "EarlyStartStepExecutionCount",
+    "datatype": "integer",
+    "type": "aggregation",
+    "nullable": true,
+    "Description": "Step executions on record that began before the step they depend on had finished.",
+    "formula": "=COUNTIFS(StepExecutions!{{RanBeforePrerequisiteCompleted}}, TRUE)"
+   },
+   {
+    "name": "ExactMappingCount",
+    "datatype": "integer",
+    "type": "aggregation",
+    "nullable": true,
+    "Description": "Concepts of this book that map exactly onto a term PKO itself defines.",
+    "formula": "=COUNTIFS(SemanticMappings!{{MappingRelation}}, \"exact\")"
+   },
+   {
+    "name": "AlignedMappingCount",
+    "datatype": "integer",
+    "type": "aggregation",
+    "nullable": true,
+    "Description": "Concepts of this book that map onto one of the older standards PKO reuses.",
+    "formula": "=COUNTIFS(SemanticMappings!{{MappingRelation}}, \"aligned\")"
+   },
+   {
+    "name": "ExtensionMappingCount",
+    "datatype": "integer",
+    "type": "aggregation",
+    "nullable": true,
+    "Description": "Concepts of this book that PKO does not define: the book's own extensions, labelled as such.",
+    "formula": "=COUNTIFS(SemanticMappings!{{MappingRelation}}, \"extension\")"
    }
   ],
   "data": [
@@ -12511,6 +12631,14 @@
     "nullable": true,
     "Description": "TRUE for an apprenticeship started within three years.",
     "formula": "=AND({{MentorshipForm}} = \"Apprenticeship\", {{DaysSinceStarted}} >= 0, {{DaysSinceStarted}} <= 1095)"
+   },
+   {
+    "name": "CommunityLabel",
+    "datatype": "string",
+    "type": "lookup",
+    "nullable": true,
+    "Description": "The name of the community of practice this mentorship belongs to.",
+    "formula": "=INDEX(CommunitiesOfPractice!{{Label}}, MATCH({{CommunityOfPractice}}, CommunitiesOfPractice!{{CommunityOfPracticeId}}, 0))"
    }
   ],
   "data": [
@@ -32356,6 +32484,30 @@
     "nullable": true,
     "Description": "The organization that owns the procedure this row belongs to, one hop at a time from Procedures.OwnerOrganization. A row policy compares it to the caller's organization, so a plant sign-in never sees the finance close.",
     "formula": "=INDEX(ProcedureVersions!{{OwnerOrganization}}, MATCH({{ProcedureVersion}}, ProcedureVersions!{{ProcedureVersionId}}, 0))"
+   },
+   {
+    "name": "AnsweredByModelChangeRequest",
+    "datatype": "string",
+    "type": "relationship",
+    "nullable": true,
+    "Description": "The change to the book that was raised to close this gap, when there is one.",
+    "RelatedTo": "ModelChangeRequests"
+   },
+   {
+    "name": "AnsweringChangeTitle",
+    "datatype": "string",
+    "type": "lookup",
+    "nullable": true,
+    "Description": "What the change that answers this gap asks for.",
+    "formula": "=INDEX(ModelChangeRequests!{{Title}}, MATCH({{AnsweredByModelChangeRequest}}, ModelChangeRequests!{{ModelChangeRequestId}}, 0))"
+   },
+   {
+    "name": "AnsweringChangeStatus",
+    "datatype": "string",
+    "type": "lookup",
+    "nullable": true,
+    "Description": "Where the change that answers this gap has got to.",
+    "formula": "=INDEX(ModelChangeRequests!{{Status}}, MATCH({{AnsweredByModelChangeRequest}}, ModelChangeRequests!{{ModelChangeRequestId}}, 0))"
    }
   ],
   "data": [
@@ -32707,7 +32859,8 @@
     "IsGatekeepingOrSabotage": false,
     "IsUnattributedGatekeeping": false,
     "IsRequiredGatekeptUncodified": false,
-    "OwnerOrganization": "acme-plant"
+    "OwnerOrganization": "acme-plant",
+    "AnsweredByModelChangeRequest": "mcr-16"
    },
    {
     "KnowledgeGapId": "gap-classifier-training-dependency",
@@ -33929,6 +34082,46 @@
     "nullable": true,
     "Description": "The organization that owns the procedure this row belongs to, one hop at a time from Procedures.OwnerOrganization. A row policy compares it to the caller's organization, so a plant sign-in never sees the finance close.",
     "formula": "=INDEX(ProcedureVersions!{{OwnerOrganization}}, MATCH({{ProcedureVersion}}, ProcedureVersions!{{ProcedureVersionId}}, 0))"
+   },
+   {
+    "name": "StoppedAtKnowledgeGap",
+    "datatype": "string",
+    "type": "relationship",
+    "nullable": true,
+    "Description": "The knowledge gap this run stopped at: the procedure had no answer, so the run ended instead of someone guessing.",
+    "RelatedTo": "KnowledgeGaps"
+   },
+   {
+    "name": "StoppedAtGapStatement",
+    "datatype": "string",
+    "type": "lookup",
+    "nullable": true,
+    "Description": "What nobody knows, in the gap this run stopped at.",
+    "formula": "=INDEX(KnowledgeGaps!{{Statement}}, MATCH({{StoppedAtKnowledgeGap}}, KnowledgeGaps!{{KnowledgeGapId}}, 0))"
+   },
+   {
+    "name": "StoppedAtGapStatus",
+    "datatype": "string",
+    "type": "lookup",
+    "nullable": true,
+    "Description": "Whether the gap this run stopped at is still open.",
+    "formula": "=INDEX(KnowledgeGaps!{{Status}}, MATCH({{StoppedAtKnowledgeGap}}, KnowledgeGaps!{{KnowledgeGapId}}, 0))"
+   },
+   {
+    "name": "StoppedAtGapChangeTitle",
+    "datatype": "string",
+    "type": "lookup",
+    "nullable": true,
+    "Description": "The change to the book that answers the gap this run stopped at.",
+    "formula": "=INDEX(KnowledgeGaps!{{AnsweringChangeTitle}}, MATCH({{StoppedAtKnowledgeGap}}, KnowledgeGaps!{{KnowledgeGapId}}, 0))"
+   },
+   {
+    "name": "StoppedAtGapChangeStatus",
+    "datatype": "string",
+    "type": "lookup",
+    "nullable": true,
+    "Description": "Where the change that answers this run's gap has got to.",
+    "formula": "=INDEX(KnowledgeGaps!{{AnsweringChangeStatus}}, MATCH({{StoppedAtKnowledgeGap}}, KnowledgeGaps!{{KnowledgeGapId}}, 0))"
    }
   ],
   "data": [
@@ -34628,7 +34821,8 @@
     "HasNoRecordedOutcome": false,
     "FeedbackCount": 1,
     "IsUnreportedMistake": false,
-    "OwnerOrganization": "acme-plant"
+    "OwnerOrganization": "acme-plant",
+    "StoppedAtKnowledgeGap": "gap-mixer2-twin-drive-isolation"
    },
    {
     "ProcedureExecutionId": "exec-deploy-2026-01-05",
@@ -53998,6 +54192,13 @@
     "Title": "Controlled is not the same as secured: who reads the register in full",
     "Premise": "Loop 15's access-control seeding gave every governance table a policy, which silently retired the witness for 'access to process knowledge must be controlled': a column that asked whether a table had no policy at all now reads false everywhere. The question that only became askable once every table was policed is the sharper one -- of the policies that do exist, which ones cut no rows at all for a principal who is not an administrator. That condition is present in this model and an access review is exactly the exercise that looks for it.",
     "SemanticTypeIri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#WitnessLoop"
+   },
+   {
+    "WitnessLoopId": "loop-17",
+    "LoopNumber": 17,
+    "Title": "What is read aloud must be on a page",
+    "Premise": "Loop 15 gave each role an app to work in, and rehearsing the video series in that app showed the difference between a fact the rows support and a fact a person can find. Seven sentences of narration were true and visible nowhere: totals by kind of knowledge, by who did an assistant's reasoning, by execution order and by mapping relation; the community a mentorship belongs to; and the path from a cancelled run to the gap it stopped at and the change that answers it. Those questions only became askable once people could sign in and look.",
+    "SemanticTypeIri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#WitnessLoop"
    }
   ]
  },
@@ -59739,6 +59940,60 @@
     "WitnessLoop": "loop-16",
     "QuestionText": "For each table of process knowledge in this register: can anyone who is not an administrator read the whole of it? Not 'is there a policy on it' -- is there a policy that actually cuts the rows they see?",
     "WhyItMatters": "Every table in this register has a policy, and a policy that grants a non-administrator every row passes every check the build performs. Counting policies tells me nothing; it is the policies with an empty row predicate that I am sent here to find. I want the two counts kept apart on every table so that a table with wide-open read access cannot hide inside a coverage figure.",
+    "AnswerableBefore": false,
+    "SemanticTypeIri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RoleQuestion"
+   },
+   {
+    "RoleQuestionId": "q17-maintenance-technician-kinds-of-knowing",
+    "AskingRole": "maintenance-technician",
+    "WitnessLoop": "loop-17",
+    "QuestionText": "Of everything this register knows, how much is written down, and how much is the kind that only lives in somebody's hands?",
+    "WhyItMatters": "I am told the book holds what the veterans know and not only what the manual says. I want to see that as four numbers on the page where I read the procedure, not take it on trust.",
+    "AnswerableBefore": false,
+    "SemanticTypeIri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RoleQuestion"
+   },
+   {
+    "RoleQuestionId": "q17-maintenance-technician-who-did-the-reasoning",
+    "AskingRole": "maintenance-technician",
+    "WitnessLoop": "loop-17",
+    "QuestionText": "When the assistant answers one of us, how often did the language model work the answer out by itself, and how did those jobs end?",
+    "WhyItMatters": "One answer told me to proceed while the locks were still going on. I need to know whether that was one bad day or the pattern whenever the model reasons alone, across every answer and not only the two I can see.",
+    "AnswerableBefore": false,
+    "SemanticTypeIri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RoleQuestion"
+   },
+   {
+    "RoleQuestionId": "q17-maintenance-technician-order-across-every-run",
+    "AskingRole": "maintenance-technician",
+    "WitnessLoop": "loop-17",
+    "QuestionText": "Across every run on record, how many steps were carried out of the specified order, and how many began before the step they depend on had finished?",
+    "WhyItMatters": "The ledger compares my one run with the procedure. Whether my run is unusual depends on every other run, and nobody fills in a report for that.",
+    "AnswerableBefore": false,
+    "SemanticTypeIri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RoleQuestion"
+   },
+   {
+    "RoleQuestionId": "q17-maintenance-technician-where-my-run-stopped",
+    "AskingRole": "maintenance-technician",
+    "WitnessLoop": "loop-17",
+    "QuestionText": "I cancelled a run because the procedure had no answer for that machine. Does the register hold that as a gap, and is anyone changing the book to close it?",
+    "WhyItMatters": "A cancelled job looks like a failure on my record unless the book shows what it stopped at. I should be able to see the gap and the change that answers it from my own run, without signing in as somebody else.",
+    "AnswerableBefore": false,
+    "SemanticTypeIri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RoleQuestion"
+   },
+   {
+    "RoleQuestionId": "q17-plant-operations-manager-community-of-a-mentorship",
+    "AskingRole": "plant-operations-manager",
+    "WitnessLoop": "loop-17",
+    "QuestionText": "Which community of practice does each mentorship on my floor belong to?",
+    "WhyItMatters": "A mentorship is one line between two people. What I lose when the work is sent away is the community around those lines, and I cannot see it if the line does not name it.",
+    "AnswerableBefore": false,
+    "SemanticTypeIri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RoleQuestion"
+   },
+   {
+    "RoleQuestionId": "q17-process-steward-where-the-book-stands",
+    "AskingRole": "process-steward",
+    "WitnessLoop": "loop-17",
+    "QuestionText": "How much of this book is PKO's own vocabulary, how much is a standard PKO reuses, and how much is our own extension? And for each mined log, what percent of the paths people took match the plan?",
+    "WhyItMatters": "I answer for this book against an open standard. If I cannot state the three counts from a page, somebody will mistake an extension for the standard. The conformance figure is the one I am asked for as a percentage every quarter.",
     "AnswerableBefore": false,
     "SemanticTypeIri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RoleQuestion"
    }
@@ -126936,6 +127191,162 @@
     "SemanticTypeIri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RulebookField",
     "MeasuredSubstantiveCount": 2,
     "MeasuredDistinctValueCount": 1
+   },
+   {
+    "RulebookFieldId": "EvaluationContexts.ExplicitFragmentCount",
+    "TargetTable": "EvaluationContexts",
+    "FieldName": "ExplicitFragmentCount",
+    "InventedForQuestion": "q17-maintenance-technician-kinds-of-knowing"
+   },
+   {
+    "RulebookFieldId": "EvaluationContexts.TacitFragmentCount",
+    "TargetTable": "EvaluationContexts",
+    "FieldName": "TacitFragmentCount",
+    "InventedForQuestion": "q17-maintenance-technician-kinds-of-knowing"
+   },
+   {
+    "RulebookFieldId": "EvaluationContexts.ImplicitFragmentCount",
+    "TargetTable": "EvaluationContexts",
+    "FieldName": "ImplicitFragmentCount",
+    "InventedForQuestion": "q17-maintenance-technician-kinds-of-knowing"
+   },
+   {
+    "RulebookFieldId": "EvaluationContexts.SituatedJudgmentFragmentCount",
+    "TargetTable": "EvaluationContexts",
+    "FieldName": "SituatedJudgmentFragmentCount",
+    "InventedForQuestion": "q17-maintenance-technician-kinds-of-knowing"
+   },
+   {
+    "RulebookFieldId": "AssistantAnswers.ModelReasonedAndTaskFailed",
+    "TargetTable": "AssistantAnswers",
+    "FieldName": "ModelReasonedAndTaskFailed",
+    "InventedForQuestion": "q17-maintenance-technician-who-did-the-reasoning"
+   },
+   {
+    "RulebookFieldId": "EvaluationContexts.ModelReasonedAnswerCount",
+    "TargetTable": "EvaluationContexts",
+    "FieldName": "ModelReasonedAnswerCount",
+    "InventedForQuestion": "q17-maintenance-technician-who-did-the-reasoning"
+   },
+   {
+    "RulebookFieldId": "EvaluationContexts.OtherwiseReasonedAnswerCount",
+    "TargetTable": "EvaluationContexts",
+    "FieldName": "OtherwiseReasonedAnswerCount",
+    "InventedForQuestion": "q17-maintenance-technician-who-did-the-reasoning"
+   },
+   {
+    "RulebookFieldId": "EvaluationContexts.AssistantAnswerCount",
+    "TargetTable": "EvaluationContexts",
+    "FieldName": "AssistantAnswerCount",
+    "InventedForQuestion": "q17-maintenance-technician-who-did-the-reasoning"
+   },
+   {
+    "RulebookFieldId": "EvaluationContexts.ModelReasonedFailedAnswerCount",
+    "TargetTable": "EvaluationContexts",
+    "FieldName": "ModelReasonedFailedAnswerCount",
+    "InventedForQuestion": "q17-maintenance-technician-who-did-the-reasoning"
+   },
+   {
+    "RulebookFieldId": "EvaluationContexts.OutOfOrderStepExecutionCount",
+    "TargetTable": "EvaluationContexts",
+    "FieldName": "OutOfOrderStepExecutionCount",
+    "InventedForQuestion": "q17-maintenance-technician-order-across-every-run"
+   },
+   {
+    "RulebookFieldId": "EvaluationContexts.InOrderStepExecutionCount",
+    "TargetTable": "EvaluationContexts",
+    "FieldName": "InOrderStepExecutionCount",
+    "InventedForQuestion": "q17-maintenance-technician-order-across-every-run"
+   },
+   {
+    "RulebookFieldId": "EvaluationContexts.StepExecutionCount",
+    "TargetTable": "EvaluationContexts",
+    "FieldName": "StepExecutionCount",
+    "InventedForQuestion": "q17-maintenance-technician-order-across-every-run"
+   },
+   {
+    "RulebookFieldId": "EvaluationContexts.EarlyStartStepExecutionCount",
+    "TargetTable": "EvaluationContexts",
+    "FieldName": "EarlyStartStepExecutionCount",
+    "InventedForQuestion": "q17-maintenance-technician-order-across-every-run"
+   },
+   {
+    "RulebookFieldId": "KnowledgeGaps.AnsweredByModelChangeRequest",
+    "TargetTable": "KnowledgeGaps",
+    "FieldName": "AnsweredByModelChangeRequest",
+    "InventedForQuestion": "q17-maintenance-technician-where-my-run-stopped"
+   },
+   {
+    "RulebookFieldId": "KnowledgeGaps.AnsweringChangeTitle",
+    "TargetTable": "KnowledgeGaps",
+    "FieldName": "AnsweringChangeTitle",
+    "InventedForQuestion": "q17-maintenance-technician-where-my-run-stopped"
+   },
+   {
+    "RulebookFieldId": "KnowledgeGaps.AnsweringChangeStatus",
+    "TargetTable": "KnowledgeGaps",
+    "FieldName": "AnsweringChangeStatus",
+    "InventedForQuestion": "q17-maintenance-technician-where-my-run-stopped"
+   },
+   {
+    "RulebookFieldId": "ProcedureExecutions.StoppedAtKnowledgeGap",
+    "TargetTable": "ProcedureExecutions",
+    "FieldName": "StoppedAtKnowledgeGap",
+    "InventedForQuestion": "q17-maintenance-technician-where-my-run-stopped"
+   },
+   {
+    "RulebookFieldId": "ProcedureExecutions.StoppedAtGapStatement",
+    "TargetTable": "ProcedureExecutions",
+    "FieldName": "StoppedAtGapStatement",
+    "InventedForQuestion": "q17-maintenance-technician-where-my-run-stopped"
+   },
+   {
+    "RulebookFieldId": "ProcedureExecutions.StoppedAtGapStatus",
+    "TargetTable": "ProcedureExecutions",
+    "FieldName": "StoppedAtGapStatus",
+    "InventedForQuestion": "q17-maintenance-technician-where-my-run-stopped"
+   },
+   {
+    "RulebookFieldId": "ProcedureExecutions.StoppedAtGapChangeTitle",
+    "TargetTable": "ProcedureExecutions",
+    "FieldName": "StoppedAtGapChangeTitle",
+    "InventedForQuestion": "q17-maintenance-technician-where-my-run-stopped"
+   },
+   {
+    "RulebookFieldId": "ProcedureExecutions.StoppedAtGapChangeStatus",
+    "TargetTable": "ProcedureExecutions",
+    "FieldName": "StoppedAtGapChangeStatus",
+    "InventedForQuestion": "q17-maintenance-technician-where-my-run-stopped"
+   },
+   {
+    "RulebookFieldId": "Mentorships.CommunityLabel",
+    "TargetTable": "Mentorships",
+    "FieldName": "CommunityLabel",
+    "InventedForQuestion": "q17-plant-operations-manager-community-of-a-mentorship"
+   },
+   {
+    "RulebookFieldId": "EvaluationContexts.ExactMappingCount",
+    "TargetTable": "EvaluationContexts",
+    "FieldName": "ExactMappingCount",
+    "InventedForQuestion": "q17-process-steward-where-the-book-stands"
+   },
+   {
+    "RulebookFieldId": "EvaluationContexts.AlignedMappingCount",
+    "TargetTable": "EvaluationContexts",
+    "FieldName": "AlignedMappingCount",
+    "InventedForQuestion": "q17-process-steward-where-the-book-stands"
+   },
+   {
+    "RulebookFieldId": "EvaluationContexts.ExtensionMappingCount",
+    "TargetTable": "EvaluationContexts",
+    "FieldName": "ExtensionMappingCount",
+    "InventedForQuestion": "q17-process-steward-where-the-book-stands"
+   },
+   {
+    "RulebookFieldId": "ProcessMiningRuns.ConformancePercent",
+    "TargetTable": "ProcessMiningRuns",
+    "FieldName": "ConformancePercent",
+    "InventedForQuestion": "q17-process-steward-where-the-book-stands"
    }
   ]
  },
@@ -359710,7 +360121,8 @@
     "type": "aggregation",
     "nullable": true,
     "Description": "Number of columns exposed, derived live from the principal's readable field grants. Change one grant and this view's shape changes.",
-    "formula": "=COUNTIFS(FieldGrants!{{GrantKeyWhenReadable}}, {{GrantKey}})"
+    "formula": "=COUNTIFS(FieldGrants!{{Principal}}, {{Principal}}, FieldGrants!{{CanRead}}, TRUE, FieldGrants!{{FieldTable}}, {{TargetTable}})",
+    "description": "How many columns this role view exposes: the readable field grants this principal holds on this table. Counted on the raw principal reference first -- a count keyed on FieldGrants.GrantKeyWhenReadable made Postgres resolve a lookup into RulebookFields for all 18,272 grants once per view, and the column took 160 seconds to read."
    },
    {
     "name": "TableFieldCount",
@@ -367431,6 +367843,14 @@
     "nullable": true,
     "Description": "TRUE when the enacted flow the run reconstructed contains a path the documentation lacks.",
     "formula": "={{UndocumentedPathCount}} > 0"
+   },
+   {
+    "name": "ConformancePercent",
+    "datatype": "integer",
+    "type": "calculated",
+    "nullable": true,
+    "Description": "The share of the paths people really took that match the documented procedure, as a whole percent.",
+    "formula": "=ROUND({{ConformanceRate}} * 100, 0)"
    }
   ],
   "data": [
@@ -422734,6 +423154,14 @@
     "nullable": true,
     "Description": "The organization that owns the procedure this row belongs to, one hop at a time from Procedures.OwnerOrganization. A row policy compares it to the caller's organization, so a plant sign-in never sees the finance close.",
     "formula": "=INDEX(StepExecutions!{{OwnerOrganization}}, MATCH({{StepExecution}}, StepExecutions!{{StepExecutionId}}, 0))"
+   },
+   {
+    "name": "ModelReasonedAndTaskFailed",
+    "datatype": "boolean",
+    "type": "calculated",
+    "nullable": true,
+    "Description": "The language model did the reasoning for this answer itself, and the task it was asked about ended in failure.",
+    "formula": "=AND({{ModelDidTheReasoning}}, {{TaskOutcome}} = \"Failed\")"
    }
   ],
   "data": [

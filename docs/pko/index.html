@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Procedural Knowledge Ontology</title>
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<header class="site-header">
+  <a class="site-mark" href="index.html">Procedural Knowledge Ontology</a>
+  <nav class="crumbs"><span>Home</span></nav>
+</header>
+<main>
+  <div class="page-head">
+    <p class="kicker">Effortless Rulebook project</p>
+    <h1>Procedural Knowledge Ontology</h1>
+    <p class="lede">A rulebook-derived register of procedural knowledge at ACME, LLC.</p>
+  </div>
+  
+  <section id="sections"><h2><a class="anchor" href="#sections">Sections</a></h2><p class="lede">The site is generated section by section. Live sections are links; the rest name what this documentation will carry as it grows.</p><div class="cards"><a class="card card-live" href="roles/index.html"><h3>Roles<span class="card-count">33 pages</span></h3><p>One page per role: who holds it and since when, the questions it asks and the witnessed answer to each, the app routes it owns, and exactly what it is allowed to see in the database.</p><span class="card-cta">Open &rarr;</span></a><div class="card card-planned"><h3>Procedures<span class="card-count">planned</span></h3><p>The specifications: steps, transitions, requirements, verifications and exceptions.</p></div><div class="card card-planned"><h3>Executions<span class="card-count">planned</span></h3><p>What actually happened, and every witness that fired against the specification.</p></div><div class="card card-planned"><h3>Witness loops<span class="card-count">planned</span></h3><p>Each expansion round, its premise, and the questions it made askable.</p></div><div class="card card-planned"><h3>Conformance<span class="card-count">planned</span></h3><p>Every installed substrate, graded cell by cell against the same answer keys.</p></div><div class="card card-planned"><h3>Access control<span class="card-count">planned</span></h3><p>The principals, policies, grants and denial witnesses as one picture.</p></div><div class="card card-planned"><h3>PKO alignment<span class="card-count">planned</span></h3><p>Exact, aligned and extension mappings for every table in the model.</p></div></div></section><section id="contract"><h2><a class="anchor" href="#contract">How this site is built</a></h2><p>The rulebook is the single source of truth. <code>effortless build</code> compiles it into a Postgres schema in which every rulebook formula becomes a column of a generated <code>vw_*</code> view &mdash; 261 entity views in this model. This site reads those views and nothing else: no value on any page was computed by the site generator, and no value was read from the rulebook JSON. Each metric carries the <code>view.column</code> it came from, so any number here can be checked with one <code>SELECT</code>.</p><pre class="cmd">python3 tools/generate_pages_site.py</pre></section>
+</main>
+<footer class="site-footer">
+  <p>Every value on this page was selected from a generated <code>vw_*</code> view of
+  <code>erb_procedural_knowledge_ontology</code>. Nothing here is computed by the site
+  generator. Regenerate with <code>python3 tools/generate_pages_site.py</code>.</p>
+  <p>The Procedural Knowledge Ontology was created by Valentina Anita Carriero, Mario Scrocca,
+  Ilaria Baroni, Antonia Azzini and Irene Celino (CC BY 4.0). This project aligns to PKO; it is
+  not an official PKO distribution and implies no endorsement.</p>
+</footer>
+</body>
+</html>

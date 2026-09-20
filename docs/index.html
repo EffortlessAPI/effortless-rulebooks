@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Effortless Rulebooks — published documents</title>
+<style>
+ body { font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        max-width: 54rem; margin: 0 auto; padding: 2rem 1.25rem 6rem; color: #1a1a1a; }
+ header { border-bottom: 1px solid #e3e3e3; padding-bottom: 1.5rem; margin-bottom: 2rem; }
+ h1 { font-size: 1.9rem; margin: 0 0 .35rem; }
+ .sub { color: #666; margin: 0; }
+ .card { border: 1px solid #e6e8ee; border-radius: 8px; padding: 1.1rem 1.35rem;
+         margin: 1rem 0; background: #f8f9fb; }
+ .card h2 { margin: 0 0 .35rem; font-size: 1.15rem; }
+ .card h2 a { color: #0b63ce; text-decoration: none; }
+ .card h2 a:hover { text-decoration: underline; }
+ .card p { margin: .35rem 0 0; color: #333; }
+ code { background: #eef0f4; padding: .1rem .35rem; border-radius: 3px; font-size: .85em; }
+ footer { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid #e3e3e3;
+          color: #666; font-size: .9em; }
+</style>
+</head>
+<body>
+<header>
+<h1>Effortless Rulebooks</h1>
+<p class="sub">Documents published from the rulebooks in
+<a href="https://github.com/EffortlessAPI/effortless-rulebooks">EffortlessAPI/effortless-rulebooks</a>.
+Every page here is generated from a rulebook's own database views; none of it is written by hand.</p>
+</header>
+
+<div class="card">
+<h2><a href="ns/pko-extension">ERB-PKO Enterprise Extension vocabulary</a></h2>
+<p>The terms the Procedural Knowledge Ontology register uses that
+<a href="https://w3id.org/pko/2.0.0">PKO 2.0.0</a> does not define, each with a resolvable IRI.
+This is what <code>https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#</code>
+dereferences to, served as HTML carrying its own JSON-LD, with Turtle and JSON-LD alternates.</p>
+</div>
+
+<div class="card">
+<h2><a href="pko/">Procedural Knowledge Ontology — the register, by role</a></h2>
+<p>One page per role, showing what that person can see and change, and the measures that
+describe their part of the model. Read from the same <code>vw_*</code> views the application
+reads.</p>
+</div>
+
+<footer>
+<p>PKO was created by Valentina Anita Carriero, Mario Scrocca, Ilaria Baroni, Antonia Azzini
+and Irene Celino (CC BY 4.0). The work published here aligns to PKO; it is not an official
+PKO distribution and implies no endorsement.</p>
+</footer>
+</body>
+</html>
