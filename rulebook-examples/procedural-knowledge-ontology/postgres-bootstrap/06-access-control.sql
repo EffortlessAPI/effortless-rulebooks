@@ -2468,9 +2468,9 @@ CREATE POLICY "pol-releasemanager-agent_upgrade_assessments-select" ON public.ag
 -- Owns the release gate: the deployment procedure, the AI agents that score releases, what an upgrade would touch, and who held which role when.
 DROP POLICY IF EXISTS "pol-releasemanager-ai_registry_model_versions-select" ON public.ai_registry_model_versions;
 CREATE POLICY "pol-releasemanager-ai_registry_model_versions-select" ON public.ai_registry_model_versions FOR SELECT TO pko_release_manager USING (true);
--- Only assignments in force at the modelled evaluation instant.
+-- Every assignment, open or closed. A question about a past date can only be answered from the rows that were closed, never deleted.
 DROP POLICY IF EXISTS "pol-releasemanager-role_assignments-select" ON public.role_assignments;
-CREATE POLICY "pol-releasemanager-role_assignments-select" ON public.role_assignments FOR SELECT TO pko_release_manager USING (public.calc_role_assignments_is_current(role_assignment_id));
+CREATE POLICY "pol-releasemanager-role_assignments-select" ON public.role_assignments FOR SELECT TO pko_release_manager USING (true);
 -- Owns the release gate: the deployment procedure, the AI agents that score releases, what an upgrade would touch, and who held which role when.
 DROP POLICY IF EXISTS "pol-releasemanager-roles-select" ON public.roles;
 CREATE POLICY "pol-releasemanager-roles-select" ON public.roles FOR SELECT TO pko_release_manager USING (true);
@@ -3511,7 +3511,7 @@ CREATE VIEW pko_process_steward.scheme_refinements AS
 ALTER VIEW pko_process_steward.scheme_refinements OWNER TO postgres;
 GRANT SELECT ON pko_process_steward.scheme_refinements TO pko_process_steward;
 CREATE VIEW pko_process_steward.term_label_variants AS
-  SELECT concepts_sharing_wording, is_ambiguous_label, is_cross_scheme_duplicate_pref, label_kind, name, practitioner_mention_count, pref_wording, pref_wording_key, same_pref_wording_count, semantic_type_iri, term_label_variant_id, term_scheme, vocabulary_term, wording, wording_key FROM public.vw_term_label_variants;
+  SELECT concepts_sharing_wording, is_ambiguous_label, is_cross_scheme_duplicate_pref, label_kind, name, practitioner_mention_count, pref_wording, pref_wording_key, same_pref_wording_count, semantic_type_iri, term_label_variant_id, term_pref_label, term_scheme, vocabulary_term, wording, wording_key FROM public.vw_term_label_variants;
 ALTER VIEW pko_process_steward.term_label_variants OWNER TO postgres;
 GRANT SELECT ON pko_process_steward.term_label_variants TO pko_process_steward;
 CREATE VIEW pko_process_steward.ai_labeling_runs AS
@@ -4543,7 +4543,7 @@ CREATE VIEW pko_knowledge_authority.scheme_refinements AS
 ALTER VIEW pko_knowledge_authority.scheme_refinements OWNER TO postgres;
 GRANT SELECT ON pko_knowledge_authority.scheme_refinements TO pko_knowledge_authority;
 CREATE VIEW pko_knowledge_authority.term_label_variants AS
-  SELECT concepts_sharing_wording, is_ambiguous_label, is_cross_scheme_duplicate_pref, label_kind, name, practitioner_mention_count, pref_wording, pref_wording_key, same_pref_wording_count, semantic_type_iri, term_label_variant_id, term_scheme, vocabulary_term, wording, wording_key FROM public.vw_term_label_variants;
+  SELECT concepts_sharing_wording, is_ambiguous_label, is_cross_scheme_duplicate_pref, label_kind, name, practitioner_mention_count, pref_wording, pref_wording_key, same_pref_wording_count, semantic_type_iri, term_label_variant_id, term_pref_label, term_scheme, vocabulary_term, wording, wording_key FROM public.vw_term_label_variants;
 ALTER VIEW pko_knowledge_authority.term_label_variants OWNER TO postgres;
 GRANT SELECT ON pko_knowledge_authority.term_label_variants TO pko_knowledge_authority;
 CREATE VIEW pko_knowledge_authority.ai_labeling_runs AS
@@ -5531,7 +5531,7 @@ CREATE VIEW pko_knowledge_engineer.vocabulary_terms AS
 ALTER VIEW pko_knowledge_engineer.vocabulary_terms OWNER TO postgres;
 GRANT SELECT ON pko_knowledge_engineer.vocabulary_terms TO pko_knowledge_engineer;
 CREATE VIEW pko_knowledge_engineer.term_label_variants AS
-  SELECT concepts_sharing_wording, is_ambiguous_label, is_cross_scheme_duplicate_pref, label_kind, name, practitioner_mention_count, pref_wording, pref_wording_key, same_pref_wording_count, semantic_type_iri, term_label_variant_id, term_scheme, vocabulary_term, wording, wording_key FROM public.vw_term_label_variants;
+  SELECT concepts_sharing_wording, is_ambiguous_label, is_cross_scheme_duplicate_pref, label_kind, name, practitioner_mention_count, pref_wording, pref_wording_key, same_pref_wording_count, semantic_type_iri, term_label_variant_id, term_pref_label, term_scheme, vocabulary_term, wording, wording_key FROM public.vw_term_label_variants;
 ALTER VIEW pko_knowledge_engineer.term_label_variants OWNER TO postgres;
 GRANT SELECT ON pko_knowledge_engineer.term_label_variants TO pko_knowledge_engineer;
 CREATE VIEW pko_knowledge_engineer.stakeholder_lenses AS

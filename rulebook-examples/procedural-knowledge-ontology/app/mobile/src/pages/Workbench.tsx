@@ -138,14 +138,14 @@ function Organize() {
       <div>
         <div className="section">One word for one thing</div>
         <div className="card"><label className="field" style={{ marginBottom: 8 }}><span>Search the vocabulary the way people actually say it</span><input type="text" placeholder="try: loto" value={q} onChange={(e) => setQ(e.target.value)} /></label>
-          {hit && (hit.length ? hit.map((v) => <div key={v.term_label_variant_id} className="row" style={{ padding: "6px 2px" }}><b className="derived grow">{v.pref_wording || v.wording}</b><span className="sub">{v.label_kind === "alt" ? `matched alternative label: ${v.wording}` : "preferred label"}</span></div>) : <div className="sub">No term carries that wording. That is a gap to report.</div>)}</div>
+          {hit && (hit.length ? hit.map((v) => <div key={v.term_label_variant_id} className="row" style={{ padding: "6px 2px" }}><b className="derived grow">{v.term_pref_label}</b><span className="sub">{v.label_kind === "alt" ? `matched alternative label: ${v.wording}` : "preferred label"}</span></div>) : <div className="sub">No term carries that wording. That is a gap to report.</div>)}</div>
         {terms.rows?.filter((t) => t.vocabulary === "voc-lockout-activities").map((t) => (
           <div key={t.vocabulary_term_id} className="card tight"><div className="row"><b className="fact grow">{t.pref_label}</b><Tag tone="grey">preferred</Tag></div>
             <div className="row wrap" style={{ marginTop: 6 }}>{variants.rows?.filter((v) => v.vocabulary_term === t.vocabulary_term_id && v.label_kind === "alt").map((v) => <Tag key={v.term_label_variant_id} tone="blue">also said: {v.wording}</Tag>)}</div>
             {t.definition && <p className="sub" style={{ marginTop: 6 }}>{t.definition}</p>}</div>))}
       </div>
       <div>
-        <div className="section">Six readers, one record</div>
+        <div className="section">One record, many readers <span className="count">{lenses.rows?.length ?? "·"}</span></div>
         {lenses.rows?.map((l) => (<div key={l.stakeholder_lens_id} className="card tight"><div className="row"><b className="grow">{l.label}</b><Tag tone="purple">{String(l.required_granularity).toLowerCase()} level</Tag><Tag tone="grey">{String(l.preferred_form).toLowerCase()}</Tag></div>
           <div className="row wrap" style={{ marginTop: 6 }}>{l.needs_step_guidance && <Tag tone="blue">step guidance</Tag>}{l.needs_metrics && <Tag tone="blue">metrics</Tag>}{l.needs_exception_handling && <Tag tone="blue">exceptions</Tag>}{l.needs_compliance_evidence && <Tag tone="blue">evidence</Tag>}{l.needs_structured_constraints && <Tag tone="blue">structured constraints</Tag>}</div></div>))}
         <p className="provenance">The same knowledge, shown at a different height and in a different form for whoever signed in. It is written once.</p>

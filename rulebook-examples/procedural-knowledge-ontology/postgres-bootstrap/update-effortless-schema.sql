@@ -32014,6 +32014,17 @@ RETURNS TEXT AS $$
   SELECT (SELECT vocabulary::text FROM vocabulary_terms WHERE vocabulary_term_id = (SELECT vocabulary_term FROM term_label_variants WHERE term_label_variant_id = p_term_label_variant_id));
 $$ LANGUAGE sql STABLE;
 
+-- calc_term_label_variants_term_pref_label
+-- Field: TermLabelVariants.TermPrefLabel
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: PrefLabel from related VocabularyTerms
+
+
+CREATE OR REPLACE FUNCTION calc_term_label_variants_term_pref_label(p_term_label_variant_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT pref_label::text FROM vocabulary_terms WHERE vocabulary_term_id = (SELECT vocabulary_term FROM term_label_variants WHERE term_label_variant_id = p_term_label_variant_id));
+$$ LANGUAGE sql STABLE;
+
 -- calc_term_label_variants_name
 -- Field: TermLabelVariants.Name
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -47569,6 +47580,7 @@ SELECT
   t.label_kind,                                                                 -- pref (skos:prefLabel) or alt (skos:altLabel).
   t.wording,                                                                    -- The wording, lower case.
   calc_term_label_variants_term_scheme(t.term_label_variant_id) AS term_scheme, -- Scheme the concept belongs to.
+  calc_term_label_variants_term_pref_label(t.term_label_variant_id) AS term_pref_label,-- The preferred label of the concept this wording belongs to. What a vocabulary search answers with, whichever wording was typed.
   calc_term_label_variants_wording_key(t.term_label_variant_id) AS wording_key, -- Scheme and wording.
   calc_term_label_variants_pref_wording_key(t.term_label_variant_id) AS pref_wording_key,-- Scheme and wording for a preferred label.
   calc_term_label_variants_concepts_sharing_wording(t.term_label_variant_id) AS concepts_sharing_wording,-- Labels in the same scheme with this exact wording.

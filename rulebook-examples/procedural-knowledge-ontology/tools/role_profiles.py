@@ -421,8 +421,12 @@ EXPERIENCE_PROFILES = {
                                     "AiRegistryModelVersions", "RoleAssignments", "Roles", "Agents",
                                     "TermMeaningChanges", "VocabularyTerms", "ArtifactHandoffs",
                                     "ExecutionEntities"]},
-        "rows": {k: v for k, v in PLANT_ROWS.items()
-                 if k in ("Procedures", "ProcedureVersions", "Steps", "ProcedureExecutions", "StepExecutions")},
+        "rows": {**{k: v for k, v in PLANT_ROWS.items()
+                    if k in ("Procedures", "ProcedureVersions", "Steps", "ProcedureExecutions", "StepExecutions")},
+                 # Without this the default policy is IsCurrent, and the page "Who held the role that
+                 # day" could only ever answer "whoever holds it now" (found rehearsing episode 5).
+                 "RoleAssignments": ("true", "Every assignment, open or closed. A question about a past date "
+                                             "can only be answered from the rows that were closed, never deleted.")},
     },
     "ontology-authority": {
         "why": "Approves changes to the model itself and must see anything such a change could "

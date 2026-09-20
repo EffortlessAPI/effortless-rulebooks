@@ -24111,6 +24111,17 @@ RETURNS TEXT AS $$
   SELECT (SELECT vocabulary::text FROM vocabulary_terms WHERE vocabulary_term_id = (SELECT vocabulary_term FROM term_label_variants WHERE term_label_variant_id = p_term_label_variant_id));
 $$ LANGUAGE sql STABLE;
 
+-- calc_term_label_variants_term_pref_label
+-- Field: TermLabelVariants.TermPrefLabel
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: PrefLabel from related VocabularyTerms
+
+
+CREATE OR REPLACE FUNCTION calc_term_label_variants_term_pref_label(p_term_label_variant_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT pref_label::text FROM vocabulary_terms WHERE vocabulary_term_id = (SELECT vocabulary_term FROM term_label_variants WHERE term_label_variant_id = p_term_label_variant_id));
+$$ LANGUAGE sql STABLE;
+
 -- calc_term_label_variants_name
 -- Field: TermLabelVariants.Name
 -- Type: calculated | DataType: string | Returns: TEXT
