@@ -19,7 +19,7 @@ DOCKERFILE_PATH="docker/Dockerfile"
 EXTERNAL_SRC_MOUNTED=
 EXTERNAL_SRC_HOST_PATH=""
 RULEBOOK_SELF_UPDATE_PATH="procedural-knowledge-ontology-rulebook.json"
-EDITOR_RUNTIME_VERSION="2026.9.10.1047"
+EDITOR_RUNTIME_VERSION="2026.9.17.2059"
 
 # The launcher is the OUTER half of the editor and therefore cannot rely on the
 # container's inner `effortless -upgradeAll`. Update and regenerate this runtime

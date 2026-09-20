@@ -85,6 +85,14 @@ const STEP_COPY = {
     'Design the database',
     'Reads your rulebook and works out the database from it: a table for every kind of thing you described, a function for every value that gets calculated, and a view that puts them back together.',
   ],
+  rulebooktorbac: [
+    'Work out who can see and change what',
+    'Security module. Reads the roles, users and permissions in your rulebook and writes them down as one list of who is allowed to see or change each table. Off until the Security module is switched on in the portal\'s Modules page.',
+  ],
+  rbactopostgrespolicies: [
+    'Lock down the database to match',
+    'Security module. Turns that list into database rules, so each person only sees and changes the rows their role allows -- enforced by the database itself, not just the screens. Off until the Security module is switched on.',
+  ],
   chmodinitdb: [
     'Prepare the database setup script',
     'Housekeeping. Marks the setup script the previous step just wrote as runnable, so the next step can run it.',
@@ -120,6 +128,10 @@ const STEP_COPY = {
   rulebooktoxlsx: [
     'Export everything to an Excel workbook',
     'Writes your tables into a spreadsheet you can download and open in Excel. Enabled by default.',
+  ],
+  rulebooktoprogressreport: [
+    'Write the progress report',
+    'Delivery module. Reads the user stories, acceptance criteria and build phases in your rulebook and writes up what is done and what is left, shown under the portal\'s Progress Report tab. Off until the Delivery module is switched on.',
   ],
 };
 
