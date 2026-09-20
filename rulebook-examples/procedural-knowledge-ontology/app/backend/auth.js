@@ -83,12 +83,37 @@ export async function listSignIns(pool) {
   return rows;
 }
 
+// --- claims for a non-interactive principal ----------------------------------
+// The Plant Copilot does not sign in through the UI, but it acts through the
+// same door: claims resolved from the database for an assignment that exists.
+// No token is minted and nothing is audited, because nothing leaves the server.
+export async function mintClaimsFor(appUserId, principalId) {
+  const { pool } = await import("./db.js");
+  const { rows } = await pool.query(
+    `SELECT pa.app_user, pa.principal, u.email_address, u.organization, u.is_enabled,
+            u.linked_agent, p.is_administrator, p.domain_role
+       FROM vw_principal_assignments pa
+       JOIN vw_app_users         u ON u.app_user_id         = pa.app_user
+       JOIN vw_access_principals p ON p.access_principal_id = pa.principal
+      WHERE pa.app_user = $1 AND pa.principal = $2`, [appUserId, principalId]);
+  if (rows.length !== 1 || !rows[0].is_enabled) {
+    const err = new Error(`${appUserId} may not act as ${principalId}`);
+    err.status = 403;
+    throw err;
+  }
+  const a = rows[0];
+  return { sub: a.app_user, email: a.email_address, principal: a.principal,
+           organization: a.organization, agent: a.linked_agent, role: a.domain_role,
+           is_admin: a.is_administrator === true };
+}
+
 // --- mint ------------------------------------------------------------------
 // appUserId + principalId -> a signed token whose claims came from the DB.
 export async function mintToken(pool, appUserId, principalId) {
   const { rows } = await pool.query(
     `SELECT pa.app_user, pa.principal,
             u.email_address, u.display_name, u.organization, u.is_enabled,
+            u.linked_agent,
             p.is_administrator, p.domain_role, p.pg_role_name, p.schema_name,
             p.label AS principal_label
        FROM vw_principal_assignments pa
@@ -119,6 +144,9 @@ export async function mintToken(pool, appUserId, principalId) {
     email: a.email_address,
     principal: a.principal,
     organization: a.organization,
+    // The Agents row this person acts as. Write policies compare it to
+    // executed_by_agent / observed_by_agent, so work is recorded in one's own name.
+    agent: a.linked_agent,
     role: a.domain_role,
     is_admin: a.is_administrator === true,
     pg_role: a.pg_role_name,

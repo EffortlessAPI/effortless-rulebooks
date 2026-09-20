@@ -12,8 +12,10 @@
 # Per repo doctrine start.sh IS the restart story: it kills whatever is on its
 # ports first, then boots clean. You never need to find a PID.
 #
-#   ./start.sh            app: API (:8099) + Vite dev server (:5174)
-#                              open http://localhost:5174
+#   ./start.sh            app: API (:8099) + the role experiences (:5175, primary)
+#                              + the admin console (:5174)
+#                              open http://localhost:5175 and sign in as anyone
+#   ./start.sh quick      Postgres-only rebuild from the rulebook (~30s), then the app
 #   ./start.sh prod       app: build the UI, serve API + static UI on :8099
 #   ./start.sh docs       regenerate every markdown projection (no server)
 #   ./start.sh validate   validate the rulebook against the ERB-PKO profile
@@ -38,8 +40,9 @@ RULEBOOK="effortless-rulebook/procedural-knowledge-ontology-rulebook.json"
 MODE="${1:-app}"
 
 API_PORT="${PORT:-8099}"
-WEB_PORT="${WEB_PORT:-5174}"
-PRIMARY_URL="http://localhost:${WEB_PORT}"
+WEB_PORT="${WEB_PORT:-5174}"          # the admin console: read-only register, explorer, conformance, access
+MOBILE_PORT="${MOBILE_PORT:-5175}"    # the role experiences: what each person at ACME signs in to
+PRIMARY_URL="http://localhost:${MOBILE_PORT}"
 HEALTH_URL="http://localhost:${API_PORT}/api/health"
 
 # The DB name is DERIVED from the domain (erb_<domain-with-underscores>), which
@@ -165,7 +168,8 @@ The app reads vw_<entity> views from this database. Create and load it:
 
 ensure_deps() {
   [ -d app/backend/node_modules ]  || (banner "Installing API deps";  cd app/backend  && npm install --silent)
-  [ -d app/frontend/node_modules ] || (banner "Installing UI deps";   cd app/frontend && npm install --silent)
+  [ -d app/frontend/node_modules ] || (banner "Installing admin console deps"; cd app/frontend && npm install --silent)
+  [ -d app/mobile/node_modules ]   || (banner "Installing role experiences deps"; cd app/mobile && npm install --silent)
 }
 
 run_app() {
@@ -174,12 +178,13 @@ run_app() {
   ensure_deps
 
   banner "Freeing ports"
-  free_ports "$API_PORT" "$WEB_PORT"
+  free_ports "$API_PORT" "$WEB_PORT" "$MOBILE_PORT"
 
   banner "Starting API on :$API_PORT"
   (cd app/backend && PORT="$API_PORT" node server.js) &
   API_PID=$!
-  trap 'kill $API_PID 2>/dev/null || true' EXIT
+  ADMIN_PID=""
+  trap 'kill $API_PID $ADMIN_PID 2>/dev/null || true' EXIT
 
   # Wait for the API to actually answer before starting the UI, so a failed
   # boot surfaces here rather than as a confusing proxy error in the browser.
@@ -191,13 +196,19 @@ run_app() {
     || die "the API did not come up on :$API_PORT"
   echo "  API healthy"
 
-  banner "Starting UI on :$WEB_PORT"
+  banner "Starting the admin console on :$WEB_PORT"
+  (cd app/frontend && npx vite --port "$WEB_PORT" --strictPort >/dev/null 2>&1) &
+  ADMIN_PID=$!
+
+  banner "Starting the role experiences on :$MOBILE_PORT"
   echo "[start] project: $PROJECT_NAME"
   echo "[start] starting: $EXPERIENCE_DESCRIPTION"
-  echo "[start] primary:  $PRIMARY_URL"
+  echo "[start] primary:  $PRIMARY_URL   (sign in as Tomas Reyes, Aisha Bello, Sam Adeyemi, ...)"
+  echo "[start] admin:    http://localhost:$WEB_PORT"
   echo "[start] API:      http://localhost:$API_PORT"
   echo "[start] health:   $HEALTH_URL"
-  (cd app/frontend && npx vite --port "$WEB_PORT" --strictPort)
+  echo "[start] reset:    bash init-db.sh   (or Admin > Save / Reset, signed in as Elena Garcia)"
+  (cd app/mobile && API_URL="http://localhost:$API_PORT" npx vite --port "$MOBILE_PORT" --strictPort)
 }
 
 run_prod() {
@@ -233,6 +244,12 @@ case "$MODE" in
     printf '\n\033[1;32mOK\033[0m — rulebook valid, projections regenerated.\n'
     ;;
   app)  run_app ;;
+  quick)
+    # The development loop: rulebook -> Postgres only (~30s), then the app. The other six
+    # substrates are rebuilt and graded by the full `effortless build`, once, at the end.
+    bash tools/quick_build.sh
+    run_app
+    ;;
   prod) run_prod ;;
   all)
     run_validate

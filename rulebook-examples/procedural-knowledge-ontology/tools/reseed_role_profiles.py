@@ -91,6 +91,23 @@ def main():
             print("  - " + e, file=sys.stderr)
         sys.exit(1)
 
+    # ---- which columns each role may WRITE: exactly those its actions name ---
+    action_role = {a["AppActionId"]: a["OwningRole"] for a in rb.get("AppActions", {}).get("data", [])}
+    writable = {}
+    for af in rb.get("AppActionFields", {}).get("data", []):
+        writable.setdefault(action_role[af["AppAction"]], set()).add(af["TargetField"])
+    for role, cols in writable.items():
+        for col in cols:
+            tname, fn = col.split(".", 1)
+            ftype = fields_by_table.get(tname, {}).get(fn, {}).get("FieldType")
+            if ftype not in ("raw", "relationship"):
+                errors.append(f"{role}: action writes {col}, which is {ftype!r}, not a stored column")
+    if errors:
+        print("REFUSING TO SEED -- action errors:", file=sys.stderr)
+        for e in errors:
+            print("  - " + e, file=sys.stderr)
+        sys.exit(1)
+
     # ---- build ------------------------------------------------------------
     admin_tables = [t["TableName"] for t in rb["RulebookTables"]["data"]
                     if t.get("PhysicalView")]
@@ -117,7 +134,11 @@ def main():
                              "administrator." if prof.get("admin")
                              else prof["why"])
             infer = False
-            if not prof.get("admin"):
+            if not prof.get("admin") and tname in prof.get("rows", {}):
+                # loop 15: this role states its own vertical cut for this table
+                pred, why = prof["rows"][tname]
+                infer = "calc_" in pred
+            elif not prof.get("admin") and not prof.get("unscoped"):
                 if tname in ORG_SCOPED:
                     pred = ORG_SCOPED[tname]
                     why = ("Tenancy boundary: only rows belonging to this "
@@ -143,7 +164,9 @@ def main():
                 grants.append({
                     "FieldGrantId": f"fg-{role}-{tname}.{fn}",
                     "Principal": pid, "TargetField": f"{tname}.{fn}",
-                    "CanRead": True, "CanWrite": False, "MaskStrategy": "plain",
+                    "CanRead": True,
+                    "CanWrite": f"{tname}.{fn}" in writable.get(role, set()),
+                    "MaskStrategy": "plain",
                     "SemanticTypeIri": IRI + "FieldGrant",
                 })
 
@@ -152,6 +175,26 @@ def main():
                 "RoleSchema": f"schema-{role}", "Principal": pid,
                 "TargetTable": tname, "ViewName": snake(tname),
                 "SemanticTypeIri": IRI + "RoleSchemaView",
+            })
+
+    # ---- write policies (loop 15) ------------------------------------------
+    # A write policy is only meaningful on a table the role can already read,
+    # and only the columns an AppActionFields row names become writable.
+    for p in principals:
+        role, pid = p["DomainRole"], p["AccessPrincipalId"]
+        short = role.replace("-", "")
+        for tname, cmd, using, check, why in PROFILES[role].get("writes", []):
+            if not any(v["Principal"] == pid and v["TargetTable"] == tname for v in views):
+                raise SystemExit(f"{role}: write policy on {tname}, which this role cannot read")
+            if not any(w.startswith(tname + ".") for w in writable.get(role, set())):
+                raise SystemExit(f"{role}: write policy on {tname} but no AppActionFields row "
+                                 f"makes any of its columns writable")
+            policies.append({
+                "AccessPolicyId": f"pol-{short}-{snake(tname)}-{cmd.lower()}",
+                "Principal": pid, "TargetTable": tname, "Command": cmd,
+                "RowPredicate": using, "CheckPredicate": check,
+                "Rationale": why, "ReferencesInference": "calc_" in (using + check),
+                "SemanticTypeIri": IRI + "AccessPolicy",
             })
 
     # ---- write ------------------------------------------------------------

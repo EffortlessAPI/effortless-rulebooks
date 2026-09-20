@@ -28,6 +28,12 @@ const DATABASE_URL =
 
 const PORT = Number(process.env.PORT || 8099);
 const pool = new pg.Pool({ connectionString: DATABASE_URL });
+// An idle client whose connection is terminated (DROP DATABASE ... WITH (FORCE), which is what
+// init-db.sh and the app's own "Reset the story" do) emits 'error' on the pool. Unhandled, that
+// kills the process: the API would crash itself on every reset. The pool discards the dead client
+// and opens a fresh one on the next query, so logging it is the whole of the correct handling.
+pool.on("error", (err) => console.error(`[db] idle connection lost (${err.code || err.message}); the pool will reconnect`));
+
 
 const app = express();
 app.use(express.json());
@@ -925,6 +931,10 @@ app.post("/api/admin/access/edits", requireAuth, requireAdmin, h(async (req, res
 app.post("/api/admin/access/rebuild", requireAuth, requireAdmin, (req, res) => {
   rebuildStream(res);
 });
+
+// --- the role experiences: reads, actions, the Copilot, the story -----------
+import { mountExperience } from "./experience.js";
+mountExperience(app, { requireAuth, requireAdmin, h });
 
 // --- conformance: do all substrates compute the same answers? ---------------
 // Every score, count and flag below is a column on a vw_ view, computed from

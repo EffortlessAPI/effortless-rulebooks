@@ -256,3 +256,196 @@ PROFILES = {
         "admin": True,
     },
 }
+
+
+# ============================================================================
+# Loop 15 -- the roles that WORK in the app (ROLE-EXPERIENCES.md).
+#
+# Three keys the office profiles above never needed:
+#
+#   rows      {table: (predicate, why)}  the vertical cut for THIS role on that
+#             table, replacing the shared defaults in reseed_role_profiles.py.
+#   unscoped  True = this role reads across ACME (the knowledge engineer, the
+#             ontology authority); the shared tenancy defaults do not apply.
+#   writes    [(table, command, using, check, why)]  what the role may CHANGE.
+#             Each becomes an INSERT or UPDATE policy; the columns it may write
+#             come from AppActionFields via FieldGrants.CanWrite.
+#
+# These roles get every column of the tables they work with (ALL). The narrow
+# column lists above were earned by an audit of what each office role's work
+# stalls without; the same audit for these roles is still to be done, and
+# IsOverPrivileged will say so until it is.
+# ============================================================================
+def _org(table_snake, pk):
+    """Rows whose owning procedure belongs to the caller's organization. The
+    predicate calls a derived lookup several hops down the DAG; the policy stays
+    one line."""
+    return (f"public.calc_{table_snake}_owner_organization({pk}) = app.jwt_organization()",
+            "Only rows belonging to a procedure this sign-in's organization owns. "
+            "OwnerOrganization is derived hop by hop from Procedures; the policy reads one function.")
+
+
+PLANT_ROWS = {
+    "Procedures": ("owner_organization = app.jwt_organization()",
+                   "Only procedures this sign-in's organization owns."),
+    "ProcedureVersions": _org("procedure_versions", "procedure_version_id"),
+    "Steps": _org("steps", "step_id"),
+    "ProcedureExecutions": _org("procedure_executions", "procedure_execution_id"),
+    "StepExecutions": _org("step_executions", "step_execution_id"),
+    "CueObservations": _org("cue_observations", "cue_observation_id"),
+    "AssistantAnswers": _org("assistant_answers", "assistant_answer_id"),
+    "KnowledgeFragments": _org("knowledge_fragments", "knowledge_fragment_id"),
+    "ChangeRequests": _org("change_requests", "change_request_id"),
+    "KnowledgeGaps": _org("knowledge_gaps", "knowledge_gap_id"),
+    "KnowHowCarriers": ("organization = app.jwt_organization()",
+                        "Only know-how held in this sign-in's organization."),
+}
+
+_RUNNER = ["Procedures", "ProcedureVersions", "Steps", "StepTransitions", "StepCues",
+           "StepConditions", "StepLockRequirements", "StepProtectiveEquipment",
+           "LockDevices", "ProtectiveEquipment", "Machines", "MachineEnergySources",
+           "EnergySources", "Facilities", "FailureModes", "DecisionPoints",
+           "ProcedureExecutions", "StepExecutions", "CueObservations",
+           "KnowledgeFragments", "ExpertCognitions", "ConceptLadderRungs",
+           "KnowHowCarriers", "AssistantAnswers", "KnowledgeQueryDefinitions",
+           "Agents", "Roles"]
+
+_OWN_AGENT = "executed_by_agent = app.jwt_agent()"
+_DECIDE = ("NOT (requested_by_agent = app.jwt_agent() AND decided_at IS NOT NULL)")
+
+EXPERIENCE_PROFILES = {
+    "maintenance-technician": {
+        "why": "Runs lockouts on the floor. Needs the procedure, its warning signs, the knowledge "
+               "attached to each step, their own runs, and the assistant's answers. Plant only.",
+        "tables": {t: ALL for t in _RUNNER},
+        "rows": PLANT_ROWS,
+        "writes": [
+            ("ProcedureExecutions", "INSERT", "", _OWN_AGENT, "A technician may start a run in their own name only."),
+            ("ProcedureExecutions", "UPDATE", _OWN_AGENT, _OWN_AGENT, "A technician may pause or finish their own run."),
+            ("StepExecutions", "INSERT", "", _OWN_AGENT, "A technician records the steps they carried out themselves."),
+            ("StepExecutions", "UPDATE", _OWN_AGENT, _OWN_AGENT, "A technician completes a step they began themselves."),
+            ("CueObservations", "INSERT", "", "observed_by_agent = app.jwt_agent()",
+             "A warning sign is recorded by the person who saw it."),
+            ("CueObservations", "UPDATE", "observed_by_agent = app.jwt_agent()", "observed_by_agent = app.jwt_agent()",
+             "Only the observer escalates their own observation."),
+            ("AssistantAnswers", "INSERT", "", "asked_by_agent = app.jwt_agent()",
+             "A question to the assistant is recorded against the person who asked it."),
+        ],
+    },
+    "plant-assistant": {
+        "why": "The Plant Copilot. Reads the procedure, its warning signs, transitions and attached "
+               "knowledge, and nothing about people, governance or any other organization. It "
+               "answers from these rows; it cannot leak what it cannot read.",
+        "tables": {t: ALL for t in ["Procedures", "ProcedureVersions", "Steps", "StepTransitions",
+                                    "StepCues", "StepConditions", "MachineEnergySources",
+                                    "EnergySources", "Machines", "KnowledgeFragments",
+                                    "FailureModes", "DecisionPoints", "KnowledgeQueryDefinitions",
+                                    "ProcedureExecutions", "StepExecutions", "CueObservations"]},
+        "rows": PLANT_ROWS,
+    },
+    "plant-safety-officer": {
+        "why": "Owns lockout safety: receives escalations, validates what the assistant proposes, "
+               "and is the authority on changes to the plant's procedures.",
+        "tables": {t: ALL for t in _RUNNER + ["AiInsightProposals", "ChangeRequests", "KnowledgeGaps",
+                                              "WorkflowViewDivergences", "StakeholderPerspectives"]},
+        "rows": PLANT_ROWS,
+        "writes": [
+            ("CueObservations", "UPDATE", "escalated_to_agent = app.jwt_agent()", "escalated_to_agent = app.jwt_agent()",
+             "The person an observation was escalated to acknowledges it."),
+            ("AiInsightProposals", "UPDATE", "", "validated_by_agent = app.jwt_agent()",
+             "A person, never the proposing agent, validates an insight, in their own name."),
+            ("ChangeRequests", "UPDATE", "authority_role = app.jwt_role()", _DECIDE,
+             "The authority may hand a decision up or decide it, but never decide a request they raised themselves."),
+        ],
+    },
+    "plant-operations-manager": {
+        "why": "Runs the floor over weeks and quarters: who is proficient, who mentors whom, what "
+               "know-how is about to leave, and the decisions handed up to them.",
+        "tables": {t: ALL for t in ["Procedures", "ProcedureVersions", "Steps", "ProcedureExecutions",
+                                    "OnboardingRecords", "Mentorships", "CommunitiesOfPractice",
+                                    "KnowHowCarriers", "KnowledgeTransfers", "ProcessKnowledgeLevels",
+                                    "ProcessLevelStatements", "LevelCaptureStrategies", "ChangeRequests",
+                                    "WorkflowViewDivergences", "KnowledgeWorkforcePositions",
+                                    "Agents", "Roles"]},
+        "rows": PLANT_ROWS,
+        "writes": [
+            ("ChangeRequests", "UPDATE", "authority_role = app.jwt_role()", _DECIDE,
+             "The authority decides a request, but never one they raised themselves."),
+        ],
+    },
+    "knowledge-engineer": {
+        "why": "Collects, organizes and encodes procedural knowledge across ACME. The capture "
+               "workbench reads every session, fragment, gap, vocabulary and know-how card.",
+        "unscoped": True,
+        "tables": {t: ALL for t in _RUNNER + [
+            "ElicitationSessions", "ElicitationParticipants", "CriticalIncidents",
+            "RepertoryGridConstructs", "WorkflowViewDivergences", "StakeholderPerspectives",
+            "KnowledgeRepositoryEntries", "KnowledgeTransfers", "Mentorships",
+            "KnowledgeBrokerLinks", "Vocabularies", "VocabularyTerms", "TermLabelVariants",
+            "StakeholderLenses", "ProcedureLensViews", "KnowledgeTraces",
+            "CollectedSourceMaterials", "KnowledgeSearchEvents", "KnowledgeMethods",
+            "KnowledgeGaps", "ChangeRequests", "OnboardingRecords", "CommunitiesOfPractice"]},
+        "writes": [
+            ("KnowledgeRepositoryEntries", "INSERT", "", "author_agent = app.jwt_agent()",
+             "A repository entry is written in its author's own name."),
+            ("KnowledgeTransfers", "INSERT", "", "true",
+             "The knowledge engineer records a hand-over between two other people."),
+            ("StepCues", "INSERT", "", "true",
+             "Encoding a warning sign onto a step is the knowledge engineer's job."),
+            ("ChangeRequests", "UPDATE", "decided_at IS NOT NULL", "decided_at IS NOT NULL",
+             "The steward marks a DECIDED request implemented; it cannot touch an undecided one."),
+        ],
+    },
+    "sourcing-manager": {
+        "why": "Manages the contracts ACME depends on. Reads every organization's engagements and "
+               "audits (sourcing is a corporate view) and changes only its own organization's.",
+        "unscoped": True,
+        "tables": {t: ALL for t in ["ProviderEngagements", "KnowledgeDeliverables", "KnowledgeAudits",
+                                    "KnowledgeAuditItems", "SourcingFunctions", "Organizations",
+                                    "KnowledgeWorkforcePositions", "Agents"]},
+        "writes": [
+            ("ProviderEngagements", "UPDATE", "client_organization = app.jwt_organization()",
+             "client_organization = app.jwt_organization()",
+             "A sourcing manager changes only their own organization's contracts."),
+            ("KnowledgeDeliverables", "INSERT", "",
+             "provider_engagement IN (SELECT provider_engagement_id FROM public.provider_engagements "
+             "WHERE client_organization = app.jwt_organization())",
+             "A deliverable may be required only on the caller's own organization's contract."),
+        ],
+    },
+    "release-manager": {
+        "why": "Owns the release gate: the deployment procedure, the AI agents that score releases, "
+               "what an upgrade would touch, and who held which role when.",
+        "tables": {t: ALL for t in ["Procedures", "ProcedureVersions", "Steps", "StepTransitions",
+                                    "ProcedureExecutions", "StepExecutions", "AgentUpgradeAssessments",
+                                    "AiRegistryModelVersions", "RoleAssignments", "Roles", "Agents",
+                                    "TermMeaningChanges", "VocabularyTerms", "ArtifactHandoffs",
+                                    "ExecutionEntities"]},
+        "rows": {k: v for k, v in PLANT_ROWS.items()
+                 if k in ("Procedures", "ProcedureVersions", "Steps", "ProcedureExecutions", "StepExecutions")},
+    },
+    "ontology-authority": {
+        "why": "Approves changes to the model itself and must see anything such a change could "
+               "touch: requests, validation runs, integrity checks, releases and the questions the "
+               "model must still answer.",
+        "unscoped": True,
+        "tables": {t: ALL for t in ["ModelChangeRequests", "ChangeValidationRuns", "ChangeIntegrityChecks",
+                                    "ChangeImpactFindings", "CompetencyQuestionRuns",
+                                    "CompetencyQuestionSetEntries", "CompetencyQuestionReviews",
+                                    "RulebookReleases", "InstanceDataVersions",
+                                    "ExternalDependencyRevisions", "ModelExpansionRequests",
+                                    "TermMeaningChanges", "VocabularyTerms", "GovernedModels",
+                                    "AiRegistryModelVersions", "RoleAssignments", "Roles", "Agents"]},
+        "writes": [
+            ("ModelChangeRequests", "UPDATE", "", "authority_reviewed_at IS NOT NULL",
+             "The authority records that they reviewed a model change."),
+        ],
+    },
+}
+PROFILES.update(EXPERIENCE_PROFILES)
+
+# The process steward is an administrator and owns the modelled instant.
+PROFILES["process-steward"]["writes"] = [
+    ("EvaluationContexts", "UPDATE", "", "true",
+     "An administrator may move the instant every time-dependent answer is judged against."),
+]

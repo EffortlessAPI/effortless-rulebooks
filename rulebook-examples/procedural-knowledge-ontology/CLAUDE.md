@@ -222,6 +222,65 @@ the transpiler emits `SELECT (TargetTable)::text` — a function that fails at
 call time while the build stays green. Seventeen fields were silently corrupted
 this way. `check_rulebook_integrity.py` now catches it.
 
+## The role experiences — an app people work in, in front of Postgres
+
+`app/mobile` (React + TypeScript, `:5175`, the primary URL of `./start.sh`) is where each
+person at ACME signs in and works: a phone for the floor roles, a landscape tablet for the desk
+roles. The older vanilla-JS console (`app/frontend`, `:5174`) is the administrator's read-only
+register, explorer, conformance and access pages. Both talk to the one Express API. The plan,
+and the contract with the video series filmed in this app, is `ROLE-EXPERIENCES.md`.
+
+**Develop against Postgres only.** `bash tools/quick_build.sh` (or `./start.sh quick`) runs the
+integrity gate, `rulebook-to-postgres` alone, and `init-db.sh`: about 30 seconds, against seven
+minutes for the full seven-substrate `effortless build`. The other six substrates are rebuilt
+and graded once, at the very end, with the full build and a recorded conformance run. Until then
+the derived values baked into the rulebook JSON by `compile-rulebook` are stale; nothing in the
+app reads them.
+
+**Two write paths, different on purpose.**
+
+- *Data* (a run, an observation, a repository entry, a decision): an `AppActions` row. The app
+  has no endpoint per action; `POST /api/app/action/:id` executes the row AS the caller. An RLS
+  `INSERT`/`UPDATE` policy opens the row, a column-level grant opens exactly the columns the
+  action's `AppActionFields` rows name, and a refusal is the database's own error. Writes are
+  stamped from the modelled instant, never the wall clock. They live in Postgres like any app's
+  data; Admin > Save carries a session into the rulebook (`tools/save_session_to_book.py`: adds
+  rows, updates only writable columns, never deletes, records an `InstanceDataVersions` row) and
+  Admin > Reset, or `bash init-db.sh`, returns to the rulebook.
+- *The model* (a formula, a field, a policy): edit the rulebook, then quick build.
+
+To add something a role can do: add the action to `tools/seed_role_experiences.py`, the write
+policy to that role's `writes` in `tools/role_profiles.py`, run the seeder, quick build. The app
+renders the form from the rows. `AppActions.IsUnpermitted`, `PolicyCommandDisagrees` and
+`IsUnprovenWrite` say what is still wrong with it.
+
+**`python3 tools/story_states.py --check`** (fresh database, API running) signs in as each person
+in episode order and asserts that every on-camera write moves the derived value it should, and
+that every refusal is real. It is the acceptance test for this app. Keep it at zero failures.
+
+### Verified substrate facts — write access
+
+5. **`ALTER ROLE ... SET search_path` applies at LOGIN, and `SET ROLE` is not a login.** Until
+   `asPrincipal()` ran `SET LOCAL search_path = <role schema>`, an unqualified table name
+   resolved to the `public` BASE table: RLS still guarded the rows, but none of the derived
+   columns existed and none of the column narrowing applied.
+6. **A `SECURITY DEFINER` function must pin its own `search_path`.** The generated `calc_*`
+   bodies call one another unqualified, so under a role-schema search_path they failed with
+   `function calc_... does not exist`. The generator now sets `search_path = public` on each.
+7. **No `RETURNING` on an insert whose SELECT policy reads a derived lookup.** Postgres applies
+   the SELECT policy to the new row when `RETURNING` is present; the derived
+   `OwnerOrganization` lookup cannot see a row that is not there yet, so a legitimate insert is
+   refused with a row-level-security error. Insert, then select.
+8. **`RulebookTables.PhysicalTable` / `PhysicalView` were set for only 80 of 262 tables**, and
+   the generator skips any policy or role view whose table has no physical name. Every policy on
+   every table added since loop 6 was silently absent. `tools/seed_role_experiences.py` fills the
+   names from the live database; a new table needs that run before it can be granted.
+9. **Role views list their columns alphabetically.** "The first column is the key" is false in a
+   role schema (it sent `configuration_kind` as a machine id). `/api/app/rows` returns `pk`.
+10. **`DROP DATABASE ... WITH (FORCE)` emits `error` on an idle pg pool client, and an unhandled
+    pool error kills Node.** The app's own Reset would have crashed the API every time. Both pools
+    now handle it; the pool reconnects on the next query.
+
 ## Conformance — every installed tool, graded cell by cell
 
 This project registers the same tool set as `toy-rulebooks/a1-effortless-init-sample`: `compile-rulebook`, `rulebook-to-postgres`, `-python`, `-go`, `-typescript`, `-entity-framework`, `-xlsx`, commercial `rulebook-to-owl`, `rulebook-to-rulespeak`, and the editor. Seven of them produce something that computes, and the repo's conformance harness grades each one against the same answer keys.
@@ -285,11 +344,16 @@ PKO is graph-shaped; an ERB rulebook is an acyclic structural graph. Many-to-man
 | `NOTICE.md` | PKO attribution and non-endorsement |
 | `schemas/pko-erb-profile-1.0.0.schema.json` | The ERB-PKO profile |
 | `tools/pko_rulebook_tool.py` | Validator + the four document projectors |
+| `tools/quick_build.sh` | The development loop: integrity gate, Postgres transpiler only, reload (~30s) |
+| `tools/story_states.py` | Plays the video series through the API as each person; `--check` is the app's acceptance test |
+| `tools/seed_role_experiences.py` | Sign-ins, role profiles, `AppActions`; then re-seeds policies, grants and role views |
+| `tools/save_session_to_book.py` | Admin > Save: carries what people did in the app into the rulebook |
 | `tools/verify_witnesses.sh` | **The gate.** Rebuild + reload + report every witness's distribution; fails on translation errors, load errors, or catalog drift |
 | `tools/reconcile_field_catalog.py` | Derives `RulebookFields` from the real schemas; `--check` fails on drift |
 | `tools/apply_witness_spec.py` | Applies one role's question/predicate spec to the rulebook |
 | `tools/extract_computed_answers.py` | Reads computed witness values out of Postgres back into `RoleQuestions.WitnessedAnswer` |
 | `WITNESS-LOOPS.md` | The multi-loop plan, decisions, and verified transpiler defects |
+| `ROLE-EXPERIENCES.md` | The plan for per-role app experiences with live writes, and the contract with the video series filmed in them |
 | `tools/bpm_process_export_to_pko.py` | Inbound adapter: BPM process-export format -> PKO rulebook |
 | `examples/bpm-vendor-payment.json` | Sample foreign-format input for the adapter |
 | `generated/*` | Generated projections — do not edit |

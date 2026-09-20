@@ -243,7 +243,7 @@ the database fully reset. macOS has no `timeout(1)` — write the bound explicit
 
 # Making a video about a project? Load the `effortless-video` skill.
 
-Videos live in the sibling producer repo (`../effortless-vid-01-full-name/videos/<NN-slug>/`); each is an Effortless project whose story is changed by editing its rulebook and running `effortless build`. Invoke the skill first; the reference example is `videos/03-closure`.
+Videos live in the sibling producer repo (`../effortless-videos/series/<series>/<video>/`; it was once named `effortless-vid-01-full-name` with a flat `videos/` folder, and neither exists any more); each is an Effortless project whose story is changed by editing its rulebook and running `effortless build`. Invoke the skill first; the reference cut is `series/15-cli-tour/06-effortless-init`, and for a short one-idea explainer `series/03-effortless-demos/03-closure`.
 
 After a repository-tour video is published, its collection README must show a
 large clickable player card, not a bare text link. GitHub strips YouTube

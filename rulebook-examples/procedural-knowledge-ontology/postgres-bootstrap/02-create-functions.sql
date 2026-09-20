@@ -4669,6 +4669,17 @@ RETURNS TEXT AS $$
   SELECT (SELECT agent_kind::text FROM agents WHERE agent_id = (SELECT created_by_agent FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id));
 $$ LANGUAGE sql STABLE;
 
+-- calc_procedure_versions_owner_organization
+-- Field: ProcedureVersions.OwnerOrganization
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: OwnerOrganization from related Procedures
+
+
+CREATE OR REPLACE FUNCTION calc_procedure_versions_owner_organization(p_procedure_version_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT owner_organization::text FROM procedures WHERE procedure_id = (SELECT procedure FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id));
+$$ LANGUAGE sql STABLE;
+
 -- get_lifecycle_statuses_label
 -- Helper function: Get Label from LifecycleStatuses by LifecycleStatusId
 -- Used for join-free cross-table references in aggregations
@@ -6701,6 +6712,17 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_steps_version_model_trace_count(p_step_id TEXT)
 RETURNS INTEGER AS $$
   SELECT calc_procedure_versions_process_model_trace_count((SELECT procedure_version FROM steps WHERE step_id = p_step_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_steps_owner_organization
+-- Field: Steps.OwnerOrganization
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: OwnerOrganization from related ProcedureVersions
+
+
+CREATE OR REPLACE FUNCTION calc_steps_owner_organization(p_step_id TEXT)
+RETURNS TEXT AS $$
+  SELECT calc_procedure_versions_owner_organization((SELECT procedure_version FROM steps WHERE step_id = p_step_id));
 $$ LANGUAGE sql STABLE;
 
 -- get_steps_step_number
@@ -9742,6 +9764,17 @@ RETURNS BOOLEAN AS $$
   SELECT calc_roles_is_vacated_role((SELECT owner_role FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id));
 $$ LANGUAGE sql STABLE;
 
+-- calc_knowledge_fragments_owner_organization
+-- Field: KnowledgeFragments.OwnerOrganization
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: OwnerOrganization from related ProcedureVersions
+
+
+CREATE OR REPLACE FUNCTION calc_knowledge_fragments_owner_organization(p_knowledge_fragment_id TEXT)
+RETURNS TEXT AS $$
+  SELECT calc_procedure_versions_owner_organization((SELECT procedure_version FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id));
+$$ LANGUAGE sql STABLE;
+
 -- get_elicitation_sessions_started_at
 -- Helper function: Get StartedAt from ElicitationSessions by ElicitationSessionId
 -- Used for join-free cross-table references in aggregations
@@ -10397,6 +10430,17 @@ RETURNS BOOLEAN AS $$
   SELECT calc_roles_is_vacated_role((SELECT owner_role FROM knowledge_gaps WHERE knowledge_gap_id = p_knowledge_gap_id));
 $$ LANGUAGE sql STABLE;
 
+-- calc_knowledge_gaps_owner_organization
+-- Field: KnowledgeGaps.OwnerOrganization
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: OwnerOrganization from related ProcedureVersions
+
+
+CREATE OR REPLACE FUNCTION calc_knowledge_gaps_owner_organization(p_knowledge_gap_id TEXT)
+RETURNS TEXT AS $$
+  SELECT calc_procedure_versions_owner_organization((SELECT procedure_version FROM knowledge_gaps WHERE knowledge_gap_id = p_knowledge_gap_id));
+$$ LANGUAGE sql STABLE;
+
 -- get_knowledge_fragments_knowledge_form
 -- Helper function: Get KnowledgeForm from KnowledgeFragments by KnowledgeFragmentId
 -- Used for join-free cross-table references in aggregations
@@ -10770,6 +10814,17 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_procedure_executions_executed_version_is_fit(p_procedure_execution_id TEXT)
 RETURNS BOOLEAN AS $$
   SELECT calc_procedure_versions_is_fit_to_execute((SELECT procedure_version FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_procedure_executions_owner_organization
+-- Field: ProcedureExecutions.OwnerOrganization
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: OwnerOrganization from related ProcedureVersions
+
+
+CREATE OR REPLACE FUNCTION calc_procedure_executions_owner_organization(p_procedure_execution_id TEXT)
+RETURNS TEXT AS $$
+  SELECT calc_procedure_versions_owner_organization((SELECT procedure_version FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id));
 $$ LANGUAGE sql STABLE;
 
 -- get_facilities_label
@@ -11923,6 +11978,17 @@ RETURNS TEXT AS $$
   SELECT (SELECT prerequisite_step::text FROM steps WHERE step_id = (SELECT step FROM step_executions WHERE step_execution_id = p_step_execution_id));
 $$ LANGUAGE sql STABLE;
 
+-- calc_step_executions_owner_organization
+-- Field: StepExecutions.OwnerOrganization
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: OwnerOrganization from related ProcedureExecutions
+
+
+CREATE OR REPLACE FUNCTION calc_step_executions_owner_organization(p_step_execution_id TEXT)
+RETURNS TEXT AS $$
+  SELECT calc_procedure_executions_owner_organization((SELECT procedure_execution FROM step_executions WHERE step_execution_id = p_step_execution_id));
+$$ LANGUAGE sql STABLE;
+
 -- get_step_executions_execution_status
 -- Helper function: Get ExecutionStatus from StepExecutions by StepExecutionId
 -- Used for join-free cross-table references in aggregations
@@ -12946,6 +13012,26 @@ RETURNS BOOLEAN AS $$
   SELECT ((COALESCE(calc_step_executions_step_prerequisite(p_step_execution_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE((calc_step_executions_completed_prerequisite_run_count(p_step_execution_id))::NUMERIC, 0) = 0, FALSE) AND COALESCE(COALESCE((SELECT NULLIF(execution_status, '') FROM step_executions WHERE step_execution_id = p_step_execution_id), '') <> 'Completed', FALSE)));
 $$ LANGUAGE sql STABLE;
 
+-- calc_step_executions_incomplete_cue_observation_count
+-- Field: StepExecutions.IncompleteCueObservationCount
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_step_executions_incomplete_cue_observation_count(p_step_execution_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM cue_observations WHERE step_execution = (SELECT NULLIF(step_execution_id, '') FROM step_executions WHERE step_execution_id = p_step_execution_id) AND calc_cue_observations_cue_signals_incomplete_step(cue_observation_id) = TRUE))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_step_executions_is_blocked_by_observed_cue
+-- Field: StepExecutions.IsBlockedByObservedCue
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_step_executions_is_blocked_by_observed_cue(p_step_execution_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (COALESCE((calc_step_executions_incomplete_cue_observation_count(p_step_execution_id))::NUMERIC, 0) > 0)::boolean;
+$$ LANGUAGE sql STABLE;
+
 -- calc_requirement_satisfactions_requirement_is_blocking
 -- Field: RequirementSatisfactions.RequirementIsBlocking
 -- Type: lookup | DataType: boolean | Returns: BOOLEAN
@@ -13661,6 +13747,17 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_change_requests_touches_live_version(p_change_request_id TEXT)
 RETURNS BOOLEAN AS $$
   SELECT calc_procedure_versions_is_live((SELECT procedure_version FROM change_requests WHERE change_request_id = p_change_request_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_change_requests_owner_organization
+-- Field: ChangeRequests.OwnerOrganization
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: OwnerOrganization from related ProcedureVersions
+
+
+CREATE OR REPLACE FUNCTION calc_change_requests_owner_organization(p_change_request_id TEXT)
+RETURNS TEXT AS $$
+  SELECT calc_procedure_versions_owner_organization((SELECT procedure_version FROM change_requests WHERE change_request_id = p_change_request_id));
 $$ LANGUAGE sql STABLE;
 
 -- calc_change_requests_name
@@ -22575,6 +22672,53 @@ RETURNS BOOLEAN AS $$
   SELECT ((SELECT NULLIF(response, '') FROM failure_modes WHERE failure_mode_id = p_failure_mode_id) IS NULL)::boolean;
 $$ LANGUAGE sql STABLE;
 
+-- calc_step_cues_failure_mode_response
+-- Field: StepCues.FailureModeResponse
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: Response from related FailureModes
+
+
+CREATE OR REPLACE FUNCTION calc_step_cues_failure_mode_response(p_step_cue_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT response::text FROM failure_modes WHERE failure_mode_id = (SELECT signals_failure_mode FROM step_cues WHERE step_cue_id = p_step_cue_id));
+$$ LANGUAGE sql STABLE;
+
+-- get_failure_modes_description
+-- Helper function: Get Description from FailureModes by FailureModeId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_failure_modes_description(p_failure_mode_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT description FROM failure_modes WHERE failure_mode_id = p_failure_mode_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_failure_modes_response
+-- Helper function: Get Response from FailureModes by FailureModeId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_failure_modes_response(p_failure_mode_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT response FROM failure_modes WHERE failure_mode_id = p_failure_mode_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_failure_modes_requires_escalation
+-- Helper function: Get RequiresEscalation from FailureModes by FailureModeId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_failure_modes_requires_escalation(p_failure_mode_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (SELECT requires_escalation FROM failure_modes WHERE failure_mode_id = p_failure_mode_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_failure_modes_semantic_type_iri
+-- Helper function: Get SemanticTypeIri from FailureModes by FailureModeId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_failure_modes_semantic_type_iri(p_failure_mode_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT semantic_type_iri FROM failure_modes WHERE failure_mode_id = p_failure_mode_id);
+$$ LANGUAGE sql STABLE;
+
 -- calc_step_cues_name
 -- Field: StepCues.Name
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -22625,6 +22769,16 @@ RETURNS TEXT AS $$
   SELECT (CASE WHEN COALESCE((SELECT signals_incomplete_step FROM step_cues WHERE step_cue_id = p_step_cue_id), FALSE) THEN ((SELECT NULLIF(step, '') FROM step_cues WHERE step_cue_id = p_step_cue_id))::text ELSE ('')::text END)::text;
 $$ LANGUAGE sql STABLE;
 
+-- calc_step_cues_is_unanswerable_sign
+-- Field: StepCues.IsUnanswerableSign
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_step_cues_is_unanswerable_sign(p_step_cue_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((COALESCE(COALESCE((SELECT signals_incomplete_step FROM step_cues WHERE step_cue_id = p_step_cue_id), FALSE) = TRUE, FALSE) AND COALESCE((SELECT NULLIF(signals_failure_mode, '') FROM step_cues WHERE step_cue_id = p_step_cue_id) IS NULL, FALSE)))::boolean;
+$$ LANGUAGE sql STABLE;
+
 -- calc_cue_observations_cue_requires_escalation
 -- Field: CueObservations.CueRequiresEscalation
 -- Type: lookup | DataType: boolean | Returns: BOOLEAN
@@ -22634,6 +22788,28 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_cue_observations_cue_requires_escalation(p_cue_observation_id TEXT)
 RETURNS BOOLEAN AS $$
   SELECT (SELECT requires_escalation::boolean FROM step_cues WHERE step_cue_id = (SELECT step_cue FROM cue_observations WHERE cue_observation_id = p_cue_observation_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_cue_observations_owner_organization
+-- Field: CueObservations.OwnerOrganization
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: OwnerOrganization from related StepExecutions
+
+
+CREATE OR REPLACE FUNCTION calc_cue_observations_owner_organization(p_cue_observation_id TEXT)
+RETURNS TEXT AS $$
+  SELECT calc_step_executions_owner_organization((SELECT step_execution FROM cue_observations WHERE cue_observation_id = p_cue_observation_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_cue_observations_cue_signals_incomplete_step
+-- Field: CueObservations.CueSignalsIncompleteStep
+-- Type: lookup | DataType: boolean | Returns: BOOLEAN
+-- Lookup: SignalsIncompleteStep from related StepCues
+
+
+CREATE OR REPLACE FUNCTION calc_cue_observations_cue_signals_incomplete_step(p_cue_observation_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (SELECT signals_incomplete_step::boolean FROM step_cues WHERE step_cue_id = (SELECT step_cue FROM cue_observations WHERE cue_observation_id = p_cue_observation_id));
 $$ LANGUAGE sql STABLE;
 
 -- get_step_cues_cue_kind
@@ -22681,6 +22857,15 @@ RETURNS TEXT AS $$
   SELECT (SELECT semantic_type_iri FROM step_cues WHERE step_cue_id = p_step_cue_id);
 $$ LANGUAGE sql STABLE;
 
+-- get_step_cues_operator_question
+-- Helper function: Get OperatorQuestion from StepCues by StepCueId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_step_cues_operator_question(p_step_cue_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT operator_question FROM step_cues WHERE step_cue_id = p_step_cue_id);
+$$ LANGUAGE sql STABLE;
+
 -- calc_cue_observations_name
 -- Field: CueObservations.Name
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -22719,6 +22904,16 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_cue_observations_unescalated_execution_key(p_cue_observation_id TEXT)
 RETURNS TEXT AS $$
   SELECT (CASE WHEN calc_cue_observations_is_unescalated_danger_cue(p_cue_observation_id) THEN ((SELECT NULLIF(step_execution, '') FROM cue_observations WHERE cue_observation_id = p_cue_observation_id))::text ELSE ('')::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_cue_observations_is_awaiting_acknowledgement
+-- Field: CueObservations.IsAwaitingAcknowledgement
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_cue_observations_is_awaiting_acknowledgement(p_cue_observation_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((COALESCE(COALESCE((SELECT was_escalated FROM cue_observations WHERE cue_observation_id = p_cue_observation_id), FALSE) = TRUE, FALSE) AND COALESCE((SELECT acknowledged_at::timestamptz FROM cue_observations WHERE cue_observation_id = p_cue_observation_id) IS NULL, FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_decision_points_name
@@ -25589,6 +25784,17 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_assistant_answers_recommended_step_needs_human(p_assistant_answer_id TEXT)
 RETURNS BOOLEAN AS $$
   SELECT (SELECT requires_human_confirmation::boolean FROM steps WHERE step_id = (SELECT recommended_step FROM assistant_answers WHERE assistant_answer_id = p_assistant_answer_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_assistant_answers_owner_organization
+-- Field: AssistantAnswers.OwnerOrganization
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: OwnerOrganization from related StepExecutions
+
+
+CREATE OR REPLACE FUNCTION calc_assistant_answers_owner_organization(p_assistant_answer_id TEXT)
+RETURNS TEXT AS $$
+  SELECT calc_step_executions_owner_organization((SELECT step_execution FROM assistant_answers WHERE assistant_answer_id = p_assistant_answer_id));
 $$ LANGUAGE sql STABLE;
 
 -- get_agent_integrations_delivery_mode
@@ -34432,6 +34638,174 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_artifact_handoffs_disagrees_with_declared_variable(p_artifact_handoff_id TEXT)
 RETURNS BOOLEAN AS $$
   SELECT ((COALESCE(COALESCE((SELECT NULLIF(from_step, '') FROM artifact_handoffs WHERE artifact_handoff_id = p_artifact_handoff_id), '') <> COALESCE(calc_artifact_handoffs_declared_source_step(p_artifact_handoff_id), ''), FALSE) OR COALESCE(COALESCE((SELECT NULLIF(to_step, '') FROM artifact_handoffs WHERE artifact_handoff_id = p_artifact_handoff_id), '') <> COALESCE(calc_artifact_handoffs_declared_consumer_step(p_artifact_handoff_id), ''), FALSE)))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_app_actions_policy_command
+-- Field: AppActions.PolicyCommand
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: Command from related AccessPolicies
+
+
+CREATE OR REPLACE FUNCTION calc_app_actions_policy_command(p_app_action_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT command::text FROM access_policies WHERE access_policy_id = (SELECT policy FROM app_actions WHERE app_action_id = p_app_action_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_app_actions_policy_denial_test_count
+-- Field: AppActions.PolicyDenialTestCount
+-- Type: lookup | DataType: integer | Returns: NUMERIC
+-- Lookup: DenialTestCount from related AccessPolicies
+
+
+CREATE OR REPLACE FUNCTION calc_app_actions_policy_denial_test_count(p_app_action_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT calc_access_policies_denial_test_count((SELECT policy FROM app_actions WHERE app_action_id = p_app_action_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_app_actions_watched_field_is_witness
+-- Field: AppActions.WatchedFieldIsWitness
+-- Type: lookup | DataType: boolean | Returns: BOOLEAN
+-- Lookup: IsWitness from related RulebookFields
+
+
+CREATE OR REPLACE FUNCTION calc_app_actions_watched_field_is_witness(p_app_action_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT calc_rulebook_fields_is_witness((SELECT watched_field FROM app_actions WHERE app_action_id = p_app_action_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_app_actions_name
+-- Field: AppActions.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_app_actions_name(p_app_action_id TEXT)
+RETURNS TEXT AS $$
+  SELECT ((SELECT NULLIF(label, '') FROM app_actions WHERE app_action_id = p_app_action_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_app_actions_input_field_count
+-- Field: AppActions.InputFieldCount
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_app_actions_input_field_count(p_app_action_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM app_action_fields WHERE app_action = (SELECT NULLIF(app_action_id, '') FROM app_actions WHERE app_action_id = p_app_action_id)))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_app_actions_is_unpermitted
+-- Field: AppActions.IsUnpermitted
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_app_actions_is_unpermitted(p_app_action_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((SELECT NULLIF(policy, '') FROM app_actions WHERE app_action_id = p_app_action_id) IS NULL)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_app_actions_policy_command_disagrees
+-- Field: AppActions.PolicyCommandDisagrees
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_app_actions_policy_command_disagrees(p_app_action_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((COALESCE((SELECT NULLIF(policy, '') FROM app_actions WHERE app_action_id = p_app_action_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE((SELECT NULLIF(operation, '') FROM app_actions WHERE app_action_id = p_app_action_id), '') <> COALESCE(calc_app_actions_policy_command(p_app_action_id), ''), FALSE)))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_app_actions_is_unproven_write
+-- Field: AppActions.IsUnprovenWrite
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_app_actions_is_unproven_write(p_app_action_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((COALESCE((SELECT NULLIF(policy, '') FROM app_actions WHERE app_action_id = p_app_action_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE((calc_app_actions_policy_denial_test_count(p_app_action_id))::NUMERIC, 0) = 0, FALSE)));
+$$ LANGUAGE sql STABLE;
+
+-- calc_app_action_fields_target_field_type
+-- Field: AppActionFields.TargetFieldType
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: FieldType from related RulebookFields
+
+
+CREATE OR REPLACE FUNCTION calc_app_action_fields_target_field_type(p_app_action_field_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT field_type::text FROM rulebook_fields WHERE rulebook_field_id = (SELECT target_field FROM app_action_fields WHERE app_action_field_id = p_app_action_field_id));
+$$ LANGUAGE sql STABLE;
+
+-- get_app_actions_label
+-- Helper function: Get Label from AppActions by AppActionId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_app_actions_label(p_app_action_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT label FROM app_actions WHERE app_action_id = p_app_action_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_app_actions_route_path
+-- Helper function: Get RoutePath from AppActions by AppActionId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_app_actions_route_path(p_app_action_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT route_path FROM app_actions WHERE app_action_id = p_app_action_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_app_actions_operation
+-- Helper function: Get Operation from AppActions by AppActionId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_app_actions_operation(p_app_action_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT operation FROM app_actions WHERE app_action_id = p_app_action_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_app_actions_story_episode
+-- Helper function: Get StoryEpisode from AppActions by AppActionId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_app_actions_story_episode(p_app_action_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (SELECT story_episode FROM app_actions WHERE app_action_id = p_app_action_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_app_actions_description
+-- Helper function: Get Description from AppActions by AppActionId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_app_actions_description(p_app_action_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT description FROM app_actions WHERE app_action_id = p_app_action_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_app_actions_semantic_type_iri
+-- Helper function: Get SemanticTypeIri from AppActions by AppActionId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_app_actions_semantic_type_iri(p_app_action_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT semantic_type_iri FROM app_actions WHERE app_action_id = p_app_action_id);
+$$ LANGUAGE sql STABLE;
+
+-- calc_app_action_fields_name
+-- Field: AppActionFields.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_app_action_fields_name(p_app_action_field_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT((SELECT NULLIF(app_action, '') FROM app_action_fields WHERE app_action_field_id = p_app_action_field_id), ' / ', (SELECT NULLIF(field_label, '') FROM app_action_fields WHERE app_action_field_id = p_app_action_field_id)))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_app_action_fields_writes_derived_field
+-- Field: AppActionFields.WritesDerivedField
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_app_action_fields_writes_derived_field(p_app_action_field_id TEXT)
+RETURNS BOOLEAN AS $$
+  WITH __erb_dedup_v1 AS (SELECT calc_app_action_fields_target_field_type(p_app_action_field_id) AS val) SELECT ((COALESCE((SELECT NULLIF(target_field, '') FROM app_action_fields WHERE app_action_field_id = p_app_action_field_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE((SELECT val FROM __erb_dedup_v1), '') <> 'raw', FALSE) AND COALESCE(COALESCE((SELECT val FROM __erb_dedup_v1), '') <> 'relationship', FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- ============================================================================

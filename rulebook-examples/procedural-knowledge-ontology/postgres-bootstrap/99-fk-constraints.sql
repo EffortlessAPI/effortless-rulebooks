@@ -1180,6 +1180,9 @@ ALTER TABLE step_cues ADD CONSTRAINT fk_step_cues_step
 ALTER TABLE step_cues DROP CONSTRAINT IF EXISTS fk_step_cues_escalate_to_role;
 ALTER TABLE step_cues ADD CONSTRAINT fk_step_cues_escalate_to_role
   FOREIGN KEY (escalate_to_role) REFERENCES roles (role_id);
+ALTER TABLE step_cues DROP CONSTRAINT IF EXISTS fk_step_cues_signals_failure_mode;
+ALTER TABLE step_cues ADD CONSTRAINT fk_step_cues_signals_failure_mode
+  FOREIGN KEY (signals_failure_mode) REFERENCES failure_modes (failure_mode_id);
 
 -- CueObservations
 ALTER TABLE cue_observations DROP CONSTRAINT IF EXISTS fk_cue_observations_step_execution;
@@ -2659,4 +2662,26 @@ ALTER TABLE artifact_handoffs DROP CONSTRAINT IF EXISTS fk_artifact_handoffs_to_
 ALTER TABLE artifact_handoffs ADD CONSTRAINT fk_artifact_handoffs_to_step
   FOREIGN KEY (to_step) REFERENCES steps (step_id);
 
--- 727 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).
+-- AppActions
+ALTER TABLE app_actions DROP CONSTRAINT IF EXISTS fk_app_actions_owning_role;
+ALTER TABLE app_actions ADD CONSTRAINT fk_app_actions_owning_role
+  FOREIGN KEY (owning_role) REFERENCES roles (role_id);
+ALTER TABLE app_actions DROP CONSTRAINT IF EXISTS fk_app_actions_target_table;
+ALTER TABLE app_actions ADD CONSTRAINT fk_app_actions_target_table
+  FOREIGN KEY (target_table) REFERENCES rulebook_tables (rulebook_table_id);
+ALTER TABLE app_actions DROP CONSTRAINT IF EXISTS fk_app_actions_policy;
+ALTER TABLE app_actions ADD CONSTRAINT fk_app_actions_policy
+  FOREIGN KEY (policy) REFERENCES access_policies (access_policy_id);
+ALTER TABLE app_actions DROP CONSTRAINT IF EXISTS fk_app_actions_watched_field;
+ALTER TABLE app_actions ADD CONSTRAINT fk_app_actions_watched_field
+  FOREIGN KEY (watched_field) REFERENCES rulebook_fields (rulebook_field_id);
+
+-- AppActionFields
+ALTER TABLE app_action_fields DROP CONSTRAINT IF EXISTS fk_app_action_fields_app_action;
+ALTER TABLE app_action_fields ADD CONSTRAINT fk_app_action_fields_app_action
+  FOREIGN KEY (app_action) REFERENCES app_actions (app_action_id);
+ALTER TABLE app_action_fields DROP CONSTRAINT IF EXISTS fk_app_action_fields_target_field;
+ALTER TABLE app_action_fields ADD CONSTRAINT fk_app_action_fields_target_field
+  FOREIGN KEY (target_field) REFERENCES rulebook_fields (rulebook_field_id);
+
+-- 734 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).

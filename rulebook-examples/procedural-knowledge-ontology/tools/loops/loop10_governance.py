@@ -1375,7 +1375,7 @@ _CR_COLS = ["ModelChangeRequestId", "GovernedModel", "Title", "StatedNeed", "Req
 _N = "NewQuestionNeeded"
 _F = "ExistingQuestionNowFails"
 ROWS["ModelChangeRequests"] = _rows(_CR_COLS,
-    ("mcr-01", PKO_MODEL, "Add the lockout/tagout class model", "Part IV's lockout story has no classes to hold multi-steps, cues or energy sources.",
+    ("mcr-01", PKO_MODEL, "Add the lockout/tagout class model", "The lockout story has no classes to hold multi-steps, cues or energy sources.",
      "sam-adeyemi", _t("2026-04-02"), "aq-pkm2-q19", _N, "Schema", "AddClass", "ModelingChange", "Governance", "Minor", "Deployed",
      "Additive; a new parent-step reference re-infers child counts on existing steps.", _t("2026-04-10"), _t("2026-04-12"), "sam-adeyemi",
      _t("2026-04-12"), "", None, R["0.9.0"], "", None),
@@ -1555,7 +1555,7 @@ ROWS["ModelChangeLogEntries"] = _rows(
     ("le-07", PKO_MODEL, None, R["0.8.2"], None, "Schema", "ChangeDomainRange", "Widen ReviewEvents.ReviewedByAgent to any agent",
      "Let automated reviewers be recorded.", "ReviewEvents.ReviewedByAgent", "ReviewEvents", False, _t("2026-04-10"), "elena-garcia", "b71d9e0", None),
     ("le-04", PKO_MODEL, "mcr-01", R["0.9.0"], None, "Schema", "AddClass", "Lockout/tagout class model",
-     "Part IV's lockout story needs multi-steps, cues and energy sources.", "StepCues, EnergySources, Machines", "Machines", False,
+     "The lockout story needs multi-steps, cues and energy sources.", "StepCues, EnergySources, Machines", "Machines", False,
      _t("2026-04-20"), "sam-adeyemi", "c1f0a77", None),
     ("le-05", PKO_MODEL, "mcr-01", R["0.9.0"], None, "Schema", "AddProperty", "First and fallback step properties",
      "The first step must be declared, not guessed.", "ProcedureVersions.FirstStep, ProcedureVersions.FallbackStep", "ProcedureVersions", False,

@@ -34,6 +34,11 @@ CREATE OR REPLACE FUNCTION app.jwt_user() RETURNS text
     SELECT nullif(current_setting('app.jwt_user', true), '')
   $$;
 
+CREATE OR REPLACE FUNCTION app.jwt_agent() RETURNS text
+  LANGUAGE sql STABLE AS $$
+    SELECT nullif(current_setting('app.jwt_agent', true), '')
+  $$;
+
 CREATE OR REPLACE FUNCTION app.jwt_is_admin() RETURNS boolean
   LANGUAGE sql STABLE AS $$
     SELECT coalesce(current_setting('app.jwt_is_admin', true) = 'true', false)
@@ -62,6 +67,7 @@ BEGIN
   LOOP
     EXECUTE format('ALTER FUNCTION %s SECURITY DEFINER', r.sig);
     EXECUTE format('ALTER FUNCTION %s SET row_security = off', r.sig);
+    EXECUTE format('ALTER FUNCTION %s SET search_path = public', r.sig);
     n := n + 1;
   END LOOP;
   RAISE NOTICE 'access-control: % derivation functions marked SECURITY DEFINER', n;
@@ -128,6 +134,46 @@ DO $$ BEGIN
     CREATE ROLE pko_knowledge_authority NOLOGIN;
   END IF;
 END $$;
+DO $$ BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'pko_maintenance_technician') THEN
+    CREATE ROLE pko_maintenance_technician NOLOGIN;
+  END IF;
+END $$;
+DO $$ BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'pko_plant_assistant') THEN
+    CREATE ROLE pko_plant_assistant NOLOGIN;
+  END IF;
+END $$;
+DO $$ BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'pko_plant_safety_officer') THEN
+    CREATE ROLE pko_plant_safety_officer NOLOGIN;
+  END IF;
+END $$;
+DO $$ BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'pko_plant_operations_manager') THEN
+    CREATE ROLE pko_plant_operations_manager NOLOGIN;
+  END IF;
+END $$;
+DO $$ BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'pko_knowledge_engineer') THEN
+    CREATE ROLE pko_knowledge_engineer NOLOGIN;
+  END IF;
+END $$;
+DO $$ BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'pko_sourcing_manager') THEN
+    CREATE ROLE pko_sourcing_manager NOLOGIN;
+  END IF;
+END $$;
+DO $$ BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'pko_release_manager') THEN
+    CREATE ROLE pko_release_manager NOLOGIN;
+  END IF;
+END $$;
+DO $$ BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'pko_ontology_authority') THEN
+    CREATE ROLE pko_ontology_authority NOLOGIN;
+  END IF;
+END $$;
 
 -- Base-table SELECT is granted, and RLS is what makes that safe.
 -- (Ownership-chaining does NOT survive the calc_* hop, so a narrowed
@@ -180,6 +226,59 @@ GRANT USAGE ON SCHEMA public TO pko_knowledge_authority;
 GRANT SELECT ON ALL TABLES IN SCHEMA public TO pko_knowledge_authority;
 GRANT USAGE ON SCHEMA app TO pko_knowledge_authority;
 GRANT EXECUTE ON ALL FUNCTIONS IN SCHEMA app TO pko_knowledge_authority;
+GRANT USAGE ON SCHEMA public TO pko_maintenance_technician;
+GRANT SELECT ON ALL TABLES IN SCHEMA public TO pko_maintenance_technician;
+GRANT USAGE ON SCHEMA app TO pko_maintenance_technician;
+GRANT EXECUTE ON ALL FUNCTIONS IN SCHEMA app TO pko_maintenance_technician;
+GRANT USAGE ON SCHEMA public TO pko_plant_assistant;
+GRANT SELECT ON ALL TABLES IN SCHEMA public TO pko_plant_assistant;
+GRANT USAGE ON SCHEMA app TO pko_plant_assistant;
+GRANT EXECUTE ON ALL FUNCTIONS IN SCHEMA app TO pko_plant_assistant;
+GRANT USAGE ON SCHEMA public TO pko_plant_safety_officer;
+GRANT SELECT ON ALL TABLES IN SCHEMA public TO pko_plant_safety_officer;
+GRANT USAGE ON SCHEMA app TO pko_plant_safety_officer;
+GRANT EXECUTE ON ALL FUNCTIONS IN SCHEMA app TO pko_plant_safety_officer;
+GRANT USAGE ON SCHEMA public TO pko_plant_operations_manager;
+GRANT SELECT ON ALL TABLES IN SCHEMA public TO pko_plant_operations_manager;
+GRANT USAGE ON SCHEMA app TO pko_plant_operations_manager;
+GRANT EXECUTE ON ALL FUNCTIONS IN SCHEMA app TO pko_plant_operations_manager;
+GRANT USAGE ON SCHEMA public TO pko_knowledge_engineer;
+GRANT SELECT ON ALL TABLES IN SCHEMA public TO pko_knowledge_engineer;
+GRANT USAGE ON SCHEMA app TO pko_knowledge_engineer;
+GRANT EXECUTE ON ALL FUNCTIONS IN SCHEMA app TO pko_knowledge_engineer;
+GRANT USAGE ON SCHEMA public TO pko_sourcing_manager;
+GRANT SELECT ON ALL TABLES IN SCHEMA public TO pko_sourcing_manager;
+GRANT USAGE ON SCHEMA app TO pko_sourcing_manager;
+GRANT EXECUTE ON ALL FUNCTIONS IN SCHEMA app TO pko_sourcing_manager;
+GRANT USAGE ON SCHEMA public TO pko_release_manager;
+GRANT SELECT ON ALL TABLES IN SCHEMA public TO pko_release_manager;
+GRANT USAGE ON SCHEMA app TO pko_release_manager;
+GRANT EXECUTE ON ALL FUNCTIONS IN SCHEMA app TO pko_release_manager;
+GRANT USAGE ON SCHEMA public TO pko_ontology_authority;
+GRANT SELECT ON ALL TABLES IN SCHEMA public TO pko_ontology_authority;
+GRANT USAGE ON SCHEMA app TO pko_ontology_authority;
+GRANT EXECUTE ON ALL FUNCTIONS IN SCHEMA app TO pko_ontology_authority;
+
+-- Column-level INSERT/UPDATE: exactly the columns the role's actions name.
+GRANT UPDATE (as_of_instant) ON public.evaluation_contexts TO pko_process_steward;
+GRANT INSERT (ended_at, executed_by_agent, executed_on_machine, execution_status, facility, observations, outcome, procedure_execution_id, procedure_version, semantic_type_iri, shift, started_at, title) ON public.procedure_executions TO pko_maintenance_technician;
+GRANT UPDATE (ended_at, executed_by_agent, executed_on_machine, execution_status, facility, observations, outcome, procedure_execution_id, procedure_version, semantic_type_iri, shift, started_at, title) ON public.procedure_executions TO pko_maintenance_technician;
+GRANT INSERT (ended_at, executed_by_agent, execution_status, previous_step_execution, procedure_execution, semantic_type_iri, started_at, step, step_execution_id, verification_result) ON public.step_executions TO pko_maintenance_technician;
+GRANT UPDATE (ended_at, executed_by_agent, execution_status, previous_step_execution, procedure_execution, semantic_type_iri, started_at, step, step_execution_id, verification_result) ON public.step_executions TO pko_maintenance_technician;
+GRANT INSERT (cue_observation_id, escalated_to_agent, observed_at, observed_by_agent, semantic_type_iri, step_cue, step_execution, was_escalated) ON public.cue_observations TO pko_maintenance_technician;
+GRANT UPDATE (cue_observation_id, escalated_to_agent, observed_at, observed_by_agent, semantic_type_iri, step_cue, step_execution, was_escalated) ON public.cue_observations TO pko_maintenance_technician;
+GRANT INSERT (answer_kind, answer_text, answered_at, answering_agent, asked_at, asked_by_agent, asserted_next_step, assistant_answer_id, assumed_current_step, delivery_disposition, derivation_performed_by, question_text, question_topic, raised_safety_concern, retrieval_mode, semantic_type_iri, step_execution) ON public.assistant_answers TO pko_maintenance_technician;
+GRANT UPDATE (acknowledged_at) ON public.cue_observations TO pko_plant_safety_officer;
+GRANT UPDATE (validated_by_agent, validation_verdict) ON public.ai_insight_proposals TO pko_plant_safety_officer;
+GRANT UPDATE (authority_role, decided_at, status) ON public.change_requests TO pko_plant_safety_officer;
+GRANT UPDATE (decided_at, status) ON public.change_requests TO pko_plant_operations_manager;
+GRANT INSERT (author_agent, authored_on_allocated_time, created_at, credits_source_expert, evaluation_context, know_how, knowledge_repository_entry_id, last_updated_at, procedure, review_interval_days, semantic_type_iri, source_expert, title, written_for_audience) ON public.knowledge_repository_entries TO pko_knowledge_engineer;
+GRANT INSERT (channel, community_of_practice, from_agent, know_how, knowledge_transfer_id, occurred_at, on_allocated_time, recipient_agent, semantic_type_iri) ON public.knowledge_transfers TO pko_knowledge_engineer;
+GRANT INSERT (cue_kind, description, escalate_to_role, requires_escalation, semantic_type_iri, signals_incomplete_step, step, step_cue_id) ON public.step_cues TO pko_knowledge_engineer;
+GRANT UPDATE (implemented_at) ON public.change_requests TO pko_knowledge_engineer;
+GRANT UPDATE (has_knowledge_access_clause) ON public.provider_engagements TO pko_sourcing_manager;
+GRANT INSERT (direction, due_at, knowledge_deliverable_id, provider_engagement, semantic_type_iri, title) ON public.knowledge_deliverables TO pko_sourcing_manager;
+GRANT UPDATE (authority_reviewed_at) ON public.model_change_requests TO pko_ontology_authority;
 
 -- ---------- 4. Row policies (the VERTICAL cut) --------------------
 -- RLS is already ENABLED on every table by 04-create-policies.sql with
@@ -348,6 +447,15 @@ CREATE POLICY "pol-notificationpublisher-recipients-select" ON public.recipients
 DROP POLICY IF EXISTS "pol-notificationpublisher-steps-select" ON public.steps;
 CREATE POLICY "pol-notificationpublisher-steps-select" ON public.steps FOR SELECT TO pko_notification_publisher USING (true);
 -- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-access_denial_tests-select" ON public.access_denial_tests;
+CREATE POLICY "pol-processsteward-access_denial_tests-select" ON public.access_denial_tests FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-access_policies-select" ON public.access_policies;
+CREATE POLICY "pol-processsteward-access_policies-select" ON public.access_policies FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-access_principals-select" ON public.access_principals;
+CREATE POLICY "pol-processsteward-access_principals-select" ON public.access_principals FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
 DROP POLICY IF EXISTS "pol-processsteward-actions-select" ON public.actions;
 CREATE POLICY "pol-processsteward-actions-select" ON public.actions FOR SELECT TO pko_process_steward USING (true);
 -- Full read: this principal is a declared administrator.
@@ -411,11 +519,17 @@ CREATE POLICY "pol-processsteward-exceptions-select" ON public.exceptions FOR SE
 DROP POLICY IF EXISTS "pol-processsteward-explanations-select" ON public.explanations;
 CREATE POLICY "pol-processsteward-explanations-select" ON public.explanations FOR SELECT TO pko_process_steward USING (true);
 -- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-field_grants-select" ON public.field_grants;
+CREATE POLICY "pol-processsteward-field_grants-select" ON public.field_grants FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
 DROP POLICY IF EXISTS "pol-processsteward-functions-select" ON public.functions;
 CREATE POLICY "pol-processsteward-functions-select" ON public.functions FOR SELECT TO pko_process_steward USING (true);
 -- Full read: this principal is a declared administrator.
 DROP POLICY IF EXISTS "pol-processsteward-issue_occurrences-select" ON public.issue_occurrences;
 CREATE POLICY "pol-processsteward-issue_occurrences-select" ON public.issue_occurrences FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-jwt_claim_mappings-select" ON public.jwt_claim_mappings;
+CREATE POLICY "pol-processsteward-jwt_claim_mappings-select" ON public.jwt_claim_mappings FOR SELECT TO pko_process_steward USING (true);
 -- Full read: this principal is a declared administrator.
 DROP POLICY IF EXISTS "pol-processsteward-knowledge_fragments-select" ON public.knowledge_fragments;
 CREATE POLICY "pol-processsteward-knowledge_fragments-select" ON public.knowledge_fragments FOR SELECT TO pko_process_steward USING (true);
@@ -492,6 +606,12 @@ CREATE POLICY "pol-processsteward-role_assignments-select" ON public.role_assign
 DROP POLICY IF EXISTS "pol-processsteward-role_questions-select" ON public.role_questions;
 CREATE POLICY "pol-processsteward-role_questions-select" ON public.role_questions FOR SELECT TO pko_process_steward USING (true);
 -- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-role_schema_views-select" ON public.role_schema_views;
+CREATE POLICY "pol-processsteward-role_schema_views-select" ON public.role_schema_views FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-role_schemas-select" ON public.role_schemas;
+CREATE POLICY "pol-processsteward-role_schemas-select" ON public.role_schemas FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
 DROP POLICY IF EXISTS "pol-processsteward-roles-select" ON public.roles;
 CREATE POLICY "pol-processsteward-roles-select" ON public.roles FOR SELECT TO pko_process_steward USING (true);
 -- Full read: this principal is a declared administrator.
@@ -500,6 +620,9 @@ CREATE POLICY "pol-processsteward-rulebook_fields-select" ON public.rulebook_fie
 -- Full read: this principal is a declared administrator.
 DROP POLICY IF EXISTS "pol-processsteward-rulebook_releases-select" ON public.rulebook_releases;
 CREATE POLICY "pol-processsteward-rulebook_releases-select" ON public.rulebook_releases FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-rulebook_tables-select" ON public.rulebook_tables;
+CREATE POLICY "pol-processsteward-rulebook_tables-select" ON public.rulebook_tables FOR SELECT TO pko_process_steward USING (true);
 -- Full read: this principal is a declared administrator.
 DROP POLICY IF EXISTS "pol-processsteward-semantic_mappings-select" ON public.semantic_mappings;
 CREATE POLICY "pol-processsteward-semantic_mappings-select" ON public.semantic_mappings FOR SELECT TO pko_process_steward USING (true);
@@ -557,6 +680,555 @@ CREATE POLICY "pol-processsteward-verification_outcomes-select" ON public.verifi
 -- Full read: this principal is a declared administrator.
 DROP POLICY IF EXISTS "pol-processsteward-witness_loops-select" ON public.witness_loops;
 CREATE POLICY "pol-processsteward-witness_loops-select" ON public.witness_loops FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-process_mining_runs-select" ON public.process_mining_runs;
+CREATE POLICY "pol-processsteward-process_mining_runs-select" ON public.process_mining_runs FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-vocabularies-select" ON public.vocabularies;
+CREATE POLICY "pol-processsteward-vocabularies-select" ON public.vocabularies FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-vocabulary_terms-select" ON public.vocabulary_terms;
+CREATE POLICY "pol-processsteward-vocabulary_terms-select" ON public.vocabulary_terms FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-knowledge_broker_links-select" ON public.knowledge_broker_links;
+CREATE POLICY "pol-processsteward-knowledge_broker_links-select" ON public.knowledge_broker_links FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-conformance_substrates-select" ON public.conformance_substrates;
+CREATE POLICY "pol-processsteward-conformance_substrates-select" ON public.conformance_substrates FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-conformance_runs-select" ON public.conformance_runs;
+CREATE POLICY "pol-processsteward-conformance_runs-select" ON public.conformance_runs FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-substrate_run_scores-select" ON public.substrate_run_scores;
+CREATE POLICY "pol-processsteward-substrate_run_scores-select" ON public.substrate_run_scores FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-table_conformance-select" ON public.table_conformance;
+CREATE POLICY "pol-processsteward-table_conformance-select" ON public.table_conformance FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-field_disagreements-select" ON public.field_disagreements;
+CREATE POLICY "pol-processsteward-field_disagreements-select" ON public.field_disagreements FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-cell_disagreements-select" ON public.cell_disagreements;
+CREATE POLICY "pol-processsteward-cell_disagreements-select" ON public.cell_disagreements FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-knowledge_methods-select" ON public.knowledge_methods;
+CREATE POLICY "pol-processsteward-knowledge_methods-select" ON public.knowledge_methods FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-source_articles-select" ON public.source_articles;
+CREATE POLICY "pol-processsteward-source_articles-select" ON public.source_articles FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-article_claims-select" ON public.article_claims;
+CREATE POLICY "pol-processsteward-article_claims-select" ON public.article_claims FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-claim_evidence-select" ON public.claim_evidence;
+CREATE POLICY "pol-processsteward-claim_evidence-select" ON public.claim_evidence FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-app_users-select" ON public.app_users;
+CREATE POLICY "pol-processsteward-app_users-select" ON public.app_users FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-principal_assignments-select" ON public.principal_assignments;
+CREATE POLICY "pol-processsteward-principal_assignments-select" ON public.principal_assignments FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-issued_tokens-select" ON public.issued_tokens;
+CREATE POLICY "pol-processsteward-issued_tokens-select" ON public.issued_tokens FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-method_applications-select" ON public.method_applications;
+CREATE POLICY "pol-processsteward-method_applications-select" ON public.method_applications FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-lifecycle_statuses-select" ON public.lifecycle_statuses;
+CREATE POLICY "pol-processsteward-lifecycle_statuses-select" ON public.lifecycle_statuses FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-facilities-select" ON public.facilities;
+CREATE POLICY "pol-processsteward-facilities-select" ON public.facilities FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-machine_types-select" ON public.machine_types;
+CREATE POLICY "pol-processsteward-machine_types-select" ON public.machine_types FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-energy_sources-select" ON public.energy_sources;
+CREATE POLICY "pol-processsteward-energy_sources-select" ON public.energy_sources FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-machines-select" ON public.machines;
+CREATE POLICY "pol-processsteward-machines-select" ON public.machines FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-machine_energy_sources-select" ON public.machine_energy_sources;
+CREATE POLICY "pol-processsteward-machine_energy_sources-select" ON public.machine_energy_sources FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-lock_devices-select" ON public.lock_devices;
+CREATE POLICY "pol-processsteward-lock_devices-select" ON public.lock_devices FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-protective_equipment-select" ON public.protective_equipment;
+CREATE POLICY "pol-processsteward-protective_equipment-select" ON public.protective_equipment FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-step_lock_requirements-select" ON public.step_lock_requirements;
+CREATE POLICY "pol-processsteward-step_lock_requirements-select" ON public.step_lock_requirements FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-step_protective_equipment-select" ON public.step_protective_equipment;
+CREATE POLICY "pol-processsteward-step_protective_equipment-select" ON public.step_protective_equipment FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-regulatory_frameworks-select" ON public.regulatory_frameworks;
+CREATE POLICY "pol-processsteward-regulatory_frameworks-select" ON public.regulatory_frameworks FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-procedure_targets-select" ON public.procedure_targets;
+CREATE POLICY "pol-processsteward-procedure_targets-select" ON public.procedure_targets FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-procedure_adoptions-select" ON public.procedure_adoptions;
+CREATE POLICY "pol-processsteward-procedure_adoptions-select" ON public.procedure_adoptions FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-procedure_outcome_criteria-select" ON public.procedure_outcome_criteria;
+CREATE POLICY "pol-processsteward-procedure_outcome_criteria-select" ON public.procedure_outcome_criteria FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-relation_types-select" ON public.relation_types;
+CREATE POLICY "pol-processsteward-relation_types-select" ON public.relation_types FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-activity_relations-select" ON public.activity_relations;
+CREATE POLICY "pol-processsteward-activity_relations-select" ON public.activity_relations FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-step_variables-select" ON public.step_variables;
+CREATE POLICY "pol-processsteward-step_variables-select" ON public.step_variables FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-execution_entities-select" ON public.execution_entities;
+CREATE POLICY "pol-processsteward-execution_entities-select" ON public.execution_entities FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-step_conditions-select" ON public.step_conditions;
+CREATE POLICY "pol-processsteward-step_conditions-select" ON public.step_conditions FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-condition_checks-select" ON public.condition_checks;
+CREATE POLICY "pol-processsteward-condition_checks-select" ON public.condition_checks FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-failure_modes-select" ON public.failure_modes;
+CREATE POLICY "pol-processsteward-failure_modes-select" ON public.failure_modes FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-step_cues-select" ON public.step_cues;
+CREATE POLICY "pol-processsteward-step_cues-select" ON public.step_cues FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-cue_observations-select" ON public.cue_observations;
+CREATE POLICY "pol-processsteward-cue_observations-select" ON public.cue_observations FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-decision_points-select" ON public.decision_points;
+CREATE POLICY "pol-processsteward-decision_points-select" ON public.decision_points FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-execution_participants-select" ON public.execution_participants;
+CREATE POLICY "pol-processsteward-execution_participants-select" ON public.execution_participants FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-step_resources-select" ON public.step_resources;
+CREATE POLICY "pol-processsteward-step_resources-select" ON public.step_resources FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-faq_categories-select" ON public.faq_categories;
+CREATE POLICY "pol-processsteward-faq_categories-select" ON public.faq_categories FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-faq_targets-select" ON public.faq_targets;
+CREATE POLICY "pol-processsteward-faq_targets-select" ON public.faq_targets FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-authoring_submissions-select" ON public.authoring_submissions;
+CREATE POLICY "pol-processsteward-authoring_submissions-select" ON public.authoring_submissions FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-process_knowledge_levels-select" ON public.process_knowledge_levels;
+CREATE POLICY "pol-processsteward-process_knowledge_levels-select" ON public.process_knowledge_levels FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-level_capture_strategies-select" ON public.level_capture_strategies;
+CREATE POLICY "pol-processsteward-level_capture_strategies-select" ON public.level_capture_strategies FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-level_pyramid_questions-select" ON public.level_pyramid_questions;
+CREATE POLICY "pol-processsteward-level_pyramid_questions-select" ON public.level_pyramid_questions FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-process_level_statements-select" ON public.process_level_statements;
+CREATE POLICY "pol-processsteward-process_level_statements-select" ON public.process_level_statements FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-tactical_resource_allocations-select" ON public.tactical_resource_allocations;
+CREATE POLICY "pol-processsteward-tactical_resource_allocations-select" ON public.tactical_resource_allocations FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-process_strategic_alignments-select" ON public.process_strategic_alignments;
+CREATE POLICY "pol-processsteward-process_strategic_alignments-select" ON public.process_strategic_alignments FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-business_outcomes-select" ON public.business_outcomes;
+CREATE POLICY "pol-processsteward-business_outcomes-select" ON public.business_outcomes FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-process_outcome_measures-select" ON public.process_outcome_measures;
+CREATE POLICY "pol-processsteward-process_outcome_measures-select" ON public.process_outcome_measures FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-process_stages-select" ON public.process_stages;
+CREATE POLICY "pol-processsteward-process_stages-select" ON public.process_stages FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-process_interdependencies-select" ON public.process_interdependencies;
+CREATE POLICY "pol-processsteward-process_interdependencies-select" ON public.process_interdependencies FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-stakeholder_lenses-select" ON public.stakeholder_lenses;
+CREATE POLICY "pol-processsteward-stakeholder_lenses-select" ON public.stakeholder_lenses FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-procedure_lens_views-select" ON public.procedure_lens_views;
+CREATE POLICY "pol-processsteward-procedure_lens_views-select" ON public.procedure_lens_views FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-applicability_scopes-select" ON public.applicability_scopes;
+CREATE POLICY "pol-processsteward-applicability_scopes-select" ON public.applicability_scopes FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-step_context_sensitivities-select" ON public.step_context_sensitivities;
+CREATE POLICY "pol-processsteward-step_context_sensitivities-select" ON public.step_context_sensitivities FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-situational_variants-select" ON public.situational_variants;
+CREATE POLICY "pol-processsteward-situational_variants-select" ON public.situational_variants FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-collected_source_materials-select" ON public.collected_source_materials;
+CREATE POLICY "pol-processsteward-collected_source_materials-select" ON public.collected_source_materials FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-scheme_refinements-select" ON public.scheme_refinements;
+CREATE POLICY "pol-processsteward-scheme_refinements-select" ON public.scheme_refinements FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-term_label_variants-select" ON public.term_label_variants;
+CREATE POLICY "pol-processsteward-term_label_variants-select" ON public.term_label_variants FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-ai_labeling_runs-select" ON public.ai_labeling_runs;
+CREATE POLICY "pol-processsteward-ai_labeling_runs-select" ON public.ai_labeling_runs FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-source_term_mentions-select" ON public.source_term_mentions;
+CREATE POLICY "pol-processsteward-source_term_mentions-select" ON public.source_term_mentions FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-term_relations-select" ON public.term_relations;
+CREATE POLICY "pol-processsteward-term_relations-select" ON public.term_relations FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-term_meaning_changes-select" ON public.term_meaning_changes;
+CREATE POLICY "pol-processsteward-term_meaning_changes-select" ON public.term_meaning_changes FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-external_standard_terms-select" ON public.external_standard_terms;
+CREATE POLICY "pol-processsteward-external_standard_terms-select" ON public.external_standard_terms FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-role_capability_tags-select" ON public.role_capability_tags;
+CREATE POLICY "pol-processsteward-role_capability_tags-select" ON public.role_capability_tags FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-classification_facets-select" ON public.classification_facets;
+CREATE POLICY "pol-processsteward-classification_facets-select" ON public.classification_facets FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-procedure_facet_assignments-select" ON public.procedure_facet_assignments;
+CREATE POLICY "pol-processsteward-procedure_facet_assignments-select" ON public.procedure_facet_assignments FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-encoding_lifecycle_stages-select" ON public.encoding_lifecycle_stages;
+CREATE POLICY "pol-processsteward-encoding_lifecycle_stages-select" ON public.encoding_lifecycle_stages FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-knowledge_consumer_systems-select" ON public.knowledge_consumer_systems;
+CREATE POLICY "pol-processsteward-knowledge_consumer_systems-select" ON public.knowledge_consumer_systems FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-consumer_system_syncs-select" ON public.consumer_system_syncs;
+CREATE POLICY "pol-processsteward-consumer_system_syncs-select" ON public.consumer_system_syncs FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-integration_pathways-select" ON public.integration_pathways;
+CREATE POLICY "pol-processsteward-integration_pathways-select" ON public.integration_pathways FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-agent_integrations-select" ON public.agent_integrations;
+CREATE POLICY "pol-processsteward-agent_integrations-select" ON public.agent_integrations FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-grounding_snapshots-select" ON public.grounding_snapshots;
+CREATE POLICY "pol-processsteward-grounding_snapshots-select" ON public.grounding_snapshots FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-reasoner_runs-select" ON public.reasoner_runs;
+CREATE POLICY "pol-processsteward-reasoner_runs-select" ON public.reasoner_runs FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-snapshot_assertions-select" ON public.snapshot_assertions;
+CREATE POLICY "pol-processsteward-snapshot_assertions-select" ON public.snapshot_assertions FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-retrieval_segments-select" ON public.retrieval_segments;
+CREATE POLICY "pol-processsteward-retrieval_segments-select" ON public.retrieval_segments FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-knowledge_query_definitions-select" ON public.knowledge_query_definitions;
+CREATE POLICY "pol-processsteward-knowledge_query_definitions-select" ON public.knowledge_query_definitions FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-knowledge_query_sources-select" ON public.knowledge_query_sources;
+CREATE POLICY "pol-processsteward-knowledge_query_sources-select" ON public.knowledge_query_sources FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-assistant_answers-select" ON public.assistant_answers;
+CREATE POLICY "pol-processsteward-assistant_answers-select" ON public.assistant_answers FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-answer_groundings-select" ON public.answer_groundings;
+CREATE POLICY "pol-processsteward-answer_groundings-select" ON public.answer_groundings FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-answer_requirement_checks-select" ON public.answer_requirement_checks;
+CREATE POLICY "pol-processsteward-answer_requirement_checks-select" ON public.answer_requirement_checks FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-ai_tool_invocations-select" ON public.ai_tool_invocations;
+CREATE POLICY "pol-processsteward-ai_tool_invocations-select" ON public.ai_tool_invocations FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-embedding_probes-select" ON public.embedding_probes;
+CREATE POLICY "pol-processsteward-embedding_probes-select" ON public.embedding_probes FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-prompt_templates-select" ON public.prompt_templates;
+CREATE POLICY "pol-processsteward-prompt_templates-select" ON public.prompt_templates FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-knowledge_projections-select" ON public.knowledge_projections;
+CREATE POLICY "pol-processsteward-knowledge_projections-select" ON public.knowledge_projections FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-model_annotations-select" ON public.model_annotations;
+CREATE POLICY "pol-processsteward-model_annotations-select" ON public.model_annotations FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-knowledge_search_events-select" ON public.knowledge_search_events;
+CREATE POLICY "pol-processsteward-knowledge_search_events-select" ON public.knowledge_search_events FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-ai_adoption_initiatives-select" ON public.ai_adoption_initiatives;
+CREATE POLICY "pol-processsteward-ai_adoption_initiatives-select" ON public.ai_adoption_initiatives FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-knowledge_outcome_measurements-select" ON public.knowledge_outcome_measurements;
+CREATE POLICY "pol-processsteward-knowledge_outcome_measurements-select" ON public.knowledge_outcome_measurements FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-ai_insight_proposals-select" ON public.ai_insight_proposals;
+CREATE POLICY "pol-processsteward-ai_insight_proposals-select" ON public.ai_insight_proposals FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-assistant_benchmarks-select" ON public.assistant_benchmarks;
+CREATE POLICY "pol-processsteward-assistant_benchmarks-select" ON public.assistant_benchmarks FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-governed_models-select" ON public.governed_models;
+CREATE POLICY "pol-processsteward-governed_models-select" ON public.governed_models FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-model_charters-select" ON public.model_charters;
+CREATE POLICY "pol-processsteward-model_charters-select" ON public.model_charters FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-steward_activities-select" ON public.steward_activities;
+CREATE POLICY "pol-processsteward-steward_activities-select" ON public.steward_activities FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-model_change_requests-select" ON public.model_change_requests;
+CREATE POLICY "pol-processsteward-model_change_requests-select" ON public.model_change_requests FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-change_authority_rules-select" ON public.change_authority_rules;
+CREATE POLICY "pol-processsteward-change_authority_rules-select" ON public.change_authority_rules FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-change_impact_findings-select" ON public.change_impact_findings;
+CREATE POLICY "pol-processsteward-change_impact_findings-select" ON public.change_impact_findings FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-change_integrity_checks-select" ON public.change_integrity_checks;
+CREATE POLICY "pol-processsteward-change_integrity_checks-select" ON public.change_integrity_checks FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-change_objections-select" ON public.change_objections;
+CREATE POLICY "pol-processsteward-change_objections-select" ON public.change_objections FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-change_validation_runs-select" ON public.change_validation_runs;
+CREATE POLICY "pol-processsteward-change_validation_runs-select" ON public.change_validation_runs FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-expected_inference_checks-select" ON public.expected_inference_checks;
+CREATE POLICY "pol-processsteward-expected_inference_checks-select" ON public.expected_inference_checks FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-model_consumers-select" ON public.model_consumers;
+CREATE POLICY "pol-processsteward-model_consumers-select" ON public.model_consumers FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-consumer_revalidations-select" ON public.consumer_revalidations;
+CREATE POLICY "pol-processsteward-consumer_revalidations-select" ON public.consumer_revalidations FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-model_documents-select" ON public.model_documents;
+CREATE POLICY "pol-processsteward-model_documents-select" ON public.model_documents FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-staleness_query_runs-select" ON public.staleness_query_runs;
+CREATE POLICY "pol-processsteward-staleness_query_runs-select" ON public.staleness_query_runs FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-external_dependency_revisions-select" ON public.external_dependency_revisions;
+CREATE POLICY "pol-processsteward-external_dependency_revisions-select" ON public.external_dependency_revisions FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-stakeholder_questions-select" ON public.stakeholder_questions;
+CREATE POLICY "pol-processsteward-stakeholder_questions-select" ON public.stakeholder_questions FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-model_expansion_requests-select" ON public.model_expansion_requests;
+CREATE POLICY "pol-processsteward-model_expansion_requests-select" ON public.model_expansion_requests FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-expansion_concept_fits-select" ON public.expansion_concept_fits;
+CREATE POLICY "pol-processsteward-expansion_concept_fits-select" ON public.expansion_concept_fits FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-competency_question_set_entries-select" ON public.competency_question_set_entries;
+CREATE POLICY "pol-processsteward-competency_question_set_entries-select" ON public.competency_question_set_entries FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-competency_question_runs-select" ON public.competency_question_runs;
+CREATE POLICY "pol-processsteward-competency_question_runs-select" ON public.competency_question_runs FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-competency_question_reviews-select" ON public.competency_question_reviews;
+CREATE POLICY "pol-processsteward-competency_question_reviews-select" ON public.competency_question_reviews FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-quality_criteria-select" ON public.quality_criteria;
+CREATE POLICY "pol-processsteward-quality_criteria-select" ON public.quality_criteria FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-quality_assessments-select" ON public.quality_assessments;
+CREATE POLICY "pol-processsteward-quality_assessments-select" ON public.quality_assessments FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-term_definitions-select" ON public.term_definitions;
+CREATE POLICY "pol-processsteward-term_definitions-select" ON public.term_definitions FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-model_proposals-select" ON public.model_proposals;
+CREATE POLICY "pol-processsteward-model_proposals-select" ON public.model_proposals FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-assignment_instant_checks-select" ON public.assignment_instant_checks;
+CREATE POLICY "pol-processsteward-assignment_instant_checks-select" ON public.assignment_instant_checks FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-instance_data_versions-select" ON public.instance_data_versions;
+CREATE POLICY "pol-processsteward-instance_data_versions-select" ON public.instance_data_versions FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-domain_coverage_areas-select" ON public.domain_coverage_areas;
+CREATE POLICY "pol-processsteward-domain_coverage_areas-select" ON public.domain_coverage_areas FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-governance_stage_controls-select" ON public.governance_stage_controls;
+CREATE POLICY "pol-processsteward-governance_stage_controls-select" ON public.governance_stage_controls FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-process_design_decisions-select" ON public.process_design_decisions;
+CREATE POLICY "pol-processsteward-process_design_decisions-select" ON public.process_design_decisions FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-model_change_log_entries-select" ON public.model_change_log_entries;
+CREATE POLICY "pol-processsteward-model_change_log_entries-select" ON public.model_change_log_entries FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-drift_observations-select" ON public.drift_observations;
+CREATE POLICY "pol-processsteward-drift_observations-select" ON public.drift_observations FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-sourcing_functions-select" ON public.sourcing_functions;
+CREATE POLICY "pol-processsteward-sourcing_functions-select" ON public.sourcing_functions FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-knowledge_audits-select" ON public.knowledge_audits;
+CREATE POLICY "pol-processsteward-knowledge_audits-select" ON public.knowledge_audits FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-knowledge_audit_items-select" ON public.knowledge_audit_items;
+CREATE POLICY "pol-processsteward-knowledge_audit_items-select" ON public.knowledge_audit_items FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-knowledge_capture_initiatives-select" ON public.knowledge_capture_initiatives;
+CREATE POLICY "pol-processsteward-knowledge_capture_initiatives-select" ON public.knowledge_capture_initiatives FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-knowledge_workforce_positions-select" ON public.knowledge_workforce_positions;
+CREATE POLICY "pol-processsteward-knowledge_workforce_positions-select" ON public.knowledge_workforce_positions FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-provider_engagements-select" ON public.provider_engagements;
+CREATE POLICY "pol-processsteward-provider_engagements-select" ON public.provider_engagements FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-knowledge_deliverables-select" ON public.knowledge_deliverables;
+CREATE POLICY "pol-processsteward-knowledge_deliverables-select" ON public.knowledge_deliverables FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-corporate_governance_programs-select" ON public.corporate_governance_programs;
+CREATE POLICY "pol-processsteward-corporate_governance_programs-select" ON public.corporate_governance_programs FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-records_retention_policies-select" ON public.records_retention_policies;
+CREATE POLICY "pol-processsteward-records_retention_policies-select" ON public.records_retention_policies FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-ai_registry_model_versions-select" ON public.ai_registry_model_versions;
+CREATE POLICY "pol-processsteward-ai_registry_model_versions-select" ON public.ai_registry_model_versions FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-ai_model_deployments-select" ON public.ai_model_deployments;
+CREATE POLICY "pol-processsteward-ai_model_deployments-select" ON public.ai_model_deployments FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-ai_model_evaluations-select" ON public.ai_model_evaluations;
+CREATE POLICY "pol-processsteward-ai_model_evaluations-select" ON public.ai_model_evaluations FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-ai_agent_accountabilities-select" ON public.ai_agent_accountabilities;
+CREATE POLICY "pol-processsteward-ai_agent_accountabilities-select" ON public.ai_agent_accountabilities FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-agent_upgrade_assessments-select" ON public.agent_upgrade_assessments;
+CREATE POLICY "pol-processsteward-agent_upgrade_assessments-select" ON public.agent_upgrade_assessments FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-assignment_update_policies-select" ON public.assignment_update_policies;
+CREATE POLICY "pol-processsteward-assignment_update_policies-select" ON public.assignment_update_policies FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-role_assignment_update_tasks-select" ON public.role_assignment_update_tasks;
+CREATE POLICY "pol-processsteward-role_assignment_update_tasks-select" ON public.role_assignment_update_tasks FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-assignment_routed_notices-select" ON public.assignment_routed_notices;
+CREATE POLICY "pol-processsteward-assignment_routed_notices-select" ON public.assignment_routed_notices FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-practitioner_expertise-select" ON public.practitioner_expertise;
+CREATE POLICY "pol-processsteward-practitioner_expertise-select" ON public.practitioner_expertise FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-critical_incidents-select" ON public.critical_incidents;
+CREATE POLICY "pol-processsteward-critical_incidents-select" ON public.critical_incidents FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-interview_probes-select" ON public.interview_probes;
+CREATE POLICY "pol-processsteward-interview_probes-select" ON public.interview_probes FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-observed_actions-select" ON public.observed_actions;
+CREATE POLICY "pol-processsteward-observed_actions-select" ON public.observed_actions FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-elicitation_participants-select" ON public.elicitation_participants;
+CREATE POLICY "pol-processsteward-elicitation_participants-select" ON public.elicitation_participants FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-representation_reviews-select" ON public.representation_reviews;
+CREATE POLICY "pol-processsteward-representation_reviews-select" ON public.representation_reviews FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-workflow_view_divergences-select" ON public.workflow_view_divergences;
+CREATE POLICY "pol-processsteward-workflow_view_divergences-select" ON public.workflow_view_divergences FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-expert_cognitions-select" ON public.expert_cognitions;
+CREATE POLICY "pol-processsteward-expert_cognitions-select" ON public.expert_cognitions FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-concept_ladder_rungs-select" ON public.concept_ladder_rungs;
+CREATE POLICY "pol-processsteward-concept_ladder_rungs-select" ON public.concept_ladder_rungs FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-repertory_grid_constructs-select" ON public.repertory_grid_constructs;
+CREATE POLICY "pol-processsteward-repertory_grid_constructs-select" ON public.repertory_grid_constructs FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-knowledge_conversions-select" ON public.knowledge_conversions;
+CREATE POLICY "pol-processsteward-knowledge_conversions-select" ON public.knowledge_conversions FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-knowledge_holdings-select" ON public.knowledge_holdings;
+CREATE POLICY "pol-processsteward-knowledge_holdings-select" ON public.knowledge_holdings FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-fragment_corroborations-select" ON public.fragment_corroborations;
+CREATE POLICY "pol-processsteward-fragment_corroborations-select" ON public.fragment_corroborations FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-knowledge_test_outcomes-select" ON public.knowledge_test_outcomes;
+CREATE POLICY "pol-processsteward-knowledge_test_outcomes-select" ON public.knowledge_test_outcomes FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-know_how_carriers-select" ON public.know_how_carriers;
+CREATE POLICY "pol-processsteward-know_how_carriers-select" ON public.know_how_carriers FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-knowledge_transfers-select" ON public.knowledge_transfers;
+CREATE POLICY "pol-processsteward-knowledge_transfers-select" ON public.knowledge_transfers FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-knowledge_repository_entries-select" ON public.knowledge_repository_entries;
+CREATE POLICY "pol-processsteward-knowledge_repository_entries-select" ON public.knowledge_repository_entries FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-community_memberships-select" ON public.community_memberships;
+CREATE POLICY "pol-processsteward-community_memberships-select" ON public.community_memberships FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-source_relationships-select" ON public.source_relationships;
+CREATE POLICY "pol-processsteward-source_relationships-select" ON public.source_relationships FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-department_process_accounts-select" ON public.department_process_accounts;
+CREATE POLICY "pol-processsteward-department_process_accounts-select" ON public.department_process_accounts FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-problem_occurrences-select" ON public.problem_occurrences;
+CREATE POLICY "pol-processsteward-problem_occurrences-select" ON public.problem_occurrences FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-onboarding_records-select" ON public.onboarding_records;
+CREATE POLICY "pol-processsteward-onboarding_records-select" ON public.onboarding_records FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-sharing_recognitions-select" ON public.sharing_recognitions;
+CREATE POLICY "pol-processsteward-sharing_recognitions-select" ON public.sharing_recognitions FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-capability_declines-select" ON public.capability_declines;
+CREATE POLICY "pol-processsteward-capability_declines-select" ON public.capability_declines FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-knowledge_traces-select" ON public.knowledge_traces;
+CREATE POLICY "pol-processsteward-knowledge_traces-select" ON public.knowledge_traces FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-mined_flow_edges-select" ON public.mined_flow_edges;
+CREATE POLICY "pol-processsteward-mined_flow_edges-select" ON public.mined_flow_edges FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-collection_occasions-select" ON public.collection_occasions;
+CREATE POLICY "pol-processsteward-collection_occasions-select" ON public.collection_occasions FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-stakeholder_perspectives-select" ON public.stakeholder_perspectives;
+CREATE POLICY "pol-processsteward-stakeholder_perspectives-select" ON public.stakeholder_perspectives FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-model_pilots-select" ON public.model_pilots;
+CREATE POLICY "pol-processsteward-model_pilots-select" ON public.model_pilots FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-model_activity_experts-select" ON public.model_activity_experts;
+CREATE POLICY "pol-processsteward-model_activity_experts-select" ON public.model_activity_experts FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-model_data_mapping_runs-select" ON public.model_data_mapping_runs;
+CREATE POLICY "pol-processsteward-model_data_mapping_runs-select" ON public.model_data_mapping_runs FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-artifact_handoffs-select" ON public.artifact_handoffs;
+CREATE POLICY "pol-processsteward-artifact_handoffs-select" ON public.artifact_handoffs FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-app_actions-select" ON public.app_actions;
+CREATE POLICY "pol-processsteward-app_actions-select" ON public.app_actions FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-processsteward-app_action_fields-select" ON public.app_action_fields;
+CREATE POLICY "pol-processsteward-app_action_fields-select" ON public.app_action_fields FOR SELECT TO pko_process_steward USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-access_denial_tests-select" ON public.access_denial_tests;
+CREATE POLICY "pol-knowledgeauthority-access_denial_tests-select" ON public.access_denial_tests FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-access_policies-select" ON public.access_policies;
+CREATE POLICY "pol-knowledgeauthority-access_policies-select" ON public.access_policies FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-access_principals-select" ON public.access_principals;
+CREATE POLICY "pol-knowledgeauthority-access_principals-select" ON public.access_principals FOR SELECT TO pko_knowledge_authority USING (true);
 -- Full read: this principal is a declared administrator.
 DROP POLICY IF EXISTS "pol-knowledgeauthority-actions-select" ON public.actions;
 CREATE POLICY "pol-knowledgeauthority-actions-select" ON public.actions FOR SELECT TO pko_knowledge_authority USING (true);
@@ -621,11 +1293,17 @@ CREATE POLICY "pol-knowledgeauthority-exceptions-select" ON public.exceptions FO
 DROP POLICY IF EXISTS "pol-knowledgeauthority-explanations-select" ON public.explanations;
 CREATE POLICY "pol-knowledgeauthority-explanations-select" ON public.explanations FOR SELECT TO pko_knowledge_authority USING (true);
 -- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-field_grants-select" ON public.field_grants;
+CREATE POLICY "pol-knowledgeauthority-field_grants-select" ON public.field_grants FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
 DROP POLICY IF EXISTS "pol-knowledgeauthority-functions-select" ON public.functions;
 CREATE POLICY "pol-knowledgeauthority-functions-select" ON public.functions FOR SELECT TO pko_knowledge_authority USING (true);
 -- Full read: this principal is a declared administrator.
 DROP POLICY IF EXISTS "pol-knowledgeauthority-issue_occurrences-select" ON public.issue_occurrences;
 CREATE POLICY "pol-knowledgeauthority-issue_occurrences-select" ON public.issue_occurrences FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-jwt_claim_mappings-select" ON public.jwt_claim_mappings;
+CREATE POLICY "pol-knowledgeauthority-jwt_claim_mappings-select" ON public.jwt_claim_mappings FOR SELECT TO pko_knowledge_authority USING (true);
 -- Full read: this principal is a declared administrator.
 DROP POLICY IF EXISTS "pol-knowledgeauthority-knowledge_fragments-select" ON public.knowledge_fragments;
 CREATE POLICY "pol-knowledgeauthority-knowledge_fragments-select" ON public.knowledge_fragments FOR SELECT TO pko_knowledge_authority USING (true);
@@ -702,6 +1380,12 @@ CREATE POLICY "pol-knowledgeauthority-role_assignments-select" ON public.role_as
 DROP POLICY IF EXISTS "pol-knowledgeauthority-role_questions-select" ON public.role_questions;
 CREATE POLICY "pol-knowledgeauthority-role_questions-select" ON public.role_questions FOR SELECT TO pko_knowledge_authority USING (true);
 -- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-role_schema_views-select" ON public.role_schema_views;
+CREATE POLICY "pol-knowledgeauthority-role_schema_views-select" ON public.role_schema_views FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-role_schemas-select" ON public.role_schemas;
+CREATE POLICY "pol-knowledgeauthority-role_schemas-select" ON public.role_schemas FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
 DROP POLICY IF EXISTS "pol-knowledgeauthority-roles-select" ON public.roles;
 CREATE POLICY "pol-knowledgeauthority-roles-select" ON public.roles FOR SELECT TO pko_knowledge_authority USING (true);
 -- Full read: this principal is a declared administrator.
@@ -710,6 +1394,9 @@ CREATE POLICY "pol-knowledgeauthority-rulebook_fields-select" ON public.rulebook
 -- Full read: this principal is a declared administrator.
 DROP POLICY IF EXISTS "pol-knowledgeauthority-rulebook_releases-select" ON public.rulebook_releases;
 CREATE POLICY "pol-knowledgeauthority-rulebook_releases-select" ON public.rulebook_releases FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-rulebook_tables-select" ON public.rulebook_tables;
+CREATE POLICY "pol-knowledgeauthority-rulebook_tables-select" ON public.rulebook_tables FOR SELECT TO pko_knowledge_authority USING (true);
 -- Full read: this principal is a declared administrator.
 DROP POLICY IF EXISTS "pol-knowledgeauthority-semantic_mappings-select" ON public.semantic_mappings;
 CREATE POLICY "pol-knowledgeauthority-semantic_mappings-select" ON public.semantic_mappings FOR SELECT TO pko_knowledge_authority USING (true);
@@ -767,30 +1454,1152 @@ CREATE POLICY "pol-knowledgeauthority-verification_outcomes-select" ON public.ve
 -- Full read: this principal is a declared administrator.
 DROP POLICY IF EXISTS "pol-knowledgeauthority-witness_loops-select" ON public.witness_loops;
 CREATE POLICY "pol-knowledgeauthority-witness_loops-select" ON public.witness_loops FOR SELECT TO pko_knowledge_authority USING (true);
--- Steward-level role: unrestricted read of this table, matching this principal's existing broad reach across the model.
-DROP POLICY IF EXISTS "pol-processsteward-process_mining_runs-select" ON public.process_mining_runs;
-CREATE POLICY "pol-processsteward-process_mining_runs-select" ON public.process_mining_runs FOR SELECT TO pko_process_steward USING (true);
--- Steward-level role: unrestricted read of this table, matching this principal's existing broad reach across the model.
-DROP POLICY IF EXISTS "pol-processsteward-vocabularies-select" ON public.vocabularies;
-CREATE POLICY "pol-processsteward-vocabularies-select" ON public.vocabularies FOR SELECT TO pko_process_steward USING (true);
--- Steward-level role: unrestricted read of this table, matching this principal's existing broad reach across the model.
-DROP POLICY IF EXISTS "pol-processsteward-vocabulary_terms-select" ON public.vocabulary_terms;
-CREATE POLICY "pol-processsteward-vocabulary_terms-select" ON public.vocabulary_terms FOR SELECT TO pko_process_steward USING (true);
--- Steward-level role: unrestricted read of this table, matching this principal's existing broad reach across the model.
-DROP POLICY IF EXISTS "pol-processsteward-knowledge_broker_links-select" ON public.knowledge_broker_links;
-CREATE POLICY "pol-processsteward-knowledge_broker_links-select" ON public.knowledge_broker_links FOR SELECT TO pko_process_steward USING (true);
--- Steward-level role: unrestricted read of this table, matching this principal's existing broad reach across the model.
+-- Full read: this principal is a declared administrator.
 DROP POLICY IF EXISTS "pol-knowledgeauthority-process_mining_runs-select" ON public.process_mining_runs;
 CREATE POLICY "pol-knowledgeauthority-process_mining_runs-select" ON public.process_mining_runs FOR SELECT TO pko_knowledge_authority USING (true);
--- Steward-level role: unrestricted read of this table, matching this principal's existing broad reach across the model.
+-- Full read: this principal is a declared administrator.
 DROP POLICY IF EXISTS "pol-knowledgeauthority-vocabularies-select" ON public.vocabularies;
 CREATE POLICY "pol-knowledgeauthority-vocabularies-select" ON public.vocabularies FOR SELECT TO pko_knowledge_authority USING (true);
--- Steward-level role: unrestricted read of this table, matching this principal's existing broad reach across the model.
+-- Full read: this principal is a declared administrator.
 DROP POLICY IF EXISTS "pol-knowledgeauthority-vocabulary_terms-select" ON public.vocabulary_terms;
 CREATE POLICY "pol-knowledgeauthority-vocabulary_terms-select" ON public.vocabulary_terms FOR SELECT TO pko_knowledge_authority USING (true);
--- Steward-level role: unrestricted read of this table, matching this principal's existing broad reach across the model.
+-- Full read: this principal is a declared administrator.
 DROP POLICY IF EXISTS "pol-knowledgeauthority-knowledge_broker_links-select" ON public.knowledge_broker_links;
 CREATE POLICY "pol-knowledgeauthority-knowledge_broker_links-select" ON public.knowledge_broker_links FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-conformance_substrates-select" ON public.conformance_substrates;
+CREATE POLICY "pol-knowledgeauthority-conformance_substrates-select" ON public.conformance_substrates FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-conformance_runs-select" ON public.conformance_runs;
+CREATE POLICY "pol-knowledgeauthority-conformance_runs-select" ON public.conformance_runs FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-substrate_run_scores-select" ON public.substrate_run_scores;
+CREATE POLICY "pol-knowledgeauthority-substrate_run_scores-select" ON public.substrate_run_scores FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-table_conformance-select" ON public.table_conformance;
+CREATE POLICY "pol-knowledgeauthority-table_conformance-select" ON public.table_conformance FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-field_disagreements-select" ON public.field_disagreements;
+CREATE POLICY "pol-knowledgeauthority-field_disagreements-select" ON public.field_disagreements FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-cell_disagreements-select" ON public.cell_disagreements;
+CREATE POLICY "pol-knowledgeauthority-cell_disagreements-select" ON public.cell_disagreements FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-knowledge_methods-select" ON public.knowledge_methods;
+CREATE POLICY "pol-knowledgeauthority-knowledge_methods-select" ON public.knowledge_methods FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-source_articles-select" ON public.source_articles;
+CREATE POLICY "pol-knowledgeauthority-source_articles-select" ON public.source_articles FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-article_claims-select" ON public.article_claims;
+CREATE POLICY "pol-knowledgeauthority-article_claims-select" ON public.article_claims FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-claim_evidence-select" ON public.claim_evidence;
+CREATE POLICY "pol-knowledgeauthority-claim_evidence-select" ON public.claim_evidence FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-app_users-select" ON public.app_users;
+CREATE POLICY "pol-knowledgeauthority-app_users-select" ON public.app_users FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-principal_assignments-select" ON public.principal_assignments;
+CREATE POLICY "pol-knowledgeauthority-principal_assignments-select" ON public.principal_assignments FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-issued_tokens-select" ON public.issued_tokens;
+CREATE POLICY "pol-knowledgeauthority-issued_tokens-select" ON public.issued_tokens FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-method_applications-select" ON public.method_applications;
+CREATE POLICY "pol-knowledgeauthority-method_applications-select" ON public.method_applications FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-lifecycle_statuses-select" ON public.lifecycle_statuses;
+CREATE POLICY "pol-knowledgeauthority-lifecycle_statuses-select" ON public.lifecycle_statuses FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-facilities-select" ON public.facilities;
+CREATE POLICY "pol-knowledgeauthority-facilities-select" ON public.facilities FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-machine_types-select" ON public.machine_types;
+CREATE POLICY "pol-knowledgeauthority-machine_types-select" ON public.machine_types FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-energy_sources-select" ON public.energy_sources;
+CREATE POLICY "pol-knowledgeauthority-energy_sources-select" ON public.energy_sources FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-machines-select" ON public.machines;
+CREATE POLICY "pol-knowledgeauthority-machines-select" ON public.machines FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-machine_energy_sources-select" ON public.machine_energy_sources;
+CREATE POLICY "pol-knowledgeauthority-machine_energy_sources-select" ON public.machine_energy_sources FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-lock_devices-select" ON public.lock_devices;
+CREATE POLICY "pol-knowledgeauthority-lock_devices-select" ON public.lock_devices FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-protective_equipment-select" ON public.protective_equipment;
+CREATE POLICY "pol-knowledgeauthority-protective_equipment-select" ON public.protective_equipment FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-step_lock_requirements-select" ON public.step_lock_requirements;
+CREATE POLICY "pol-knowledgeauthority-step_lock_requirements-select" ON public.step_lock_requirements FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-step_protective_equipment-select" ON public.step_protective_equipment;
+CREATE POLICY "pol-knowledgeauthority-step_protective_equipment-select" ON public.step_protective_equipment FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-regulatory_frameworks-select" ON public.regulatory_frameworks;
+CREATE POLICY "pol-knowledgeauthority-regulatory_frameworks-select" ON public.regulatory_frameworks FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-procedure_targets-select" ON public.procedure_targets;
+CREATE POLICY "pol-knowledgeauthority-procedure_targets-select" ON public.procedure_targets FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-procedure_adoptions-select" ON public.procedure_adoptions;
+CREATE POLICY "pol-knowledgeauthority-procedure_adoptions-select" ON public.procedure_adoptions FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-procedure_outcome_criteria-select" ON public.procedure_outcome_criteria;
+CREATE POLICY "pol-knowledgeauthority-procedure_outcome_criteria-select" ON public.procedure_outcome_criteria FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-relation_types-select" ON public.relation_types;
+CREATE POLICY "pol-knowledgeauthority-relation_types-select" ON public.relation_types FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-activity_relations-select" ON public.activity_relations;
+CREATE POLICY "pol-knowledgeauthority-activity_relations-select" ON public.activity_relations FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-step_variables-select" ON public.step_variables;
+CREATE POLICY "pol-knowledgeauthority-step_variables-select" ON public.step_variables FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-execution_entities-select" ON public.execution_entities;
+CREATE POLICY "pol-knowledgeauthority-execution_entities-select" ON public.execution_entities FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-step_conditions-select" ON public.step_conditions;
+CREATE POLICY "pol-knowledgeauthority-step_conditions-select" ON public.step_conditions FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-condition_checks-select" ON public.condition_checks;
+CREATE POLICY "pol-knowledgeauthority-condition_checks-select" ON public.condition_checks FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-failure_modes-select" ON public.failure_modes;
+CREATE POLICY "pol-knowledgeauthority-failure_modes-select" ON public.failure_modes FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-step_cues-select" ON public.step_cues;
+CREATE POLICY "pol-knowledgeauthority-step_cues-select" ON public.step_cues FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-cue_observations-select" ON public.cue_observations;
+CREATE POLICY "pol-knowledgeauthority-cue_observations-select" ON public.cue_observations FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-decision_points-select" ON public.decision_points;
+CREATE POLICY "pol-knowledgeauthority-decision_points-select" ON public.decision_points FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-execution_participants-select" ON public.execution_participants;
+CREATE POLICY "pol-knowledgeauthority-execution_participants-select" ON public.execution_participants FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-step_resources-select" ON public.step_resources;
+CREATE POLICY "pol-knowledgeauthority-step_resources-select" ON public.step_resources FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-faq_categories-select" ON public.faq_categories;
+CREATE POLICY "pol-knowledgeauthority-faq_categories-select" ON public.faq_categories FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-faq_targets-select" ON public.faq_targets;
+CREATE POLICY "pol-knowledgeauthority-faq_targets-select" ON public.faq_targets FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-authoring_submissions-select" ON public.authoring_submissions;
+CREATE POLICY "pol-knowledgeauthority-authoring_submissions-select" ON public.authoring_submissions FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-process_knowledge_levels-select" ON public.process_knowledge_levels;
+CREATE POLICY "pol-knowledgeauthority-process_knowledge_levels-select" ON public.process_knowledge_levels FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-level_capture_strategies-select" ON public.level_capture_strategies;
+CREATE POLICY "pol-knowledgeauthority-level_capture_strategies-select" ON public.level_capture_strategies FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-level_pyramid_questions-select" ON public.level_pyramid_questions;
+CREATE POLICY "pol-knowledgeauthority-level_pyramid_questions-select" ON public.level_pyramid_questions FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-process_level_statements-select" ON public.process_level_statements;
+CREATE POLICY "pol-knowledgeauthority-process_level_statements-select" ON public.process_level_statements FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-tactical_resource_allocations-select" ON public.tactical_resource_allocations;
+CREATE POLICY "pol-knowledgeauthority-tactical_resource_allocations-select" ON public.tactical_resource_allocations FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-process_strategic_alignments-select" ON public.process_strategic_alignments;
+CREATE POLICY "pol-knowledgeauthority-process_strategic_alignments-select" ON public.process_strategic_alignments FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-business_outcomes-select" ON public.business_outcomes;
+CREATE POLICY "pol-knowledgeauthority-business_outcomes-select" ON public.business_outcomes FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-process_outcome_measures-select" ON public.process_outcome_measures;
+CREATE POLICY "pol-knowledgeauthority-process_outcome_measures-select" ON public.process_outcome_measures FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-process_stages-select" ON public.process_stages;
+CREATE POLICY "pol-knowledgeauthority-process_stages-select" ON public.process_stages FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-process_interdependencies-select" ON public.process_interdependencies;
+CREATE POLICY "pol-knowledgeauthority-process_interdependencies-select" ON public.process_interdependencies FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-stakeholder_lenses-select" ON public.stakeholder_lenses;
+CREATE POLICY "pol-knowledgeauthority-stakeholder_lenses-select" ON public.stakeholder_lenses FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-procedure_lens_views-select" ON public.procedure_lens_views;
+CREATE POLICY "pol-knowledgeauthority-procedure_lens_views-select" ON public.procedure_lens_views FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-applicability_scopes-select" ON public.applicability_scopes;
+CREATE POLICY "pol-knowledgeauthority-applicability_scopes-select" ON public.applicability_scopes FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-step_context_sensitivities-select" ON public.step_context_sensitivities;
+CREATE POLICY "pol-knowledgeauthority-step_context_sensitivities-select" ON public.step_context_sensitivities FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-situational_variants-select" ON public.situational_variants;
+CREATE POLICY "pol-knowledgeauthority-situational_variants-select" ON public.situational_variants FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-collected_source_materials-select" ON public.collected_source_materials;
+CREATE POLICY "pol-knowledgeauthority-collected_source_materials-select" ON public.collected_source_materials FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-scheme_refinements-select" ON public.scheme_refinements;
+CREATE POLICY "pol-knowledgeauthority-scheme_refinements-select" ON public.scheme_refinements FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-term_label_variants-select" ON public.term_label_variants;
+CREATE POLICY "pol-knowledgeauthority-term_label_variants-select" ON public.term_label_variants FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-ai_labeling_runs-select" ON public.ai_labeling_runs;
+CREATE POLICY "pol-knowledgeauthority-ai_labeling_runs-select" ON public.ai_labeling_runs FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-source_term_mentions-select" ON public.source_term_mentions;
+CREATE POLICY "pol-knowledgeauthority-source_term_mentions-select" ON public.source_term_mentions FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-term_relations-select" ON public.term_relations;
+CREATE POLICY "pol-knowledgeauthority-term_relations-select" ON public.term_relations FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-term_meaning_changes-select" ON public.term_meaning_changes;
+CREATE POLICY "pol-knowledgeauthority-term_meaning_changes-select" ON public.term_meaning_changes FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-external_standard_terms-select" ON public.external_standard_terms;
+CREATE POLICY "pol-knowledgeauthority-external_standard_terms-select" ON public.external_standard_terms FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-role_capability_tags-select" ON public.role_capability_tags;
+CREATE POLICY "pol-knowledgeauthority-role_capability_tags-select" ON public.role_capability_tags FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-classification_facets-select" ON public.classification_facets;
+CREATE POLICY "pol-knowledgeauthority-classification_facets-select" ON public.classification_facets FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-procedure_facet_assignments-select" ON public.procedure_facet_assignments;
+CREATE POLICY "pol-knowledgeauthority-procedure_facet_assignments-select" ON public.procedure_facet_assignments FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-encoding_lifecycle_stages-select" ON public.encoding_lifecycle_stages;
+CREATE POLICY "pol-knowledgeauthority-encoding_lifecycle_stages-select" ON public.encoding_lifecycle_stages FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-knowledge_consumer_systems-select" ON public.knowledge_consumer_systems;
+CREATE POLICY "pol-knowledgeauthority-knowledge_consumer_systems-select" ON public.knowledge_consumer_systems FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-consumer_system_syncs-select" ON public.consumer_system_syncs;
+CREATE POLICY "pol-knowledgeauthority-consumer_system_syncs-select" ON public.consumer_system_syncs FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-integration_pathways-select" ON public.integration_pathways;
+CREATE POLICY "pol-knowledgeauthority-integration_pathways-select" ON public.integration_pathways FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-agent_integrations-select" ON public.agent_integrations;
+CREATE POLICY "pol-knowledgeauthority-agent_integrations-select" ON public.agent_integrations FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-grounding_snapshots-select" ON public.grounding_snapshots;
+CREATE POLICY "pol-knowledgeauthority-grounding_snapshots-select" ON public.grounding_snapshots FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-reasoner_runs-select" ON public.reasoner_runs;
+CREATE POLICY "pol-knowledgeauthority-reasoner_runs-select" ON public.reasoner_runs FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-snapshot_assertions-select" ON public.snapshot_assertions;
+CREATE POLICY "pol-knowledgeauthority-snapshot_assertions-select" ON public.snapshot_assertions FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-retrieval_segments-select" ON public.retrieval_segments;
+CREATE POLICY "pol-knowledgeauthority-retrieval_segments-select" ON public.retrieval_segments FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-knowledge_query_definitions-select" ON public.knowledge_query_definitions;
+CREATE POLICY "pol-knowledgeauthority-knowledge_query_definitions-select" ON public.knowledge_query_definitions FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-knowledge_query_sources-select" ON public.knowledge_query_sources;
+CREATE POLICY "pol-knowledgeauthority-knowledge_query_sources-select" ON public.knowledge_query_sources FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-assistant_answers-select" ON public.assistant_answers;
+CREATE POLICY "pol-knowledgeauthority-assistant_answers-select" ON public.assistant_answers FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-answer_groundings-select" ON public.answer_groundings;
+CREATE POLICY "pol-knowledgeauthority-answer_groundings-select" ON public.answer_groundings FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-answer_requirement_checks-select" ON public.answer_requirement_checks;
+CREATE POLICY "pol-knowledgeauthority-answer_requirement_checks-select" ON public.answer_requirement_checks FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-ai_tool_invocations-select" ON public.ai_tool_invocations;
+CREATE POLICY "pol-knowledgeauthority-ai_tool_invocations-select" ON public.ai_tool_invocations FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-embedding_probes-select" ON public.embedding_probes;
+CREATE POLICY "pol-knowledgeauthority-embedding_probes-select" ON public.embedding_probes FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-prompt_templates-select" ON public.prompt_templates;
+CREATE POLICY "pol-knowledgeauthority-prompt_templates-select" ON public.prompt_templates FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-knowledge_projections-select" ON public.knowledge_projections;
+CREATE POLICY "pol-knowledgeauthority-knowledge_projections-select" ON public.knowledge_projections FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-model_annotations-select" ON public.model_annotations;
+CREATE POLICY "pol-knowledgeauthority-model_annotations-select" ON public.model_annotations FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-knowledge_search_events-select" ON public.knowledge_search_events;
+CREATE POLICY "pol-knowledgeauthority-knowledge_search_events-select" ON public.knowledge_search_events FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-ai_adoption_initiatives-select" ON public.ai_adoption_initiatives;
+CREATE POLICY "pol-knowledgeauthority-ai_adoption_initiatives-select" ON public.ai_adoption_initiatives FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-knowledge_outcome_measurements-select" ON public.knowledge_outcome_measurements;
+CREATE POLICY "pol-knowledgeauthority-knowledge_outcome_measurements-select" ON public.knowledge_outcome_measurements FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-ai_insight_proposals-select" ON public.ai_insight_proposals;
+CREATE POLICY "pol-knowledgeauthority-ai_insight_proposals-select" ON public.ai_insight_proposals FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-assistant_benchmarks-select" ON public.assistant_benchmarks;
+CREATE POLICY "pol-knowledgeauthority-assistant_benchmarks-select" ON public.assistant_benchmarks FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-governed_models-select" ON public.governed_models;
+CREATE POLICY "pol-knowledgeauthority-governed_models-select" ON public.governed_models FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-model_charters-select" ON public.model_charters;
+CREATE POLICY "pol-knowledgeauthority-model_charters-select" ON public.model_charters FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-steward_activities-select" ON public.steward_activities;
+CREATE POLICY "pol-knowledgeauthority-steward_activities-select" ON public.steward_activities FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-model_change_requests-select" ON public.model_change_requests;
+CREATE POLICY "pol-knowledgeauthority-model_change_requests-select" ON public.model_change_requests FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-change_authority_rules-select" ON public.change_authority_rules;
+CREATE POLICY "pol-knowledgeauthority-change_authority_rules-select" ON public.change_authority_rules FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-change_impact_findings-select" ON public.change_impact_findings;
+CREATE POLICY "pol-knowledgeauthority-change_impact_findings-select" ON public.change_impact_findings FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-change_integrity_checks-select" ON public.change_integrity_checks;
+CREATE POLICY "pol-knowledgeauthority-change_integrity_checks-select" ON public.change_integrity_checks FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-change_objections-select" ON public.change_objections;
+CREATE POLICY "pol-knowledgeauthority-change_objections-select" ON public.change_objections FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-change_validation_runs-select" ON public.change_validation_runs;
+CREATE POLICY "pol-knowledgeauthority-change_validation_runs-select" ON public.change_validation_runs FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-expected_inference_checks-select" ON public.expected_inference_checks;
+CREATE POLICY "pol-knowledgeauthority-expected_inference_checks-select" ON public.expected_inference_checks FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-model_consumers-select" ON public.model_consumers;
+CREATE POLICY "pol-knowledgeauthority-model_consumers-select" ON public.model_consumers FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-consumer_revalidations-select" ON public.consumer_revalidations;
+CREATE POLICY "pol-knowledgeauthority-consumer_revalidations-select" ON public.consumer_revalidations FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-model_documents-select" ON public.model_documents;
+CREATE POLICY "pol-knowledgeauthority-model_documents-select" ON public.model_documents FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-staleness_query_runs-select" ON public.staleness_query_runs;
+CREATE POLICY "pol-knowledgeauthority-staleness_query_runs-select" ON public.staleness_query_runs FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-external_dependency_revisions-select" ON public.external_dependency_revisions;
+CREATE POLICY "pol-knowledgeauthority-external_dependency_revisions-select" ON public.external_dependency_revisions FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-stakeholder_questions-select" ON public.stakeholder_questions;
+CREATE POLICY "pol-knowledgeauthority-stakeholder_questions-select" ON public.stakeholder_questions FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-model_expansion_requests-select" ON public.model_expansion_requests;
+CREATE POLICY "pol-knowledgeauthority-model_expansion_requests-select" ON public.model_expansion_requests FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-expansion_concept_fits-select" ON public.expansion_concept_fits;
+CREATE POLICY "pol-knowledgeauthority-expansion_concept_fits-select" ON public.expansion_concept_fits FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-competency_question_set_entries-selec" ON public.competency_question_set_entries;
+CREATE POLICY "pol-knowledgeauthority-competency_question_set_entries-selec" ON public.competency_question_set_entries FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-competency_question_runs-select" ON public.competency_question_runs;
+CREATE POLICY "pol-knowledgeauthority-competency_question_runs-select" ON public.competency_question_runs FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-competency_question_reviews-select" ON public.competency_question_reviews;
+CREATE POLICY "pol-knowledgeauthority-competency_question_reviews-select" ON public.competency_question_reviews FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-quality_criteria-select" ON public.quality_criteria;
+CREATE POLICY "pol-knowledgeauthority-quality_criteria-select" ON public.quality_criteria FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-quality_assessments-select" ON public.quality_assessments;
+CREATE POLICY "pol-knowledgeauthority-quality_assessments-select" ON public.quality_assessments FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-term_definitions-select" ON public.term_definitions;
+CREATE POLICY "pol-knowledgeauthority-term_definitions-select" ON public.term_definitions FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-model_proposals-select" ON public.model_proposals;
+CREATE POLICY "pol-knowledgeauthority-model_proposals-select" ON public.model_proposals FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-assignment_instant_checks-select" ON public.assignment_instant_checks;
+CREATE POLICY "pol-knowledgeauthority-assignment_instant_checks-select" ON public.assignment_instant_checks FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-instance_data_versions-select" ON public.instance_data_versions;
+CREATE POLICY "pol-knowledgeauthority-instance_data_versions-select" ON public.instance_data_versions FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-domain_coverage_areas-select" ON public.domain_coverage_areas;
+CREATE POLICY "pol-knowledgeauthority-domain_coverage_areas-select" ON public.domain_coverage_areas FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-governance_stage_controls-select" ON public.governance_stage_controls;
+CREATE POLICY "pol-knowledgeauthority-governance_stage_controls-select" ON public.governance_stage_controls FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-process_design_decisions-select" ON public.process_design_decisions;
+CREATE POLICY "pol-knowledgeauthority-process_design_decisions-select" ON public.process_design_decisions FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-model_change_log_entries-select" ON public.model_change_log_entries;
+CREATE POLICY "pol-knowledgeauthority-model_change_log_entries-select" ON public.model_change_log_entries FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-drift_observations-select" ON public.drift_observations;
+CREATE POLICY "pol-knowledgeauthority-drift_observations-select" ON public.drift_observations FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-sourcing_functions-select" ON public.sourcing_functions;
+CREATE POLICY "pol-knowledgeauthority-sourcing_functions-select" ON public.sourcing_functions FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-knowledge_audits-select" ON public.knowledge_audits;
+CREATE POLICY "pol-knowledgeauthority-knowledge_audits-select" ON public.knowledge_audits FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-knowledge_audit_items-select" ON public.knowledge_audit_items;
+CREATE POLICY "pol-knowledgeauthority-knowledge_audit_items-select" ON public.knowledge_audit_items FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-knowledge_capture_initiatives-select" ON public.knowledge_capture_initiatives;
+CREATE POLICY "pol-knowledgeauthority-knowledge_capture_initiatives-select" ON public.knowledge_capture_initiatives FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-knowledge_workforce_positions-select" ON public.knowledge_workforce_positions;
+CREATE POLICY "pol-knowledgeauthority-knowledge_workforce_positions-select" ON public.knowledge_workforce_positions FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-provider_engagements-select" ON public.provider_engagements;
+CREATE POLICY "pol-knowledgeauthority-provider_engagements-select" ON public.provider_engagements FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-knowledge_deliverables-select" ON public.knowledge_deliverables;
+CREATE POLICY "pol-knowledgeauthority-knowledge_deliverables-select" ON public.knowledge_deliverables FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-corporate_governance_programs-select" ON public.corporate_governance_programs;
+CREATE POLICY "pol-knowledgeauthority-corporate_governance_programs-select" ON public.corporate_governance_programs FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-records_retention_policies-select" ON public.records_retention_policies;
+CREATE POLICY "pol-knowledgeauthority-records_retention_policies-select" ON public.records_retention_policies FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-ai_registry_model_versions-select" ON public.ai_registry_model_versions;
+CREATE POLICY "pol-knowledgeauthority-ai_registry_model_versions-select" ON public.ai_registry_model_versions FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-ai_model_deployments-select" ON public.ai_model_deployments;
+CREATE POLICY "pol-knowledgeauthority-ai_model_deployments-select" ON public.ai_model_deployments FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-ai_model_evaluations-select" ON public.ai_model_evaluations;
+CREATE POLICY "pol-knowledgeauthority-ai_model_evaluations-select" ON public.ai_model_evaluations FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-ai_agent_accountabilities-select" ON public.ai_agent_accountabilities;
+CREATE POLICY "pol-knowledgeauthority-ai_agent_accountabilities-select" ON public.ai_agent_accountabilities FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-agent_upgrade_assessments-select" ON public.agent_upgrade_assessments;
+CREATE POLICY "pol-knowledgeauthority-agent_upgrade_assessments-select" ON public.agent_upgrade_assessments FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-assignment_update_policies-select" ON public.assignment_update_policies;
+CREATE POLICY "pol-knowledgeauthority-assignment_update_policies-select" ON public.assignment_update_policies FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-role_assignment_update_tasks-select" ON public.role_assignment_update_tasks;
+CREATE POLICY "pol-knowledgeauthority-role_assignment_update_tasks-select" ON public.role_assignment_update_tasks FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-assignment_routed_notices-select" ON public.assignment_routed_notices;
+CREATE POLICY "pol-knowledgeauthority-assignment_routed_notices-select" ON public.assignment_routed_notices FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-practitioner_expertise-select" ON public.practitioner_expertise;
+CREATE POLICY "pol-knowledgeauthority-practitioner_expertise-select" ON public.practitioner_expertise FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-critical_incidents-select" ON public.critical_incidents;
+CREATE POLICY "pol-knowledgeauthority-critical_incidents-select" ON public.critical_incidents FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-interview_probes-select" ON public.interview_probes;
+CREATE POLICY "pol-knowledgeauthority-interview_probes-select" ON public.interview_probes FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-observed_actions-select" ON public.observed_actions;
+CREATE POLICY "pol-knowledgeauthority-observed_actions-select" ON public.observed_actions FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-elicitation_participants-select" ON public.elicitation_participants;
+CREATE POLICY "pol-knowledgeauthority-elicitation_participants-select" ON public.elicitation_participants FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-representation_reviews-select" ON public.representation_reviews;
+CREATE POLICY "pol-knowledgeauthority-representation_reviews-select" ON public.representation_reviews FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-workflow_view_divergences-select" ON public.workflow_view_divergences;
+CREATE POLICY "pol-knowledgeauthority-workflow_view_divergences-select" ON public.workflow_view_divergences FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-expert_cognitions-select" ON public.expert_cognitions;
+CREATE POLICY "pol-knowledgeauthority-expert_cognitions-select" ON public.expert_cognitions FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-concept_ladder_rungs-select" ON public.concept_ladder_rungs;
+CREATE POLICY "pol-knowledgeauthority-concept_ladder_rungs-select" ON public.concept_ladder_rungs FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-repertory_grid_constructs-select" ON public.repertory_grid_constructs;
+CREATE POLICY "pol-knowledgeauthority-repertory_grid_constructs-select" ON public.repertory_grid_constructs FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-knowledge_conversions-select" ON public.knowledge_conversions;
+CREATE POLICY "pol-knowledgeauthority-knowledge_conversions-select" ON public.knowledge_conversions FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-knowledge_holdings-select" ON public.knowledge_holdings;
+CREATE POLICY "pol-knowledgeauthority-knowledge_holdings-select" ON public.knowledge_holdings FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-fragment_corroborations-select" ON public.fragment_corroborations;
+CREATE POLICY "pol-knowledgeauthority-fragment_corroborations-select" ON public.fragment_corroborations FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-knowledge_test_outcomes-select" ON public.knowledge_test_outcomes;
+CREATE POLICY "pol-knowledgeauthority-knowledge_test_outcomes-select" ON public.knowledge_test_outcomes FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-know_how_carriers-select" ON public.know_how_carriers;
+CREATE POLICY "pol-knowledgeauthority-know_how_carriers-select" ON public.know_how_carriers FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-knowledge_transfers-select" ON public.knowledge_transfers;
+CREATE POLICY "pol-knowledgeauthority-knowledge_transfers-select" ON public.knowledge_transfers FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-knowledge_repository_entries-select" ON public.knowledge_repository_entries;
+CREATE POLICY "pol-knowledgeauthority-knowledge_repository_entries-select" ON public.knowledge_repository_entries FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-community_memberships-select" ON public.community_memberships;
+CREATE POLICY "pol-knowledgeauthority-community_memberships-select" ON public.community_memberships FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-source_relationships-select" ON public.source_relationships;
+CREATE POLICY "pol-knowledgeauthority-source_relationships-select" ON public.source_relationships FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-department_process_accounts-select" ON public.department_process_accounts;
+CREATE POLICY "pol-knowledgeauthority-department_process_accounts-select" ON public.department_process_accounts FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-problem_occurrences-select" ON public.problem_occurrences;
+CREATE POLICY "pol-knowledgeauthority-problem_occurrences-select" ON public.problem_occurrences FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-onboarding_records-select" ON public.onboarding_records;
+CREATE POLICY "pol-knowledgeauthority-onboarding_records-select" ON public.onboarding_records FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-sharing_recognitions-select" ON public.sharing_recognitions;
+CREATE POLICY "pol-knowledgeauthority-sharing_recognitions-select" ON public.sharing_recognitions FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-capability_declines-select" ON public.capability_declines;
+CREATE POLICY "pol-knowledgeauthority-capability_declines-select" ON public.capability_declines FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-knowledge_traces-select" ON public.knowledge_traces;
+CREATE POLICY "pol-knowledgeauthority-knowledge_traces-select" ON public.knowledge_traces FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-mined_flow_edges-select" ON public.mined_flow_edges;
+CREATE POLICY "pol-knowledgeauthority-mined_flow_edges-select" ON public.mined_flow_edges FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-collection_occasions-select" ON public.collection_occasions;
+CREATE POLICY "pol-knowledgeauthority-collection_occasions-select" ON public.collection_occasions FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-stakeholder_perspectives-select" ON public.stakeholder_perspectives;
+CREATE POLICY "pol-knowledgeauthority-stakeholder_perspectives-select" ON public.stakeholder_perspectives FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-model_pilots-select" ON public.model_pilots;
+CREATE POLICY "pol-knowledgeauthority-model_pilots-select" ON public.model_pilots FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-model_activity_experts-select" ON public.model_activity_experts;
+CREATE POLICY "pol-knowledgeauthority-model_activity_experts-select" ON public.model_activity_experts FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-model_data_mapping_runs-select" ON public.model_data_mapping_runs;
+CREATE POLICY "pol-knowledgeauthority-model_data_mapping_runs-select" ON public.model_data_mapping_runs FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-artifact_handoffs-select" ON public.artifact_handoffs;
+CREATE POLICY "pol-knowledgeauthority-artifact_handoffs-select" ON public.artifact_handoffs FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-app_actions-select" ON public.app_actions;
+CREATE POLICY "pol-knowledgeauthority-app_actions-select" ON public.app_actions FOR SELECT TO pko_knowledge_authority USING (true);
+-- Full read: this principal is a declared administrator.
+DROP POLICY IF EXISTS "pol-knowledgeauthority-app_action_fields-select" ON public.app_action_fields;
+CREATE POLICY "pol-knowledgeauthority-app_action_fields-select" ON public.app_action_fields FOR SELECT TO pko_knowledge_authority USING (true);
+-- Only procedures this sign-in's organization owns.
+DROP POLICY IF EXISTS "pol-maintenancetechnician-procedures-select" ON public.procedures;
+CREATE POLICY "pol-maintenancetechnician-procedures-select" ON public.procedures FOR SELECT TO pko_maintenance_technician USING (owner_organization = app.jwt_organization());
+-- Only rows belonging to a procedure this sign-in's organization owns. OwnerOrganization is derived hop by hop from Procedures; the policy reads one function.
+DROP POLICY IF EXISTS "pol-maintenancetechnician-procedure_versions-select" ON public.procedure_versions;
+CREATE POLICY "pol-maintenancetechnician-procedure_versions-select" ON public.procedure_versions FOR SELECT TO pko_maintenance_technician USING (public.calc_procedure_versions_owner_organization(procedure_version_id) = app.jwt_organization());
+-- Only rows belonging to a procedure this sign-in's organization owns. OwnerOrganization is derived hop by hop from Procedures; the policy reads one function.
+DROP POLICY IF EXISTS "pol-maintenancetechnician-steps-select" ON public.steps;
+CREATE POLICY "pol-maintenancetechnician-steps-select" ON public.steps FOR SELECT TO pko_maintenance_technician USING (public.calc_steps_owner_organization(step_id) = app.jwt_organization());
+-- Runs lockouts on the floor. Needs the procedure, its warning signs, the knowledge attached to each step, their own runs, and the assistant's answers. Plant only.
+DROP POLICY IF EXISTS "pol-maintenancetechnician-step_transitions-select" ON public.step_transitions;
+CREATE POLICY "pol-maintenancetechnician-step_transitions-select" ON public.step_transitions FOR SELECT TO pko_maintenance_technician USING (true);
+-- Runs lockouts on the floor. Needs the procedure, its warning signs, the knowledge attached to each step, their own runs, and the assistant's answers. Plant only.
+DROP POLICY IF EXISTS "pol-maintenancetechnician-step_cues-select" ON public.step_cues;
+CREATE POLICY "pol-maintenancetechnician-step_cues-select" ON public.step_cues FOR SELECT TO pko_maintenance_technician USING (true);
+-- Runs lockouts on the floor. Needs the procedure, its warning signs, the knowledge attached to each step, their own runs, and the assistant's answers. Plant only.
+DROP POLICY IF EXISTS "pol-maintenancetechnician-step_conditions-select" ON public.step_conditions;
+CREATE POLICY "pol-maintenancetechnician-step_conditions-select" ON public.step_conditions FOR SELECT TO pko_maintenance_technician USING (true);
+-- Runs lockouts on the floor. Needs the procedure, its warning signs, the knowledge attached to each step, their own runs, and the assistant's answers. Plant only.
+DROP POLICY IF EXISTS "pol-maintenancetechnician-step_lock_requirements-select" ON public.step_lock_requirements;
+CREATE POLICY "pol-maintenancetechnician-step_lock_requirements-select" ON public.step_lock_requirements FOR SELECT TO pko_maintenance_technician USING (true);
+-- Runs lockouts on the floor. Needs the procedure, its warning signs, the knowledge attached to each step, their own runs, and the assistant's answers. Plant only.
+DROP POLICY IF EXISTS "pol-maintenancetechnician-step_protective_equipment-select" ON public.step_protective_equipment;
+CREATE POLICY "pol-maintenancetechnician-step_protective_equipment-select" ON public.step_protective_equipment FOR SELECT TO pko_maintenance_technician USING (true);
+-- Runs lockouts on the floor. Needs the procedure, its warning signs, the knowledge attached to each step, their own runs, and the assistant's answers. Plant only.
+DROP POLICY IF EXISTS "pol-maintenancetechnician-lock_devices-select" ON public.lock_devices;
+CREATE POLICY "pol-maintenancetechnician-lock_devices-select" ON public.lock_devices FOR SELECT TO pko_maintenance_technician USING (true);
+-- Runs lockouts on the floor. Needs the procedure, its warning signs, the knowledge attached to each step, their own runs, and the assistant's answers. Plant only.
+DROP POLICY IF EXISTS "pol-maintenancetechnician-protective_equipment-select" ON public.protective_equipment;
+CREATE POLICY "pol-maintenancetechnician-protective_equipment-select" ON public.protective_equipment FOR SELECT TO pko_maintenance_technician USING (true);
+-- Runs lockouts on the floor. Needs the procedure, its warning signs, the knowledge attached to each step, their own runs, and the assistant's answers. Plant only.
+DROP POLICY IF EXISTS "pol-maintenancetechnician-machines-select" ON public.machines;
+CREATE POLICY "pol-maintenancetechnician-machines-select" ON public.machines FOR SELECT TO pko_maintenance_technician USING (true);
+-- Runs lockouts on the floor. Needs the procedure, its warning signs, the knowledge attached to each step, their own runs, and the assistant's answers. Plant only.
+DROP POLICY IF EXISTS "pol-maintenancetechnician-machine_energy_sources-select" ON public.machine_energy_sources;
+CREATE POLICY "pol-maintenancetechnician-machine_energy_sources-select" ON public.machine_energy_sources FOR SELECT TO pko_maintenance_technician USING (true);
+-- Runs lockouts on the floor. Needs the procedure, its warning signs, the knowledge attached to each step, their own runs, and the assistant's answers. Plant only.
+DROP POLICY IF EXISTS "pol-maintenancetechnician-energy_sources-select" ON public.energy_sources;
+CREATE POLICY "pol-maintenancetechnician-energy_sources-select" ON public.energy_sources FOR SELECT TO pko_maintenance_technician USING (true);
+-- Runs lockouts on the floor. Needs the procedure, its warning signs, the knowledge attached to each step, their own runs, and the assistant's answers. Plant only.
+DROP POLICY IF EXISTS "pol-maintenancetechnician-facilities-select" ON public.facilities;
+CREATE POLICY "pol-maintenancetechnician-facilities-select" ON public.facilities FOR SELECT TO pko_maintenance_technician USING (true);
+-- Runs lockouts on the floor. Needs the procedure, its warning signs, the knowledge attached to each step, their own runs, and the assistant's answers. Plant only.
+DROP POLICY IF EXISTS "pol-maintenancetechnician-failure_modes-select" ON public.failure_modes;
+CREATE POLICY "pol-maintenancetechnician-failure_modes-select" ON public.failure_modes FOR SELECT TO pko_maintenance_technician USING (true);
+-- Runs lockouts on the floor. Needs the procedure, its warning signs, the knowledge attached to each step, their own runs, and the assistant's answers. Plant only.
+DROP POLICY IF EXISTS "pol-maintenancetechnician-decision_points-select" ON public.decision_points;
+CREATE POLICY "pol-maintenancetechnician-decision_points-select" ON public.decision_points FOR SELECT TO pko_maintenance_technician USING (true);
+-- Only rows belonging to a procedure this sign-in's organization owns. OwnerOrganization is derived hop by hop from Procedures; the policy reads one function.
+DROP POLICY IF EXISTS "pol-maintenancetechnician-procedure_executions-select" ON public.procedure_executions;
+CREATE POLICY "pol-maintenancetechnician-procedure_executions-select" ON public.procedure_executions FOR SELECT TO pko_maintenance_technician USING (public.calc_procedure_executions_owner_organization(procedure_execution_id) = app.jwt_organization());
+-- Only rows belonging to a procedure this sign-in's organization owns. OwnerOrganization is derived hop by hop from Procedures; the policy reads one function.
+DROP POLICY IF EXISTS "pol-maintenancetechnician-step_executions-select" ON public.step_executions;
+CREATE POLICY "pol-maintenancetechnician-step_executions-select" ON public.step_executions FOR SELECT TO pko_maintenance_technician USING (public.calc_step_executions_owner_organization(step_execution_id) = app.jwt_organization());
+-- Only rows belonging to a procedure this sign-in's organization owns. OwnerOrganization is derived hop by hop from Procedures; the policy reads one function.
+DROP POLICY IF EXISTS "pol-maintenancetechnician-cue_observations-select" ON public.cue_observations;
+CREATE POLICY "pol-maintenancetechnician-cue_observations-select" ON public.cue_observations FOR SELECT TO pko_maintenance_technician USING (public.calc_cue_observations_owner_organization(cue_observation_id) = app.jwt_organization());
+-- Only rows belonging to a procedure this sign-in's organization owns. OwnerOrganization is derived hop by hop from Procedures; the policy reads one function.
+DROP POLICY IF EXISTS "pol-maintenancetechnician-knowledge_fragments-select" ON public.knowledge_fragments;
+CREATE POLICY "pol-maintenancetechnician-knowledge_fragments-select" ON public.knowledge_fragments FOR SELECT TO pko_maintenance_technician USING (public.calc_knowledge_fragments_owner_organization(knowledge_fragment_id) = app.jwt_organization());
+-- Runs lockouts on the floor. Needs the procedure, its warning signs, the knowledge attached to each step, their own runs, and the assistant's answers. Plant only.
+DROP POLICY IF EXISTS "pol-maintenancetechnician-expert_cognitions-select" ON public.expert_cognitions;
+CREATE POLICY "pol-maintenancetechnician-expert_cognitions-select" ON public.expert_cognitions FOR SELECT TO pko_maintenance_technician USING (true);
+-- Runs lockouts on the floor. Needs the procedure, its warning signs, the knowledge attached to each step, their own runs, and the assistant's answers. Plant only.
+DROP POLICY IF EXISTS "pol-maintenancetechnician-concept_ladder_rungs-select" ON public.concept_ladder_rungs;
+CREATE POLICY "pol-maintenancetechnician-concept_ladder_rungs-select" ON public.concept_ladder_rungs FOR SELECT TO pko_maintenance_technician USING (true);
+-- Only know-how held in this sign-in's organization.
+DROP POLICY IF EXISTS "pol-maintenancetechnician-know_how_carriers-select" ON public.know_how_carriers;
+CREATE POLICY "pol-maintenancetechnician-know_how_carriers-select" ON public.know_how_carriers FOR SELECT TO pko_maintenance_technician USING (organization = app.jwt_organization());
+-- Only rows belonging to a procedure this sign-in's organization owns. OwnerOrganization is derived hop by hop from Procedures; the policy reads one function.
+DROP POLICY IF EXISTS "pol-maintenancetechnician-assistant_answers-select" ON public.assistant_answers;
+CREATE POLICY "pol-maintenancetechnician-assistant_answers-select" ON public.assistant_answers FOR SELECT TO pko_maintenance_technician USING (public.calc_assistant_answers_owner_organization(assistant_answer_id) = app.jwt_organization());
+-- Runs lockouts on the floor. Needs the procedure, its warning signs, the knowledge attached to each step, their own runs, and the assistant's answers. Plant only.
+DROP POLICY IF EXISTS "pol-maintenancetechnician-knowledge_query_definitions-select" ON public.knowledge_query_definitions;
+CREATE POLICY "pol-maintenancetechnician-knowledge_query_definitions-select" ON public.knowledge_query_definitions FOR SELECT TO pko_maintenance_technician USING (true);
+-- Tenancy boundary: only rows belonging to this principal's own organization.
+DROP POLICY IF EXISTS "pol-maintenancetechnician-agents-select" ON public.agents;
+CREATE POLICY "pol-maintenancetechnician-agents-select" ON public.agents FOR SELECT TO pko_maintenance_technician USING (organization = app.jwt_organization());
+-- Runs lockouts on the floor. Needs the procedure, its warning signs, the knowledge attached to each step, their own runs, and the assistant's answers. Plant only.
+DROP POLICY IF EXISTS "pol-maintenancetechnician-roles-select" ON public.roles;
+CREATE POLICY "pol-maintenancetechnician-roles-select" ON public.roles FOR SELECT TO pko_maintenance_technician USING (true);
+-- Only procedures this sign-in's organization owns.
+DROP POLICY IF EXISTS "pol-plantassistant-procedures-select" ON public.procedures;
+CREATE POLICY "pol-plantassistant-procedures-select" ON public.procedures FOR SELECT TO pko_plant_assistant USING (owner_organization = app.jwt_organization());
+-- Only rows belonging to a procedure this sign-in's organization owns. OwnerOrganization is derived hop by hop from Procedures; the policy reads one function.
+DROP POLICY IF EXISTS "pol-plantassistant-procedure_versions-select" ON public.procedure_versions;
+CREATE POLICY "pol-plantassistant-procedure_versions-select" ON public.procedure_versions FOR SELECT TO pko_plant_assistant USING (public.calc_procedure_versions_owner_organization(procedure_version_id) = app.jwt_organization());
+-- Only rows belonging to a procedure this sign-in's organization owns. OwnerOrganization is derived hop by hop from Procedures; the policy reads one function.
+DROP POLICY IF EXISTS "pol-plantassistant-steps-select" ON public.steps;
+CREATE POLICY "pol-plantassistant-steps-select" ON public.steps FOR SELECT TO pko_plant_assistant USING (public.calc_steps_owner_organization(step_id) = app.jwt_organization());
+-- The Plant Copilot. Reads the procedure, its warning signs, transitions and attached knowledge, and nothing about people, governance or any other organization. It answers from these rows; it cannot leak what it cannot read.
+DROP POLICY IF EXISTS "pol-plantassistant-step_transitions-select" ON public.step_transitions;
+CREATE POLICY "pol-plantassistant-step_transitions-select" ON public.step_transitions FOR SELECT TO pko_plant_assistant USING (true);
+-- The Plant Copilot. Reads the procedure, its warning signs, transitions and attached knowledge, and nothing about people, governance or any other organization. It answers from these rows; it cannot leak what it cannot read.
+DROP POLICY IF EXISTS "pol-plantassistant-step_cues-select" ON public.step_cues;
+CREATE POLICY "pol-plantassistant-step_cues-select" ON public.step_cues FOR SELECT TO pko_plant_assistant USING (true);
+-- The Plant Copilot. Reads the procedure, its warning signs, transitions and attached knowledge, and nothing about people, governance or any other organization. It answers from these rows; it cannot leak what it cannot read.
+DROP POLICY IF EXISTS "pol-plantassistant-step_conditions-select" ON public.step_conditions;
+CREATE POLICY "pol-plantassistant-step_conditions-select" ON public.step_conditions FOR SELECT TO pko_plant_assistant USING (true);
+-- The Plant Copilot. Reads the procedure, its warning signs, transitions and attached knowledge, and nothing about people, governance or any other organization. It answers from these rows; it cannot leak what it cannot read.
+DROP POLICY IF EXISTS "pol-plantassistant-machine_energy_sources-select" ON public.machine_energy_sources;
+CREATE POLICY "pol-plantassistant-machine_energy_sources-select" ON public.machine_energy_sources FOR SELECT TO pko_plant_assistant USING (true);
+-- The Plant Copilot. Reads the procedure, its warning signs, transitions and attached knowledge, and nothing about people, governance or any other organization. It answers from these rows; it cannot leak what it cannot read.
+DROP POLICY IF EXISTS "pol-plantassistant-energy_sources-select" ON public.energy_sources;
+CREATE POLICY "pol-plantassistant-energy_sources-select" ON public.energy_sources FOR SELECT TO pko_plant_assistant USING (true);
+-- The Plant Copilot. Reads the procedure, its warning signs, transitions and attached knowledge, and nothing about people, governance or any other organization. It answers from these rows; it cannot leak what it cannot read.
+DROP POLICY IF EXISTS "pol-plantassistant-machines-select" ON public.machines;
+CREATE POLICY "pol-plantassistant-machines-select" ON public.machines FOR SELECT TO pko_plant_assistant USING (true);
+-- Only rows belonging to a procedure this sign-in's organization owns. OwnerOrganization is derived hop by hop from Procedures; the policy reads one function.
+DROP POLICY IF EXISTS "pol-plantassistant-knowledge_fragments-select" ON public.knowledge_fragments;
+CREATE POLICY "pol-plantassistant-knowledge_fragments-select" ON public.knowledge_fragments FOR SELECT TO pko_plant_assistant USING (public.calc_knowledge_fragments_owner_organization(knowledge_fragment_id) = app.jwt_organization());
+-- The Plant Copilot. Reads the procedure, its warning signs, transitions and attached knowledge, and nothing about people, governance or any other organization. It answers from these rows; it cannot leak what it cannot read.
+DROP POLICY IF EXISTS "pol-plantassistant-failure_modes-select" ON public.failure_modes;
+CREATE POLICY "pol-plantassistant-failure_modes-select" ON public.failure_modes FOR SELECT TO pko_plant_assistant USING (true);
+-- The Plant Copilot. Reads the procedure, its warning signs, transitions and attached knowledge, and nothing about people, governance or any other organization. It answers from these rows; it cannot leak what it cannot read.
+DROP POLICY IF EXISTS "pol-plantassistant-decision_points-select" ON public.decision_points;
+CREATE POLICY "pol-plantassistant-decision_points-select" ON public.decision_points FOR SELECT TO pko_plant_assistant USING (true);
+-- The Plant Copilot. Reads the procedure, its warning signs, transitions and attached knowledge, and nothing about people, governance or any other organization. It answers from these rows; it cannot leak what it cannot read.
+DROP POLICY IF EXISTS "pol-plantassistant-knowledge_query_definitions-select" ON public.knowledge_query_definitions;
+CREATE POLICY "pol-plantassistant-knowledge_query_definitions-select" ON public.knowledge_query_definitions FOR SELECT TO pko_plant_assistant USING (true);
+-- Only rows belonging to a procedure this sign-in's organization owns. OwnerOrganization is derived hop by hop from Procedures; the policy reads one function.
+DROP POLICY IF EXISTS "pol-plantassistant-procedure_executions-select" ON public.procedure_executions;
+CREATE POLICY "pol-plantassistant-procedure_executions-select" ON public.procedure_executions FOR SELECT TO pko_plant_assistant USING (public.calc_procedure_executions_owner_organization(procedure_execution_id) = app.jwt_organization());
+-- Only rows belonging to a procedure this sign-in's organization owns. OwnerOrganization is derived hop by hop from Procedures; the policy reads one function.
+DROP POLICY IF EXISTS "pol-plantassistant-step_executions-select" ON public.step_executions;
+CREATE POLICY "pol-plantassistant-step_executions-select" ON public.step_executions FOR SELECT TO pko_plant_assistant USING (public.calc_step_executions_owner_organization(step_execution_id) = app.jwt_organization());
+-- Only rows belonging to a procedure this sign-in's organization owns. OwnerOrganization is derived hop by hop from Procedures; the policy reads one function.
+DROP POLICY IF EXISTS "pol-plantassistant-cue_observations-select" ON public.cue_observations;
+CREATE POLICY "pol-plantassistant-cue_observations-select" ON public.cue_observations FOR SELECT TO pko_plant_assistant USING (public.calc_cue_observations_owner_organization(cue_observation_id) = app.jwt_organization());
+-- Only procedures this sign-in's organization owns.
+DROP POLICY IF EXISTS "pol-plantsafetyofficer-procedures-select" ON public.procedures;
+CREATE POLICY "pol-plantsafetyofficer-procedures-select" ON public.procedures FOR SELECT TO pko_plant_safety_officer USING (owner_organization = app.jwt_organization());
+-- Only rows belonging to a procedure this sign-in's organization owns. OwnerOrganization is derived hop by hop from Procedures; the policy reads one function.
+DROP POLICY IF EXISTS "pol-plantsafetyofficer-procedure_versions-select" ON public.procedure_versions;
+CREATE POLICY "pol-plantsafetyofficer-procedure_versions-select" ON public.procedure_versions FOR SELECT TO pko_plant_safety_officer USING (public.calc_procedure_versions_owner_organization(procedure_version_id) = app.jwt_organization());
+-- Only rows belonging to a procedure this sign-in's organization owns. OwnerOrganization is derived hop by hop from Procedures; the policy reads one function.
+DROP POLICY IF EXISTS "pol-plantsafetyofficer-steps-select" ON public.steps;
+CREATE POLICY "pol-plantsafetyofficer-steps-select" ON public.steps FOR SELECT TO pko_plant_safety_officer USING (public.calc_steps_owner_organization(step_id) = app.jwt_organization());
+-- Owns lockout safety: receives escalations, validates what the assistant proposes, and is the authority on changes to the plant's procedures.
+DROP POLICY IF EXISTS "pol-plantsafetyofficer-step_transitions-select" ON public.step_transitions;
+CREATE POLICY "pol-plantsafetyofficer-step_transitions-select" ON public.step_transitions FOR SELECT TO pko_plant_safety_officer USING (true);
+-- Owns lockout safety: receives escalations, validates what the assistant proposes, and is the authority on changes to the plant's procedures.
+DROP POLICY IF EXISTS "pol-plantsafetyofficer-step_cues-select" ON public.step_cues;
+CREATE POLICY "pol-plantsafetyofficer-step_cues-select" ON public.step_cues FOR SELECT TO pko_plant_safety_officer USING (true);
+-- Owns lockout safety: receives escalations, validates what the assistant proposes, and is the authority on changes to the plant's procedures.
+DROP POLICY IF EXISTS "pol-plantsafetyofficer-step_conditions-select" ON public.step_conditions;
+CREATE POLICY "pol-plantsafetyofficer-step_conditions-select" ON public.step_conditions FOR SELECT TO pko_plant_safety_officer USING (true);
+-- Owns lockout safety: receives escalations, validates what the assistant proposes, and is the authority on changes to the plant's procedures.
+DROP POLICY IF EXISTS "pol-plantsafetyofficer-step_lock_requirements-select" ON public.step_lock_requirements;
+CREATE POLICY "pol-plantsafetyofficer-step_lock_requirements-select" ON public.step_lock_requirements FOR SELECT TO pko_plant_safety_officer USING (true);
+-- Owns lockout safety: receives escalations, validates what the assistant proposes, and is the authority on changes to the plant's procedures.
+DROP POLICY IF EXISTS "pol-plantsafetyofficer-step_protective_equipment-select" ON public.step_protective_equipment;
+CREATE POLICY "pol-plantsafetyofficer-step_protective_equipment-select" ON public.step_protective_equipment FOR SELECT TO pko_plant_safety_officer USING (true);
+-- Owns lockout safety: receives escalations, validates what the assistant proposes, and is the authority on changes to the plant's procedures.
+DROP POLICY IF EXISTS "pol-plantsafetyofficer-lock_devices-select" ON public.lock_devices;
+CREATE POLICY "pol-plantsafetyofficer-lock_devices-select" ON public.lock_devices FOR SELECT TO pko_plant_safety_officer USING (true);
+-- Owns lockout safety: receives escalations, validates what the assistant proposes, and is the authority on changes to the plant's procedures.
+DROP POLICY IF EXISTS "pol-plantsafetyofficer-protective_equipment-select" ON public.protective_equipment;
+CREATE POLICY "pol-plantsafetyofficer-protective_equipment-select" ON public.protective_equipment FOR SELECT TO pko_plant_safety_officer USING (true);
+-- Owns lockout safety: receives escalations, validates what the assistant proposes, and is the authority on changes to the plant's procedures.
+DROP POLICY IF EXISTS "pol-plantsafetyofficer-machines-select" ON public.machines;
+CREATE POLICY "pol-plantsafetyofficer-machines-select" ON public.machines FOR SELECT TO pko_plant_safety_officer USING (true);
+-- Owns lockout safety: receives escalations, validates what the assistant proposes, and is the authority on changes to the plant's procedures.
+DROP POLICY IF EXISTS "pol-plantsafetyofficer-machine_energy_sources-select" ON public.machine_energy_sources;
+CREATE POLICY "pol-plantsafetyofficer-machine_energy_sources-select" ON public.machine_energy_sources FOR SELECT TO pko_plant_safety_officer USING (true);
+-- Owns lockout safety: receives escalations, validates what the assistant proposes, and is the authority on changes to the plant's procedures.
+DROP POLICY IF EXISTS "pol-plantsafetyofficer-energy_sources-select" ON public.energy_sources;
+CREATE POLICY "pol-plantsafetyofficer-energy_sources-select" ON public.energy_sources FOR SELECT TO pko_plant_safety_officer USING (true);
+-- Owns lockout safety: receives escalations, validates what the assistant proposes, and is the authority on changes to the plant's procedures.
+DROP POLICY IF EXISTS "pol-plantsafetyofficer-facilities-select" ON public.facilities;
+CREATE POLICY "pol-plantsafetyofficer-facilities-select" ON public.facilities FOR SELECT TO pko_plant_safety_officer USING (true);
+-- Owns lockout safety: receives escalations, validates what the assistant proposes, and is the authority on changes to the plant's procedures.
+DROP POLICY IF EXISTS "pol-plantsafetyofficer-failure_modes-select" ON public.failure_modes;
+CREATE POLICY "pol-plantsafetyofficer-failure_modes-select" ON public.failure_modes FOR SELECT TO pko_plant_safety_officer USING (true);
+-- Owns lockout safety: receives escalations, validates what the assistant proposes, and is the authority on changes to the plant's procedures.
+DROP POLICY IF EXISTS "pol-plantsafetyofficer-decision_points-select" ON public.decision_points;
+CREATE POLICY "pol-plantsafetyofficer-decision_points-select" ON public.decision_points FOR SELECT TO pko_plant_safety_officer USING (true);
+-- Only rows belonging to a procedure this sign-in's organization owns. OwnerOrganization is derived hop by hop from Procedures; the policy reads one function.
+DROP POLICY IF EXISTS "pol-plantsafetyofficer-procedure_executions-select" ON public.procedure_executions;
+CREATE POLICY "pol-plantsafetyofficer-procedure_executions-select" ON public.procedure_executions FOR SELECT TO pko_plant_safety_officer USING (public.calc_procedure_executions_owner_organization(procedure_execution_id) = app.jwt_organization());
+-- Only rows belonging to a procedure this sign-in's organization owns. OwnerOrganization is derived hop by hop from Procedures; the policy reads one function.
+DROP POLICY IF EXISTS "pol-plantsafetyofficer-step_executions-select" ON public.step_executions;
+CREATE POLICY "pol-plantsafetyofficer-step_executions-select" ON public.step_executions FOR SELECT TO pko_plant_safety_officer USING (public.calc_step_executions_owner_organization(step_execution_id) = app.jwt_organization());
+-- Only rows belonging to a procedure this sign-in's organization owns. OwnerOrganization is derived hop by hop from Procedures; the policy reads one function.
+DROP POLICY IF EXISTS "pol-plantsafetyofficer-cue_observations-select" ON public.cue_observations;
+CREATE POLICY "pol-plantsafetyofficer-cue_observations-select" ON public.cue_observations FOR SELECT TO pko_plant_safety_officer USING (public.calc_cue_observations_owner_organization(cue_observation_id) = app.jwt_organization());
+-- Only rows belonging to a procedure this sign-in's organization owns. OwnerOrganization is derived hop by hop from Procedures; the policy reads one function.
+DROP POLICY IF EXISTS "pol-plantsafetyofficer-knowledge_fragments-select" ON public.knowledge_fragments;
+CREATE POLICY "pol-plantsafetyofficer-knowledge_fragments-select" ON public.knowledge_fragments FOR SELECT TO pko_plant_safety_officer USING (public.calc_knowledge_fragments_owner_organization(knowledge_fragment_id) = app.jwt_organization());
+-- Owns lockout safety: receives escalations, validates what the assistant proposes, and is the authority on changes to the plant's procedures.
+DROP POLICY IF EXISTS "pol-plantsafetyofficer-expert_cognitions-select" ON public.expert_cognitions;
+CREATE POLICY "pol-plantsafetyofficer-expert_cognitions-select" ON public.expert_cognitions FOR SELECT TO pko_plant_safety_officer USING (true);
+-- Owns lockout safety: receives escalations, validates what the assistant proposes, and is the authority on changes to the plant's procedures.
+DROP POLICY IF EXISTS "pol-plantsafetyofficer-concept_ladder_rungs-select" ON public.concept_ladder_rungs;
+CREATE POLICY "pol-plantsafetyofficer-concept_ladder_rungs-select" ON public.concept_ladder_rungs FOR SELECT TO pko_plant_safety_officer USING (true);
+-- Only know-how held in this sign-in's organization.
+DROP POLICY IF EXISTS "pol-plantsafetyofficer-know_how_carriers-select" ON public.know_how_carriers;
+CREATE POLICY "pol-plantsafetyofficer-know_how_carriers-select" ON public.know_how_carriers FOR SELECT TO pko_plant_safety_officer USING (organization = app.jwt_organization());
+-- Only rows belonging to a procedure this sign-in's organization owns. OwnerOrganization is derived hop by hop from Procedures; the policy reads one function.
+DROP POLICY IF EXISTS "pol-plantsafetyofficer-assistant_answers-select" ON public.assistant_answers;
+CREATE POLICY "pol-plantsafetyofficer-assistant_answers-select" ON public.assistant_answers FOR SELECT TO pko_plant_safety_officer USING (public.calc_assistant_answers_owner_organization(assistant_answer_id) = app.jwt_organization());
+-- Owns lockout safety: receives escalations, validates what the assistant proposes, and is the authority on changes to the plant's procedures.
+DROP POLICY IF EXISTS "pol-plantsafetyofficer-knowledge_query_definitions-select" ON public.knowledge_query_definitions;
+CREATE POLICY "pol-plantsafetyofficer-knowledge_query_definitions-select" ON public.knowledge_query_definitions FOR SELECT TO pko_plant_safety_officer USING (true);
+-- Tenancy boundary: only rows belonging to this principal's own organization.
+DROP POLICY IF EXISTS "pol-plantsafetyofficer-agents-select" ON public.agents;
+CREATE POLICY "pol-plantsafetyofficer-agents-select" ON public.agents FOR SELECT TO pko_plant_safety_officer USING (organization = app.jwt_organization());
+-- Owns lockout safety: receives escalations, validates what the assistant proposes, and is the authority on changes to the plant's procedures.
+DROP POLICY IF EXISTS "pol-plantsafetyofficer-roles-select" ON public.roles;
+CREATE POLICY "pol-plantsafetyofficer-roles-select" ON public.roles FOR SELECT TO pko_plant_safety_officer USING (true);
+-- Owns lockout safety: receives escalations, validates what the assistant proposes, and is the authority on changes to the plant's procedures.
+DROP POLICY IF EXISTS "pol-plantsafetyofficer-ai_insight_proposals-select" ON public.ai_insight_proposals;
+CREATE POLICY "pol-plantsafetyofficer-ai_insight_proposals-select" ON public.ai_insight_proposals FOR SELECT TO pko_plant_safety_officer USING (true);
+-- Only rows belonging to a procedure this sign-in's organization owns. OwnerOrganization is derived hop by hop from Procedures; the policy reads one function.
+DROP POLICY IF EXISTS "pol-plantsafetyofficer-change_requests-select" ON public.change_requests;
+CREATE POLICY "pol-plantsafetyofficer-change_requests-select" ON public.change_requests FOR SELECT TO pko_plant_safety_officer USING (public.calc_change_requests_owner_organization(change_request_id) = app.jwt_organization());
+-- Only rows belonging to a procedure this sign-in's organization owns. OwnerOrganization is derived hop by hop from Procedures; the policy reads one function.
+DROP POLICY IF EXISTS "pol-plantsafetyofficer-knowledge_gaps-select" ON public.knowledge_gaps;
+CREATE POLICY "pol-plantsafetyofficer-knowledge_gaps-select" ON public.knowledge_gaps FOR SELECT TO pko_plant_safety_officer USING (public.calc_knowledge_gaps_owner_organization(knowledge_gap_id) = app.jwt_organization());
+-- Owns lockout safety: receives escalations, validates what the assistant proposes, and is the authority on changes to the plant's procedures.
+DROP POLICY IF EXISTS "pol-plantsafetyofficer-workflow_view_divergences-select" ON public.workflow_view_divergences;
+CREATE POLICY "pol-plantsafetyofficer-workflow_view_divergences-select" ON public.workflow_view_divergences FOR SELECT TO pko_plant_safety_officer USING (true);
+-- Owns lockout safety: receives escalations, validates what the assistant proposes, and is the authority on changes to the plant's procedures.
+DROP POLICY IF EXISTS "pol-plantsafetyofficer-stakeholder_perspectives-select" ON public.stakeholder_perspectives;
+CREATE POLICY "pol-plantsafetyofficer-stakeholder_perspectives-select" ON public.stakeholder_perspectives FOR SELECT TO pko_plant_safety_officer USING (true);
+-- Only procedures this sign-in's organization owns.
+DROP POLICY IF EXISTS "pol-plantoperationsmanager-procedures-select" ON public.procedures;
+CREATE POLICY "pol-plantoperationsmanager-procedures-select" ON public.procedures FOR SELECT TO pko_plant_operations_manager USING (owner_organization = app.jwt_organization());
+-- Only rows belonging to a procedure this sign-in's organization owns. OwnerOrganization is derived hop by hop from Procedures; the policy reads one function.
+DROP POLICY IF EXISTS "pol-plantoperationsmanager-procedure_versions-select" ON public.procedure_versions;
+CREATE POLICY "pol-plantoperationsmanager-procedure_versions-select" ON public.procedure_versions FOR SELECT TO pko_plant_operations_manager USING (public.calc_procedure_versions_owner_organization(procedure_version_id) = app.jwt_organization());
+-- Only rows belonging to a procedure this sign-in's organization owns. OwnerOrganization is derived hop by hop from Procedures; the policy reads one function.
+DROP POLICY IF EXISTS "pol-plantoperationsmanager-steps-select" ON public.steps;
+CREATE POLICY "pol-plantoperationsmanager-steps-select" ON public.steps FOR SELECT TO pko_plant_operations_manager USING (public.calc_steps_owner_organization(step_id) = app.jwt_organization());
+-- Only rows belonging to a procedure this sign-in's organization owns. OwnerOrganization is derived hop by hop from Procedures; the policy reads one function.
+DROP POLICY IF EXISTS "pol-plantoperationsmanager-procedure_executions-select" ON public.procedure_executions;
+CREATE POLICY "pol-plantoperationsmanager-procedure_executions-select" ON public.procedure_executions FOR SELECT TO pko_plant_operations_manager USING (public.calc_procedure_executions_owner_organization(procedure_execution_id) = app.jwt_organization());
+-- Runs the floor over weeks and quarters: who is proficient, who mentors whom, what know-how is about to leave, and the decisions handed up to them.
+DROP POLICY IF EXISTS "pol-plantoperationsmanager-onboarding_records-select" ON public.onboarding_records;
+CREATE POLICY "pol-plantoperationsmanager-onboarding_records-select" ON public.onboarding_records FOR SELECT TO pko_plant_operations_manager USING (true);
+-- Runs the floor over weeks and quarters: who is proficient, who mentors whom, what know-how is about to leave, and the decisions handed up to them.
+DROP POLICY IF EXISTS "pol-plantoperationsmanager-mentorships-select" ON public.mentorships;
+CREATE POLICY "pol-plantoperationsmanager-mentorships-select" ON public.mentorships FOR SELECT TO pko_plant_operations_manager USING (true);
+-- Tenancy boundary: only rows belonging to this principal's own organization.
+DROP POLICY IF EXISTS "pol-plantoperationsmanager-communities_of_practice-select" ON public.communities_of_practice;
+CREATE POLICY "pol-plantoperationsmanager-communities_of_practice-select" ON public.communities_of_practice FOR SELECT TO pko_plant_operations_manager USING (organization = app.jwt_organization());
+-- Only know-how held in this sign-in's organization.
+DROP POLICY IF EXISTS "pol-plantoperationsmanager-know_how_carriers-select" ON public.know_how_carriers;
+CREATE POLICY "pol-plantoperationsmanager-know_how_carriers-select" ON public.know_how_carriers FOR SELECT TO pko_plant_operations_manager USING (organization = app.jwt_organization());
+-- Runs the floor over weeks and quarters: who is proficient, who mentors whom, what know-how is about to leave, and the decisions handed up to them.
+DROP POLICY IF EXISTS "pol-plantoperationsmanager-knowledge_transfers-select" ON public.knowledge_transfers;
+CREATE POLICY "pol-plantoperationsmanager-knowledge_transfers-select" ON public.knowledge_transfers FOR SELECT TO pko_plant_operations_manager USING (true);
+-- Runs the floor over weeks and quarters: who is proficient, who mentors whom, what know-how is about to leave, and the decisions handed up to them.
+DROP POLICY IF EXISTS "pol-plantoperationsmanager-process_knowledge_levels-select" ON public.process_knowledge_levels;
+CREATE POLICY "pol-plantoperationsmanager-process_knowledge_levels-select" ON public.process_knowledge_levels FOR SELECT TO pko_plant_operations_manager USING (true);
+-- Runs the floor over weeks and quarters: who is proficient, who mentors whom, what know-how is about to leave, and the decisions handed up to them.
+DROP POLICY IF EXISTS "pol-plantoperationsmanager-process_level_statements-select" ON public.process_level_statements;
+CREATE POLICY "pol-plantoperationsmanager-process_level_statements-select" ON public.process_level_statements FOR SELECT TO pko_plant_operations_manager USING (true);
+-- Runs the floor over weeks and quarters: who is proficient, who mentors whom, what know-how is about to leave, and the decisions handed up to them.
+DROP POLICY IF EXISTS "pol-plantoperationsmanager-level_capture_strategies-select" ON public.level_capture_strategies;
+CREATE POLICY "pol-plantoperationsmanager-level_capture_strategies-select" ON public.level_capture_strategies FOR SELECT TO pko_plant_operations_manager USING (true);
+-- Only rows belonging to a procedure this sign-in's organization owns. OwnerOrganization is derived hop by hop from Procedures; the policy reads one function.
+DROP POLICY IF EXISTS "pol-plantoperationsmanager-change_requests-select" ON public.change_requests;
+CREATE POLICY "pol-plantoperationsmanager-change_requests-select" ON public.change_requests FOR SELECT TO pko_plant_operations_manager USING (public.calc_change_requests_owner_organization(change_request_id) = app.jwt_organization());
+-- Runs the floor over weeks and quarters: who is proficient, who mentors whom, what know-how is about to leave, and the decisions handed up to them.
+DROP POLICY IF EXISTS "pol-plantoperationsmanager-workflow_view_divergences-select" ON public.workflow_view_divergences;
+CREATE POLICY "pol-plantoperationsmanager-workflow_view_divergences-select" ON public.workflow_view_divergences FOR SELECT TO pko_plant_operations_manager USING (true);
+-- Runs the floor over weeks and quarters: who is proficient, who mentors whom, what know-how is about to leave, and the decisions handed up to them.
+DROP POLICY IF EXISTS "pol-plantoperationsmanager-knowledge_workforce_positions-sel" ON public.knowledge_workforce_positions;
+CREATE POLICY "pol-plantoperationsmanager-knowledge_workforce_positions-sel" ON public.knowledge_workforce_positions FOR SELECT TO pko_plant_operations_manager USING (true);
+-- Tenancy boundary: only rows belonging to this principal's own organization.
+DROP POLICY IF EXISTS "pol-plantoperationsmanager-agents-select" ON public.agents;
+CREATE POLICY "pol-plantoperationsmanager-agents-select" ON public.agents FOR SELECT TO pko_plant_operations_manager USING (organization = app.jwt_organization());
+-- Runs the floor over weeks and quarters: who is proficient, who mentors whom, what know-how is about to leave, and the decisions handed up to them.
+DROP POLICY IF EXISTS "pol-plantoperationsmanager-roles-select" ON public.roles;
+CREATE POLICY "pol-plantoperationsmanager-roles-select" ON public.roles FOR SELECT TO pko_plant_operations_manager USING (true);
+-- Collects, organizes and encodes procedural knowledge across ACME. The capture workbench reads every session, fragment, gap, vocabulary and know-how card.
+DROP POLICY IF EXISTS "pol-knowledgeengineer-procedures-select" ON public.procedures;
+CREATE POLICY "pol-knowledgeengineer-procedures-select" ON public.procedures FOR SELECT TO pko_knowledge_engineer USING (true);
+-- Collects, organizes and encodes procedural knowledge across ACME. The capture workbench reads every session, fragment, gap, vocabulary and know-how card.
+DROP POLICY IF EXISTS "pol-knowledgeengineer-procedure_versions-select" ON public.procedure_versions;
+CREATE POLICY "pol-knowledgeengineer-procedure_versions-select" ON public.procedure_versions FOR SELECT TO pko_knowledge_engineer USING (true);
+-- Collects, organizes and encodes procedural knowledge across ACME. The capture workbench reads every session, fragment, gap, vocabulary and know-how card.
+DROP POLICY IF EXISTS "pol-knowledgeengineer-steps-select" ON public.steps;
+CREATE POLICY "pol-knowledgeengineer-steps-select" ON public.steps FOR SELECT TO pko_knowledge_engineer USING (true);
+-- Collects, organizes and encodes procedural knowledge across ACME. The capture workbench reads every session, fragment, gap, vocabulary and know-how card.
+DROP POLICY IF EXISTS "pol-knowledgeengineer-step_transitions-select" ON public.step_transitions;
+CREATE POLICY "pol-knowledgeengineer-step_transitions-select" ON public.step_transitions FOR SELECT TO pko_knowledge_engineer USING (true);
+-- Collects, organizes and encodes procedural knowledge across ACME. The capture workbench reads every session, fragment, gap, vocabulary and know-how card.
+DROP POLICY IF EXISTS "pol-knowledgeengineer-step_cues-select" ON public.step_cues;
+CREATE POLICY "pol-knowledgeengineer-step_cues-select" ON public.step_cues FOR SELECT TO pko_knowledge_engineer USING (true);
+-- Collects, organizes and encodes procedural knowledge across ACME. The capture workbench reads every session, fragment, gap, vocabulary and know-how card.
+DROP POLICY IF EXISTS "pol-knowledgeengineer-step_conditions-select" ON public.step_conditions;
+CREATE POLICY "pol-knowledgeengineer-step_conditions-select" ON public.step_conditions FOR SELECT TO pko_knowledge_engineer USING (true);
+-- Collects, organizes and encodes procedural knowledge across ACME. The capture workbench reads every session, fragment, gap, vocabulary and know-how card.
+DROP POLICY IF EXISTS "pol-knowledgeengineer-step_lock_requirements-select" ON public.step_lock_requirements;
+CREATE POLICY "pol-knowledgeengineer-step_lock_requirements-select" ON public.step_lock_requirements FOR SELECT TO pko_knowledge_engineer USING (true);
+-- Collects, organizes and encodes procedural knowledge across ACME. The capture workbench reads every session, fragment, gap, vocabulary and know-how card.
+DROP POLICY IF EXISTS "pol-knowledgeengineer-step_protective_equipment-select" ON public.step_protective_equipment;
+CREATE POLICY "pol-knowledgeengineer-step_protective_equipment-select" ON public.step_protective_equipment FOR SELECT TO pko_knowledge_engineer USING (true);
+-- Collects, organizes and encodes procedural knowledge across ACME. The capture workbench reads every session, fragment, gap, vocabulary and know-how card.
+DROP POLICY IF EXISTS "pol-knowledgeengineer-lock_devices-select" ON public.lock_devices;
+CREATE POLICY "pol-knowledgeengineer-lock_devices-select" ON public.lock_devices FOR SELECT TO pko_knowledge_engineer USING (true);
+-- Collects, organizes and encodes procedural knowledge across ACME. The capture workbench reads every session, fragment, gap, vocabulary and know-how card.
+DROP POLICY IF EXISTS "pol-knowledgeengineer-protective_equipment-select" ON public.protective_equipment;
+CREATE POLICY "pol-knowledgeengineer-protective_equipment-select" ON public.protective_equipment FOR SELECT TO pko_knowledge_engineer USING (true);
+-- Collects, organizes and encodes procedural knowledge across ACME. The capture workbench reads every session, fragment, gap, vocabulary and know-how card.
+DROP POLICY IF EXISTS "pol-knowledgeengineer-machines-select" ON public.machines;
+CREATE POLICY "pol-knowledgeengineer-machines-select" ON public.machines FOR SELECT TO pko_knowledge_engineer USING (true);
+-- Collects, organizes and encodes procedural knowledge across ACME. The capture workbench reads every session, fragment, gap, vocabulary and know-how card.
+DROP POLICY IF EXISTS "pol-knowledgeengineer-machine_energy_sources-select" ON public.machine_energy_sources;
+CREATE POLICY "pol-knowledgeengineer-machine_energy_sources-select" ON public.machine_energy_sources FOR SELECT TO pko_knowledge_engineer USING (true);
+-- Collects, organizes and encodes procedural knowledge across ACME. The capture workbench reads every session, fragment, gap, vocabulary and know-how card.
+DROP POLICY IF EXISTS "pol-knowledgeengineer-energy_sources-select" ON public.energy_sources;
+CREATE POLICY "pol-knowledgeengineer-energy_sources-select" ON public.energy_sources FOR SELECT TO pko_knowledge_engineer USING (true);
+-- Collects, organizes and encodes procedural knowledge across ACME. The capture workbench reads every session, fragment, gap, vocabulary and know-how card.
+DROP POLICY IF EXISTS "pol-knowledgeengineer-facilities-select" ON public.facilities;
+CREATE POLICY "pol-knowledgeengineer-facilities-select" ON public.facilities FOR SELECT TO pko_knowledge_engineer USING (true);
+-- Collects, organizes and encodes procedural knowledge across ACME. The capture workbench reads every session, fragment, gap, vocabulary and know-how card.
+DROP POLICY IF EXISTS "pol-knowledgeengineer-failure_modes-select" ON public.failure_modes;
+CREATE POLICY "pol-knowledgeengineer-failure_modes-select" ON public.failure_modes FOR SELECT TO pko_knowledge_engineer USING (true);
+-- Collects, organizes and encodes procedural knowledge across ACME. The capture workbench reads every session, fragment, gap, vocabulary and know-how card.
+DROP POLICY IF EXISTS "pol-knowledgeengineer-decision_points-select" ON public.decision_points;
+CREATE POLICY "pol-knowledgeengineer-decision_points-select" ON public.decision_points FOR SELECT TO pko_knowledge_engineer USING (true);
+-- Collects, organizes and encodes procedural knowledge across ACME. The capture workbench reads every session, fragment, gap, vocabulary and know-how card.
+DROP POLICY IF EXISTS "pol-knowledgeengineer-procedure_executions-select" ON public.procedure_executions;
+CREATE POLICY "pol-knowledgeengineer-procedure_executions-select" ON public.procedure_executions FOR SELECT TO pko_knowledge_engineer USING (true);
+-- Collects, organizes and encodes procedural knowledge across ACME. The capture workbench reads every session, fragment, gap, vocabulary and know-how card.
+DROP POLICY IF EXISTS "pol-knowledgeengineer-step_executions-select" ON public.step_executions;
+CREATE POLICY "pol-knowledgeengineer-step_executions-select" ON public.step_executions FOR SELECT TO pko_knowledge_engineer USING (true);
+-- Collects, organizes and encodes procedural knowledge across ACME. The capture workbench reads every session, fragment, gap, vocabulary and know-how card.
+DROP POLICY IF EXISTS "pol-knowledgeengineer-cue_observations-select" ON public.cue_observations;
+CREATE POLICY "pol-knowledgeengineer-cue_observations-select" ON public.cue_observations FOR SELECT TO pko_knowledge_engineer USING (true);
+-- Collects, organizes and encodes procedural knowledge across ACME. The capture workbench reads every session, fragment, gap, vocabulary and know-how card.
+DROP POLICY IF EXISTS "pol-knowledgeengineer-knowledge_fragments-select" ON public.knowledge_fragments;
+CREATE POLICY "pol-knowledgeengineer-knowledge_fragments-select" ON public.knowledge_fragments FOR SELECT TO pko_knowledge_engineer USING (true);
+-- Collects, organizes and encodes procedural knowledge across ACME. The capture workbench reads every session, fragment, gap, vocabulary and know-how card.
+DROP POLICY IF EXISTS "pol-knowledgeengineer-expert_cognitions-select" ON public.expert_cognitions;
+CREATE POLICY "pol-knowledgeengineer-expert_cognitions-select" ON public.expert_cognitions FOR SELECT TO pko_knowledge_engineer USING (true);
+-- Collects, organizes and encodes procedural knowledge across ACME. The capture workbench reads every session, fragment, gap, vocabulary and know-how card.
+DROP POLICY IF EXISTS "pol-knowledgeengineer-concept_ladder_rungs-select" ON public.concept_ladder_rungs;
+CREATE POLICY "pol-knowledgeengineer-concept_ladder_rungs-select" ON public.concept_ladder_rungs FOR SELECT TO pko_knowledge_engineer USING (true);
+-- Collects, organizes and encodes procedural knowledge across ACME. The capture workbench reads every session, fragment, gap, vocabulary and know-how card.
+DROP POLICY IF EXISTS "pol-knowledgeengineer-know_how_carriers-select" ON public.know_how_carriers;
+CREATE POLICY "pol-knowledgeengineer-know_how_carriers-select" ON public.know_how_carriers FOR SELECT TO pko_knowledge_engineer USING (true);
+-- Collects, organizes and encodes procedural knowledge across ACME. The capture workbench reads every session, fragment, gap, vocabulary and know-how card.
+DROP POLICY IF EXISTS "pol-knowledgeengineer-assistant_answers-select" ON public.assistant_answers;
+CREATE POLICY "pol-knowledgeengineer-assistant_answers-select" ON public.assistant_answers FOR SELECT TO pko_knowledge_engineer USING (true);
+-- Collects, organizes and encodes procedural knowledge across ACME. The capture workbench reads every session, fragment, gap, vocabulary and know-how card.
+DROP POLICY IF EXISTS "pol-knowledgeengineer-knowledge_query_definitions-select" ON public.knowledge_query_definitions;
+CREATE POLICY "pol-knowledgeengineer-knowledge_query_definitions-select" ON public.knowledge_query_definitions FOR SELECT TO pko_knowledge_engineer USING (true);
+-- Collects, organizes and encodes procedural knowledge across ACME. The capture workbench reads every session, fragment, gap, vocabulary and know-how card.
+DROP POLICY IF EXISTS "pol-knowledgeengineer-agents-select" ON public.agents;
+CREATE POLICY "pol-knowledgeengineer-agents-select" ON public.agents FOR SELECT TO pko_knowledge_engineer USING (true);
+-- Collects, organizes and encodes procedural knowledge across ACME. The capture workbench reads every session, fragment, gap, vocabulary and know-how card.
+DROP POLICY IF EXISTS "pol-knowledgeengineer-roles-select" ON public.roles;
+CREATE POLICY "pol-knowledgeengineer-roles-select" ON public.roles FOR SELECT TO pko_knowledge_engineer USING (true);
+-- Collects, organizes and encodes procedural knowledge across ACME. The capture workbench reads every session, fragment, gap, vocabulary and know-how card.
+DROP POLICY IF EXISTS "pol-knowledgeengineer-elicitation_sessions-select" ON public.elicitation_sessions;
+CREATE POLICY "pol-knowledgeengineer-elicitation_sessions-select" ON public.elicitation_sessions FOR SELECT TO pko_knowledge_engineer USING (true);
+-- Collects, organizes and encodes procedural knowledge across ACME. The capture workbench reads every session, fragment, gap, vocabulary and know-how card.
+DROP POLICY IF EXISTS "pol-knowledgeengineer-elicitation_participants-select" ON public.elicitation_participants;
+CREATE POLICY "pol-knowledgeengineer-elicitation_participants-select" ON public.elicitation_participants FOR SELECT TO pko_knowledge_engineer USING (true);
+-- Collects, organizes and encodes procedural knowledge across ACME. The capture workbench reads every session, fragment, gap, vocabulary and know-how card.
+DROP POLICY IF EXISTS "pol-knowledgeengineer-critical_incidents-select" ON public.critical_incidents;
+CREATE POLICY "pol-knowledgeengineer-critical_incidents-select" ON public.critical_incidents FOR SELECT TO pko_knowledge_engineer USING (true);
+-- Collects, organizes and encodes procedural knowledge across ACME. The capture workbench reads every session, fragment, gap, vocabulary and know-how card.
+DROP POLICY IF EXISTS "pol-knowledgeengineer-repertory_grid_constructs-select" ON public.repertory_grid_constructs;
+CREATE POLICY "pol-knowledgeengineer-repertory_grid_constructs-select" ON public.repertory_grid_constructs FOR SELECT TO pko_knowledge_engineer USING (true);
+-- Collects, organizes and encodes procedural knowledge across ACME. The capture workbench reads every session, fragment, gap, vocabulary and know-how card.
+DROP POLICY IF EXISTS "pol-knowledgeengineer-workflow_view_divergences-select" ON public.workflow_view_divergences;
+CREATE POLICY "pol-knowledgeengineer-workflow_view_divergences-select" ON public.workflow_view_divergences FOR SELECT TO pko_knowledge_engineer USING (true);
+-- Collects, organizes and encodes procedural knowledge across ACME. The capture workbench reads every session, fragment, gap, vocabulary and know-how card.
+DROP POLICY IF EXISTS "pol-knowledgeengineer-stakeholder_perspectives-select" ON public.stakeholder_perspectives;
+CREATE POLICY "pol-knowledgeengineer-stakeholder_perspectives-select" ON public.stakeholder_perspectives FOR SELECT TO pko_knowledge_engineer USING (true);
+-- Collects, organizes and encodes procedural knowledge across ACME. The capture workbench reads every session, fragment, gap, vocabulary and know-how card.
+DROP POLICY IF EXISTS "pol-knowledgeengineer-knowledge_repository_entries-select" ON public.knowledge_repository_entries;
+CREATE POLICY "pol-knowledgeengineer-knowledge_repository_entries-select" ON public.knowledge_repository_entries FOR SELECT TO pko_knowledge_engineer USING (true);
+-- Collects, organizes and encodes procedural knowledge across ACME. The capture workbench reads every session, fragment, gap, vocabulary and know-how card.
+DROP POLICY IF EXISTS "pol-knowledgeengineer-knowledge_transfers-select" ON public.knowledge_transfers;
+CREATE POLICY "pol-knowledgeengineer-knowledge_transfers-select" ON public.knowledge_transfers FOR SELECT TO pko_knowledge_engineer USING (true);
+-- Collects, organizes and encodes procedural knowledge across ACME. The capture workbench reads every session, fragment, gap, vocabulary and know-how card.
+DROP POLICY IF EXISTS "pol-knowledgeengineer-mentorships-select" ON public.mentorships;
+CREATE POLICY "pol-knowledgeengineer-mentorships-select" ON public.mentorships FOR SELECT TO pko_knowledge_engineer USING (true);
+-- Collects, organizes and encodes procedural knowledge across ACME. The capture workbench reads every session, fragment, gap, vocabulary and know-how card.
+DROP POLICY IF EXISTS "pol-knowledgeengineer-knowledge_broker_links-select" ON public.knowledge_broker_links;
+CREATE POLICY "pol-knowledgeengineer-knowledge_broker_links-select" ON public.knowledge_broker_links FOR SELECT TO pko_knowledge_engineer USING (true);
+-- Collects, organizes and encodes procedural knowledge across ACME. The capture workbench reads every session, fragment, gap, vocabulary and know-how card.
+DROP POLICY IF EXISTS "pol-knowledgeengineer-vocabularies-select" ON public.vocabularies;
+CREATE POLICY "pol-knowledgeengineer-vocabularies-select" ON public.vocabularies FOR SELECT TO pko_knowledge_engineer USING (true);
+-- Collects, organizes and encodes procedural knowledge across ACME. The capture workbench reads every session, fragment, gap, vocabulary and know-how card.
+DROP POLICY IF EXISTS "pol-knowledgeengineer-vocabulary_terms-select" ON public.vocabulary_terms;
+CREATE POLICY "pol-knowledgeengineer-vocabulary_terms-select" ON public.vocabulary_terms FOR SELECT TO pko_knowledge_engineer USING (true);
+-- Collects, organizes and encodes procedural knowledge across ACME. The capture workbench reads every session, fragment, gap, vocabulary and know-how card.
+DROP POLICY IF EXISTS "pol-knowledgeengineer-term_label_variants-select" ON public.term_label_variants;
+CREATE POLICY "pol-knowledgeengineer-term_label_variants-select" ON public.term_label_variants FOR SELECT TO pko_knowledge_engineer USING (true);
+-- Collects, organizes and encodes procedural knowledge across ACME. The capture workbench reads every session, fragment, gap, vocabulary and know-how card.
+DROP POLICY IF EXISTS "pol-knowledgeengineer-stakeholder_lenses-select" ON public.stakeholder_lenses;
+CREATE POLICY "pol-knowledgeengineer-stakeholder_lenses-select" ON public.stakeholder_lenses FOR SELECT TO pko_knowledge_engineer USING (true);
+-- Collects, organizes and encodes procedural knowledge across ACME. The capture workbench reads every session, fragment, gap, vocabulary and know-how card.
+DROP POLICY IF EXISTS "pol-knowledgeengineer-procedure_lens_views-select" ON public.procedure_lens_views;
+CREATE POLICY "pol-knowledgeengineer-procedure_lens_views-select" ON public.procedure_lens_views FOR SELECT TO pko_knowledge_engineer USING (true);
+-- Collects, organizes and encodes procedural knowledge across ACME. The capture workbench reads every session, fragment, gap, vocabulary and know-how card.
+DROP POLICY IF EXISTS "pol-knowledgeengineer-knowledge_traces-select" ON public.knowledge_traces;
+CREATE POLICY "pol-knowledgeengineer-knowledge_traces-select" ON public.knowledge_traces FOR SELECT TO pko_knowledge_engineer USING (true);
+-- Collects, organizes and encodes procedural knowledge across ACME. The capture workbench reads every session, fragment, gap, vocabulary and know-how card.
+DROP POLICY IF EXISTS "pol-knowledgeengineer-collected_source_materials-select" ON public.collected_source_materials;
+CREATE POLICY "pol-knowledgeengineer-collected_source_materials-select" ON public.collected_source_materials FOR SELECT TO pko_knowledge_engineer USING (true);
+-- Collects, organizes and encodes procedural knowledge across ACME. The capture workbench reads every session, fragment, gap, vocabulary and know-how card.
+DROP POLICY IF EXISTS "pol-knowledgeengineer-knowledge_search_events-select" ON public.knowledge_search_events;
+CREATE POLICY "pol-knowledgeengineer-knowledge_search_events-select" ON public.knowledge_search_events FOR SELECT TO pko_knowledge_engineer USING (true);
+-- Collects, organizes and encodes procedural knowledge across ACME. The capture workbench reads every session, fragment, gap, vocabulary and know-how card.
+DROP POLICY IF EXISTS "pol-knowledgeengineer-knowledge_methods-select" ON public.knowledge_methods;
+CREATE POLICY "pol-knowledgeengineer-knowledge_methods-select" ON public.knowledge_methods FOR SELECT TO pko_knowledge_engineer USING (true);
+-- Collects, organizes and encodes procedural knowledge across ACME. The capture workbench reads every session, fragment, gap, vocabulary and know-how card.
+DROP POLICY IF EXISTS "pol-knowledgeengineer-knowledge_gaps-select" ON public.knowledge_gaps;
+CREATE POLICY "pol-knowledgeengineer-knowledge_gaps-select" ON public.knowledge_gaps FOR SELECT TO pko_knowledge_engineer USING (true);
+-- Collects, organizes and encodes procedural knowledge across ACME. The capture workbench reads every session, fragment, gap, vocabulary and know-how card.
+DROP POLICY IF EXISTS "pol-knowledgeengineer-change_requests-select" ON public.change_requests;
+CREATE POLICY "pol-knowledgeengineer-change_requests-select" ON public.change_requests FOR SELECT TO pko_knowledge_engineer USING (true);
+-- Collects, organizes and encodes procedural knowledge across ACME. The capture workbench reads every session, fragment, gap, vocabulary and know-how card.
+DROP POLICY IF EXISTS "pol-knowledgeengineer-onboarding_records-select" ON public.onboarding_records;
+CREATE POLICY "pol-knowledgeengineer-onboarding_records-select" ON public.onboarding_records FOR SELECT TO pko_knowledge_engineer USING (true);
+-- Collects, organizes and encodes procedural knowledge across ACME. The capture workbench reads every session, fragment, gap, vocabulary and know-how card.
+DROP POLICY IF EXISTS "pol-knowledgeengineer-communities_of_practice-select" ON public.communities_of_practice;
+CREATE POLICY "pol-knowledgeengineer-communities_of_practice-select" ON public.communities_of_practice FOR SELECT TO pko_knowledge_engineer USING (true);
+-- Manages the contracts ACME depends on. Reads every organization's engagements and audits (sourcing is a corporate view) and changes only its own organization's.
+DROP POLICY IF EXISTS "pol-sourcingmanager-provider_engagements-select" ON public.provider_engagements;
+CREATE POLICY "pol-sourcingmanager-provider_engagements-select" ON public.provider_engagements FOR SELECT TO pko_sourcing_manager USING (true);
+-- Manages the contracts ACME depends on. Reads every organization's engagements and audits (sourcing is a corporate view) and changes only its own organization's.
+DROP POLICY IF EXISTS "pol-sourcingmanager-knowledge_deliverables-select" ON public.knowledge_deliverables;
+CREATE POLICY "pol-sourcingmanager-knowledge_deliverables-select" ON public.knowledge_deliverables FOR SELECT TO pko_sourcing_manager USING (true);
+-- Manages the contracts ACME depends on. Reads every organization's engagements and audits (sourcing is a corporate view) and changes only its own organization's.
+DROP POLICY IF EXISTS "pol-sourcingmanager-knowledge_audits-select" ON public.knowledge_audits;
+CREATE POLICY "pol-sourcingmanager-knowledge_audits-select" ON public.knowledge_audits FOR SELECT TO pko_sourcing_manager USING (true);
+-- Manages the contracts ACME depends on. Reads every organization's engagements and audits (sourcing is a corporate view) and changes only its own organization's.
+DROP POLICY IF EXISTS "pol-sourcingmanager-knowledge_audit_items-select" ON public.knowledge_audit_items;
+CREATE POLICY "pol-sourcingmanager-knowledge_audit_items-select" ON public.knowledge_audit_items FOR SELECT TO pko_sourcing_manager USING (true);
+-- Manages the contracts ACME depends on. Reads every organization's engagements and audits (sourcing is a corporate view) and changes only its own organization's.
+DROP POLICY IF EXISTS "pol-sourcingmanager-sourcing_functions-select" ON public.sourcing_functions;
+CREATE POLICY "pol-sourcingmanager-sourcing_functions-select" ON public.sourcing_functions FOR SELECT TO pko_sourcing_manager USING (true);
+-- Manages the contracts ACME depends on. Reads every organization's engagements and audits (sourcing is a corporate view) and changes only its own organization's.
+DROP POLICY IF EXISTS "pol-sourcingmanager-organizations-select" ON public.organizations;
+CREATE POLICY "pol-sourcingmanager-organizations-select" ON public.organizations FOR SELECT TO pko_sourcing_manager USING (true);
+-- Manages the contracts ACME depends on. Reads every organization's engagements and audits (sourcing is a corporate view) and changes only its own organization's.
+DROP POLICY IF EXISTS "pol-sourcingmanager-knowledge_workforce_positions-select" ON public.knowledge_workforce_positions;
+CREATE POLICY "pol-sourcingmanager-knowledge_workforce_positions-select" ON public.knowledge_workforce_positions FOR SELECT TO pko_sourcing_manager USING (true);
+-- Manages the contracts ACME depends on. Reads every organization's engagements and audits (sourcing is a corporate view) and changes only its own organization's.
+DROP POLICY IF EXISTS "pol-sourcingmanager-agents-select" ON public.agents;
+CREATE POLICY "pol-sourcingmanager-agents-select" ON public.agents FOR SELECT TO pko_sourcing_manager USING (true);
+-- Only procedures this sign-in's organization owns.
+DROP POLICY IF EXISTS "pol-releasemanager-procedures-select" ON public.procedures;
+CREATE POLICY "pol-releasemanager-procedures-select" ON public.procedures FOR SELECT TO pko_release_manager USING (owner_organization = app.jwt_organization());
+-- Only rows belonging to a procedure this sign-in's organization owns. OwnerOrganization is derived hop by hop from Procedures; the policy reads one function.
+DROP POLICY IF EXISTS "pol-releasemanager-procedure_versions-select" ON public.procedure_versions;
+CREATE POLICY "pol-releasemanager-procedure_versions-select" ON public.procedure_versions FOR SELECT TO pko_release_manager USING (public.calc_procedure_versions_owner_organization(procedure_version_id) = app.jwt_organization());
+-- Only rows belonging to a procedure this sign-in's organization owns. OwnerOrganization is derived hop by hop from Procedures; the policy reads one function.
+DROP POLICY IF EXISTS "pol-releasemanager-steps-select" ON public.steps;
+CREATE POLICY "pol-releasemanager-steps-select" ON public.steps FOR SELECT TO pko_release_manager USING (public.calc_steps_owner_organization(step_id) = app.jwt_organization());
+-- Owns the release gate: the deployment procedure, the AI agents that score releases, what an upgrade would touch, and who held which role when.
+DROP POLICY IF EXISTS "pol-releasemanager-step_transitions-select" ON public.step_transitions;
+CREATE POLICY "pol-releasemanager-step_transitions-select" ON public.step_transitions FOR SELECT TO pko_release_manager USING (true);
+-- Only rows belonging to a procedure this sign-in's organization owns. OwnerOrganization is derived hop by hop from Procedures; the policy reads one function.
+DROP POLICY IF EXISTS "pol-releasemanager-procedure_executions-select" ON public.procedure_executions;
+CREATE POLICY "pol-releasemanager-procedure_executions-select" ON public.procedure_executions FOR SELECT TO pko_release_manager USING (public.calc_procedure_executions_owner_organization(procedure_execution_id) = app.jwt_organization());
+-- Only rows belonging to a procedure this sign-in's organization owns. OwnerOrganization is derived hop by hop from Procedures; the policy reads one function.
+DROP POLICY IF EXISTS "pol-releasemanager-step_executions-select" ON public.step_executions;
+CREATE POLICY "pol-releasemanager-step_executions-select" ON public.step_executions FOR SELECT TO pko_release_manager USING (public.calc_step_executions_owner_organization(step_execution_id) = app.jwt_organization());
+-- Owns the release gate: the deployment procedure, the AI agents that score releases, what an upgrade would touch, and who held which role when.
+DROP POLICY IF EXISTS "pol-releasemanager-agent_upgrade_assessments-select" ON public.agent_upgrade_assessments;
+CREATE POLICY "pol-releasemanager-agent_upgrade_assessments-select" ON public.agent_upgrade_assessments FOR SELECT TO pko_release_manager USING (true);
+-- Owns the release gate: the deployment procedure, the AI agents that score releases, what an upgrade would touch, and who held which role when.
+DROP POLICY IF EXISTS "pol-releasemanager-ai_registry_model_versions-select" ON public.ai_registry_model_versions;
+CREATE POLICY "pol-releasemanager-ai_registry_model_versions-select" ON public.ai_registry_model_versions FOR SELECT TO pko_release_manager USING (true);
+-- Only assignments in force at the modelled evaluation instant.
+DROP POLICY IF EXISTS "pol-releasemanager-role_assignments-select" ON public.role_assignments;
+CREATE POLICY "pol-releasemanager-role_assignments-select" ON public.role_assignments FOR SELECT TO pko_release_manager USING (public.calc_role_assignments_is_current(role_assignment_id));
+-- Owns the release gate: the deployment procedure, the AI agents that score releases, what an upgrade would touch, and who held which role when.
+DROP POLICY IF EXISTS "pol-releasemanager-roles-select" ON public.roles;
+CREATE POLICY "pol-releasemanager-roles-select" ON public.roles FOR SELECT TO pko_release_manager USING (true);
+-- Tenancy boundary: only rows belonging to this principal's own organization.
+DROP POLICY IF EXISTS "pol-releasemanager-agents-select" ON public.agents;
+CREATE POLICY "pol-releasemanager-agents-select" ON public.agents FOR SELECT TO pko_release_manager USING (organization = app.jwt_organization());
+-- Owns the release gate: the deployment procedure, the AI agents that score releases, what an upgrade would touch, and who held which role when.
+DROP POLICY IF EXISTS "pol-releasemanager-term_meaning_changes-select" ON public.term_meaning_changes;
+CREATE POLICY "pol-releasemanager-term_meaning_changes-select" ON public.term_meaning_changes FOR SELECT TO pko_release_manager USING (true);
+-- Owns the release gate: the deployment procedure, the AI agents that score releases, what an upgrade would touch, and who held which role when.
+DROP POLICY IF EXISTS "pol-releasemanager-vocabulary_terms-select" ON public.vocabulary_terms;
+CREATE POLICY "pol-releasemanager-vocabulary_terms-select" ON public.vocabulary_terms FOR SELECT TO pko_release_manager USING (true);
+-- Owns the release gate: the deployment procedure, the AI agents that score releases, what an upgrade would touch, and who held which role when.
+DROP POLICY IF EXISTS "pol-releasemanager-artifact_handoffs-select" ON public.artifact_handoffs;
+CREATE POLICY "pol-releasemanager-artifact_handoffs-select" ON public.artifact_handoffs FOR SELECT TO pko_release_manager USING (true);
+-- Owns the release gate: the deployment procedure, the AI agents that score releases, what an upgrade would touch, and who held which role when.
+DROP POLICY IF EXISTS "pol-releasemanager-execution_entities-select" ON public.execution_entities;
+CREATE POLICY "pol-releasemanager-execution_entities-select" ON public.execution_entities FOR SELECT TO pko_release_manager USING (true);
+-- Approves changes to the model itself and must see anything such a change could touch: requests, validation runs, integrity checks, releases and the questions the model must still answer.
+DROP POLICY IF EXISTS "pol-ontologyauthority-model_change_requests-select" ON public.model_change_requests;
+CREATE POLICY "pol-ontologyauthority-model_change_requests-select" ON public.model_change_requests FOR SELECT TO pko_ontology_authority USING (true);
+-- Approves changes to the model itself and must see anything such a change could touch: requests, validation runs, integrity checks, releases and the questions the model must still answer.
+DROP POLICY IF EXISTS "pol-ontologyauthority-change_validation_runs-select" ON public.change_validation_runs;
+CREATE POLICY "pol-ontologyauthority-change_validation_runs-select" ON public.change_validation_runs FOR SELECT TO pko_ontology_authority USING (true);
+-- Approves changes to the model itself and must see anything such a change could touch: requests, validation runs, integrity checks, releases and the questions the model must still answer.
+DROP POLICY IF EXISTS "pol-ontologyauthority-change_integrity_checks-select" ON public.change_integrity_checks;
+CREATE POLICY "pol-ontologyauthority-change_integrity_checks-select" ON public.change_integrity_checks FOR SELECT TO pko_ontology_authority USING (true);
+-- Approves changes to the model itself and must see anything such a change could touch: requests, validation runs, integrity checks, releases and the questions the model must still answer.
+DROP POLICY IF EXISTS "pol-ontologyauthority-change_impact_findings-select" ON public.change_impact_findings;
+CREATE POLICY "pol-ontologyauthority-change_impact_findings-select" ON public.change_impact_findings FOR SELECT TO pko_ontology_authority USING (true);
+-- Approves changes to the model itself and must see anything such a change could touch: requests, validation runs, integrity checks, releases and the questions the model must still answer.
+DROP POLICY IF EXISTS "pol-ontologyauthority-competency_question_runs-select" ON public.competency_question_runs;
+CREATE POLICY "pol-ontologyauthority-competency_question_runs-select" ON public.competency_question_runs FOR SELECT TO pko_ontology_authority USING (true);
+-- Approves changes to the model itself and must see anything such a change could touch: requests, validation runs, integrity checks, releases and the questions the model must still answer.
+DROP POLICY IF EXISTS "pol-ontologyauthority-competency_question_set_entries-select" ON public.competency_question_set_entries;
+CREATE POLICY "pol-ontologyauthority-competency_question_set_entries-select" ON public.competency_question_set_entries FOR SELECT TO pko_ontology_authority USING (true);
+-- Approves changes to the model itself and must see anything such a change could touch: requests, validation runs, integrity checks, releases and the questions the model must still answer.
+DROP POLICY IF EXISTS "pol-ontologyauthority-competency_question_reviews-select" ON public.competency_question_reviews;
+CREATE POLICY "pol-ontologyauthority-competency_question_reviews-select" ON public.competency_question_reviews FOR SELECT TO pko_ontology_authority USING (true);
+-- Approves changes to the model itself and must see anything such a change could touch: requests, validation runs, integrity checks, releases and the questions the model must still answer.
+DROP POLICY IF EXISTS "pol-ontologyauthority-rulebook_releases-select" ON public.rulebook_releases;
+CREATE POLICY "pol-ontologyauthority-rulebook_releases-select" ON public.rulebook_releases FOR SELECT TO pko_ontology_authority USING (true);
+-- Approves changes to the model itself and must see anything such a change could touch: requests, validation runs, integrity checks, releases and the questions the model must still answer.
+DROP POLICY IF EXISTS "pol-ontologyauthority-instance_data_versions-select" ON public.instance_data_versions;
+CREATE POLICY "pol-ontologyauthority-instance_data_versions-select" ON public.instance_data_versions FOR SELECT TO pko_ontology_authority USING (true);
+-- Approves changes to the model itself and must see anything such a change could touch: requests, validation runs, integrity checks, releases and the questions the model must still answer.
+DROP POLICY IF EXISTS "pol-ontologyauthority-external_dependency_revisions-select" ON public.external_dependency_revisions;
+CREATE POLICY "pol-ontologyauthority-external_dependency_revisions-select" ON public.external_dependency_revisions FOR SELECT TO pko_ontology_authority USING (true);
+-- Approves changes to the model itself and must see anything such a change could touch: requests, validation runs, integrity checks, releases and the questions the model must still answer.
+DROP POLICY IF EXISTS "pol-ontologyauthority-model_expansion_requests-select" ON public.model_expansion_requests;
+CREATE POLICY "pol-ontologyauthority-model_expansion_requests-select" ON public.model_expansion_requests FOR SELECT TO pko_ontology_authority USING (true);
+-- Approves changes to the model itself and must see anything such a change could touch: requests, validation runs, integrity checks, releases and the questions the model must still answer.
+DROP POLICY IF EXISTS "pol-ontologyauthority-term_meaning_changes-select" ON public.term_meaning_changes;
+CREATE POLICY "pol-ontologyauthority-term_meaning_changes-select" ON public.term_meaning_changes FOR SELECT TO pko_ontology_authority USING (true);
+-- Approves changes to the model itself and must see anything such a change could touch: requests, validation runs, integrity checks, releases and the questions the model must still answer.
+DROP POLICY IF EXISTS "pol-ontologyauthority-vocabulary_terms-select" ON public.vocabulary_terms;
+CREATE POLICY "pol-ontologyauthority-vocabulary_terms-select" ON public.vocabulary_terms FOR SELECT TO pko_ontology_authority USING (true);
+-- Approves changes to the model itself and must see anything such a change could touch: requests, validation runs, integrity checks, releases and the questions the model must still answer.
+DROP POLICY IF EXISTS "pol-ontologyauthority-governed_models-select" ON public.governed_models;
+CREATE POLICY "pol-ontologyauthority-governed_models-select" ON public.governed_models FOR SELECT TO pko_ontology_authority USING (true);
+-- Approves changes to the model itself and must see anything such a change could touch: requests, validation runs, integrity checks, releases and the questions the model must still answer.
+DROP POLICY IF EXISTS "pol-ontologyauthority-ai_registry_model_versions-select" ON public.ai_registry_model_versions;
+CREATE POLICY "pol-ontologyauthority-ai_registry_model_versions-select" ON public.ai_registry_model_versions FOR SELECT TO pko_ontology_authority USING (true);
+-- Approves changes to the model itself and must see anything such a change could touch: requests, validation runs, integrity checks, releases and the questions the model must still answer.
+DROP POLICY IF EXISTS "pol-ontologyauthority-role_assignments-select" ON public.role_assignments;
+CREATE POLICY "pol-ontologyauthority-role_assignments-select" ON public.role_assignments FOR SELECT TO pko_ontology_authority USING (true);
+-- Approves changes to the model itself and must see anything such a change could touch: requests, validation runs, integrity checks, releases and the questions the model must still answer.
+DROP POLICY IF EXISTS "pol-ontologyauthority-roles-select" ON public.roles;
+CREATE POLICY "pol-ontologyauthority-roles-select" ON public.roles FOR SELECT TO pko_ontology_authority USING (true);
+-- Approves changes to the model itself and must see anything such a change could touch: requests, validation runs, integrity checks, releases and the questions the model must still answer.
+DROP POLICY IF EXISTS "pol-ontologyauthority-agents-select" ON public.agents;
+CREATE POLICY "pol-ontologyauthority-agents-select" ON public.agents FOR SELECT TO pko_ontology_authority USING (true);
+-- An administrator may move the instant every time-dependent answer is judged against.
+DROP POLICY IF EXISTS "pol-processsteward-evaluation_contexts-update" ON public.evaluation_contexts;
+CREATE POLICY "pol-processsteward-evaluation_contexts-update" ON public.evaluation_contexts FOR UPDATE TO pko_process_steward USING (true) WITH CHECK (true);
+-- A technician may start a run in their own name only.
+DROP POLICY IF EXISTS "pol-maintenancetechnician-procedure_executions-insert" ON public.procedure_executions;
+CREATE POLICY "pol-maintenancetechnician-procedure_executions-insert" ON public.procedure_executions FOR INSERT TO pko_maintenance_technician WITH CHECK (executed_by_agent = app.jwt_agent());
+-- A technician may pause or finish their own run.
+DROP POLICY IF EXISTS "pol-maintenancetechnician-procedure_executions-update" ON public.procedure_executions;
+CREATE POLICY "pol-maintenancetechnician-procedure_executions-update" ON public.procedure_executions FOR UPDATE TO pko_maintenance_technician USING (executed_by_agent = app.jwt_agent()) WITH CHECK (executed_by_agent = app.jwt_agent());
+-- A technician records the steps they carried out themselves.
+DROP POLICY IF EXISTS "pol-maintenancetechnician-step_executions-insert" ON public.step_executions;
+CREATE POLICY "pol-maintenancetechnician-step_executions-insert" ON public.step_executions FOR INSERT TO pko_maintenance_technician WITH CHECK (executed_by_agent = app.jwt_agent());
+-- A technician completes a step they began themselves.
+DROP POLICY IF EXISTS "pol-maintenancetechnician-step_executions-update" ON public.step_executions;
+CREATE POLICY "pol-maintenancetechnician-step_executions-update" ON public.step_executions FOR UPDATE TO pko_maintenance_technician USING (executed_by_agent = app.jwt_agent()) WITH CHECK (executed_by_agent = app.jwt_agent());
+-- A warning sign is recorded by the person who saw it.
+DROP POLICY IF EXISTS "pol-maintenancetechnician-cue_observations-insert" ON public.cue_observations;
+CREATE POLICY "pol-maintenancetechnician-cue_observations-insert" ON public.cue_observations FOR INSERT TO pko_maintenance_technician WITH CHECK (observed_by_agent = app.jwt_agent());
+-- Only the observer escalates their own observation.
+DROP POLICY IF EXISTS "pol-maintenancetechnician-cue_observations-update" ON public.cue_observations;
+CREATE POLICY "pol-maintenancetechnician-cue_observations-update" ON public.cue_observations FOR UPDATE TO pko_maintenance_technician USING (observed_by_agent = app.jwt_agent()) WITH CHECK (observed_by_agent = app.jwt_agent());
+-- A question to the assistant is recorded against the person who asked it.
+DROP POLICY IF EXISTS "pol-maintenancetechnician-assistant_answers-insert" ON public.assistant_answers;
+CREATE POLICY "pol-maintenancetechnician-assistant_answers-insert" ON public.assistant_answers FOR INSERT TO pko_maintenance_technician WITH CHECK (asked_by_agent = app.jwt_agent());
+-- The person an observation was escalated to acknowledges it.
+DROP POLICY IF EXISTS "pol-plantsafetyofficer-cue_observations-update" ON public.cue_observations;
+CREATE POLICY "pol-plantsafetyofficer-cue_observations-update" ON public.cue_observations FOR UPDATE TO pko_plant_safety_officer USING (escalated_to_agent = app.jwt_agent()) WITH CHECK (escalated_to_agent = app.jwt_agent());
+-- A person, never the proposing agent, validates an insight, in their own name.
+DROP POLICY IF EXISTS "pol-plantsafetyofficer-ai_insight_proposals-update" ON public.ai_insight_proposals;
+CREATE POLICY "pol-plantsafetyofficer-ai_insight_proposals-update" ON public.ai_insight_proposals FOR UPDATE TO pko_plant_safety_officer USING (true) WITH CHECK (validated_by_agent = app.jwt_agent());
+-- The authority may hand a decision up or decide it, but never decide a request they raised themselves.
+DROP POLICY IF EXISTS "pol-plantsafetyofficer-change_requests-update" ON public.change_requests;
+CREATE POLICY "pol-plantsafetyofficer-change_requests-update" ON public.change_requests FOR UPDATE TO pko_plant_safety_officer USING (authority_role = app.jwt_role()) WITH CHECK (NOT (requested_by_agent = app.jwt_agent() AND decided_at IS NOT NULL));
+-- The authority decides a request, but never one they raised themselves.
+DROP POLICY IF EXISTS "pol-plantoperationsmanager-change_requests-update" ON public.change_requests;
+CREATE POLICY "pol-plantoperationsmanager-change_requests-update" ON public.change_requests FOR UPDATE TO pko_plant_operations_manager USING (authority_role = app.jwt_role()) WITH CHECK (NOT (requested_by_agent = app.jwt_agent() AND decided_at IS NOT NULL));
+-- A repository entry is written in its author's own name.
+DROP POLICY IF EXISTS "pol-knowledgeengineer-knowledge_repository_entries-insert" ON public.knowledge_repository_entries;
+CREATE POLICY "pol-knowledgeengineer-knowledge_repository_entries-insert" ON public.knowledge_repository_entries FOR INSERT TO pko_knowledge_engineer WITH CHECK (author_agent = app.jwt_agent());
+-- The knowledge engineer records a hand-over between two other people.
+DROP POLICY IF EXISTS "pol-knowledgeengineer-knowledge_transfers-insert" ON public.knowledge_transfers;
+CREATE POLICY "pol-knowledgeengineer-knowledge_transfers-insert" ON public.knowledge_transfers FOR INSERT TO pko_knowledge_engineer WITH CHECK (true);
+-- Encoding a warning sign onto a step is the knowledge engineer's job.
+DROP POLICY IF EXISTS "pol-knowledgeengineer-step_cues-insert" ON public.step_cues;
+CREATE POLICY "pol-knowledgeengineer-step_cues-insert" ON public.step_cues FOR INSERT TO pko_knowledge_engineer WITH CHECK (true);
+-- The steward marks a DECIDED request implemented; it cannot touch an undecided one.
+DROP POLICY IF EXISTS "pol-knowledgeengineer-change_requests-update" ON public.change_requests;
+CREATE POLICY "pol-knowledgeengineer-change_requests-update" ON public.change_requests FOR UPDATE TO pko_knowledge_engineer USING (decided_at IS NOT NULL) WITH CHECK (decided_at IS NOT NULL);
+-- A sourcing manager changes only their own organization's contracts.
+DROP POLICY IF EXISTS "pol-sourcingmanager-provider_engagements-update" ON public.provider_engagements;
+CREATE POLICY "pol-sourcingmanager-provider_engagements-update" ON public.provider_engagements FOR UPDATE TO pko_sourcing_manager USING (client_organization = app.jwt_organization()) WITH CHECK (client_organization = app.jwt_organization());
+-- A deliverable may be required only on the caller's own organization's contract.
+DROP POLICY IF EXISTS "pol-sourcingmanager-knowledge_deliverables-insert" ON public.knowledge_deliverables;
+CREATE POLICY "pol-sourcingmanager-knowledge_deliverables-insert" ON public.knowledge_deliverables FOR INSERT TO pko_sourcing_manager WITH CHECK (provider_engagement IN (SELECT provider_engagement_id FROM public.provider_engagements WHERE client_organization = app.jwt_organization()));
+-- The authority records that they reviewed a model change.
+DROP POLICY IF EXISTS "pol-ontologyauthority-model_change_requests-update" ON public.model_change_requests;
+CREATE POLICY "pol-ontologyauthority-model_change_requests-update" ON public.model_change_requests FOR UPDATE TO pko_ontology_authority USING (true) WITH CHECK (authority_reviewed_at IS NOT NULL);
 
 -- ---------- 5. Role schemas (the HORIZONTAL cut) ------------------
 -- Each principal's schema is its ENTIRE visible world: it is the only
@@ -868,6 +2677,54 @@ CREATE SCHEMA pko_knowledge_authority;
 GRANT USAGE ON SCHEMA pko_knowledge_authority TO pko_knowledge_authority;
 REVOKE CREATE ON SCHEMA pko_knowledge_authority FROM pko_knowledge_authority;
 ALTER ROLE pko_knowledge_authority SET search_path = pko_knowledge_authority;
+
+DROP SCHEMA IF EXISTS pko_maintenance_technician CASCADE;
+CREATE SCHEMA pko_maintenance_technician;
+GRANT USAGE ON SCHEMA pko_maintenance_technician TO pko_maintenance_technician;
+REVOKE CREATE ON SCHEMA pko_maintenance_technician FROM pko_maintenance_technician;
+ALTER ROLE pko_maintenance_technician SET search_path = pko_maintenance_technician;
+
+DROP SCHEMA IF EXISTS pko_plant_assistant CASCADE;
+CREATE SCHEMA pko_plant_assistant;
+GRANT USAGE ON SCHEMA pko_plant_assistant TO pko_plant_assistant;
+REVOKE CREATE ON SCHEMA pko_plant_assistant FROM pko_plant_assistant;
+ALTER ROLE pko_plant_assistant SET search_path = pko_plant_assistant;
+
+DROP SCHEMA IF EXISTS pko_plant_safety_officer CASCADE;
+CREATE SCHEMA pko_plant_safety_officer;
+GRANT USAGE ON SCHEMA pko_plant_safety_officer TO pko_plant_safety_officer;
+REVOKE CREATE ON SCHEMA pko_plant_safety_officer FROM pko_plant_safety_officer;
+ALTER ROLE pko_plant_safety_officer SET search_path = pko_plant_safety_officer;
+
+DROP SCHEMA IF EXISTS pko_plant_operations_manager CASCADE;
+CREATE SCHEMA pko_plant_operations_manager;
+GRANT USAGE ON SCHEMA pko_plant_operations_manager TO pko_plant_operations_manager;
+REVOKE CREATE ON SCHEMA pko_plant_operations_manager FROM pko_plant_operations_manager;
+ALTER ROLE pko_plant_operations_manager SET search_path = pko_plant_operations_manager;
+
+DROP SCHEMA IF EXISTS pko_knowledge_engineer CASCADE;
+CREATE SCHEMA pko_knowledge_engineer;
+GRANT USAGE ON SCHEMA pko_knowledge_engineer TO pko_knowledge_engineer;
+REVOKE CREATE ON SCHEMA pko_knowledge_engineer FROM pko_knowledge_engineer;
+ALTER ROLE pko_knowledge_engineer SET search_path = pko_knowledge_engineer;
+
+DROP SCHEMA IF EXISTS pko_sourcing_manager CASCADE;
+CREATE SCHEMA pko_sourcing_manager;
+GRANT USAGE ON SCHEMA pko_sourcing_manager TO pko_sourcing_manager;
+REVOKE CREATE ON SCHEMA pko_sourcing_manager FROM pko_sourcing_manager;
+ALTER ROLE pko_sourcing_manager SET search_path = pko_sourcing_manager;
+
+DROP SCHEMA IF EXISTS pko_release_manager CASCADE;
+CREATE SCHEMA pko_release_manager;
+GRANT USAGE ON SCHEMA pko_release_manager TO pko_release_manager;
+REVOKE CREATE ON SCHEMA pko_release_manager FROM pko_release_manager;
+ALTER ROLE pko_release_manager SET search_path = pko_release_manager;
+
+DROP SCHEMA IF EXISTS pko_ontology_authority CASCADE;
+CREATE SCHEMA pko_ontology_authority;
+GRANT USAGE ON SCHEMA pko_ontology_authority TO pko_ontology_authority;
+REVOKE CREATE ON SCHEMA pko_ontology_authority FROM pko_ontology_authority;
+ALTER ROLE pko_ontology_authority SET search_path = pko_ontology_authority;
 
 CREATE VIEW pko_finance_analyst.steps AS
   SELECT assigned_role, assigned_role_label, expected_duration_minutes, instruction, is_approval_step, name, procedure_version, requires_human_confirmation, step_id, step_kind, step_number, title FROM public.vw_steps;
@@ -1026,7 +2883,7 @@ CREATE VIEW pko_close_automation.step_executions AS
 ALTER VIEW pko_close_automation.step_executions OWNER TO postgres;
 GRANT SELECT ON pko_close_automation.step_executions TO pko_close_automation;
 CREATE VIEW pko_close_automation.errors AS
-  SELECT error_cause, error_code, error_id, label, name, semantic_type_iri FROM public.vw_errors;
+  SELECT description, error_cause, error_code, error_id, has_no_remedy_step, label, name, occurrence_count, remedy_step_count, semantic_type_iri FROM public.vw_errors;
 ALTER VIEW pko_close_automation.errors OWNER TO postgres;
 GRANT SELECT ON pko_close_automation.errors TO pko_close_automation;
 CREATE VIEW pko_variance_review_agent.steps AS
@@ -1046,7 +2903,7 @@ CREATE VIEW pko_variance_review_agent.requirement_satisfactions AS
 ALTER VIEW pko_variance_review_agent.requirement_satisfactions OWNER TO postgres;
 GRANT SELECT ON pko_variance_review_agent.requirement_satisfactions TO pko_variance_review_agent;
 CREATE VIEW pko_variance_review_agent.errors AS
-  SELECT error_cause, error_code, error_id, label, name, semantic_type_iri FROM public.vw_errors;
+  SELECT description, error_cause, error_code, error_id, has_no_remedy_step, label, name, occurrence_count, remedy_step_count, semantic_type_iri FROM public.vw_errors;
 ALTER VIEW pko_variance_review_agent.errors OWNER TO postgres;
 GRANT SELECT ON pko_variance_review_agent.errors TO pko_variance_review_agent;
 CREATE VIEW pko_policy_drafting_agent.message_templates AS
@@ -1085,6 +2942,18 @@ CREATE VIEW pko_notification_publisher.steps AS
   SELECT assigned_role, assigned_role_label, instruction, name, procedure_version, step_id, step_kind, step_number, title FROM public.vw_steps;
 ALTER VIEW pko_notification_publisher.steps OWNER TO postgres;
 GRANT SELECT ON pko_notification_publisher.steps TO pko_notification_publisher;
+CREATE VIEW pko_process_steward.access_denial_tests AS
+  SELECT access_denial_test_id, expected_visible, forbidden_column, forbidden_row_id, forbidden_table, has_run, is_leak, is_passing, is_positive_control, is_unproven, last_run_at, name, observed_visible, principal, rationale, semantic_type_iri, target_policy, target_table FROM public.vw_access_denial_tests;
+ALTER VIEW pko_process_steward.access_denial_tests OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.access_denial_tests TO pko_process_steward;
+CREATE VIEW pko_process_steward.access_policies AS
+  SELECT access_policy_id, check_predicate, command, denial_test_count, is_unrestricted, is_unrestricted_non_admin_grant, is_unwitnessed_write, is_write_command, name, principal, principal_is_admin, rationale, references_inference, row_predicate, semantic_type_iri, target_table FROM public.vw_access_policies;
+ALTER VIEW pko_process_steward.access_policies OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.access_policies TO pko_process_steward;
+CREATE VIEW pko_process_steward.access_principals AS
+  SELECT access_principal_id, domain_role, grant_count, has_no_access, is_administrator, is_over_privileged, label, name, organization_scope, pg_role_name, policy_count, role_label, schema_name, semantic_type_iri, visible_table_count FROM public.vw_access_principals;
+ALTER VIEW pko_process_steward.access_principals OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.access_principals TO pko_process_steward;
 CREATE VIEW pko_process_steward.actions AS
   SELECT action_id, definition, label, name, semantic_type_iri FROM public.vw_actions;
 ALTER VIEW pko_process_steward.actions OWNER TO postgres;
@@ -1094,7 +2963,7 @@ CREATE VIEW pko_process_steward.agent_decision_records AS
 ALTER VIEW pko_process_steward.agent_decision_records OWNER TO postgres;
 GRANT SELECT ON pko_process_steward.agent_decision_records TO pko_process_steward;
 CREATE VIEW pko_process_steward.agents AS
-  SELECT agent_id, agent_kind, at_risk_reliance_count, boundary_violation_count, contact_address, count_of_current_role_assignments, decision_count, display_name, draft_decision_count, draft_rewrite_rate_percent, has_at_risk_knowledge_reliance, is_non_human, is_operating_outside_boundary, is_recognized_broker, is_still_engaged, name, organization, overridden_decision_count, overridden_draft_count, override_rate_percent, semantic_type_iri, times_named_as_broker, version_or_employment_key FROM public.vw_agents;
+  SELECT accountability_assertion_count, agent_id, agent_kind, ai_task_completed_count, ai_task_completion_percent, answer_count, artifact_blast_radius_step_count, at_risk_reliance_count, attributed_artifact_count, boundary_violation_count, category_not_available_as_inference, community_count, contact_address, count_of_current_role_assignments, current_accountable_human_count, decision_count, departure_at, display_name, downstream_of_held_steps_count, draft_decision_count, draft_rewrite_rate_percent, has_artifact_blast_radius, has_at_risk_knowledge_reliance, has_produced_artifacts, inferred_category_count, is_ai_agent_not_filled_from_registry, is_ai_agent_without_accountable_human, is_ai_agent_without_model_version, is_below_task_completion_target, is_boundary_spanner, is_non_human, is_operating_outside_boundary, is_organization_agent, is_recognized_broker, is_still_engaged, is_unclassified_agent, is_unidentified_boundary_spanner, is_unrewarded_sharer, is_untracked_ai_consumer, lacks_runtime_knowledge_integration, lacks_time_to_mentor, located_know_how_count, name, organization, overridden_decision_count, overridden_draft_count, override_rate_percent, protected_mentoring_hours_per_week, recognition_count, registry_version_match_count, represents_organization, required_mentoring_hours_per_week, runtime_integration_count, search_event_count, semantic_type_iri, service_started_at, sna_identification_count, times_named_as_broker, transfers_given_count, version_or_employment_key FROM public.vw_agents;
 ALTER VIEW pko_process_steward.agents OWNER TO postgres;
 GRANT SELECT ON pko_process_steward.agents TO pko_process_steward;
 CREATE VIEW pko_process_steward.app_nav_groups AS
@@ -1102,7 +2971,7 @@ CREATE VIEW pko_process_steward.app_nav_groups AS
 ALTER VIEW pko_process_steward.app_nav_groups OWNER TO postgres;
 GRANT SELECT ON pko_process_steward.app_nav_groups TO pko_process_steward;
 CREATE VIEW pko_process_steward.app_role_profiles AS
-  SELECT accent_color, app_role_profile_id, display_label, icon_mark, icon_png_base64, name, pitch, role, role_kind, route_count, semantic_type_iri, sort_order FROM public.vw_app_role_profiles;
+  SELECT accent_color, app_role_profile_id, device, display_label, home_route, home_title, icon_mark, icon_png_base64, name, pitch, role, role_kind, route_count, semantic_type_iri, sort_order FROM public.vw_app_role_profiles;
 ALTER VIEW pko_process_steward.app_role_profiles OWNER TO postgres;
 GRANT SELECT ON pko_process_steward.app_role_profiles TO pko_process_steward;
 CREATE VIEW pko_process_steward.app_route_questions AS
@@ -1130,7 +2999,7 @@ CREATE VIEW pko_process_steward.binding_observations AS
 ALTER VIEW pko_process_steward.binding_observations OWNER TO postgres;
 GRANT SELECT ON pko_process_steward.binding_observations TO pko_process_steward;
 CREATE VIEW pko_process_steward.change_requests AS
-  SELECT approved_version_key, as_of_instant, authority_agent, authority_role, authority_role_label, awaits_authority_decision, backlog_version_key, blocks_an_open_gap, change_kind, change_request_id, days_pending, days_since_approval, decided_at, decision_latency_days, delay_is_downstream_of_me, evaluation_context, impact_assessment, implementation_latency_days, implemented_at, is_approved_decision, is_approved_not_implemented, is_decided, is_implemented, is_live_decision_backlog, is_my_blocking_backlog, is_my_decided_but_unlanded, is_my_decided_request, is_my_overdue_backlog, is_my_pending_decision, is_open, is_stalled, is_stalled_implementation, is_still_pending, name, open_change_version_key, procedure_version, requested_at, requested_by_agent, requester_is_authority, semantic_type_iri, stalled_implementation_version_key, status, title, touches_live_version, unlanded_version_key FROM public.vw_change_requests;
+  SELECT approved_version_key, as_of_instant, authority_agent, authority_role, authority_role_label, awaits_authority_decision, backlog_version_key, blocks_an_open_gap, change_kind, change_request_id, days_pending, days_since_approval, decided_at, decision_latency_days, delay_is_downstream_of_me, evaluation_context, impact_assessment, implementation_latency_days, implemented_at, is_approved_decision, is_approved_not_implemented, is_decided, is_implemented, is_live_decision_backlog, is_my_blocking_backlog, is_my_decided_but_unlanded, is_my_decided_request, is_my_overdue_backlog, is_my_pending_decision, is_open, is_stalled, is_stalled_implementation, is_still_pending, name, open_change_version_key, owner_organization, procedure_version, requested_at, requested_by_agent, requester_is_authority, semantic_type_iri, stalled_implementation_version_key, status, title, touches_live_version, unlanded_version_key FROM public.vw_change_requests;
 ALTER VIEW pko_process_steward.change_requests OWNER TO postgres;
 GRANT SELECT ON pko_process_steward.change_requests TO pko_process_steward;
 CREATE VIEW pko_process_steward.communication_policies AS
@@ -1138,7 +3007,7 @@ CREATE VIEW pko_process_steward.communication_policies AS
 ALTER VIEW pko_process_steward.communication_policies OWNER TO postgres;
 GRANT SELECT ON pko_process_steward.communication_policies TO pko_process_steward;
 CREATE VIEW pko_process_steward.communities_of_practice AS
-  SELECT cadence, community_of_practice_id, label, name, organization, purpose, semantic_type_iri, steward_role FROM public.vw_communities_of_practice;
+  SELECT ambient_absorption_count, cadence, community_of_practice_id, digital_know_how_count, employer_move_count, external_member_count, has_ambient_trade_know_how, has_own_vocabulary_and_norms, interconnected_know_how_count, is_circulation_ending_for_lack_of_apprentices, is_colocated_trade, is_cross_firm_practice_cluster, is_mandated_without_sharing_norm, label, name, norms, open_apprenticeship_places, organization, origin, own_vocabulary, person_carried_know_how_count, physical_know_how_count, purpose, recent_apprenticeship_count, semantic_type_iri, sharing_event_count, spans_physical_and_digital_with_humans, specialist_member_count, steward_role FROM public.vw_communities_of_practice;
 ALTER VIEW pko_process_steward.communities_of_practice OWNER TO postgres;
 GRANT SELECT ON pko_process_steward.communities_of_practice TO pko_process_steward;
 CREATE VIEW pko_process_steward.delivered_communications AS
@@ -1146,11 +3015,11 @@ CREATE VIEW pko_process_steward.delivered_communications AS
 ALTER VIEW pko_process_steward.delivered_communications OWNER TO postgres;
 GRANT SELECT ON pko_process_steward.delivered_communications TO pko_process_steward;
 CREATE VIEW pko_process_steward.elicitation_sessions AS
-  SELECT as_of_instant, concentrated_session_version_key, days_since_elicited, elicitation_session_id, ended_at, evaluation_context, facilitator_agent, is_concentrated_single_witness, is_high_yield_session, is_single_witness_method, is_stale_concentrated_witness, method, name, practitioner_agent, practitioner_is_still_engaged, procedure_version, semantic_type_iri, started_at, status, summary, valid_fragments_produced FROM public.vw_elicitation_sessions;
+  SELECT as_of_instant, concentrated_session_version_key, days_since_elicited, dependent_count, elicitation_mode, elicitation_session_id, ended_at, evaluation_context, executor_count, facilitator_agent, facilitator_is_knowledge_engineer, facilitator_knowledge_engineer_role_count, gathers_whole_process_chain, initiator_count, is_concentrated_single_witness, is_generic_or_unskilled_capture, is_high_yield_session, is_interview, is_interview_without_shortfall_probe, is_interview_without_why_probe, is_ke_field_session, is_reviewed_recording, is_single_witness_method, is_stale_concentrated_witness, is_workshop, is_workshop_without_usual_outsiders, method, method_family, name, observer_stance, practitioner_agent, practitioner_is_still_engaged, practitioner_reviewed_at, procedure_version, recording_reference, semantic_type_iri, setting, shortfall_probe_count, started_at, status, summary, uninvited_participant_count, valid_fragments_produced, why_probe_count FROM public.vw_elicitation_sessions;
 ALTER VIEW pko_process_steward.elicitation_sessions OWNER TO postgres;
 GRANT SELECT ON pko_process_steward.elicitation_sessions TO pko_process_steward;
 CREATE VIEW pko_process_steward.errors AS
-  SELECT error_cause, error_code, error_id, label, name, semantic_type_iri FROM public.vw_errors;
+  SELECT description, error_cause, error_code, error_id, has_no_remedy_step, label, name, occurrence_count, remedy_step_count, semantic_type_iri FROM public.vw_errors;
 ALTER VIEW pko_process_steward.errors OWNER TO postgres;
 GRANT SELECT ON pko_process_steward.errors TO pko_process_steward;
 CREATE VIEW pko_process_steward.evaluation_contexts AS
@@ -1169,20 +3038,28 @@ CREATE VIEW pko_process_steward.explanations AS
   SELECT description, explanation_id, name, procedure_version, semantic_type_iri, step, title FROM public.vw_explanations;
 ALTER VIEW pko_process_steward.explanations OWNER TO postgres;
 GRANT SELECT ON pko_process_steward.explanations TO pko_process_steward;
+CREATE VIEW pko_process_steward.field_grants AS
+  SELECT can_read, can_write, field_grant_id, field_is_derived, field_name, field_table, grant_key_when_readable, is_masked, is_writable_derived_field, mask_strategy, name, principal, semantic_type_iri, target_field FROM public.vw_field_grants;
+ALTER VIEW pko_process_steward.field_grants OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.field_grants TO pko_process_steward;
 CREATE VIEW pko_process_steward.functions AS
   SELECT definition, function_id, implementation_key, label, name, semantic_type_iri FROM public.vw_functions;
 ALTER VIEW pko_process_steward.functions OWNER TO postgres;
 GRANT SELECT ON pko_process_steward.functions TO pko_process_steward;
 CREATE VIEW pko_process_steward.issue_occurrences AS
-  SELECT encountered_by_agent, error, is_unresolved, issue_cause, issue_occurrence_id, issue_solution, name, occurred_at, semantic_type_iri, status, step_execution, step_execution_when_unresolved FROM public.vw_issue_occurrences;
+  SELECT coincided_with_failed_condition, encountered_by_agent, error, executed_step, failed_condition_count_on_run, has_no_recorded_solution, improvement_cycle_path, is_failure_without_landed_redesign, is_unresolved, issue_cause, issue_occurrence_id, issue_solution, name, occurred_at, redesign_change_request, redesign_implemented_at, semantic_type_iri, status, step_execution, step_execution_when_unresolved FROM public.vw_issue_occurrences;
 ALTER VIEW pko_process_steward.issue_occurrences OWNER TO postgres;
 GRANT SELECT ON pko_process_steward.issue_occurrences TO pko_process_steward;
+CREATE VIEW pko_process_steward.jwt_claim_mappings AS
+  SELECT claim_name, description2, is_reserved_claim, jwt_claim_mapping_id, maps_to_principal, name, semantic_type_iri, sql_accessor, usage_count FROM public.vw_jwt_claim_mappings;
+ALTER VIEW pko_process_steward.jwt_claim_mappings OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.jwt_claim_mappings TO pko_process_steward;
 CREATE VIEW pko_process_steward.knowledge_fragments AS
-  SELECT age_days, as_of_instant, compound_fragile_version_key, confidence, consuming_step_agent_kind, consuming_step_is_software_assigned, days_awaiting_my_approval, days_since_actual_review, elicitation_session, evaluation_context, evidence_age_days, evidence_expiry_days, evidence_has_expired, exceeds_owning_cadence, fragility_signal_count, genuinely_overdue_version_key, has_human_source, has_operational_reliance, has_orphaned_provenance, has_recorded_elicitation, has_review_record, inference_disagrees_with_record, is_aging_low_confidence_claim, is_ai_validated_by_ai, is_approved, is_attached_to_live_version, is_awaiting_approval, is_compound_fragile, is_currently_valid, is_expiring_single_point_of_failure, is_from_single_witness, is_genuinely_overdue, is_high_blast_radius_unapproved, is_human_owned, is_invoked_by_an_exception, is_long_unapproved, is_low_confidence, is_my_unfinished_approval, is_orphaned_by_role, is_overdue_for_review, is_relied_upon, is_single_point_of_failure, is_unapproved_and_human_consumed, is_unapproved_and_machine_consumed, is_unapproved_and_operationally_live, is_unapproved_but_relied_on, is_undefendable_tacit_claim, is_unreviewed_since_authoring, is_within_validity_window, knowledge_form, knowledge_fragment_id, last_reviewed_at, machine_consumed_unapproved_version_key, name, owner_agent, owner_is_me, owner_role, owner_role_agent_kind, owner_role_assignment_valid_from, owner_role_is_vacated, owning_version_cadence_days, predates_current_role_holder, procedure_version, ratified_boundary_count, reliance_surface_count, review_cadence_days, review_recency_is_inferred, semantic_type_iri, source_agent, source_agent_is_still_engaged, source_agent_kind, statement, status, step, step_procedure_version_status, unapproved_load_bearing_version_key, valid_fragment_session_key, valid_fragment_version_key, valid_from, valid_to FROM public.vw_knowledge_fragments;
+  SELECT age_days, as_of_instant, cognitive_basis, compound_fragile_version_key, confidence, consuming_step_agent_kind, consuming_step_is_software_assigned, corroboration_count, days_awaiting_my_approval, days_since_actual_review, elicitation_session, encoded_as, evaluation_context, evidence_age_days, evidence_expiry_days, evidence_has_expired, exceeds_owning_cadence, fragility_signal_count, genuinely_overdue_version_key, has_human_source, has_operational_reliance, has_orphaned_provenance, has_recorded_elicitation, has_review_record, inference_disagrees_with_record, is_aging_low_confidence_claim, is_ai_validated_by_ai, is_approved, is_attached_to_live_version, is_awaiting_approval, is_compound_fragile, is_currently_valid, is_expiring_single_point_of_failure, is_flattened_to_brittle_rule, is_from_single_witness, is_genuinely_overdue, is_high_blast_radius_unapproved, is_human_owned, is_invoked_by_an_exception, is_long_unapproved, is_low_confidence, is_my_unfinished_approval, is_orphaned_by_role, is_overdue_for_review, is_relied_upon, is_single_point_of_failure, is_unapproved_and_human_consumed, is_unapproved_and_machine_consumed, is_unapproved_and_operationally_live, is_unapproved_but_relied_on, is_undefendable_tacit_claim, is_unreviewed_since_authoring, is_within_validity_window, knowledge_form, knowledge_fragment_id, last_reviewed_at, lost_in_translation, machine_consumed_unapproved_version_key, name, owner_agent, owner_is_me, owner_organization, owner_role, owner_role_agent_kind, owner_role_assignment_valid_from, owner_role_is_vacated, owning_version_cadence_days, predates_current_role_holder, procedure_version, ratified_boundary_count, reliance_surface_count, rests_on_single_data_point, review_cadence_days, review_recency_is_inferred, semantic_type_iri, source_agent, source_agent_is_still_engaged, source_agent_kind, stated_conditions, statement, status, step, step_procedure_version_status, tacitness_degree, unapproved_load_bearing_version_key, valid_fragment_session_key, valid_fragment_version_key, valid_from, valid_to FROM public.vw_knowledge_fragments;
 ALTER VIEW pko_process_steward.knowledge_fragments OWNER TO postgres;
 GRANT SELECT ON pko_process_steward.knowledge_fragments TO pko_process_steward;
 CREATE VIEW pko_process_steward.knowledge_gaps AS
-  SELECT as_of_instant, blocking_kind, days_open, evaluation_context, has_resolution_plan, identified_at, is_abandoned_unknown, is_blocking, is_open, is_open_and_blocking, is_overdue_gap, is_ownerless_open_gap, knowledge_gap_id, name, open_blocking_gap_version_key, open_gap_version_key, owner_agent, owner_is_still_engaged, owner_role, owner_role_is_vacated, procedure_version, resolution_plan, semantic_type_iri, severity, statement, status, step, tolerance_days FROM public.vw_knowledge_gaps;
+  SELECT as_of_instant, blocking_kind, codified_as_fragment, days_open, drawn_out_by_session, evaluation_context, gap_cause, has_resolution_plan, holder_declined_to_share, identified_at, is_abandoned_unknown, is_blocking, is_gatekeeping_or_sabotage, is_known_and_unresolved, is_open, is_open_and_blocking, is_overdue_gap, is_ownerless_open_gap, is_required_gatekept_uncodified, is_unattributed_gatekeeping, knowledge_gap_id, name, open_blocking_gap_version_key, open_gap_version_key, owner_agent, owner_is_still_engaged, owner_organization, owner_role, owner_role_is_vacated, procedure_version, resolution_plan, semantic_type_iri, severity, siloed_within, statement, status, step, tolerance_days FROM public.vw_knowledge_gaps;
 ALTER VIEW pko_process_steward.knowledge_gaps OWNER TO postgres;
 GRANT SELECT ON pko_process_steward.knowledge_gaps TO pko_process_steward;
 CREATE VIEW pko_process_steward.learning_activities AS
@@ -1190,7 +3067,7 @@ CREATE VIEW pko_process_steward.learning_activities AS
 ALTER VIEW pko_process_steward.learning_activities OWNER TO postgres;
 GRANT SELECT ON pko_process_steward.learning_activities TO pko_process_steward;
 CREATE VIEW pko_process_steward.mentorships AS
-  SELECT community_of_practice, evidence_of_completion, learner_agent, learning_objective, mentor_agent, mentorship_id, name, semantic_type_iri, valid_from, valid_to FROM public.vw_mentorships;
+  SELECT as_of_instant, community_of_practice, days_since_started, employer_worker_obligation, evaluation_context, evidence_of_completion, expected_weekly_hours, is_active, is_recent_apprenticeship, learner_agent, learning_objective, mentor_agent, mentorship_form, mentorship_id, name, semantic_type_iri, valid_from, valid_to FROM public.vw_mentorships;
 ALTER VIEW pko_process_steward.mentorships OWNER TO postgres;
 GRANT SELECT ON pko_process_steward.mentorships TO pko_process_steward;
 CREATE VIEW pko_process_steward.message_deliveries AS
@@ -1206,7 +3083,7 @@ CREATE VIEW pko_process_steward.observed_transitions AS
 ALTER VIEW pko_process_steward.observed_transitions OWNER TO postgres;
 GRANT SELECT ON pko_process_steward.observed_transitions TO pko_process_steward;
 CREATE VIEW pko_process_steward.ontology_profiles AS
-  SELECT label, license, name, namespace_iri, ontology_profile_id, scope, version, version_iri FROM public.vw_ontology_profiles;
+  SELECT adopted_at, adoption_stage, as_of_instant, change_rate_profile, days_since_dependency_reviewed, days_since_last_revision, days_since_major_revision, dependency_reviewed_at, evaluation_context, is_review_overdue_for_change_rate, label, last_major_revision_at, last_revised_at, license, mapping_count, name, namespace_iri, ontology_profile_id, prerequisite_adopted_at, prerequisite_profile, recent_deprecation_count, requires_frequent_review, scope, skips_adoption_path, version, version_iri FROM public.vw_ontology_profiles;
 ALTER VIEW pko_process_steward.ontology_profiles OWNER TO postgres;
 GRANT SELECT ON pko_process_steward.ontology_profiles TO pko_process_steward;
 CREATE VIEW pko_process_steward.operational_bindings AS
@@ -1214,23 +3091,23 @@ CREATE VIEW pko_process_steward.operational_bindings AS
 ALTER VIEW pko_process_steward.operational_bindings OWNER TO postgres;
 GRANT SELECT ON pko_process_steward.operational_bindings TO pko_process_steward;
 CREATE VIEW pko_process_steward.organizations AS
-  SELECT display_name, external_identifier, name, organization_id, organization_type, semantic_type_iri FROM public.vw_organizations;
+  SELECT ai_fails_for_lack_of_captured_knowledge, audit_finding_count, captured_own_know_how_count, departed_holder_know_how_count, display_name, documentation_entry_count, eroded_in_stages, external_identifier, facility_carried_know_how_count, failed_ai_initiative_count, filled_knowledge_position_count, has_knowledge_findings_without_knowledge_staff, holds_know_how_in_people_plants_and_systems, is_hollowed_out_firm, lost_departed_know_how_count, memory_leaves_with_staff, name, organization_id, organization_type, owned_procedure_count, person_carried_know_how_count, product_delivery_function_count, provider_held_delivery_method_count, retained_departed_know_how_percent, semantic_type_iri, staged_decline_count, system_carried_know_how_count, transfer_given_count, treats_knowledge_work_as_unvalued, unallocated_documentation_count, unallocated_transfer_count FROM public.vw_organizations;
 ALTER VIEW pko_process_steward.organizations OWNER TO postgres;
 GRANT SELECT ON pko_process_steward.organizations TO pko_process_steward;
 CREATE VIEW pko_process_steward.procedure_executions AS
-  SELECT abandoned_failure_count, all_blocking_controls_evaluated, approval_chain_is_complete, approval_step_count, asserted_only_control_count, assurance_chain_is_circular, assurance_grade, assurance_is_mostly_asserted, attestation_blocker_summary, attestation_count, attestation_would_be_weakly_based, basis_changed_after_signature, campaign_silently_lost_audience, cleared_legal_review_count, completed_step_count, computed_assurance_ratio, computedly_witnessed_control_count, context, control_breach_count, count_of_approval_executions, count_of_delivery_executions, delivered_count, delivered_without_approval, delivery_yield_percent, diverged_from_specification, divergence_was_fully_governed, ended_at, evaluated_control_count, executed_by_agent, executed_version_is_fit, execution_status, expected_step_count, has_abandoned_failures, has_any_independent_observation, has_been_attested, has_cleared_legal_review, has_delivered, has_human_approval, has_unrecorded_refusals, independent_human_observation_count, independently_confirmed_intent_count, intended_recipient_count, interested_party_assertion_count, invalid_approval_count, is_attestation_ready, is_structurally_complete, late_step_count, latest_attestation_instant, mishandled_refusal_count, name, operational_record_uri, post_attestation_score_count, preparation_step_count, procedure_execution_id, procedure_version, ran_clean, reached_recipient_count, requires_re_attestation, retention_breach_count, self_attested_approval_count, semantic_type_iri, send_decisions_are_entirely_self_witnessed, separation_assurance_note, separation_held_under_test, separation_is_vacuously_green, separation_of_duties_held, separation_violation_count, separation_was_testable, signed_against_unfit_version, silently_dropped_count, started_at, total_delivery_attempt_count, unclean_step_count, unevaluated_blocking_total, ungoverned_divergence_count, unreachable_handling_failure_count, unrecorded_refusal_count, vacuously_clean_step_count FROM public.vw_procedure_executions;
+  SELECT abandoned_failure_count, all_blocking_controls_evaluated, approval_chain_is_complete, approval_step_count, asserted_only_control_count, assurance_chain_is_circular, assurance_grade, assurance_is_mostly_asserted, attestation_blocker_summary, attestation_count, attestation_would_be_weakly_based, basis_changed_after_signature, campaign_silently_lost_audience, claims_completion_without_all_steps, clean_facility_key, cleared_legal_review_count, completed_step_count, computed_assurance_ratio, computedly_witnessed_control_count, confirmed_by_agent, context, control_breach_count, count_of_approval_executions, count_of_delivery_executions, delivered_count, delivered_without_approval, delivery_yield_percent, description, deviating_day_version_key, deviating_facility_key, deviating_night_version_key, deviating_step_count, diverged_from_specification, divergence_was_fully_governed, ended_at, evaluated_control_count, executed_by_agent, executed_on_machine, executed_version_is_fit, execution_status, expected_step_count, facility, feedback_count, has_abandoned_failures, has_any_independent_observation, has_been_attested, has_cleared_legal_review, has_delivered, has_human_approval, has_no_recorded_outcome, has_step_deviation, has_unrecorded_refusals, independent_human_observation_count, independently_confirmed_intent_count, intended_recipient_count, interested_party_assertion_count, invalid_approval_count, is_attestation_ready, is_structurally_complete, is_unconfirmed_completion, is_unreported_mistake, late_step_count, latest_attestation_instant, mishandled_refusal_count, name, observations, operational_record_uri, outcome, owner_organization, participant_count, post_attestation_score_count, preparation_step_count, procedure_execution_id, procedure_version, ran_clean, reached_recipient_count, requires_re_attestation, retention_breach_count, self_attested_approval_count, semantic_type_iri, send_decisions_are_entirely_self_witnessed, separation_assurance_note, separation_held_under_test, separation_is_vacuously_green, separation_of_duties_held, separation_violation_count, separation_was_testable, shift, signed_against_unfit_version, silently_dropped_count, started_at, status_change_count, title, total_delivery_attempt_count, unclean_step_count, unevaluated_blocking_total, ungoverned_divergence_count, unreachable_handling_failure_count, unrecorded_refusal_count, vacuously_clean_step_count FROM public.vw_procedure_executions;
 ALTER VIEW pko_process_steward.procedure_executions OWNER TO postgres;
 GRANT SELECT ON pko_process_steward.procedure_executions TO pko_process_steward;
 CREATE VIEW pko_process_steward.procedure_resources AS
-  SELECT name, procedure_resource_id, procedure_version, relation, relation_iri, resource FROM public.vw_procedure_resources;
+  SELECT name, procedure_resource_id, procedure_version, relation, relation_iri, resource, resource_modified_at FROM public.vw_procedure_resources;
 ALTER VIEW pko_process_steward.procedure_resources OWNER TO postgres;
 GRANT SELECT ON pko_process_steward.procedure_resources TO pko_process_steward;
 CREATE VIEW pko_process_steward.procedure_status_changes AS
-  SELECT changed_at, changed_by_agent, from_status, motivation, name, procedure_status_change_id, procedure_version, semantic_type_iri, to_status FROM public.vw_procedure_status_changes;
+  SELECT change_kind, change_kind_contradicts_target, changed_at, changed_by_agent, from_status, is_unattributed_change, motivation, name, procedure_execution, procedure_status_change_id, procedure_version, semantic_type_iri, to_status FROM public.vw_procedure_status_changes;
 ALTER VIEW pko_process_steward.procedure_status_changes OWNER TO postgres;
 GRANT SELECT ON pko_process_steward.procedure_status_changes TO pko_process_steward;
 CREATE VIEW pko_process_steward.procedure_types AS
-  SELECT definition, label, name, procedure_type_id, semantic_type_iri FROM public.vw_procedure_types;
+  SELECT broader_is_detached, broader_procedure_type, definition, distinguishing_facet, distinguishing_value, has_narrower_types, is_arbitrary_grouping, is_detached_from_taxonomy, is_unreachable_by_navigation, label, member_count, members_lacking_distinction_count, name, narrower_type_count, procedure_type_id, semantic_type_iri, taxonomy_rank FROM public.vw_procedure_types;
 ALTER VIEW pko_process_steward.procedure_types OWNER TO postgres;
 GRANT SELECT ON pko_process_steward.procedure_types TO pko_process_steward;
 CREATE VIEW pko_process_steward.procedure_version_links AS
@@ -1238,11 +3115,11 @@ CREATE VIEW pko_process_steward.procedure_version_links AS
 ALTER VIEW pko_process_steward.procedure_version_links OWNER TO postgres;
 GRANT SELECT ON pko_process_steward.procedure_version_links TO pko_process_steward;
 CREATE VIEW pko_process_steward.procedure_versions AS
-  SELECT ai_boundary_is_unevidenced, approved_change_request_count, as_of_instant, awaited_decision_count, cadence_breach_count, changelog_description, compound_fragile_fragment_count, concentrated_witness_session_count, control_taxonomy_is_incomplete, count_of_change_requests, count_of_open_blocking_gaps, count_of_open_knowledge_gaps, count_of_overdue_gaps, count_of_review_events, count_of_stale_fragments, count_of_steps, count_of_stewardship_assignments, count_of_unapproved_reliance_fragments, created_by_agent, days_since_last_review, days_since_modified, drifted_mining_run_count, evaluation_context, feeds_unapproved_knowledge_to_machines, genuinely_overdue_fragment_count, governance_is_silent, has_any_steward, has_approved_change_request, has_decision_in_flight, has_governance_record, has_open_blocking_gap, has_unrehearsed_control_entry, has_unresolved_mining_drift, has_unwitnessed_change, incoming_supersession_count, is_blocked_on_pending_decision, is_cleanly_retired, is_current, is_fit_to_execute, is_held_unfit_by_landed_decisions, is_in_cadence_breach, is_live, is_live_and_unstewarded, is_live_with_blocking_gap, is_live_with_unrehearsed_control, is_load_bearing_orphan, is_managed_cadence_breach, is_ready_for_execution, is_still_referenced, is_unremediated_cadence_breach, is_unstewarded, issued_at, knowledge_base_is_concentrated, knowledge_is_staler_than_cadence, load_bearing_unapproved_count, machine_consumed_unapproved_count, mining_run_count, modified_at, modified_by_agent, modifier_is_authority, name, new_version_motivation, open_change_request_count, open_high_severity_gap_count, overdue_review_count, procedure, procedure_version_id, rests_on_compound_fragile_knowledge, runs_on_unapproved_knowledge, scoped_open_blocking_gap_count, semantic_type_iri, should_not_be_executable, specified_step_count, stalled_implementation_count, status, steward_review_cadence_days, still_owns_valid_knowledge, title, undeclared_control_kind_count, unexercised_human_gate_count, unlanded_decision_count, unrehearsed_control_entry_count, unwatched_unowned_control_count, valid_fragment_count, version_number, was_modified_since_last_review FROM public.vw_procedure_versions;
+  SELECT ai_artifact_consuming_input_count, ai_boundary_is_unevidenced, ai_consumption_count, ai_contribution_count, alternative_transition_count, approved_change_request_count, as_of_instant, awaited_decision_count, cadence_breach_count, changelog_description, coarse_top_level_step_count, complementary_method_count, compound_fragile_fragment_count, concentrated_witness_session_count, conditionless_step_count, consumer_sync_count, contains_steps_affected_by_ai_agent_change, control_taxonomy_is_incomplete, count_of_change_requests, count_of_open_blocking_gaps, count_of_open_knowledge_gaps, count_of_overdue_gaps, count_of_review_events, count_of_stale_fragments, count_of_steps, count_of_stewardship_assignments, count_of_unapproved_reliance_fragments, created_by_agent, created_by_agent_kind, critical_incident_count, day_deviating_run_count, day_run_count, days_document_trails_version, days_since_last_review, days_since_modified, declared_first_step_count, design_decision_count, document_lags_practice, drifted_mining_run_count, elicitation_evidence_count, elicitation_session_count, enables_relation_count, entry_step_id, evaluation_context, exception_count, execution_count, expected_duration_unit, expected_duration_value, expert_capture_count, experts_evaluate_ai_not_representation, explicit_holding_count, fallback_step, fallback_transition_count, feeds_unapproved_knowledge_to_machines, fine_top_level_step_count, first_step, first_step_disagrees_with_graph, fresh_mining_run_count, genuinely_overdue_fragment_count, governance_is_silent, graph_entry_step_count, hands_held_count, has_any_steward, has_approved_change_request, has_decision_in_flight, has_governance_record, has_no_exception_handling, has_open_blocking_gap, has_unrehearsed_control_entry, has_unresolved_mining_drift, has_unwitnessed_change, human_channel_count, human_step_count, human_sync_count, incident_session_count, incoming_supersession_count, indexed_segment_count, interview_session_count, is_approved_without_sme_signoff, is_blocked_on_pending_decision, is_cleanly_retired, is_current, is_current_without_motivation, is_disconnected_from_outcomes, is_documented_behind_practice, is_fit_to_execute, is_held_unfit_by_landed_decisions, is_in_cadence_breach, is_inadequate_for_use, is_inconsistent_across_shifts, is_live, is_live_and_unstewarded, is_live_model_untraced, is_live_with_blocking_gap, is_live_with_unrehearsed_control, is_live_without_recorded_decisions, is_load_bearing_orphan, is_managed_cadence_breach, is_not_query_validate_reason_ready, is_ready_for_execution, is_standardized_without_tacit_capture, is_still_referenced, is_studied_only_from_the_desk, is_under_specified_for_execution, is_unmodified_for_twelve_months, is_unreachable_knowledge, is_unremediated_cadence_breach, is_unstewarded, issued_at, judgment_held_outside_sop_count, judgment_unprobed_by_incidents, ke_field_session_count, ke_session_count, knowledge_base_is_concentrated, knowledge_is_staler_than_cadence, lacks_continuous_drift_detection, lacks_machine_interpretable_encoding, latest_source_document_modified_at, lives_in_hands_silence_and_negotiation, load_bearing_unapproved_count, machine_channel_count, machine_consumed_unapproved_count, machine_sync_count, mining_run_count, misses_a_required_elicitation_mode, mixes_granularity_at_one_level, mixes_human_and_software_steps, modified_at, modified_by_agent, modifier_is_authority, name, negotiated_practice_count, new_version_motivation, night_deviating_run_count, night_run_count, non_human_step_count, observation_session_count, open_change_request_count, open_high_severity_gap_count, open_question_annotation_count, outcome_measurement_count, overdue_review_count, overlaps_relation_count, owner_organization, prevents_relation_count, procedure, procedure_type_of_version, procedure_version_id, process_model_trace_count, profile_validated_submission_count, protocol_session_count, published_projection_count, reasoned_assertion_count, reconciled_divergence_count, relies_on_single_method, rests_on_compound_fragile_knowledge, rests_on_notation_only, runs_on_unapproved_knowledge, scoped_open_blocking_gap_count, search_count, search_success_percent, semantic_type_iri, served_assertion_count, serves_only_humans_or_only_machines, should_not_be_executable, situated_judgment_fragment_count, sme_ai_evaluation_count, sme_approval_count, specified_step_count, stalled_implementation_count, standardization_driver, status, status_is_pko, steps_without_ontology_type_count, steward_review_cadence_days, still_owns_valid_knowledge, structured_query_count, successful_search_count, tacit_form_fragment_count, tacit_fragment_count, tacit_holding_count, tacit_judgment_fragment_count, tacit_share_exceeds_explicit, title, trailing_practice_trace_count, undeclared_control_kind_count, unexercised_human_gate_count, unlanded_decision_count, unrehearsed_control_entry_count, unwatched_unowned_control_count, uses_ai_in_one_direction_only, uses_non_pko_status, valid_fragment_count, version_number, was_modified_since_last_review, workshop_session_count FROM public.vw_procedure_versions;
 ALTER VIEW pko_process_steward.procedure_versions OWNER TO postgres;
 GRANT SELECT ON pko_process_steward.procedure_versions TO pko_process_steward;
 CREATE VIEW pko_process_steward.procedures AS
-  SELECT adopted_by_organization, current_version_key, is_template, name, owner_organization, procedure_id, procedure_type, purpose, semantic_type_iri, target, title FROM public.vw_procedures;
+  SELECT adopted_by_organization, adoption_count, agent_intended_count, avg_days_to_proficiency_with_capture, avg_days_to_proficiency_without_capture, called_by_step_count, category_level_view_count, collected_material_count, compliance_document_count, compliance_review_step_count, current_version_key, days_with_capture_total, days_without_capture_total, departed_only_know_how_count, departing_veteran_know_how_count, execution_count, execution_feedback_entry_count, expert_acquisition_hours, failure_criterion_count, formalization_does_not_ease_onboarding, has_decayed_transfer_channel, has_no_explicit_steps, has_no_failure_criterion, has_no_stated_reason_for_existing, has_step_and_category_resolutions, has_transfer_shortfall_exposure, has_unengaged_stakeholder, hindered_by_count, in_work_capture_count, involves_compliance_review_role, is_capture_separate_from_work, is_captured_by_automation_alone, is_executed_without_feedback_loop, is_hindered_by_another_operation, is_inconsistently_categorized, is_missing_demanded_resolution, is_nested_procedure, is_regulated_but_unformalized, is_tacit_only_agent_target, is_template, is_template_instance, lacks_distinction_type_key, lacks_managed_controlled_vocabulary, lacks_type_distinction, lens_view_count, machine_authored_entry_count, managed_vocabulary_count, matching_distinction_count, measures_performance_without_business_link, name, outcome_measure_count, owner_organization, practitioner_relationship_count, privileges_single_stakeholder_view, procedure_id, procedure_type, procedure_type_definition, procedure_type_rank, proficient_with_capture_count, proficient_without_capture_count, purpose, recent_starter_count, repository_entry_count, required_by_regulation, semantic_type_iri, specified_step_total, stale_entry_count, step_level_view_count, strategic_alignment_count, target, target_count, template_procedure, title, type_distinguishing_facet, type_distinguishing_value, unengaged_stakeholder_count, unlinked_measure_count, untransferred_veteran_know_how_count FROM public.vw_procedures;
 ALTER VIEW pko_process_steward.procedures OWNER TO postgres;
 GRANT SELECT ON pko_process_steward.procedures TO pko_process_steward;
 CREATE VIEW pko_process_steward.rationales AS
@@ -1258,39 +3135,51 @@ CREATE VIEW pko_process_steward.requirement_satisfactions AS
 ALTER VIEW pko_process_steward.requirement_satisfactions OWNER TO postgres;
 GRANT SELECT ON pko_process_steward.requirement_satisfactions TO pko_process_steward;
 CREATE VIEW pko_process_steward.requirements AS
-  SELECT accountable_agent, accountable_role, attestation_exposure_note, claims_a_witness_field, control_assurance_state, controlled_term, derived_has_computed_witness, evaluation_sample_size, has_computed_witness, has_ever_been_evaluated, has_ever_produced_negative, has_meaningful_sample, has_named_owner, is_blocking, is_bound_to_any_step, is_decorative_control, is_evidenced_holding_control, is_inoperative_control, is_orphaned_blocking_control, is_unfalsified_control, is_untested_witness, is_unwatched_and_unowned, is_unwitnessed_blocking_control, label, minimum_sample_for_assurance, name, named_witness_field_exists, negative_outcome_count, rationale, requirement_id, requirement_type, satisfaction_record_count, semantic_type_iri, statement, step_binding_count, unexercised_binding_count, unwatched_unowned_flag, uses_controlled_vocabulary, witness_claim_is_unverified, witness_field_name, witness_fire_count, witness_has_never_fired, witness_is_partially_scoped FROM public.vw_requirements;
+  SELECT accountable_agent, accountable_role, attestation_exposure_note, claims_a_witness_field, constraint_trace_count, control_assurance_state, controlled_term, derived_has_computed_witness, evaluation_sample_size, has_computed_witness, has_ever_been_evaluated, has_ever_produced_negative, has_meaningful_sample, has_named_owner, is_blocking, is_bound_to_any_step, is_decorative_control, is_evidenced_holding_control, is_inoperative_control, is_orphaned_blocking_control, is_regulatory_requirement, is_unfalsified_control, is_untested_witness, is_untraced_bound_constraint, is_unwatched_and_unowned, is_unwitnessed_blocking_control, label, minimum_sample_for_assurance, name, named_witness_field_exists, negative_outcome_count, rationale, regulatory_framework, requirement_id, requirement_type, satisfaction_record_count, semantic_type_iri, statement, step_binding_count, unexercised_binding_count, unwatched_unowned_flag, uses_controlled_vocabulary, witness_claim_is_unverified, witness_field_name, witness_fire_count, witness_has_never_fired, witness_is_partially_scoped FROM public.vw_requirements;
 ALTER VIEW pko_process_steward.requirements OWNER TO postgres;
 GRANT SELECT ON pko_process_steward.requirements TO pko_process_steward;
 CREATE VIEW pko_process_steward.resources AS
-  SELECT approval_status, created_at, description, external_uri, is_approved_source, modified_at, name, resource_id, resource_kind, semantic_type_iri, title FROM public.vw_resources;
+  SELECT approval_status, artifact_type_concept, catalog_entry_for, compliance_record_for, created_at, created_by_agent, description, external_uri, extracted_from_resource, format, is_approved_source, is_behind_current_practice, is_content_without_organization, is_stale_extraction, is_unused_resource, keywords, language, modified_at, modified_by_agent, name, referencing_step_count, referencing_version_count, resource_id, resource_kind, semantic_type_iri, source_modified_at, title, trailing_practice_count FROM public.vw_resources;
 ALTER VIEW pko_process_steward.resources OWNER TO postgres;
 GRANT SELECT ON pko_process_steward.resources TO pko_process_steward;
 CREATE VIEW pko_process_steward.review_events AS
-  SELECT as_of_instant, cadence_breach_version_key, cadence_drift_days, days_since_reviewed, evaluation_context, exceeds_promised_cadence, is_overdue, name, next_review_due, outcome, overdue_version_key, procedure_version, promise_and_behavior_disagree, promised_cadence_days, related_change_request, review_event_id, review_kind, reviewed_at, reviewed_by_agent, semantic_type_iri FROM public.vw_review_events;
+  SELECT as_of_instant, cadence_breach_version_key, cadence_drift_days, days_since_reviewed, evaluation_context, exceeds_promised_cadence, is_overdue, name, next_review_due, outcome, overdue_version_key, procedure_version, promise_and_behavior_disagree, promised_cadence_days, related_change_request, review_did_not_refresh_modified, review_event_id, review_kind, reviewed_at, reviewed_by_agent, semantic_type_iri, version_modified_at FROM public.vw_review_events;
 ALTER VIEW pko_process_steward.review_events OWNER TO postgres;
 GRANT SELECT ON pko_process_steward.review_events TO pko_process_steward;
 CREATE VIEW pko_process_steward.role_assignments AS
-  SELECT agent, agent_kind, agent_role_key, approving_authority_role, as_of_instant, authorization_decided_at, authorization_is_overdue_for_review, authorization_review_cadence_days, authorization_reviewed_at, authorizing_change_request, boundary_violation_count_for_assignment, comparison_is_evidentially_sound, covers_now, current_agent_key, days_since_authorization_review, decision_count, departed_role_key, error_correction_count, error_rate_percent, evaluation_context, exceeds_tolerable_error_rate, governance_evidence_count, has_any_boundary_violation, has_approving_authority, has_authorizing_change_request, has_dated_authorization, has_declared_suspension_condition, has_departed, has_sufficient_sample, has_ungrounded_governing_boundary, is_current, is_currently_valid, is_enforcement_role, is_human_to_non_human_handover, is_non_human_assignment, is_operating_under_met_suspension_condition, is_standing_unreviewed_automation, is_unauthorized_enforcement_agent, is_unauthorized_non_human_assignment, is_unconditioned_automation_handover, is_unmeasured_automation_handover, max_tolerable_error_rate_percent, minimum_decisions_for_comparison, name, overridden_decision_count, override_rate_percent, predecessor_agent_kind, predecessor_decision_count, predecessor_has_sufficient_sample, predecessor_override_rate_percent, quality_regressed_vs_predecessor, quality_verdict_is_unsupported, reason, role, role_assignment_id, role_when_covering, semantic_type_iri, single_override_swing_percent, status, supersedes_assignment, suspension_condition_met, unauthorized_enforcement_role_key, valid_from, valid_to, was_authorized_by_change_request FROM public.vw_role_assignments;
+  SELECT agent, agent_kind, agent_role_key, agent_role_pair_key, agent_version_key, approving_authority_role, as_of_instant, authorization_decided_at, authorization_is_overdue_for_review, authorization_review_cadence_days, authorization_reviewed_at, authorizing_change_request, boundary_violation_count_for_assignment, comparison_is_evidentially_sound, covers_now, current_agent_key, days_since_authorization_review, decision_count, departed_role_key, error_correction_count, error_rate_percent, evaluation_context, exceeds_tolerable_error_rate, for_procedure_version, governance_evidence_count, has_any_boundary_violation, has_approving_authority, has_authorizing_change_request, has_dated_authorization, has_declared_suspension_condition, has_departed, has_sufficient_sample, has_ungrounded_governing_boundary, is_current, is_currently_valid, is_enforcement_role, is_human_to_non_human_handover, is_non_human_assignment, is_open_ended, is_operating_under_met_suspension_condition, is_scoped_to_retired_version, is_standing_unreviewed_automation, is_unauthorized_enforcement_agent, is_unauthorized_non_human_assignment, is_unconditioned_automation_handover, is_unmeasured_automation_handover, max_tolerable_error_rate_percent, minimum_decisions_for_comparison, name, overridden_decision_count, override_rate_percent, predecessor_agent_kind, predecessor_decision_count, predecessor_has_sufficient_sample, predecessor_lacks_validity_end, predecessor_override_rate_percent, predecessor_valid_to, quality_regressed_vs_predecessor, quality_verdict_is_unsupported, reason, receives_approval_notices_now, role, role_approval_step_count, role_assignment_id, role_when_covering, scoped_version_status, semantic_type_iri, single_override_swing_percent, status, supersedes_assignment, suspension_condition_met, unauthorized_enforcement_role_key, valid_from, valid_to, was_authorized_by_change_request FROM public.vw_role_assignments;
 ALTER VIEW pko_process_steward.role_assignments OWNER TO postgres;
 GRANT SELECT ON pko_process_steward.role_assignments TO pko_process_steward;
 CREATE VIEW pko_process_steward.role_questions AS
   SELECT answerable_before, asking_role, is_answered, name, predicate_count, question_text, role_question_id, semantic_type_iri, why_it_matters, witness_loop, witnessed_answer FROM public.vw_role_questions;
 ALTER VIEW pko_process_steward.role_questions OWNER TO postgres;
 GRANT SELECT ON pko_process_steward.role_questions TO pko_process_steward;
+CREATE VIEW pko_process_steward.role_schema_views AS
+  SELECT column_count, grant_key, is_degenerate_view, is_full_width, name, principal, role_schema, role_schema_view_id, schema_name, semantic_type_iri, source_view, table_field_count, target_table, view_name FROM public.vw_role_schema_views;
+ALTER VIEW pko_process_steward.role_schema_views OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.role_schema_views TO pko_process_steward;
+CREATE VIEW pko_process_steward.role_schemas AS
+  SELECT is_empty_schema, is_sealed, name, principal, role_schema_id, schema_name, search_path, semantic_type_iri, view_count FROM public.vw_role_schemas;
+ALTER VIEW pko_process_steward.role_schemas OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.role_schemas TO pko_process_steward;
 CREATE VIEW pko_process_steward.roles AS
-  SELECT active_assignment_count, count_of_awaited_decisions, current_agent, current_agent_kind, current_assignment, current_assignment_valid_from, currently_covered_assignment_count, departed_assignment_count, has_lost_a_holder, has_no_current_holder, is_governed_by_lapsed_authority, is_non_human_held, is_ungoverned_enforcement_role, is_ungoverned_non_human_role, is_vacated_role, label, name, organization, responsibility, role_id, semantic_type_iri, unauthorized_enforcement_assignment_count, unescalated_refusal_count, ungrounded_boundary_count FROM public.vw_roles;
+  SELECT active_assignment_count, approval_step_count, backup_role_holder, capability_tag_count, compliance_review_tag_count, count_of_awaited_decisions, current_agent, current_agent_kind, current_assignment, current_assignment_valid_from, current_holder_name, currently_covered_assignment_count, departed_assignment_count, escalation_backup_role, has_compliance_review_capability, has_escalation_backup, has_lost_a_holder, has_no_current_holder, has_specializations, has_unfilled_escalation_backup, is_governed_by_lapsed_authority, is_missed_by_phrase_query, is_non_human_held, is_not_housed_in_department, is_production_release_approver, is_senior_variant_not_specialization, is_ungoverned_enforcement_role, is_ungoverned_non_human_role, is_vacated_role, label, name, organization, organization_type, preferred_knowledge_form, release_approval_step_count, responsibility, role_family, role_id, role_mention_count, semantic_type_iri, seniority_level, specialization_count, specialized_role_family, specializes_role, unauthorized_enforcement_assignment_count, unescalated_refusal_count, ungrounded_boundary_count, unresolved_role_mention_count FROM public.vw_roles;
 ALTER VIEW pko_process_steward.roles OWNER TO postgres;
 GRANT SELECT ON pko_process_steward.roles TO pko_process_steward;
 CREATE VIEW pko_process_steward.rulebook_fields AS
-  SELECT datatype, field_name, field_type, formula, invented_for_question, is_derived, is_witness, name, rulebook_field_id, semantic_type_iri, target_table FROM public.vw_rulebook_fields;
+  SELECT datatype, disagreeing_substrate_count, field_name, field_type, formula, has_measured_data, invented_for_question, is_derived, is_discriminating, is_substrate_contested, is_witness, measured_distinct_value_count, measured_substantive_count, name, rulebook_field_id, semantic_type_iri, target_table FROM public.vw_rulebook_fields;
 ALTER VIEW pko_process_steward.rulebook_fields OWNER TO postgres;
 GRANT SELECT ON pko_process_steward.rulebook_fields TO pko_process_steward;
 CREATE VIEW pko_process_steward.rulebook_releases AS
-  SELECT changelog, is_current, issued_at, name, pko_core_version_iri, pko_industry_version_iri, profile_schema_path, profile_version, rulebook_release_id, rulebook_version, status FROM public.vw_rulebook_releases;
+  SELECT answerable_cq_run_count, approved_by_agent, breaking_release_with_unrevalidated_consumers, breaking_release_without_migration_plan, changelog, class_removal_or_rename_count, class_removal_without_major, consistent_run_count, consumer_count, cq_coverage_declined, cq_coverage_percent, cq_run_count, days_since_previous_release, declared_scale, expected_major, expected_minor, expected_patch, funding_note, governed_model, has_baseline_regression, inconsistent_disjointness_count, inconsistent_disjointness_without_major, invalidating_domain_range_count, invalidating_domain_range_without_major, is_breaking_release, is_current, is_declared_current_release, is_increment_inconsistent_with_scale, is_long_release_cycle, is_not_scored_against_criteria, is_release_without_recorded_changes, is_released_without_licence_or_permanent_id, is_unannounced_to_dependents, is_undocumented_version_decision, is_untagged_release, issued_at, license, log_entry_count, logical_change_count, migration_plan, minor_is_not_backward_compatible, model_current_release, name, namespace_prefix, non_additive_change_count, notified_consumer_count, passed_validation_at_release, patch_alters_logical_model, permanent_iri, pko_core_version_iri, pko_industry_version_iri, prev_cq_coverage_percent, prev_cq_run_count, prev_issued_at, prev_major, prev_minor, prev_patch, previous_release, profile_schema_path, profile_version, published_without_approval, regressed_baseline_count, released_despite_failed_validation, released_without_consistency_check, released_without_cq_task_test, revalidated_consumer_count, rulebook_commit, rulebook_release_id, rulebook_version, schema_addition_count, scored_criterion_count, stated_criterion_count, status, suite_lags_release, suite_update_count, validation_failure_total, validation_run_count, version_decided_by_agent, version_decision_rationale, version_major, version_minor, version_patch, well_formed_but_requirements_unshown FROM public.vw_rulebook_releases;
 ALTER VIEW pko_process_steward.rulebook_releases OWNER TO postgres;
 GRANT SELECT ON pko_process_steward.rulebook_releases TO pko_process_steward;
+CREATE VIEW pko_process_steward.rulebook_tables AS
+  SELECT aligned_mapping_count, disagreeing_substrate_count, exact_mapping_count, field_count, has_measured_rows, is_extension, is_unaligned_to_standard, is_unsecured, is_unsecured_governance_record, lacks_semantic_type_convention, meaning_is_only_tabular, measured_row_count, name, organization_level, physical_table, physical_view, policy_count, rulebook_table_id, semantic_mapping_count, semantic_type_iri, semantic_type_iri_field_count, subject_area, table_name FROM public.vw_rulebook_tables;
+ALTER VIEW pko_process_steward.rulebook_tables OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.rulebook_tables TO pko_process_steward;
 CREATE VIEW pko_process_steward.semantic_mappings AS
-  SELECT mapping_kind, mapping_relation, name, notes, ontology_profile, semantic_mapping_id, source_path, target_iri FROM public.vw_semantic_mappings;
+  SELECT available_standard_iri, is_non_resolvable_term_iri, mapping_kind, mapping_relation, name, notes, ontology_profile, reinvents_standard_term, semantic_mapping_id, source_path, target_iri FROM public.vw_semantic_mappings;
 ALTER VIEW pko_process_steward.semantic_mappings OWNER TO postgres;
 GRANT SELECT ON pko_process_steward.semantic_mappings TO pko_process_steward;
 CREATE VIEW pko_process_steward.send_intents AS
@@ -1302,7 +3191,7 @@ CREATE VIEW pko_process_steward.step_actions AS
 ALTER VIEW pko_process_steward.step_actions OWNER TO postgres;
 GRANT SELECT ON pko_process_steward.step_actions TO pko_process_steward;
 CREATE VIEW pko_process_steward.step_executions AS
-  SELECT actual_duration_minutes, all_clearances_are_unfalsified, approval_execution_key, approval_rests_on_self_attestation, approver_agent_key, assigned_role, available_exception_count_for_step, blocking_unmet_count, blocking_unmet_count_safe, claims_pass_without_evidence, cleared_legal_review_key, completed_execution_key, control_breach_execution_key, declared_check_count, deviation, drafted_from_unusable_source, ended_at, evaluated_blocking_count, evaluated_requirement_count, evidence_position_is_weak, exception_invocation_count, executed_by_agent, executing_agent_kind, execution_status, executor_agent_kind, executor_authority_count, executor_held_required_role, executor_is_designated_agent, executor_is_human, executor_role_key, expected_blocking_count, expected_duration_minutes, expected_verification_count, had_uninvoked_exception_available, has_any_declared_check, has_approved_change_coverage, has_deviation, has_deviation_note, has_governing_instrument, has_skipped_verification, has_unevaluated_blocking_control, has_unevaluated_blocking_requirement, human_confirmation_missing, inputs_were_fresh_at_run, inputs_were_usable, is_approval_execution, is_clean, is_completed, is_late, is_late_and_unexplained, is_legal_review_step, is_substantively_clean, is_unauthorized_approval, is_unchecked_by_design, is_ungoverned_divergence, is_vacuously_clean, is_verification_passed, is_verified, late_execution_key, name, non_human_approval, non_human_ran_human_step, performed_check_count, performed_verification_count, preparation_execution_key, prepared_by_this_agent_count, preparer_agent_key, procedure_execution, procedure_execution_when_unclean, proceeded_past_blocking_control, ran_on_stale_authoritative_source, ran_on_stale_inputs, ran_under_exception, required_blocking_count, required_role_for_step, requires_human_confirmation, role_current_agent, self_attested_approval_execution_key, self_witnessed_verification_count, semantic_type_iri, separation_violation_execution_key, skipped_verification_count, software_did_human_work, software_execution_step_key, stale_at_run_count, stale_authoritative_source_count, staleness_answer_is_tense_dependent, started_at, step, step_control_kind, step_execution_id, step_is_approval, step_is_preparation, step_is_software_assigned, step_requires_human_confirmation, unbacked_verification_count, unconfirmed_non_human_decision_count, uncorroborated_pass_count, unevaluated_blocking_count, unevaluated_blocking_execution_key, unfalsified_clearance_count, ungoverned_divergence_execution_key, unresolved_issue_count, vacuously_clean_execution_key, verification_result, version_of_step, violates_separation_of_duties, was_executed_by_software, was_stale_when_i_ran_it FROM public.vw_step_executions;
+  SELECT actual_duration_minutes, all_clearances_are_unfalsified, approval_execution_key, approval_rests_on_self_attestation, approver_agent_key, assigned_role, available_exception_count_for_step, blocking_unmet_count, blocking_unmet_count_safe, broke_invariant, claims_pass_without_evidence, cleared_legal_review_key, completed_execution_key, completed_prerequisite_run_count, confirmed_by_agent, control_breach_execution_key, declared_check_count, description, deviation, deviation_execution_key, drafted_from_unusable_source, ended_at, evaluated_blocking_count, evaluated_requirement_count, evidence_position_is_weak, exceeds_max_repetitions, exception_invocation_count, executed_by_agent, executes_step_of_other_version, executing_agent_kind, execution_status, execution_version, executor_agent_kind, executor_authority_count, executor_held_required_role, executor_is_designated_agent, executor_is_human, executor_role_key, expected_blocking_count, expected_duration_minutes, expected_verification_count, failed_precondition_count, generated_entity_count, had_uninvoked_exception_available, has_any_declared_check, has_approved_change_coverage, has_deviation, has_deviation_note, has_governing_instrument, has_skipped_verification, has_unevaluated_blocking_control, has_unevaluated_blocking_requirement, human_confirmation_missing, ignored_danger_cue, incomplete_cue_observation_count, inputs_were_fresh_at_run, inputs_were_usable, is_approval_execution, is_blocked_by_incomplete_prerequisite, is_blocked_by_observed_cue, is_clean, is_completed, is_late, is_late_and_unexplained, is_legal_review_step, is_out_of_specified_order, is_substantively_clean, is_unauthorized_approval, is_unchecked_by_design, is_ungoverned_divergence, is_vacuously_clean, is_verification_passed, is_verified, lacks_required_confirmation, late_execution_key, name, non_human_approval, non_human_ran_human_step, owner_organization, performed_check_count, performed_verification_count, preparation_execution_key, prepared_by_this_agent_count, preparer_agent_key, previous_executed_step, previous_step_execution, procedure_execution, procedure_execution_when_unclean, proceeded_despite_failed_precondition, proceeded_past_blocking_control, ran_before_prerequisite_completed, ran_on_stale_authoritative_source, ran_on_stale_inputs, ran_under_exception, ran_without_declared_inputs, repetition_count, required_blocking_count, required_role_for_step, requires_human_confirmation, role_current_agent, self_attested_approval_execution_key, self_witnessed_verification_count, semantic_type_iri, separation_violation_execution_key, skipped_verification_count, software_did_human_work, software_execution_step_key, specified_transition_from_previous_count, stale_at_run_count, stale_authoritative_source_count, staleness_answer_is_tense_dependent, started_at, step, step_control_kind, step_execution_id, step_input_variable_count, step_is_approval, step_is_preparation, step_is_software_assigned, step_max_repetitions, step_prerequisite, step_requires_human_confirmation, unbacked_verification_count, unconfirmed_non_human_decision_count, uncorroborated_pass_count, unescalated_danger_cue_count, unevaluated_blocking_count, unevaluated_blocking_execution_key, unfalsified_clearance_count, ungoverned_divergence_execution_key, unresolved_issue_count, used_entity_count, vacuously_clean_execution_key, verification_result, version_of_step, violated_invariant_count, violates_separation_of_duties, was_executed_by_software, was_stale_when_i_ran_it FROM public.vw_step_executions;
 ALTER VIEW pko_process_steward.step_executions OWNER TO postgres;
 GRANT SELECT ON pko_process_steward.step_executions TO pko_process_steward;
 CREATE VIEW pko_process_steward.step_functions AS
@@ -1310,7 +3199,7 @@ CREATE VIEW pko_process_steward.step_functions AS
 ALTER VIEW pko_process_steward.step_functions OWNER TO postgres;
 GRANT SELECT ON pko_process_steward.step_functions TO pko_process_steward;
 CREATE VIEW pko_process_steward.step_requirements AS
-  SELECT binding_was_ever_exercised, blocking_step_key, is_unexercised_blocking_binding, name, requirement, requirement_is_blocking, requirement_lacks_witness, satisfaction_count_for_binding, step, step_requirement_id, step_when_blocking, unexercised_binding_requirement_key, unwitnessed_step_key FROM public.vw_step_requirements;
+  SELECT binding_was_ever_exercised, blocking_step_key, is_unexercised_blocking_binding, name, requirement, requirement_is_blocking, requirement_is_regulatory, requirement_lacks_witness, satisfaction_count_for_binding, step, step_requirement_id, step_when_blocking, unexercised_binding_requirement_key, unwitnessed_step_key FROM public.vw_step_requirements;
 ALTER VIEW pko_process_steward.step_requirements OWNER TO postgres;
 GRANT SELECT ON pko_process_steward.step_requirements TO pko_process_steward;
 CREATE VIEW pko_process_steward.step_tools AS
@@ -1318,7 +3207,7 @@ CREATE VIEW pko_process_steward.step_tools AS
 ALTER VIEW pko_process_steward.step_tools OWNER TO postgres;
 GRANT SELECT ON pko_process_steward.step_tools TO pko_process_steward;
 CREATE VIEW pko_process_steward.step_transitions AS
-  SELECT condition, count_of_from_step_executions, count_of_observed_traversals, count_of_to_step_executions, from_step, has_been_traversed, has_reachable_origin, has_reachable_target, is_never_exercised, is_recovery_path, is_unrehearsed_control_entry, is_untested_recovery_path, is_unwalked_recovery_path, name, priority, procedure_version, semantic_type_iri, step_transition_id, target_blocking_requirement_count, target_carries_blocking_control, to_step, transition_kind, unrehearsed_control_version_key FROM public.vw_step_transitions;
+  SELECT avoids_human_approval_gate, condition, count_of_from_step_executions, count_of_observed_traversals, count_of_to_step_executions, decision_point_count, from_step, from_step_is_human_approval_gate, has_been_traversed, has_reachable_origin, has_reachable_target, is_never_exercised, is_recovery_path, is_undocumented_branch, is_unrehearsed_control_entry, is_untested_recovery_path, is_unwalked_recovery_path, name, priority, procedure_version, semantic_type_iri, step_transition_id, target_blocking_requirement_count, target_carries_blocking_control, to_step, to_step_is_human_approval_gate, transition_kind, unrehearsed_control_version_key FROM public.vw_step_transitions;
 ALTER VIEW pko_process_steward.step_transitions OWNER TO postgres;
 GRANT SELECT ON pko_process_steward.step_transitions TO pko_process_steward;
 CREATE VIEW pko_process_steward.step_verifications AS
@@ -1326,7 +3215,7 @@ CREATE VIEW pko_process_steward.step_verifications AS
 ALTER VIEW pko_process_steward.step_verifications OWNER TO postgres;
 GRANT SELECT ON pko_process_steward.step_verifications TO pko_process_steward;
 CREATE VIEW pko_process_steward.steps AS
-  SELECT all_sources_usable, approval_step_is_software_assigned, assigned_agent_kind, assigned_role, assigned_role_is_ungoverned, assigned_role_label, authoritative_stale_count, available_exception_count, binding_boundary_count, blocking_requirement_count, control_kind, declared_verification_count, expected_duration_minutes, expertise_level, gate_held_by_human, has_been_approached_by_software, has_declared_control_kind, inputs_are_fresh, instruction, is_approval_step, is_demonstrated_human_gate, is_governed_by_unwarranted_boundary, is_human_approval_gate, is_preparation_step, is_software_assigned, is_unexercised_human_gate, name, procedure_version, requires_human_confirmation, semantic_type_iri, software_execution_count, stale_authoritative_binding_count, stale_binding_count, step_id, step_kind, step_number, title, undeclared_control_version_key, unexercised_gate_version_key, unusable_binding_count, unwarranted_boundary_count, unwitnessed_blocking_count FROM public.vw_steps;
+  SELECT accountable_agent, activity_origin_trace_count, ai_artifact_input_count, ai_failure_count, all_sources_usable, approval_step_is_software_assigned, assigned_agent_kind, assigned_role, assigned_role_does_compliance_review, assigned_role_is_ungoverned, assigned_role_label, authoritative_stale_count, available_exception_count, binding_boundary_count, blocking_requirement_count, bottleneck_allocation_count, calls_procedure, child_step_count, coarse_top_level_version_key, collection_evidence_count, compliance_review_procedure_key, conditionless_version_key, consumes_ai_agent_artifact, context_sensitivity_count, control_kind, cue_count, danger_cue_count, decision_point_count, declared_fallback_step_key, declared_first_step_key, declared_verification_count, description, detail_level, deviated_run_count, dmn_decision_count, downstream_artifact_step_count, elicited_extension_count, elicited_validation_count, entry_step_key, expected_duration_minutes, expertise_level, failure_mode_count, fine_top_level_version_key, first_child_step, gate_free_reach_from_entry_count, gate_held_by_human, has_been_approached_by_software, has_collection_evidence, has_declared_control_kind, has_downstream_steps, has_incompleteness_cue, has_instruction_only, has_no_accountable_agent, has_postcondition, has_reported_reality_mismatch, incoming_transition_count, incompleteness_cue_count, input_variable_count, inputs_are_fresh, instruction, invariant_count, is_accountable_to_software, is_ai_failure_point, is_approval_step, is_blocking_control_on_rework_loop, is_bottleneck_step, is_composite_without_children, is_context_sensitive_but_unscoped, is_declared_fallback_step, is_declared_first_step, is_demonstrated_human_gate, is_drifted_from_practice, is_entry_step, is_gate_bypassed_publication, is_governed_by_unwarranted_boundary, is_human_approval_gate, is_isolation_without_lock, is_on_rework_loop, is_preparation_step, is_reachable_from_entry_without_human_gate, is_release_approval_gate, is_software_assigned, is_unexercised_human_gate, is_untraced_activity_in_traced_model, isolates_energy_source, knowledge_fragment_count, max_repetitions, min_repetitions, name, open_outdated_flag_count, output_variable_count, owner_organization, parent_step, parent_step_kind, parseable_condition_count, postcondition_count, precondition_count, prerequisite_downstream_count, prerequisite_is_downstream, prerequisite_step, procedure_version, reachable_step_count, reached_from_step_count, referenced_resource_count, regulatory_requirement_count, remedy_for_error, required_lock_count, required_protective_equipment_count, requires_human_confirmation, safety_critical_condition_count, self_reach_count, semantic_type_iri, software_execution_count, stage, stale_authoritative_binding_count, stale_binding_count, states_operational_knowledge, step_id, step_kind, step_number, step_procedure_type, title, tool_function_count, tool_use_rules_only_in_prose, undeclared_control_version_key, unexercised_gate_version_key, unscoped_sensitivity_count, untyped_version_key, unusable_binding_count, unwarranted_boundary_count, unwitnessed_blocking_count, verifies_step, version_entry_step_id, version_model_trace_count, version_procedure FROM public.vw_steps;
 ALTER VIEW pko_process_steward.steps OWNER TO postgres;
 GRANT SELECT ON pko_process_steward.steps TO pko_process_steward;
 CREATE VIEW pko_process_steward.stewardship_assignments AS
@@ -1350,11 +3239,11 @@ CREATE VIEW pko_process_steward.tools AS
 ALTER VIEW pko_process_steward.tools OWNER TO postgres;
 GRANT SELECT ON pko_process_steward.tools TO pko_process_steward;
 CREATE VIEW pko_process_steward.user_feedback AS
-  SELECT change_request_key, disposition, feedback_text, name, procedure_execution, provided_at, provided_by_agent, semantic_type_iri, user_feedback_id FROM public.vw_user_feedback;
+  SELECT change_request_key, collection_follow_up_count, disposition, feedback_on_execution, feedback_on_procedure, feedback_text, is_tacit_signal_not_fed_into_collection, is_unactioned_procedure_critique, name, procedure_execution, provided_at, provided_by_agent, reveals_tacit_knowledge, semantic_type_iri, user_feedback_id FROM public.vw_user_feedback;
 ALTER VIEW pko_process_steward.user_feedback OWNER TO postgres;
 GRANT SELECT ON pko_process_steward.user_feedback TO pko_process_steward;
 CREATE VIEW pko_process_steward.user_questions AS
-  SELECT addressed_by_resource, asked_at, asked_by_agent, name, question_text, resolved_by_faq, semantic_type_iri, status, step_execution, user_question_id FROM public.vw_user_questions;
+  SELECT addressed_by_resource, asked_at, asked_by_agent, is_unaddressed_question, name, question_text, resolved_by_faq, semantic_type_iri, status, step_execution, user_question_id FROM public.vw_user_questions;
 ALTER VIEW pko_process_steward.user_questions OWNER TO postgres;
 GRANT SELECT ON pko_process_steward.user_questions TO pko_process_steward;
 CREATE VIEW pko_process_steward.verification_outcomes AS
@@ -1365,6 +3254,738 @@ CREATE VIEW pko_process_steward.witness_loops AS
   SELECT completed_at, derived_after, fields_after, is_complete, loop_number, name, premise, question_count, semantic_type_iri, started_at, title, witness_loop_id, witnessed_after FROM public.vw_witness_loops;
 ALTER VIEW pko_process_steward.witness_loops OWNER TO postgres;
 GRANT SELECT ON pko_process_steward.witness_loops TO pko_process_steward;
+CREATE VIEW pko_process_steward.process_mining_runs AS
+  SELECT as_of_instant, conformance_rate, conforming_variant_count, days_since_mined, deviation_description, discovered_variant_count, drifted_mining_run_key, evaluation_context, event_log_source, has_major_drift_from_documentation, has_undocumented_enacted_path, is_conformant, is_deviation_unexplained_by_people, is_drift_on_live_version, is_stale_mining_evidence, mined_at, name, people_capture_complement_count, procedure_version, procedure_version_is_live, process_mining_run_id, semantic_type_iri, undocumented_path_count FROM public.vw_process_mining_runs;
+ALTER VIEW pko_process_steward.process_mining_runs OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.process_mining_runs TO pko_process_steward;
+CREATE VIEW pko_process_steward.vocabularies AS
+  SELECT established_at, governed_dimension, governing_role, governs_procedure, has_orphan_terms, is_frozen_despite_new_collection, is_machine_accessible, is_single_kind_frame, latest_organized_material_at, managed_scheme_procedure_key, model_layer, name, ontology_modeling_started_at, ontology_preceded_vocabulary_control, organized_document_excerpt_count, organized_field_notes_count, organized_kind_count, organized_material_count, organized_mined_event_trace_count, organized_process_map_count, organized_transcript_count, orphan_term_count, prefix, publication_format, refinement_count, scheme_kind, scheme_uri, semantic_type_iri, term_count, title, vocabulary_id FROM public.vw_vocabularies;
+ALTER VIEW pko_process_steward.vocabularies OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.vocabularies TO pko_process_steward;
+CREATE VIEW pko_process_steward.vocabulary_terms AS
+  SELECT alt_label_practitioner_mention_count, alt_labels, broader_term, broader_term_parent, concept_iri, definition, definition_revised_at, has_stale_definition, has_structural_sense_shift_across_years, has_unreconciled_variant_phrasings, introduced_in_release, introduced_release_issued_at, is_organized_around_official_term, is_orphan_term, is_widely_adopted_term, latest_meaning_change_at, name, namespace_iri, orphan_term_vocabulary_key, pref_label, pref_label_practitioner_mention_count, represents_role, same_as_iri, scheme_governed_dimension, scope_note, semantic_type_iri, source_phrasing_count, structural_shift_count, unreconciled_phrasing_count, usage_count, vocabulary, vocabulary_term_id FROM public.vw_vocabulary_terms;
+ALTER VIEW pko_process_steward.vocabulary_terms OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.vocabulary_terms TO pko_process_steward;
+CREATE VIEW pko_process_steward.knowledge_broker_links AS
+  SELECT active_reliance_broker_key, as_of_instant, at_risk_broker_key, broker, broker_is_still_engaged, days_since_consulted, evaluation_context, frequency, holder_vocabulary, holder_wording, is_active_reliance, is_at_risk_reliance, knowledge_broker_link_id, last_consulted_at, locates_other_holder, name, pointed_holder, points_to_know_how, seeker, seeker_vocabulary, seeker_wording, semantic_type_iri, topic, translation_between_vocabularies FROM public.vw_knowledge_broker_links;
+ALTER VIEW pko_process_steward.knowledge_broker_links OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.knowledge_broker_links TO pko_process_steward;
+CREATE VIEW pko_process_steward.conformance_substrates AS
+  SELECT conformance_substrate_id, disagreeing_field_count, disagreeing_table_count, engine, how_it_computes, is_fully_conformant, is_graded, label, latest_cells_failed, latest_cells_passed, latest_cells_tested, latest_harness_errors, latest_score, name, output_folder, role, run_count, semantic_type_iri, sort_order, transpiler FROM public.vw_conformance_substrates;
+ALTER VIEW pko_process_steward.conformance_substrates OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.conformance_substrates TO pko_process_steward;
+CREATE VIEW pko_process_steward.conformance_runs AS
+  SELECT answer_key_author, cells_failed, cells_passed, cells_tested, conformance_run_id, imperfect_substrate_count, is_fully_conformant, is_latest, name, notes, overall_score, perfect_substrate_count, ran_on, rulebook_commit, semantic_type_iri, substrate_count FROM public.vw_conformance_runs;
+ALTER VIEW pko_process_steward.conformance_runs OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.conformance_runs TO pko_process_steward;
+CREATE VIEW pko_process_steward.substrate_run_scores AS
+  SELECT aggregation_passed, aggregation_score, aggregation_tested, calculated_passed, calculated_score, calculated_tested, cells_failed, cells_passed, cells_tested, duration_seconds, harness_error, is_in_latest_run, is_perfect, latest_cells_passed, latest_cells_tested, latest_error_flag, lookup_passed, lookup_score, lookup_tested, name, perfect_run_key, run, score, semantic_type_iri, substrate, substrate_label, substrate_run_score_id FROM public.vw_substrate_run_scores;
+ALTER VIEW pko_process_steward.substrate_run_scores OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.substrate_run_scores TO pko_process_steward;
+CREATE VIEW pko_process_steward.table_conformance AS
+  SELECT cells_failed, cells_passed, cells_tested, derived_field_count, disagreeing_field_count, imperfect_substrate_key, imperfect_table_key, is_missing_answer_file, is_perfect, name, record_count, rulebook_table, run, score, semantic_type_iri, subject_area, substrate, substrate_label, table_conformance_id FROM public.vw_table_conformance;
+ALTER VIEW pko_process_steward.table_conformance OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.table_conformance TO pko_process_steward;
+CREATE VIEW pko_process_steward.field_disagreements AS
+  SELECT cells_failed, dominant_reason, field_class, field_disagreement_id, formula, is_fully_sampled, name, rulebook_field, sampled_cell_count, semantic_type_iri, substrate, substrate_label, table_conformance FROM public.vw_field_disagreements;
+ALTER VIEW pko_process_steward.field_disagreements OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.field_disagreements TO pko_process_steward;
+CREATE VIEW pko_process_steward.cell_disagreements AS
+  SELECT actual_value, cell_disagreement_id, expected_value, field_disagreement, name, reason, record_id, rulebook_field, semantic_type_iri, substrate FROM public.vw_cell_disagreements;
+ALTER VIEW pko_process_steward.cell_disagreements OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.cell_disagreements TO pko_process_steward;
+CREATE VIEW pko_process_steward.knowledge_methods AS
+  SELECT application_count, elicitation_tradeoff, elicitation_use_count, is_applied, knowledge_method_id, label, method_family, name, origin_reference, semantic_type_iri, summary, usage_count FROM public.vw_knowledge_methods;
+ALTER VIEW pko_process_steward.knowledge_methods OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.knowledge_methods TO pko_process_steward;
+CREATE VIEW pko_process_steward.source_articles AS
+  SELECT agreed_claim_count, agreed_coverage_percent, author, claim_count, coverage_percent, covered_claim_count, is_fully_covered, local_file_name, name, published_on, semantic_type_iri, series, source_article_id, thesis, title, uncovered_claim_count FROM public.vw_source_articles;
+ALTER VIEW pko_process_steward.source_articles OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.source_articles TO pko_process_steward;
+CREATE VIEW pko_process_steward.article_claims AS
+  SELECT agreed_evidence_count, article_claim_id, claim_kind, claim_text, evidence_count, has_rejected_evidence, is_agreed, is_covered, name, required_evidence, section_ref, semantic_type_iri, source_article, valid_evidence_count FROM public.vw_article_claims;
+ALTER VIEW pko_process_steward.article_claims OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.article_claims TO pko_process_steward;
+CREATE VIEW pko_process_steward.claim_evidence AS
+  SELECT article_claim, claim_evidence_id, claim_kind, evidence_kind, field_catalog_name, field_has_data, field_is_contested, field_is_discriminating, field_is_witness, has_justification, is_agreed_evidence, is_contested, is_question_proof, is_scenario_proof, is_standard_proof, is_structural_proof, is_valid, is_witness_proof, justification, knowledge_method, method_is_applied, name, ontology_profile, procedure, procedure_execution_count, profile_mapping_count, question_is_answered, question_witnessed_answer, role_question, rulebook_field, rulebook_table, semantic_type_iri, table_has_rows FROM public.vw_claim_evidence;
+ALTER VIEW pko_process_steward.claim_evidence OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.claim_evidence TO pko_process_steward;
+CREATE VIEW pko_process_steward.app_users AS
+  SELECT agent_kind, app_user_id, assignment_count, display_name, email_address, has_no_principal, holds_multiple_principals, is_enabled, is_non_human_sign_in, linked_agent, name, organization, semantic_type_iri FROM public.vw_app_users;
+ALTER VIEW pko_process_steward.app_users OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.app_users TO pko_process_steward;
+CREATE VIEW pko_process_steward.principal_assignments AS
+  SELECT app_user, granted_rationale, is_cross_organization_grant, is_default, name, principal, principal_assignment_id, principal_is_admin, principal_organization, semantic_type_iri, user_organization FROM public.vw_principal_assignments;
+ALTER VIEW pko_process_steward.principal_assignments OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.principal_assignments TO pko_process_steward;
+CREATE VIEW pko_process_steward.issued_tokens AS
+  SELECT app_user, claims_snapshot, expires_at, is_dev_minted, issued_at, issued_token_id, issuer, name, principal, semantic_type_iri, subject_claim FROM public.vw_issued_tokens;
+ALTER VIEW pko_process_steward.issued_tokens OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.issued_tokens TO pko_process_steward;
+CREATE VIEW pko_process_steward.method_applications AS
+  SELECT applied_at, applied_by_agent, applied_to, applied_to_grounding_snapshot, identified_broker, knowledge_method, method_application_id, name, semantic_type_iri FROM public.vw_method_applications;
+ALTER VIEW pko_process_steward.method_applications OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.method_applications TO pko_process_steward;
+CREATE VIEW pko_process_steward.lifecycle_statuses AS
+  SELECT broader_status, execution_use_count, is_non_pko_status_in_use, is_pko_status, label, lifecycle_status_id, name, pko_iri, semantic_type_iri, status_scheme, version_use_count, workflow_status_concept FROM public.vw_lifecycle_statuses;
+ALTER VIEW pko_process_steward.lifecycle_statuses OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.lifecycle_statuses TO pko_process_steward;
+CREATE VIEW pko_process_steward.facilities AS
+  SELECT clean_run_count, deviating_run_count, facility_id, facility_kind, is_deviation_only_facility, label, name, organization, parent_facility, semantic_type_iri FROM public.vw_facilities;
+ALTER VIEW pko_process_steward.facilities OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.facilities TO pko_process_steward;
+CREATE VIEW pko_process_steward.machine_types AS
+  SELECT label, machine_type_id, name, semantic_type_iri FROM public.vw_machine_types;
+ALTER VIEW pko_process_steward.machine_types OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.machine_types TO pko_process_steward;
+CREATE VIEW pko_process_steward.energy_sources AS
+  SELECT energy_source_id, label, name, pko_individual_iri, semantic_type_iri FROM public.vw_energy_sources;
+ALTER VIEW pko_process_steward.energy_sources OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.energy_sources TO pko_process_steward;
+CREATE VIEW pko_process_steward.machines AS
+  SELECT configuration_kind, energy_source_count, facility, governing_procedure_version, has_unisolated_energy_source, is_non_standard_configuration, label, machine_id, machine_type, manufactured_by, name, semantic_type_iri, unisolated_energy_source_count FROM public.vw_machines;
+ALTER VIEW pko_process_steward.machines OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.machines TO pko_process_steward;
+CREATE VIEW pko_process_steward.machine_energy_sources AS
+  SELECT energy_source, is_unisolated_energy_source, isolation_step_count, machine, machine_energy_source_id, machine_procedure_version, name, semantic_type_iri, unisolated_machine_key FROM public.vw_machine_energy_sources;
+ALTER VIEW pko_process_steward.machine_energy_sources OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.machine_energy_sources TO pko_process_steward;
+CREATE VIEW pko_process_steward.lock_devices AS
+  SELECT label, lock_device_id, name, semantic_type_iri FROM public.vw_lock_devices;
+ALTER VIEW pko_process_steward.lock_devices OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.lock_devices TO pko_process_steward;
+CREATE VIEW pko_process_steward.protective_equipment AS
+  SELECT label, name, protective_equipment_id, semantic_type_iri FROM public.vw_protective_equipment;
+ALTER VIEW pko_process_steward.protective_equipment OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.protective_equipment TO pko_process_steward;
+CREATE VIEW pko_process_steward.step_lock_requirements AS
+  SELECT lock_device, name, semantic_type_iri, step, step_lock_requirement_id FROM public.vw_step_lock_requirements;
+ALTER VIEW pko_process_steward.step_lock_requirements OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.step_lock_requirements TO pko_process_steward;
+CREATE VIEW pko_process_steward.step_protective_equipment AS
+  SELECT name, protective_equipment, semantic_type_iri, step, step_protective_equipment_id FROM public.vw_step_protective_equipment;
+ALTER VIEW pko_process_steward.step_protective_equipment OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.step_protective_equipment TO pko_process_steward;
+CREATE VIEW pko_process_steward.regulatory_frameworks AS
+  SELECT jurisdiction, label, name, regulatory_framework_id, required_procedure_count, requirement_count, semantic_type_iri FROM public.vw_regulatory_frameworks;
+ALTER VIEW pko_process_steward.regulatory_frameworks OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.regulatory_frameworks TO pko_process_steward;
+CREATE VIEW pko_process_steward.procedure_targets AS
+  SELECT handling_failure_mode_count, is_unhandled_non_standard_target, label, machine, machine_is_non_standard, name, procedure, procedure_target_id, semantic_type_iri, target_kind FROM public.vw_procedure_targets;
+ALTER VIEW pko_process_steward.procedure_targets OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.procedure_targets TO pko_process_steward;
+CREATE VIEW pko_process_steward.procedure_adoptions AS
+  SELECT adopted_at, adoption_mode, is_adoption_mode_unstated, name, organization, procedure, procedure_adoption_id, semantic_type_iri FROM public.vw_procedure_adoptions;
+ALTER VIEW pko_process_steward.procedure_adoptions OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.procedure_adoptions TO pko_process_steward;
+CREATE VIEW pko_process_steward.procedure_outcome_criteria AS
+  SELECT failure_procedure_key, name, polarity, procedure, procedure_outcome_criterion_id, semantic_type_iri, statement FROM public.vw_procedure_outcome_criteria;
+ALTER VIEW pko_process_steward.procedure_outcome_criteria OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.procedure_outcome_criteria TO pko_process_steward;
+CREATE VIEW pko_process_steward.relation_types AS
+  SELECT family, inverse_label, is_defined, label, name, realized_by, relation_type_id, semantic_type_iri, usage_count FROM public.vw_relation_types;
+ALTER VIEW pko_process_steward.relation_types OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.relation_types TO pko_process_steward;
+CREATE VIEW pko_process_steward.activity_relations AS
+  SELECT activity_relation_id, enables_version_key, from_step, from_step_version, name, overlaps_version_key, prevents_version_key, rationale, relation_type, relation_type_is_defined, semantic_type_iri, to_step, uses_undefined_relation_type FROM public.vw_activity_relations;
+ALTER VIEW pko_process_steward.activity_relations OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.activity_relations TO pko_process_steward;
+CREATE VIEW pko_process_steward.step_variables AS
+  SELECT ai_artifact_consumer_has_no_accountable_agent, ai_blast_radius_path, consumer_count, consumer_role, consumer_workflow, datatype, direction, expected_format, input_step_key, is_dangling_input, is_external_input, is_input_from_ai_artifact, is_miswired_source, label, name, output_step_key, semantic_type_iri, source_direction, source_step, source_step_agent, source_step_agent_kind, source_variable, step, step_accountable_agent, step_agent_kind, step_variable_id FROM public.vw_step_variables;
+ALTER VIEW pko_process_steward.step_variables OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.step_variables TO pko_process_steward;
+CREATE VIEW pko_process_steward.execution_entities AS
+  SELECT attributed_to_agent, entity_label, entity_uri, executed_step, execution_entity_id, generated_execution_key, generating_agent, is_foreign_variable, is_usage_direction_mismatch, name, recorded_datatype, recorded_format, semantic_type_iri, step_execution, step_variable, usage, used_execution_key, variable_datatype, variable_direction, variable_expected_format, variable_step, violates_declared_datatype_or_format FROM public.vw_execution_entities;
+ALTER VIEW pko_process_steward.execution_entities OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.execution_entities TO pko_process_steward;
+CREATE VIEW pko_process_steward.step_conditions AS
+  SELECT check_count, condition_kind, invariant_step_key, is_machine_parseable, is_never_checked, is_safety_critical, machine_expression, name, postcondition_step_key, precondition_step_key, safety_critical_step_key, semantic_type_iri, statement, step, step_condition_id FROM public.vw_step_conditions;
+ALTER VIEW pko_process_steward.step_conditions OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.step_conditions TO pko_process_steward;
+CREATE VIEW pko_process_steward.condition_checks AS
+  SELECT checked_at, checked_by_agent, condition_check_id, condition_kind, failed_precondition_execution_key, held, is_failed_precondition, is_violated_invariant, name, semantic_type_iri, step_condition, step_execution, violated_invariant_execution_key FROM public.vw_condition_checks;
+ALTER VIEW pko_process_steward.condition_checks OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.condition_checks TO pko_process_steward;
+CREATE VIEW pko_process_steward.failure_modes AS
+  SELECT description, escalate_to_role, escalates_to_vacant_role, escalation_role_has_no_holder, failure_mode_id, has_no_response, name, procedure_target, requires_escalation, response, semantic_type_iri, step FROM public.vw_failure_modes;
+ALTER VIEW pko_process_steward.failure_modes OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.failure_modes TO pko_process_steward;
+CREATE VIEW pko_process_steward.step_cues AS
+  SELECT cue_kind, danger_cue_step_key, description, escalate_to_role, failure_mode_response, incomplete_cue_step_key, is_unanswerable_sign, name, observation_count, operator_question, requires_escalation, semantic_type_iri, signals_failure_mode, signals_incomplete_step, step, step_cue_id, unescalated_observation_count FROM public.vw_step_cues;
+ALTER VIEW pko_process_steward.step_cues OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.step_cues TO pko_process_steward;
+CREATE VIEW pko_process_steward.cue_observations AS
+  SELECT acknowledged_at, cue_observation_id, cue_requires_escalation, cue_signals_incomplete_step, escalated_to_agent, is_awaiting_acknowledgement, is_unescalated_danger_cue, name, observed_at, observed_by_agent, owner_organization, semantic_type_iri, step_cue, step_execution, unescalated_cue_key, unescalated_execution_key, was_escalated FROM public.vw_cue_observations;
+ALTER VIEW pko_process_steward.cue_observations OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.cue_observations TO pko_process_steward;
+CREATE VIEW pko_process_steward.decision_points AS
+  SELECT deciding_factors, decision_point_id, default_outcome, dmn_decision_key, governing_transition, has_no_deciding_factors, is_dmn_encoded, name, question, semantic_type_iri, step FROM public.vw_decision_points;
+ALTER VIEW pko_process_steward.decision_points OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.decision_points TO pko_process_steward;
+CREATE VIEW pko_process_steward.execution_participants AS
+  SELECT agent, execution_participant_id, name, participation_role, procedure_execution, semantic_type_iri FROM public.vw_execution_participants;
+ALTER VIEW pko_process_steward.execution_participants OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.execution_participants TO pko_process_steward;
+CREATE VIEW pko_process_steward.step_resources AS
+  SELECT name, relation, resource, semantic_type_iri, step, step_resource_id FROM public.vw_step_resources;
+ALTER VIEW pko_process_steward.step_resources OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.step_resources TO pko_process_steward;
+CREATE VIEW pko_process_steward.faq_categories AS
+  SELECT faq_category_id, faq_count, label, name, semantic_type_iri FROM public.vw_faq_categories;
+ALTER VIEW pko_process_steward.faq_categories OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.faq_categories TO pko_process_steward;
+CREATE VIEW pko_process_steward.faq_targets AS
+  SELECT faq_count, faq_target_id, label, name, semantic_type_iri FROM public.vw_faq_targets;
+ALTER VIEW pko_process_steward.faq_targets OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.faq_targets TO pko_process_steward;
+CREATE VIEW pko_process_steward.authoring_submissions AS
+  SELECT authoring_submission_id, authoring_tool, is_expert_authored_conforming, is_non_conforming_accepted, name, procedure_version, profile_validation_passed, semantic_type_iri, step_count, submitted_at, submitted_by_agent, submitter_expertise, validation_error_count, was_accepted FROM public.vw_authoring_submissions;
+ALTER VIEW pko_process_steward.authoring_submissions OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.authoring_submissions TO pko_process_steward;
+CREATE VIEW pko_process_steward.process_knowledge_levels AS
+  SELECT explicit_strategy_count, label, lacks_capture_strategy_for_either_form, name, planning_horizon, process_knowledge_level_id, semantic_type_iri, tacit_strategy_count FROM public.vw_process_knowledge_levels;
+ALTER VIEW pko_process_steward.process_knowledge_levels OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.process_knowledge_levels TO pko_process_steward;
+CREATE VIEW pko_process_steward.level_capture_strategies AS
+  SELECT contradicts_knowledge_form, description, knowledge_form, knowledge_method, level, level_capture_strategy_id, name, semantic_type_iri, transfer_mode FROM public.vw_level_capture_strategies;
+ALTER VIEW pko_process_steward.level_capture_strategies OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.level_capture_strategies TO pko_process_steward;
+CREATE VIEW pko_process_steward.level_pyramid_questions AS
+  SELECT level, level_pyramid_question_id, name, question_kind, semantic_type_iri FROM public.vw_level_pyramid_questions;
+ALTER VIEW pko_process_steward.level_pyramid_questions OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.level_pyramid_questions TO pko_process_steward;
+CREATE VIEW pko_process_steward.process_level_statements AS
+  SELECT is_filed_at_wrong_level, level, level_question_key, name, procedure, process_level_statement_id, pyramid_match_count, question_kind, semantic_type_iri, statement FROM public.vw_process_level_statements;
+ALTER VIEW pko_process_steward.process_level_statements OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.process_level_statements TO pko_process_steward;
+CREATE VIEW pko_process_steward.tactical_resource_allocations AS
+  SELECT adjustment_decision, available_units_per_week, demanded_units_per_week, facility, is_bottleneck, name, resource_kind, resource_label, semantic_type_iri, step, tactical_resource_allocation_id, utilization_percent FROM public.vw_tactical_resource_allocations;
+ALTER VIEW pko_process_steward.tactical_resource_allocations OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.tactical_resource_allocations TO pko_process_steward;
+CREATE VIEW pko_process_steward.process_strategic_alignments AS
+  SELECT mission_statement, name, organization, procedure, process_strategic_alignment_id, rationale, semantic_type_iri, states_no_trade_off, trade_offs, value_created FROM public.vw_process_strategic_alignments;
+ALTER VIEW pko_process_steward.process_strategic_alignments OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.process_strategic_alignments TO pko_process_steward;
+CREATE VIEW pko_process_steward.business_outcomes AS
+  SELECT business_outcome_id, label, linked_measure_count, name, owner_role, semantic_type_iri, strategic_objective FROM public.vw_business_outcomes;
+ALTER VIEW pko_process_steward.business_outcomes OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.business_outcomes TO pko_process_steward;
+CREATE VIEW pko_process_steward.process_outcome_measures AS
+  SELECT business_outcome, is_unlinked_to_business_outcome, label, link_rationale, measured_over_period, name, observed_value, procedure, process_outcome_measure_id, semantic_type_iri, target_value, unit FROM public.vw_process_outcome_measures;
+ALTER VIEW pko_process_steward.process_outcome_measures OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.process_outcome_measures TO pko_process_steward;
+CREATE VIEW pko_process_steward.process_stages AS
+  SELECT is_unowned_or_empty_stage, label, name, owner_has_no_holder, owner_role, procedure_version, process_stage_id, semantic_type_iri, sequence, step_count FROM public.vw_process_stages;
+ALTER VIEW pko_process_steward.process_stages OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.process_stages TO pko_process_steward;
+CREATE VIEW pko_process_steward.process_interdependencies AS
+  SELECT effect, evidence_note, from_procedure, hindered_procedure_key, is_hindering_dependency, mechanism, name, process_interdependency_id, semantic_type_iri, to_procedure FROM public.vw_process_interdependencies;
+ALTER VIEW pko_process_steward.process_interdependencies OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.process_interdependencies TO pko_process_steward;
+CREATE VIEW pko_process_steward.stakeholder_lenses AS
+  SELECT exemplar_role, granularity_rank, label, name, needs_compliance_evidence, needs_exception_handling, needs_metrics, needs_step_guidance, needs_structured_constraints, preferred_form, required_granularity, semantic_type_iri, stakeholder_lens_id FROM public.vw_stakeholder_lenses;
+ALTER VIEW pko_process_steward.stakeholder_lenses OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.stakeholder_lenses TO pko_process_steward;
+CREATE VIEW pko_process_steward.procedure_lens_views AS
+  SELECT category_level_procedure_key, form, granularity, is_disconnected_silo, is_granularity_misfit, lens_granularity_rank, name, procedure, procedure_current_version, procedure_lens_view_id, projects_version, semantic_type_iri, stakeholder_lens, step_level_procedure_key, view_granularity_rank FROM public.vw_procedure_lens_views;
+ALTER VIEW pko_process_steward.procedure_lens_views OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.procedure_lens_views TO pko_process_steward;
+CREATE VIEW pko_process_steward.applicability_scopes AS
+  SELECT applicability_scope_id, applies_when, business_unit, customer_segment, dimension_count, exclusion_condition, geography, label, name, named_graph_iri, regulatory_regime, semantic_type_iri, states_conditions FROM public.vw_applicability_scopes;
+ALTER VIEW pko_process_steward.applicability_scopes OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.applicability_scopes TO pko_process_steward;
+CREATE VIEW pko_process_steward.step_context_sensitivities AS
+  SELECT applicability_scope, context_factor, description, effect_on_significance, name, semantic_type_iri, step, step_context_sensitivity_id, unscoped_step_key FROM public.vw_step_context_sensitivities;
+ALTER VIEW pko_process_steward.step_context_sensitivities OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.step_context_sensitivities TO pko_process_steward;
+CREATE VIEW pko_process_steward.situational_variants AS
+  SELECT adaptation, applicability_scope, diverges_without_stated_conditions, expert_agent, has_no_applicability_dimension, label, name, procedure, scope_dimension_count, scope_states_conditions, semantic_type_iri, situation, situational_variant_id FROM public.vw_situational_variants;
+ALTER VIEW pko_process_steward.situational_variants OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.situational_variants TO pko_process_steward;
+CREATE VIEW pko_process_steward.collected_source_materials AS
+  SELECT captured_during_execution, changed_dependent_count, collected_at, collected_at_occasion, collected_source_material_id, complements_mining_run, contributing_expert, dependent_trace_count, encoded_at, encoded_into_version, expert_effort_hours, has_knowledge_affected_by_source_change, holds_reasoning_or_tacit_knowledge, is_captured_in_flow_of_work, is_dependency_invisible_to_change, is_document_source, is_modeled_before_organized, is_people_capture, is_practice_evidence, label, material_kind, name, organized_at, organized_into_scheme, procedure, produced_by_method_application, prompted_by_feedback, semantic_type_iri, source_document, source_document_revised_at FROM public.vw_collected_source_materials;
+ALTER VIEW pko_process_steward.collected_source_materials OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.collected_source_materials TO pko_process_steward;
+CREATE VIEW pko_process_steward.scheme_refinements AS
+  SELECT change_summary, name, refined_at, scheme_refinement_id, semantic_type_iri, triggered_by_material, vocabulary FROM public.vw_scheme_refinements;
+ALTER VIEW pko_process_steward.scheme_refinements OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.scheme_refinements TO pko_process_steward;
+CREATE VIEW pko_process_steward.term_label_variants AS
+  SELECT concepts_sharing_wording, is_ambiguous_label, is_cross_scheme_duplicate_pref, label_kind, name, practitioner_mention_count, pref_wording, pref_wording_key, same_pref_wording_count, semantic_type_iri, term_label_variant_id, term_scheme, vocabulary_term, wording, wording_key FROM public.vw_term_label_variants;
+ALTER VIEW pko_process_steward.term_label_variants OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.term_label_variants TO pko_process_steward;
+CREATE VIEW pko_process_steward.ai_labeling_runs AS
+  SELECT agent, ai_labeling_run_id, grounded_in_non_machine_readable_scheme, grounding_scheme, grounding_scheme_is_machine_accessible, is_ungrounded_synonym_sprawl, name, non_canonical_output_count, output_count, run_at, semantic_type_iri, task_description FROM public.vw_ai_labeling_runs;
+ALTER VIEW pko_process_steward.ai_labeling_runs OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.ai_labeling_runs TO pko_process_steward;
+CREATE VIEW pko_process_steward.source_term_mentions AS
+  SELECT ai_labeling_run, concept_scheme, intended_term, intended_term_role, is_non_canonical_generated_value, is_uncontrolled_wording, matching_label_count, matching_pref_label_count, mention_origin, name, semantic_type_iri, source_material, source_term_mention_id, unresolved_intended_term_key, unresolved_role_key, wording, wording_key FROM public.vw_source_term_mentions;
+ALTER VIEW pko_process_steward.source_term_mentions OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.source_term_mentions TO pko_process_steward;
+CREATE VIEW pko_process_steward.term_relations AS
+  SELECT asserts_indirect_link_as_direct, from_term, from_term_grandparent, name, note, relation_kind, semantic_type_iri, term_relation_id, to_term FROM public.vw_term_relations;
+ALTER VIEW pko_process_steward.term_relations OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.term_relations TO pko_process_steward;
+CREATE VIEW pko_process_steward.term_meaning_changes AS
+  SELECT changed_at, is_structural_change, name, new_meaning, prior_meaning, prior_meaning_since, recorded_by_agent, semantic_type_iri, span_days, term_meaning_change_id, vocabulary_term FROM public.vw_term_meaning_changes;
+ALTER VIEW pko_process_steward.term_meaning_changes OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.term_meaning_changes TO pko_process_steward;
+CREATE VIEW pko_process_steward.external_standard_terms AS
+  SELECT alignment_updated_at, as_of_instant, days_since_deprecated, deprecated_at, deprecated_by_source, evaluation_context, external_standard_term_id, has_unpropagated_identifier_change, is_adopted_but_deprecated, is_alignment_stale_after_deprecation, is_needed_deprecated_term_not_rehomed, is_recent_deprecation, is_rehomed_without_identity_link, is_rehomed_without_new_release, model_still_needs_term, name, ontology_profile, previous_term_iri, profile_namespace_iri, rehomed_as_term, rehomed_term_namespace, rehomed_term_release_issued_at, rehomed_term_same_as, rehoming_kept_external_namespace, semantic_type_iri, stale_identifier_mapping_count, still_resolves, term_iri, using_mapping_count FROM public.vw_external_standard_terms;
+ALTER VIEW pko_process_steward.external_standard_terms OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.external_standard_terms TO pko_process_steward;
+CREATE VIEW pko_process_steward.role_capability_tags AS
+  SELECT capability_scheme_dimension, capability_term, is_tag_outside_capability_scheme, name, role, role_capability_tag_id, semantic_type_iri FROM public.vw_role_capability_tags;
+ALTER VIEW pko_process_steward.role_capability_tags OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.role_capability_tags TO pko_process_steward;
+CREATE VIEW pko_process_steward.classification_facets AS
+  SELECT assignment_count, classification_facet_id, dimension_description, label, name, semantic_type_iri FROM public.vw_classification_facets;
+ALTER VIEW pko_process_steward.classification_facets OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.classification_facets TO pko_process_steward;
+CREATE VIEW pko_process_steward.procedure_facet_assignments AS
+  SELECT facet, facet_value, name, procedure, procedure_facet_assignment_id, semantic_type_iri FROM public.vw_procedure_facet_assignments;
+ALTER VIEW pko_process_steward.procedure_facet_assignments OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.procedure_facet_assignments TO pko_process_steward;
+CREATE VIEW pko_process_steward.encoding_lifecycle_stages AS
+  SELECT activity, annotation_count, encoding_lifecycle_stage_id, is_stage_without_feedback, label, name, semantic_type_iri, stage_order FROM public.vw_encoding_lifecycle_stages;
+ALTER VIEW pko_process_steward.encoding_lifecycle_stages OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.encoding_lifecycle_stages TO pko_process_steward;
+CREATE VIEW pko_process_steward.knowledge_consumer_systems AS
+  SELECT audience, export_format, exports_standard_format, has_graph_algorithms, has_machine_learning, has_metadata_schema, has_ontology, has_reasoner, has_semantic_storage, has_taxonomy, has_thesaurus, holds_procedure_knowledge, integration_count, is_immature_graph_platform, is_knowledge_silo, is_unlinked_toolchain_component, knowledge_consumer_system_id, label, model_sync_count, name, organization, platform_capability_count, semantic_layer_component_count, semantic_type_iri, system_kind FROM public.vw_knowledge_consumer_systems;
+ALTER VIEW pko_process_steward.knowledge_consumer_systems OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.knowledge_consumer_systems TO pko_process_steward;
+CREATE VIEW pko_process_steward.consumer_system_syncs AS
+  SELECT canonical_version, canonical_version_modified_at, carries_provenance, consumer_system, consumer_system_sync_id, drops_provenance_in_transit, is_ai_fed_from_forked_copy, is_behind_canonical_version, loaded_procedure, loaded_version, loaded_version_creator, name, predates_version_change, reaches_humans, reaches_machines, semantic_type_iri, source_resource, synced_at, system_audience FROM public.vw_consumer_system_syncs;
+ALTER VIEW pko_process_steward.consumer_system_syncs OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.consumer_system_syncs TO pko_process_steward;
+CREATE VIEW pko_process_steward.integration_pathways AS
+  SELECT integration_count_on_pathway, integration_pathway_id, label, name, protocol, semantic_type_iri FROM public.vw_integration_pathways;
+ALTER VIEW pko_process_steward.integration_pathways OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.integration_pathways TO pko_process_steward;
+CREATE VIEW pko_process_steward.agent_integrations AS
+  SELECT agent, agent_integration_id, connected_at, delivery_mode, is_deployed_on_ungoverned_graph, is_one_off_connection, is_shadow_integration, knowledge_system, name, observed_answer_count, pathway, pathway_integration_count, registry_entry_key, semantic_type_iri, serves_snapshot, snapshot_is_governed FROM public.vw_agent_integrations;
+ALTER VIEW pko_process_steward.agent_integrations OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.agent_integrations TO pko_process_steward;
+CREATE VIEW pko_process_steward.grounding_snapshots AS
+  SELECT assertion_count, built_at, consistent_reasoner_run_count, deprecated_as_current_count, governance_reviewed_at, grounding_snapshot_id, is_governed, label, latest_materialized_at, name, reasoner_run_count, semantic_type_iri, served_before_materialization, served_from, served_to, served_without_consistency_check, serves_deprecated_as_current, serves_stale_role_assignments, stale_assignment_assertion_count, steward_role FROM public.vw_grounding_snapshots;
+ALTER VIEW pko_process_steward.grounding_snapshots OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.grounding_snapshots TO pko_process_steward;
+CREATE VIEW pko_process_steward.reasoner_runs AS
+  SELECT dropped_axiom_count, duration_seconds, inferred_triple_count, is_consistent, is_richness_tractability_failure, materialized_at, name, passes_schema_but_fails_reasoner, ran_at, reasoner_profile, reasoner_run_id, schema_validation_passed, semantic_type_iri, snapshot, time_budget_seconds FROM public.vw_reasoner_runs;
+ALTER VIEW pko_process_steward.reasoner_runs OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.reasoner_runs TO pko_process_steward;
+CREATE VIEW pko_process_steward.snapshot_assertions AS
+  SELECT about_agent, dc_description, dc_title, has_opaque_identifier, is_inferred, is_stale_role_assertion, lacks_dublin_core, lacks_provenance, name, object_value, predicate, presented_status, presents_deprecated_as_current, provenance_uri, semantic_type_iri, snapshot, snapshot_assertion_id, snapshot_consistent_run_count, snapshot_is_reasoned, source_assignment_is_current, source_procedure_version, source_role_assignment, source_step, source_version_status, subject_identifier FROM public.vw_snapshot_assertions;
+ALTER VIEW pko_process_steward.snapshot_assertions OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.snapshot_assertions TO pko_process_steward;
+CREATE VIEW pko_process_steward.retrieval_segments AS
+  SELECT accountable_role, applicability_condition, author_agent_kind, authored_by_agent, boundary_kind, character_count, contradicted_is_indexed, contradicts_segment, decision_point, is_inconsistent_grounding, is_indexed, is_isolated_chunk, is_machine_held_knowledge, name, position_in_process, procedure_version, related_from_count, related_segment, retrieval_segment_id, segment_text, semantic_type_iri, source_resource, step FROM public.vw_retrieval_segments;
+ALTER VIEW pko_process_steward.retrieval_segments OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.retrieval_segments TO pko_process_steward;
+CREATE VIEW pko_process_steward.knowledge_query_definitions AS
+  SELECT consolidated_distributed_sources, knowledge_query_definition_id, label, last_run_at, misses_a_layer, name, needs_ontology_and_instances, query_language, query_text, ran_over_consolidated_copy, semantic_type_iri, source_system_count, target_procedure_version, traverses_instance_layer, traverses_ontology_layer FROM public.vw_knowledge_query_definitions;
+ALTER VIEW pko_process_steward.knowledge_query_definitions OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.knowledge_query_definitions TO pko_process_steward;
+CREATE VIEW pko_process_steward.knowledge_query_sources AS
+  SELECT consumer_system, knowledge_query_source_id, name, query_definition, semantic_type_iri FROM public.vw_knowledge_query_sources;
+ALTER VIEW pko_process_steward.knowledge_query_sources OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.knowledge_query_sources TO pko_process_steward;
+CREATE VIEW pko_process_steward.assistant_answers AS
+  SELECT acted_on_without_human_judgment, answer_kind, answer_text, answered_at, answered_compliance_question_from_documents, answering_agent, arrived_after_step_ended, asked_at, asked_by_agent, asserted_next_step, assistant_answer_id, assumed_current_step, assumed_step_completed_count, cited_grounding_count, conflict_count, conflicts_with_regulation, context_step, context_step_ended_at, context_unescalated_danger_cue_count, contradicts_shared_model, delivered_despite_conflict, delivery_disposition, derivation_performed_by, document_interpretation_erred, documented_inaccuracy, execution_of_context, grounding_count, human_reviewed_by, is_explicitly_grounded_recommendation, is_not_from_own_knowledge, is_unchecked_regulated_recommendation, is_untraceable_to_source, lost_track_of_state, model_did_the_reasoning, name, needs_inference, own_knowledge_grounding_count, owner_organization, question_text, question_topic, raised_safety_concern, recommendation_rests_on_nothing_explicit, recommended_step, recommended_step_needs_human, recommended_step_regulatory_count, requirement_check_count, retrieval_mode, reviewed_for_initiative, semantic_type_iri, specified_transition_count, stale_grounding_count, stayed_silent_on_safety_problem, step_execution, task_outcome, via_integration, was_acted_on, was_correct, wrong_because_graph_was_stale FROM public.vw_assistant_answers;
+ALTER VIEW pko_process_steward.assistant_answers OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.assistant_answers TO pko_process_steward;
+CREATE VIEW pko_process_steward.answer_groundings AS
+  SELECT answer_grounding_id, assertion_is_stale, assertion_presents_deprecated, assistant_answer, cited_to_user, external_source_uri, grounds_on_stale_assertion, is_from_own_knowledge, name, retrieval_segment, semantic_type_iri, snapshot_assertion FROM public.vw_answer_groundings;
+ALTER VIEW pko_process_steward.answer_groundings OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.answer_groundings TO pko_process_steward;
+CREATE VIEW pko_process_steward.answer_requirement_checks AS
+  SELECT answer_requirement_check_id, assistant_answer, checked_at, checked_by_agent, name, requirement, semantic_type_iri, verdict FROM public.vw_answer_requirement_checks;
+ALTER VIEW pko_process_steward.answer_requirement_checks OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.answer_requirement_checks TO pko_process_steward;
+CREATE VIEW pko_process_steward.ai_tool_invocations AS
+  SELECT acted_without_declared_context, ai_tool_invocation_id, declared_function_count, declared_input_count, executed_step, function, invoked_at, invoking_agent, is_undeclared_tool_use, name, semantic_type_iri, step_execution, supplied_input_count FROM public.vw_ai_tool_invocations;
+ALTER VIEW pko_process_steward.ai_tool_invocations OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.ai_tool_invocations TO pko_process_steward;
+CREATE VIEW pko_process_steward.embedding_probes AS
+  SELECT cosine_similarity, embedding_model, embedding_probe_id, expected_relation, name, opposites_not_opposed, probed_at, semantic_type_iri, synonyms_not_similar, term_a, term_b FROM public.vw_embedding_probes;
+ALTER VIEW pko_process_steward.embedding_probes OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.embedding_probes TO pko_process_steward;
+CREATE VIEW pko_process_steward.prompt_templates AS
+  SELECT carries_procedure_instructions, child_template_count, condensation_percent, estimated_tokens, includes_rare_detail, is_disconnected_prompt_knowledge, is_unmanaged_prompt_in_use, is_verbatim_dump, label, layer, library_status, maintained_by_role, name, parent_template, prompt_template_id, semantic_type_iri, source_procedure_version, source_token_count, spends_budget_on_rare_detail, token_budget, used_by_agent FROM public.vw_prompt_templates;
+ALTER VIEW pko_process_steward.prompt_templates OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.prompt_templates TO pko_process_steward;
+CREATE VIEW pko_process_steward.knowledge_projections AS
+  SELECT audience_role, diagram_can_diverge_from_model, generated_at, generated_by_tool, is_published, knowledge_projection_id, label, name, narrative_not_generated_from_model, narrative_unreachable, notation, open_count, output_path, procedure_version, projection_kind, published_uri, semantic_type_iri, version_modified_at FROM public.vw_knowledge_projections;
+ALTER VIEW pko_process_steward.knowledge_projections OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.knowledge_projections TO pko_process_steward;
+CREATE VIEW pko_process_steward.model_annotations AS
+  SELECT annotated_at, annotated_by_agent, annotation_kind, body, entered_through, flag_bypassed_annotation_interface, is_discussion_in_authoritative_model, is_friction_without_gap, is_lost_new_knowledge, is_open_outdated_flag, lifecycle_stage, model_annotation_id, name, procedure_version, promoted_to_fragment, raised_knowledge_gap, semantic_type_iri, status, step, stored_in FROM public.vw_model_annotations;
+ALTER VIEW pko_process_steward.model_annotations OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.model_annotations TO pko_process_steward;
+CREATE VIEW pko_process_steward.knowledge_search_events AS
+  SELECT channel, dwell_seconds, found_nothing_useful, gave_up_after_seeing_results, is_unlinked_failed_search, knowledge_search_event_id, linked_knowledge_gap, linked_usability_barrier, name, opened_projection, opened_segment, query_text, result_count, searched_at, searched_by_agent, seconds_before_abandoning, semantic_type_iri, sought_procedure_version, was_abandoned FROM public.vw_knowledge_search_events;
+ALTER VIEW pko_process_steward.knowledge_search_events OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.knowledge_search_events TO pko_process_steward;
+CREATE VIEW pko_process_steward.ai_adoption_initiatives AS
+  SELECT adopted_without_bottom_line_result, agent, agent_on_notation_only_procedure, agent_on_under_specified_procedure, agentic_without_knowledge_capture, ai_adoption_initiative_id, ai_insight_count, approach, as_of_instant, automation_level, breaks_elicit_encode_connect_order, calls_for_process_knowledge_framework, connected_to_ai_at, days_since_outcome_measured, depends_on_organizational_knowledge, evaluation_context, failed_without_formalized_knowledge, hands_tacit_procedure_to_agent, is_agentic, is_ai_outcome_unmeasured, knowledge_layer_budget, label, last_outcome_measured_at, measured_bottom_line_impact, model_layer_budget, name, not_anchored_in_process_knowledge, organization, outcome, preceding_initiative, preceding_reviewed_output_count, redesign_started_at, redesigned_before_documented, reviewed_output_count, semantic_type_iri, status, target_elicitation_evidence_count, target_has_no_explicit_steps, target_procedure, target_version, target_version_issued_at, target_version_notation_only, target_version_under_specified, task_is_multi_step, underinvests_knowledge_layer, went_full_without_reviewed_partial_stage FROM public.vw_ai_adoption_initiatives;
+ALTER VIEW pko_process_steward.ai_adoption_initiatives OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.ai_adoption_initiatives TO pko_process_steward;
+CREATE VIEW pko_process_steward.knowledge_outcome_measurements AS
+  SELECT ai_initiative, baseline_access_score, baseline_error_rate, baseline_minutes_per_run, baseline_satisfaction, comparison_baseline, efficiency_gain_percent, error_rate_percent, facility, higher_access_fewer_errors, higher_access_more_efficient, higher_access_more_satisfied, informed_change_request, informed_investment_decision, is_gain_outside_procedural_scope, is_unacted_adverse_outcome, knowledge_access_score, knowledge_outcome_measurement_id, knowledge_scope, label, measured_at, measured_group, minutes_per_run, name, procedure_version, satisfaction_score, semantic_type_iri, target_error_rate_percent FROM public.vw_knowledge_outcome_measurements;
+ALTER VIEW pko_process_steward.knowledge_outcome_measurements OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.knowledge_outcome_measurements TO pko_process_steward;
+CREATE VIEW pko_process_steward.ai_insight_proposals AS
+  SELECT ai_insight_proposal_id, folded_into_change_request, grew_model_without_human_seed, insight_kind, is_unvalidated_or_stranded_insight, name, proposed_at, proposing_agent, semantic_type_iri, source_initiative, statement, target_creator_kind, target_procedure_version, validated_by_agent, validation_verdict FROM public.vw_ai_insight_proposals;
+ALTER VIEW pko_process_steward.ai_insight_proposals OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.ai_insight_proposals TO pko_process_steward;
+CREATE VIEW pko_process_steward.assistant_benchmarks AS
+  SELECT accuracy_lift_points, agent, assistant_benchmark_id, generates_database_queries, graph_grounded_accuracy_percent, grounding_snapshot, label, name, ran_at, semantic_type_iri, shows_geospatial_retrieval_lift, shows_spatial_lift_from_graph_queries, task_family, ungrounded_accuracy_percent FROM public.vw_assistant_benchmarks;
+ALTER VIEW pko_process_steward.assistant_benchmarks OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.assistant_benchmarks TO pko_process_steward;
+CREATE VIEW pko_process_steward.governed_models AS
+  SELECT as_of_instant, baseline_question_count, charter_count, collection_control_count, continuous_pipeline_stage_count, cq_review_count, cq_review_overdue, current_authority_agent, current_authority_role, current_charter, current_charter_count, current_release, current_steward_agent, current_steward_role, days_since_cq_review, days_since_registered, days_since_steward_activity, degradation_hidden_until_wrong_answer, documents_behind_count, domain_owning_organization, evaluation_context, expert_found_drift_count, experts_not_involved_throughout, first_control_adopted_at, governance_lapsed, governed_model_id, has_no_current_authority, has_no_current_steward, has_open_practice_drift, implementation_expert_count, intended_users, is_adopted_without_pilot, is_implemented_without_real_data, is_neglected_and_drifting, is_not_kept_current, is_ownerless, is_ownerless_past_a_year, is_procedure_without_change_authority, is_unmaintained, is_unmanageable_undocumented_work, is_without_originating_use_case, label, lacks_lifecycle_stage_control, last_cq_review_at, last_steward_activity_at, maintenance_expert_count, model_kind, name, open_practice_drift_count, organization_headcount, originating_use_case, pilot_count, pipeline_not_continuous, procedure, procedure_has_no_explicit_steps, publication_expert_count, real_data_mapping_run_count, registered_at, requirements_expert_count, requirements_purpose, requirements_spec_incomplete, retrieval_control_count, semantic_type_iri, stewardship_control_count, tooling_owner_role, use_control_count FROM public.vw_governed_models;
+ALTER VIEW pko_process_steward.governed_models OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.governed_models TO pko_process_steward;
+CREATE VIEW pko_process_steward.model_charters AS
+  SELECT adopted_template_without_adaptation, as_of_instant, authority_agent, authority_approval_scope, authority_organization, authority_role, charter_template, conflates_steward_and_authority, controls_precede_ownership, days_since_drift_watch, evaluation_context, governed_model, is_authority_outside_domain_owner, is_authority_scope_unstated, is_current, is_drift_watch_lapsed, is_named_but_unexercised, is_sanctioned_dual_holding, is_steward_unwritten, last_drift_watch_at, local_adaptation, model_charter_id, model_domain_owner, model_first_control_adopted_at, model_headcount, model_kind, model_review_count, model_tooling_owner_role, name, procedure_decision_count, semantic_type_iri, steward_activity_count, steward_agent, steward_is_outside_tooling, steward_responsibilities, steward_role, supersedes_charter, valid_from, valid_to FROM public.vw_model_charters;
+ALTER VIEW pko_process_steward.model_charters OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.model_charters TO pko_process_steward;
+CREATE VIEW pko_process_steward.steward_activities AS
+  SELECT activity_model, duty_kind, model_charter, name, performed_at, performed_by_agent, release, semantic_type_iri, steward_activity_id, subject FROM public.vw_steward_activities;
+ALTER VIEW pko_process_steward.steward_activities OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.steward_activities TO pko_process_steward;
+CREATE VIEW pko_process_steward.model_change_requests AS
+  SELECT acceptance_failure_total, accepted_with_failing_suite, accepted_without_structural_check, accepted_without_test_run, accepted_without_vocabulary_check, ai_to_human_move_unaudited, ai_to_human_move_without_compliance_review, approved_by_agent, approved_over_unresolved_objection, assessed_coverage_gap_count, assessed_inconsistent_count, assessed_inference_count, assessed_query_result_count, authority_agent, authority_review_skipped, authority_reviewed_at, change_layer, change_operation, classification, compliance_impact, coverage_checked_at, decided_at, declared_scale, deployed_without_target_release, disjointness_check_count, domain_change_spread_wrong_inferences, domain_inference_check_count, effective_at, governed_model, has_authority_review, human_integrity_check_count, impact_assessment, implementation_placement, integrity_check_count, integrity_decided_without_human, intuitive_disjointness_broke_individuals, is_accepted, is_accepted_without_named_approver, is_ai_to_human_move, is_minor_scope, is_misclassified_agent_swap, is_misrouted, is_modeling_change, is_schema_change, lacks_motivating_question, leaves_coverage_unchecked, lifecycle_change_by_unauthorized_agent, missed_altered_inferences, missed_altered_query_results, missed_inconsistent_instances, model_change_request_id, motivated_by_failing_question, motivating_question, motivation_kind, name, placement_decided_by_agent, placement_not_decided_by_authority, post_deploy_inconsistent_count, post_deploy_inference_count, post_deploy_query_result_count, range_consistency_check_count, requested_at, requested_by_agent, required_route, requires_authority_review, route, rule_key, semantic_type_iri, skipped_disjointness_review, skipped_domain_inference_review, skipped_range_review, stated_need, status, steward_agent, steward_approval_out_of_bounds, steward_own_change_unreviewed, structural_pass_count, target_release, title, unmotivated_and_not_returned, unresolved_objection_count, validation_run_count, vocabulary_pass_count, would_alter_inferences, would_alter_query_results, would_leave_coverage_incomplete, would_make_instances_inconsistent FROM public.vw_model_change_requests;
+ALTER VIEW pko_process_steward.model_change_requests OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.model_change_requests TO pko_process_steward;
+CREATE VIEW pko_process_steward.change_authority_rules AS
+  SELECT approval_role, breakage_response, change_authority_rule_id, change_layer, governed_model, is_rule_bypassed, misrouted_request_count, name, permitted_role, required_route, semantic_type_iri, when_permitted FROM public.vw_change_authority_rules;
+ALTER VIEW pko_process_steward.change_authority_rules OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.change_authority_rules TO pko_process_steward;
+CREATE VIEW pko_process_steward.change_impact_findings AS
+  SELECT affected_row_key, affected_table, change_impact_finding_id, description, detected_by_query, finding_kind, finding_stage, found_at, found_by_agent, model_change_request, name, query_language, semantic_type_iri FROM public.vw_change_impact_findings;
+ALTER VIEW pko_process_steward.change_impact_findings OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.change_impact_findings TO pko_process_steward;
+CREATE VIEW pko_process_steward.change_integrity_checks AS
+  SELECT change_integrity_check_id, check_kind, checked_at, checked_by_agent, checker_kind, model_change_request, name, result, semantic_type_iri FROM public.vw_change_integrity_checks;
+ALTER VIEW pko_process_steward.change_integrity_checks OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.change_integrity_checks TO pko_process_steward;
+CREATE VIEW pko_process_steward.change_objections AS
+  SELECT change_objection_id, is_unresolved, model_change_request, name, objection, raised_at, raised_by_agent, resolution, resolved_at, resolved_by_agent, semantic_type_iri FROM public.vw_change_objections;
+ALTER VIEW pko_process_steward.change_objections OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.change_objections TO pko_process_steward;
+CREATE VIEW pko_process_steward.change_validation_runs AS
+  SELECT change_validation_run_id, consistency_check_outcome, expected_chain_count, failure_count, failures_inspected_at, has_uninspected_failures, is_unconfirmed_consistency, misses_expected_inference, model_change_request, name, ran_at, release, run_purpose, semantic_type_iri, structural_check_outcome, test_count, test_suite, unproduced_chain_count, vocabulary_check_outcome FROM public.vw_change_validation_runs;
+ALTER VIEW pko_process_steward.change_validation_runs OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.change_validation_runs TO pko_process_steward;
+CREATE VIEW pko_process_steward.expected_inference_checks AS
+  SELECT chain_description, change_validation_run, expected_field, expected_inference_check_id, expected_value, is_unproduced, name, produced_value, semantic_type_iri FROM public.vw_expected_inference_checks;
+ALTER VIEW pko_process_steward.expected_inference_checks OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.expected_inference_checks TO pko_process_steward;
+CREATE VIEW pko_process_steward.model_consumers AS
+  SELECT conformance_substrate, consumer_kind, depends_on_model, label, model_consumer_id, name, owner_role, semantic_type_iri FROM public.vw_model_consumers;
+ALTER VIEW pko_process_steward.model_consumers OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.model_consumers TO pko_process_steward;
+CREATE VIEW pko_process_steward.consumer_revalidations AS
+  SELECT consumer_revalidation_id, model_consumer, name, notified_at, passed_revalidation, revalidated_at, rulebook_release, semantic_type_iri, was_notified FROM public.vw_consumer_revalidations;
+ALTER VIEW pko_process_steward.consumer_revalidations OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.consumer_revalidations TO pko_process_steward;
+CREATE VIEW pko_process_steward.model_documents AS
+  SELECT document_kind, documented_release, governed_model, is_behind_current_release, last_updated_at, model_current_release, model_document_id, name, semantic_type_iri, title FROM public.vw_model_documents;
+ALTER VIEW pko_process_steward.model_documents OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.model_documents TO pko_process_steward;
+CREATE VIEW pko_process_steward.staleness_query_runs AS
+  SELECT governed_model, name, not_surfaced_to_steward, query_text, ran_at, ran_by_agent, runner_kind, semantic_type_iri, stale_workflow_count, staleness_query_run_id, surfaced_to_steward_at, threshold_days FROM public.vw_staleness_query_runs;
+ALTER VIEW pko_process_steward.staleness_query_runs OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.staleness_query_runs TO pko_process_steward;
+CREATE VIEW pko_process_steward.external_dependency_revisions AS
+  SELECT affected_mapping_count, as_of_instant, days_since_published, evaluation_context, external_dependency_revision_id, is_untracked_revision, name, ontology_profile, published_at, revision_kind, revision_label, semantic_type_iri, tracked_at, tracked_by_agent FROM public.vw_external_dependency_revisions;
+ALTER VIEW pko_process_steward.external_dependency_revisions OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.external_dependency_revisions TO pko_process_steward;
+CREATE VIEW pko_process_steward.stakeholder_questions AS
+  SELECT answered_at, answered_by_agent, answering_role_question, as_of_instant, asked_at, asked_by_agent, channel, days_open, evaluation_context, governed_model, is_misrouted_after_triage, is_unanswerable_today, is_unanswered_past_due, is_untriaged_unanswerable, name, needs_structural_change, question_text, result_route, resulting_change_request, semantic_type_iri, stakeholder_question_id, triage_outcome, triaged_by_agent, triager_kind, unanswerable_without_scope_request, use_case FROM public.vw_stakeholder_questions;
+ALTER VIEW pko_process_steward.stakeholder_questions OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.stakeholder_questions TO pko_process_steward;
+CREATE VIEW pko_process_steward.model_expansion_requests AS
+  SELECT concept_count, decided_at, decided_by_agent, fit_decision, fit_decision_contradicts_concept_fit, governed_model, is_cross_function_expansion, model_domain_owner, model_expansion_request_id, name, requested_at, requested_by_agent, requesting_organization, requires_schema_extension, semantic_type_iri, uncovered_concept_count, workflow_description FROM public.vw_model_expansion_requests;
+ALTER VIEW pko_process_steward.model_expansion_requests OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.model_expansion_requests TO pko_process_steward;
+CREATE VIEW pko_process_steward.expansion_concept_fits AS
+  SELECT concept_label, covering_table, expansion_concept_fit_id, is_uncovered, model_expansion_request, name, semantic_type_iri FROM public.vw_expansion_concept_fits;
+ALTER VIEW pko_process_steward.expansion_concept_fits OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.expansion_concept_fits TO pko_process_steward;
+CREATE VIEW pko_process_steward.competency_question_set_entries AS
+  SELECT added_at, as_of_instant, competency_question_set_entry_id, days_since_added, evaluation_context, governance_use_count, governed_model, irrelevant_but_still_active, is_original_baseline, is_outgrown_baseline_question, name, relevance_verdict, role_question, semantic_type_iri, serves_every_governance_use, status, used_as_acceptance_criterion, used_as_test_driver, used_for_governance, used_for_scoping FROM public.vw_competency_question_set_entries;
+ALTER VIEW pko_process_steward.competency_question_set_entries OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.competency_question_set_entries TO pko_process_steward;
+CREATE VIEW pko_process_steward.competency_question_runs AS
+  SELECT answer_outcome, competency_question_run_id, cq_set_entry, defect_change_request, entry_is_original, is_baseline_regression, is_unfixed_wrong_answer, name, prior_run, prior_was_answerable, ran_at, rulebook_release, semantic_type_iri, was_answerable FROM public.vw_competency_question_runs;
+ALTER VIEW pko_process_steward.competency_question_runs OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.competency_question_runs TO pko_process_steward;
+CREATE VIEW pko_process_steward.competency_question_reviews AS
+  SELECT competency_question_review_id, deprecation_candidates_raised, governed_model, name, outcome, questions_added, reviewed_at, reviewed_by_agent, semantic_type_iri FROM public.vw_competency_question_reviews;
+ALTER VIEW pko_process_steward.competency_question_reviews OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.competency_question_reviews TO pko_process_steward;
+CREATE VIEW pko_process_steward.quality_criteria AS
+  SELECT assessment_count, definition, is_stated, label, name, quality_criterion_id, semantic_type_iri FROM public.vw_quality_criteria;
+ALTER VIEW pko_process_steward.quality_criteria OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.quality_criteria TO pko_process_steward;
+CREATE VIEW pko_process_steward.quality_assessments AS
+  SELECT assessed_at, assessed_by_agent, method, name, quality_assessment_id, quality_criterion, rulebook_release, score, semantic_type_iri FROM public.vw_quality_assessments;
+ALTER VIEW pko_process_steward.quality_assessments OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.quality_assessments TO pko_process_steward;
+CREATE VIEW pko_process_steward.term_definitions AS
+  SELECT ai_draft_adopted_unrevised, drafted_at, drafted_by_agent, drafter_kind, excludes, includes, name, neighboring_terms, revised_at, revised_by_agent, rulebook_table, semantic_type_iri, term_definition_id FROM public.vw_term_definitions;
+ALTER VIEW pko_process_steward.term_definitions OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.term_definitions TO pko_process_steward;
+CREATE VIEW pko_process_steward.model_proposals AS
+  SELECT adopted_in_data_version, adopted_in_release, adoption_not_answered_by_person, ai_alignment_decided_by_ai, ai_axiom_without_human_review, ai_instance_data_loaded_without_steward, ai_question_adopted_unvetted, approver_unknown, awaits_engineer_vetting, awaits_steward_approval, committed_at, committed_by_agent, committed_outside_any_version, committed_without_expert_review, committer_kind, content, entered_without_quality_check, governed_model, has_no_human_touchpoint, is_ai_candidate, is_only_proposed, is_pending_alignment_decision, model_proposal_id, model_steward_agent, name, proposal_kind, proposed_at, proposed_by_agent, proposer_kind, quality_check_outcome, review_outcome, reviewed_at, reviewed_by_agent, reviewer_kind, semantic_type_iri, source_document FROM public.vw_model_proposals;
+ALTER VIEW pko_process_steward.model_proposals OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.model_proposals TO pko_process_steward;
+CREATE VIEW pko_process_steward.assignment_instant_checks AS
+  SELECT assignment_agent, assignment_agent_version, assignment_instant_check_id, assignment_role, assignment_valid_from, assignment_valid_to, audit_instant, audit_question, held_step_at_instant, name, role_assignment, semantic_type_iri, step, step_role FROM public.vw_assignment_instant_checks;
+ALTER VIEW pko_process_steward.assignment_instant_checks OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.assignment_instant_checks TO pko_process_steward;
+CREATE VIEW pko_process_steward.instance_data_versions AS
+  SELECT conforms_to_release, data_version_label, governed_model, instance_data_version_id, logged_change_count, name, semantic_type_iri, snapshot_at FROM public.vw_instance_data_versions;
+ALTER VIEW pko_process_steward.instance_data_versions OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.instance_data_versions TO pko_process_steward;
+CREATE VIEW pko_process_steward.domain_coverage_areas AS
+  SELECT area_label, covering_table, domain_coverage_area_id, governed_model, is_uncovered_area, name, required_concept, semantic_type_iri FROM public.vw_domain_coverage_areas;
+ALTER VIEW pko_process_steward.domain_coverage_areas OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.domain_coverage_areas TO pko_process_steward;
+CREATE VIEW pko_process_steward.governance_stage_controls AS
+  SELECT control, governance_stage_control_id, governed_model, is_continuous, is_continuous_pipeline_stage, name, semantic_type_iri, stage FROM public.vw_governance_stage_controls;
+ALTER VIEW pko_process_steward.governance_stage_controls OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.governance_stage_controls TO pko_process_steward;
+CREATE VIEW pko_process_steward.process_design_decisions AS
+  SELECT days_before_recorded, decided_at, decided_by_agent, decision, is_commitment_without_rationale, is_recorded_after_the_fact, name, procedure_version, process_design_decision_id, rationale, recorded_at, semantic_type_iri, step FROM public.vw_process_design_decisions;
+ALTER VIEW pko_process_steward.process_design_decisions OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.process_design_decisions TO pko_process_steward;
+CREATE VIEW pko_process_steward.model_change_log_entries AS
+  SELECT affected_table, alters_logical_model, cannot_be_audited, cannot_be_rolled_back, change_layer, change_operation, change_summary, changed_by_agent, governed_model, instance_data_version, invalidates_instances, is_additive_schema_change, is_backward_incompatible, is_class_removal_or_rename, is_inconsistent_disjointness, is_instance_change_in_schema_release, is_invalidating_domain_range_change, is_schema_change_without_increment, is_unexplained_modification, is_untraceable_breaking_change, logged_at, model_change_log_entry_id, model_change_request, motivating_question, name, prior_state_commit, rationale, rationale_without_question, release, release_decision_undocumented, release_version, reverts_entry, schema_change_without_request, semantic_type_iri, terms_affected FROM public.vw_model_change_log_entries;
+ALTER VIEW pko_process_steward.model_change_log_entries OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.model_change_log_entries TO pko_process_steward;
+CREATE VIEW pko_process_steward.drift_observations AS
+  SELECT description, detected_by, drift_cause, drift_follows_clean_release, drift_kind, drift_observation_id, governed_model, is_open_practice_mismatch, name, observed_at, observed_by_agent, procedure_version, release_issued_at, release_passed_validation, resolved_at, semantic_type_iri, since_release, went_undetected_by_passing_suite FROM public.vw_drift_observations;
+ALTER VIEW pko_process_steward.drift_observations OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.drift_observations TO pko_process_steward;
+CREATE VIEW pko_process_steward.sourcing_functions AS
+  SELECT audit_item_count, capture_initiative_count, claims_how_without_doing, client_organization, coverage_gap_count, delivers_own_product, dependency_count, designs_what_it_cannot_build, executing_organization, is_business_process_outsourcing, is_knowledge_process_outsourcing, is_method_knowledge_held_outside, is_outsourced, is_outsourced_vital_expertise_process, is_strategically_vital, is_unaudited_function, is_uncaptured_priority_process, is_vital_expertise_classed_non_core, is_vital_expertise_process, is_what_how_split, label, method_holder, method_shortfall_count, name, procedure, provider_ip_documentation_count, semantic_type_iri, sourced_since, sourcing_class, sourcing_function_id, sourcing_rationale, specification_audit_count, specification_holder, specification_shortfall_count, work_nature FROM public.vw_sourcing_functions;
+ALTER VIEW pko_process_steward.sourcing_functions OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.sourcing_functions TO pko_process_steward;
+CREATE VIEW pko_process_steward.knowledge_audits AS
+  SELECT conducted_at, conducted_by_agent, finding_count, knowledge_audit_id, name, organization, problem_framing, semantic_type_iri, title, treats_deficit_as_cost_problem FROM public.vw_knowledge_audits;
+ALTER VIEW pko_process_steward.knowledge_audits OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.knowledge_audits TO pko_process_steward;
+CREATE VIEW pko_process_steward.knowledge_audit_items AS
+  SELECT client_organization, has_internal_shortfall, held_internal_level, internal_holding_team_count, is_coverage_gap, is_knowledge_dependency, is_single_team_silo, is_unnamed_finding, knowledge_area, knowledge_audit, knowledge_audit_item_id, knowledge_kind, name, named_knowledge_gap, needed_level, provider_held_level, provider_holding_knowledge, semantic_type_iri, sourcing_function FROM public.vw_knowledge_audit_items;
+ALTER VIEW pko_process_steward.knowledge_audit_items OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.knowledge_audit_items TO pko_process_steward;
+CREATE VIEW pko_process_steward.knowledge_capture_initiatives AS
+  SELECT knowledge_capture_initiative_id, knowledge_method, lead_agent, name, semantic_type_iri, sourcing_function, started_at, status FROM public.vw_knowledge_capture_initiatives;
+ALTER VIEW pko_process_steward.knowledge_capture_initiatives OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.knowledge_capture_initiatives TO pko_process_steward;
+CREATE VIEW pko_process_steward.knowledge_workforce_positions AS
+  SELECT discipline, filled_by_agent, knowledge_workforce_position_id, name, opened_at, organization, role, semantic_type_iri, status FROM public.vw_knowledge_workforce_positions;
+ALTER VIEW pko_process_steward.knowledge_workforce_positions OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.knowledge_workforce_positions TO pko_process_steward;
+CREATE VIEW pko_process_steward.provider_engagements AS
+  SELECT client_organization, documentation_ownership, has_knowledge_access_clause, is_active, is_knowledge_access_unsecured, is_one_way_learning, is_short_term_without_joint_knowledge, is_unplanned_knowledge_return, joint_deliverable_count, knowledge_duty_terms, knowledge_return_plan, lacks_knowledge_deliverables, name, obliges_knowledge_flow_back, provider, provider_engagement_id, provider_treats_know_how_as_differentiator, relied_dependency_count, required_deliverable_count, semantic_type_iri, sourcing_function, started_at, status, term_months, to_client_delivered_count, to_client_required_count, to_provider_delivered_count FROM public.vw_provider_engagements;
+ALTER VIEW pko_process_steward.provider_engagements OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.provider_engagements TO pko_process_steward;
+CREATE VIEW pko_process_steward.knowledge_deliverables AS
+  SELECT delivered_at, direction, due_at, is_delivered, knowledge_deliverable_id, name, provider_engagement, semantic_type_iri, title FROM public.vw_knowledge_deliverables;
+ALTER VIEW pko_process_steward.knowledge_deliverables OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.knowledge_deliverables TO pko_process_steward;
+CREATE VIEW pko_process_steward.corporate_governance_programs AS
+  SELECT corporate_governance_program_id, covers_compliance, covers_data_quality, covers_information_management, covers_knowledge_management, is_compliance_only, label, launched_at, name, organization, semantic_type_iri, sponsor_discipline FROM public.vw_corporate_governance_programs;
+ALTER VIEW pko_process_steward.corporate_governance_programs OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.corporate_governance_programs TO pko_process_steward;
+CREATE VIEW pko_process_steward.records_retention_policies AS
+  SELECT governance_program, is_legal_led_knowledge_destruction, knowledge_useful_life_years, name, program_sponsor_discipline, record_class, records_retention_policy_id, retention_driver, retention_years, semantic_type_iri FROM public.vw_records_retention_policies;
+ALTER VIEW pko_process_steward.records_retention_policies OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.records_retention_policies TO pko_process_steward;
+CREATE VIEW pko_process_steward.ai_registry_model_versions AS
+  SELECT ai_registry_model_version_id, dc_creator, dc_date, dc_description, dc_has_version, dc_identifier, dc_title, feed_received_at, graph_individual_count, is_live_but_unregistered_in_graph, live_production_deployment_count, name, registry_system, semantic_type_iri FROM public.vw_ai_registry_model_versions;
+ALTER VIEW pko_process_steward.ai_registry_model_versions OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.ai_registry_model_versions TO pko_process_steward;
+CREATE VIEW pko_process_steward.ai_model_deployments AS
+  SELECT agent_identifier, ai_model_deployment_id, artifact_link_count, as_of_instant, assignment_link_count, deployed_at, environment, evaluation_context, is_isolated_registry_fact, is_live_in_production, model_version, name, retired_at, semantic_type_iri FROM public.vw_ai_model_deployments;
+ALTER VIEW pko_process_steward.ai_model_deployments OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.ai_model_deployments TO pko_process_steward;
+CREATE VIEW pko_process_steward.ai_model_evaluations AS
+  SELECT ai_model_evaluation_id, evaluated_at, evaluation_suite, metric, model_version, name, pass_threshold, passed, score, semantic_type_iri FROM public.vw_ai_model_evaluations;
+ALTER VIEW pko_process_steward.ai_model_evaluations OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.ai_model_evaluations TO pko_process_steward;
+CREATE VIEW pko_process_steward.ai_agent_accountabilities AS
+  SELECT accountable_agent, accountable_agent_kind, ai_agent, ai_agent_accountability_id, as_of_instant, evaluation_context, is_accountable_to_non_person, is_current, is_current_human_accountability, name, semantic_type_iri, valid_from, valid_to FROM public.vw_ai_agent_accountabilities;
+ALTER VIEW pko_process_steward.ai_agent_accountabilities OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.ai_agent_accountabilities TO pko_process_steward;
+CREATE VIEW pko_process_steward.agent_upgrade_assessments AS
+  SELECT agent_upgrade_assessment_id, assessed_at, assessed_by_agent, assessment_method, attributed_artifact_count, candidate_agent, current_agent, listed_affected_step_count, listed_affected_steps_note, missed_traversed_impact, name, semantic_type_iri, traversed_downstream_step_count FROM public.vw_agent_upgrade_assessments;
+ALTER VIEW pko_process_steward.agent_upgrade_assessments OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.agent_upgrade_assessments TO pko_process_steward;
+CREATE VIEW pko_process_steward.assignment_update_policies AS
+  SELECT adopted_at, assignment_update_policy_id, label, model_drives_routing, name, semantic_type_iri, trigger_owner_role, update_sla_hours FROM public.vw_assignment_update_policies;
+ALTER VIEW pko_process_steward.assignment_update_policies OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.assignment_update_policies TO pko_process_steward;
+CREATE VIEW pko_process_steward.role_assignment_update_tasks AS
+  SELECT as_of_instant, changed_role_instead_of_assignment, completed_at, dependent_execution, dependent_run_role_step_count, dependent_run_started_at, dependent_run_version, elapsed_minutes, ending_assignment, ending_role, evaluation_context, exceeded_update_sla, failed_notice_count, governing_policy, lacks_named_trigger_owner, missed_next_dependent_run, name, policy_sla_hours, policy_trigger_owner_role, reason, replacement_assignment, replacement_role, role, role_assignment_update_task_id, semantic_type_iri, stale_assignment_broke_routing, trigger_event, trigger_occurred_at, trigger_owner_cover_count, triggered_at, triggered_by_agent FROM public.vw_role_assignment_update_tasks;
+ALTER VIEW pko_process_steward.role_assignment_update_tasks OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.role_assignment_update_tasks TO pko_process_steward;
+CREATE VIEW pko_process_steward.assignment_routed_notices AS
+  SELECT assignment_routed_notice_id, name, notice_kind, notice_role, notice_step, procedure_execution, reached_wrong_person_or_nobody, recipient_held_role_when_sent, recipient_latest_valid_to, recipient_open_ended_count, recipient_pair_assignment_count, recipient_role_key, recipient_valid_from, routed_around_model, routed_to_agent, routing_source, semantic_type_iri, sent_at FROM public.vw_assignment_routed_notices;
+ALTER VIEW pko_process_steward.assignment_routed_notices OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.assignment_routed_notices TO pko_process_steward;
+CREATE VIEW pko_process_steward.practitioner_expertise AS
+  SELECT agent, cue, elicitation_session, expert_kind, foresight_confirmed, is_unexplained_foresight, knows_more_than_can_say, name, practitioner_expertise_id, procedure, reliable_call_count, semantic_type_iri, step, unstated_basis FROM public.vw_practitioner_expertise;
+ALTER VIEW pko_process_steward.practitioner_expertise OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.practitioner_expertise TO pko_process_steward;
+CREATE VIEW pko_process_steward.critical_incidents AS
+  SELECT account, critical_incident_id, elicitation_session, has_surfaced_judgment, is_adverse_or_improvised, judgment_fragment, name, narrator, occurred_at, outcome, procedure_version, revealed_judgment, semantic_type_iri, step FROM public.vw_critical_incidents;
+ALTER VIEW pko_process_steward.critical_incidents OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.critical_incidents TO pko_process_steward;
+CREATE VIEW pko_process_steward.interview_probes AS
+  SELECT answer, elicitation_session, interview_probe_id, name, probe_kind, prompt, semantic_type_iri, shortfall_answer, step, why_answer FROM public.vw_interview_probes;
+ALTER VIEW pko_process_steward.interview_probes OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.interview_probes TO pko_process_steward;
+CREATE VIEW pko_process_steward.observed_actions AS
+  SELECT action_description, action_kind, captured_as_fragment, counterfactual_answer, counterfactual_condition, elicitation_session, has_counterfactual_answer, has_recorded_reason, is_missed_step_left_uncaptured, is_omitted_from_own_account, is_small_choice, is_unofficial_workaround, is_watched_not_questioned, mentioned_in_own_account, name, observed_action_id, practitioner, semantic_type_iri, stated_reason, step FROM public.vw_observed_actions;
+ALTER VIEW pko_process_steward.observed_actions OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.observed_actions TO pko_process_steward;
+CREATE VIEW pko_process_steward.elicitation_participants AS
+  SELECT agent, elicitation_participant_id, elicitation_session, is_knowledge_consumer, is_knowledge_engineer, is_knowledge_producer, is_practitioner, is_subject_matter_expert, is_usually_invited, knowledge_flow, name, participation_role, process_stake, semantic_type_iri FROM public.vw_elicitation_participants;
+ALTER VIEW pko_process_steward.elicitation_participants OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.elicitation_participants TO pko_process_steward;
+CREATE VIEW pko_process_steward.representation_reviews AS
+  SELECT decision, name, procedure_version, representation_review_id, review_purpose, reviewed_at, reviewer_agent, reviewer_is_affected_sme, semantic_type_iri FROM public.vw_representation_reviews;
+ALTER VIEW pko_process_steward.representation_reviews OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.representation_reviews TO pko_process_steward;
+CREATE VIEW pko_process_steward.workflow_view_divergences AS
+  SELECT elicitation_session, holder_a, holder_b, is_reconciled, is_surfaced_but_unreconciled, name, procedure_version, reconciled_at, reconciled_into_fragment, reconciled_statement, semantic_type_iri, step, view_a, view_b, workflow_view_divergence_id FROM public.vw_workflow_view_divergences;
+ALTER VIEW pko_process_steward.workflow_view_divergences OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.workflow_view_divergences TO pko_process_steward;
+CREATE VIEW pko_process_steward.expert_cognitions AS
+  SELECT agent, applied_automatically, captured_exceptions, cognition_kind, elicitation_session, expert_cognition_id, expert_stated_exceptions, is_automatic_heuristic, is_heuristic_oversimplified, is_mental_model, name, semantic_type_iri, statement, step FROM public.vw_expert_cognitions;
+ALTER VIEW pko_process_steward.expert_cognitions OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.expert_cognitions TO pko_process_steward;
+CREATE VIEW pko_process_steward.concept_ladder_rungs AS
+  SELECT concept_ladder_rung_id, elicitation_session, is_decomposition_rung, is_ultimate_goal, ladder_level, name, rung_kind, semantic_type_iri, statement, step, step_top_level FROM public.vw_concept_ladder_rungs;
+ALTER VIEW pko_process_steward.concept_ladder_rungs OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.concept_ladder_rungs TO pko_process_steward;
+CREATE VIEW pko_process_steward.repertory_grid_constructs AS
+  SELECT agent, dimension, elicitation_session, is_never_stated_dimension, is_recorded_discriminating_dimension, name, pole_a, pole_b, repertory_grid_construct_id, semantic_type_iri, separates_situations, situations_compared, was_stated_unprompted FROM public.vw_repertory_grid_constructs;
+ALTER VIEW pko_process_steward.repertory_grid_constructs OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.repertory_grid_constructs TO pko_process_steward;
+CREATE VIEW pko_process_steward.knowledge_conversions AS
+  SELECT conversion_mode, description, elicitation_session, from_form, is_mode_inconsistent_with_forms, knowledge_conversion_id, name, occurred_at, result_fragment, semantic_type_iri, to_form FROM public.vw_knowledge_conversions;
+ALTER VIEW pko_process_steward.knowledge_conversions OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.knowledge_conversions TO pko_process_steward;
+CREATE VIEW pko_process_steward.knowledge_holdings AS
+  SELECT carrier, formalized_as, formalized_fragment_session, handles_exception_or_discretion, holder_agent, holder_is_veteran, is_formalized_without_elicitation_work, is_judgment_outside_document, is_procedural_knowledge, is_unformalized_process_knowledge, is_unsaid_in_sop, is_veteran_discretion, knowledge_form, knowledge_holding_id, name, procedure_version, semantic_type_iri, snapshot, statement, step FROM public.vw_knowledge_holdings;
+ALTER VIEW pko_process_steward.knowledge_holdings OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.knowledge_holdings TO pko_process_steward;
+CREATE VIEW pko_process_steward.fragment_corroborations AS
+  SELECT agent, agrees, elicitation_session, fragment_corroboration_id, knowledge_fragment, name, semantic_type_iri FROM public.vw_fragment_corroborations;
+ALTER VIEW pko_process_steward.fragment_corroborations OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.fragment_corroborations TO pko_process_steward;
+CREATE VIEW pko_process_steward.knowledge_test_outcomes AS
+  SELECT after_test_value, baseline_value, higher_is_better, is_improved, knowledge_test_outcome_id, measure, name, outcome_area, procedure, semantic_type_iri FROM public.vw_knowledge_test_outcomes;
+ALTER VIEW pko_process_steward.knowledge_test_outcomes OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.knowledge_test_outcomes TO pko_process_steward;
+CREATE VIEW pko_process_steward.know_how_carriers AS
+  SELECT as_of_instant, builds_on_know_how, builds_on_same_community_know_how, carrier_kind, community_of_practice, days_served_to_as_of, days_served_to_departure, days_until_holder_departure, dependency_community, evaluation_context, held_since, holder_agent, holder_departure_at, holder_facility, holder_is_still_engaged, holder_service_started_at, holder_tenure_years, is_at_risk_of_imminent_loss, is_captured, is_delegated_to_unfit_source, is_held_by_current_practitioner, is_held_by_departed_holder, is_held_in_both_forms, is_held_only_by_departed, is_holder_leaving_soon, is_in_public_references, is_in_written_procedure, is_overlooked_living_holder, is_trained_skill, is_untransferred_veteran_know_how, is_veteran_held, know_how_carrier_id, know_how_kind, lost_accumulation_years, must_be_relearned_if_holder_leaves, name, organization, procedure, replacement_plan, repository_entry_count, semantic_type_iri, source_relationship_count, topic, transfer_count, transfer_stops_without_veteran, work_medium FROM public.vw_know_how_carriers;
+ALTER VIEW pko_process_steward.know_how_carriers OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.know_how_carriers TO pko_process_steward;
+CREATE VIEW pko_process_steward.knowledge_transfers AS
+  SELECT channel, community_of_practice, from_agent, from_organization, is_ambient_absorption_by_non_practitioner, is_social_network_channel, is_traditional_channel, know_how, knowledge_transfer_id, name, occurred_at, on_allocated_time, recipient_agent, recipient_role_count, semantic_type_iri FROM public.vw_knowledge_transfers;
+ALTER VIEW pko_process_steward.knowledge_transfers OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.knowledge_transfers TO pko_process_steward;
+CREATE VIEW pko_process_steward.knowledge_repository_entries AS
+  SELECT as_of_instant, author_agent, author_agent_kind, author_is_still_engaged, authored_on_allocated_time, created_at, credits_source_expert, days_since_updated, evaluation_context, fed_from_execution, is_execution_feedback, is_machine_authored, is_stale, is_uncredited_expert_know_how, know_how, knowledge_repository_entry_id, last_updated_at, name, outlives_author_tenure, owner_organization, procedure, review_interval_days, semantic_type_iri, source_expert, title, written_for_audience FROM public.vw_knowledge_repository_entries;
+ALTER VIEW pko_process_steward.knowledge_repository_entries OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.knowledge_repository_entries TO pko_process_steward;
+CREATE VIEW pko_process_steward.community_memberships AS
+  SELECT agent, community_membership_id, community_of_practice, community_organization, is_external_member, is_specialist, joined_at, member_organization, name, semantic_type_iri FROM public.vw_community_memberships;
+ALTER VIEW pko_process_steward.community_memberships OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.community_memberships TO pko_process_steward;
+CREATE VIEW pko_process_steward.source_relationships AS
+  SELECT is_extractive_relationship, is_unnegotiated_power_gap, knowledge_engineer, name, negotiated_agreement, power_dynamic, procedure, semantic_type_iri, source_agent, source_relationship_id, source_standing, started_at, trust_building_practice, trust_level, withholding_motive, withholding_observed FROM public.vw_source_relationships;
+ALTER VIEW pko_process_steward.source_relationships OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.source_relationships TO pko_process_steward;
+CREATE VIEW pko_process_steward.department_process_accounts AS
+  SELECT account_summary, conflicting_department, conflicts_with_account, department, department_process_account_id, engaged_at, is_awaiting_engagement, is_conflicting_account, is_unresolved_disagreement, name, procedure, resolution_practice, resolved_at, semantic_type_iri, shaping_interest, stakeholder_agent FROM public.vw_department_process_accounts;
+ALTER VIEW pko_process_steward.department_process_accounts OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.department_process_accounts TO pko_process_steward;
+CREATE VIEW pko_process_steward.problem_occurrences AS
+  SELECT has_been_solved_before, has_consultable_specialist, is_relearned_solved_problem, is_solved, is_solved_without_recorded_solution, is_turnover_regression, name, occurred_at, prior_occurrence, prior_solution_entry, prior_solver, prior_solver_is_still_engaged, prior_was_solved, problem_occurrence_id, problem_signature, procedure, semantic_type_iri, solution_entry, solved_at, solved_by_agent, solver_is_still_engaged FROM public.vw_problem_occurrences;
+ALTER VIEW pko_process_steward.problem_occurrences OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.problem_occurrences TO pko_process_steward;
+CREATE VIEW pko_process_steward.onboarding_records AS
+  SELECT as_of_instant, days_since_start, days_to_proficiency, evaluation_context, is_proficient, is_recent_start, is_starting_from_nothing, name, new_starter, onboarding_record_id, procedure, procedure_departed_only_count, procedure_repository_entry_count, proficient_at, semantic_type_iri, started_at, used_captured_knowledge FROM public.vw_onboarding_records;
+ALTER VIEW pko_process_steward.onboarding_records OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.onboarding_records TO pko_process_steward;
+CREATE VIEW pko_process_steward.sharing_recognitions AS
+  SELECT awarded_at, for_contribution, name, organization, recognition_kind, recognized_agent, semantic_type_iri, sharing_recognition_id FROM public.vw_sharing_recognitions;
+ALTER VIEW pko_process_steward.sharing_recognitions OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.sharing_recognitions TO pko_process_steward;
+CREATE VIEW pko_process_steward.capability_declines AS
+  SELECT capability_decline_id, decline_started_at, evidence, follows_preceding_stage_decline, name, organization, preceding_decline_started_at, preceding_stage, preceding_stage_decline, semantic_type_iri, stage FROM public.vw_capability_declines;
+ALTER VIEW pko_process_steward.capability_declines OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.capability_declines TO pko_process_steward;
+CREATE VIEW pko_process_steward.knowledge_traces AS
+  SELECT contradicted_document, contradicted_document_revised_at, derivation_route, derived_by_agent, derived_by_agent_kind, has_incomplete_provenance, is_aspect_unsupported_by_source_kind, is_document_origin, is_document_start_never_extended, is_document_start_never_validated, is_document_trailing_practice, is_machine_derived, is_self_validated, is_source_changed_since_taken, is_unfaithful_to_source, knowledge_trace_id, modeled_duration_minutes, name, prescribed_versus_enacted, procedure_version, provenance_statement, requirement, semantic_type_iri, source_collected_at, source_is_document, source_is_people_capture, source_is_practice_evidence, source_material, source_material_kind, source_revised_at, source_stated_duration_minutes, source_statement, step, step_elicited_extension_count, step_elicited_validation_count, target_kind, trace_role, traced_aspect, validated_at, validated_by_agent FROM public.vw_knowledge_traces;
+ALTER VIEW pko_process_steward.knowledge_traces OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.knowledge_traces TO pko_process_steward;
+CREATE VIEW pko_process_steward.mined_flow_edges AS
+  SELECT documented_transition_count, from_step, intent_decision_by, is_bottleneck, is_mined_path_recorded_as_intent_without_decision, is_undocumented_path, median_wait_minutes, mined_flow_edge_id, name, observed_case_count, process_mining_run, recorded_stance, semantic_type_iri, to_step, to_step_expected_minutes FROM public.vw_mined_flow_edges;
+ALTER VIEW pko_process_steward.mined_flow_edges OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.mined_flow_edges TO pko_process_steward;
+CREATE VIEW pko_process_steward.collection_occasions AS
+  SELECT as_of_instant, cadence_days, captured_material_count, collection_occasion_id, days_since_held, evaluation_context, is_held_without_capture, is_lapsed, label, last_held_at, name, occasion_kind, procedure, semantic_type_iri FROM public.vw_collection_occasions;
+ALTER VIEW pko_process_steward.collection_occasions OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.collection_occasions TO pko_process_steward;
+CREATE VIEW pko_process_steward.stakeholder_perspectives AS
+  SELECT conflict_partner_count, conflicts_with_perspective, disposition, holder_role, is_dissenting_view_not_kept_with_source, is_in_conflict, name, position, procedure_version, semantic_type_iri, source_material, source_material_kind, stakeholder_perspective_id, step FROM public.vw_stakeholder_perspectives;
+ALTER VIEW pko_process_steward.stakeholder_perspectives OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.stakeholder_perspectives TO pko_process_steward;
+CREATE VIEW pko_process_steward.model_pilots AS
+  SELECT finding, governed_model, model_pilot_id, name, semantic_type_iri, site, started_at FROM public.vw_model_pilots;
+ALTER VIEW pko_process_steward.model_pilots OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.model_pilots TO pko_process_steward;
+CREATE VIEW pko_process_steward.model_activity_experts AS
+  SELECT expert, governed_model, lot_activity, model_activity_expert_id, name, semantic_type_iri FROM public.vw_model_activity_experts;
+ALTER VIEW pko_process_steward.model_activity_experts OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.model_activity_experts TO pko_process_steward;
+CREATE VIEW pko_process_steward.model_data_mapping_runs AS
+  SELECT data_origin, governed_model, model_data_mapping_run_id, name, ran_at, semantic_type_iri, triples_produced FROM public.vw_model_data_mapping_runs;
+ALTER VIEW pko_process_steward.model_data_mapping_runs OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.model_data_mapping_runs TO pko_process_steward;
+CREATE VIEW pko_process_steward.artifact_handoffs AS
+  SELECT artifact_handoff_id, declared_consumer_step, declared_source_step, disagrees_with_declared_variable, from_step, name, semantic_type_iri, step_variable, to_step FROM public.vw_artifact_handoffs;
+ALTER VIEW pko_process_steward.artifact_handoffs OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.artifact_handoffs TO pko_process_steward;
+CREATE VIEW pko_process_steward.app_actions AS
+  SELECT app_action_id, description, input_field_count, is_unpermitted, is_unproven_write, label, name, operation, owning_role, policy, policy_command, policy_command_disagrees, policy_denial_test_count, route_path, semantic_type_iri, story_episode, target_table, watched_field, watched_field_is_witness FROM public.vw_app_actions;
+ALTER VIEW pko_process_steward.app_actions OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.app_actions TO pko_process_steward;
+CREATE VIEW pko_process_steward.app_action_fields AS
+  SELECT app_action, app_action_field_id, choices_from, field_label, fixed_value, input_kind, name, semantic_type_iri, sort_order, target_field, target_field_type, writes_derived_field FROM public.vw_app_action_fields;
+ALTER VIEW pko_process_steward.app_action_fields OWNER TO postgres;
+GRANT SELECT ON pko_process_steward.app_action_fields TO pko_process_steward;
+CREATE VIEW pko_knowledge_authority.access_denial_tests AS
+  SELECT access_denial_test_id, expected_visible, forbidden_column, forbidden_row_id, forbidden_table, has_run, is_leak, is_passing, is_positive_control, is_unproven, last_run_at, name, observed_visible, principal, rationale, semantic_type_iri, target_policy, target_table FROM public.vw_access_denial_tests;
+ALTER VIEW pko_knowledge_authority.access_denial_tests OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.access_denial_tests TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.access_policies AS
+  SELECT access_policy_id, check_predicate, command, denial_test_count, is_unrestricted, is_unrestricted_non_admin_grant, is_unwitnessed_write, is_write_command, name, principal, principal_is_admin, rationale, references_inference, row_predicate, semantic_type_iri, target_table FROM public.vw_access_policies;
+ALTER VIEW pko_knowledge_authority.access_policies OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.access_policies TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.access_principals AS
+  SELECT access_principal_id, domain_role, grant_count, has_no_access, is_administrator, is_over_privileged, label, name, organization_scope, pg_role_name, policy_count, role_label, schema_name, semantic_type_iri, visible_table_count FROM public.vw_access_principals;
+ALTER VIEW pko_knowledge_authority.access_principals OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.access_principals TO pko_knowledge_authority;
 CREATE VIEW pko_knowledge_authority.actions AS
   SELECT action_id, definition, label, name, semantic_type_iri FROM public.vw_actions;
 ALTER VIEW pko_knowledge_authority.actions OWNER TO postgres;
@@ -1374,7 +3995,7 @@ CREATE VIEW pko_knowledge_authority.agent_decision_records AS
 ALTER VIEW pko_knowledge_authority.agent_decision_records OWNER TO postgres;
 GRANT SELECT ON pko_knowledge_authority.agent_decision_records TO pko_knowledge_authority;
 CREATE VIEW pko_knowledge_authority.agents AS
-  SELECT agent_id, agent_kind, at_risk_reliance_count, boundary_violation_count, contact_address, count_of_current_role_assignments, decision_count, display_name, draft_decision_count, draft_rewrite_rate_percent, has_at_risk_knowledge_reliance, is_non_human, is_operating_outside_boundary, is_recognized_broker, is_still_engaged, name, organization, overridden_decision_count, overridden_draft_count, override_rate_percent, semantic_type_iri, times_named_as_broker, version_or_employment_key FROM public.vw_agents;
+  SELECT accountability_assertion_count, agent_id, agent_kind, ai_task_completed_count, ai_task_completion_percent, answer_count, artifact_blast_radius_step_count, at_risk_reliance_count, attributed_artifact_count, boundary_violation_count, category_not_available_as_inference, community_count, contact_address, count_of_current_role_assignments, current_accountable_human_count, decision_count, departure_at, display_name, downstream_of_held_steps_count, draft_decision_count, draft_rewrite_rate_percent, has_artifact_blast_radius, has_at_risk_knowledge_reliance, has_produced_artifacts, inferred_category_count, is_ai_agent_not_filled_from_registry, is_ai_agent_without_accountable_human, is_ai_agent_without_model_version, is_below_task_completion_target, is_boundary_spanner, is_non_human, is_operating_outside_boundary, is_organization_agent, is_recognized_broker, is_still_engaged, is_unclassified_agent, is_unidentified_boundary_spanner, is_unrewarded_sharer, is_untracked_ai_consumer, lacks_runtime_knowledge_integration, lacks_time_to_mentor, located_know_how_count, name, organization, overridden_decision_count, overridden_draft_count, override_rate_percent, protected_mentoring_hours_per_week, recognition_count, registry_version_match_count, represents_organization, required_mentoring_hours_per_week, runtime_integration_count, search_event_count, semantic_type_iri, service_started_at, sna_identification_count, times_named_as_broker, transfers_given_count, version_or_employment_key FROM public.vw_agents;
 ALTER VIEW pko_knowledge_authority.agents OWNER TO postgres;
 GRANT SELECT ON pko_knowledge_authority.agents TO pko_knowledge_authority;
 CREATE VIEW pko_knowledge_authority.app_nav_groups AS
@@ -1382,7 +4003,7 @@ CREATE VIEW pko_knowledge_authority.app_nav_groups AS
 ALTER VIEW pko_knowledge_authority.app_nav_groups OWNER TO postgres;
 GRANT SELECT ON pko_knowledge_authority.app_nav_groups TO pko_knowledge_authority;
 CREATE VIEW pko_knowledge_authority.app_role_profiles AS
-  SELECT accent_color, app_role_profile_id, display_label, icon_mark, icon_png_base64, name, pitch, role, role_kind, route_count, semantic_type_iri, sort_order FROM public.vw_app_role_profiles;
+  SELECT accent_color, app_role_profile_id, device, display_label, home_route, home_title, icon_mark, icon_png_base64, name, pitch, role, role_kind, route_count, semantic_type_iri, sort_order FROM public.vw_app_role_profiles;
 ALTER VIEW pko_knowledge_authority.app_role_profiles OWNER TO postgres;
 GRANT SELECT ON pko_knowledge_authority.app_role_profiles TO pko_knowledge_authority;
 CREATE VIEW pko_knowledge_authority.app_route_questions AS
@@ -1410,7 +4031,7 @@ CREATE VIEW pko_knowledge_authority.binding_observations AS
 ALTER VIEW pko_knowledge_authority.binding_observations OWNER TO postgres;
 GRANT SELECT ON pko_knowledge_authority.binding_observations TO pko_knowledge_authority;
 CREATE VIEW pko_knowledge_authority.change_requests AS
-  SELECT approved_version_key, as_of_instant, authority_agent, authority_role, authority_role_label, awaits_authority_decision, backlog_version_key, blocks_an_open_gap, change_kind, change_request_id, days_pending, days_since_approval, decided_at, decision_latency_days, delay_is_downstream_of_me, evaluation_context, impact_assessment, implementation_latency_days, implemented_at, is_approved_decision, is_approved_not_implemented, is_decided, is_implemented, is_live_decision_backlog, is_my_blocking_backlog, is_my_decided_but_unlanded, is_my_decided_request, is_my_overdue_backlog, is_my_pending_decision, is_open, is_stalled, is_stalled_implementation, is_still_pending, name, open_change_version_key, procedure_version, requested_at, requested_by_agent, requester_is_authority, semantic_type_iri, stalled_implementation_version_key, status, title, touches_live_version, unlanded_version_key FROM public.vw_change_requests;
+  SELECT approved_version_key, as_of_instant, authority_agent, authority_role, authority_role_label, awaits_authority_decision, backlog_version_key, blocks_an_open_gap, change_kind, change_request_id, days_pending, days_since_approval, decided_at, decision_latency_days, delay_is_downstream_of_me, evaluation_context, impact_assessment, implementation_latency_days, implemented_at, is_approved_decision, is_approved_not_implemented, is_decided, is_implemented, is_live_decision_backlog, is_my_blocking_backlog, is_my_decided_but_unlanded, is_my_decided_request, is_my_overdue_backlog, is_my_pending_decision, is_open, is_stalled, is_stalled_implementation, is_still_pending, name, open_change_version_key, owner_organization, procedure_version, requested_at, requested_by_agent, requester_is_authority, semantic_type_iri, stalled_implementation_version_key, status, title, touches_live_version, unlanded_version_key FROM public.vw_change_requests;
 ALTER VIEW pko_knowledge_authority.change_requests OWNER TO postgres;
 GRANT SELECT ON pko_knowledge_authority.change_requests TO pko_knowledge_authority;
 CREATE VIEW pko_knowledge_authority.communication_policies AS
@@ -1418,7 +4039,7 @@ CREATE VIEW pko_knowledge_authority.communication_policies AS
 ALTER VIEW pko_knowledge_authority.communication_policies OWNER TO postgres;
 GRANT SELECT ON pko_knowledge_authority.communication_policies TO pko_knowledge_authority;
 CREATE VIEW pko_knowledge_authority.communities_of_practice AS
-  SELECT cadence, community_of_practice_id, label, name, organization, purpose, semantic_type_iri, steward_role FROM public.vw_communities_of_practice;
+  SELECT ambient_absorption_count, cadence, community_of_practice_id, digital_know_how_count, employer_move_count, external_member_count, has_ambient_trade_know_how, has_own_vocabulary_and_norms, interconnected_know_how_count, is_circulation_ending_for_lack_of_apprentices, is_colocated_trade, is_cross_firm_practice_cluster, is_mandated_without_sharing_norm, label, name, norms, open_apprenticeship_places, organization, origin, own_vocabulary, person_carried_know_how_count, physical_know_how_count, purpose, recent_apprenticeship_count, semantic_type_iri, sharing_event_count, spans_physical_and_digital_with_humans, specialist_member_count, steward_role FROM public.vw_communities_of_practice;
 ALTER VIEW pko_knowledge_authority.communities_of_practice OWNER TO postgres;
 GRANT SELECT ON pko_knowledge_authority.communities_of_practice TO pko_knowledge_authority;
 CREATE VIEW pko_knowledge_authority.delivered_communications AS
@@ -1426,11 +4047,11 @@ CREATE VIEW pko_knowledge_authority.delivered_communications AS
 ALTER VIEW pko_knowledge_authority.delivered_communications OWNER TO postgres;
 GRANT SELECT ON pko_knowledge_authority.delivered_communications TO pko_knowledge_authority;
 CREATE VIEW pko_knowledge_authority.elicitation_sessions AS
-  SELECT as_of_instant, concentrated_session_version_key, days_since_elicited, elicitation_session_id, ended_at, evaluation_context, facilitator_agent, is_concentrated_single_witness, is_high_yield_session, is_single_witness_method, is_stale_concentrated_witness, method, name, practitioner_agent, practitioner_is_still_engaged, procedure_version, semantic_type_iri, started_at, status, summary, valid_fragments_produced FROM public.vw_elicitation_sessions;
+  SELECT as_of_instant, concentrated_session_version_key, days_since_elicited, dependent_count, elicitation_mode, elicitation_session_id, ended_at, evaluation_context, executor_count, facilitator_agent, facilitator_is_knowledge_engineer, facilitator_knowledge_engineer_role_count, gathers_whole_process_chain, initiator_count, is_concentrated_single_witness, is_generic_or_unskilled_capture, is_high_yield_session, is_interview, is_interview_without_shortfall_probe, is_interview_without_why_probe, is_ke_field_session, is_reviewed_recording, is_single_witness_method, is_stale_concentrated_witness, is_workshop, is_workshop_without_usual_outsiders, method, method_family, name, observer_stance, practitioner_agent, practitioner_is_still_engaged, practitioner_reviewed_at, procedure_version, recording_reference, semantic_type_iri, setting, shortfall_probe_count, started_at, status, summary, uninvited_participant_count, valid_fragments_produced, why_probe_count FROM public.vw_elicitation_sessions;
 ALTER VIEW pko_knowledge_authority.elicitation_sessions OWNER TO postgres;
 GRANT SELECT ON pko_knowledge_authority.elicitation_sessions TO pko_knowledge_authority;
 CREATE VIEW pko_knowledge_authority.errors AS
-  SELECT error_cause, error_code, error_id, label, name, semantic_type_iri FROM public.vw_errors;
+  SELECT description, error_cause, error_code, error_id, has_no_remedy_step, label, name, occurrence_count, remedy_step_count, semantic_type_iri FROM public.vw_errors;
 ALTER VIEW pko_knowledge_authority.errors OWNER TO postgres;
 GRANT SELECT ON pko_knowledge_authority.errors TO pko_knowledge_authority;
 CREATE VIEW pko_knowledge_authority.evaluation_contexts AS
@@ -1449,20 +4070,28 @@ CREATE VIEW pko_knowledge_authority.explanations AS
   SELECT description, explanation_id, name, procedure_version, semantic_type_iri, step, title FROM public.vw_explanations;
 ALTER VIEW pko_knowledge_authority.explanations OWNER TO postgres;
 GRANT SELECT ON pko_knowledge_authority.explanations TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.field_grants AS
+  SELECT can_read, can_write, field_grant_id, field_is_derived, field_name, field_table, grant_key_when_readable, is_masked, is_writable_derived_field, mask_strategy, name, principal, semantic_type_iri, target_field FROM public.vw_field_grants;
+ALTER VIEW pko_knowledge_authority.field_grants OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.field_grants TO pko_knowledge_authority;
 CREATE VIEW pko_knowledge_authority.functions AS
   SELECT definition, function_id, implementation_key, label, name, semantic_type_iri FROM public.vw_functions;
 ALTER VIEW pko_knowledge_authority.functions OWNER TO postgres;
 GRANT SELECT ON pko_knowledge_authority.functions TO pko_knowledge_authority;
 CREATE VIEW pko_knowledge_authority.issue_occurrences AS
-  SELECT encountered_by_agent, error, is_unresolved, issue_cause, issue_occurrence_id, issue_solution, name, occurred_at, semantic_type_iri, status, step_execution, step_execution_when_unresolved FROM public.vw_issue_occurrences;
+  SELECT coincided_with_failed_condition, encountered_by_agent, error, executed_step, failed_condition_count_on_run, has_no_recorded_solution, improvement_cycle_path, is_failure_without_landed_redesign, is_unresolved, issue_cause, issue_occurrence_id, issue_solution, name, occurred_at, redesign_change_request, redesign_implemented_at, semantic_type_iri, status, step_execution, step_execution_when_unresolved FROM public.vw_issue_occurrences;
 ALTER VIEW pko_knowledge_authority.issue_occurrences OWNER TO postgres;
 GRANT SELECT ON pko_knowledge_authority.issue_occurrences TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.jwt_claim_mappings AS
+  SELECT claim_name, description2, is_reserved_claim, jwt_claim_mapping_id, maps_to_principal, name, semantic_type_iri, sql_accessor, usage_count FROM public.vw_jwt_claim_mappings;
+ALTER VIEW pko_knowledge_authority.jwt_claim_mappings OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.jwt_claim_mappings TO pko_knowledge_authority;
 CREATE VIEW pko_knowledge_authority.knowledge_fragments AS
-  SELECT age_days, as_of_instant, compound_fragile_version_key, confidence, consuming_step_agent_kind, consuming_step_is_software_assigned, days_awaiting_my_approval, days_since_actual_review, elicitation_session, evaluation_context, evidence_age_days, evidence_expiry_days, evidence_has_expired, exceeds_owning_cadence, fragility_signal_count, genuinely_overdue_version_key, has_human_source, has_operational_reliance, has_orphaned_provenance, has_recorded_elicitation, has_review_record, inference_disagrees_with_record, is_aging_low_confidence_claim, is_ai_validated_by_ai, is_approved, is_attached_to_live_version, is_awaiting_approval, is_compound_fragile, is_currently_valid, is_expiring_single_point_of_failure, is_from_single_witness, is_genuinely_overdue, is_high_blast_radius_unapproved, is_human_owned, is_invoked_by_an_exception, is_long_unapproved, is_low_confidence, is_my_unfinished_approval, is_orphaned_by_role, is_overdue_for_review, is_relied_upon, is_single_point_of_failure, is_unapproved_and_human_consumed, is_unapproved_and_machine_consumed, is_unapproved_and_operationally_live, is_unapproved_but_relied_on, is_undefendable_tacit_claim, is_unreviewed_since_authoring, is_within_validity_window, knowledge_form, knowledge_fragment_id, last_reviewed_at, machine_consumed_unapproved_version_key, name, owner_agent, owner_is_me, owner_role, owner_role_agent_kind, owner_role_assignment_valid_from, owner_role_is_vacated, owning_version_cadence_days, predates_current_role_holder, procedure_version, ratified_boundary_count, reliance_surface_count, review_cadence_days, review_recency_is_inferred, semantic_type_iri, source_agent, source_agent_is_still_engaged, source_agent_kind, statement, status, step, step_procedure_version_status, unapproved_load_bearing_version_key, valid_fragment_session_key, valid_fragment_version_key, valid_from, valid_to FROM public.vw_knowledge_fragments;
+  SELECT age_days, as_of_instant, cognitive_basis, compound_fragile_version_key, confidence, consuming_step_agent_kind, consuming_step_is_software_assigned, corroboration_count, days_awaiting_my_approval, days_since_actual_review, elicitation_session, encoded_as, evaluation_context, evidence_age_days, evidence_expiry_days, evidence_has_expired, exceeds_owning_cadence, fragility_signal_count, genuinely_overdue_version_key, has_human_source, has_operational_reliance, has_orphaned_provenance, has_recorded_elicitation, has_review_record, inference_disagrees_with_record, is_aging_low_confidence_claim, is_ai_validated_by_ai, is_approved, is_attached_to_live_version, is_awaiting_approval, is_compound_fragile, is_currently_valid, is_expiring_single_point_of_failure, is_flattened_to_brittle_rule, is_from_single_witness, is_genuinely_overdue, is_high_blast_radius_unapproved, is_human_owned, is_invoked_by_an_exception, is_long_unapproved, is_low_confidence, is_my_unfinished_approval, is_orphaned_by_role, is_overdue_for_review, is_relied_upon, is_single_point_of_failure, is_unapproved_and_human_consumed, is_unapproved_and_machine_consumed, is_unapproved_and_operationally_live, is_unapproved_but_relied_on, is_undefendable_tacit_claim, is_unreviewed_since_authoring, is_within_validity_window, knowledge_form, knowledge_fragment_id, last_reviewed_at, lost_in_translation, machine_consumed_unapproved_version_key, name, owner_agent, owner_is_me, owner_organization, owner_role, owner_role_agent_kind, owner_role_assignment_valid_from, owner_role_is_vacated, owning_version_cadence_days, predates_current_role_holder, procedure_version, ratified_boundary_count, reliance_surface_count, rests_on_single_data_point, review_cadence_days, review_recency_is_inferred, semantic_type_iri, source_agent, source_agent_is_still_engaged, source_agent_kind, stated_conditions, statement, status, step, step_procedure_version_status, tacitness_degree, unapproved_load_bearing_version_key, valid_fragment_session_key, valid_fragment_version_key, valid_from, valid_to FROM public.vw_knowledge_fragments;
 ALTER VIEW pko_knowledge_authority.knowledge_fragments OWNER TO postgres;
 GRANT SELECT ON pko_knowledge_authority.knowledge_fragments TO pko_knowledge_authority;
 CREATE VIEW pko_knowledge_authority.knowledge_gaps AS
-  SELECT as_of_instant, blocking_kind, days_open, evaluation_context, has_resolution_plan, identified_at, is_abandoned_unknown, is_blocking, is_open, is_open_and_blocking, is_overdue_gap, is_ownerless_open_gap, knowledge_gap_id, name, open_blocking_gap_version_key, open_gap_version_key, owner_agent, owner_is_still_engaged, owner_role, owner_role_is_vacated, procedure_version, resolution_plan, semantic_type_iri, severity, statement, status, step, tolerance_days FROM public.vw_knowledge_gaps;
+  SELECT as_of_instant, blocking_kind, codified_as_fragment, days_open, drawn_out_by_session, evaluation_context, gap_cause, has_resolution_plan, holder_declined_to_share, identified_at, is_abandoned_unknown, is_blocking, is_gatekeeping_or_sabotage, is_known_and_unresolved, is_open, is_open_and_blocking, is_overdue_gap, is_ownerless_open_gap, is_required_gatekept_uncodified, is_unattributed_gatekeeping, knowledge_gap_id, name, open_blocking_gap_version_key, open_gap_version_key, owner_agent, owner_is_still_engaged, owner_organization, owner_role, owner_role_is_vacated, procedure_version, resolution_plan, semantic_type_iri, severity, siloed_within, statement, status, step, tolerance_days FROM public.vw_knowledge_gaps;
 ALTER VIEW pko_knowledge_authority.knowledge_gaps OWNER TO postgres;
 GRANT SELECT ON pko_knowledge_authority.knowledge_gaps TO pko_knowledge_authority;
 CREATE VIEW pko_knowledge_authority.learning_activities AS
@@ -1470,7 +4099,7 @@ CREATE VIEW pko_knowledge_authority.learning_activities AS
 ALTER VIEW pko_knowledge_authority.learning_activities OWNER TO postgres;
 GRANT SELECT ON pko_knowledge_authority.learning_activities TO pko_knowledge_authority;
 CREATE VIEW pko_knowledge_authority.mentorships AS
-  SELECT community_of_practice, evidence_of_completion, learner_agent, learning_objective, mentor_agent, mentorship_id, name, semantic_type_iri, valid_from, valid_to FROM public.vw_mentorships;
+  SELECT as_of_instant, community_of_practice, days_since_started, employer_worker_obligation, evaluation_context, evidence_of_completion, expected_weekly_hours, is_active, is_recent_apprenticeship, learner_agent, learning_objective, mentor_agent, mentorship_form, mentorship_id, name, semantic_type_iri, valid_from, valid_to FROM public.vw_mentorships;
 ALTER VIEW pko_knowledge_authority.mentorships OWNER TO postgres;
 GRANT SELECT ON pko_knowledge_authority.mentorships TO pko_knowledge_authority;
 CREATE VIEW pko_knowledge_authority.message_deliveries AS
@@ -1486,7 +4115,7 @@ CREATE VIEW pko_knowledge_authority.observed_transitions AS
 ALTER VIEW pko_knowledge_authority.observed_transitions OWNER TO postgres;
 GRANT SELECT ON pko_knowledge_authority.observed_transitions TO pko_knowledge_authority;
 CREATE VIEW pko_knowledge_authority.ontology_profiles AS
-  SELECT label, license, name, namespace_iri, ontology_profile_id, scope, version, version_iri FROM public.vw_ontology_profiles;
+  SELECT adopted_at, adoption_stage, as_of_instant, change_rate_profile, days_since_dependency_reviewed, days_since_last_revision, days_since_major_revision, dependency_reviewed_at, evaluation_context, is_review_overdue_for_change_rate, label, last_major_revision_at, last_revised_at, license, mapping_count, name, namespace_iri, ontology_profile_id, prerequisite_adopted_at, prerequisite_profile, recent_deprecation_count, requires_frequent_review, scope, skips_adoption_path, version, version_iri FROM public.vw_ontology_profiles;
 ALTER VIEW pko_knowledge_authority.ontology_profiles OWNER TO postgres;
 GRANT SELECT ON pko_knowledge_authority.ontology_profiles TO pko_knowledge_authority;
 CREATE VIEW pko_knowledge_authority.operational_bindings AS
@@ -1494,23 +4123,23 @@ CREATE VIEW pko_knowledge_authority.operational_bindings AS
 ALTER VIEW pko_knowledge_authority.operational_bindings OWNER TO postgres;
 GRANT SELECT ON pko_knowledge_authority.operational_bindings TO pko_knowledge_authority;
 CREATE VIEW pko_knowledge_authority.organizations AS
-  SELECT display_name, external_identifier, name, organization_id, organization_type, semantic_type_iri FROM public.vw_organizations;
+  SELECT ai_fails_for_lack_of_captured_knowledge, audit_finding_count, captured_own_know_how_count, departed_holder_know_how_count, display_name, documentation_entry_count, eroded_in_stages, external_identifier, facility_carried_know_how_count, failed_ai_initiative_count, filled_knowledge_position_count, has_knowledge_findings_without_knowledge_staff, holds_know_how_in_people_plants_and_systems, is_hollowed_out_firm, lost_departed_know_how_count, memory_leaves_with_staff, name, organization_id, organization_type, owned_procedure_count, person_carried_know_how_count, product_delivery_function_count, provider_held_delivery_method_count, retained_departed_know_how_percent, semantic_type_iri, staged_decline_count, system_carried_know_how_count, transfer_given_count, treats_knowledge_work_as_unvalued, unallocated_documentation_count, unallocated_transfer_count FROM public.vw_organizations;
 ALTER VIEW pko_knowledge_authority.organizations OWNER TO postgres;
 GRANT SELECT ON pko_knowledge_authority.organizations TO pko_knowledge_authority;
 CREATE VIEW pko_knowledge_authority.procedure_executions AS
-  SELECT abandoned_failure_count, all_blocking_controls_evaluated, approval_chain_is_complete, approval_step_count, asserted_only_control_count, assurance_chain_is_circular, assurance_grade, assurance_is_mostly_asserted, attestation_blocker_summary, attestation_count, attestation_would_be_weakly_based, basis_changed_after_signature, campaign_silently_lost_audience, cleared_legal_review_count, completed_step_count, computed_assurance_ratio, computedly_witnessed_control_count, context, control_breach_count, count_of_approval_executions, count_of_delivery_executions, delivered_count, delivered_without_approval, delivery_yield_percent, diverged_from_specification, divergence_was_fully_governed, ended_at, evaluated_control_count, executed_by_agent, executed_version_is_fit, execution_status, expected_step_count, has_abandoned_failures, has_any_independent_observation, has_been_attested, has_cleared_legal_review, has_delivered, has_human_approval, has_unrecorded_refusals, independent_human_observation_count, independently_confirmed_intent_count, intended_recipient_count, interested_party_assertion_count, invalid_approval_count, is_attestation_ready, is_structurally_complete, late_step_count, latest_attestation_instant, mishandled_refusal_count, name, operational_record_uri, post_attestation_score_count, preparation_step_count, procedure_execution_id, procedure_version, ran_clean, reached_recipient_count, requires_re_attestation, retention_breach_count, self_attested_approval_count, semantic_type_iri, send_decisions_are_entirely_self_witnessed, separation_assurance_note, separation_held_under_test, separation_is_vacuously_green, separation_of_duties_held, separation_violation_count, separation_was_testable, signed_against_unfit_version, silently_dropped_count, started_at, total_delivery_attempt_count, unclean_step_count, unevaluated_blocking_total, ungoverned_divergence_count, unreachable_handling_failure_count, unrecorded_refusal_count, vacuously_clean_step_count FROM public.vw_procedure_executions;
+  SELECT abandoned_failure_count, all_blocking_controls_evaluated, approval_chain_is_complete, approval_step_count, asserted_only_control_count, assurance_chain_is_circular, assurance_grade, assurance_is_mostly_asserted, attestation_blocker_summary, attestation_count, attestation_would_be_weakly_based, basis_changed_after_signature, campaign_silently_lost_audience, claims_completion_without_all_steps, clean_facility_key, cleared_legal_review_count, completed_step_count, computed_assurance_ratio, computedly_witnessed_control_count, confirmed_by_agent, context, control_breach_count, count_of_approval_executions, count_of_delivery_executions, delivered_count, delivered_without_approval, delivery_yield_percent, description, deviating_day_version_key, deviating_facility_key, deviating_night_version_key, deviating_step_count, diverged_from_specification, divergence_was_fully_governed, ended_at, evaluated_control_count, executed_by_agent, executed_on_machine, executed_version_is_fit, execution_status, expected_step_count, facility, feedback_count, has_abandoned_failures, has_any_independent_observation, has_been_attested, has_cleared_legal_review, has_delivered, has_human_approval, has_no_recorded_outcome, has_step_deviation, has_unrecorded_refusals, independent_human_observation_count, independently_confirmed_intent_count, intended_recipient_count, interested_party_assertion_count, invalid_approval_count, is_attestation_ready, is_structurally_complete, is_unconfirmed_completion, is_unreported_mistake, late_step_count, latest_attestation_instant, mishandled_refusal_count, name, observations, operational_record_uri, outcome, owner_organization, participant_count, post_attestation_score_count, preparation_step_count, procedure_execution_id, procedure_version, ran_clean, reached_recipient_count, requires_re_attestation, retention_breach_count, self_attested_approval_count, semantic_type_iri, send_decisions_are_entirely_self_witnessed, separation_assurance_note, separation_held_under_test, separation_is_vacuously_green, separation_of_duties_held, separation_violation_count, separation_was_testable, shift, signed_against_unfit_version, silently_dropped_count, started_at, status_change_count, title, total_delivery_attempt_count, unclean_step_count, unevaluated_blocking_total, ungoverned_divergence_count, unreachable_handling_failure_count, unrecorded_refusal_count, vacuously_clean_step_count FROM public.vw_procedure_executions;
 ALTER VIEW pko_knowledge_authority.procedure_executions OWNER TO postgres;
 GRANT SELECT ON pko_knowledge_authority.procedure_executions TO pko_knowledge_authority;
 CREATE VIEW pko_knowledge_authority.procedure_resources AS
-  SELECT name, procedure_resource_id, procedure_version, relation, relation_iri, resource FROM public.vw_procedure_resources;
+  SELECT name, procedure_resource_id, procedure_version, relation, relation_iri, resource, resource_modified_at FROM public.vw_procedure_resources;
 ALTER VIEW pko_knowledge_authority.procedure_resources OWNER TO postgres;
 GRANT SELECT ON pko_knowledge_authority.procedure_resources TO pko_knowledge_authority;
 CREATE VIEW pko_knowledge_authority.procedure_status_changes AS
-  SELECT changed_at, changed_by_agent, from_status, motivation, name, procedure_status_change_id, procedure_version, semantic_type_iri, to_status FROM public.vw_procedure_status_changes;
+  SELECT change_kind, change_kind_contradicts_target, changed_at, changed_by_agent, from_status, is_unattributed_change, motivation, name, procedure_execution, procedure_status_change_id, procedure_version, semantic_type_iri, to_status FROM public.vw_procedure_status_changes;
 ALTER VIEW pko_knowledge_authority.procedure_status_changes OWNER TO postgres;
 GRANT SELECT ON pko_knowledge_authority.procedure_status_changes TO pko_knowledge_authority;
 CREATE VIEW pko_knowledge_authority.procedure_types AS
-  SELECT definition, label, name, procedure_type_id, semantic_type_iri FROM public.vw_procedure_types;
+  SELECT broader_is_detached, broader_procedure_type, definition, distinguishing_facet, distinguishing_value, has_narrower_types, is_arbitrary_grouping, is_detached_from_taxonomy, is_unreachable_by_navigation, label, member_count, members_lacking_distinction_count, name, narrower_type_count, procedure_type_id, semantic_type_iri, taxonomy_rank FROM public.vw_procedure_types;
 ALTER VIEW pko_knowledge_authority.procedure_types OWNER TO postgres;
 GRANT SELECT ON pko_knowledge_authority.procedure_types TO pko_knowledge_authority;
 CREATE VIEW pko_knowledge_authority.procedure_version_links AS
@@ -1518,11 +4147,11 @@ CREATE VIEW pko_knowledge_authority.procedure_version_links AS
 ALTER VIEW pko_knowledge_authority.procedure_version_links OWNER TO postgres;
 GRANT SELECT ON pko_knowledge_authority.procedure_version_links TO pko_knowledge_authority;
 CREATE VIEW pko_knowledge_authority.procedure_versions AS
-  SELECT ai_boundary_is_unevidenced, approved_change_request_count, as_of_instant, awaited_decision_count, cadence_breach_count, changelog_description, compound_fragile_fragment_count, concentrated_witness_session_count, control_taxonomy_is_incomplete, count_of_change_requests, count_of_open_blocking_gaps, count_of_open_knowledge_gaps, count_of_overdue_gaps, count_of_review_events, count_of_stale_fragments, count_of_steps, count_of_stewardship_assignments, count_of_unapproved_reliance_fragments, created_by_agent, days_since_last_review, days_since_modified, drifted_mining_run_count, evaluation_context, feeds_unapproved_knowledge_to_machines, genuinely_overdue_fragment_count, governance_is_silent, has_any_steward, has_approved_change_request, has_decision_in_flight, has_governance_record, has_open_blocking_gap, has_unrehearsed_control_entry, has_unresolved_mining_drift, has_unwitnessed_change, incoming_supersession_count, is_blocked_on_pending_decision, is_cleanly_retired, is_current, is_fit_to_execute, is_held_unfit_by_landed_decisions, is_in_cadence_breach, is_live, is_live_and_unstewarded, is_live_with_blocking_gap, is_live_with_unrehearsed_control, is_load_bearing_orphan, is_managed_cadence_breach, is_ready_for_execution, is_still_referenced, is_unremediated_cadence_breach, is_unstewarded, issued_at, knowledge_base_is_concentrated, knowledge_is_staler_than_cadence, load_bearing_unapproved_count, machine_consumed_unapproved_count, mining_run_count, modified_at, modified_by_agent, modifier_is_authority, name, new_version_motivation, open_change_request_count, open_high_severity_gap_count, overdue_review_count, procedure, procedure_version_id, rests_on_compound_fragile_knowledge, runs_on_unapproved_knowledge, scoped_open_blocking_gap_count, semantic_type_iri, should_not_be_executable, specified_step_count, stalled_implementation_count, status, steward_review_cadence_days, still_owns_valid_knowledge, title, undeclared_control_kind_count, unexercised_human_gate_count, unlanded_decision_count, unrehearsed_control_entry_count, unwatched_unowned_control_count, valid_fragment_count, version_number, was_modified_since_last_review FROM public.vw_procedure_versions;
+  SELECT ai_artifact_consuming_input_count, ai_boundary_is_unevidenced, ai_consumption_count, ai_contribution_count, alternative_transition_count, approved_change_request_count, as_of_instant, awaited_decision_count, cadence_breach_count, changelog_description, coarse_top_level_step_count, complementary_method_count, compound_fragile_fragment_count, concentrated_witness_session_count, conditionless_step_count, consumer_sync_count, contains_steps_affected_by_ai_agent_change, control_taxonomy_is_incomplete, count_of_change_requests, count_of_open_blocking_gaps, count_of_open_knowledge_gaps, count_of_overdue_gaps, count_of_review_events, count_of_stale_fragments, count_of_steps, count_of_stewardship_assignments, count_of_unapproved_reliance_fragments, created_by_agent, created_by_agent_kind, critical_incident_count, day_deviating_run_count, day_run_count, days_document_trails_version, days_since_last_review, days_since_modified, declared_first_step_count, design_decision_count, document_lags_practice, drifted_mining_run_count, elicitation_evidence_count, elicitation_session_count, enables_relation_count, entry_step_id, evaluation_context, exception_count, execution_count, expected_duration_unit, expected_duration_value, expert_capture_count, experts_evaluate_ai_not_representation, explicit_holding_count, fallback_step, fallback_transition_count, feeds_unapproved_knowledge_to_machines, fine_top_level_step_count, first_step, first_step_disagrees_with_graph, fresh_mining_run_count, genuinely_overdue_fragment_count, governance_is_silent, graph_entry_step_count, hands_held_count, has_any_steward, has_approved_change_request, has_decision_in_flight, has_governance_record, has_no_exception_handling, has_open_blocking_gap, has_unrehearsed_control_entry, has_unresolved_mining_drift, has_unwitnessed_change, human_channel_count, human_step_count, human_sync_count, incident_session_count, incoming_supersession_count, indexed_segment_count, interview_session_count, is_approved_without_sme_signoff, is_blocked_on_pending_decision, is_cleanly_retired, is_current, is_current_without_motivation, is_disconnected_from_outcomes, is_documented_behind_practice, is_fit_to_execute, is_held_unfit_by_landed_decisions, is_in_cadence_breach, is_inadequate_for_use, is_inconsistent_across_shifts, is_live, is_live_and_unstewarded, is_live_model_untraced, is_live_with_blocking_gap, is_live_with_unrehearsed_control, is_live_without_recorded_decisions, is_load_bearing_orphan, is_managed_cadence_breach, is_not_query_validate_reason_ready, is_ready_for_execution, is_standardized_without_tacit_capture, is_still_referenced, is_studied_only_from_the_desk, is_under_specified_for_execution, is_unmodified_for_twelve_months, is_unreachable_knowledge, is_unremediated_cadence_breach, is_unstewarded, issued_at, judgment_held_outside_sop_count, judgment_unprobed_by_incidents, ke_field_session_count, ke_session_count, knowledge_base_is_concentrated, knowledge_is_staler_than_cadence, lacks_continuous_drift_detection, lacks_machine_interpretable_encoding, latest_source_document_modified_at, lives_in_hands_silence_and_negotiation, load_bearing_unapproved_count, machine_channel_count, machine_consumed_unapproved_count, machine_sync_count, mining_run_count, misses_a_required_elicitation_mode, mixes_granularity_at_one_level, mixes_human_and_software_steps, modified_at, modified_by_agent, modifier_is_authority, name, negotiated_practice_count, new_version_motivation, night_deviating_run_count, night_run_count, non_human_step_count, observation_session_count, open_change_request_count, open_high_severity_gap_count, open_question_annotation_count, outcome_measurement_count, overdue_review_count, overlaps_relation_count, owner_organization, prevents_relation_count, procedure, procedure_type_of_version, procedure_version_id, process_model_trace_count, profile_validated_submission_count, protocol_session_count, published_projection_count, reasoned_assertion_count, reconciled_divergence_count, relies_on_single_method, rests_on_compound_fragile_knowledge, rests_on_notation_only, runs_on_unapproved_knowledge, scoped_open_blocking_gap_count, search_count, search_success_percent, semantic_type_iri, served_assertion_count, serves_only_humans_or_only_machines, should_not_be_executable, situated_judgment_fragment_count, sme_ai_evaluation_count, sme_approval_count, specified_step_count, stalled_implementation_count, standardization_driver, status, status_is_pko, steps_without_ontology_type_count, steward_review_cadence_days, still_owns_valid_knowledge, structured_query_count, successful_search_count, tacit_form_fragment_count, tacit_fragment_count, tacit_holding_count, tacit_judgment_fragment_count, tacit_share_exceeds_explicit, title, trailing_practice_trace_count, undeclared_control_kind_count, unexercised_human_gate_count, unlanded_decision_count, unrehearsed_control_entry_count, unwatched_unowned_control_count, uses_ai_in_one_direction_only, uses_non_pko_status, valid_fragment_count, version_number, was_modified_since_last_review, workshop_session_count FROM public.vw_procedure_versions;
 ALTER VIEW pko_knowledge_authority.procedure_versions OWNER TO postgres;
 GRANT SELECT ON pko_knowledge_authority.procedure_versions TO pko_knowledge_authority;
 CREATE VIEW pko_knowledge_authority.procedures AS
-  SELECT adopted_by_organization, current_version_key, is_template, name, owner_organization, procedure_id, procedure_type, purpose, semantic_type_iri, target, title FROM public.vw_procedures;
+  SELECT adopted_by_organization, adoption_count, agent_intended_count, avg_days_to_proficiency_with_capture, avg_days_to_proficiency_without_capture, called_by_step_count, category_level_view_count, collected_material_count, compliance_document_count, compliance_review_step_count, current_version_key, days_with_capture_total, days_without_capture_total, departed_only_know_how_count, departing_veteran_know_how_count, execution_count, execution_feedback_entry_count, expert_acquisition_hours, failure_criterion_count, formalization_does_not_ease_onboarding, has_decayed_transfer_channel, has_no_explicit_steps, has_no_failure_criterion, has_no_stated_reason_for_existing, has_step_and_category_resolutions, has_transfer_shortfall_exposure, has_unengaged_stakeholder, hindered_by_count, in_work_capture_count, involves_compliance_review_role, is_capture_separate_from_work, is_captured_by_automation_alone, is_executed_without_feedback_loop, is_hindered_by_another_operation, is_inconsistently_categorized, is_missing_demanded_resolution, is_nested_procedure, is_regulated_but_unformalized, is_tacit_only_agent_target, is_template, is_template_instance, lacks_distinction_type_key, lacks_managed_controlled_vocabulary, lacks_type_distinction, lens_view_count, machine_authored_entry_count, managed_vocabulary_count, matching_distinction_count, measures_performance_without_business_link, name, outcome_measure_count, owner_organization, practitioner_relationship_count, privileges_single_stakeholder_view, procedure_id, procedure_type, procedure_type_definition, procedure_type_rank, proficient_with_capture_count, proficient_without_capture_count, purpose, recent_starter_count, repository_entry_count, required_by_regulation, semantic_type_iri, specified_step_total, stale_entry_count, step_level_view_count, strategic_alignment_count, target, target_count, template_procedure, title, type_distinguishing_facet, type_distinguishing_value, unengaged_stakeholder_count, unlinked_measure_count, untransferred_veteran_know_how_count FROM public.vw_procedures;
 ALTER VIEW pko_knowledge_authority.procedures OWNER TO postgres;
 GRANT SELECT ON pko_knowledge_authority.procedures TO pko_knowledge_authority;
 CREATE VIEW pko_knowledge_authority.rationales AS
@@ -1538,39 +4167,51 @@ CREATE VIEW pko_knowledge_authority.requirement_satisfactions AS
 ALTER VIEW pko_knowledge_authority.requirement_satisfactions OWNER TO postgres;
 GRANT SELECT ON pko_knowledge_authority.requirement_satisfactions TO pko_knowledge_authority;
 CREATE VIEW pko_knowledge_authority.requirements AS
-  SELECT accountable_agent, accountable_role, attestation_exposure_note, claims_a_witness_field, control_assurance_state, controlled_term, derived_has_computed_witness, evaluation_sample_size, has_computed_witness, has_ever_been_evaluated, has_ever_produced_negative, has_meaningful_sample, has_named_owner, is_blocking, is_bound_to_any_step, is_decorative_control, is_evidenced_holding_control, is_inoperative_control, is_orphaned_blocking_control, is_unfalsified_control, is_untested_witness, is_unwatched_and_unowned, is_unwitnessed_blocking_control, label, minimum_sample_for_assurance, name, named_witness_field_exists, negative_outcome_count, rationale, requirement_id, requirement_type, satisfaction_record_count, semantic_type_iri, statement, step_binding_count, unexercised_binding_count, unwatched_unowned_flag, uses_controlled_vocabulary, witness_claim_is_unverified, witness_field_name, witness_fire_count, witness_has_never_fired, witness_is_partially_scoped FROM public.vw_requirements;
+  SELECT accountable_agent, accountable_role, attestation_exposure_note, claims_a_witness_field, constraint_trace_count, control_assurance_state, controlled_term, derived_has_computed_witness, evaluation_sample_size, has_computed_witness, has_ever_been_evaluated, has_ever_produced_negative, has_meaningful_sample, has_named_owner, is_blocking, is_bound_to_any_step, is_decorative_control, is_evidenced_holding_control, is_inoperative_control, is_orphaned_blocking_control, is_regulatory_requirement, is_unfalsified_control, is_untested_witness, is_untraced_bound_constraint, is_unwatched_and_unowned, is_unwitnessed_blocking_control, label, minimum_sample_for_assurance, name, named_witness_field_exists, negative_outcome_count, rationale, regulatory_framework, requirement_id, requirement_type, satisfaction_record_count, semantic_type_iri, statement, step_binding_count, unexercised_binding_count, unwatched_unowned_flag, uses_controlled_vocabulary, witness_claim_is_unverified, witness_field_name, witness_fire_count, witness_has_never_fired, witness_is_partially_scoped FROM public.vw_requirements;
 ALTER VIEW pko_knowledge_authority.requirements OWNER TO postgres;
 GRANT SELECT ON pko_knowledge_authority.requirements TO pko_knowledge_authority;
 CREATE VIEW pko_knowledge_authority.resources AS
-  SELECT approval_status, created_at, description, external_uri, is_approved_source, modified_at, name, resource_id, resource_kind, semantic_type_iri, title FROM public.vw_resources;
+  SELECT approval_status, artifact_type_concept, catalog_entry_for, compliance_record_for, created_at, created_by_agent, description, external_uri, extracted_from_resource, format, is_approved_source, is_behind_current_practice, is_content_without_organization, is_stale_extraction, is_unused_resource, keywords, language, modified_at, modified_by_agent, name, referencing_step_count, referencing_version_count, resource_id, resource_kind, semantic_type_iri, source_modified_at, title, trailing_practice_count FROM public.vw_resources;
 ALTER VIEW pko_knowledge_authority.resources OWNER TO postgres;
 GRANT SELECT ON pko_knowledge_authority.resources TO pko_knowledge_authority;
 CREATE VIEW pko_knowledge_authority.review_events AS
-  SELECT as_of_instant, cadence_breach_version_key, cadence_drift_days, days_since_reviewed, evaluation_context, exceeds_promised_cadence, is_overdue, name, next_review_due, outcome, overdue_version_key, procedure_version, promise_and_behavior_disagree, promised_cadence_days, related_change_request, review_event_id, review_kind, reviewed_at, reviewed_by_agent, semantic_type_iri FROM public.vw_review_events;
+  SELECT as_of_instant, cadence_breach_version_key, cadence_drift_days, days_since_reviewed, evaluation_context, exceeds_promised_cadence, is_overdue, name, next_review_due, outcome, overdue_version_key, procedure_version, promise_and_behavior_disagree, promised_cadence_days, related_change_request, review_did_not_refresh_modified, review_event_id, review_kind, reviewed_at, reviewed_by_agent, semantic_type_iri, version_modified_at FROM public.vw_review_events;
 ALTER VIEW pko_knowledge_authority.review_events OWNER TO postgres;
 GRANT SELECT ON pko_knowledge_authority.review_events TO pko_knowledge_authority;
 CREATE VIEW pko_knowledge_authority.role_assignments AS
-  SELECT agent, agent_kind, agent_role_key, approving_authority_role, as_of_instant, authorization_decided_at, authorization_is_overdue_for_review, authorization_review_cadence_days, authorization_reviewed_at, authorizing_change_request, boundary_violation_count_for_assignment, comparison_is_evidentially_sound, covers_now, current_agent_key, days_since_authorization_review, decision_count, departed_role_key, error_correction_count, error_rate_percent, evaluation_context, exceeds_tolerable_error_rate, governance_evidence_count, has_any_boundary_violation, has_approving_authority, has_authorizing_change_request, has_dated_authorization, has_declared_suspension_condition, has_departed, has_sufficient_sample, has_ungrounded_governing_boundary, is_current, is_currently_valid, is_enforcement_role, is_human_to_non_human_handover, is_non_human_assignment, is_operating_under_met_suspension_condition, is_standing_unreviewed_automation, is_unauthorized_enforcement_agent, is_unauthorized_non_human_assignment, is_unconditioned_automation_handover, is_unmeasured_automation_handover, max_tolerable_error_rate_percent, minimum_decisions_for_comparison, name, overridden_decision_count, override_rate_percent, predecessor_agent_kind, predecessor_decision_count, predecessor_has_sufficient_sample, predecessor_override_rate_percent, quality_regressed_vs_predecessor, quality_verdict_is_unsupported, reason, role, role_assignment_id, role_when_covering, semantic_type_iri, single_override_swing_percent, status, supersedes_assignment, suspension_condition_met, unauthorized_enforcement_role_key, valid_from, valid_to, was_authorized_by_change_request FROM public.vw_role_assignments;
+  SELECT agent, agent_kind, agent_role_key, agent_role_pair_key, agent_version_key, approving_authority_role, as_of_instant, authorization_decided_at, authorization_is_overdue_for_review, authorization_review_cadence_days, authorization_reviewed_at, authorizing_change_request, boundary_violation_count_for_assignment, comparison_is_evidentially_sound, covers_now, current_agent_key, days_since_authorization_review, decision_count, departed_role_key, error_correction_count, error_rate_percent, evaluation_context, exceeds_tolerable_error_rate, for_procedure_version, governance_evidence_count, has_any_boundary_violation, has_approving_authority, has_authorizing_change_request, has_dated_authorization, has_declared_suspension_condition, has_departed, has_sufficient_sample, has_ungrounded_governing_boundary, is_current, is_currently_valid, is_enforcement_role, is_human_to_non_human_handover, is_non_human_assignment, is_open_ended, is_operating_under_met_suspension_condition, is_scoped_to_retired_version, is_standing_unreviewed_automation, is_unauthorized_enforcement_agent, is_unauthorized_non_human_assignment, is_unconditioned_automation_handover, is_unmeasured_automation_handover, max_tolerable_error_rate_percent, minimum_decisions_for_comparison, name, overridden_decision_count, override_rate_percent, predecessor_agent_kind, predecessor_decision_count, predecessor_has_sufficient_sample, predecessor_lacks_validity_end, predecessor_override_rate_percent, predecessor_valid_to, quality_regressed_vs_predecessor, quality_verdict_is_unsupported, reason, receives_approval_notices_now, role, role_approval_step_count, role_assignment_id, role_when_covering, scoped_version_status, semantic_type_iri, single_override_swing_percent, status, supersedes_assignment, suspension_condition_met, unauthorized_enforcement_role_key, valid_from, valid_to, was_authorized_by_change_request FROM public.vw_role_assignments;
 ALTER VIEW pko_knowledge_authority.role_assignments OWNER TO postgres;
 GRANT SELECT ON pko_knowledge_authority.role_assignments TO pko_knowledge_authority;
 CREATE VIEW pko_knowledge_authority.role_questions AS
   SELECT answerable_before, asking_role, is_answered, name, predicate_count, question_text, role_question_id, semantic_type_iri, why_it_matters, witness_loop, witnessed_answer FROM public.vw_role_questions;
 ALTER VIEW pko_knowledge_authority.role_questions OWNER TO postgres;
 GRANT SELECT ON pko_knowledge_authority.role_questions TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.role_schema_views AS
+  SELECT column_count, grant_key, is_degenerate_view, is_full_width, name, principal, role_schema, role_schema_view_id, schema_name, semantic_type_iri, source_view, table_field_count, target_table, view_name FROM public.vw_role_schema_views;
+ALTER VIEW pko_knowledge_authority.role_schema_views OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.role_schema_views TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.role_schemas AS
+  SELECT is_empty_schema, is_sealed, name, principal, role_schema_id, schema_name, search_path, semantic_type_iri, view_count FROM public.vw_role_schemas;
+ALTER VIEW pko_knowledge_authority.role_schemas OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.role_schemas TO pko_knowledge_authority;
 CREATE VIEW pko_knowledge_authority.roles AS
-  SELECT active_assignment_count, count_of_awaited_decisions, current_agent, current_agent_kind, current_assignment, current_assignment_valid_from, currently_covered_assignment_count, departed_assignment_count, has_lost_a_holder, has_no_current_holder, is_governed_by_lapsed_authority, is_non_human_held, is_ungoverned_enforcement_role, is_ungoverned_non_human_role, is_vacated_role, label, name, organization, responsibility, role_id, semantic_type_iri, unauthorized_enforcement_assignment_count, unescalated_refusal_count, ungrounded_boundary_count FROM public.vw_roles;
+  SELECT active_assignment_count, approval_step_count, backup_role_holder, capability_tag_count, compliance_review_tag_count, count_of_awaited_decisions, current_agent, current_agent_kind, current_assignment, current_assignment_valid_from, current_holder_name, currently_covered_assignment_count, departed_assignment_count, escalation_backup_role, has_compliance_review_capability, has_escalation_backup, has_lost_a_holder, has_no_current_holder, has_specializations, has_unfilled_escalation_backup, is_governed_by_lapsed_authority, is_missed_by_phrase_query, is_non_human_held, is_not_housed_in_department, is_production_release_approver, is_senior_variant_not_specialization, is_ungoverned_enforcement_role, is_ungoverned_non_human_role, is_vacated_role, label, name, organization, organization_type, preferred_knowledge_form, release_approval_step_count, responsibility, role_family, role_id, role_mention_count, semantic_type_iri, seniority_level, specialization_count, specialized_role_family, specializes_role, unauthorized_enforcement_assignment_count, unescalated_refusal_count, ungrounded_boundary_count, unresolved_role_mention_count FROM public.vw_roles;
 ALTER VIEW pko_knowledge_authority.roles OWNER TO postgres;
 GRANT SELECT ON pko_knowledge_authority.roles TO pko_knowledge_authority;
 CREATE VIEW pko_knowledge_authority.rulebook_fields AS
-  SELECT datatype, field_name, field_type, formula, invented_for_question, is_derived, is_witness, name, rulebook_field_id, semantic_type_iri, target_table FROM public.vw_rulebook_fields;
+  SELECT datatype, disagreeing_substrate_count, field_name, field_type, formula, has_measured_data, invented_for_question, is_derived, is_discriminating, is_substrate_contested, is_witness, measured_distinct_value_count, measured_substantive_count, name, rulebook_field_id, semantic_type_iri, target_table FROM public.vw_rulebook_fields;
 ALTER VIEW pko_knowledge_authority.rulebook_fields OWNER TO postgres;
 GRANT SELECT ON pko_knowledge_authority.rulebook_fields TO pko_knowledge_authority;
 CREATE VIEW pko_knowledge_authority.rulebook_releases AS
-  SELECT changelog, is_current, issued_at, name, pko_core_version_iri, pko_industry_version_iri, profile_schema_path, profile_version, rulebook_release_id, rulebook_version, status FROM public.vw_rulebook_releases;
+  SELECT answerable_cq_run_count, approved_by_agent, breaking_release_with_unrevalidated_consumers, breaking_release_without_migration_plan, changelog, class_removal_or_rename_count, class_removal_without_major, consistent_run_count, consumer_count, cq_coverage_declined, cq_coverage_percent, cq_run_count, days_since_previous_release, declared_scale, expected_major, expected_minor, expected_patch, funding_note, governed_model, has_baseline_regression, inconsistent_disjointness_count, inconsistent_disjointness_without_major, invalidating_domain_range_count, invalidating_domain_range_without_major, is_breaking_release, is_current, is_declared_current_release, is_increment_inconsistent_with_scale, is_long_release_cycle, is_not_scored_against_criteria, is_release_without_recorded_changes, is_released_without_licence_or_permanent_id, is_unannounced_to_dependents, is_undocumented_version_decision, is_untagged_release, issued_at, license, log_entry_count, logical_change_count, migration_plan, minor_is_not_backward_compatible, model_current_release, name, namespace_prefix, non_additive_change_count, notified_consumer_count, passed_validation_at_release, patch_alters_logical_model, permanent_iri, pko_core_version_iri, pko_industry_version_iri, prev_cq_coverage_percent, prev_cq_run_count, prev_issued_at, prev_major, prev_minor, prev_patch, previous_release, profile_schema_path, profile_version, published_without_approval, regressed_baseline_count, released_despite_failed_validation, released_without_consistency_check, released_without_cq_task_test, revalidated_consumer_count, rulebook_commit, rulebook_release_id, rulebook_version, schema_addition_count, scored_criterion_count, stated_criterion_count, status, suite_lags_release, suite_update_count, validation_failure_total, validation_run_count, version_decided_by_agent, version_decision_rationale, version_major, version_minor, version_patch, well_formed_but_requirements_unshown FROM public.vw_rulebook_releases;
 ALTER VIEW pko_knowledge_authority.rulebook_releases OWNER TO postgres;
 GRANT SELECT ON pko_knowledge_authority.rulebook_releases TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.rulebook_tables AS
+  SELECT aligned_mapping_count, disagreeing_substrate_count, exact_mapping_count, field_count, has_measured_rows, is_extension, is_unaligned_to_standard, is_unsecured, is_unsecured_governance_record, lacks_semantic_type_convention, meaning_is_only_tabular, measured_row_count, name, organization_level, physical_table, physical_view, policy_count, rulebook_table_id, semantic_mapping_count, semantic_type_iri, semantic_type_iri_field_count, subject_area, table_name FROM public.vw_rulebook_tables;
+ALTER VIEW pko_knowledge_authority.rulebook_tables OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.rulebook_tables TO pko_knowledge_authority;
 CREATE VIEW pko_knowledge_authority.semantic_mappings AS
-  SELECT mapping_kind, mapping_relation, name, notes, ontology_profile, semantic_mapping_id, source_path, target_iri FROM public.vw_semantic_mappings;
+  SELECT available_standard_iri, is_non_resolvable_term_iri, mapping_kind, mapping_relation, name, notes, ontology_profile, reinvents_standard_term, semantic_mapping_id, source_path, target_iri FROM public.vw_semantic_mappings;
 ALTER VIEW pko_knowledge_authority.semantic_mappings OWNER TO postgres;
 GRANT SELECT ON pko_knowledge_authority.semantic_mappings TO pko_knowledge_authority;
 CREATE VIEW pko_knowledge_authority.send_intents AS
@@ -1582,7 +4223,7 @@ CREATE VIEW pko_knowledge_authority.step_actions AS
 ALTER VIEW pko_knowledge_authority.step_actions OWNER TO postgres;
 GRANT SELECT ON pko_knowledge_authority.step_actions TO pko_knowledge_authority;
 CREATE VIEW pko_knowledge_authority.step_executions AS
-  SELECT actual_duration_minutes, all_clearances_are_unfalsified, approval_execution_key, approval_rests_on_self_attestation, approver_agent_key, assigned_role, available_exception_count_for_step, blocking_unmet_count, blocking_unmet_count_safe, claims_pass_without_evidence, cleared_legal_review_key, completed_execution_key, control_breach_execution_key, declared_check_count, deviation, drafted_from_unusable_source, ended_at, evaluated_blocking_count, evaluated_requirement_count, evidence_position_is_weak, exception_invocation_count, executed_by_agent, executing_agent_kind, execution_status, executor_agent_kind, executor_authority_count, executor_held_required_role, executor_is_designated_agent, executor_is_human, executor_role_key, expected_blocking_count, expected_duration_minutes, expected_verification_count, had_uninvoked_exception_available, has_any_declared_check, has_approved_change_coverage, has_deviation, has_deviation_note, has_governing_instrument, has_skipped_verification, has_unevaluated_blocking_control, has_unevaluated_blocking_requirement, human_confirmation_missing, inputs_were_fresh_at_run, inputs_were_usable, is_approval_execution, is_clean, is_completed, is_late, is_late_and_unexplained, is_legal_review_step, is_substantively_clean, is_unauthorized_approval, is_unchecked_by_design, is_ungoverned_divergence, is_vacuously_clean, is_verification_passed, is_verified, late_execution_key, name, non_human_approval, non_human_ran_human_step, performed_check_count, performed_verification_count, preparation_execution_key, prepared_by_this_agent_count, preparer_agent_key, procedure_execution, procedure_execution_when_unclean, proceeded_past_blocking_control, ran_on_stale_authoritative_source, ran_on_stale_inputs, ran_under_exception, required_blocking_count, required_role_for_step, requires_human_confirmation, role_current_agent, self_attested_approval_execution_key, self_witnessed_verification_count, semantic_type_iri, separation_violation_execution_key, skipped_verification_count, software_did_human_work, software_execution_step_key, stale_at_run_count, stale_authoritative_source_count, staleness_answer_is_tense_dependent, started_at, step, step_control_kind, step_execution_id, step_is_approval, step_is_preparation, step_is_software_assigned, step_requires_human_confirmation, unbacked_verification_count, unconfirmed_non_human_decision_count, uncorroborated_pass_count, unevaluated_blocking_count, unevaluated_blocking_execution_key, unfalsified_clearance_count, ungoverned_divergence_execution_key, unresolved_issue_count, vacuously_clean_execution_key, verification_result, version_of_step, violates_separation_of_duties, was_executed_by_software, was_stale_when_i_ran_it FROM public.vw_step_executions;
+  SELECT actual_duration_minutes, all_clearances_are_unfalsified, approval_execution_key, approval_rests_on_self_attestation, approver_agent_key, assigned_role, available_exception_count_for_step, blocking_unmet_count, blocking_unmet_count_safe, broke_invariant, claims_pass_without_evidence, cleared_legal_review_key, completed_execution_key, completed_prerequisite_run_count, confirmed_by_agent, control_breach_execution_key, declared_check_count, description, deviation, deviation_execution_key, drafted_from_unusable_source, ended_at, evaluated_blocking_count, evaluated_requirement_count, evidence_position_is_weak, exceeds_max_repetitions, exception_invocation_count, executed_by_agent, executes_step_of_other_version, executing_agent_kind, execution_status, execution_version, executor_agent_kind, executor_authority_count, executor_held_required_role, executor_is_designated_agent, executor_is_human, executor_role_key, expected_blocking_count, expected_duration_minutes, expected_verification_count, failed_precondition_count, generated_entity_count, had_uninvoked_exception_available, has_any_declared_check, has_approved_change_coverage, has_deviation, has_deviation_note, has_governing_instrument, has_skipped_verification, has_unevaluated_blocking_control, has_unevaluated_blocking_requirement, human_confirmation_missing, ignored_danger_cue, incomplete_cue_observation_count, inputs_were_fresh_at_run, inputs_were_usable, is_approval_execution, is_blocked_by_incomplete_prerequisite, is_blocked_by_observed_cue, is_clean, is_completed, is_late, is_late_and_unexplained, is_legal_review_step, is_out_of_specified_order, is_substantively_clean, is_unauthorized_approval, is_unchecked_by_design, is_ungoverned_divergence, is_vacuously_clean, is_verification_passed, is_verified, lacks_required_confirmation, late_execution_key, name, non_human_approval, non_human_ran_human_step, owner_organization, performed_check_count, performed_verification_count, preparation_execution_key, prepared_by_this_agent_count, preparer_agent_key, previous_executed_step, previous_step_execution, procedure_execution, procedure_execution_when_unclean, proceeded_despite_failed_precondition, proceeded_past_blocking_control, ran_before_prerequisite_completed, ran_on_stale_authoritative_source, ran_on_stale_inputs, ran_under_exception, ran_without_declared_inputs, repetition_count, required_blocking_count, required_role_for_step, requires_human_confirmation, role_current_agent, self_attested_approval_execution_key, self_witnessed_verification_count, semantic_type_iri, separation_violation_execution_key, skipped_verification_count, software_did_human_work, software_execution_step_key, specified_transition_from_previous_count, stale_at_run_count, stale_authoritative_source_count, staleness_answer_is_tense_dependent, started_at, step, step_control_kind, step_execution_id, step_input_variable_count, step_is_approval, step_is_preparation, step_is_software_assigned, step_max_repetitions, step_prerequisite, step_requires_human_confirmation, unbacked_verification_count, unconfirmed_non_human_decision_count, uncorroborated_pass_count, unescalated_danger_cue_count, unevaluated_blocking_count, unevaluated_blocking_execution_key, unfalsified_clearance_count, ungoverned_divergence_execution_key, unresolved_issue_count, used_entity_count, vacuously_clean_execution_key, verification_result, version_of_step, violated_invariant_count, violates_separation_of_duties, was_executed_by_software, was_stale_when_i_ran_it FROM public.vw_step_executions;
 ALTER VIEW pko_knowledge_authority.step_executions OWNER TO postgres;
 GRANT SELECT ON pko_knowledge_authority.step_executions TO pko_knowledge_authority;
 CREATE VIEW pko_knowledge_authority.step_functions AS
@@ -1590,7 +4231,7 @@ CREATE VIEW pko_knowledge_authority.step_functions AS
 ALTER VIEW pko_knowledge_authority.step_functions OWNER TO postgres;
 GRANT SELECT ON pko_knowledge_authority.step_functions TO pko_knowledge_authority;
 CREATE VIEW pko_knowledge_authority.step_requirements AS
-  SELECT binding_was_ever_exercised, blocking_step_key, is_unexercised_blocking_binding, name, requirement, requirement_is_blocking, requirement_lacks_witness, satisfaction_count_for_binding, step, step_requirement_id, step_when_blocking, unexercised_binding_requirement_key, unwitnessed_step_key FROM public.vw_step_requirements;
+  SELECT binding_was_ever_exercised, blocking_step_key, is_unexercised_blocking_binding, name, requirement, requirement_is_blocking, requirement_is_regulatory, requirement_lacks_witness, satisfaction_count_for_binding, step, step_requirement_id, step_when_blocking, unexercised_binding_requirement_key, unwitnessed_step_key FROM public.vw_step_requirements;
 ALTER VIEW pko_knowledge_authority.step_requirements OWNER TO postgres;
 GRANT SELECT ON pko_knowledge_authority.step_requirements TO pko_knowledge_authority;
 CREATE VIEW pko_knowledge_authority.step_tools AS
@@ -1598,7 +4239,7 @@ CREATE VIEW pko_knowledge_authority.step_tools AS
 ALTER VIEW pko_knowledge_authority.step_tools OWNER TO postgres;
 GRANT SELECT ON pko_knowledge_authority.step_tools TO pko_knowledge_authority;
 CREATE VIEW pko_knowledge_authority.step_transitions AS
-  SELECT condition, count_of_from_step_executions, count_of_observed_traversals, count_of_to_step_executions, from_step, has_been_traversed, has_reachable_origin, has_reachable_target, is_never_exercised, is_recovery_path, is_unrehearsed_control_entry, is_untested_recovery_path, is_unwalked_recovery_path, name, priority, procedure_version, semantic_type_iri, step_transition_id, target_blocking_requirement_count, target_carries_blocking_control, to_step, transition_kind, unrehearsed_control_version_key FROM public.vw_step_transitions;
+  SELECT avoids_human_approval_gate, condition, count_of_from_step_executions, count_of_observed_traversals, count_of_to_step_executions, decision_point_count, from_step, from_step_is_human_approval_gate, has_been_traversed, has_reachable_origin, has_reachable_target, is_never_exercised, is_recovery_path, is_undocumented_branch, is_unrehearsed_control_entry, is_untested_recovery_path, is_unwalked_recovery_path, name, priority, procedure_version, semantic_type_iri, step_transition_id, target_blocking_requirement_count, target_carries_blocking_control, to_step, to_step_is_human_approval_gate, transition_kind, unrehearsed_control_version_key FROM public.vw_step_transitions;
 ALTER VIEW pko_knowledge_authority.step_transitions OWNER TO postgres;
 GRANT SELECT ON pko_knowledge_authority.step_transitions TO pko_knowledge_authority;
 CREATE VIEW pko_knowledge_authority.step_verifications AS
@@ -1606,7 +4247,7 @@ CREATE VIEW pko_knowledge_authority.step_verifications AS
 ALTER VIEW pko_knowledge_authority.step_verifications OWNER TO postgres;
 GRANT SELECT ON pko_knowledge_authority.step_verifications TO pko_knowledge_authority;
 CREATE VIEW pko_knowledge_authority.steps AS
-  SELECT all_sources_usable, approval_step_is_software_assigned, assigned_agent_kind, assigned_role, assigned_role_is_ungoverned, assigned_role_label, authoritative_stale_count, available_exception_count, binding_boundary_count, blocking_requirement_count, control_kind, declared_verification_count, expected_duration_minutes, expertise_level, gate_held_by_human, has_been_approached_by_software, has_declared_control_kind, inputs_are_fresh, instruction, is_approval_step, is_demonstrated_human_gate, is_governed_by_unwarranted_boundary, is_human_approval_gate, is_preparation_step, is_software_assigned, is_unexercised_human_gate, name, procedure_version, requires_human_confirmation, semantic_type_iri, software_execution_count, stale_authoritative_binding_count, stale_binding_count, step_id, step_kind, step_number, title, undeclared_control_version_key, unexercised_gate_version_key, unusable_binding_count, unwarranted_boundary_count, unwitnessed_blocking_count FROM public.vw_steps;
+  SELECT accountable_agent, activity_origin_trace_count, ai_artifact_input_count, ai_failure_count, all_sources_usable, approval_step_is_software_assigned, assigned_agent_kind, assigned_role, assigned_role_does_compliance_review, assigned_role_is_ungoverned, assigned_role_label, authoritative_stale_count, available_exception_count, binding_boundary_count, blocking_requirement_count, bottleneck_allocation_count, calls_procedure, child_step_count, coarse_top_level_version_key, collection_evidence_count, compliance_review_procedure_key, conditionless_version_key, consumes_ai_agent_artifact, context_sensitivity_count, control_kind, cue_count, danger_cue_count, decision_point_count, declared_fallback_step_key, declared_first_step_key, declared_verification_count, description, detail_level, deviated_run_count, dmn_decision_count, downstream_artifact_step_count, elicited_extension_count, elicited_validation_count, entry_step_key, expected_duration_minutes, expertise_level, failure_mode_count, fine_top_level_version_key, first_child_step, gate_free_reach_from_entry_count, gate_held_by_human, has_been_approached_by_software, has_collection_evidence, has_declared_control_kind, has_downstream_steps, has_incompleteness_cue, has_instruction_only, has_no_accountable_agent, has_postcondition, has_reported_reality_mismatch, incoming_transition_count, incompleteness_cue_count, input_variable_count, inputs_are_fresh, instruction, invariant_count, is_accountable_to_software, is_ai_failure_point, is_approval_step, is_blocking_control_on_rework_loop, is_bottleneck_step, is_composite_without_children, is_context_sensitive_but_unscoped, is_declared_fallback_step, is_declared_first_step, is_demonstrated_human_gate, is_drifted_from_practice, is_entry_step, is_gate_bypassed_publication, is_governed_by_unwarranted_boundary, is_human_approval_gate, is_isolation_without_lock, is_on_rework_loop, is_preparation_step, is_reachable_from_entry_without_human_gate, is_release_approval_gate, is_software_assigned, is_unexercised_human_gate, is_untraced_activity_in_traced_model, isolates_energy_source, knowledge_fragment_count, max_repetitions, min_repetitions, name, open_outdated_flag_count, output_variable_count, owner_organization, parent_step, parent_step_kind, parseable_condition_count, postcondition_count, precondition_count, prerequisite_downstream_count, prerequisite_is_downstream, prerequisite_step, procedure_version, reachable_step_count, reached_from_step_count, referenced_resource_count, regulatory_requirement_count, remedy_for_error, required_lock_count, required_protective_equipment_count, requires_human_confirmation, safety_critical_condition_count, self_reach_count, semantic_type_iri, software_execution_count, stage, stale_authoritative_binding_count, stale_binding_count, states_operational_knowledge, step_id, step_kind, step_number, step_procedure_type, title, tool_function_count, tool_use_rules_only_in_prose, undeclared_control_version_key, unexercised_gate_version_key, unscoped_sensitivity_count, untyped_version_key, unusable_binding_count, unwarranted_boundary_count, unwitnessed_blocking_count, verifies_step, version_entry_step_id, version_model_trace_count, version_procedure FROM public.vw_steps;
 ALTER VIEW pko_knowledge_authority.steps OWNER TO postgres;
 GRANT SELECT ON pko_knowledge_authority.steps TO pko_knowledge_authority;
 CREATE VIEW pko_knowledge_authority.stewardship_assignments AS
@@ -1630,11 +4271,11 @@ CREATE VIEW pko_knowledge_authority.tools AS
 ALTER VIEW pko_knowledge_authority.tools OWNER TO postgres;
 GRANT SELECT ON pko_knowledge_authority.tools TO pko_knowledge_authority;
 CREATE VIEW pko_knowledge_authority.user_feedback AS
-  SELECT change_request_key, disposition, feedback_text, name, procedure_execution, provided_at, provided_by_agent, semantic_type_iri, user_feedback_id FROM public.vw_user_feedback;
+  SELECT change_request_key, collection_follow_up_count, disposition, feedback_on_execution, feedback_on_procedure, feedback_text, is_tacit_signal_not_fed_into_collection, is_unactioned_procedure_critique, name, procedure_execution, provided_at, provided_by_agent, reveals_tacit_knowledge, semantic_type_iri, user_feedback_id FROM public.vw_user_feedback;
 ALTER VIEW pko_knowledge_authority.user_feedback OWNER TO postgres;
 GRANT SELECT ON pko_knowledge_authority.user_feedback TO pko_knowledge_authority;
 CREATE VIEW pko_knowledge_authority.user_questions AS
-  SELECT addressed_by_resource, asked_at, asked_by_agent, name, question_text, resolved_by_faq, semantic_type_iri, status, step_execution, user_question_id FROM public.vw_user_questions;
+  SELECT addressed_by_resource, asked_at, asked_by_agent, is_unaddressed_question, name, question_text, resolved_by_faq, semantic_type_iri, status, step_execution, user_question_id FROM public.vw_user_questions;
 ALTER VIEW pko_knowledge_authority.user_questions OWNER TO postgres;
 GRANT SELECT ON pko_knowledge_authority.user_questions TO pko_knowledge_authority;
 CREATE VIEW pko_knowledge_authority.verification_outcomes AS
@@ -1645,37 +4286,1463 @@ CREATE VIEW pko_knowledge_authority.witness_loops AS
   SELECT completed_at, derived_after, fields_after, is_complete, loop_number, name, premise, question_count, semantic_type_iri, started_at, title, witness_loop_id, witnessed_after FROM public.vw_witness_loops;
 ALTER VIEW pko_knowledge_authority.witness_loops OWNER TO postgres;
 GRANT SELECT ON pko_knowledge_authority.witness_loops TO pko_knowledge_authority;
-CREATE VIEW pko_process_steward.process_mining_runs AS
-  SELECT as_of_instant, conformance_rate, conforming_variant_count, days_since_mined, deviation_description, discovered_variant_count, drifted_mining_run_key, evaluation_context, event_log_source, has_major_drift_from_documentation, is_conformant, is_drift_on_live_version, is_stale_mining_evidence, mined_at, name, procedure_version, procedure_version_is_live, process_mining_run_id, semantic_type_iri FROM public.vw_process_mining_runs;
-ALTER VIEW pko_process_steward.process_mining_runs OWNER TO postgres;
-GRANT SELECT ON pko_process_steward.process_mining_runs TO pko_process_steward;
-CREATE VIEW pko_process_steward.vocabularies AS
-  SELECT governing_role, has_orphan_terms, name, orphan_term_count, scheme_uri, semantic_type_iri, term_count, title, vocabulary_id FROM public.vw_vocabularies;
-ALTER VIEW pko_process_steward.vocabularies OWNER TO postgres;
-GRANT SELECT ON pko_process_steward.vocabularies TO pko_process_steward;
-CREATE VIEW pko_process_steward.vocabulary_terms AS
-  SELECT alt_labels, definition, is_orphan_term, is_widely_adopted_term, name, orphan_term_vocabulary_key, pref_label, semantic_type_iri, usage_count, vocabulary, vocabulary_term_id FROM public.vw_vocabulary_terms;
-ALTER VIEW pko_process_steward.vocabulary_terms OWNER TO postgres;
-GRANT SELECT ON pko_process_steward.vocabulary_terms TO pko_process_steward;
-CREATE VIEW pko_process_steward.knowledge_broker_links AS
-  SELECT active_reliance_broker_key, as_of_instant, at_risk_broker_key, broker, broker_is_still_engaged, days_since_consulted, evaluation_context, frequency, is_active_reliance, is_at_risk_reliance, knowledge_broker_link_id, last_consulted_at, name, seeker, semantic_type_iri, topic FROM public.vw_knowledge_broker_links;
-ALTER VIEW pko_process_steward.knowledge_broker_links OWNER TO postgres;
-GRANT SELECT ON pko_process_steward.knowledge_broker_links TO pko_process_steward;
 CREATE VIEW pko_knowledge_authority.process_mining_runs AS
-  SELECT as_of_instant, conformance_rate, conforming_variant_count, days_since_mined, deviation_description, discovered_variant_count, drifted_mining_run_key, evaluation_context, event_log_source, has_major_drift_from_documentation, is_conformant, is_drift_on_live_version, is_stale_mining_evidence, mined_at, name, procedure_version, procedure_version_is_live, process_mining_run_id, semantic_type_iri FROM public.vw_process_mining_runs;
+  SELECT as_of_instant, conformance_rate, conforming_variant_count, days_since_mined, deviation_description, discovered_variant_count, drifted_mining_run_key, evaluation_context, event_log_source, has_major_drift_from_documentation, has_undocumented_enacted_path, is_conformant, is_deviation_unexplained_by_people, is_drift_on_live_version, is_stale_mining_evidence, mined_at, name, people_capture_complement_count, procedure_version, procedure_version_is_live, process_mining_run_id, semantic_type_iri, undocumented_path_count FROM public.vw_process_mining_runs;
 ALTER VIEW pko_knowledge_authority.process_mining_runs OWNER TO postgres;
 GRANT SELECT ON pko_knowledge_authority.process_mining_runs TO pko_knowledge_authority;
 CREATE VIEW pko_knowledge_authority.vocabularies AS
-  SELECT governing_role, has_orphan_terms, name, orphan_term_count, scheme_uri, semantic_type_iri, term_count, title, vocabulary_id FROM public.vw_vocabularies;
+  SELECT established_at, governed_dimension, governing_role, governs_procedure, has_orphan_terms, is_frozen_despite_new_collection, is_machine_accessible, is_single_kind_frame, latest_organized_material_at, managed_scheme_procedure_key, model_layer, name, ontology_modeling_started_at, ontology_preceded_vocabulary_control, organized_document_excerpt_count, organized_field_notes_count, organized_kind_count, organized_material_count, organized_mined_event_trace_count, organized_process_map_count, organized_transcript_count, orphan_term_count, prefix, publication_format, refinement_count, scheme_kind, scheme_uri, semantic_type_iri, term_count, title, vocabulary_id FROM public.vw_vocabularies;
 ALTER VIEW pko_knowledge_authority.vocabularies OWNER TO postgres;
 GRANT SELECT ON pko_knowledge_authority.vocabularies TO pko_knowledge_authority;
 CREATE VIEW pko_knowledge_authority.vocabulary_terms AS
-  SELECT alt_labels, definition, is_orphan_term, is_widely_adopted_term, name, orphan_term_vocabulary_key, pref_label, semantic_type_iri, usage_count, vocabulary, vocabulary_term_id FROM public.vw_vocabulary_terms;
+  SELECT alt_label_practitioner_mention_count, alt_labels, broader_term, broader_term_parent, concept_iri, definition, definition_revised_at, has_stale_definition, has_structural_sense_shift_across_years, has_unreconciled_variant_phrasings, introduced_in_release, introduced_release_issued_at, is_organized_around_official_term, is_orphan_term, is_widely_adopted_term, latest_meaning_change_at, name, namespace_iri, orphan_term_vocabulary_key, pref_label, pref_label_practitioner_mention_count, represents_role, same_as_iri, scheme_governed_dimension, scope_note, semantic_type_iri, source_phrasing_count, structural_shift_count, unreconciled_phrasing_count, usage_count, vocabulary, vocabulary_term_id FROM public.vw_vocabulary_terms;
 ALTER VIEW pko_knowledge_authority.vocabulary_terms OWNER TO postgres;
 GRANT SELECT ON pko_knowledge_authority.vocabulary_terms TO pko_knowledge_authority;
 CREATE VIEW pko_knowledge_authority.knowledge_broker_links AS
-  SELECT active_reliance_broker_key, as_of_instant, at_risk_broker_key, broker, broker_is_still_engaged, days_since_consulted, evaluation_context, frequency, is_active_reliance, is_at_risk_reliance, knowledge_broker_link_id, last_consulted_at, name, seeker, semantic_type_iri, topic FROM public.vw_knowledge_broker_links;
+  SELECT active_reliance_broker_key, as_of_instant, at_risk_broker_key, broker, broker_is_still_engaged, days_since_consulted, evaluation_context, frequency, holder_vocabulary, holder_wording, is_active_reliance, is_at_risk_reliance, knowledge_broker_link_id, last_consulted_at, locates_other_holder, name, pointed_holder, points_to_know_how, seeker, seeker_vocabulary, seeker_wording, semantic_type_iri, topic, translation_between_vocabularies FROM public.vw_knowledge_broker_links;
 ALTER VIEW pko_knowledge_authority.knowledge_broker_links OWNER TO postgres;
 GRANT SELECT ON pko_knowledge_authority.knowledge_broker_links TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.conformance_substrates AS
+  SELECT conformance_substrate_id, disagreeing_field_count, disagreeing_table_count, engine, how_it_computes, is_fully_conformant, is_graded, label, latest_cells_failed, latest_cells_passed, latest_cells_tested, latest_harness_errors, latest_score, name, output_folder, role, run_count, semantic_type_iri, sort_order, transpiler FROM public.vw_conformance_substrates;
+ALTER VIEW pko_knowledge_authority.conformance_substrates OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.conformance_substrates TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.conformance_runs AS
+  SELECT answer_key_author, cells_failed, cells_passed, cells_tested, conformance_run_id, imperfect_substrate_count, is_fully_conformant, is_latest, name, notes, overall_score, perfect_substrate_count, ran_on, rulebook_commit, semantic_type_iri, substrate_count FROM public.vw_conformance_runs;
+ALTER VIEW pko_knowledge_authority.conformance_runs OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.conformance_runs TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.substrate_run_scores AS
+  SELECT aggregation_passed, aggregation_score, aggregation_tested, calculated_passed, calculated_score, calculated_tested, cells_failed, cells_passed, cells_tested, duration_seconds, harness_error, is_in_latest_run, is_perfect, latest_cells_passed, latest_cells_tested, latest_error_flag, lookup_passed, lookup_score, lookup_tested, name, perfect_run_key, run, score, semantic_type_iri, substrate, substrate_label, substrate_run_score_id FROM public.vw_substrate_run_scores;
+ALTER VIEW pko_knowledge_authority.substrate_run_scores OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.substrate_run_scores TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.table_conformance AS
+  SELECT cells_failed, cells_passed, cells_tested, derived_field_count, disagreeing_field_count, imperfect_substrate_key, imperfect_table_key, is_missing_answer_file, is_perfect, name, record_count, rulebook_table, run, score, semantic_type_iri, subject_area, substrate, substrate_label, table_conformance_id FROM public.vw_table_conformance;
+ALTER VIEW pko_knowledge_authority.table_conformance OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.table_conformance TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.field_disagreements AS
+  SELECT cells_failed, dominant_reason, field_class, field_disagreement_id, formula, is_fully_sampled, name, rulebook_field, sampled_cell_count, semantic_type_iri, substrate, substrate_label, table_conformance FROM public.vw_field_disagreements;
+ALTER VIEW pko_knowledge_authority.field_disagreements OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.field_disagreements TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.cell_disagreements AS
+  SELECT actual_value, cell_disagreement_id, expected_value, field_disagreement, name, reason, record_id, rulebook_field, semantic_type_iri, substrate FROM public.vw_cell_disagreements;
+ALTER VIEW pko_knowledge_authority.cell_disagreements OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.cell_disagreements TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.knowledge_methods AS
+  SELECT application_count, elicitation_tradeoff, elicitation_use_count, is_applied, knowledge_method_id, label, method_family, name, origin_reference, semantic_type_iri, summary, usage_count FROM public.vw_knowledge_methods;
+ALTER VIEW pko_knowledge_authority.knowledge_methods OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.knowledge_methods TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.source_articles AS
+  SELECT agreed_claim_count, agreed_coverage_percent, author, claim_count, coverage_percent, covered_claim_count, is_fully_covered, local_file_name, name, published_on, semantic_type_iri, series, source_article_id, thesis, title, uncovered_claim_count FROM public.vw_source_articles;
+ALTER VIEW pko_knowledge_authority.source_articles OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.source_articles TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.article_claims AS
+  SELECT agreed_evidence_count, article_claim_id, claim_kind, claim_text, evidence_count, has_rejected_evidence, is_agreed, is_covered, name, required_evidence, section_ref, semantic_type_iri, source_article, valid_evidence_count FROM public.vw_article_claims;
+ALTER VIEW pko_knowledge_authority.article_claims OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.article_claims TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.claim_evidence AS
+  SELECT article_claim, claim_evidence_id, claim_kind, evidence_kind, field_catalog_name, field_has_data, field_is_contested, field_is_discriminating, field_is_witness, has_justification, is_agreed_evidence, is_contested, is_question_proof, is_scenario_proof, is_standard_proof, is_structural_proof, is_valid, is_witness_proof, justification, knowledge_method, method_is_applied, name, ontology_profile, procedure, procedure_execution_count, profile_mapping_count, question_is_answered, question_witnessed_answer, role_question, rulebook_field, rulebook_table, semantic_type_iri, table_has_rows FROM public.vw_claim_evidence;
+ALTER VIEW pko_knowledge_authority.claim_evidence OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.claim_evidence TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.app_users AS
+  SELECT agent_kind, app_user_id, assignment_count, display_name, email_address, has_no_principal, holds_multiple_principals, is_enabled, is_non_human_sign_in, linked_agent, name, organization, semantic_type_iri FROM public.vw_app_users;
+ALTER VIEW pko_knowledge_authority.app_users OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.app_users TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.principal_assignments AS
+  SELECT app_user, granted_rationale, is_cross_organization_grant, is_default, name, principal, principal_assignment_id, principal_is_admin, principal_organization, semantic_type_iri, user_organization FROM public.vw_principal_assignments;
+ALTER VIEW pko_knowledge_authority.principal_assignments OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.principal_assignments TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.issued_tokens AS
+  SELECT app_user, claims_snapshot, expires_at, is_dev_minted, issued_at, issued_token_id, issuer, name, principal, semantic_type_iri, subject_claim FROM public.vw_issued_tokens;
+ALTER VIEW pko_knowledge_authority.issued_tokens OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.issued_tokens TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.method_applications AS
+  SELECT applied_at, applied_by_agent, applied_to, applied_to_grounding_snapshot, identified_broker, knowledge_method, method_application_id, name, semantic_type_iri FROM public.vw_method_applications;
+ALTER VIEW pko_knowledge_authority.method_applications OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.method_applications TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.lifecycle_statuses AS
+  SELECT broader_status, execution_use_count, is_non_pko_status_in_use, is_pko_status, label, lifecycle_status_id, name, pko_iri, semantic_type_iri, status_scheme, version_use_count, workflow_status_concept FROM public.vw_lifecycle_statuses;
+ALTER VIEW pko_knowledge_authority.lifecycle_statuses OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.lifecycle_statuses TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.facilities AS
+  SELECT clean_run_count, deviating_run_count, facility_id, facility_kind, is_deviation_only_facility, label, name, organization, parent_facility, semantic_type_iri FROM public.vw_facilities;
+ALTER VIEW pko_knowledge_authority.facilities OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.facilities TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.machine_types AS
+  SELECT label, machine_type_id, name, semantic_type_iri FROM public.vw_machine_types;
+ALTER VIEW pko_knowledge_authority.machine_types OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.machine_types TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.energy_sources AS
+  SELECT energy_source_id, label, name, pko_individual_iri, semantic_type_iri FROM public.vw_energy_sources;
+ALTER VIEW pko_knowledge_authority.energy_sources OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.energy_sources TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.machines AS
+  SELECT configuration_kind, energy_source_count, facility, governing_procedure_version, has_unisolated_energy_source, is_non_standard_configuration, label, machine_id, machine_type, manufactured_by, name, semantic_type_iri, unisolated_energy_source_count FROM public.vw_machines;
+ALTER VIEW pko_knowledge_authority.machines OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.machines TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.machine_energy_sources AS
+  SELECT energy_source, is_unisolated_energy_source, isolation_step_count, machine, machine_energy_source_id, machine_procedure_version, name, semantic_type_iri, unisolated_machine_key FROM public.vw_machine_energy_sources;
+ALTER VIEW pko_knowledge_authority.machine_energy_sources OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.machine_energy_sources TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.lock_devices AS
+  SELECT label, lock_device_id, name, semantic_type_iri FROM public.vw_lock_devices;
+ALTER VIEW pko_knowledge_authority.lock_devices OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.lock_devices TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.protective_equipment AS
+  SELECT label, name, protective_equipment_id, semantic_type_iri FROM public.vw_protective_equipment;
+ALTER VIEW pko_knowledge_authority.protective_equipment OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.protective_equipment TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.step_lock_requirements AS
+  SELECT lock_device, name, semantic_type_iri, step, step_lock_requirement_id FROM public.vw_step_lock_requirements;
+ALTER VIEW pko_knowledge_authority.step_lock_requirements OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.step_lock_requirements TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.step_protective_equipment AS
+  SELECT name, protective_equipment, semantic_type_iri, step, step_protective_equipment_id FROM public.vw_step_protective_equipment;
+ALTER VIEW pko_knowledge_authority.step_protective_equipment OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.step_protective_equipment TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.regulatory_frameworks AS
+  SELECT jurisdiction, label, name, regulatory_framework_id, required_procedure_count, requirement_count, semantic_type_iri FROM public.vw_regulatory_frameworks;
+ALTER VIEW pko_knowledge_authority.regulatory_frameworks OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.regulatory_frameworks TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.procedure_targets AS
+  SELECT handling_failure_mode_count, is_unhandled_non_standard_target, label, machine, machine_is_non_standard, name, procedure, procedure_target_id, semantic_type_iri, target_kind FROM public.vw_procedure_targets;
+ALTER VIEW pko_knowledge_authority.procedure_targets OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.procedure_targets TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.procedure_adoptions AS
+  SELECT adopted_at, adoption_mode, is_adoption_mode_unstated, name, organization, procedure, procedure_adoption_id, semantic_type_iri FROM public.vw_procedure_adoptions;
+ALTER VIEW pko_knowledge_authority.procedure_adoptions OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.procedure_adoptions TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.procedure_outcome_criteria AS
+  SELECT failure_procedure_key, name, polarity, procedure, procedure_outcome_criterion_id, semantic_type_iri, statement FROM public.vw_procedure_outcome_criteria;
+ALTER VIEW pko_knowledge_authority.procedure_outcome_criteria OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.procedure_outcome_criteria TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.relation_types AS
+  SELECT family, inverse_label, is_defined, label, name, realized_by, relation_type_id, semantic_type_iri, usage_count FROM public.vw_relation_types;
+ALTER VIEW pko_knowledge_authority.relation_types OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.relation_types TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.activity_relations AS
+  SELECT activity_relation_id, enables_version_key, from_step, from_step_version, name, overlaps_version_key, prevents_version_key, rationale, relation_type, relation_type_is_defined, semantic_type_iri, to_step, uses_undefined_relation_type FROM public.vw_activity_relations;
+ALTER VIEW pko_knowledge_authority.activity_relations OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.activity_relations TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.step_variables AS
+  SELECT ai_artifact_consumer_has_no_accountable_agent, ai_blast_radius_path, consumer_count, consumer_role, consumer_workflow, datatype, direction, expected_format, input_step_key, is_dangling_input, is_external_input, is_input_from_ai_artifact, is_miswired_source, label, name, output_step_key, semantic_type_iri, source_direction, source_step, source_step_agent, source_step_agent_kind, source_variable, step, step_accountable_agent, step_agent_kind, step_variable_id FROM public.vw_step_variables;
+ALTER VIEW pko_knowledge_authority.step_variables OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.step_variables TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.execution_entities AS
+  SELECT attributed_to_agent, entity_label, entity_uri, executed_step, execution_entity_id, generated_execution_key, generating_agent, is_foreign_variable, is_usage_direction_mismatch, name, recorded_datatype, recorded_format, semantic_type_iri, step_execution, step_variable, usage, used_execution_key, variable_datatype, variable_direction, variable_expected_format, variable_step, violates_declared_datatype_or_format FROM public.vw_execution_entities;
+ALTER VIEW pko_knowledge_authority.execution_entities OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.execution_entities TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.step_conditions AS
+  SELECT check_count, condition_kind, invariant_step_key, is_machine_parseable, is_never_checked, is_safety_critical, machine_expression, name, postcondition_step_key, precondition_step_key, safety_critical_step_key, semantic_type_iri, statement, step, step_condition_id FROM public.vw_step_conditions;
+ALTER VIEW pko_knowledge_authority.step_conditions OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.step_conditions TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.condition_checks AS
+  SELECT checked_at, checked_by_agent, condition_check_id, condition_kind, failed_precondition_execution_key, held, is_failed_precondition, is_violated_invariant, name, semantic_type_iri, step_condition, step_execution, violated_invariant_execution_key FROM public.vw_condition_checks;
+ALTER VIEW pko_knowledge_authority.condition_checks OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.condition_checks TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.failure_modes AS
+  SELECT description, escalate_to_role, escalates_to_vacant_role, escalation_role_has_no_holder, failure_mode_id, has_no_response, name, procedure_target, requires_escalation, response, semantic_type_iri, step FROM public.vw_failure_modes;
+ALTER VIEW pko_knowledge_authority.failure_modes OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.failure_modes TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.step_cues AS
+  SELECT cue_kind, danger_cue_step_key, description, escalate_to_role, failure_mode_response, incomplete_cue_step_key, is_unanswerable_sign, name, observation_count, operator_question, requires_escalation, semantic_type_iri, signals_failure_mode, signals_incomplete_step, step, step_cue_id, unescalated_observation_count FROM public.vw_step_cues;
+ALTER VIEW pko_knowledge_authority.step_cues OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.step_cues TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.cue_observations AS
+  SELECT acknowledged_at, cue_observation_id, cue_requires_escalation, cue_signals_incomplete_step, escalated_to_agent, is_awaiting_acknowledgement, is_unescalated_danger_cue, name, observed_at, observed_by_agent, owner_organization, semantic_type_iri, step_cue, step_execution, unescalated_cue_key, unescalated_execution_key, was_escalated FROM public.vw_cue_observations;
+ALTER VIEW pko_knowledge_authority.cue_observations OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.cue_observations TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.decision_points AS
+  SELECT deciding_factors, decision_point_id, default_outcome, dmn_decision_key, governing_transition, has_no_deciding_factors, is_dmn_encoded, name, question, semantic_type_iri, step FROM public.vw_decision_points;
+ALTER VIEW pko_knowledge_authority.decision_points OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.decision_points TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.execution_participants AS
+  SELECT agent, execution_participant_id, name, participation_role, procedure_execution, semantic_type_iri FROM public.vw_execution_participants;
+ALTER VIEW pko_knowledge_authority.execution_participants OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.execution_participants TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.step_resources AS
+  SELECT name, relation, resource, semantic_type_iri, step, step_resource_id FROM public.vw_step_resources;
+ALTER VIEW pko_knowledge_authority.step_resources OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.step_resources TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.faq_categories AS
+  SELECT faq_category_id, faq_count, label, name, semantic_type_iri FROM public.vw_faq_categories;
+ALTER VIEW pko_knowledge_authority.faq_categories OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.faq_categories TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.faq_targets AS
+  SELECT faq_count, faq_target_id, label, name, semantic_type_iri FROM public.vw_faq_targets;
+ALTER VIEW pko_knowledge_authority.faq_targets OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.faq_targets TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.authoring_submissions AS
+  SELECT authoring_submission_id, authoring_tool, is_expert_authored_conforming, is_non_conforming_accepted, name, procedure_version, profile_validation_passed, semantic_type_iri, step_count, submitted_at, submitted_by_agent, submitter_expertise, validation_error_count, was_accepted FROM public.vw_authoring_submissions;
+ALTER VIEW pko_knowledge_authority.authoring_submissions OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.authoring_submissions TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.process_knowledge_levels AS
+  SELECT explicit_strategy_count, label, lacks_capture_strategy_for_either_form, name, planning_horizon, process_knowledge_level_id, semantic_type_iri, tacit_strategy_count FROM public.vw_process_knowledge_levels;
+ALTER VIEW pko_knowledge_authority.process_knowledge_levels OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.process_knowledge_levels TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.level_capture_strategies AS
+  SELECT contradicts_knowledge_form, description, knowledge_form, knowledge_method, level, level_capture_strategy_id, name, semantic_type_iri, transfer_mode FROM public.vw_level_capture_strategies;
+ALTER VIEW pko_knowledge_authority.level_capture_strategies OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.level_capture_strategies TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.level_pyramid_questions AS
+  SELECT level, level_pyramid_question_id, name, question_kind, semantic_type_iri FROM public.vw_level_pyramid_questions;
+ALTER VIEW pko_knowledge_authority.level_pyramid_questions OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.level_pyramid_questions TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.process_level_statements AS
+  SELECT is_filed_at_wrong_level, level, level_question_key, name, procedure, process_level_statement_id, pyramid_match_count, question_kind, semantic_type_iri, statement FROM public.vw_process_level_statements;
+ALTER VIEW pko_knowledge_authority.process_level_statements OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.process_level_statements TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.tactical_resource_allocations AS
+  SELECT adjustment_decision, available_units_per_week, demanded_units_per_week, facility, is_bottleneck, name, resource_kind, resource_label, semantic_type_iri, step, tactical_resource_allocation_id, utilization_percent FROM public.vw_tactical_resource_allocations;
+ALTER VIEW pko_knowledge_authority.tactical_resource_allocations OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.tactical_resource_allocations TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.process_strategic_alignments AS
+  SELECT mission_statement, name, organization, procedure, process_strategic_alignment_id, rationale, semantic_type_iri, states_no_trade_off, trade_offs, value_created FROM public.vw_process_strategic_alignments;
+ALTER VIEW pko_knowledge_authority.process_strategic_alignments OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.process_strategic_alignments TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.business_outcomes AS
+  SELECT business_outcome_id, label, linked_measure_count, name, owner_role, semantic_type_iri, strategic_objective FROM public.vw_business_outcomes;
+ALTER VIEW pko_knowledge_authority.business_outcomes OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.business_outcomes TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.process_outcome_measures AS
+  SELECT business_outcome, is_unlinked_to_business_outcome, label, link_rationale, measured_over_period, name, observed_value, procedure, process_outcome_measure_id, semantic_type_iri, target_value, unit FROM public.vw_process_outcome_measures;
+ALTER VIEW pko_knowledge_authority.process_outcome_measures OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.process_outcome_measures TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.process_stages AS
+  SELECT is_unowned_or_empty_stage, label, name, owner_has_no_holder, owner_role, procedure_version, process_stage_id, semantic_type_iri, sequence, step_count FROM public.vw_process_stages;
+ALTER VIEW pko_knowledge_authority.process_stages OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.process_stages TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.process_interdependencies AS
+  SELECT effect, evidence_note, from_procedure, hindered_procedure_key, is_hindering_dependency, mechanism, name, process_interdependency_id, semantic_type_iri, to_procedure FROM public.vw_process_interdependencies;
+ALTER VIEW pko_knowledge_authority.process_interdependencies OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.process_interdependencies TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.stakeholder_lenses AS
+  SELECT exemplar_role, granularity_rank, label, name, needs_compliance_evidence, needs_exception_handling, needs_metrics, needs_step_guidance, needs_structured_constraints, preferred_form, required_granularity, semantic_type_iri, stakeholder_lens_id FROM public.vw_stakeholder_lenses;
+ALTER VIEW pko_knowledge_authority.stakeholder_lenses OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.stakeholder_lenses TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.procedure_lens_views AS
+  SELECT category_level_procedure_key, form, granularity, is_disconnected_silo, is_granularity_misfit, lens_granularity_rank, name, procedure, procedure_current_version, procedure_lens_view_id, projects_version, semantic_type_iri, stakeholder_lens, step_level_procedure_key, view_granularity_rank FROM public.vw_procedure_lens_views;
+ALTER VIEW pko_knowledge_authority.procedure_lens_views OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.procedure_lens_views TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.applicability_scopes AS
+  SELECT applicability_scope_id, applies_when, business_unit, customer_segment, dimension_count, exclusion_condition, geography, label, name, named_graph_iri, regulatory_regime, semantic_type_iri, states_conditions FROM public.vw_applicability_scopes;
+ALTER VIEW pko_knowledge_authority.applicability_scopes OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.applicability_scopes TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.step_context_sensitivities AS
+  SELECT applicability_scope, context_factor, description, effect_on_significance, name, semantic_type_iri, step, step_context_sensitivity_id, unscoped_step_key FROM public.vw_step_context_sensitivities;
+ALTER VIEW pko_knowledge_authority.step_context_sensitivities OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.step_context_sensitivities TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.situational_variants AS
+  SELECT adaptation, applicability_scope, diverges_without_stated_conditions, expert_agent, has_no_applicability_dimension, label, name, procedure, scope_dimension_count, scope_states_conditions, semantic_type_iri, situation, situational_variant_id FROM public.vw_situational_variants;
+ALTER VIEW pko_knowledge_authority.situational_variants OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.situational_variants TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.collected_source_materials AS
+  SELECT captured_during_execution, changed_dependent_count, collected_at, collected_at_occasion, collected_source_material_id, complements_mining_run, contributing_expert, dependent_trace_count, encoded_at, encoded_into_version, expert_effort_hours, has_knowledge_affected_by_source_change, holds_reasoning_or_tacit_knowledge, is_captured_in_flow_of_work, is_dependency_invisible_to_change, is_document_source, is_modeled_before_organized, is_people_capture, is_practice_evidence, label, material_kind, name, organized_at, organized_into_scheme, procedure, produced_by_method_application, prompted_by_feedback, semantic_type_iri, source_document, source_document_revised_at FROM public.vw_collected_source_materials;
+ALTER VIEW pko_knowledge_authority.collected_source_materials OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.collected_source_materials TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.scheme_refinements AS
+  SELECT change_summary, name, refined_at, scheme_refinement_id, semantic_type_iri, triggered_by_material, vocabulary FROM public.vw_scheme_refinements;
+ALTER VIEW pko_knowledge_authority.scheme_refinements OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.scheme_refinements TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.term_label_variants AS
+  SELECT concepts_sharing_wording, is_ambiguous_label, is_cross_scheme_duplicate_pref, label_kind, name, practitioner_mention_count, pref_wording, pref_wording_key, same_pref_wording_count, semantic_type_iri, term_label_variant_id, term_scheme, vocabulary_term, wording, wording_key FROM public.vw_term_label_variants;
+ALTER VIEW pko_knowledge_authority.term_label_variants OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.term_label_variants TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.ai_labeling_runs AS
+  SELECT agent, ai_labeling_run_id, grounded_in_non_machine_readable_scheme, grounding_scheme, grounding_scheme_is_machine_accessible, is_ungrounded_synonym_sprawl, name, non_canonical_output_count, output_count, run_at, semantic_type_iri, task_description FROM public.vw_ai_labeling_runs;
+ALTER VIEW pko_knowledge_authority.ai_labeling_runs OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.ai_labeling_runs TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.source_term_mentions AS
+  SELECT ai_labeling_run, concept_scheme, intended_term, intended_term_role, is_non_canonical_generated_value, is_uncontrolled_wording, matching_label_count, matching_pref_label_count, mention_origin, name, semantic_type_iri, source_material, source_term_mention_id, unresolved_intended_term_key, unresolved_role_key, wording, wording_key FROM public.vw_source_term_mentions;
+ALTER VIEW pko_knowledge_authority.source_term_mentions OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.source_term_mentions TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.term_relations AS
+  SELECT asserts_indirect_link_as_direct, from_term, from_term_grandparent, name, note, relation_kind, semantic_type_iri, term_relation_id, to_term FROM public.vw_term_relations;
+ALTER VIEW pko_knowledge_authority.term_relations OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.term_relations TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.term_meaning_changes AS
+  SELECT changed_at, is_structural_change, name, new_meaning, prior_meaning, prior_meaning_since, recorded_by_agent, semantic_type_iri, span_days, term_meaning_change_id, vocabulary_term FROM public.vw_term_meaning_changes;
+ALTER VIEW pko_knowledge_authority.term_meaning_changes OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.term_meaning_changes TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.external_standard_terms AS
+  SELECT alignment_updated_at, as_of_instant, days_since_deprecated, deprecated_at, deprecated_by_source, evaluation_context, external_standard_term_id, has_unpropagated_identifier_change, is_adopted_but_deprecated, is_alignment_stale_after_deprecation, is_needed_deprecated_term_not_rehomed, is_recent_deprecation, is_rehomed_without_identity_link, is_rehomed_without_new_release, model_still_needs_term, name, ontology_profile, previous_term_iri, profile_namespace_iri, rehomed_as_term, rehomed_term_namespace, rehomed_term_release_issued_at, rehomed_term_same_as, rehoming_kept_external_namespace, semantic_type_iri, stale_identifier_mapping_count, still_resolves, term_iri, using_mapping_count FROM public.vw_external_standard_terms;
+ALTER VIEW pko_knowledge_authority.external_standard_terms OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.external_standard_terms TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.role_capability_tags AS
+  SELECT capability_scheme_dimension, capability_term, is_tag_outside_capability_scheme, name, role, role_capability_tag_id, semantic_type_iri FROM public.vw_role_capability_tags;
+ALTER VIEW pko_knowledge_authority.role_capability_tags OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.role_capability_tags TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.classification_facets AS
+  SELECT assignment_count, classification_facet_id, dimension_description, label, name, semantic_type_iri FROM public.vw_classification_facets;
+ALTER VIEW pko_knowledge_authority.classification_facets OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.classification_facets TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.procedure_facet_assignments AS
+  SELECT facet, facet_value, name, procedure, procedure_facet_assignment_id, semantic_type_iri FROM public.vw_procedure_facet_assignments;
+ALTER VIEW pko_knowledge_authority.procedure_facet_assignments OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.procedure_facet_assignments TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.encoding_lifecycle_stages AS
+  SELECT activity, annotation_count, encoding_lifecycle_stage_id, is_stage_without_feedback, label, name, semantic_type_iri, stage_order FROM public.vw_encoding_lifecycle_stages;
+ALTER VIEW pko_knowledge_authority.encoding_lifecycle_stages OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.encoding_lifecycle_stages TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.knowledge_consumer_systems AS
+  SELECT audience, export_format, exports_standard_format, has_graph_algorithms, has_machine_learning, has_metadata_schema, has_ontology, has_reasoner, has_semantic_storage, has_taxonomy, has_thesaurus, holds_procedure_knowledge, integration_count, is_immature_graph_platform, is_knowledge_silo, is_unlinked_toolchain_component, knowledge_consumer_system_id, label, model_sync_count, name, organization, platform_capability_count, semantic_layer_component_count, semantic_type_iri, system_kind FROM public.vw_knowledge_consumer_systems;
+ALTER VIEW pko_knowledge_authority.knowledge_consumer_systems OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.knowledge_consumer_systems TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.consumer_system_syncs AS
+  SELECT canonical_version, canonical_version_modified_at, carries_provenance, consumer_system, consumer_system_sync_id, drops_provenance_in_transit, is_ai_fed_from_forked_copy, is_behind_canonical_version, loaded_procedure, loaded_version, loaded_version_creator, name, predates_version_change, reaches_humans, reaches_machines, semantic_type_iri, source_resource, synced_at, system_audience FROM public.vw_consumer_system_syncs;
+ALTER VIEW pko_knowledge_authority.consumer_system_syncs OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.consumer_system_syncs TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.integration_pathways AS
+  SELECT integration_count_on_pathway, integration_pathway_id, label, name, protocol, semantic_type_iri FROM public.vw_integration_pathways;
+ALTER VIEW pko_knowledge_authority.integration_pathways OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.integration_pathways TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.agent_integrations AS
+  SELECT agent, agent_integration_id, connected_at, delivery_mode, is_deployed_on_ungoverned_graph, is_one_off_connection, is_shadow_integration, knowledge_system, name, observed_answer_count, pathway, pathway_integration_count, registry_entry_key, semantic_type_iri, serves_snapshot, snapshot_is_governed FROM public.vw_agent_integrations;
+ALTER VIEW pko_knowledge_authority.agent_integrations OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.agent_integrations TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.grounding_snapshots AS
+  SELECT assertion_count, built_at, consistent_reasoner_run_count, deprecated_as_current_count, governance_reviewed_at, grounding_snapshot_id, is_governed, label, latest_materialized_at, name, reasoner_run_count, semantic_type_iri, served_before_materialization, served_from, served_to, served_without_consistency_check, serves_deprecated_as_current, serves_stale_role_assignments, stale_assignment_assertion_count, steward_role FROM public.vw_grounding_snapshots;
+ALTER VIEW pko_knowledge_authority.grounding_snapshots OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.grounding_snapshots TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.reasoner_runs AS
+  SELECT dropped_axiom_count, duration_seconds, inferred_triple_count, is_consistent, is_richness_tractability_failure, materialized_at, name, passes_schema_but_fails_reasoner, ran_at, reasoner_profile, reasoner_run_id, schema_validation_passed, semantic_type_iri, snapshot, time_budget_seconds FROM public.vw_reasoner_runs;
+ALTER VIEW pko_knowledge_authority.reasoner_runs OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.reasoner_runs TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.snapshot_assertions AS
+  SELECT about_agent, dc_description, dc_title, has_opaque_identifier, is_inferred, is_stale_role_assertion, lacks_dublin_core, lacks_provenance, name, object_value, predicate, presented_status, presents_deprecated_as_current, provenance_uri, semantic_type_iri, snapshot, snapshot_assertion_id, snapshot_consistent_run_count, snapshot_is_reasoned, source_assignment_is_current, source_procedure_version, source_role_assignment, source_step, source_version_status, subject_identifier FROM public.vw_snapshot_assertions;
+ALTER VIEW pko_knowledge_authority.snapshot_assertions OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.snapshot_assertions TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.retrieval_segments AS
+  SELECT accountable_role, applicability_condition, author_agent_kind, authored_by_agent, boundary_kind, character_count, contradicted_is_indexed, contradicts_segment, decision_point, is_inconsistent_grounding, is_indexed, is_isolated_chunk, is_machine_held_knowledge, name, position_in_process, procedure_version, related_from_count, related_segment, retrieval_segment_id, segment_text, semantic_type_iri, source_resource, step FROM public.vw_retrieval_segments;
+ALTER VIEW pko_knowledge_authority.retrieval_segments OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.retrieval_segments TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.knowledge_query_definitions AS
+  SELECT consolidated_distributed_sources, knowledge_query_definition_id, label, last_run_at, misses_a_layer, name, needs_ontology_and_instances, query_language, query_text, ran_over_consolidated_copy, semantic_type_iri, source_system_count, target_procedure_version, traverses_instance_layer, traverses_ontology_layer FROM public.vw_knowledge_query_definitions;
+ALTER VIEW pko_knowledge_authority.knowledge_query_definitions OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.knowledge_query_definitions TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.knowledge_query_sources AS
+  SELECT consumer_system, knowledge_query_source_id, name, query_definition, semantic_type_iri FROM public.vw_knowledge_query_sources;
+ALTER VIEW pko_knowledge_authority.knowledge_query_sources OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.knowledge_query_sources TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.assistant_answers AS
+  SELECT acted_on_without_human_judgment, answer_kind, answer_text, answered_at, answered_compliance_question_from_documents, answering_agent, arrived_after_step_ended, asked_at, asked_by_agent, asserted_next_step, assistant_answer_id, assumed_current_step, assumed_step_completed_count, cited_grounding_count, conflict_count, conflicts_with_regulation, context_step, context_step_ended_at, context_unescalated_danger_cue_count, contradicts_shared_model, delivered_despite_conflict, delivery_disposition, derivation_performed_by, document_interpretation_erred, documented_inaccuracy, execution_of_context, grounding_count, human_reviewed_by, is_explicitly_grounded_recommendation, is_not_from_own_knowledge, is_unchecked_regulated_recommendation, is_untraceable_to_source, lost_track_of_state, model_did_the_reasoning, name, needs_inference, own_knowledge_grounding_count, owner_organization, question_text, question_topic, raised_safety_concern, recommendation_rests_on_nothing_explicit, recommended_step, recommended_step_needs_human, recommended_step_regulatory_count, requirement_check_count, retrieval_mode, reviewed_for_initiative, semantic_type_iri, specified_transition_count, stale_grounding_count, stayed_silent_on_safety_problem, step_execution, task_outcome, via_integration, was_acted_on, was_correct, wrong_because_graph_was_stale FROM public.vw_assistant_answers;
+ALTER VIEW pko_knowledge_authority.assistant_answers OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.assistant_answers TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.answer_groundings AS
+  SELECT answer_grounding_id, assertion_is_stale, assertion_presents_deprecated, assistant_answer, cited_to_user, external_source_uri, grounds_on_stale_assertion, is_from_own_knowledge, name, retrieval_segment, semantic_type_iri, snapshot_assertion FROM public.vw_answer_groundings;
+ALTER VIEW pko_knowledge_authority.answer_groundings OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.answer_groundings TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.answer_requirement_checks AS
+  SELECT answer_requirement_check_id, assistant_answer, checked_at, checked_by_agent, name, requirement, semantic_type_iri, verdict FROM public.vw_answer_requirement_checks;
+ALTER VIEW pko_knowledge_authority.answer_requirement_checks OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.answer_requirement_checks TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.ai_tool_invocations AS
+  SELECT acted_without_declared_context, ai_tool_invocation_id, declared_function_count, declared_input_count, executed_step, function, invoked_at, invoking_agent, is_undeclared_tool_use, name, semantic_type_iri, step_execution, supplied_input_count FROM public.vw_ai_tool_invocations;
+ALTER VIEW pko_knowledge_authority.ai_tool_invocations OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.ai_tool_invocations TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.embedding_probes AS
+  SELECT cosine_similarity, embedding_model, embedding_probe_id, expected_relation, name, opposites_not_opposed, probed_at, semantic_type_iri, synonyms_not_similar, term_a, term_b FROM public.vw_embedding_probes;
+ALTER VIEW pko_knowledge_authority.embedding_probes OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.embedding_probes TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.prompt_templates AS
+  SELECT carries_procedure_instructions, child_template_count, condensation_percent, estimated_tokens, includes_rare_detail, is_disconnected_prompt_knowledge, is_unmanaged_prompt_in_use, is_verbatim_dump, label, layer, library_status, maintained_by_role, name, parent_template, prompt_template_id, semantic_type_iri, source_procedure_version, source_token_count, spends_budget_on_rare_detail, token_budget, used_by_agent FROM public.vw_prompt_templates;
+ALTER VIEW pko_knowledge_authority.prompt_templates OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.prompt_templates TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.knowledge_projections AS
+  SELECT audience_role, diagram_can_diverge_from_model, generated_at, generated_by_tool, is_published, knowledge_projection_id, label, name, narrative_not_generated_from_model, narrative_unreachable, notation, open_count, output_path, procedure_version, projection_kind, published_uri, semantic_type_iri, version_modified_at FROM public.vw_knowledge_projections;
+ALTER VIEW pko_knowledge_authority.knowledge_projections OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.knowledge_projections TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.model_annotations AS
+  SELECT annotated_at, annotated_by_agent, annotation_kind, body, entered_through, flag_bypassed_annotation_interface, is_discussion_in_authoritative_model, is_friction_without_gap, is_lost_new_knowledge, is_open_outdated_flag, lifecycle_stage, model_annotation_id, name, procedure_version, promoted_to_fragment, raised_knowledge_gap, semantic_type_iri, status, step, stored_in FROM public.vw_model_annotations;
+ALTER VIEW pko_knowledge_authority.model_annotations OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.model_annotations TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.knowledge_search_events AS
+  SELECT channel, dwell_seconds, found_nothing_useful, gave_up_after_seeing_results, is_unlinked_failed_search, knowledge_search_event_id, linked_knowledge_gap, linked_usability_barrier, name, opened_projection, opened_segment, query_text, result_count, searched_at, searched_by_agent, seconds_before_abandoning, semantic_type_iri, sought_procedure_version, was_abandoned FROM public.vw_knowledge_search_events;
+ALTER VIEW pko_knowledge_authority.knowledge_search_events OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.knowledge_search_events TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.ai_adoption_initiatives AS
+  SELECT adopted_without_bottom_line_result, agent, agent_on_notation_only_procedure, agent_on_under_specified_procedure, agentic_without_knowledge_capture, ai_adoption_initiative_id, ai_insight_count, approach, as_of_instant, automation_level, breaks_elicit_encode_connect_order, calls_for_process_knowledge_framework, connected_to_ai_at, days_since_outcome_measured, depends_on_organizational_knowledge, evaluation_context, failed_without_formalized_knowledge, hands_tacit_procedure_to_agent, is_agentic, is_ai_outcome_unmeasured, knowledge_layer_budget, label, last_outcome_measured_at, measured_bottom_line_impact, model_layer_budget, name, not_anchored_in_process_knowledge, organization, outcome, preceding_initiative, preceding_reviewed_output_count, redesign_started_at, redesigned_before_documented, reviewed_output_count, semantic_type_iri, status, target_elicitation_evidence_count, target_has_no_explicit_steps, target_procedure, target_version, target_version_issued_at, target_version_notation_only, target_version_under_specified, task_is_multi_step, underinvests_knowledge_layer, went_full_without_reviewed_partial_stage FROM public.vw_ai_adoption_initiatives;
+ALTER VIEW pko_knowledge_authority.ai_adoption_initiatives OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.ai_adoption_initiatives TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.knowledge_outcome_measurements AS
+  SELECT ai_initiative, baseline_access_score, baseline_error_rate, baseline_minutes_per_run, baseline_satisfaction, comparison_baseline, efficiency_gain_percent, error_rate_percent, facility, higher_access_fewer_errors, higher_access_more_efficient, higher_access_more_satisfied, informed_change_request, informed_investment_decision, is_gain_outside_procedural_scope, is_unacted_adverse_outcome, knowledge_access_score, knowledge_outcome_measurement_id, knowledge_scope, label, measured_at, measured_group, minutes_per_run, name, procedure_version, satisfaction_score, semantic_type_iri, target_error_rate_percent FROM public.vw_knowledge_outcome_measurements;
+ALTER VIEW pko_knowledge_authority.knowledge_outcome_measurements OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.knowledge_outcome_measurements TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.ai_insight_proposals AS
+  SELECT ai_insight_proposal_id, folded_into_change_request, grew_model_without_human_seed, insight_kind, is_unvalidated_or_stranded_insight, name, proposed_at, proposing_agent, semantic_type_iri, source_initiative, statement, target_creator_kind, target_procedure_version, validated_by_agent, validation_verdict FROM public.vw_ai_insight_proposals;
+ALTER VIEW pko_knowledge_authority.ai_insight_proposals OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.ai_insight_proposals TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.assistant_benchmarks AS
+  SELECT accuracy_lift_points, agent, assistant_benchmark_id, generates_database_queries, graph_grounded_accuracy_percent, grounding_snapshot, label, name, ran_at, semantic_type_iri, shows_geospatial_retrieval_lift, shows_spatial_lift_from_graph_queries, task_family, ungrounded_accuracy_percent FROM public.vw_assistant_benchmarks;
+ALTER VIEW pko_knowledge_authority.assistant_benchmarks OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.assistant_benchmarks TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.governed_models AS
+  SELECT as_of_instant, baseline_question_count, charter_count, collection_control_count, continuous_pipeline_stage_count, cq_review_count, cq_review_overdue, current_authority_agent, current_authority_role, current_charter, current_charter_count, current_release, current_steward_agent, current_steward_role, days_since_cq_review, days_since_registered, days_since_steward_activity, degradation_hidden_until_wrong_answer, documents_behind_count, domain_owning_organization, evaluation_context, expert_found_drift_count, experts_not_involved_throughout, first_control_adopted_at, governance_lapsed, governed_model_id, has_no_current_authority, has_no_current_steward, has_open_practice_drift, implementation_expert_count, intended_users, is_adopted_without_pilot, is_implemented_without_real_data, is_neglected_and_drifting, is_not_kept_current, is_ownerless, is_ownerless_past_a_year, is_procedure_without_change_authority, is_unmaintained, is_unmanageable_undocumented_work, is_without_originating_use_case, label, lacks_lifecycle_stage_control, last_cq_review_at, last_steward_activity_at, maintenance_expert_count, model_kind, name, open_practice_drift_count, organization_headcount, originating_use_case, pilot_count, pipeline_not_continuous, procedure, procedure_has_no_explicit_steps, publication_expert_count, real_data_mapping_run_count, registered_at, requirements_expert_count, requirements_purpose, requirements_spec_incomplete, retrieval_control_count, semantic_type_iri, stewardship_control_count, tooling_owner_role, use_control_count FROM public.vw_governed_models;
+ALTER VIEW pko_knowledge_authority.governed_models OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.governed_models TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.model_charters AS
+  SELECT adopted_template_without_adaptation, as_of_instant, authority_agent, authority_approval_scope, authority_organization, authority_role, charter_template, conflates_steward_and_authority, controls_precede_ownership, days_since_drift_watch, evaluation_context, governed_model, is_authority_outside_domain_owner, is_authority_scope_unstated, is_current, is_drift_watch_lapsed, is_named_but_unexercised, is_sanctioned_dual_holding, is_steward_unwritten, last_drift_watch_at, local_adaptation, model_charter_id, model_domain_owner, model_first_control_adopted_at, model_headcount, model_kind, model_review_count, model_tooling_owner_role, name, procedure_decision_count, semantic_type_iri, steward_activity_count, steward_agent, steward_is_outside_tooling, steward_responsibilities, steward_role, supersedes_charter, valid_from, valid_to FROM public.vw_model_charters;
+ALTER VIEW pko_knowledge_authority.model_charters OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.model_charters TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.steward_activities AS
+  SELECT activity_model, duty_kind, model_charter, name, performed_at, performed_by_agent, release, semantic_type_iri, steward_activity_id, subject FROM public.vw_steward_activities;
+ALTER VIEW pko_knowledge_authority.steward_activities OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.steward_activities TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.model_change_requests AS
+  SELECT acceptance_failure_total, accepted_with_failing_suite, accepted_without_structural_check, accepted_without_test_run, accepted_without_vocabulary_check, ai_to_human_move_unaudited, ai_to_human_move_without_compliance_review, approved_by_agent, approved_over_unresolved_objection, assessed_coverage_gap_count, assessed_inconsistent_count, assessed_inference_count, assessed_query_result_count, authority_agent, authority_review_skipped, authority_reviewed_at, change_layer, change_operation, classification, compliance_impact, coverage_checked_at, decided_at, declared_scale, deployed_without_target_release, disjointness_check_count, domain_change_spread_wrong_inferences, domain_inference_check_count, effective_at, governed_model, has_authority_review, human_integrity_check_count, impact_assessment, implementation_placement, integrity_check_count, integrity_decided_without_human, intuitive_disjointness_broke_individuals, is_accepted, is_accepted_without_named_approver, is_ai_to_human_move, is_minor_scope, is_misclassified_agent_swap, is_misrouted, is_modeling_change, is_schema_change, lacks_motivating_question, leaves_coverage_unchecked, lifecycle_change_by_unauthorized_agent, missed_altered_inferences, missed_altered_query_results, missed_inconsistent_instances, model_change_request_id, motivated_by_failing_question, motivating_question, motivation_kind, name, placement_decided_by_agent, placement_not_decided_by_authority, post_deploy_inconsistent_count, post_deploy_inference_count, post_deploy_query_result_count, range_consistency_check_count, requested_at, requested_by_agent, required_route, requires_authority_review, route, rule_key, semantic_type_iri, skipped_disjointness_review, skipped_domain_inference_review, skipped_range_review, stated_need, status, steward_agent, steward_approval_out_of_bounds, steward_own_change_unreviewed, structural_pass_count, target_release, title, unmotivated_and_not_returned, unresolved_objection_count, validation_run_count, vocabulary_pass_count, would_alter_inferences, would_alter_query_results, would_leave_coverage_incomplete, would_make_instances_inconsistent FROM public.vw_model_change_requests;
+ALTER VIEW pko_knowledge_authority.model_change_requests OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.model_change_requests TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.change_authority_rules AS
+  SELECT approval_role, breakage_response, change_authority_rule_id, change_layer, governed_model, is_rule_bypassed, misrouted_request_count, name, permitted_role, required_route, semantic_type_iri, when_permitted FROM public.vw_change_authority_rules;
+ALTER VIEW pko_knowledge_authority.change_authority_rules OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.change_authority_rules TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.change_impact_findings AS
+  SELECT affected_row_key, affected_table, change_impact_finding_id, description, detected_by_query, finding_kind, finding_stage, found_at, found_by_agent, model_change_request, name, query_language, semantic_type_iri FROM public.vw_change_impact_findings;
+ALTER VIEW pko_knowledge_authority.change_impact_findings OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.change_impact_findings TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.change_integrity_checks AS
+  SELECT change_integrity_check_id, check_kind, checked_at, checked_by_agent, checker_kind, model_change_request, name, result, semantic_type_iri FROM public.vw_change_integrity_checks;
+ALTER VIEW pko_knowledge_authority.change_integrity_checks OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.change_integrity_checks TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.change_objections AS
+  SELECT change_objection_id, is_unresolved, model_change_request, name, objection, raised_at, raised_by_agent, resolution, resolved_at, resolved_by_agent, semantic_type_iri FROM public.vw_change_objections;
+ALTER VIEW pko_knowledge_authority.change_objections OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.change_objections TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.change_validation_runs AS
+  SELECT change_validation_run_id, consistency_check_outcome, expected_chain_count, failure_count, failures_inspected_at, has_uninspected_failures, is_unconfirmed_consistency, misses_expected_inference, model_change_request, name, ran_at, release, run_purpose, semantic_type_iri, structural_check_outcome, test_count, test_suite, unproduced_chain_count, vocabulary_check_outcome FROM public.vw_change_validation_runs;
+ALTER VIEW pko_knowledge_authority.change_validation_runs OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.change_validation_runs TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.expected_inference_checks AS
+  SELECT chain_description, change_validation_run, expected_field, expected_inference_check_id, expected_value, is_unproduced, name, produced_value, semantic_type_iri FROM public.vw_expected_inference_checks;
+ALTER VIEW pko_knowledge_authority.expected_inference_checks OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.expected_inference_checks TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.model_consumers AS
+  SELECT conformance_substrate, consumer_kind, depends_on_model, label, model_consumer_id, name, owner_role, semantic_type_iri FROM public.vw_model_consumers;
+ALTER VIEW pko_knowledge_authority.model_consumers OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.model_consumers TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.consumer_revalidations AS
+  SELECT consumer_revalidation_id, model_consumer, name, notified_at, passed_revalidation, revalidated_at, rulebook_release, semantic_type_iri, was_notified FROM public.vw_consumer_revalidations;
+ALTER VIEW pko_knowledge_authority.consumer_revalidations OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.consumer_revalidations TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.model_documents AS
+  SELECT document_kind, documented_release, governed_model, is_behind_current_release, last_updated_at, model_current_release, model_document_id, name, semantic_type_iri, title FROM public.vw_model_documents;
+ALTER VIEW pko_knowledge_authority.model_documents OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.model_documents TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.staleness_query_runs AS
+  SELECT governed_model, name, not_surfaced_to_steward, query_text, ran_at, ran_by_agent, runner_kind, semantic_type_iri, stale_workflow_count, staleness_query_run_id, surfaced_to_steward_at, threshold_days FROM public.vw_staleness_query_runs;
+ALTER VIEW pko_knowledge_authority.staleness_query_runs OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.staleness_query_runs TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.external_dependency_revisions AS
+  SELECT affected_mapping_count, as_of_instant, days_since_published, evaluation_context, external_dependency_revision_id, is_untracked_revision, name, ontology_profile, published_at, revision_kind, revision_label, semantic_type_iri, tracked_at, tracked_by_agent FROM public.vw_external_dependency_revisions;
+ALTER VIEW pko_knowledge_authority.external_dependency_revisions OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.external_dependency_revisions TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.stakeholder_questions AS
+  SELECT answered_at, answered_by_agent, answering_role_question, as_of_instant, asked_at, asked_by_agent, channel, days_open, evaluation_context, governed_model, is_misrouted_after_triage, is_unanswerable_today, is_unanswered_past_due, is_untriaged_unanswerable, name, needs_structural_change, question_text, result_route, resulting_change_request, semantic_type_iri, stakeholder_question_id, triage_outcome, triaged_by_agent, triager_kind, unanswerable_without_scope_request, use_case FROM public.vw_stakeholder_questions;
+ALTER VIEW pko_knowledge_authority.stakeholder_questions OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.stakeholder_questions TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.model_expansion_requests AS
+  SELECT concept_count, decided_at, decided_by_agent, fit_decision, fit_decision_contradicts_concept_fit, governed_model, is_cross_function_expansion, model_domain_owner, model_expansion_request_id, name, requested_at, requested_by_agent, requesting_organization, requires_schema_extension, semantic_type_iri, uncovered_concept_count, workflow_description FROM public.vw_model_expansion_requests;
+ALTER VIEW pko_knowledge_authority.model_expansion_requests OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.model_expansion_requests TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.expansion_concept_fits AS
+  SELECT concept_label, covering_table, expansion_concept_fit_id, is_uncovered, model_expansion_request, name, semantic_type_iri FROM public.vw_expansion_concept_fits;
+ALTER VIEW pko_knowledge_authority.expansion_concept_fits OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.expansion_concept_fits TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.competency_question_set_entries AS
+  SELECT added_at, as_of_instant, competency_question_set_entry_id, days_since_added, evaluation_context, governance_use_count, governed_model, irrelevant_but_still_active, is_original_baseline, is_outgrown_baseline_question, name, relevance_verdict, role_question, semantic_type_iri, serves_every_governance_use, status, used_as_acceptance_criterion, used_as_test_driver, used_for_governance, used_for_scoping FROM public.vw_competency_question_set_entries;
+ALTER VIEW pko_knowledge_authority.competency_question_set_entries OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.competency_question_set_entries TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.competency_question_runs AS
+  SELECT answer_outcome, competency_question_run_id, cq_set_entry, defect_change_request, entry_is_original, is_baseline_regression, is_unfixed_wrong_answer, name, prior_run, prior_was_answerable, ran_at, rulebook_release, semantic_type_iri, was_answerable FROM public.vw_competency_question_runs;
+ALTER VIEW pko_knowledge_authority.competency_question_runs OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.competency_question_runs TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.competency_question_reviews AS
+  SELECT competency_question_review_id, deprecation_candidates_raised, governed_model, name, outcome, questions_added, reviewed_at, reviewed_by_agent, semantic_type_iri FROM public.vw_competency_question_reviews;
+ALTER VIEW pko_knowledge_authority.competency_question_reviews OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.competency_question_reviews TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.quality_criteria AS
+  SELECT assessment_count, definition, is_stated, label, name, quality_criterion_id, semantic_type_iri FROM public.vw_quality_criteria;
+ALTER VIEW pko_knowledge_authority.quality_criteria OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.quality_criteria TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.quality_assessments AS
+  SELECT assessed_at, assessed_by_agent, method, name, quality_assessment_id, quality_criterion, rulebook_release, score, semantic_type_iri FROM public.vw_quality_assessments;
+ALTER VIEW pko_knowledge_authority.quality_assessments OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.quality_assessments TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.term_definitions AS
+  SELECT ai_draft_adopted_unrevised, drafted_at, drafted_by_agent, drafter_kind, excludes, includes, name, neighboring_terms, revised_at, revised_by_agent, rulebook_table, semantic_type_iri, term_definition_id FROM public.vw_term_definitions;
+ALTER VIEW pko_knowledge_authority.term_definitions OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.term_definitions TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.model_proposals AS
+  SELECT adopted_in_data_version, adopted_in_release, adoption_not_answered_by_person, ai_alignment_decided_by_ai, ai_axiom_without_human_review, ai_instance_data_loaded_without_steward, ai_question_adopted_unvetted, approver_unknown, awaits_engineer_vetting, awaits_steward_approval, committed_at, committed_by_agent, committed_outside_any_version, committed_without_expert_review, committer_kind, content, entered_without_quality_check, governed_model, has_no_human_touchpoint, is_ai_candidate, is_only_proposed, is_pending_alignment_decision, model_proposal_id, model_steward_agent, name, proposal_kind, proposed_at, proposed_by_agent, proposer_kind, quality_check_outcome, review_outcome, reviewed_at, reviewed_by_agent, reviewer_kind, semantic_type_iri, source_document FROM public.vw_model_proposals;
+ALTER VIEW pko_knowledge_authority.model_proposals OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.model_proposals TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.assignment_instant_checks AS
+  SELECT assignment_agent, assignment_agent_version, assignment_instant_check_id, assignment_role, assignment_valid_from, assignment_valid_to, audit_instant, audit_question, held_step_at_instant, name, role_assignment, semantic_type_iri, step, step_role FROM public.vw_assignment_instant_checks;
+ALTER VIEW pko_knowledge_authority.assignment_instant_checks OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.assignment_instant_checks TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.instance_data_versions AS
+  SELECT conforms_to_release, data_version_label, governed_model, instance_data_version_id, logged_change_count, name, semantic_type_iri, snapshot_at FROM public.vw_instance_data_versions;
+ALTER VIEW pko_knowledge_authority.instance_data_versions OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.instance_data_versions TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.domain_coverage_areas AS
+  SELECT area_label, covering_table, domain_coverage_area_id, governed_model, is_uncovered_area, name, required_concept, semantic_type_iri FROM public.vw_domain_coverage_areas;
+ALTER VIEW pko_knowledge_authority.domain_coverage_areas OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.domain_coverage_areas TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.governance_stage_controls AS
+  SELECT control, governance_stage_control_id, governed_model, is_continuous, is_continuous_pipeline_stage, name, semantic_type_iri, stage FROM public.vw_governance_stage_controls;
+ALTER VIEW pko_knowledge_authority.governance_stage_controls OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.governance_stage_controls TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.process_design_decisions AS
+  SELECT days_before_recorded, decided_at, decided_by_agent, decision, is_commitment_without_rationale, is_recorded_after_the_fact, name, procedure_version, process_design_decision_id, rationale, recorded_at, semantic_type_iri, step FROM public.vw_process_design_decisions;
+ALTER VIEW pko_knowledge_authority.process_design_decisions OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.process_design_decisions TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.model_change_log_entries AS
+  SELECT affected_table, alters_logical_model, cannot_be_audited, cannot_be_rolled_back, change_layer, change_operation, change_summary, changed_by_agent, governed_model, instance_data_version, invalidates_instances, is_additive_schema_change, is_backward_incompatible, is_class_removal_or_rename, is_inconsistent_disjointness, is_instance_change_in_schema_release, is_invalidating_domain_range_change, is_schema_change_without_increment, is_unexplained_modification, is_untraceable_breaking_change, logged_at, model_change_log_entry_id, model_change_request, motivating_question, name, prior_state_commit, rationale, rationale_without_question, release, release_decision_undocumented, release_version, reverts_entry, schema_change_without_request, semantic_type_iri, terms_affected FROM public.vw_model_change_log_entries;
+ALTER VIEW pko_knowledge_authority.model_change_log_entries OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.model_change_log_entries TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.drift_observations AS
+  SELECT description, detected_by, drift_cause, drift_follows_clean_release, drift_kind, drift_observation_id, governed_model, is_open_practice_mismatch, name, observed_at, observed_by_agent, procedure_version, release_issued_at, release_passed_validation, resolved_at, semantic_type_iri, since_release, went_undetected_by_passing_suite FROM public.vw_drift_observations;
+ALTER VIEW pko_knowledge_authority.drift_observations OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.drift_observations TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.sourcing_functions AS
+  SELECT audit_item_count, capture_initiative_count, claims_how_without_doing, client_organization, coverage_gap_count, delivers_own_product, dependency_count, designs_what_it_cannot_build, executing_organization, is_business_process_outsourcing, is_knowledge_process_outsourcing, is_method_knowledge_held_outside, is_outsourced, is_outsourced_vital_expertise_process, is_strategically_vital, is_unaudited_function, is_uncaptured_priority_process, is_vital_expertise_classed_non_core, is_vital_expertise_process, is_what_how_split, label, method_holder, method_shortfall_count, name, procedure, provider_ip_documentation_count, semantic_type_iri, sourced_since, sourcing_class, sourcing_function_id, sourcing_rationale, specification_audit_count, specification_holder, specification_shortfall_count, work_nature FROM public.vw_sourcing_functions;
+ALTER VIEW pko_knowledge_authority.sourcing_functions OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.sourcing_functions TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.knowledge_audits AS
+  SELECT conducted_at, conducted_by_agent, finding_count, knowledge_audit_id, name, organization, problem_framing, semantic_type_iri, title, treats_deficit_as_cost_problem FROM public.vw_knowledge_audits;
+ALTER VIEW pko_knowledge_authority.knowledge_audits OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.knowledge_audits TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.knowledge_audit_items AS
+  SELECT client_organization, has_internal_shortfall, held_internal_level, internal_holding_team_count, is_coverage_gap, is_knowledge_dependency, is_single_team_silo, is_unnamed_finding, knowledge_area, knowledge_audit, knowledge_audit_item_id, knowledge_kind, name, named_knowledge_gap, needed_level, provider_held_level, provider_holding_knowledge, semantic_type_iri, sourcing_function FROM public.vw_knowledge_audit_items;
+ALTER VIEW pko_knowledge_authority.knowledge_audit_items OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.knowledge_audit_items TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.knowledge_capture_initiatives AS
+  SELECT knowledge_capture_initiative_id, knowledge_method, lead_agent, name, semantic_type_iri, sourcing_function, started_at, status FROM public.vw_knowledge_capture_initiatives;
+ALTER VIEW pko_knowledge_authority.knowledge_capture_initiatives OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.knowledge_capture_initiatives TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.knowledge_workforce_positions AS
+  SELECT discipline, filled_by_agent, knowledge_workforce_position_id, name, opened_at, organization, role, semantic_type_iri, status FROM public.vw_knowledge_workforce_positions;
+ALTER VIEW pko_knowledge_authority.knowledge_workforce_positions OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.knowledge_workforce_positions TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.provider_engagements AS
+  SELECT client_organization, documentation_ownership, has_knowledge_access_clause, is_active, is_knowledge_access_unsecured, is_one_way_learning, is_short_term_without_joint_knowledge, is_unplanned_knowledge_return, joint_deliverable_count, knowledge_duty_terms, knowledge_return_plan, lacks_knowledge_deliverables, name, obliges_knowledge_flow_back, provider, provider_engagement_id, provider_treats_know_how_as_differentiator, relied_dependency_count, required_deliverable_count, semantic_type_iri, sourcing_function, started_at, status, term_months, to_client_delivered_count, to_client_required_count, to_provider_delivered_count FROM public.vw_provider_engagements;
+ALTER VIEW pko_knowledge_authority.provider_engagements OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.provider_engagements TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.knowledge_deliverables AS
+  SELECT delivered_at, direction, due_at, is_delivered, knowledge_deliverable_id, name, provider_engagement, semantic_type_iri, title FROM public.vw_knowledge_deliverables;
+ALTER VIEW pko_knowledge_authority.knowledge_deliverables OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.knowledge_deliverables TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.corporate_governance_programs AS
+  SELECT corporate_governance_program_id, covers_compliance, covers_data_quality, covers_information_management, covers_knowledge_management, is_compliance_only, label, launched_at, name, organization, semantic_type_iri, sponsor_discipline FROM public.vw_corporate_governance_programs;
+ALTER VIEW pko_knowledge_authority.corporate_governance_programs OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.corporate_governance_programs TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.records_retention_policies AS
+  SELECT governance_program, is_legal_led_knowledge_destruction, knowledge_useful_life_years, name, program_sponsor_discipline, record_class, records_retention_policy_id, retention_driver, retention_years, semantic_type_iri FROM public.vw_records_retention_policies;
+ALTER VIEW pko_knowledge_authority.records_retention_policies OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.records_retention_policies TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.ai_registry_model_versions AS
+  SELECT ai_registry_model_version_id, dc_creator, dc_date, dc_description, dc_has_version, dc_identifier, dc_title, feed_received_at, graph_individual_count, is_live_but_unregistered_in_graph, live_production_deployment_count, name, registry_system, semantic_type_iri FROM public.vw_ai_registry_model_versions;
+ALTER VIEW pko_knowledge_authority.ai_registry_model_versions OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.ai_registry_model_versions TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.ai_model_deployments AS
+  SELECT agent_identifier, ai_model_deployment_id, artifact_link_count, as_of_instant, assignment_link_count, deployed_at, environment, evaluation_context, is_isolated_registry_fact, is_live_in_production, model_version, name, retired_at, semantic_type_iri FROM public.vw_ai_model_deployments;
+ALTER VIEW pko_knowledge_authority.ai_model_deployments OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.ai_model_deployments TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.ai_model_evaluations AS
+  SELECT ai_model_evaluation_id, evaluated_at, evaluation_suite, metric, model_version, name, pass_threshold, passed, score, semantic_type_iri FROM public.vw_ai_model_evaluations;
+ALTER VIEW pko_knowledge_authority.ai_model_evaluations OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.ai_model_evaluations TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.ai_agent_accountabilities AS
+  SELECT accountable_agent, accountable_agent_kind, ai_agent, ai_agent_accountability_id, as_of_instant, evaluation_context, is_accountable_to_non_person, is_current, is_current_human_accountability, name, semantic_type_iri, valid_from, valid_to FROM public.vw_ai_agent_accountabilities;
+ALTER VIEW pko_knowledge_authority.ai_agent_accountabilities OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.ai_agent_accountabilities TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.agent_upgrade_assessments AS
+  SELECT agent_upgrade_assessment_id, assessed_at, assessed_by_agent, assessment_method, attributed_artifact_count, candidate_agent, current_agent, listed_affected_step_count, listed_affected_steps_note, missed_traversed_impact, name, semantic_type_iri, traversed_downstream_step_count FROM public.vw_agent_upgrade_assessments;
+ALTER VIEW pko_knowledge_authority.agent_upgrade_assessments OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.agent_upgrade_assessments TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.assignment_update_policies AS
+  SELECT adopted_at, assignment_update_policy_id, label, model_drives_routing, name, semantic_type_iri, trigger_owner_role, update_sla_hours FROM public.vw_assignment_update_policies;
+ALTER VIEW pko_knowledge_authority.assignment_update_policies OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.assignment_update_policies TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.role_assignment_update_tasks AS
+  SELECT as_of_instant, changed_role_instead_of_assignment, completed_at, dependent_execution, dependent_run_role_step_count, dependent_run_started_at, dependent_run_version, elapsed_minutes, ending_assignment, ending_role, evaluation_context, exceeded_update_sla, failed_notice_count, governing_policy, lacks_named_trigger_owner, missed_next_dependent_run, name, policy_sla_hours, policy_trigger_owner_role, reason, replacement_assignment, replacement_role, role, role_assignment_update_task_id, semantic_type_iri, stale_assignment_broke_routing, trigger_event, trigger_occurred_at, trigger_owner_cover_count, triggered_at, triggered_by_agent FROM public.vw_role_assignment_update_tasks;
+ALTER VIEW pko_knowledge_authority.role_assignment_update_tasks OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.role_assignment_update_tasks TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.assignment_routed_notices AS
+  SELECT assignment_routed_notice_id, name, notice_kind, notice_role, notice_step, procedure_execution, reached_wrong_person_or_nobody, recipient_held_role_when_sent, recipient_latest_valid_to, recipient_open_ended_count, recipient_pair_assignment_count, recipient_role_key, recipient_valid_from, routed_around_model, routed_to_agent, routing_source, semantic_type_iri, sent_at FROM public.vw_assignment_routed_notices;
+ALTER VIEW pko_knowledge_authority.assignment_routed_notices OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.assignment_routed_notices TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.practitioner_expertise AS
+  SELECT agent, cue, elicitation_session, expert_kind, foresight_confirmed, is_unexplained_foresight, knows_more_than_can_say, name, practitioner_expertise_id, procedure, reliable_call_count, semantic_type_iri, step, unstated_basis FROM public.vw_practitioner_expertise;
+ALTER VIEW pko_knowledge_authority.practitioner_expertise OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.practitioner_expertise TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.critical_incidents AS
+  SELECT account, critical_incident_id, elicitation_session, has_surfaced_judgment, is_adverse_or_improvised, judgment_fragment, name, narrator, occurred_at, outcome, procedure_version, revealed_judgment, semantic_type_iri, step FROM public.vw_critical_incidents;
+ALTER VIEW pko_knowledge_authority.critical_incidents OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.critical_incidents TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.interview_probes AS
+  SELECT answer, elicitation_session, interview_probe_id, name, probe_kind, prompt, semantic_type_iri, shortfall_answer, step, why_answer FROM public.vw_interview_probes;
+ALTER VIEW pko_knowledge_authority.interview_probes OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.interview_probes TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.observed_actions AS
+  SELECT action_description, action_kind, captured_as_fragment, counterfactual_answer, counterfactual_condition, elicitation_session, has_counterfactual_answer, has_recorded_reason, is_missed_step_left_uncaptured, is_omitted_from_own_account, is_small_choice, is_unofficial_workaround, is_watched_not_questioned, mentioned_in_own_account, name, observed_action_id, practitioner, semantic_type_iri, stated_reason, step FROM public.vw_observed_actions;
+ALTER VIEW pko_knowledge_authority.observed_actions OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.observed_actions TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.elicitation_participants AS
+  SELECT agent, elicitation_participant_id, elicitation_session, is_knowledge_consumer, is_knowledge_engineer, is_knowledge_producer, is_practitioner, is_subject_matter_expert, is_usually_invited, knowledge_flow, name, participation_role, process_stake, semantic_type_iri FROM public.vw_elicitation_participants;
+ALTER VIEW pko_knowledge_authority.elicitation_participants OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.elicitation_participants TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.representation_reviews AS
+  SELECT decision, name, procedure_version, representation_review_id, review_purpose, reviewed_at, reviewer_agent, reviewer_is_affected_sme, semantic_type_iri FROM public.vw_representation_reviews;
+ALTER VIEW pko_knowledge_authority.representation_reviews OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.representation_reviews TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.workflow_view_divergences AS
+  SELECT elicitation_session, holder_a, holder_b, is_reconciled, is_surfaced_but_unreconciled, name, procedure_version, reconciled_at, reconciled_into_fragment, reconciled_statement, semantic_type_iri, step, view_a, view_b, workflow_view_divergence_id FROM public.vw_workflow_view_divergences;
+ALTER VIEW pko_knowledge_authority.workflow_view_divergences OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.workflow_view_divergences TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.expert_cognitions AS
+  SELECT agent, applied_automatically, captured_exceptions, cognition_kind, elicitation_session, expert_cognition_id, expert_stated_exceptions, is_automatic_heuristic, is_heuristic_oversimplified, is_mental_model, name, semantic_type_iri, statement, step FROM public.vw_expert_cognitions;
+ALTER VIEW pko_knowledge_authority.expert_cognitions OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.expert_cognitions TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.concept_ladder_rungs AS
+  SELECT concept_ladder_rung_id, elicitation_session, is_decomposition_rung, is_ultimate_goal, ladder_level, name, rung_kind, semantic_type_iri, statement, step, step_top_level FROM public.vw_concept_ladder_rungs;
+ALTER VIEW pko_knowledge_authority.concept_ladder_rungs OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.concept_ladder_rungs TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.repertory_grid_constructs AS
+  SELECT agent, dimension, elicitation_session, is_never_stated_dimension, is_recorded_discriminating_dimension, name, pole_a, pole_b, repertory_grid_construct_id, semantic_type_iri, separates_situations, situations_compared, was_stated_unprompted FROM public.vw_repertory_grid_constructs;
+ALTER VIEW pko_knowledge_authority.repertory_grid_constructs OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.repertory_grid_constructs TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.knowledge_conversions AS
+  SELECT conversion_mode, description, elicitation_session, from_form, is_mode_inconsistent_with_forms, knowledge_conversion_id, name, occurred_at, result_fragment, semantic_type_iri, to_form FROM public.vw_knowledge_conversions;
+ALTER VIEW pko_knowledge_authority.knowledge_conversions OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.knowledge_conversions TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.knowledge_holdings AS
+  SELECT carrier, formalized_as, formalized_fragment_session, handles_exception_or_discretion, holder_agent, holder_is_veteran, is_formalized_without_elicitation_work, is_judgment_outside_document, is_procedural_knowledge, is_unformalized_process_knowledge, is_unsaid_in_sop, is_veteran_discretion, knowledge_form, knowledge_holding_id, name, procedure_version, semantic_type_iri, snapshot, statement, step FROM public.vw_knowledge_holdings;
+ALTER VIEW pko_knowledge_authority.knowledge_holdings OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.knowledge_holdings TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.fragment_corroborations AS
+  SELECT agent, agrees, elicitation_session, fragment_corroboration_id, knowledge_fragment, name, semantic_type_iri FROM public.vw_fragment_corroborations;
+ALTER VIEW pko_knowledge_authority.fragment_corroborations OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.fragment_corroborations TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.knowledge_test_outcomes AS
+  SELECT after_test_value, baseline_value, higher_is_better, is_improved, knowledge_test_outcome_id, measure, name, outcome_area, procedure, semantic_type_iri FROM public.vw_knowledge_test_outcomes;
+ALTER VIEW pko_knowledge_authority.knowledge_test_outcomes OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.knowledge_test_outcomes TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.know_how_carriers AS
+  SELECT as_of_instant, builds_on_know_how, builds_on_same_community_know_how, carrier_kind, community_of_practice, days_served_to_as_of, days_served_to_departure, days_until_holder_departure, dependency_community, evaluation_context, held_since, holder_agent, holder_departure_at, holder_facility, holder_is_still_engaged, holder_service_started_at, holder_tenure_years, is_at_risk_of_imminent_loss, is_captured, is_delegated_to_unfit_source, is_held_by_current_practitioner, is_held_by_departed_holder, is_held_in_both_forms, is_held_only_by_departed, is_holder_leaving_soon, is_in_public_references, is_in_written_procedure, is_overlooked_living_holder, is_trained_skill, is_untransferred_veteran_know_how, is_veteran_held, know_how_carrier_id, know_how_kind, lost_accumulation_years, must_be_relearned_if_holder_leaves, name, organization, procedure, replacement_plan, repository_entry_count, semantic_type_iri, source_relationship_count, topic, transfer_count, transfer_stops_without_veteran, work_medium FROM public.vw_know_how_carriers;
+ALTER VIEW pko_knowledge_authority.know_how_carriers OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.know_how_carriers TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.knowledge_transfers AS
+  SELECT channel, community_of_practice, from_agent, from_organization, is_ambient_absorption_by_non_practitioner, is_social_network_channel, is_traditional_channel, know_how, knowledge_transfer_id, name, occurred_at, on_allocated_time, recipient_agent, recipient_role_count, semantic_type_iri FROM public.vw_knowledge_transfers;
+ALTER VIEW pko_knowledge_authority.knowledge_transfers OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.knowledge_transfers TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.knowledge_repository_entries AS
+  SELECT as_of_instant, author_agent, author_agent_kind, author_is_still_engaged, authored_on_allocated_time, created_at, credits_source_expert, days_since_updated, evaluation_context, fed_from_execution, is_execution_feedback, is_machine_authored, is_stale, is_uncredited_expert_know_how, know_how, knowledge_repository_entry_id, last_updated_at, name, outlives_author_tenure, owner_organization, procedure, review_interval_days, semantic_type_iri, source_expert, title, written_for_audience FROM public.vw_knowledge_repository_entries;
+ALTER VIEW pko_knowledge_authority.knowledge_repository_entries OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.knowledge_repository_entries TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.community_memberships AS
+  SELECT agent, community_membership_id, community_of_practice, community_organization, is_external_member, is_specialist, joined_at, member_organization, name, semantic_type_iri FROM public.vw_community_memberships;
+ALTER VIEW pko_knowledge_authority.community_memberships OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.community_memberships TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.source_relationships AS
+  SELECT is_extractive_relationship, is_unnegotiated_power_gap, knowledge_engineer, name, negotiated_agreement, power_dynamic, procedure, semantic_type_iri, source_agent, source_relationship_id, source_standing, started_at, trust_building_practice, trust_level, withholding_motive, withholding_observed FROM public.vw_source_relationships;
+ALTER VIEW pko_knowledge_authority.source_relationships OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.source_relationships TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.department_process_accounts AS
+  SELECT account_summary, conflicting_department, conflicts_with_account, department, department_process_account_id, engaged_at, is_awaiting_engagement, is_conflicting_account, is_unresolved_disagreement, name, procedure, resolution_practice, resolved_at, semantic_type_iri, shaping_interest, stakeholder_agent FROM public.vw_department_process_accounts;
+ALTER VIEW pko_knowledge_authority.department_process_accounts OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.department_process_accounts TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.problem_occurrences AS
+  SELECT has_been_solved_before, has_consultable_specialist, is_relearned_solved_problem, is_solved, is_solved_without_recorded_solution, is_turnover_regression, name, occurred_at, prior_occurrence, prior_solution_entry, prior_solver, prior_solver_is_still_engaged, prior_was_solved, problem_occurrence_id, problem_signature, procedure, semantic_type_iri, solution_entry, solved_at, solved_by_agent, solver_is_still_engaged FROM public.vw_problem_occurrences;
+ALTER VIEW pko_knowledge_authority.problem_occurrences OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.problem_occurrences TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.onboarding_records AS
+  SELECT as_of_instant, days_since_start, days_to_proficiency, evaluation_context, is_proficient, is_recent_start, is_starting_from_nothing, name, new_starter, onboarding_record_id, procedure, procedure_departed_only_count, procedure_repository_entry_count, proficient_at, semantic_type_iri, started_at, used_captured_knowledge FROM public.vw_onboarding_records;
+ALTER VIEW pko_knowledge_authority.onboarding_records OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.onboarding_records TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.sharing_recognitions AS
+  SELECT awarded_at, for_contribution, name, organization, recognition_kind, recognized_agent, semantic_type_iri, sharing_recognition_id FROM public.vw_sharing_recognitions;
+ALTER VIEW pko_knowledge_authority.sharing_recognitions OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.sharing_recognitions TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.capability_declines AS
+  SELECT capability_decline_id, decline_started_at, evidence, follows_preceding_stage_decline, name, organization, preceding_decline_started_at, preceding_stage, preceding_stage_decline, semantic_type_iri, stage FROM public.vw_capability_declines;
+ALTER VIEW pko_knowledge_authority.capability_declines OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.capability_declines TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.knowledge_traces AS
+  SELECT contradicted_document, contradicted_document_revised_at, derivation_route, derived_by_agent, derived_by_agent_kind, has_incomplete_provenance, is_aspect_unsupported_by_source_kind, is_document_origin, is_document_start_never_extended, is_document_start_never_validated, is_document_trailing_practice, is_machine_derived, is_self_validated, is_source_changed_since_taken, is_unfaithful_to_source, knowledge_trace_id, modeled_duration_minutes, name, prescribed_versus_enacted, procedure_version, provenance_statement, requirement, semantic_type_iri, source_collected_at, source_is_document, source_is_people_capture, source_is_practice_evidence, source_material, source_material_kind, source_revised_at, source_stated_duration_minutes, source_statement, step, step_elicited_extension_count, step_elicited_validation_count, target_kind, trace_role, traced_aspect, validated_at, validated_by_agent FROM public.vw_knowledge_traces;
+ALTER VIEW pko_knowledge_authority.knowledge_traces OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.knowledge_traces TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.mined_flow_edges AS
+  SELECT documented_transition_count, from_step, intent_decision_by, is_bottleneck, is_mined_path_recorded_as_intent_without_decision, is_undocumented_path, median_wait_minutes, mined_flow_edge_id, name, observed_case_count, process_mining_run, recorded_stance, semantic_type_iri, to_step, to_step_expected_minutes FROM public.vw_mined_flow_edges;
+ALTER VIEW pko_knowledge_authority.mined_flow_edges OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.mined_flow_edges TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.collection_occasions AS
+  SELECT as_of_instant, cadence_days, captured_material_count, collection_occasion_id, days_since_held, evaluation_context, is_held_without_capture, is_lapsed, label, last_held_at, name, occasion_kind, procedure, semantic_type_iri FROM public.vw_collection_occasions;
+ALTER VIEW pko_knowledge_authority.collection_occasions OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.collection_occasions TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.stakeholder_perspectives AS
+  SELECT conflict_partner_count, conflicts_with_perspective, disposition, holder_role, is_dissenting_view_not_kept_with_source, is_in_conflict, name, position, procedure_version, semantic_type_iri, source_material, source_material_kind, stakeholder_perspective_id, step FROM public.vw_stakeholder_perspectives;
+ALTER VIEW pko_knowledge_authority.stakeholder_perspectives OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.stakeholder_perspectives TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.model_pilots AS
+  SELECT finding, governed_model, model_pilot_id, name, semantic_type_iri, site, started_at FROM public.vw_model_pilots;
+ALTER VIEW pko_knowledge_authority.model_pilots OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.model_pilots TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.model_activity_experts AS
+  SELECT expert, governed_model, lot_activity, model_activity_expert_id, name, semantic_type_iri FROM public.vw_model_activity_experts;
+ALTER VIEW pko_knowledge_authority.model_activity_experts OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.model_activity_experts TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.model_data_mapping_runs AS
+  SELECT data_origin, governed_model, model_data_mapping_run_id, name, ran_at, semantic_type_iri, triples_produced FROM public.vw_model_data_mapping_runs;
+ALTER VIEW pko_knowledge_authority.model_data_mapping_runs OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.model_data_mapping_runs TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.artifact_handoffs AS
+  SELECT artifact_handoff_id, declared_consumer_step, declared_source_step, disagrees_with_declared_variable, from_step, name, semantic_type_iri, step_variable, to_step FROM public.vw_artifact_handoffs;
+ALTER VIEW pko_knowledge_authority.artifact_handoffs OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.artifact_handoffs TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.app_actions AS
+  SELECT app_action_id, description, input_field_count, is_unpermitted, is_unproven_write, label, name, operation, owning_role, policy, policy_command, policy_command_disagrees, policy_denial_test_count, route_path, semantic_type_iri, story_episode, target_table, watched_field, watched_field_is_witness FROM public.vw_app_actions;
+ALTER VIEW pko_knowledge_authority.app_actions OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.app_actions TO pko_knowledge_authority;
+CREATE VIEW pko_knowledge_authority.app_action_fields AS
+  SELECT app_action, app_action_field_id, choices_from, field_label, fixed_value, input_kind, name, semantic_type_iri, sort_order, target_field, target_field_type, writes_derived_field FROM public.vw_app_action_fields;
+ALTER VIEW pko_knowledge_authority.app_action_fields OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_authority.app_action_fields TO pko_knowledge_authority;
+CREATE VIEW pko_maintenance_technician.procedures AS
+  SELECT adopted_by_organization, adoption_count, agent_intended_count, avg_days_to_proficiency_with_capture, avg_days_to_proficiency_without_capture, called_by_step_count, category_level_view_count, collected_material_count, compliance_document_count, compliance_review_step_count, current_version_key, days_with_capture_total, days_without_capture_total, departed_only_know_how_count, departing_veteran_know_how_count, execution_count, execution_feedback_entry_count, expert_acquisition_hours, failure_criterion_count, formalization_does_not_ease_onboarding, has_decayed_transfer_channel, has_no_explicit_steps, has_no_failure_criterion, has_no_stated_reason_for_existing, has_step_and_category_resolutions, has_transfer_shortfall_exposure, has_unengaged_stakeholder, hindered_by_count, in_work_capture_count, involves_compliance_review_role, is_capture_separate_from_work, is_captured_by_automation_alone, is_executed_without_feedback_loop, is_hindered_by_another_operation, is_inconsistently_categorized, is_missing_demanded_resolution, is_nested_procedure, is_regulated_but_unformalized, is_tacit_only_agent_target, is_template, is_template_instance, lacks_distinction_type_key, lacks_managed_controlled_vocabulary, lacks_type_distinction, lens_view_count, machine_authored_entry_count, managed_vocabulary_count, matching_distinction_count, measures_performance_without_business_link, name, outcome_measure_count, owner_organization, practitioner_relationship_count, privileges_single_stakeholder_view, procedure_id, procedure_type, procedure_type_definition, procedure_type_rank, proficient_with_capture_count, proficient_without_capture_count, purpose, recent_starter_count, repository_entry_count, required_by_regulation, semantic_type_iri, specified_step_total, stale_entry_count, step_level_view_count, strategic_alignment_count, target, target_count, template_procedure, title, type_distinguishing_facet, type_distinguishing_value, unengaged_stakeholder_count, unlinked_measure_count, untransferred_veteran_know_how_count FROM public.vw_procedures;
+ALTER VIEW pko_maintenance_technician.procedures OWNER TO postgres;
+GRANT SELECT ON pko_maintenance_technician.procedures TO pko_maintenance_technician;
+CREATE VIEW pko_maintenance_technician.procedure_versions AS
+  SELECT ai_artifact_consuming_input_count, ai_boundary_is_unevidenced, ai_consumption_count, ai_contribution_count, alternative_transition_count, approved_change_request_count, as_of_instant, awaited_decision_count, cadence_breach_count, changelog_description, coarse_top_level_step_count, complementary_method_count, compound_fragile_fragment_count, concentrated_witness_session_count, conditionless_step_count, consumer_sync_count, contains_steps_affected_by_ai_agent_change, control_taxonomy_is_incomplete, count_of_change_requests, count_of_open_blocking_gaps, count_of_open_knowledge_gaps, count_of_overdue_gaps, count_of_review_events, count_of_stale_fragments, count_of_steps, count_of_stewardship_assignments, count_of_unapproved_reliance_fragments, created_by_agent, created_by_agent_kind, critical_incident_count, day_deviating_run_count, day_run_count, days_document_trails_version, days_since_last_review, days_since_modified, declared_first_step_count, design_decision_count, document_lags_practice, drifted_mining_run_count, elicitation_evidence_count, elicitation_session_count, enables_relation_count, entry_step_id, evaluation_context, exception_count, execution_count, expected_duration_unit, expected_duration_value, expert_capture_count, experts_evaluate_ai_not_representation, explicit_holding_count, fallback_step, fallback_transition_count, feeds_unapproved_knowledge_to_machines, fine_top_level_step_count, first_step, first_step_disagrees_with_graph, fresh_mining_run_count, genuinely_overdue_fragment_count, governance_is_silent, graph_entry_step_count, hands_held_count, has_any_steward, has_approved_change_request, has_decision_in_flight, has_governance_record, has_no_exception_handling, has_open_blocking_gap, has_unrehearsed_control_entry, has_unresolved_mining_drift, has_unwitnessed_change, human_channel_count, human_step_count, human_sync_count, incident_session_count, incoming_supersession_count, indexed_segment_count, interview_session_count, is_approved_without_sme_signoff, is_blocked_on_pending_decision, is_cleanly_retired, is_current, is_current_without_motivation, is_disconnected_from_outcomes, is_documented_behind_practice, is_fit_to_execute, is_held_unfit_by_landed_decisions, is_in_cadence_breach, is_inadequate_for_use, is_inconsistent_across_shifts, is_live, is_live_and_unstewarded, is_live_model_untraced, is_live_with_blocking_gap, is_live_with_unrehearsed_control, is_live_without_recorded_decisions, is_load_bearing_orphan, is_managed_cadence_breach, is_not_query_validate_reason_ready, is_ready_for_execution, is_standardized_without_tacit_capture, is_still_referenced, is_studied_only_from_the_desk, is_under_specified_for_execution, is_unmodified_for_twelve_months, is_unreachable_knowledge, is_unremediated_cadence_breach, is_unstewarded, issued_at, judgment_held_outside_sop_count, judgment_unprobed_by_incidents, ke_field_session_count, ke_session_count, knowledge_base_is_concentrated, knowledge_is_staler_than_cadence, lacks_continuous_drift_detection, lacks_machine_interpretable_encoding, latest_source_document_modified_at, lives_in_hands_silence_and_negotiation, load_bearing_unapproved_count, machine_channel_count, machine_consumed_unapproved_count, machine_sync_count, mining_run_count, misses_a_required_elicitation_mode, mixes_granularity_at_one_level, mixes_human_and_software_steps, modified_at, modified_by_agent, modifier_is_authority, name, negotiated_practice_count, new_version_motivation, night_deviating_run_count, night_run_count, non_human_step_count, observation_session_count, open_change_request_count, open_high_severity_gap_count, open_question_annotation_count, outcome_measurement_count, overdue_review_count, overlaps_relation_count, owner_organization, prevents_relation_count, procedure, procedure_type_of_version, procedure_version_id, process_model_trace_count, profile_validated_submission_count, protocol_session_count, published_projection_count, reasoned_assertion_count, reconciled_divergence_count, relies_on_single_method, rests_on_compound_fragile_knowledge, rests_on_notation_only, runs_on_unapproved_knowledge, scoped_open_blocking_gap_count, search_count, search_success_percent, semantic_type_iri, served_assertion_count, serves_only_humans_or_only_machines, should_not_be_executable, situated_judgment_fragment_count, sme_ai_evaluation_count, sme_approval_count, specified_step_count, stalled_implementation_count, standardization_driver, status, status_is_pko, steps_without_ontology_type_count, steward_review_cadence_days, still_owns_valid_knowledge, structured_query_count, successful_search_count, tacit_form_fragment_count, tacit_fragment_count, tacit_holding_count, tacit_judgment_fragment_count, tacit_share_exceeds_explicit, title, trailing_practice_trace_count, undeclared_control_kind_count, unexercised_human_gate_count, unlanded_decision_count, unrehearsed_control_entry_count, unwatched_unowned_control_count, uses_ai_in_one_direction_only, uses_non_pko_status, valid_fragment_count, version_number, was_modified_since_last_review, workshop_session_count FROM public.vw_procedure_versions;
+ALTER VIEW pko_maintenance_technician.procedure_versions OWNER TO postgres;
+GRANT SELECT ON pko_maintenance_technician.procedure_versions TO pko_maintenance_technician;
+CREATE VIEW pko_maintenance_technician.steps AS
+  SELECT accountable_agent, activity_origin_trace_count, ai_artifact_input_count, ai_failure_count, all_sources_usable, approval_step_is_software_assigned, assigned_agent_kind, assigned_role, assigned_role_does_compliance_review, assigned_role_is_ungoverned, assigned_role_label, authoritative_stale_count, available_exception_count, binding_boundary_count, blocking_requirement_count, bottleneck_allocation_count, calls_procedure, child_step_count, coarse_top_level_version_key, collection_evidence_count, compliance_review_procedure_key, conditionless_version_key, consumes_ai_agent_artifact, context_sensitivity_count, control_kind, cue_count, danger_cue_count, decision_point_count, declared_fallback_step_key, declared_first_step_key, declared_verification_count, description, detail_level, deviated_run_count, dmn_decision_count, downstream_artifact_step_count, elicited_extension_count, elicited_validation_count, entry_step_key, expected_duration_minutes, expertise_level, failure_mode_count, fine_top_level_version_key, first_child_step, gate_free_reach_from_entry_count, gate_held_by_human, has_been_approached_by_software, has_collection_evidence, has_declared_control_kind, has_downstream_steps, has_incompleteness_cue, has_instruction_only, has_no_accountable_agent, has_postcondition, has_reported_reality_mismatch, incoming_transition_count, incompleteness_cue_count, input_variable_count, inputs_are_fresh, instruction, invariant_count, is_accountable_to_software, is_ai_failure_point, is_approval_step, is_blocking_control_on_rework_loop, is_bottleneck_step, is_composite_without_children, is_context_sensitive_but_unscoped, is_declared_fallback_step, is_declared_first_step, is_demonstrated_human_gate, is_drifted_from_practice, is_entry_step, is_gate_bypassed_publication, is_governed_by_unwarranted_boundary, is_human_approval_gate, is_isolation_without_lock, is_on_rework_loop, is_preparation_step, is_reachable_from_entry_without_human_gate, is_release_approval_gate, is_software_assigned, is_unexercised_human_gate, is_untraced_activity_in_traced_model, isolates_energy_source, knowledge_fragment_count, max_repetitions, min_repetitions, name, open_outdated_flag_count, output_variable_count, owner_organization, parent_step, parent_step_kind, parseable_condition_count, postcondition_count, precondition_count, prerequisite_downstream_count, prerequisite_is_downstream, prerequisite_step, procedure_version, reachable_step_count, reached_from_step_count, referenced_resource_count, regulatory_requirement_count, remedy_for_error, required_lock_count, required_protective_equipment_count, requires_human_confirmation, safety_critical_condition_count, self_reach_count, semantic_type_iri, software_execution_count, stage, stale_authoritative_binding_count, stale_binding_count, states_operational_knowledge, step_id, step_kind, step_number, step_procedure_type, title, tool_function_count, tool_use_rules_only_in_prose, undeclared_control_version_key, unexercised_gate_version_key, unscoped_sensitivity_count, untyped_version_key, unusable_binding_count, unwarranted_boundary_count, unwitnessed_blocking_count, verifies_step, version_entry_step_id, version_model_trace_count, version_procedure FROM public.vw_steps;
+ALTER VIEW pko_maintenance_technician.steps OWNER TO postgres;
+GRANT SELECT ON pko_maintenance_technician.steps TO pko_maintenance_technician;
+CREATE VIEW pko_maintenance_technician.step_transitions AS
+  SELECT avoids_human_approval_gate, condition, count_of_from_step_executions, count_of_observed_traversals, count_of_to_step_executions, decision_point_count, from_step, from_step_is_human_approval_gate, has_been_traversed, has_reachable_origin, has_reachable_target, is_never_exercised, is_recovery_path, is_undocumented_branch, is_unrehearsed_control_entry, is_untested_recovery_path, is_unwalked_recovery_path, name, priority, procedure_version, semantic_type_iri, step_transition_id, target_blocking_requirement_count, target_carries_blocking_control, to_step, to_step_is_human_approval_gate, transition_kind, unrehearsed_control_version_key FROM public.vw_step_transitions;
+ALTER VIEW pko_maintenance_technician.step_transitions OWNER TO postgres;
+GRANT SELECT ON pko_maintenance_technician.step_transitions TO pko_maintenance_technician;
+CREATE VIEW pko_maintenance_technician.step_cues AS
+  SELECT cue_kind, danger_cue_step_key, description, escalate_to_role, failure_mode_response, incomplete_cue_step_key, is_unanswerable_sign, name, observation_count, operator_question, requires_escalation, semantic_type_iri, signals_failure_mode, signals_incomplete_step, step, step_cue_id, unescalated_observation_count FROM public.vw_step_cues;
+ALTER VIEW pko_maintenance_technician.step_cues OWNER TO postgres;
+GRANT SELECT ON pko_maintenance_technician.step_cues TO pko_maintenance_technician;
+CREATE VIEW pko_maintenance_technician.step_conditions AS
+  SELECT check_count, condition_kind, invariant_step_key, is_machine_parseable, is_never_checked, is_safety_critical, machine_expression, name, postcondition_step_key, precondition_step_key, safety_critical_step_key, semantic_type_iri, statement, step, step_condition_id FROM public.vw_step_conditions;
+ALTER VIEW pko_maintenance_technician.step_conditions OWNER TO postgres;
+GRANT SELECT ON pko_maintenance_technician.step_conditions TO pko_maintenance_technician;
+CREATE VIEW pko_maintenance_technician.step_lock_requirements AS
+  SELECT lock_device, name, semantic_type_iri, step, step_lock_requirement_id FROM public.vw_step_lock_requirements;
+ALTER VIEW pko_maintenance_technician.step_lock_requirements OWNER TO postgres;
+GRANT SELECT ON pko_maintenance_technician.step_lock_requirements TO pko_maintenance_technician;
+CREATE VIEW pko_maintenance_technician.step_protective_equipment AS
+  SELECT name, protective_equipment, semantic_type_iri, step, step_protective_equipment_id FROM public.vw_step_protective_equipment;
+ALTER VIEW pko_maintenance_technician.step_protective_equipment OWNER TO postgres;
+GRANT SELECT ON pko_maintenance_technician.step_protective_equipment TO pko_maintenance_technician;
+CREATE VIEW pko_maintenance_technician.lock_devices AS
+  SELECT label, lock_device_id, name, semantic_type_iri FROM public.vw_lock_devices;
+ALTER VIEW pko_maintenance_technician.lock_devices OWNER TO postgres;
+GRANT SELECT ON pko_maintenance_technician.lock_devices TO pko_maintenance_technician;
+CREATE VIEW pko_maintenance_technician.protective_equipment AS
+  SELECT label, name, protective_equipment_id, semantic_type_iri FROM public.vw_protective_equipment;
+ALTER VIEW pko_maintenance_technician.protective_equipment OWNER TO postgres;
+GRANT SELECT ON pko_maintenance_technician.protective_equipment TO pko_maintenance_technician;
+CREATE VIEW pko_maintenance_technician.machines AS
+  SELECT configuration_kind, energy_source_count, facility, governing_procedure_version, has_unisolated_energy_source, is_non_standard_configuration, label, machine_id, machine_type, manufactured_by, name, semantic_type_iri, unisolated_energy_source_count FROM public.vw_machines;
+ALTER VIEW pko_maintenance_technician.machines OWNER TO postgres;
+GRANT SELECT ON pko_maintenance_technician.machines TO pko_maintenance_technician;
+CREATE VIEW pko_maintenance_technician.machine_energy_sources AS
+  SELECT energy_source, is_unisolated_energy_source, isolation_step_count, machine, machine_energy_source_id, machine_procedure_version, name, semantic_type_iri, unisolated_machine_key FROM public.vw_machine_energy_sources;
+ALTER VIEW pko_maintenance_technician.machine_energy_sources OWNER TO postgres;
+GRANT SELECT ON pko_maintenance_technician.machine_energy_sources TO pko_maintenance_technician;
+CREATE VIEW pko_maintenance_technician.energy_sources AS
+  SELECT energy_source_id, label, name, pko_individual_iri, semantic_type_iri FROM public.vw_energy_sources;
+ALTER VIEW pko_maintenance_technician.energy_sources OWNER TO postgres;
+GRANT SELECT ON pko_maintenance_technician.energy_sources TO pko_maintenance_technician;
+CREATE VIEW pko_maintenance_technician.facilities AS
+  SELECT clean_run_count, deviating_run_count, facility_id, facility_kind, is_deviation_only_facility, label, name, organization, parent_facility, semantic_type_iri FROM public.vw_facilities;
+ALTER VIEW pko_maintenance_technician.facilities OWNER TO postgres;
+GRANT SELECT ON pko_maintenance_technician.facilities TO pko_maintenance_technician;
+CREATE VIEW pko_maintenance_technician.failure_modes AS
+  SELECT description, escalate_to_role, escalates_to_vacant_role, escalation_role_has_no_holder, failure_mode_id, has_no_response, name, procedure_target, requires_escalation, response, semantic_type_iri, step FROM public.vw_failure_modes;
+ALTER VIEW pko_maintenance_technician.failure_modes OWNER TO postgres;
+GRANT SELECT ON pko_maintenance_technician.failure_modes TO pko_maintenance_technician;
+CREATE VIEW pko_maintenance_technician.decision_points AS
+  SELECT deciding_factors, decision_point_id, default_outcome, dmn_decision_key, governing_transition, has_no_deciding_factors, is_dmn_encoded, name, question, semantic_type_iri, step FROM public.vw_decision_points;
+ALTER VIEW pko_maintenance_technician.decision_points OWNER TO postgres;
+GRANT SELECT ON pko_maintenance_technician.decision_points TO pko_maintenance_technician;
+CREATE VIEW pko_maintenance_technician.procedure_executions AS
+  SELECT abandoned_failure_count, all_blocking_controls_evaluated, approval_chain_is_complete, approval_step_count, asserted_only_control_count, assurance_chain_is_circular, assurance_grade, assurance_is_mostly_asserted, attestation_blocker_summary, attestation_count, attestation_would_be_weakly_based, basis_changed_after_signature, campaign_silently_lost_audience, claims_completion_without_all_steps, clean_facility_key, cleared_legal_review_count, completed_step_count, computed_assurance_ratio, computedly_witnessed_control_count, confirmed_by_agent, context, control_breach_count, count_of_approval_executions, count_of_delivery_executions, delivered_count, delivered_without_approval, delivery_yield_percent, description, deviating_day_version_key, deviating_facility_key, deviating_night_version_key, deviating_step_count, diverged_from_specification, divergence_was_fully_governed, ended_at, evaluated_control_count, executed_by_agent, executed_on_machine, executed_version_is_fit, execution_status, expected_step_count, facility, feedback_count, has_abandoned_failures, has_any_independent_observation, has_been_attested, has_cleared_legal_review, has_delivered, has_human_approval, has_no_recorded_outcome, has_step_deviation, has_unrecorded_refusals, independent_human_observation_count, independently_confirmed_intent_count, intended_recipient_count, interested_party_assertion_count, invalid_approval_count, is_attestation_ready, is_structurally_complete, is_unconfirmed_completion, is_unreported_mistake, late_step_count, latest_attestation_instant, mishandled_refusal_count, name, observations, operational_record_uri, outcome, owner_organization, participant_count, post_attestation_score_count, preparation_step_count, procedure_execution_id, procedure_version, ran_clean, reached_recipient_count, requires_re_attestation, retention_breach_count, self_attested_approval_count, semantic_type_iri, send_decisions_are_entirely_self_witnessed, separation_assurance_note, separation_held_under_test, separation_is_vacuously_green, separation_of_duties_held, separation_violation_count, separation_was_testable, shift, signed_against_unfit_version, silently_dropped_count, started_at, status_change_count, title, total_delivery_attempt_count, unclean_step_count, unevaluated_blocking_total, ungoverned_divergence_count, unreachable_handling_failure_count, unrecorded_refusal_count, vacuously_clean_step_count FROM public.vw_procedure_executions;
+ALTER VIEW pko_maintenance_technician.procedure_executions OWNER TO postgres;
+GRANT SELECT ON pko_maintenance_technician.procedure_executions TO pko_maintenance_technician;
+CREATE VIEW pko_maintenance_technician.step_executions AS
+  SELECT actual_duration_minutes, all_clearances_are_unfalsified, approval_execution_key, approval_rests_on_self_attestation, approver_agent_key, assigned_role, available_exception_count_for_step, blocking_unmet_count, blocking_unmet_count_safe, broke_invariant, claims_pass_without_evidence, cleared_legal_review_key, completed_execution_key, completed_prerequisite_run_count, confirmed_by_agent, control_breach_execution_key, declared_check_count, description, deviation, deviation_execution_key, drafted_from_unusable_source, ended_at, evaluated_blocking_count, evaluated_requirement_count, evidence_position_is_weak, exceeds_max_repetitions, exception_invocation_count, executed_by_agent, executes_step_of_other_version, executing_agent_kind, execution_status, execution_version, executor_agent_kind, executor_authority_count, executor_held_required_role, executor_is_designated_agent, executor_is_human, executor_role_key, expected_blocking_count, expected_duration_minutes, expected_verification_count, failed_precondition_count, generated_entity_count, had_uninvoked_exception_available, has_any_declared_check, has_approved_change_coverage, has_deviation, has_deviation_note, has_governing_instrument, has_skipped_verification, has_unevaluated_blocking_control, has_unevaluated_blocking_requirement, human_confirmation_missing, ignored_danger_cue, incomplete_cue_observation_count, inputs_were_fresh_at_run, inputs_were_usable, is_approval_execution, is_blocked_by_incomplete_prerequisite, is_blocked_by_observed_cue, is_clean, is_completed, is_late, is_late_and_unexplained, is_legal_review_step, is_out_of_specified_order, is_substantively_clean, is_unauthorized_approval, is_unchecked_by_design, is_ungoverned_divergence, is_vacuously_clean, is_verification_passed, is_verified, lacks_required_confirmation, late_execution_key, name, non_human_approval, non_human_ran_human_step, owner_organization, performed_check_count, performed_verification_count, preparation_execution_key, prepared_by_this_agent_count, preparer_agent_key, previous_executed_step, previous_step_execution, procedure_execution, procedure_execution_when_unclean, proceeded_despite_failed_precondition, proceeded_past_blocking_control, ran_before_prerequisite_completed, ran_on_stale_authoritative_source, ran_on_stale_inputs, ran_under_exception, ran_without_declared_inputs, repetition_count, required_blocking_count, required_role_for_step, requires_human_confirmation, role_current_agent, self_attested_approval_execution_key, self_witnessed_verification_count, semantic_type_iri, separation_violation_execution_key, skipped_verification_count, software_did_human_work, software_execution_step_key, specified_transition_from_previous_count, stale_at_run_count, stale_authoritative_source_count, staleness_answer_is_tense_dependent, started_at, step, step_control_kind, step_execution_id, step_input_variable_count, step_is_approval, step_is_preparation, step_is_software_assigned, step_max_repetitions, step_prerequisite, step_requires_human_confirmation, unbacked_verification_count, unconfirmed_non_human_decision_count, uncorroborated_pass_count, unescalated_danger_cue_count, unevaluated_blocking_count, unevaluated_blocking_execution_key, unfalsified_clearance_count, ungoverned_divergence_execution_key, unresolved_issue_count, used_entity_count, vacuously_clean_execution_key, verification_result, version_of_step, violated_invariant_count, violates_separation_of_duties, was_executed_by_software, was_stale_when_i_ran_it FROM public.vw_step_executions;
+ALTER VIEW pko_maintenance_technician.step_executions OWNER TO postgres;
+GRANT SELECT ON pko_maintenance_technician.step_executions TO pko_maintenance_technician;
+CREATE VIEW pko_maintenance_technician.cue_observations AS
+  SELECT acknowledged_at, cue_observation_id, cue_requires_escalation, cue_signals_incomplete_step, escalated_to_agent, is_awaiting_acknowledgement, is_unescalated_danger_cue, name, observed_at, observed_by_agent, owner_organization, semantic_type_iri, step_cue, step_execution, unescalated_cue_key, unescalated_execution_key, was_escalated FROM public.vw_cue_observations;
+ALTER VIEW pko_maintenance_technician.cue_observations OWNER TO postgres;
+GRANT SELECT ON pko_maintenance_technician.cue_observations TO pko_maintenance_technician;
+CREATE VIEW pko_maintenance_technician.knowledge_fragments AS
+  SELECT age_days, as_of_instant, cognitive_basis, compound_fragile_version_key, confidence, consuming_step_agent_kind, consuming_step_is_software_assigned, corroboration_count, days_awaiting_my_approval, days_since_actual_review, elicitation_session, encoded_as, evaluation_context, evidence_age_days, evidence_expiry_days, evidence_has_expired, exceeds_owning_cadence, fragility_signal_count, genuinely_overdue_version_key, has_human_source, has_operational_reliance, has_orphaned_provenance, has_recorded_elicitation, has_review_record, inference_disagrees_with_record, is_aging_low_confidence_claim, is_ai_validated_by_ai, is_approved, is_attached_to_live_version, is_awaiting_approval, is_compound_fragile, is_currently_valid, is_expiring_single_point_of_failure, is_flattened_to_brittle_rule, is_from_single_witness, is_genuinely_overdue, is_high_blast_radius_unapproved, is_human_owned, is_invoked_by_an_exception, is_long_unapproved, is_low_confidence, is_my_unfinished_approval, is_orphaned_by_role, is_overdue_for_review, is_relied_upon, is_single_point_of_failure, is_unapproved_and_human_consumed, is_unapproved_and_machine_consumed, is_unapproved_and_operationally_live, is_unapproved_but_relied_on, is_undefendable_tacit_claim, is_unreviewed_since_authoring, is_within_validity_window, knowledge_form, knowledge_fragment_id, last_reviewed_at, lost_in_translation, machine_consumed_unapproved_version_key, name, owner_agent, owner_is_me, owner_organization, owner_role, owner_role_agent_kind, owner_role_assignment_valid_from, owner_role_is_vacated, owning_version_cadence_days, predates_current_role_holder, procedure_version, ratified_boundary_count, reliance_surface_count, rests_on_single_data_point, review_cadence_days, review_recency_is_inferred, semantic_type_iri, source_agent, source_agent_is_still_engaged, source_agent_kind, stated_conditions, statement, status, step, step_procedure_version_status, tacitness_degree, unapproved_load_bearing_version_key, valid_fragment_session_key, valid_fragment_version_key, valid_from, valid_to FROM public.vw_knowledge_fragments;
+ALTER VIEW pko_maintenance_technician.knowledge_fragments OWNER TO postgres;
+GRANT SELECT ON pko_maintenance_technician.knowledge_fragments TO pko_maintenance_technician;
+CREATE VIEW pko_maintenance_technician.expert_cognitions AS
+  SELECT agent, applied_automatically, captured_exceptions, cognition_kind, elicitation_session, expert_cognition_id, expert_stated_exceptions, is_automatic_heuristic, is_heuristic_oversimplified, is_mental_model, name, semantic_type_iri, statement, step FROM public.vw_expert_cognitions;
+ALTER VIEW pko_maintenance_technician.expert_cognitions OWNER TO postgres;
+GRANT SELECT ON pko_maintenance_technician.expert_cognitions TO pko_maintenance_technician;
+CREATE VIEW pko_maintenance_technician.concept_ladder_rungs AS
+  SELECT concept_ladder_rung_id, elicitation_session, is_decomposition_rung, is_ultimate_goal, ladder_level, name, rung_kind, semantic_type_iri, statement, step, step_top_level FROM public.vw_concept_ladder_rungs;
+ALTER VIEW pko_maintenance_technician.concept_ladder_rungs OWNER TO postgres;
+GRANT SELECT ON pko_maintenance_technician.concept_ladder_rungs TO pko_maintenance_technician;
+CREATE VIEW pko_maintenance_technician.know_how_carriers AS
+  SELECT as_of_instant, builds_on_know_how, builds_on_same_community_know_how, carrier_kind, community_of_practice, days_served_to_as_of, days_served_to_departure, days_until_holder_departure, dependency_community, evaluation_context, held_since, holder_agent, holder_departure_at, holder_facility, holder_is_still_engaged, holder_service_started_at, holder_tenure_years, is_at_risk_of_imminent_loss, is_captured, is_delegated_to_unfit_source, is_held_by_current_practitioner, is_held_by_departed_holder, is_held_in_both_forms, is_held_only_by_departed, is_holder_leaving_soon, is_in_public_references, is_in_written_procedure, is_overlooked_living_holder, is_trained_skill, is_untransferred_veteran_know_how, is_veteran_held, know_how_carrier_id, know_how_kind, lost_accumulation_years, must_be_relearned_if_holder_leaves, name, organization, procedure, replacement_plan, repository_entry_count, semantic_type_iri, source_relationship_count, topic, transfer_count, transfer_stops_without_veteran, work_medium FROM public.vw_know_how_carriers;
+ALTER VIEW pko_maintenance_technician.know_how_carriers OWNER TO postgres;
+GRANT SELECT ON pko_maintenance_technician.know_how_carriers TO pko_maintenance_technician;
+CREATE VIEW pko_maintenance_technician.assistant_answers AS
+  SELECT acted_on_without_human_judgment, answer_kind, answer_text, answered_at, answered_compliance_question_from_documents, answering_agent, arrived_after_step_ended, asked_at, asked_by_agent, asserted_next_step, assistant_answer_id, assumed_current_step, assumed_step_completed_count, cited_grounding_count, conflict_count, conflicts_with_regulation, context_step, context_step_ended_at, context_unescalated_danger_cue_count, contradicts_shared_model, delivered_despite_conflict, delivery_disposition, derivation_performed_by, document_interpretation_erred, documented_inaccuracy, execution_of_context, grounding_count, human_reviewed_by, is_explicitly_grounded_recommendation, is_not_from_own_knowledge, is_unchecked_regulated_recommendation, is_untraceable_to_source, lost_track_of_state, model_did_the_reasoning, name, needs_inference, own_knowledge_grounding_count, owner_organization, question_text, question_topic, raised_safety_concern, recommendation_rests_on_nothing_explicit, recommended_step, recommended_step_needs_human, recommended_step_regulatory_count, requirement_check_count, retrieval_mode, reviewed_for_initiative, semantic_type_iri, specified_transition_count, stale_grounding_count, stayed_silent_on_safety_problem, step_execution, task_outcome, via_integration, was_acted_on, was_correct, wrong_because_graph_was_stale FROM public.vw_assistant_answers;
+ALTER VIEW pko_maintenance_technician.assistant_answers OWNER TO postgres;
+GRANT SELECT ON pko_maintenance_technician.assistant_answers TO pko_maintenance_technician;
+CREATE VIEW pko_maintenance_technician.knowledge_query_definitions AS
+  SELECT consolidated_distributed_sources, knowledge_query_definition_id, label, last_run_at, misses_a_layer, name, needs_ontology_and_instances, query_language, query_text, ran_over_consolidated_copy, semantic_type_iri, source_system_count, target_procedure_version, traverses_instance_layer, traverses_ontology_layer FROM public.vw_knowledge_query_definitions;
+ALTER VIEW pko_maintenance_technician.knowledge_query_definitions OWNER TO postgres;
+GRANT SELECT ON pko_maintenance_technician.knowledge_query_definitions TO pko_maintenance_technician;
+CREATE VIEW pko_maintenance_technician.agents AS
+  SELECT accountability_assertion_count, agent_id, agent_kind, ai_task_completed_count, ai_task_completion_percent, answer_count, artifact_blast_radius_step_count, at_risk_reliance_count, attributed_artifact_count, boundary_violation_count, category_not_available_as_inference, community_count, contact_address, count_of_current_role_assignments, current_accountable_human_count, decision_count, departure_at, display_name, downstream_of_held_steps_count, draft_decision_count, draft_rewrite_rate_percent, has_artifact_blast_radius, has_at_risk_knowledge_reliance, has_produced_artifacts, inferred_category_count, is_ai_agent_not_filled_from_registry, is_ai_agent_without_accountable_human, is_ai_agent_without_model_version, is_below_task_completion_target, is_boundary_spanner, is_non_human, is_operating_outside_boundary, is_organization_agent, is_recognized_broker, is_still_engaged, is_unclassified_agent, is_unidentified_boundary_spanner, is_unrewarded_sharer, is_untracked_ai_consumer, lacks_runtime_knowledge_integration, lacks_time_to_mentor, located_know_how_count, name, organization, overridden_decision_count, overridden_draft_count, override_rate_percent, protected_mentoring_hours_per_week, recognition_count, registry_version_match_count, represents_organization, required_mentoring_hours_per_week, runtime_integration_count, search_event_count, semantic_type_iri, service_started_at, sna_identification_count, times_named_as_broker, transfers_given_count, version_or_employment_key FROM public.vw_agents;
+ALTER VIEW pko_maintenance_technician.agents OWNER TO postgres;
+GRANT SELECT ON pko_maintenance_technician.agents TO pko_maintenance_technician;
+CREATE VIEW pko_maintenance_technician.roles AS
+  SELECT active_assignment_count, approval_step_count, backup_role_holder, capability_tag_count, compliance_review_tag_count, count_of_awaited_decisions, current_agent, current_agent_kind, current_assignment, current_assignment_valid_from, current_holder_name, currently_covered_assignment_count, departed_assignment_count, escalation_backup_role, has_compliance_review_capability, has_escalation_backup, has_lost_a_holder, has_no_current_holder, has_specializations, has_unfilled_escalation_backup, is_governed_by_lapsed_authority, is_missed_by_phrase_query, is_non_human_held, is_not_housed_in_department, is_production_release_approver, is_senior_variant_not_specialization, is_ungoverned_enforcement_role, is_ungoverned_non_human_role, is_vacated_role, label, name, organization, organization_type, preferred_knowledge_form, release_approval_step_count, responsibility, role_family, role_id, role_mention_count, semantic_type_iri, seniority_level, specialization_count, specialized_role_family, specializes_role, unauthorized_enforcement_assignment_count, unescalated_refusal_count, ungrounded_boundary_count, unresolved_role_mention_count FROM public.vw_roles;
+ALTER VIEW pko_maintenance_technician.roles OWNER TO postgres;
+GRANT SELECT ON pko_maintenance_technician.roles TO pko_maintenance_technician;
+CREATE VIEW pko_plant_assistant.procedures AS
+  SELECT adopted_by_organization, adoption_count, agent_intended_count, avg_days_to_proficiency_with_capture, avg_days_to_proficiency_without_capture, called_by_step_count, category_level_view_count, collected_material_count, compliance_document_count, compliance_review_step_count, current_version_key, days_with_capture_total, days_without_capture_total, departed_only_know_how_count, departing_veteran_know_how_count, execution_count, execution_feedback_entry_count, expert_acquisition_hours, failure_criterion_count, formalization_does_not_ease_onboarding, has_decayed_transfer_channel, has_no_explicit_steps, has_no_failure_criterion, has_no_stated_reason_for_existing, has_step_and_category_resolutions, has_transfer_shortfall_exposure, has_unengaged_stakeholder, hindered_by_count, in_work_capture_count, involves_compliance_review_role, is_capture_separate_from_work, is_captured_by_automation_alone, is_executed_without_feedback_loop, is_hindered_by_another_operation, is_inconsistently_categorized, is_missing_demanded_resolution, is_nested_procedure, is_regulated_but_unformalized, is_tacit_only_agent_target, is_template, is_template_instance, lacks_distinction_type_key, lacks_managed_controlled_vocabulary, lacks_type_distinction, lens_view_count, machine_authored_entry_count, managed_vocabulary_count, matching_distinction_count, measures_performance_without_business_link, name, outcome_measure_count, owner_organization, practitioner_relationship_count, privileges_single_stakeholder_view, procedure_id, procedure_type, procedure_type_definition, procedure_type_rank, proficient_with_capture_count, proficient_without_capture_count, purpose, recent_starter_count, repository_entry_count, required_by_regulation, semantic_type_iri, specified_step_total, stale_entry_count, step_level_view_count, strategic_alignment_count, target, target_count, template_procedure, title, type_distinguishing_facet, type_distinguishing_value, unengaged_stakeholder_count, unlinked_measure_count, untransferred_veteran_know_how_count FROM public.vw_procedures;
+ALTER VIEW pko_plant_assistant.procedures OWNER TO postgres;
+GRANT SELECT ON pko_plant_assistant.procedures TO pko_plant_assistant;
+CREATE VIEW pko_plant_assistant.procedure_versions AS
+  SELECT ai_artifact_consuming_input_count, ai_boundary_is_unevidenced, ai_consumption_count, ai_contribution_count, alternative_transition_count, approved_change_request_count, as_of_instant, awaited_decision_count, cadence_breach_count, changelog_description, coarse_top_level_step_count, complementary_method_count, compound_fragile_fragment_count, concentrated_witness_session_count, conditionless_step_count, consumer_sync_count, contains_steps_affected_by_ai_agent_change, control_taxonomy_is_incomplete, count_of_change_requests, count_of_open_blocking_gaps, count_of_open_knowledge_gaps, count_of_overdue_gaps, count_of_review_events, count_of_stale_fragments, count_of_steps, count_of_stewardship_assignments, count_of_unapproved_reliance_fragments, created_by_agent, created_by_agent_kind, critical_incident_count, day_deviating_run_count, day_run_count, days_document_trails_version, days_since_last_review, days_since_modified, declared_first_step_count, design_decision_count, document_lags_practice, drifted_mining_run_count, elicitation_evidence_count, elicitation_session_count, enables_relation_count, entry_step_id, evaluation_context, exception_count, execution_count, expected_duration_unit, expected_duration_value, expert_capture_count, experts_evaluate_ai_not_representation, explicit_holding_count, fallback_step, fallback_transition_count, feeds_unapproved_knowledge_to_machines, fine_top_level_step_count, first_step, first_step_disagrees_with_graph, fresh_mining_run_count, genuinely_overdue_fragment_count, governance_is_silent, graph_entry_step_count, hands_held_count, has_any_steward, has_approved_change_request, has_decision_in_flight, has_governance_record, has_no_exception_handling, has_open_blocking_gap, has_unrehearsed_control_entry, has_unresolved_mining_drift, has_unwitnessed_change, human_channel_count, human_step_count, human_sync_count, incident_session_count, incoming_supersession_count, indexed_segment_count, interview_session_count, is_approved_without_sme_signoff, is_blocked_on_pending_decision, is_cleanly_retired, is_current, is_current_without_motivation, is_disconnected_from_outcomes, is_documented_behind_practice, is_fit_to_execute, is_held_unfit_by_landed_decisions, is_in_cadence_breach, is_inadequate_for_use, is_inconsistent_across_shifts, is_live, is_live_and_unstewarded, is_live_model_untraced, is_live_with_blocking_gap, is_live_with_unrehearsed_control, is_live_without_recorded_decisions, is_load_bearing_orphan, is_managed_cadence_breach, is_not_query_validate_reason_ready, is_ready_for_execution, is_standardized_without_tacit_capture, is_still_referenced, is_studied_only_from_the_desk, is_under_specified_for_execution, is_unmodified_for_twelve_months, is_unreachable_knowledge, is_unremediated_cadence_breach, is_unstewarded, issued_at, judgment_held_outside_sop_count, judgment_unprobed_by_incidents, ke_field_session_count, ke_session_count, knowledge_base_is_concentrated, knowledge_is_staler_than_cadence, lacks_continuous_drift_detection, lacks_machine_interpretable_encoding, latest_source_document_modified_at, lives_in_hands_silence_and_negotiation, load_bearing_unapproved_count, machine_channel_count, machine_consumed_unapproved_count, machine_sync_count, mining_run_count, misses_a_required_elicitation_mode, mixes_granularity_at_one_level, mixes_human_and_software_steps, modified_at, modified_by_agent, modifier_is_authority, name, negotiated_practice_count, new_version_motivation, night_deviating_run_count, night_run_count, non_human_step_count, observation_session_count, open_change_request_count, open_high_severity_gap_count, open_question_annotation_count, outcome_measurement_count, overdue_review_count, overlaps_relation_count, owner_organization, prevents_relation_count, procedure, procedure_type_of_version, procedure_version_id, process_model_trace_count, profile_validated_submission_count, protocol_session_count, published_projection_count, reasoned_assertion_count, reconciled_divergence_count, relies_on_single_method, rests_on_compound_fragile_knowledge, rests_on_notation_only, runs_on_unapproved_knowledge, scoped_open_blocking_gap_count, search_count, search_success_percent, semantic_type_iri, served_assertion_count, serves_only_humans_or_only_machines, should_not_be_executable, situated_judgment_fragment_count, sme_ai_evaluation_count, sme_approval_count, specified_step_count, stalled_implementation_count, standardization_driver, status, status_is_pko, steps_without_ontology_type_count, steward_review_cadence_days, still_owns_valid_knowledge, structured_query_count, successful_search_count, tacit_form_fragment_count, tacit_fragment_count, tacit_holding_count, tacit_judgment_fragment_count, tacit_share_exceeds_explicit, title, trailing_practice_trace_count, undeclared_control_kind_count, unexercised_human_gate_count, unlanded_decision_count, unrehearsed_control_entry_count, unwatched_unowned_control_count, uses_ai_in_one_direction_only, uses_non_pko_status, valid_fragment_count, version_number, was_modified_since_last_review, workshop_session_count FROM public.vw_procedure_versions;
+ALTER VIEW pko_plant_assistant.procedure_versions OWNER TO postgres;
+GRANT SELECT ON pko_plant_assistant.procedure_versions TO pko_plant_assistant;
+CREATE VIEW pko_plant_assistant.steps AS
+  SELECT accountable_agent, activity_origin_trace_count, ai_artifact_input_count, ai_failure_count, all_sources_usable, approval_step_is_software_assigned, assigned_agent_kind, assigned_role, assigned_role_does_compliance_review, assigned_role_is_ungoverned, assigned_role_label, authoritative_stale_count, available_exception_count, binding_boundary_count, blocking_requirement_count, bottleneck_allocation_count, calls_procedure, child_step_count, coarse_top_level_version_key, collection_evidence_count, compliance_review_procedure_key, conditionless_version_key, consumes_ai_agent_artifact, context_sensitivity_count, control_kind, cue_count, danger_cue_count, decision_point_count, declared_fallback_step_key, declared_first_step_key, declared_verification_count, description, detail_level, deviated_run_count, dmn_decision_count, downstream_artifact_step_count, elicited_extension_count, elicited_validation_count, entry_step_key, expected_duration_minutes, expertise_level, failure_mode_count, fine_top_level_version_key, first_child_step, gate_free_reach_from_entry_count, gate_held_by_human, has_been_approached_by_software, has_collection_evidence, has_declared_control_kind, has_downstream_steps, has_incompleteness_cue, has_instruction_only, has_no_accountable_agent, has_postcondition, has_reported_reality_mismatch, incoming_transition_count, incompleteness_cue_count, input_variable_count, inputs_are_fresh, instruction, invariant_count, is_accountable_to_software, is_ai_failure_point, is_approval_step, is_blocking_control_on_rework_loop, is_bottleneck_step, is_composite_without_children, is_context_sensitive_but_unscoped, is_declared_fallback_step, is_declared_first_step, is_demonstrated_human_gate, is_drifted_from_practice, is_entry_step, is_gate_bypassed_publication, is_governed_by_unwarranted_boundary, is_human_approval_gate, is_isolation_without_lock, is_on_rework_loop, is_preparation_step, is_reachable_from_entry_without_human_gate, is_release_approval_gate, is_software_assigned, is_unexercised_human_gate, is_untraced_activity_in_traced_model, isolates_energy_source, knowledge_fragment_count, max_repetitions, min_repetitions, name, open_outdated_flag_count, output_variable_count, owner_organization, parent_step, parent_step_kind, parseable_condition_count, postcondition_count, precondition_count, prerequisite_downstream_count, prerequisite_is_downstream, prerequisite_step, procedure_version, reachable_step_count, reached_from_step_count, referenced_resource_count, regulatory_requirement_count, remedy_for_error, required_lock_count, required_protective_equipment_count, requires_human_confirmation, safety_critical_condition_count, self_reach_count, semantic_type_iri, software_execution_count, stage, stale_authoritative_binding_count, stale_binding_count, states_operational_knowledge, step_id, step_kind, step_number, step_procedure_type, title, tool_function_count, tool_use_rules_only_in_prose, undeclared_control_version_key, unexercised_gate_version_key, unscoped_sensitivity_count, untyped_version_key, unusable_binding_count, unwarranted_boundary_count, unwitnessed_blocking_count, verifies_step, version_entry_step_id, version_model_trace_count, version_procedure FROM public.vw_steps;
+ALTER VIEW pko_plant_assistant.steps OWNER TO postgres;
+GRANT SELECT ON pko_plant_assistant.steps TO pko_plant_assistant;
+CREATE VIEW pko_plant_assistant.step_transitions AS
+  SELECT avoids_human_approval_gate, condition, count_of_from_step_executions, count_of_observed_traversals, count_of_to_step_executions, decision_point_count, from_step, from_step_is_human_approval_gate, has_been_traversed, has_reachable_origin, has_reachable_target, is_never_exercised, is_recovery_path, is_undocumented_branch, is_unrehearsed_control_entry, is_untested_recovery_path, is_unwalked_recovery_path, name, priority, procedure_version, semantic_type_iri, step_transition_id, target_blocking_requirement_count, target_carries_blocking_control, to_step, to_step_is_human_approval_gate, transition_kind, unrehearsed_control_version_key FROM public.vw_step_transitions;
+ALTER VIEW pko_plant_assistant.step_transitions OWNER TO postgres;
+GRANT SELECT ON pko_plant_assistant.step_transitions TO pko_plant_assistant;
+CREATE VIEW pko_plant_assistant.step_cues AS
+  SELECT cue_kind, danger_cue_step_key, description, escalate_to_role, failure_mode_response, incomplete_cue_step_key, is_unanswerable_sign, name, observation_count, operator_question, requires_escalation, semantic_type_iri, signals_failure_mode, signals_incomplete_step, step, step_cue_id, unescalated_observation_count FROM public.vw_step_cues;
+ALTER VIEW pko_plant_assistant.step_cues OWNER TO postgres;
+GRANT SELECT ON pko_plant_assistant.step_cues TO pko_plant_assistant;
+CREATE VIEW pko_plant_assistant.step_conditions AS
+  SELECT check_count, condition_kind, invariant_step_key, is_machine_parseable, is_never_checked, is_safety_critical, machine_expression, name, postcondition_step_key, precondition_step_key, safety_critical_step_key, semantic_type_iri, statement, step, step_condition_id FROM public.vw_step_conditions;
+ALTER VIEW pko_plant_assistant.step_conditions OWNER TO postgres;
+GRANT SELECT ON pko_plant_assistant.step_conditions TO pko_plant_assistant;
+CREATE VIEW pko_plant_assistant.machine_energy_sources AS
+  SELECT energy_source, is_unisolated_energy_source, isolation_step_count, machine, machine_energy_source_id, machine_procedure_version, name, semantic_type_iri, unisolated_machine_key FROM public.vw_machine_energy_sources;
+ALTER VIEW pko_plant_assistant.machine_energy_sources OWNER TO postgres;
+GRANT SELECT ON pko_plant_assistant.machine_energy_sources TO pko_plant_assistant;
+CREATE VIEW pko_plant_assistant.energy_sources AS
+  SELECT energy_source_id, label, name, pko_individual_iri, semantic_type_iri FROM public.vw_energy_sources;
+ALTER VIEW pko_plant_assistant.energy_sources OWNER TO postgres;
+GRANT SELECT ON pko_plant_assistant.energy_sources TO pko_plant_assistant;
+CREATE VIEW pko_plant_assistant.machines AS
+  SELECT configuration_kind, energy_source_count, facility, governing_procedure_version, has_unisolated_energy_source, is_non_standard_configuration, label, machine_id, machine_type, manufactured_by, name, semantic_type_iri, unisolated_energy_source_count FROM public.vw_machines;
+ALTER VIEW pko_plant_assistant.machines OWNER TO postgres;
+GRANT SELECT ON pko_plant_assistant.machines TO pko_plant_assistant;
+CREATE VIEW pko_plant_assistant.knowledge_fragments AS
+  SELECT age_days, as_of_instant, cognitive_basis, compound_fragile_version_key, confidence, consuming_step_agent_kind, consuming_step_is_software_assigned, corroboration_count, days_awaiting_my_approval, days_since_actual_review, elicitation_session, encoded_as, evaluation_context, evidence_age_days, evidence_expiry_days, evidence_has_expired, exceeds_owning_cadence, fragility_signal_count, genuinely_overdue_version_key, has_human_source, has_operational_reliance, has_orphaned_provenance, has_recorded_elicitation, has_review_record, inference_disagrees_with_record, is_aging_low_confidence_claim, is_ai_validated_by_ai, is_approved, is_attached_to_live_version, is_awaiting_approval, is_compound_fragile, is_currently_valid, is_expiring_single_point_of_failure, is_flattened_to_brittle_rule, is_from_single_witness, is_genuinely_overdue, is_high_blast_radius_unapproved, is_human_owned, is_invoked_by_an_exception, is_long_unapproved, is_low_confidence, is_my_unfinished_approval, is_orphaned_by_role, is_overdue_for_review, is_relied_upon, is_single_point_of_failure, is_unapproved_and_human_consumed, is_unapproved_and_machine_consumed, is_unapproved_and_operationally_live, is_unapproved_but_relied_on, is_undefendable_tacit_claim, is_unreviewed_since_authoring, is_within_validity_window, knowledge_form, knowledge_fragment_id, last_reviewed_at, lost_in_translation, machine_consumed_unapproved_version_key, name, owner_agent, owner_is_me, owner_organization, owner_role, owner_role_agent_kind, owner_role_assignment_valid_from, owner_role_is_vacated, owning_version_cadence_days, predates_current_role_holder, procedure_version, ratified_boundary_count, reliance_surface_count, rests_on_single_data_point, review_cadence_days, review_recency_is_inferred, semantic_type_iri, source_agent, source_agent_is_still_engaged, source_agent_kind, stated_conditions, statement, status, step, step_procedure_version_status, tacitness_degree, unapproved_load_bearing_version_key, valid_fragment_session_key, valid_fragment_version_key, valid_from, valid_to FROM public.vw_knowledge_fragments;
+ALTER VIEW pko_plant_assistant.knowledge_fragments OWNER TO postgres;
+GRANT SELECT ON pko_plant_assistant.knowledge_fragments TO pko_plant_assistant;
+CREATE VIEW pko_plant_assistant.failure_modes AS
+  SELECT description, escalate_to_role, escalates_to_vacant_role, escalation_role_has_no_holder, failure_mode_id, has_no_response, name, procedure_target, requires_escalation, response, semantic_type_iri, step FROM public.vw_failure_modes;
+ALTER VIEW pko_plant_assistant.failure_modes OWNER TO postgres;
+GRANT SELECT ON pko_plant_assistant.failure_modes TO pko_plant_assistant;
+CREATE VIEW pko_plant_assistant.decision_points AS
+  SELECT deciding_factors, decision_point_id, default_outcome, dmn_decision_key, governing_transition, has_no_deciding_factors, is_dmn_encoded, name, question, semantic_type_iri, step FROM public.vw_decision_points;
+ALTER VIEW pko_plant_assistant.decision_points OWNER TO postgres;
+GRANT SELECT ON pko_plant_assistant.decision_points TO pko_plant_assistant;
+CREATE VIEW pko_plant_assistant.knowledge_query_definitions AS
+  SELECT consolidated_distributed_sources, knowledge_query_definition_id, label, last_run_at, misses_a_layer, name, needs_ontology_and_instances, query_language, query_text, ran_over_consolidated_copy, semantic_type_iri, source_system_count, target_procedure_version, traverses_instance_layer, traverses_ontology_layer FROM public.vw_knowledge_query_definitions;
+ALTER VIEW pko_plant_assistant.knowledge_query_definitions OWNER TO postgres;
+GRANT SELECT ON pko_plant_assistant.knowledge_query_definitions TO pko_plant_assistant;
+CREATE VIEW pko_plant_assistant.procedure_executions AS
+  SELECT abandoned_failure_count, all_blocking_controls_evaluated, approval_chain_is_complete, approval_step_count, asserted_only_control_count, assurance_chain_is_circular, assurance_grade, assurance_is_mostly_asserted, attestation_blocker_summary, attestation_count, attestation_would_be_weakly_based, basis_changed_after_signature, campaign_silently_lost_audience, claims_completion_without_all_steps, clean_facility_key, cleared_legal_review_count, completed_step_count, computed_assurance_ratio, computedly_witnessed_control_count, confirmed_by_agent, context, control_breach_count, count_of_approval_executions, count_of_delivery_executions, delivered_count, delivered_without_approval, delivery_yield_percent, description, deviating_day_version_key, deviating_facility_key, deviating_night_version_key, deviating_step_count, diverged_from_specification, divergence_was_fully_governed, ended_at, evaluated_control_count, executed_by_agent, executed_on_machine, executed_version_is_fit, execution_status, expected_step_count, facility, feedback_count, has_abandoned_failures, has_any_independent_observation, has_been_attested, has_cleared_legal_review, has_delivered, has_human_approval, has_no_recorded_outcome, has_step_deviation, has_unrecorded_refusals, independent_human_observation_count, independently_confirmed_intent_count, intended_recipient_count, interested_party_assertion_count, invalid_approval_count, is_attestation_ready, is_structurally_complete, is_unconfirmed_completion, is_unreported_mistake, late_step_count, latest_attestation_instant, mishandled_refusal_count, name, observations, operational_record_uri, outcome, owner_organization, participant_count, post_attestation_score_count, preparation_step_count, procedure_execution_id, procedure_version, ran_clean, reached_recipient_count, requires_re_attestation, retention_breach_count, self_attested_approval_count, semantic_type_iri, send_decisions_are_entirely_self_witnessed, separation_assurance_note, separation_held_under_test, separation_is_vacuously_green, separation_of_duties_held, separation_violation_count, separation_was_testable, shift, signed_against_unfit_version, silently_dropped_count, started_at, status_change_count, title, total_delivery_attempt_count, unclean_step_count, unevaluated_blocking_total, ungoverned_divergence_count, unreachable_handling_failure_count, unrecorded_refusal_count, vacuously_clean_step_count FROM public.vw_procedure_executions;
+ALTER VIEW pko_plant_assistant.procedure_executions OWNER TO postgres;
+GRANT SELECT ON pko_plant_assistant.procedure_executions TO pko_plant_assistant;
+CREATE VIEW pko_plant_assistant.step_executions AS
+  SELECT actual_duration_minutes, all_clearances_are_unfalsified, approval_execution_key, approval_rests_on_self_attestation, approver_agent_key, assigned_role, available_exception_count_for_step, blocking_unmet_count, blocking_unmet_count_safe, broke_invariant, claims_pass_without_evidence, cleared_legal_review_key, completed_execution_key, completed_prerequisite_run_count, confirmed_by_agent, control_breach_execution_key, declared_check_count, description, deviation, deviation_execution_key, drafted_from_unusable_source, ended_at, evaluated_blocking_count, evaluated_requirement_count, evidence_position_is_weak, exceeds_max_repetitions, exception_invocation_count, executed_by_agent, executes_step_of_other_version, executing_agent_kind, execution_status, execution_version, executor_agent_kind, executor_authority_count, executor_held_required_role, executor_is_designated_agent, executor_is_human, executor_role_key, expected_blocking_count, expected_duration_minutes, expected_verification_count, failed_precondition_count, generated_entity_count, had_uninvoked_exception_available, has_any_declared_check, has_approved_change_coverage, has_deviation, has_deviation_note, has_governing_instrument, has_skipped_verification, has_unevaluated_blocking_control, has_unevaluated_blocking_requirement, human_confirmation_missing, ignored_danger_cue, incomplete_cue_observation_count, inputs_were_fresh_at_run, inputs_were_usable, is_approval_execution, is_blocked_by_incomplete_prerequisite, is_blocked_by_observed_cue, is_clean, is_completed, is_late, is_late_and_unexplained, is_legal_review_step, is_out_of_specified_order, is_substantively_clean, is_unauthorized_approval, is_unchecked_by_design, is_ungoverned_divergence, is_vacuously_clean, is_verification_passed, is_verified, lacks_required_confirmation, late_execution_key, name, non_human_approval, non_human_ran_human_step, owner_organization, performed_check_count, performed_verification_count, preparation_execution_key, prepared_by_this_agent_count, preparer_agent_key, previous_executed_step, previous_step_execution, procedure_execution, procedure_execution_when_unclean, proceeded_despite_failed_precondition, proceeded_past_blocking_control, ran_before_prerequisite_completed, ran_on_stale_authoritative_source, ran_on_stale_inputs, ran_under_exception, ran_without_declared_inputs, repetition_count, required_blocking_count, required_role_for_step, requires_human_confirmation, role_current_agent, self_attested_approval_execution_key, self_witnessed_verification_count, semantic_type_iri, separation_violation_execution_key, skipped_verification_count, software_did_human_work, software_execution_step_key, specified_transition_from_previous_count, stale_at_run_count, stale_authoritative_source_count, staleness_answer_is_tense_dependent, started_at, step, step_control_kind, step_execution_id, step_input_variable_count, step_is_approval, step_is_preparation, step_is_software_assigned, step_max_repetitions, step_prerequisite, step_requires_human_confirmation, unbacked_verification_count, unconfirmed_non_human_decision_count, uncorroborated_pass_count, unescalated_danger_cue_count, unevaluated_blocking_count, unevaluated_blocking_execution_key, unfalsified_clearance_count, ungoverned_divergence_execution_key, unresolved_issue_count, used_entity_count, vacuously_clean_execution_key, verification_result, version_of_step, violated_invariant_count, violates_separation_of_duties, was_executed_by_software, was_stale_when_i_ran_it FROM public.vw_step_executions;
+ALTER VIEW pko_plant_assistant.step_executions OWNER TO postgres;
+GRANT SELECT ON pko_plant_assistant.step_executions TO pko_plant_assistant;
+CREATE VIEW pko_plant_assistant.cue_observations AS
+  SELECT acknowledged_at, cue_observation_id, cue_requires_escalation, cue_signals_incomplete_step, escalated_to_agent, is_awaiting_acknowledgement, is_unescalated_danger_cue, name, observed_at, observed_by_agent, owner_organization, semantic_type_iri, step_cue, step_execution, unescalated_cue_key, unescalated_execution_key, was_escalated FROM public.vw_cue_observations;
+ALTER VIEW pko_plant_assistant.cue_observations OWNER TO postgres;
+GRANT SELECT ON pko_plant_assistant.cue_observations TO pko_plant_assistant;
+CREATE VIEW pko_plant_safety_officer.procedures AS
+  SELECT adopted_by_organization, adoption_count, agent_intended_count, avg_days_to_proficiency_with_capture, avg_days_to_proficiency_without_capture, called_by_step_count, category_level_view_count, collected_material_count, compliance_document_count, compliance_review_step_count, current_version_key, days_with_capture_total, days_without_capture_total, departed_only_know_how_count, departing_veteran_know_how_count, execution_count, execution_feedback_entry_count, expert_acquisition_hours, failure_criterion_count, formalization_does_not_ease_onboarding, has_decayed_transfer_channel, has_no_explicit_steps, has_no_failure_criterion, has_no_stated_reason_for_existing, has_step_and_category_resolutions, has_transfer_shortfall_exposure, has_unengaged_stakeholder, hindered_by_count, in_work_capture_count, involves_compliance_review_role, is_capture_separate_from_work, is_captured_by_automation_alone, is_executed_without_feedback_loop, is_hindered_by_another_operation, is_inconsistently_categorized, is_missing_demanded_resolution, is_nested_procedure, is_regulated_but_unformalized, is_tacit_only_agent_target, is_template, is_template_instance, lacks_distinction_type_key, lacks_managed_controlled_vocabulary, lacks_type_distinction, lens_view_count, machine_authored_entry_count, managed_vocabulary_count, matching_distinction_count, measures_performance_without_business_link, name, outcome_measure_count, owner_organization, practitioner_relationship_count, privileges_single_stakeholder_view, procedure_id, procedure_type, procedure_type_definition, procedure_type_rank, proficient_with_capture_count, proficient_without_capture_count, purpose, recent_starter_count, repository_entry_count, required_by_regulation, semantic_type_iri, specified_step_total, stale_entry_count, step_level_view_count, strategic_alignment_count, target, target_count, template_procedure, title, type_distinguishing_facet, type_distinguishing_value, unengaged_stakeholder_count, unlinked_measure_count, untransferred_veteran_know_how_count FROM public.vw_procedures;
+ALTER VIEW pko_plant_safety_officer.procedures OWNER TO postgres;
+GRANT SELECT ON pko_plant_safety_officer.procedures TO pko_plant_safety_officer;
+CREATE VIEW pko_plant_safety_officer.procedure_versions AS
+  SELECT ai_artifact_consuming_input_count, ai_boundary_is_unevidenced, ai_consumption_count, ai_contribution_count, alternative_transition_count, approved_change_request_count, as_of_instant, awaited_decision_count, cadence_breach_count, changelog_description, coarse_top_level_step_count, complementary_method_count, compound_fragile_fragment_count, concentrated_witness_session_count, conditionless_step_count, consumer_sync_count, contains_steps_affected_by_ai_agent_change, control_taxonomy_is_incomplete, count_of_change_requests, count_of_open_blocking_gaps, count_of_open_knowledge_gaps, count_of_overdue_gaps, count_of_review_events, count_of_stale_fragments, count_of_steps, count_of_stewardship_assignments, count_of_unapproved_reliance_fragments, created_by_agent, created_by_agent_kind, critical_incident_count, day_deviating_run_count, day_run_count, days_document_trails_version, days_since_last_review, days_since_modified, declared_first_step_count, design_decision_count, document_lags_practice, drifted_mining_run_count, elicitation_evidence_count, elicitation_session_count, enables_relation_count, entry_step_id, evaluation_context, exception_count, execution_count, expected_duration_unit, expected_duration_value, expert_capture_count, experts_evaluate_ai_not_representation, explicit_holding_count, fallback_step, fallback_transition_count, feeds_unapproved_knowledge_to_machines, fine_top_level_step_count, first_step, first_step_disagrees_with_graph, fresh_mining_run_count, genuinely_overdue_fragment_count, governance_is_silent, graph_entry_step_count, hands_held_count, has_any_steward, has_approved_change_request, has_decision_in_flight, has_governance_record, has_no_exception_handling, has_open_blocking_gap, has_unrehearsed_control_entry, has_unresolved_mining_drift, has_unwitnessed_change, human_channel_count, human_step_count, human_sync_count, incident_session_count, incoming_supersession_count, indexed_segment_count, interview_session_count, is_approved_without_sme_signoff, is_blocked_on_pending_decision, is_cleanly_retired, is_current, is_current_without_motivation, is_disconnected_from_outcomes, is_documented_behind_practice, is_fit_to_execute, is_held_unfit_by_landed_decisions, is_in_cadence_breach, is_inadequate_for_use, is_inconsistent_across_shifts, is_live, is_live_and_unstewarded, is_live_model_untraced, is_live_with_blocking_gap, is_live_with_unrehearsed_control, is_live_without_recorded_decisions, is_load_bearing_orphan, is_managed_cadence_breach, is_not_query_validate_reason_ready, is_ready_for_execution, is_standardized_without_tacit_capture, is_still_referenced, is_studied_only_from_the_desk, is_under_specified_for_execution, is_unmodified_for_twelve_months, is_unreachable_knowledge, is_unremediated_cadence_breach, is_unstewarded, issued_at, judgment_held_outside_sop_count, judgment_unprobed_by_incidents, ke_field_session_count, ke_session_count, knowledge_base_is_concentrated, knowledge_is_staler_than_cadence, lacks_continuous_drift_detection, lacks_machine_interpretable_encoding, latest_source_document_modified_at, lives_in_hands_silence_and_negotiation, load_bearing_unapproved_count, machine_channel_count, machine_consumed_unapproved_count, machine_sync_count, mining_run_count, misses_a_required_elicitation_mode, mixes_granularity_at_one_level, mixes_human_and_software_steps, modified_at, modified_by_agent, modifier_is_authority, name, negotiated_practice_count, new_version_motivation, night_deviating_run_count, night_run_count, non_human_step_count, observation_session_count, open_change_request_count, open_high_severity_gap_count, open_question_annotation_count, outcome_measurement_count, overdue_review_count, overlaps_relation_count, owner_organization, prevents_relation_count, procedure, procedure_type_of_version, procedure_version_id, process_model_trace_count, profile_validated_submission_count, protocol_session_count, published_projection_count, reasoned_assertion_count, reconciled_divergence_count, relies_on_single_method, rests_on_compound_fragile_knowledge, rests_on_notation_only, runs_on_unapproved_knowledge, scoped_open_blocking_gap_count, search_count, search_success_percent, semantic_type_iri, served_assertion_count, serves_only_humans_or_only_machines, should_not_be_executable, situated_judgment_fragment_count, sme_ai_evaluation_count, sme_approval_count, specified_step_count, stalled_implementation_count, standardization_driver, status, status_is_pko, steps_without_ontology_type_count, steward_review_cadence_days, still_owns_valid_knowledge, structured_query_count, successful_search_count, tacit_form_fragment_count, tacit_fragment_count, tacit_holding_count, tacit_judgment_fragment_count, tacit_share_exceeds_explicit, title, trailing_practice_trace_count, undeclared_control_kind_count, unexercised_human_gate_count, unlanded_decision_count, unrehearsed_control_entry_count, unwatched_unowned_control_count, uses_ai_in_one_direction_only, uses_non_pko_status, valid_fragment_count, version_number, was_modified_since_last_review, workshop_session_count FROM public.vw_procedure_versions;
+ALTER VIEW pko_plant_safety_officer.procedure_versions OWNER TO postgres;
+GRANT SELECT ON pko_plant_safety_officer.procedure_versions TO pko_plant_safety_officer;
+CREATE VIEW pko_plant_safety_officer.steps AS
+  SELECT accountable_agent, activity_origin_trace_count, ai_artifact_input_count, ai_failure_count, all_sources_usable, approval_step_is_software_assigned, assigned_agent_kind, assigned_role, assigned_role_does_compliance_review, assigned_role_is_ungoverned, assigned_role_label, authoritative_stale_count, available_exception_count, binding_boundary_count, blocking_requirement_count, bottleneck_allocation_count, calls_procedure, child_step_count, coarse_top_level_version_key, collection_evidence_count, compliance_review_procedure_key, conditionless_version_key, consumes_ai_agent_artifact, context_sensitivity_count, control_kind, cue_count, danger_cue_count, decision_point_count, declared_fallback_step_key, declared_first_step_key, declared_verification_count, description, detail_level, deviated_run_count, dmn_decision_count, downstream_artifact_step_count, elicited_extension_count, elicited_validation_count, entry_step_key, expected_duration_minutes, expertise_level, failure_mode_count, fine_top_level_version_key, first_child_step, gate_free_reach_from_entry_count, gate_held_by_human, has_been_approached_by_software, has_collection_evidence, has_declared_control_kind, has_downstream_steps, has_incompleteness_cue, has_instruction_only, has_no_accountable_agent, has_postcondition, has_reported_reality_mismatch, incoming_transition_count, incompleteness_cue_count, input_variable_count, inputs_are_fresh, instruction, invariant_count, is_accountable_to_software, is_ai_failure_point, is_approval_step, is_blocking_control_on_rework_loop, is_bottleneck_step, is_composite_without_children, is_context_sensitive_but_unscoped, is_declared_fallback_step, is_declared_first_step, is_demonstrated_human_gate, is_drifted_from_practice, is_entry_step, is_gate_bypassed_publication, is_governed_by_unwarranted_boundary, is_human_approval_gate, is_isolation_without_lock, is_on_rework_loop, is_preparation_step, is_reachable_from_entry_without_human_gate, is_release_approval_gate, is_software_assigned, is_unexercised_human_gate, is_untraced_activity_in_traced_model, isolates_energy_source, knowledge_fragment_count, max_repetitions, min_repetitions, name, open_outdated_flag_count, output_variable_count, owner_organization, parent_step, parent_step_kind, parseable_condition_count, postcondition_count, precondition_count, prerequisite_downstream_count, prerequisite_is_downstream, prerequisite_step, procedure_version, reachable_step_count, reached_from_step_count, referenced_resource_count, regulatory_requirement_count, remedy_for_error, required_lock_count, required_protective_equipment_count, requires_human_confirmation, safety_critical_condition_count, self_reach_count, semantic_type_iri, software_execution_count, stage, stale_authoritative_binding_count, stale_binding_count, states_operational_knowledge, step_id, step_kind, step_number, step_procedure_type, title, tool_function_count, tool_use_rules_only_in_prose, undeclared_control_version_key, unexercised_gate_version_key, unscoped_sensitivity_count, untyped_version_key, unusable_binding_count, unwarranted_boundary_count, unwitnessed_blocking_count, verifies_step, version_entry_step_id, version_model_trace_count, version_procedure FROM public.vw_steps;
+ALTER VIEW pko_plant_safety_officer.steps OWNER TO postgres;
+GRANT SELECT ON pko_plant_safety_officer.steps TO pko_plant_safety_officer;
+CREATE VIEW pko_plant_safety_officer.step_transitions AS
+  SELECT avoids_human_approval_gate, condition, count_of_from_step_executions, count_of_observed_traversals, count_of_to_step_executions, decision_point_count, from_step, from_step_is_human_approval_gate, has_been_traversed, has_reachable_origin, has_reachable_target, is_never_exercised, is_recovery_path, is_undocumented_branch, is_unrehearsed_control_entry, is_untested_recovery_path, is_unwalked_recovery_path, name, priority, procedure_version, semantic_type_iri, step_transition_id, target_blocking_requirement_count, target_carries_blocking_control, to_step, to_step_is_human_approval_gate, transition_kind, unrehearsed_control_version_key FROM public.vw_step_transitions;
+ALTER VIEW pko_plant_safety_officer.step_transitions OWNER TO postgres;
+GRANT SELECT ON pko_plant_safety_officer.step_transitions TO pko_plant_safety_officer;
+CREATE VIEW pko_plant_safety_officer.step_cues AS
+  SELECT cue_kind, danger_cue_step_key, description, escalate_to_role, failure_mode_response, incomplete_cue_step_key, is_unanswerable_sign, name, observation_count, operator_question, requires_escalation, semantic_type_iri, signals_failure_mode, signals_incomplete_step, step, step_cue_id, unescalated_observation_count FROM public.vw_step_cues;
+ALTER VIEW pko_plant_safety_officer.step_cues OWNER TO postgres;
+GRANT SELECT ON pko_plant_safety_officer.step_cues TO pko_plant_safety_officer;
+CREATE VIEW pko_plant_safety_officer.step_conditions AS
+  SELECT check_count, condition_kind, invariant_step_key, is_machine_parseable, is_never_checked, is_safety_critical, machine_expression, name, postcondition_step_key, precondition_step_key, safety_critical_step_key, semantic_type_iri, statement, step, step_condition_id FROM public.vw_step_conditions;
+ALTER VIEW pko_plant_safety_officer.step_conditions OWNER TO postgres;
+GRANT SELECT ON pko_plant_safety_officer.step_conditions TO pko_plant_safety_officer;
+CREATE VIEW pko_plant_safety_officer.step_lock_requirements AS
+  SELECT lock_device, name, semantic_type_iri, step, step_lock_requirement_id FROM public.vw_step_lock_requirements;
+ALTER VIEW pko_plant_safety_officer.step_lock_requirements OWNER TO postgres;
+GRANT SELECT ON pko_plant_safety_officer.step_lock_requirements TO pko_plant_safety_officer;
+CREATE VIEW pko_plant_safety_officer.step_protective_equipment AS
+  SELECT name, protective_equipment, semantic_type_iri, step, step_protective_equipment_id FROM public.vw_step_protective_equipment;
+ALTER VIEW pko_plant_safety_officer.step_protective_equipment OWNER TO postgres;
+GRANT SELECT ON pko_plant_safety_officer.step_protective_equipment TO pko_plant_safety_officer;
+CREATE VIEW pko_plant_safety_officer.lock_devices AS
+  SELECT label, lock_device_id, name, semantic_type_iri FROM public.vw_lock_devices;
+ALTER VIEW pko_plant_safety_officer.lock_devices OWNER TO postgres;
+GRANT SELECT ON pko_plant_safety_officer.lock_devices TO pko_plant_safety_officer;
+CREATE VIEW pko_plant_safety_officer.protective_equipment AS
+  SELECT label, name, protective_equipment_id, semantic_type_iri FROM public.vw_protective_equipment;
+ALTER VIEW pko_plant_safety_officer.protective_equipment OWNER TO postgres;
+GRANT SELECT ON pko_plant_safety_officer.protective_equipment TO pko_plant_safety_officer;
+CREATE VIEW pko_plant_safety_officer.machines AS
+  SELECT configuration_kind, energy_source_count, facility, governing_procedure_version, has_unisolated_energy_source, is_non_standard_configuration, label, machine_id, machine_type, manufactured_by, name, semantic_type_iri, unisolated_energy_source_count FROM public.vw_machines;
+ALTER VIEW pko_plant_safety_officer.machines OWNER TO postgres;
+GRANT SELECT ON pko_plant_safety_officer.machines TO pko_plant_safety_officer;
+CREATE VIEW pko_plant_safety_officer.machine_energy_sources AS
+  SELECT energy_source, is_unisolated_energy_source, isolation_step_count, machine, machine_energy_source_id, machine_procedure_version, name, semantic_type_iri, unisolated_machine_key FROM public.vw_machine_energy_sources;
+ALTER VIEW pko_plant_safety_officer.machine_energy_sources OWNER TO postgres;
+GRANT SELECT ON pko_plant_safety_officer.machine_energy_sources TO pko_plant_safety_officer;
+CREATE VIEW pko_plant_safety_officer.energy_sources AS
+  SELECT energy_source_id, label, name, pko_individual_iri, semantic_type_iri FROM public.vw_energy_sources;
+ALTER VIEW pko_plant_safety_officer.energy_sources OWNER TO postgres;
+GRANT SELECT ON pko_plant_safety_officer.energy_sources TO pko_plant_safety_officer;
+CREATE VIEW pko_plant_safety_officer.facilities AS
+  SELECT clean_run_count, deviating_run_count, facility_id, facility_kind, is_deviation_only_facility, label, name, organization, parent_facility, semantic_type_iri FROM public.vw_facilities;
+ALTER VIEW pko_plant_safety_officer.facilities OWNER TO postgres;
+GRANT SELECT ON pko_plant_safety_officer.facilities TO pko_plant_safety_officer;
+CREATE VIEW pko_plant_safety_officer.failure_modes AS
+  SELECT description, escalate_to_role, escalates_to_vacant_role, escalation_role_has_no_holder, failure_mode_id, has_no_response, name, procedure_target, requires_escalation, response, semantic_type_iri, step FROM public.vw_failure_modes;
+ALTER VIEW pko_plant_safety_officer.failure_modes OWNER TO postgres;
+GRANT SELECT ON pko_plant_safety_officer.failure_modes TO pko_plant_safety_officer;
+CREATE VIEW pko_plant_safety_officer.decision_points AS
+  SELECT deciding_factors, decision_point_id, default_outcome, dmn_decision_key, governing_transition, has_no_deciding_factors, is_dmn_encoded, name, question, semantic_type_iri, step FROM public.vw_decision_points;
+ALTER VIEW pko_plant_safety_officer.decision_points OWNER TO postgres;
+GRANT SELECT ON pko_plant_safety_officer.decision_points TO pko_plant_safety_officer;
+CREATE VIEW pko_plant_safety_officer.procedure_executions AS
+  SELECT abandoned_failure_count, all_blocking_controls_evaluated, approval_chain_is_complete, approval_step_count, asserted_only_control_count, assurance_chain_is_circular, assurance_grade, assurance_is_mostly_asserted, attestation_blocker_summary, attestation_count, attestation_would_be_weakly_based, basis_changed_after_signature, campaign_silently_lost_audience, claims_completion_without_all_steps, clean_facility_key, cleared_legal_review_count, completed_step_count, computed_assurance_ratio, computedly_witnessed_control_count, confirmed_by_agent, context, control_breach_count, count_of_approval_executions, count_of_delivery_executions, delivered_count, delivered_without_approval, delivery_yield_percent, description, deviating_day_version_key, deviating_facility_key, deviating_night_version_key, deviating_step_count, diverged_from_specification, divergence_was_fully_governed, ended_at, evaluated_control_count, executed_by_agent, executed_on_machine, executed_version_is_fit, execution_status, expected_step_count, facility, feedback_count, has_abandoned_failures, has_any_independent_observation, has_been_attested, has_cleared_legal_review, has_delivered, has_human_approval, has_no_recorded_outcome, has_step_deviation, has_unrecorded_refusals, independent_human_observation_count, independently_confirmed_intent_count, intended_recipient_count, interested_party_assertion_count, invalid_approval_count, is_attestation_ready, is_structurally_complete, is_unconfirmed_completion, is_unreported_mistake, late_step_count, latest_attestation_instant, mishandled_refusal_count, name, observations, operational_record_uri, outcome, owner_organization, participant_count, post_attestation_score_count, preparation_step_count, procedure_execution_id, procedure_version, ran_clean, reached_recipient_count, requires_re_attestation, retention_breach_count, self_attested_approval_count, semantic_type_iri, send_decisions_are_entirely_self_witnessed, separation_assurance_note, separation_held_under_test, separation_is_vacuously_green, separation_of_duties_held, separation_violation_count, separation_was_testable, shift, signed_against_unfit_version, silently_dropped_count, started_at, status_change_count, title, total_delivery_attempt_count, unclean_step_count, unevaluated_blocking_total, ungoverned_divergence_count, unreachable_handling_failure_count, unrecorded_refusal_count, vacuously_clean_step_count FROM public.vw_procedure_executions;
+ALTER VIEW pko_plant_safety_officer.procedure_executions OWNER TO postgres;
+GRANT SELECT ON pko_plant_safety_officer.procedure_executions TO pko_plant_safety_officer;
+CREATE VIEW pko_plant_safety_officer.step_executions AS
+  SELECT actual_duration_minutes, all_clearances_are_unfalsified, approval_execution_key, approval_rests_on_self_attestation, approver_agent_key, assigned_role, available_exception_count_for_step, blocking_unmet_count, blocking_unmet_count_safe, broke_invariant, claims_pass_without_evidence, cleared_legal_review_key, completed_execution_key, completed_prerequisite_run_count, confirmed_by_agent, control_breach_execution_key, declared_check_count, description, deviation, deviation_execution_key, drafted_from_unusable_source, ended_at, evaluated_blocking_count, evaluated_requirement_count, evidence_position_is_weak, exceeds_max_repetitions, exception_invocation_count, executed_by_agent, executes_step_of_other_version, executing_agent_kind, execution_status, execution_version, executor_agent_kind, executor_authority_count, executor_held_required_role, executor_is_designated_agent, executor_is_human, executor_role_key, expected_blocking_count, expected_duration_minutes, expected_verification_count, failed_precondition_count, generated_entity_count, had_uninvoked_exception_available, has_any_declared_check, has_approved_change_coverage, has_deviation, has_deviation_note, has_governing_instrument, has_skipped_verification, has_unevaluated_blocking_control, has_unevaluated_blocking_requirement, human_confirmation_missing, ignored_danger_cue, incomplete_cue_observation_count, inputs_were_fresh_at_run, inputs_were_usable, is_approval_execution, is_blocked_by_incomplete_prerequisite, is_blocked_by_observed_cue, is_clean, is_completed, is_late, is_late_and_unexplained, is_legal_review_step, is_out_of_specified_order, is_substantively_clean, is_unauthorized_approval, is_unchecked_by_design, is_ungoverned_divergence, is_vacuously_clean, is_verification_passed, is_verified, lacks_required_confirmation, late_execution_key, name, non_human_approval, non_human_ran_human_step, owner_organization, performed_check_count, performed_verification_count, preparation_execution_key, prepared_by_this_agent_count, preparer_agent_key, previous_executed_step, previous_step_execution, procedure_execution, procedure_execution_when_unclean, proceeded_despite_failed_precondition, proceeded_past_blocking_control, ran_before_prerequisite_completed, ran_on_stale_authoritative_source, ran_on_stale_inputs, ran_under_exception, ran_without_declared_inputs, repetition_count, required_blocking_count, required_role_for_step, requires_human_confirmation, role_current_agent, self_attested_approval_execution_key, self_witnessed_verification_count, semantic_type_iri, separation_violation_execution_key, skipped_verification_count, software_did_human_work, software_execution_step_key, specified_transition_from_previous_count, stale_at_run_count, stale_authoritative_source_count, staleness_answer_is_tense_dependent, started_at, step, step_control_kind, step_execution_id, step_input_variable_count, step_is_approval, step_is_preparation, step_is_software_assigned, step_max_repetitions, step_prerequisite, step_requires_human_confirmation, unbacked_verification_count, unconfirmed_non_human_decision_count, uncorroborated_pass_count, unescalated_danger_cue_count, unevaluated_blocking_count, unevaluated_blocking_execution_key, unfalsified_clearance_count, ungoverned_divergence_execution_key, unresolved_issue_count, used_entity_count, vacuously_clean_execution_key, verification_result, version_of_step, violated_invariant_count, violates_separation_of_duties, was_executed_by_software, was_stale_when_i_ran_it FROM public.vw_step_executions;
+ALTER VIEW pko_plant_safety_officer.step_executions OWNER TO postgres;
+GRANT SELECT ON pko_plant_safety_officer.step_executions TO pko_plant_safety_officer;
+CREATE VIEW pko_plant_safety_officer.cue_observations AS
+  SELECT acknowledged_at, cue_observation_id, cue_requires_escalation, cue_signals_incomplete_step, escalated_to_agent, is_awaiting_acknowledgement, is_unescalated_danger_cue, name, observed_at, observed_by_agent, owner_organization, semantic_type_iri, step_cue, step_execution, unescalated_cue_key, unescalated_execution_key, was_escalated FROM public.vw_cue_observations;
+ALTER VIEW pko_plant_safety_officer.cue_observations OWNER TO postgres;
+GRANT SELECT ON pko_plant_safety_officer.cue_observations TO pko_plant_safety_officer;
+CREATE VIEW pko_plant_safety_officer.knowledge_fragments AS
+  SELECT age_days, as_of_instant, cognitive_basis, compound_fragile_version_key, confidence, consuming_step_agent_kind, consuming_step_is_software_assigned, corroboration_count, days_awaiting_my_approval, days_since_actual_review, elicitation_session, encoded_as, evaluation_context, evidence_age_days, evidence_expiry_days, evidence_has_expired, exceeds_owning_cadence, fragility_signal_count, genuinely_overdue_version_key, has_human_source, has_operational_reliance, has_orphaned_provenance, has_recorded_elicitation, has_review_record, inference_disagrees_with_record, is_aging_low_confidence_claim, is_ai_validated_by_ai, is_approved, is_attached_to_live_version, is_awaiting_approval, is_compound_fragile, is_currently_valid, is_expiring_single_point_of_failure, is_flattened_to_brittle_rule, is_from_single_witness, is_genuinely_overdue, is_high_blast_radius_unapproved, is_human_owned, is_invoked_by_an_exception, is_long_unapproved, is_low_confidence, is_my_unfinished_approval, is_orphaned_by_role, is_overdue_for_review, is_relied_upon, is_single_point_of_failure, is_unapproved_and_human_consumed, is_unapproved_and_machine_consumed, is_unapproved_and_operationally_live, is_unapproved_but_relied_on, is_undefendable_tacit_claim, is_unreviewed_since_authoring, is_within_validity_window, knowledge_form, knowledge_fragment_id, last_reviewed_at, lost_in_translation, machine_consumed_unapproved_version_key, name, owner_agent, owner_is_me, owner_organization, owner_role, owner_role_agent_kind, owner_role_assignment_valid_from, owner_role_is_vacated, owning_version_cadence_days, predates_current_role_holder, procedure_version, ratified_boundary_count, reliance_surface_count, rests_on_single_data_point, review_cadence_days, review_recency_is_inferred, semantic_type_iri, source_agent, source_agent_is_still_engaged, source_agent_kind, stated_conditions, statement, status, step, step_procedure_version_status, tacitness_degree, unapproved_load_bearing_version_key, valid_fragment_session_key, valid_fragment_version_key, valid_from, valid_to FROM public.vw_knowledge_fragments;
+ALTER VIEW pko_plant_safety_officer.knowledge_fragments OWNER TO postgres;
+GRANT SELECT ON pko_plant_safety_officer.knowledge_fragments TO pko_plant_safety_officer;
+CREATE VIEW pko_plant_safety_officer.expert_cognitions AS
+  SELECT agent, applied_automatically, captured_exceptions, cognition_kind, elicitation_session, expert_cognition_id, expert_stated_exceptions, is_automatic_heuristic, is_heuristic_oversimplified, is_mental_model, name, semantic_type_iri, statement, step FROM public.vw_expert_cognitions;
+ALTER VIEW pko_plant_safety_officer.expert_cognitions OWNER TO postgres;
+GRANT SELECT ON pko_plant_safety_officer.expert_cognitions TO pko_plant_safety_officer;
+CREATE VIEW pko_plant_safety_officer.concept_ladder_rungs AS
+  SELECT concept_ladder_rung_id, elicitation_session, is_decomposition_rung, is_ultimate_goal, ladder_level, name, rung_kind, semantic_type_iri, statement, step, step_top_level FROM public.vw_concept_ladder_rungs;
+ALTER VIEW pko_plant_safety_officer.concept_ladder_rungs OWNER TO postgres;
+GRANT SELECT ON pko_plant_safety_officer.concept_ladder_rungs TO pko_plant_safety_officer;
+CREATE VIEW pko_plant_safety_officer.know_how_carriers AS
+  SELECT as_of_instant, builds_on_know_how, builds_on_same_community_know_how, carrier_kind, community_of_practice, days_served_to_as_of, days_served_to_departure, days_until_holder_departure, dependency_community, evaluation_context, held_since, holder_agent, holder_departure_at, holder_facility, holder_is_still_engaged, holder_service_started_at, holder_tenure_years, is_at_risk_of_imminent_loss, is_captured, is_delegated_to_unfit_source, is_held_by_current_practitioner, is_held_by_departed_holder, is_held_in_both_forms, is_held_only_by_departed, is_holder_leaving_soon, is_in_public_references, is_in_written_procedure, is_overlooked_living_holder, is_trained_skill, is_untransferred_veteran_know_how, is_veteran_held, know_how_carrier_id, know_how_kind, lost_accumulation_years, must_be_relearned_if_holder_leaves, name, organization, procedure, replacement_plan, repository_entry_count, semantic_type_iri, source_relationship_count, topic, transfer_count, transfer_stops_without_veteran, work_medium FROM public.vw_know_how_carriers;
+ALTER VIEW pko_plant_safety_officer.know_how_carriers OWNER TO postgres;
+GRANT SELECT ON pko_plant_safety_officer.know_how_carriers TO pko_plant_safety_officer;
+CREATE VIEW pko_plant_safety_officer.assistant_answers AS
+  SELECT acted_on_without_human_judgment, answer_kind, answer_text, answered_at, answered_compliance_question_from_documents, answering_agent, arrived_after_step_ended, asked_at, asked_by_agent, asserted_next_step, assistant_answer_id, assumed_current_step, assumed_step_completed_count, cited_grounding_count, conflict_count, conflicts_with_regulation, context_step, context_step_ended_at, context_unescalated_danger_cue_count, contradicts_shared_model, delivered_despite_conflict, delivery_disposition, derivation_performed_by, document_interpretation_erred, documented_inaccuracy, execution_of_context, grounding_count, human_reviewed_by, is_explicitly_grounded_recommendation, is_not_from_own_knowledge, is_unchecked_regulated_recommendation, is_untraceable_to_source, lost_track_of_state, model_did_the_reasoning, name, needs_inference, own_knowledge_grounding_count, owner_organization, question_text, question_topic, raised_safety_concern, recommendation_rests_on_nothing_explicit, recommended_step, recommended_step_needs_human, recommended_step_regulatory_count, requirement_check_count, retrieval_mode, reviewed_for_initiative, semantic_type_iri, specified_transition_count, stale_grounding_count, stayed_silent_on_safety_problem, step_execution, task_outcome, via_integration, was_acted_on, was_correct, wrong_because_graph_was_stale FROM public.vw_assistant_answers;
+ALTER VIEW pko_plant_safety_officer.assistant_answers OWNER TO postgres;
+GRANT SELECT ON pko_plant_safety_officer.assistant_answers TO pko_plant_safety_officer;
+CREATE VIEW pko_plant_safety_officer.knowledge_query_definitions AS
+  SELECT consolidated_distributed_sources, knowledge_query_definition_id, label, last_run_at, misses_a_layer, name, needs_ontology_and_instances, query_language, query_text, ran_over_consolidated_copy, semantic_type_iri, source_system_count, target_procedure_version, traverses_instance_layer, traverses_ontology_layer FROM public.vw_knowledge_query_definitions;
+ALTER VIEW pko_plant_safety_officer.knowledge_query_definitions OWNER TO postgres;
+GRANT SELECT ON pko_plant_safety_officer.knowledge_query_definitions TO pko_plant_safety_officer;
+CREATE VIEW pko_plant_safety_officer.agents AS
+  SELECT accountability_assertion_count, agent_id, agent_kind, ai_task_completed_count, ai_task_completion_percent, answer_count, artifact_blast_radius_step_count, at_risk_reliance_count, attributed_artifact_count, boundary_violation_count, category_not_available_as_inference, community_count, contact_address, count_of_current_role_assignments, current_accountable_human_count, decision_count, departure_at, display_name, downstream_of_held_steps_count, draft_decision_count, draft_rewrite_rate_percent, has_artifact_blast_radius, has_at_risk_knowledge_reliance, has_produced_artifacts, inferred_category_count, is_ai_agent_not_filled_from_registry, is_ai_agent_without_accountable_human, is_ai_agent_without_model_version, is_below_task_completion_target, is_boundary_spanner, is_non_human, is_operating_outside_boundary, is_organization_agent, is_recognized_broker, is_still_engaged, is_unclassified_agent, is_unidentified_boundary_spanner, is_unrewarded_sharer, is_untracked_ai_consumer, lacks_runtime_knowledge_integration, lacks_time_to_mentor, located_know_how_count, name, organization, overridden_decision_count, overridden_draft_count, override_rate_percent, protected_mentoring_hours_per_week, recognition_count, registry_version_match_count, represents_organization, required_mentoring_hours_per_week, runtime_integration_count, search_event_count, semantic_type_iri, service_started_at, sna_identification_count, times_named_as_broker, transfers_given_count, version_or_employment_key FROM public.vw_agents;
+ALTER VIEW pko_plant_safety_officer.agents OWNER TO postgres;
+GRANT SELECT ON pko_plant_safety_officer.agents TO pko_plant_safety_officer;
+CREATE VIEW pko_plant_safety_officer.roles AS
+  SELECT active_assignment_count, approval_step_count, backup_role_holder, capability_tag_count, compliance_review_tag_count, count_of_awaited_decisions, current_agent, current_agent_kind, current_assignment, current_assignment_valid_from, current_holder_name, currently_covered_assignment_count, departed_assignment_count, escalation_backup_role, has_compliance_review_capability, has_escalation_backup, has_lost_a_holder, has_no_current_holder, has_specializations, has_unfilled_escalation_backup, is_governed_by_lapsed_authority, is_missed_by_phrase_query, is_non_human_held, is_not_housed_in_department, is_production_release_approver, is_senior_variant_not_specialization, is_ungoverned_enforcement_role, is_ungoverned_non_human_role, is_vacated_role, label, name, organization, organization_type, preferred_knowledge_form, release_approval_step_count, responsibility, role_family, role_id, role_mention_count, semantic_type_iri, seniority_level, specialization_count, specialized_role_family, specializes_role, unauthorized_enforcement_assignment_count, unescalated_refusal_count, ungrounded_boundary_count, unresolved_role_mention_count FROM public.vw_roles;
+ALTER VIEW pko_plant_safety_officer.roles OWNER TO postgres;
+GRANT SELECT ON pko_plant_safety_officer.roles TO pko_plant_safety_officer;
+CREATE VIEW pko_plant_safety_officer.ai_insight_proposals AS
+  SELECT ai_insight_proposal_id, folded_into_change_request, grew_model_without_human_seed, insight_kind, is_unvalidated_or_stranded_insight, name, proposed_at, proposing_agent, semantic_type_iri, source_initiative, statement, target_creator_kind, target_procedure_version, validated_by_agent, validation_verdict FROM public.vw_ai_insight_proposals;
+ALTER VIEW pko_plant_safety_officer.ai_insight_proposals OWNER TO postgres;
+GRANT SELECT ON pko_plant_safety_officer.ai_insight_proposals TO pko_plant_safety_officer;
+CREATE VIEW pko_plant_safety_officer.change_requests AS
+  SELECT approved_version_key, as_of_instant, authority_agent, authority_role, authority_role_label, awaits_authority_decision, backlog_version_key, blocks_an_open_gap, change_kind, change_request_id, days_pending, days_since_approval, decided_at, decision_latency_days, delay_is_downstream_of_me, evaluation_context, impact_assessment, implementation_latency_days, implemented_at, is_approved_decision, is_approved_not_implemented, is_decided, is_implemented, is_live_decision_backlog, is_my_blocking_backlog, is_my_decided_but_unlanded, is_my_decided_request, is_my_overdue_backlog, is_my_pending_decision, is_open, is_stalled, is_stalled_implementation, is_still_pending, name, open_change_version_key, owner_organization, procedure_version, requested_at, requested_by_agent, requester_is_authority, semantic_type_iri, stalled_implementation_version_key, status, title, touches_live_version, unlanded_version_key FROM public.vw_change_requests;
+ALTER VIEW pko_plant_safety_officer.change_requests OWNER TO postgres;
+GRANT SELECT ON pko_plant_safety_officer.change_requests TO pko_plant_safety_officer;
+CREATE VIEW pko_plant_safety_officer.knowledge_gaps AS
+  SELECT as_of_instant, blocking_kind, codified_as_fragment, days_open, drawn_out_by_session, evaluation_context, gap_cause, has_resolution_plan, holder_declined_to_share, identified_at, is_abandoned_unknown, is_blocking, is_gatekeeping_or_sabotage, is_known_and_unresolved, is_open, is_open_and_blocking, is_overdue_gap, is_ownerless_open_gap, is_required_gatekept_uncodified, is_unattributed_gatekeeping, knowledge_gap_id, name, open_blocking_gap_version_key, open_gap_version_key, owner_agent, owner_is_still_engaged, owner_organization, owner_role, owner_role_is_vacated, procedure_version, resolution_plan, semantic_type_iri, severity, siloed_within, statement, status, step, tolerance_days FROM public.vw_knowledge_gaps;
+ALTER VIEW pko_plant_safety_officer.knowledge_gaps OWNER TO postgres;
+GRANT SELECT ON pko_plant_safety_officer.knowledge_gaps TO pko_plant_safety_officer;
+CREATE VIEW pko_plant_safety_officer.workflow_view_divergences AS
+  SELECT elicitation_session, holder_a, holder_b, is_reconciled, is_surfaced_but_unreconciled, name, procedure_version, reconciled_at, reconciled_into_fragment, reconciled_statement, semantic_type_iri, step, view_a, view_b, workflow_view_divergence_id FROM public.vw_workflow_view_divergences;
+ALTER VIEW pko_plant_safety_officer.workflow_view_divergences OWNER TO postgres;
+GRANT SELECT ON pko_plant_safety_officer.workflow_view_divergences TO pko_plant_safety_officer;
+CREATE VIEW pko_plant_safety_officer.stakeholder_perspectives AS
+  SELECT conflict_partner_count, conflicts_with_perspective, disposition, holder_role, is_dissenting_view_not_kept_with_source, is_in_conflict, name, position, procedure_version, semantic_type_iri, source_material, source_material_kind, stakeholder_perspective_id, step FROM public.vw_stakeholder_perspectives;
+ALTER VIEW pko_plant_safety_officer.stakeholder_perspectives OWNER TO postgres;
+GRANT SELECT ON pko_plant_safety_officer.stakeholder_perspectives TO pko_plant_safety_officer;
+CREATE VIEW pko_plant_operations_manager.procedures AS
+  SELECT adopted_by_organization, adoption_count, agent_intended_count, avg_days_to_proficiency_with_capture, avg_days_to_proficiency_without_capture, called_by_step_count, category_level_view_count, collected_material_count, compliance_document_count, compliance_review_step_count, current_version_key, days_with_capture_total, days_without_capture_total, departed_only_know_how_count, departing_veteran_know_how_count, execution_count, execution_feedback_entry_count, expert_acquisition_hours, failure_criterion_count, formalization_does_not_ease_onboarding, has_decayed_transfer_channel, has_no_explicit_steps, has_no_failure_criterion, has_no_stated_reason_for_existing, has_step_and_category_resolutions, has_transfer_shortfall_exposure, has_unengaged_stakeholder, hindered_by_count, in_work_capture_count, involves_compliance_review_role, is_capture_separate_from_work, is_captured_by_automation_alone, is_executed_without_feedback_loop, is_hindered_by_another_operation, is_inconsistently_categorized, is_missing_demanded_resolution, is_nested_procedure, is_regulated_but_unformalized, is_tacit_only_agent_target, is_template, is_template_instance, lacks_distinction_type_key, lacks_managed_controlled_vocabulary, lacks_type_distinction, lens_view_count, machine_authored_entry_count, managed_vocabulary_count, matching_distinction_count, measures_performance_without_business_link, name, outcome_measure_count, owner_organization, practitioner_relationship_count, privileges_single_stakeholder_view, procedure_id, procedure_type, procedure_type_definition, procedure_type_rank, proficient_with_capture_count, proficient_without_capture_count, purpose, recent_starter_count, repository_entry_count, required_by_regulation, semantic_type_iri, specified_step_total, stale_entry_count, step_level_view_count, strategic_alignment_count, target, target_count, template_procedure, title, type_distinguishing_facet, type_distinguishing_value, unengaged_stakeholder_count, unlinked_measure_count, untransferred_veteran_know_how_count FROM public.vw_procedures;
+ALTER VIEW pko_plant_operations_manager.procedures OWNER TO postgres;
+GRANT SELECT ON pko_plant_operations_manager.procedures TO pko_plant_operations_manager;
+CREATE VIEW pko_plant_operations_manager.procedure_versions AS
+  SELECT ai_artifact_consuming_input_count, ai_boundary_is_unevidenced, ai_consumption_count, ai_contribution_count, alternative_transition_count, approved_change_request_count, as_of_instant, awaited_decision_count, cadence_breach_count, changelog_description, coarse_top_level_step_count, complementary_method_count, compound_fragile_fragment_count, concentrated_witness_session_count, conditionless_step_count, consumer_sync_count, contains_steps_affected_by_ai_agent_change, control_taxonomy_is_incomplete, count_of_change_requests, count_of_open_blocking_gaps, count_of_open_knowledge_gaps, count_of_overdue_gaps, count_of_review_events, count_of_stale_fragments, count_of_steps, count_of_stewardship_assignments, count_of_unapproved_reliance_fragments, created_by_agent, created_by_agent_kind, critical_incident_count, day_deviating_run_count, day_run_count, days_document_trails_version, days_since_last_review, days_since_modified, declared_first_step_count, design_decision_count, document_lags_practice, drifted_mining_run_count, elicitation_evidence_count, elicitation_session_count, enables_relation_count, entry_step_id, evaluation_context, exception_count, execution_count, expected_duration_unit, expected_duration_value, expert_capture_count, experts_evaluate_ai_not_representation, explicit_holding_count, fallback_step, fallback_transition_count, feeds_unapproved_knowledge_to_machines, fine_top_level_step_count, first_step, first_step_disagrees_with_graph, fresh_mining_run_count, genuinely_overdue_fragment_count, governance_is_silent, graph_entry_step_count, hands_held_count, has_any_steward, has_approved_change_request, has_decision_in_flight, has_governance_record, has_no_exception_handling, has_open_blocking_gap, has_unrehearsed_control_entry, has_unresolved_mining_drift, has_unwitnessed_change, human_channel_count, human_step_count, human_sync_count, incident_session_count, incoming_supersession_count, indexed_segment_count, interview_session_count, is_approved_without_sme_signoff, is_blocked_on_pending_decision, is_cleanly_retired, is_current, is_current_without_motivation, is_disconnected_from_outcomes, is_documented_behind_practice, is_fit_to_execute, is_held_unfit_by_landed_decisions, is_in_cadence_breach, is_inadequate_for_use, is_inconsistent_across_shifts, is_live, is_live_and_unstewarded, is_live_model_untraced, is_live_with_blocking_gap, is_live_with_unrehearsed_control, is_live_without_recorded_decisions, is_load_bearing_orphan, is_managed_cadence_breach, is_not_query_validate_reason_ready, is_ready_for_execution, is_standardized_without_tacit_capture, is_still_referenced, is_studied_only_from_the_desk, is_under_specified_for_execution, is_unmodified_for_twelve_months, is_unreachable_knowledge, is_unremediated_cadence_breach, is_unstewarded, issued_at, judgment_held_outside_sop_count, judgment_unprobed_by_incidents, ke_field_session_count, ke_session_count, knowledge_base_is_concentrated, knowledge_is_staler_than_cadence, lacks_continuous_drift_detection, lacks_machine_interpretable_encoding, latest_source_document_modified_at, lives_in_hands_silence_and_negotiation, load_bearing_unapproved_count, machine_channel_count, machine_consumed_unapproved_count, machine_sync_count, mining_run_count, misses_a_required_elicitation_mode, mixes_granularity_at_one_level, mixes_human_and_software_steps, modified_at, modified_by_agent, modifier_is_authority, name, negotiated_practice_count, new_version_motivation, night_deviating_run_count, night_run_count, non_human_step_count, observation_session_count, open_change_request_count, open_high_severity_gap_count, open_question_annotation_count, outcome_measurement_count, overdue_review_count, overlaps_relation_count, owner_organization, prevents_relation_count, procedure, procedure_type_of_version, procedure_version_id, process_model_trace_count, profile_validated_submission_count, protocol_session_count, published_projection_count, reasoned_assertion_count, reconciled_divergence_count, relies_on_single_method, rests_on_compound_fragile_knowledge, rests_on_notation_only, runs_on_unapproved_knowledge, scoped_open_blocking_gap_count, search_count, search_success_percent, semantic_type_iri, served_assertion_count, serves_only_humans_or_only_machines, should_not_be_executable, situated_judgment_fragment_count, sme_ai_evaluation_count, sme_approval_count, specified_step_count, stalled_implementation_count, standardization_driver, status, status_is_pko, steps_without_ontology_type_count, steward_review_cadence_days, still_owns_valid_knowledge, structured_query_count, successful_search_count, tacit_form_fragment_count, tacit_fragment_count, tacit_holding_count, tacit_judgment_fragment_count, tacit_share_exceeds_explicit, title, trailing_practice_trace_count, undeclared_control_kind_count, unexercised_human_gate_count, unlanded_decision_count, unrehearsed_control_entry_count, unwatched_unowned_control_count, uses_ai_in_one_direction_only, uses_non_pko_status, valid_fragment_count, version_number, was_modified_since_last_review, workshop_session_count FROM public.vw_procedure_versions;
+ALTER VIEW pko_plant_operations_manager.procedure_versions OWNER TO postgres;
+GRANT SELECT ON pko_plant_operations_manager.procedure_versions TO pko_plant_operations_manager;
+CREATE VIEW pko_plant_operations_manager.steps AS
+  SELECT accountable_agent, activity_origin_trace_count, ai_artifact_input_count, ai_failure_count, all_sources_usable, approval_step_is_software_assigned, assigned_agent_kind, assigned_role, assigned_role_does_compliance_review, assigned_role_is_ungoverned, assigned_role_label, authoritative_stale_count, available_exception_count, binding_boundary_count, blocking_requirement_count, bottleneck_allocation_count, calls_procedure, child_step_count, coarse_top_level_version_key, collection_evidence_count, compliance_review_procedure_key, conditionless_version_key, consumes_ai_agent_artifact, context_sensitivity_count, control_kind, cue_count, danger_cue_count, decision_point_count, declared_fallback_step_key, declared_first_step_key, declared_verification_count, description, detail_level, deviated_run_count, dmn_decision_count, downstream_artifact_step_count, elicited_extension_count, elicited_validation_count, entry_step_key, expected_duration_minutes, expertise_level, failure_mode_count, fine_top_level_version_key, first_child_step, gate_free_reach_from_entry_count, gate_held_by_human, has_been_approached_by_software, has_collection_evidence, has_declared_control_kind, has_downstream_steps, has_incompleteness_cue, has_instruction_only, has_no_accountable_agent, has_postcondition, has_reported_reality_mismatch, incoming_transition_count, incompleteness_cue_count, input_variable_count, inputs_are_fresh, instruction, invariant_count, is_accountable_to_software, is_ai_failure_point, is_approval_step, is_blocking_control_on_rework_loop, is_bottleneck_step, is_composite_without_children, is_context_sensitive_but_unscoped, is_declared_fallback_step, is_declared_first_step, is_demonstrated_human_gate, is_drifted_from_practice, is_entry_step, is_gate_bypassed_publication, is_governed_by_unwarranted_boundary, is_human_approval_gate, is_isolation_without_lock, is_on_rework_loop, is_preparation_step, is_reachable_from_entry_without_human_gate, is_release_approval_gate, is_software_assigned, is_unexercised_human_gate, is_untraced_activity_in_traced_model, isolates_energy_source, knowledge_fragment_count, max_repetitions, min_repetitions, name, open_outdated_flag_count, output_variable_count, owner_organization, parent_step, parent_step_kind, parseable_condition_count, postcondition_count, precondition_count, prerequisite_downstream_count, prerequisite_is_downstream, prerequisite_step, procedure_version, reachable_step_count, reached_from_step_count, referenced_resource_count, regulatory_requirement_count, remedy_for_error, required_lock_count, required_protective_equipment_count, requires_human_confirmation, safety_critical_condition_count, self_reach_count, semantic_type_iri, software_execution_count, stage, stale_authoritative_binding_count, stale_binding_count, states_operational_knowledge, step_id, step_kind, step_number, step_procedure_type, title, tool_function_count, tool_use_rules_only_in_prose, undeclared_control_version_key, unexercised_gate_version_key, unscoped_sensitivity_count, untyped_version_key, unusable_binding_count, unwarranted_boundary_count, unwitnessed_blocking_count, verifies_step, version_entry_step_id, version_model_trace_count, version_procedure FROM public.vw_steps;
+ALTER VIEW pko_plant_operations_manager.steps OWNER TO postgres;
+GRANT SELECT ON pko_plant_operations_manager.steps TO pko_plant_operations_manager;
+CREATE VIEW pko_plant_operations_manager.procedure_executions AS
+  SELECT abandoned_failure_count, all_blocking_controls_evaluated, approval_chain_is_complete, approval_step_count, asserted_only_control_count, assurance_chain_is_circular, assurance_grade, assurance_is_mostly_asserted, attestation_blocker_summary, attestation_count, attestation_would_be_weakly_based, basis_changed_after_signature, campaign_silently_lost_audience, claims_completion_without_all_steps, clean_facility_key, cleared_legal_review_count, completed_step_count, computed_assurance_ratio, computedly_witnessed_control_count, confirmed_by_agent, context, control_breach_count, count_of_approval_executions, count_of_delivery_executions, delivered_count, delivered_without_approval, delivery_yield_percent, description, deviating_day_version_key, deviating_facility_key, deviating_night_version_key, deviating_step_count, diverged_from_specification, divergence_was_fully_governed, ended_at, evaluated_control_count, executed_by_agent, executed_on_machine, executed_version_is_fit, execution_status, expected_step_count, facility, feedback_count, has_abandoned_failures, has_any_independent_observation, has_been_attested, has_cleared_legal_review, has_delivered, has_human_approval, has_no_recorded_outcome, has_step_deviation, has_unrecorded_refusals, independent_human_observation_count, independently_confirmed_intent_count, intended_recipient_count, interested_party_assertion_count, invalid_approval_count, is_attestation_ready, is_structurally_complete, is_unconfirmed_completion, is_unreported_mistake, late_step_count, latest_attestation_instant, mishandled_refusal_count, name, observations, operational_record_uri, outcome, owner_organization, participant_count, post_attestation_score_count, preparation_step_count, procedure_execution_id, procedure_version, ran_clean, reached_recipient_count, requires_re_attestation, retention_breach_count, self_attested_approval_count, semantic_type_iri, send_decisions_are_entirely_self_witnessed, separation_assurance_note, separation_held_under_test, separation_is_vacuously_green, separation_of_duties_held, separation_violation_count, separation_was_testable, shift, signed_against_unfit_version, silently_dropped_count, started_at, status_change_count, title, total_delivery_attempt_count, unclean_step_count, unevaluated_blocking_total, ungoverned_divergence_count, unreachable_handling_failure_count, unrecorded_refusal_count, vacuously_clean_step_count FROM public.vw_procedure_executions;
+ALTER VIEW pko_plant_operations_manager.procedure_executions OWNER TO postgres;
+GRANT SELECT ON pko_plant_operations_manager.procedure_executions TO pko_plant_operations_manager;
+CREATE VIEW pko_plant_operations_manager.onboarding_records AS
+  SELECT as_of_instant, days_since_start, days_to_proficiency, evaluation_context, is_proficient, is_recent_start, is_starting_from_nothing, name, new_starter, onboarding_record_id, procedure, procedure_departed_only_count, procedure_repository_entry_count, proficient_at, semantic_type_iri, started_at, used_captured_knowledge FROM public.vw_onboarding_records;
+ALTER VIEW pko_plant_operations_manager.onboarding_records OWNER TO postgres;
+GRANT SELECT ON pko_plant_operations_manager.onboarding_records TO pko_plant_operations_manager;
+CREATE VIEW pko_plant_operations_manager.mentorships AS
+  SELECT as_of_instant, community_of_practice, days_since_started, employer_worker_obligation, evaluation_context, evidence_of_completion, expected_weekly_hours, is_active, is_recent_apprenticeship, learner_agent, learning_objective, mentor_agent, mentorship_form, mentorship_id, name, semantic_type_iri, valid_from, valid_to FROM public.vw_mentorships;
+ALTER VIEW pko_plant_operations_manager.mentorships OWNER TO postgres;
+GRANT SELECT ON pko_plant_operations_manager.mentorships TO pko_plant_operations_manager;
+CREATE VIEW pko_plant_operations_manager.communities_of_practice AS
+  SELECT ambient_absorption_count, cadence, community_of_practice_id, digital_know_how_count, employer_move_count, external_member_count, has_ambient_trade_know_how, has_own_vocabulary_and_norms, interconnected_know_how_count, is_circulation_ending_for_lack_of_apprentices, is_colocated_trade, is_cross_firm_practice_cluster, is_mandated_without_sharing_norm, label, name, norms, open_apprenticeship_places, organization, origin, own_vocabulary, person_carried_know_how_count, physical_know_how_count, purpose, recent_apprenticeship_count, semantic_type_iri, sharing_event_count, spans_physical_and_digital_with_humans, specialist_member_count, steward_role FROM public.vw_communities_of_practice;
+ALTER VIEW pko_plant_operations_manager.communities_of_practice OWNER TO postgres;
+GRANT SELECT ON pko_plant_operations_manager.communities_of_practice TO pko_plant_operations_manager;
+CREATE VIEW pko_plant_operations_manager.know_how_carriers AS
+  SELECT as_of_instant, builds_on_know_how, builds_on_same_community_know_how, carrier_kind, community_of_practice, days_served_to_as_of, days_served_to_departure, days_until_holder_departure, dependency_community, evaluation_context, held_since, holder_agent, holder_departure_at, holder_facility, holder_is_still_engaged, holder_service_started_at, holder_tenure_years, is_at_risk_of_imminent_loss, is_captured, is_delegated_to_unfit_source, is_held_by_current_practitioner, is_held_by_departed_holder, is_held_in_both_forms, is_held_only_by_departed, is_holder_leaving_soon, is_in_public_references, is_in_written_procedure, is_overlooked_living_holder, is_trained_skill, is_untransferred_veteran_know_how, is_veteran_held, know_how_carrier_id, know_how_kind, lost_accumulation_years, must_be_relearned_if_holder_leaves, name, organization, procedure, replacement_plan, repository_entry_count, semantic_type_iri, source_relationship_count, topic, transfer_count, transfer_stops_without_veteran, work_medium FROM public.vw_know_how_carriers;
+ALTER VIEW pko_plant_operations_manager.know_how_carriers OWNER TO postgres;
+GRANT SELECT ON pko_plant_operations_manager.know_how_carriers TO pko_plant_operations_manager;
+CREATE VIEW pko_plant_operations_manager.knowledge_transfers AS
+  SELECT channel, community_of_practice, from_agent, from_organization, is_ambient_absorption_by_non_practitioner, is_social_network_channel, is_traditional_channel, know_how, knowledge_transfer_id, name, occurred_at, on_allocated_time, recipient_agent, recipient_role_count, semantic_type_iri FROM public.vw_knowledge_transfers;
+ALTER VIEW pko_plant_operations_manager.knowledge_transfers OWNER TO postgres;
+GRANT SELECT ON pko_plant_operations_manager.knowledge_transfers TO pko_plant_operations_manager;
+CREATE VIEW pko_plant_operations_manager.process_knowledge_levels AS
+  SELECT explicit_strategy_count, label, lacks_capture_strategy_for_either_form, name, planning_horizon, process_knowledge_level_id, semantic_type_iri, tacit_strategy_count FROM public.vw_process_knowledge_levels;
+ALTER VIEW pko_plant_operations_manager.process_knowledge_levels OWNER TO postgres;
+GRANT SELECT ON pko_plant_operations_manager.process_knowledge_levels TO pko_plant_operations_manager;
+CREATE VIEW pko_plant_operations_manager.process_level_statements AS
+  SELECT is_filed_at_wrong_level, level, level_question_key, name, procedure, process_level_statement_id, pyramid_match_count, question_kind, semantic_type_iri, statement FROM public.vw_process_level_statements;
+ALTER VIEW pko_plant_operations_manager.process_level_statements OWNER TO postgres;
+GRANT SELECT ON pko_plant_operations_manager.process_level_statements TO pko_plant_operations_manager;
+CREATE VIEW pko_plant_operations_manager.level_capture_strategies AS
+  SELECT contradicts_knowledge_form, description, knowledge_form, knowledge_method, level, level_capture_strategy_id, name, semantic_type_iri, transfer_mode FROM public.vw_level_capture_strategies;
+ALTER VIEW pko_plant_operations_manager.level_capture_strategies OWNER TO postgres;
+GRANT SELECT ON pko_plant_operations_manager.level_capture_strategies TO pko_plant_operations_manager;
+CREATE VIEW pko_plant_operations_manager.change_requests AS
+  SELECT approved_version_key, as_of_instant, authority_agent, authority_role, authority_role_label, awaits_authority_decision, backlog_version_key, blocks_an_open_gap, change_kind, change_request_id, days_pending, days_since_approval, decided_at, decision_latency_days, delay_is_downstream_of_me, evaluation_context, impact_assessment, implementation_latency_days, implemented_at, is_approved_decision, is_approved_not_implemented, is_decided, is_implemented, is_live_decision_backlog, is_my_blocking_backlog, is_my_decided_but_unlanded, is_my_decided_request, is_my_overdue_backlog, is_my_pending_decision, is_open, is_stalled, is_stalled_implementation, is_still_pending, name, open_change_version_key, owner_organization, procedure_version, requested_at, requested_by_agent, requester_is_authority, semantic_type_iri, stalled_implementation_version_key, status, title, touches_live_version, unlanded_version_key FROM public.vw_change_requests;
+ALTER VIEW pko_plant_operations_manager.change_requests OWNER TO postgres;
+GRANT SELECT ON pko_plant_operations_manager.change_requests TO pko_plant_operations_manager;
+CREATE VIEW pko_plant_operations_manager.workflow_view_divergences AS
+  SELECT elicitation_session, holder_a, holder_b, is_reconciled, is_surfaced_but_unreconciled, name, procedure_version, reconciled_at, reconciled_into_fragment, reconciled_statement, semantic_type_iri, step, view_a, view_b, workflow_view_divergence_id FROM public.vw_workflow_view_divergences;
+ALTER VIEW pko_plant_operations_manager.workflow_view_divergences OWNER TO postgres;
+GRANT SELECT ON pko_plant_operations_manager.workflow_view_divergences TO pko_plant_operations_manager;
+CREATE VIEW pko_plant_operations_manager.knowledge_workforce_positions AS
+  SELECT discipline, filled_by_agent, knowledge_workforce_position_id, name, opened_at, organization, role, semantic_type_iri, status FROM public.vw_knowledge_workforce_positions;
+ALTER VIEW pko_plant_operations_manager.knowledge_workforce_positions OWNER TO postgres;
+GRANT SELECT ON pko_plant_operations_manager.knowledge_workforce_positions TO pko_plant_operations_manager;
+CREATE VIEW pko_plant_operations_manager.agents AS
+  SELECT accountability_assertion_count, agent_id, agent_kind, ai_task_completed_count, ai_task_completion_percent, answer_count, artifact_blast_radius_step_count, at_risk_reliance_count, attributed_artifact_count, boundary_violation_count, category_not_available_as_inference, community_count, contact_address, count_of_current_role_assignments, current_accountable_human_count, decision_count, departure_at, display_name, downstream_of_held_steps_count, draft_decision_count, draft_rewrite_rate_percent, has_artifact_blast_radius, has_at_risk_knowledge_reliance, has_produced_artifacts, inferred_category_count, is_ai_agent_not_filled_from_registry, is_ai_agent_without_accountable_human, is_ai_agent_without_model_version, is_below_task_completion_target, is_boundary_spanner, is_non_human, is_operating_outside_boundary, is_organization_agent, is_recognized_broker, is_still_engaged, is_unclassified_agent, is_unidentified_boundary_spanner, is_unrewarded_sharer, is_untracked_ai_consumer, lacks_runtime_knowledge_integration, lacks_time_to_mentor, located_know_how_count, name, organization, overridden_decision_count, overridden_draft_count, override_rate_percent, protected_mentoring_hours_per_week, recognition_count, registry_version_match_count, represents_organization, required_mentoring_hours_per_week, runtime_integration_count, search_event_count, semantic_type_iri, service_started_at, sna_identification_count, times_named_as_broker, transfers_given_count, version_or_employment_key FROM public.vw_agents;
+ALTER VIEW pko_plant_operations_manager.agents OWNER TO postgres;
+GRANT SELECT ON pko_plant_operations_manager.agents TO pko_plant_operations_manager;
+CREATE VIEW pko_plant_operations_manager.roles AS
+  SELECT active_assignment_count, approval_step_count, backup_role_holder, capability_tag_count, compliance_review_tag_count, count_of_awaited_decisions, current_agent, current_agent_kind, current_assignment, current_assignment_valid_from, current_holder_name, currently_covered_assignment_count, departed_assignment_count, escalation_backup_role, has_compliance_review_capability, has_escalation_backup, has_lost_a_holder, has_no_current_holder, has_specializations, has_unfilled_escalation_backup, is_governed_by_lapsed_authority, is_missed_by_phrase_query, is_non_human_held, is_not_housed_in_department, is_production_release_approver, is_senior_variant_not_specialization, is_ungoverned_enforcement_role, is_ungoverned_non_human_role, is_vacated_role, label, name, organization, organization_type, preferred_knowledge_form, release_approval_step_count, responsibility, role_family, role_id, role_mention_count, semantic_type_iri, seniority_level, specialization_count, specialized_role_family, specializes_role, unauthorized_enforcement_assignment_count, unescalated_refusal_count, ungrounded_boundary_count, unresolved_role_mention_count FROM public.vw_roles;
+ALTER VIEW pko_plant_operations_manager.roles OWNER TO postgres;
+GRANT SELECT ON pko_plant_operations_manager.roles TO pko_plant_operations_manager;
+CREATE VIEW pko_knowledge_engineer.procedures AS
+  SELECT adopted_by_organization, adoption_count, agent_intended_count, avg_days_to_proficiency_with_capture, avg_days_to_proficiency_without_capture, called_by_step_count, category_level_view_count, collected_material_count, compliance_document_count, compliance_review_step_count, current_version_key, days_with_capture_total, days_without_capture_total, departed_only_know_how_count, departing_veteran_know_how_count, execution_count, execution_feedback_entry_count, expert_acquisition_hours, failure_criterion_count, formalization_does_not_ease_onboarding, has_decayed_transfer_channel, has_no_explicit_steps, has_no_failure_criterion, has_no_stated_reason_for_existing, has_step_and_category_resolutions, has_transfer_shortfall_exposure, has_unengaged_stakeholder, hindered_by_count, in_work_capture_count, involves_compliance_review_role, is_capture_separate_from_work, is_captured_by_automation_alone, is_executed_without_feedback_loop, is_hindered_by_another_operation, is_inconsistently_categorized, is_missing_demanded_resolution, is_nested_procedure, is_regulated_but_unformalized, is_tacit_only_agent_target, is_template, is_template_instance, lacks_distinction_type_key, lacks_managed_controlled_vocabulary, lacks_type_distinction, lens_view_count, machine_authored_entry_count, managed_vocabulary_count, matching_distinction_count, measures_performance_without_business_link, name, outcome_measure_count, owner_organization, practitioner_relationship_count, privileges_single_stakeholder_view, procedure_id, procedure_type, procedure_type_definition, procedure_type_rank, proficient_with_capture_count, proficient_without_capture_count, purpose, recent_starter_count, repository_entry_count, required_by_regulation, semantic_type_iri, specified_step_total, stale_entry_count, step_level_view_count, strategic_alignment_count, target, target_count, template_procedure, title, type_distinguishing_facet, type_distinguishing_value, unengaged_stakeholder_count, unlinked_measure_count, untransferred_veteran_know_how_count FROM public.vw_procedures;
+ALTER VIEW pko_knowledge_engineer.procedures OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_engineer.procedures TO pko_knowledge_engineer;
+CREATE VIEW pko_knowledge_engineer.procedure_versions AS
+  SELECT ai_artifact_consuming_input_count, ai_boundary_is_unevidenced, ai_consumption_count, ai_contribution_count, alternative_transition_count, approved_change_request_count, as_of_instant, awaited_decision_count, cadence_breach_count, changelog_description, coarse_top_level_step_count, complementary_method_count, compound_fragile_fragment_count, concentrated_witness_session_count, conditionless_step_count, consumer_sync_count, contains_steps_affected_by_ai_agent_change, control_taxonomy_is_incomplete, count_of_change_requests, count_of_open_blocking_gaps, count_of_open_knowledge_gaps, count_of_overdue_gaps, count_of_review_events, count_of_stale_fragments, count_of_steps, count_of_stewardship_assignments, count_of_unapproved_reliance_fragments, created_by_agent, created_by_agent_kind, critical_incident_count, day_deviating_run_count, day_run_count, days_document_trails_version, days_since_last_review, days_since_modified, declared_first_step_count, design_decision_count, document_lags_practice, drifted_mining_run_count, elicitation_evidence_count, elicitation_session_count, enables_relation_count, entry_step_id, evaluation_context, exception_count, execution_count, expected_duration_unit, expected_duration_value, expert_capture_count, experts_evaluate_ai_not_representation, explicit_holding_count, fallback_step, fallback_transition_count, feeds_unapproved_knowledge_to_machines, fine_top_level_step_count, first_step, first_step_disagrees_with_graph, fresh_mining_run_count, genuinely_overdue_fragment_count, governance_is_silent, graph_entry_step_count, hands_held_count, has_any_steward, has_approved_change_request, has_decision_in_flight, has_governance_record, has_no_exception_handling, has_open_blocking_gap, has_unrehearsed_control_entry, has_unresolved_mining_drift, has_unwitnessed_change, human_channel_count, human_step_count, human_sync_count, incident_session_count, incoming_supersession_count, indexed_segment_count, interview_session_count, is_approved_without_sme_signoff, is_blocked_on_pending_decision, is_cleanly_retired, is_current, is_current_without_motivation, is_disconnected_from_outcomes, is_documented_behind_practice, is_fit_to_execute, is_held_unfit_by_landed_decisions, is_in_cadence_breach, is_inadequate_for_use, is_inconsistent_across_shifts, is_live, is_live_and_unstewarded, is_live_model_untraced, is_live_with_blocking_gap, is_live_with_unrehearsed_control, is_live_without_recorded_decisions, is_load_bearing_orphan, is_managed_cadence_breach, is_not_query_validate_reason_ready, is_ready_for_execution, is_standardized_without_tacit_capture, is_still_referenced, is_studied_only_from_the_desk, is_under_specified_for_execution, is_unmodified_for_twelve_months, is_unreachable_knowledge, is_unremediated_cadence_breach, is_unstewarded, issued_at, judgment_held_outside_sop_count, judgment_unprobed_by_incidents, ke_field_session_count, ke_session_count, knowledge_base_is_concentrated, knowledge_is_staler_than_cadence, lacks_continuous_drift_detection, lacks_machine_interpretable_encoding, latest_source_document_modified_at, lives_in_hands_silence_and_negotiation, load_bearing_unapproved_count, machine_channel_count, machine_consumed_unapproved_count, machine_sync_count, mining_run_count, misses_a_required_elicitation_mode, mixes_granularity_at_one_level, mixes_human_and_software_steps, modified_at, modified_by_agent, modifier_is_authority, name, negotiated_practice_count, new_version_motivation, night_deviating_run_count, night_run_count, non_human_step_count, observation_session_count, open_change_request_count, open_high_severity_gap_count, open_question_annotation_count, outcome_measurement_count, overdue_review_count, overlaps_relation_count, owner_organization, prevents_relation_count, procedure, procedure_type_of_version, procedure_version_id, process_model_trace_count, profile_validated_submission_count, protocol_session_count, published_projection_count, reasoned_assertion_count, reconciled_divergence_count, relies_on_single_method, rests_on_compound_fragile_knowledge, rests_on_notation_only, runs_on_unapproved_knowledge, scoped_open_blocking_gap_count, search_count, search_success_percent, semantic_type_iri, served_assertion_count, serves_only_humans_or_only_machines, should_not_be_executable, situated_judgment_fragment_count, sme_ai_evaluation_count, sme_approval_count, specified_step_count, stalled_implementation_count, standardization_driver, status, status_is_pko, steps_without_ontology_type_count, steward_review_cadence_days, still_owns_valid_knowledge, structured_query_count, successful_search_count, tacit_form_fragment_count, tacit_fragment_count, tacit_holding_count, tacit_judgment_fragment_count, tacit_share_exceeds_explicit, title, trailing_practice_trace_count, undeclared_control_kind_count, unexercised_human_gate_count, unlanded_decision_count, unrehearsed_control_entry_count, unwatched_unowned_control_count, uses_ai_in_one_direction_only, uses_non_pko_status, valid_fragment_count, version_number, was_modified_since_last_review, workshop_session_count FROM public.vw_procedure_versions;
+ALTER VIEW pko_knowledge_engineer.procedure_versions OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_engineer.procedure_versions TO pko_knowledge_engineer;
+CREATE VIEW pko_knowledge_engineer.steps AS
+  SELECT accountable_agent, activity_origin_trace_count, ai_artifact_input_count, ai_failure_count, all_sources_usable, approval_step_is_software_assigned, assigned_agent_kind, assigned_role, assigned_role_does_compliance_review, assigned_role_is_ungoverned, assigned_role_label, authoritative_stale_count, available_exception_count, binding_boundary_count, blocking_requirement_count, bottleneck_allocation_count, calls_procedure, child_step_count, coarse_top_level_version_key, collection_evidence_count, compliance_review_procedure_key, conditionless_version_key, consumes_ai_agent_artifact, context_sensitivity_count, control_kind, cue_count, danger_cue_count, decision_point_count, declared_fallback_step_key, declared_first_step_key, declared_verification_count, description, detail_level, deviated_run_count, dmn_decision_count, downstream_artifact_step_count, elicited_extension_count, elicited_validation_count, entry_step_key, expected_duration_minutes, expertise_level, failure_mode_count, fine_top_level_version_key, first_child_step, gate_free_reach_from_entry_count, gate_held_by_human, has_been_approached_by_software, has_collection_evidence, has_declared_control_kind, has_downstream_steps, has_incompleteness_cue, has_instruction_only, has_no_accountable_agent, has_postcondition, has_reported_reality_mismatch, incoming_transition_count, incompleteness_cue_count, input_variable_count, inputs_are_fresh, instruction, invariant_count, is_accountable_to_software, is_ai_failure_point, is_approval_step, is_blocking_control_on_rework_loop, is_bottleneck_step, is_composite_without_children, is_context_sensitive_but_unscoped, is_declared_fallback_step, is_declared_first_step, is_demonstrated_human_gate, is_drifted_from_practice, is_entry_step, is_gate_bypassed_publication, is_governed_by_unwarranted_boundary, is_human_approval_gate, is_isolation_without_lock, is_on_rework_loop, is_preparation_step, is_reachable_from_entry_without_human_gate, is_release_approval_gate, is_software_assigned, is_unexercised_human_gate, is_untraced_activity_in_traced_model, isolates_energy_source, knowledge_fragment_count, max_repetitions, min_repetitions, name, open_outdated_flag_count, output_variable_count, owner_organization, parent_step, parent_step_kind, parseable_condition_count, postcondition_count, precondition_count, prerequisite_downstream_count, prerequisite_is_downstream, prerequisite_step, procedure_version, reachable_step_count, reached_from_step_count, referenced_resource_count, regulatory_requirement_count, remedy_for_error, required_lock_count, required_protective_equipment_count, requires_human_confirmation, safety_critical_condition_count, self_reach_count, semantic_type_iri, software_execution_count, stage, stale_authoritative_binding_count, stale_binding_count, states_operational_knowledge, step_id, step_kind, step_number, step_procedure_type, title, tool_function_count, tool_use_rules_only_in_prose, undeclared_control_version_key, unexercised_gate_version_key, unscoped_sensitivity_count, untyped_version_key, unusable_binding_count, unwarranted_boundary_count, unwitnessed_blocking_count, verifies_step, version_entry_step_id, version_model_trace_count, version_procedure FROM public.vw_steps;
+ALTER VIEW pko_knowledge_engineer.steps OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_engineer.steps TO pko_knowledge_engineer;
+CREATE VIEW pko_knowledge_engineer.step_transitions AS
+  SELECT avoids_human_approval_gate, condition, count_of_from_step_executions, count_of_observed_traversals, count_of_to_step_executions, decision_point_count, from_step, from_step_is_human_approval_gate, has_been_traversed, has_reachable_origin, has_reachable_target, is_never_exercised, is_recovery_path, is_undocumented_branch, is_unrehearsed_control_entry, is_untested_recovery_path, is_unwalked_recovery_path, name, priority, procedure_version, semantic_type_iri, step_transition_id, target_blocking_requirement_count, target_carries_blocking_control, to_step, to_step_is_human_approval_gate, transition_kind, unrehearsed_control_version_key FROM public.vw_step_transitions;
+ALTER VIEW pko_knowledge_engineer.step_transitions OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_engineer.step_transitions TO pko_knowledge_engineer;
+CREATE VIEW pko_knowledge_engineer.step_cues AS
+  SELECT cue_kind, danger_cue_step_key, description, escalate_to_role, failure_mode_response, incomplete_cue_step_key, is_unanswerable_sign, name, observation_count, operator_question, requires_escalation, semantic_type_iri, signals_failure_mode, signals_incomplete_step, step, step_cue_id, unescalated_observation_count FROM public.vw_step_cues;
+ALTER VIEW pko_knowledge_engineer.step_cues OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_engineer.step_cues TO pko_knowledge_engineer;
+CREATE VIEW pko_knowledge_engineer.step_conditions AS
+  SELECT check_count, condition_kind, invariant_step_key, is_machine_parseable, is_never_checked, is_safety_critical, machine_expression, name, postcondition_step_key, precondition_step_key, safety_critical_step_key, semantic_type_iri, statement, step, step_condition_id FROM public.vw_step_conditions;
+ALTER VIEW pko_knowledge_engineer.step_conditions OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_engineer.step_conditions TO pko_knowledge_engineer;
+CREATE VIEW pko_knowledge_engineer.step_lock_requirements AS
+  SELECT lock_device, name, semantic_type_iri, step, step_lock_requirement_id FROM public.vw_step_lock_requirements;
+ALTER VIEW pko_knowledge_engineer.step_lock_requirements OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_engineer.step_lock_requirements TO pko_knowledge_engineer;
+CREATE VIEW pko_knowledge_engineer.step_protective_equipment AS
+  SELECT name, protective_equipment, semantic_type_iri, step, step_protective_equipment_id FROM public.vw_step_protective_equipment;
+ALTER VIEW pko_knowledge_engineer.step_protective_equipment OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_engineer.step_protective_equipment TO pko_knowledge_engineer;
+CREATE VIEW pko_knowledge_engineer.lock_devices AS
+  SELECT label, lock_device_id, name, semantic_type_iri FROM public.vw_lock_devices;
+ALTER VIEW pko_knowledge_engineer.lock_devices OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_engineer.lock_devices TO pko_knowledge_engineer;
+CREATE VIEW pko_knowledge_engineer.protective_equipment AS
+  SELECT label, name, protective_equipment_id, semantic_type_iri FROM public.vw_protective_equipment;
+ALTER VIEW pko_knowledge_engineer.protective_equipment OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_engineer.protective_equipment TO pko_knowledge_engineer;
+CREATE VIEW pko_knowledge_engineer.machines AS
+  SELECT configuration_kind, energy_source_count, facility, governing_procedure_version, has_unisolated_energy_source, is_non_standard_configuration, label, machine_id, machine_type, manufactured_by, name, semantic_type_iri, unisolated_energy_source_count FROM public.vw_machines;
+ALTER VIEW pko_knowledge_engineer.machines OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_engineer.machines TO pko_knowledge_engineer;
+CREATE VIEW pko_knowledge_engineer.machine_energy_sources AS
+  SELECT energy_source, is_unisolated_energy_source, isolation_step_count, machine, machine_energy_source_id, machine_procedure_version, name, semantic_type_iri, unisolated_machine_key FROM public.vw_machine_energy_sources;
+ALTER VIEW pko_knowledge_engineer.machine_energy_sources OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_engineer.machine_energy_sources TO pko_knowledge_engineer;
+CREATE VIEW pko_knowledge_engineer.energy_sources AS
+  SELECT energy_source_id, label, name, pko_individual_iri, semantic_type_iri FROM public.vw_energy_sources;
+ALTER VIEW pko_knowledge_engineer.energy_sources OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_engineer.energy_sources TO pko_knowledge_engineer;
+CREATE VIEW pko_knowledge_engineer.facilities AS
+  SELECT clean_run_count, deviating_run_count, facility_id, facility_kind, is_deviation_only_facility, label, name, organization, parent_facility, semantic_type_iri FROM public.vw_facilities;
+ALTER VIEW pko_knowledge_engineer.facilities OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_engineer.facilities TO pko_knowledge_engineer;
+CREATE VIEW pko_knowledge_engineer.failure_modes AS
+  SELECT description, escalate_to_role, escalates_to_vacant_role, escalation_role_has_no_holder, failure_mode_id, has_no_response, name, procedure_target, requires_escalation, response, semantic_type_iri, step FROM public.vw_failure_modes;
+ALTER VIEW pko_knowledge_engineer.failure_modes OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_engineer.failure_modes TO pko_knowledge_engineer;
+CREATE VIEW pko_knowledge_engineer.decision_points AS
+  SELECT deciding_factors, decision_point_id, default_outcome, dmn_decision_key, governing_transition, has_no_deciding_factors, is_dmn_encoded, name, question, semantic_type_iri, step FROM public.vw_decision_points;
+ALTER VIEW pko_knowledge_engineer.decision_points OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_engineer.decision_points TO pko_knowledge_engineer;
+CREATE VIEW pko_knowledge_engineer.procedure_executions AS
+  SELECT abandoned_failure_count, all_blocking_controls_evaluated, approval_chain_is_complete, approval_step_count, asserted_only_control_count, assurance_chain_is_circular, assurance_grade, assurance_is_mostly_asserted, attestation_blocker_summary, attestation_count, attestation_would_be_weakly_based, basis_changed_after_signature, campaign_silently_lost_audience, claims_completion_without_all_steps, clean_facility_key, cleared_legal_review_count, completed_step_count, computed_assurance_ratio, computedly_witnessed_control_count, confirmed_by_agent, context, control_breach_count, count_of_approval_executions, count_of_delivery_executions, delivered_count, delivered_without_approval, delivery_yield_percent, description, deviating_day_version_key, deviating_facility_key, deviating_night_version_key, deviating_step_count, diverged_from_specification, divergence_was_fully_governed, ended_at, evaluated_control_count, executed_by_agent, executed_on_machine, executed_version_is_fit, execution_status, expected_step_count, facility, feedback_count, has_abandoned_failures, has_any_independent_observation, has_been_attested, has_cleared_legal_review, has_delivered, has_human_approval, has_no_recorded_outcome, has_step_deviation, has_unrecorded_refusals, independent_human_observation_count, independently_confirmed_intent_count, intended_recipient_count, interested_party_assertion_count, invalid_approval_count, is_attestation_ready, is_structurally_complete, is_unconfirmed_completion, is_unreported_mistake, late_step_count, latest_attestation_instant, mishandled_refusal_count, name, observations, operational_record_uri, outcome, owner_organization, participant_count, post_attestation_score_count, preparation_step_count, procedure_execution_id, procedure_version, ran_clean, reached_recipient_count, requires_re_attestation, retention_breach_count, self_attested_approval_count, semantic_type_iri, send_decisions_are_entirely_self_witnessed, separation_assurance_note, separation_held_under_test, separation_is_vacuously_green, separation_of_duties_held, separation_violation_count, separation_was_testable, shift, signed_against_unfit_version, silently_dropped_count, started_at, status_change_count, title, total_delivery_attempt_count, unclean_step_count, unevaluated_blocking_total, ungoverned_divergence_count, unreachable_handling_failure_count, unrecorded_refusal_count, vacuously_clean_step_count FROM public.vw_procedure_executions;
+ALTER VIEW pko_knowledge_engineer.procedure_executions OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_engineer.procedure_executions TO pko_knowledge_engineer;
+CREATE VIEW pko_knowledge_engineer.step_executions AS
+  SELECT actual_duration_minutes, all_clearances_are_unfalsified, approval_execution_key, approval_rests_on_self_attestation, approver_agent_key, assigned_role, available_exception_count_for_step, blocking_unmet_count, blocking_unmet_count_safe, broke_invariant, claims_pass_without_evidence, cleared_legal_review_key, completed_execution_key, completed_prerequisite_run_count, confirmed_by_agent, control_breach_execution_key, declared_check_count, description, deviation, deviation_execution_key, drafted_from_unusable_source, ended_at, evaluated_blocking_count, evaluated_requirement_count, evidence_position_is_weak, exceeds_max_repetitions, exception_invocation_count, executed_by_agent, executes_step_of_other_version, executing_agent_kind, execution_status, execution_version, executor_agent_kind, executor_authority_count, executor_held_required_role, executor_is_designated_agent, executor_is_human, executor_role_key, expected_blocking_count, expected_duration_minutes, expected_verification_count, failed_precondition_count, generated_entity_count, had_uninvoked_exception_available, has_any_declared_check, has_approved_change_coverage, has_deviation, has_deviation_note, has_governing_instrument, has_skipped_verification, has_unevaluated_blocking_control, has_unevaluated_blocking_requirement, human_confirmation_missing, ignored_danger_cue, incomplete_cue_observation_count, inputs_were_fresh_at_run, inputs_were_usable, is_approval_execution, is_blocked_by_incomplete_prerequisite, is_blocked_by_observed_cue, is_clean, is_completed, is_late, is_late_and_unexplained, is_legal_review_step, is_out_of_specified_order, is_substantively_clean, is_unauthorized_approval, is_unchecked_by_design, is_ungoverned_divergence, is_vacuously_clean, is_verification_passed, is_verified, lacks_required_confirmation, late_execution_key, name, non_human_approval, non_human_ran_human_step, owner_organization, performed_check_count, performed_verification_count, preparation_execution_key, prepared_by_this_agent_count, preparer_agent_key, previous_executed_step, previous_step_execution, procedure_execution, procedure_execution_when_unclean, proceeded_despite_failed_precondition, proceeded_past_blocking_control, ran_before_prerequisite_completed, ran_on_stale_authoritative_source, ran_on_stale_inputs, ran_under_exception, ran_without_declared_inputs, repetition_count, required_blocking_count, required_role_for_step, requires_human_confirmation, role_current_agent, self_attested_approval_execution_key, self_witnessed_verification_count, semantic_type_iri, separation_violation_execution_key, skipped_verification_count, software_did_human_work, software_execution_step_key, specified_transition_from_previous_count, stale_at_run_count, stale_authoritative_source_count, staleness_answer_is_tense_dependent, started_at, step, step_control_kind, step_execution_id, step_input_variable_count, step_is_approval, step_is_preparation, step_is_software_assigned, step_max_repetitions, step_prerequisite, step_requires_human_confirmation, unbacked_verification_count, unconfirmed_non_human_decision_count, uncorroborated_pass_count, unescalated_danger_cue_count, unevaluated_blocking_count, unevaluated_blocking_execution_key, unfalsified_clearance_count, ungoverned_divergence_execution_key, unresolved_issue_count, used_entity_count, vacuously_clean_execution_key, verification_result, version_of_step, violated_invariant_count, violates_separation_of_duties, was_executed_by_software, was_stale_when_i_ran_it FROM public.vw_step_executions;
+ALTER VIEW pko_knowledge_engineer.step_executions OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_engineer.step_executions TO pko_knowledge_engineer;
+CREATE VIEW pko_knowledge_engineer.cue_observations AS
+  SELECT acknowledged_at, cue_observation_id, cue_requires_escalation, cue_signals_incomplete_step, escalated_to_agent, is_awaiting_acknowledgement, is_unescalated_danger_cue, name, observed_at, observed_by_agent, owner_organization, semantic_type_iri, step_cue, step_execution, unescalated_cue_key, unescalated_execution_key, was_escalated FROM public.vw_cue_observations;
+ALTER VIEW pko_knowledge_engineer.cue_observations OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_engineer.cue_observations TO pko_knowledge_engineer;
+CREATE VIEW pko_knowledge_engineer.knowledge_fragments AS
+  SELECT age_days, as_of_instant, cognitive_basis, compound_fragile_version_key, confidence, consuming_step_agent_kind, consuming_step_is_software_assigned, corroboration_count, days_awaiting_my_approval, days_since_actual_review, elicitation_session, encoded_as, evaluation_context, evidence_age_days, evidence_expiry_days, evidence_has_expired, exceeds_owning_cadence, fragility_signal_count, genuinely_overdue_version_key, has_human_source, has_operational_reliance, has_orphaned_provenance, has_recorded_elicitation, has_review_record, inference_disagrees_with_record, is_aging_low_confidence_claim, is_ai_validated_by_ai, is_approved, is_attached_to_live_version, is_awaiting_approval, is_compound_fragile, is_currently_valid, is_expiring_single_point_of_failure, is_flattened_to_brittle_rule, is_from_single_witness, is_genuinely_overdue, is_high_blast_radius_unapproved, is_human_owned, is_invoked_by_an_exception, is_long_unapproved, is_low_confidence, is_my_unfinished_approval, is_orphaned_by_role, is_overdue_for_review, is_relied_upon, is_single_point_of_failure, is_unapproved_and_human_consumed, is_unapproved_and_machine_consumed, is_unapproved_and_operationally_live, is_unapproved_but_relied_on, is_undefendable_tacit_claim, is_unreviewed_since_authoring, is_within_validity_window, knowledge_form, knowledge_fragment_id, last_reviewed_at, lost_in_translation, machine_consumed_unapproved_version_key, name, owner_agent, owner_is_me, owner_organization, owner_role, owner_role_agent_kind, owner_role_assignment_valid_from, owner_role_is_vacated, owning_version_cadence_days, predates_current_role_holder, procedure_version, ratified_boundary_count, reliance_surface_count, rests_on_single_data_point, review_cadence_days, review_recency_is_inferred, semantic_type_iri, source_agent, source_agent_is_still_engaged, source_agent_kind, stated_conditions, statement, status, step, step_procedure_version_status, tacitness_degree, unapproved_load_bearing_version_key, valid_fragment_session_key, valid_fragment_version_key, valid_from, valid_to FROM public.vw_knowledge_fragments;
+ALTER VIEW pko_knowledge_engineer.knowledge_fragments OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_engineer.knowledge_fragments TO pko_knowledge_engineer;
+CREATE VIEW pko_knowledge_engineer.expert_cognitions AS
+  SELECT agent, applied_automatically, captured_exceptions, cognition_kind, elicitation_session, expert_cognition_id, expert_stated_exceptions, is_automatic_heuristic, is_heuristic_oversimplified, is_mental_model, name, semantic_type_iri, statement, step FROM public.vw_expert_cognitions;
+ALTER VIEW pko_knowledge_engineer.expert_cognitions OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_engineer.expert_cognitions TO pko_knowledge_engineer;
+CREATE VIEW pko_knowledge_engineer.concept_ladder_rungs AS
+  SELECT concept_ladder_rung_id, elicitation_session, is_decomposition_rung, is_ultimate_goal, ladder_level, name, rung_kind, semantic_type_iri, statement, step, step_top_level FROM public.vw_concept_ladder_rungs;
+ALTER VIEW pko_knowledge_engineer.concept_ladder_rungs OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_engineer.concept_ladder_rungs TO pko_knowledge_engineer;
+CREATE VIEW pko_knowledge_engineer.know_how_carriers AS
+  SELECT as_of_instant, builds_on_know_how, builds_on_same_community_know_how, carrier_kind, community_of_practice, days_served_to_as_of, days_served_to_departure, days_until_holder_departure, dependency_community, evaluation_context, held_since, holder_agent, holder_departure_at, holder_facility, holder_is_still_engaged, holder_service_started_at, holder_tenure_years, is_at_risk_of_imminent_loss, is_captured, is_delegated_to_unfit_source, is_held_by_current_practitioner, is_held_by_departed_holder, is_held_in_both_forms, is_held_only_by_departed, is_holder_leaving_soon, is_in_public_references, is_in_written_procedure, is_overlooked_living_holder, is_trained_skill, is_untransferred_veteran_know_how, is_veteran_held, know_how_carrier_id, know_how_kind, lost_accumulation_years, must_be_relearned_if_holder_leaves, name, organization, procedure, replacement_plan, repository_entry_count, semantic_type_iri, source_relationship_count, topic, transfer_count, transfer_stops_without_veteran, work_medium FROM public.vw_know_how_carriers;
+ALTER VIEW pko_knowledge_engineer.know_how_carriers OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_engineer.know_how_carriers TO pko_knowledge_engineer;
+CREATE VIEW pko_knowledge_engineer.assistant_answers AS
+  SELECT acted_on_without_human_judgment, answer_kind, answer_text, answered_at, answered_compliance_question_from_documents, answering_agent, arrived_after_step_ended, asked_at, asked_by_agent, asserted_next_step, assistant_answer_id, assumed_current_step, assumed_step_completed_count, cited_grounding_count, conflict_count, conflicts_with_regulation, context_step, context_step_ended_at, context_unescalated_danger_cue_count, contradicts_shared_model, delivered_despite_conflict, delivery_disposition, derivation_performed_by, document_interpretation_erred, documented_inaccuracy, execution_of_context, grounding_count, human_reviewed_by, is_explicitly_grounded_recommendation, is_not_from_own_knowledge, is_unchecked_regulated_recommendation, is_untraceable_to_source, lost_track_of_state, model_did_the_reasoning, name, needs_inference, own_knowledge_grounding_count, owner_organization, question_text, question_topic, raised_safety_concern, recommendation_rests_on_nothing_explicit, recommended_step, recommended_step_needs_human, recommended_step_regulatory_count, requirement_check_count, retrieval_mode, reviewed_for_initiative, semantic_type_iri, specified_transition_count, stale_grounding_count, stayed_silent_on_safety_problem, step_execution, task_outcome, via_integration, was_acted_on, was_correct, wrong_because_graph_was_stale FROM public.vw_assistant_answers;
+ALTER VIEW pko_knowledge_engineer.assistant_answers OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_engineer.assistant_answers TO pko_knowledge_engineer;
+CREATE VIEW pko_knowledge_engineer.knowledge_query_definitions AS
+  SELECT consolidated_distributed_sources, knowledge_query_definition_id, label, last_run_at, misses_a_layer, name, needs_ontology_and_instances, query_language, query_text, ran_over_consolidated_copy, semantic_type_iri, source_system_count, target_procedure_version, traverses_instance_layer, traverses_ontology_layer FROM public.vw_knowledge_query_definitions;
+ALTER VIEW pko_knowledge_engineer.knowledge_query_definitions OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_engineer.knowledge_query_definitions TO pko_knowledge_engineer;
+CREATE VIEW pko_knowledge_engineer.agents AS
+  SELECT accountability_assertion_count, agent_id, agent_kind, ai_task_completed_count, ai_task_completion_percent, answer_count, artifact_blast_radius_step_count, at_risk_reliance_count, attributed_artifact_count, boundary_violation_count, category_not_available_as_inference, community_count, contact_address, count_of_current_role_assignments, current_accountable_human_count, decision_count, departure_at, display_name, downstream_of_held_steps_count, draft_decision_count, draft_rewrite_rate_percent, has_artifact_blast_radius, has_at_risk_knowledge_reliance, has_produced_artifacts, inferred_category_count, is_ai_agent_not_filled_from_registry, is_ai_agent_without_accountable_human, is_ai_agent_without_model_version, is_below_task_completion_target, is_boundary_spanner, is_non_human, is_operating_outside_boundary, is_organization_agent, is_recognized_broker, is_still_engaged, is_unclassified_agent, is_unidentified_boundary_spanner, is_unrewarded_sharer, is_untracked_ai_consumer, lacks_runtime_knowledge_integration, lacks_time_to_mentor, located_know_how_count, name, organization, overridden_decision_count, overridden_draft_count, override_rate_percent, protected_mentoring_hours_per_week, recognition_count, registry_version_match_count, represents_organization, required_mentoring_hours_per_week, runtime_integration_count, search_event_count, semantic_type_iri, service_started_at, sna_identification_count, times_named_as_broker, transfers_given_count, version_or_employment_key FROM public.vw_agents;
+ALTER VIEW pko_knowledge_engineer.agents OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_engineer.agents TO pko_knowledge_engineer;
+CREATE VIEW pko_knowledge_engineer.roles AS
+  SELECT active_assignment_count, approval_step_count, backup_role_holder, capability_tag_count, compliance_review_tag_count, count_of_awaited_decisions, current_agent, current_agent_kind, current_assignment, current_assignment_valid_from, current_holder_name, currently_covered_assignment_count, departed_assignment_count, escalation_backup_role, has_compliance_review_capability, has_escalation_backup, has_lost_a_holder, has_no_current_holder, has_specializations, has_unfilled_escalation_backup, is_governed_by_lapsed_authority, is_missed_by_phrase_query, is_non_human_held, is_not_housed_in_department, is_production_release_approver, is_senior_variant_not_specialization, is_ungoverned_enforcement_role, is_ungoverned_non_human_role, is_vacated_role, label, name, organization, organization_type, preferred_knowledge_form, release_approval_step_count, responsibility, role_family, role_id, role_mention_count, semantic_type_iri, seniority_level, specialization_count, specialized_role_family, specializes_role, unauthorized_enforcement_assignment_count, unescalated_refusal_count, ungrounded_boundary_count, unresolved_role_mention_count FROM public.vw_roles;
+ALTER VIEW pko_knowledge_engineer.roles OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_engineer.roles TO pko_knowledge_engineer;
+CREATE VIEW pko_knowledge_engineer.elicitation_sessions AS
+  SELECT as_of_instant, concentrated_session_version_key, days_since_elicited, dependent_count, elicitation_mode, elicitation_session_id, ended_at, evaluation_context, executor_count, facilitator_agent, facilitator_is_knowledge_engineer, facilitator_knowledge_engineer_role_count, gathers_whole_process_chain, initiator_count, is_concentrated_single_witness, is_generic_or_unskilled_capture, is_high_yield_session, is_interview, is_interview_without_shortfall_probe, is_interview_without_why_probe, is_ke_field_session, is_reviewed_recording, is_single_witness_method, is_stale_concentrated_witness, is_workshop, is_workshop_without_usual_outsiders, method, method_family, name, observer_stance, practitioner_agent, practitioner_is_still_engaged, practitioner_reviewed_at, procedure_version, recording_reference, semantic_type_iri, setting, shortfall_probe_count, started_at, status, summary, uninvited_participant_count, valid_fragments_produced, why_probe_count FROM public.vw_elicitation_sessions;
+ALTER VIEW pko_knowledge_engineer.elicitation_sessions OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_engineer.elicitation_sessions TO pko_knowledge_engineer;
+CREATE VIEW pko_knowledge_engineer.elicitation_participants AS
+  SELECT agent, elicitation_participant_id, elicitation_session, is_knowledge_consumer, is_knowledge_engineer, is_knowledge_producer, is_practitioner, is_subject_matter_expert, is_usually_invited, knowledge_flow, name, participation_role, process_stake, semantic_type_iri FROM public.vw_elicitation_participants;
+ALTER VIEW pko_knowledge_engineer.elicitation_participants OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_engineer.elicitation_participants TO pko_knowledge_engineer;
+CREATE VIEW pko_knowledge_engineer.critical_incidents AS
+  SELECT account, critical_incident_id, elicitation_session, has_surfaced_judgment, is_adverse_or_improvised, judgment_fragment, name, narrator, occurred_at, outcome, procedure_version, revealed_judgment, semantic_type_iri, step FROM public.vw_critical_incidents;
+ALTER VIEW pko_knowledge_engineer.critical_incidents OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_engineer.critical_incidents TO pko_knowledge_engineer;
+CREATE VIEW pko_knowledge_engineer.repertory_grid_constructs AS
+  SELECT agent, dimension, elicitation_session, is_never_stated_dimension, is_recorded_discriminating_dimension, name, pole_a, pole_b, repertory_grid_construct_id, semantic_type_iri, separates_situations, situations_compared, was_stated_unprompted FROM public.vw_repertory_grid_constructs;
+ALTER VIEW pko_knowledge_engineer.repertory_grid_constructs OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_engineer.repertory_grid_constructs TO pko_knowledge_engineer;
+CREATE VIEW pko_knowledge_engineer.workflow_view_divergences AS
+  SELECT elicitation_session, holder_a, holder_b, is_reconciled, is_surfaced_but_unreconciled, name, procedure_version, reconciled_at, reconciled_into_fragment, reconciled_statement, semantic_type_iri, step, view_a, view_b, workflow_view_divergence_id FROM public.vw_workflow_view_divergences;
+ALTER VIEW pko_knowledge_engineer.workflow_view_divergences OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_engineer.workflow_view_divergences TO pko_knowledge_engineer;
+CREATE VIEW pko_knowledge_engineer.stakeholder_perspectives AS
+  SELECT conflict_partner_count, conflicts_with_perspective, disposition, holder_role, is_dissenting_view_not_kept_with_source, is_in_conflict, name, position, procedure_version, semantic_type_iri, source_material, source_material_kind, stakeholder_perspective_id, step FROM public.vw_stakeholder_perspectives;
+ALTER VIEW pko_knowledge_engineer.stakeholder_perspectives OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_engineer.stakeholder_perspectives TO pko_knowledge_engineer;
+CREATE VIEW pko_knowledge_engineer.knowledge_repository_entries AS
+  SELECT as_of_instant, author_agent, author_agent_kind, author_is_still_engaged, authored_on_allocated_time, created_at, credits_source_expert, days_since_updated, evaluation_context, fed_from_execution, is_execution_feedback, is_machine_authored, is_stale, is_uncredited_expert_know_how, know_how, knowledge_repository_entry_id, last_updated_at, name, outlives_author_tenure, owner_organization, procedure, review_interval_days, semantic_type_iri, source_expert, title, written_for_audience FROM public.vw_knowledge_repository_entries;
+ALTER VIEW pko_knowledge_engineer.knowledge_repository_entries OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_engineer.knowledge_repository_entries TO pko_knowledge_engineer;
+CREATE VIEW pko_knowledge_engineer.knowledge_transfers AS
+  SELECT channel, community_of_practice, from_agent, from_organization, is_ambient_absorption_by_non_practitioner, is_social_network_channel, is_traditional_channel, know_how, knowledge_transfer_id, name, occurred_at, on_allocated_time, recipient_agent, recipient_role_count, semantic_type_iri FROM public.vw_knowledge_transfers;
+ALTER VIEW pko_knowledge_engineer.knowledge_transfers OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_engineer.knowledge_transfers TO pko_knowledge_engineer;
+CREATE VIEW pko_knowledge_engineer.mentorships AS
+  SELECT as_of_instant, community_of_practice, days_since_started, employer_worker_obligation, evaluation_context, evidence_of_completion, expected_weekly_hours, is_active, is_recent_apprenticeship, learner_agent, learning_objective, mentor_agent, mentorship_form, mentorship_id, name, semantic_type_iri, valid_from, valid_to FROM public.vw_mentorships;
+ALTER VIEW pko_knowledge_engineer.mentorships OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_engineer.mentorships TO pko_knowledge_engineer;
+CREATE VIEW pko_knowledge_engineer.knowledge_broker_links AS
+  SELECT active_reliance_broker_key, as_of_instant, at_risk_broker_key, broker, broker_is_still_engaged, days_since_consulted, evaluation_context, frequency, holder_vocabulary, holder_wording, is_active_reliance, is_at_risk_reliance, knowledge_broker_link_id, last_consulted_at, locates_other_holder, name, pointed_holder, points_to_know_how, seeker, seeker_vocabulary, seeker_wording, semantic_type_iri, topic, translation_between_vocabularies FROM public.vw_knowledge_broker_links;
+ALTER VIEW pko_knowledge_engineer.knowledge_broker_links OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_engineer.knowledge_broker_links TO pko_knowledge_engineer;
+CREATE VIEW pko_knowledge_engineer.vocabularies AS
+  SELECT established_at, governed_dimension, governing_role, governs_procedure, has_orphan_terms, is_frozen_despite_new_collection, is_machine_accessible, is_single_kind_frame, latest_organized_material_at, managed_scheme_procedure_key, model_layer, name, ontology_modeling_started_at, ontology_preceded_vocabulary_control, organized_document_excerpt_count, organized_field_notes_count, organized_kind_count, organized_material_count, organized_mined_event_trace_count, organized_process_map_count, organized_transcript_count, orphan_term_count, prefix, publication_format, refinement_count, scheme_kind, scheme_uri, semantic_type_iri, term_count, title, vocabulary_id FROM public.vw_vocabularies;
+ALTER VIEW pko_knowledge_engineer.vocabularies OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_engineer.vocabularies TO pko_knowledge_engineer;
+CREATE VIEW pko_knowledge_engineer.vocabulary_terms AS
+  SELECT alt_label_practitioner_mention_count, alt_labels, broader_term, broader_term_parent, concept_iri, definition, definition_revised_at, has_stale_definition, has_structural_sense_shift_across_years, has_unreconciled_variant_phrasings, introduced_in_release, introduced_release_issued_at, is_organized_around_official_term, is_orphan_term, is_widely_adopted_term, latest_meaning_change_at, name, namespace_iri, orphan_term_vocabulary_key, pref_label, pref_label_practitioner_mention_count, represents_role, same_as_iri, scheme_governed_dimension, scope_note, semantic_type_iri, source_phrasing_count, structural_shift_count, unreconciled_phrasing_count, usage_count, vocabulary, vocabulary_term_id FROM public.vw_vocabulary_terms;
+ALTER VIEW pko_knowledge_engineer.vocabulary_terms OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_engineer.vocabulary_terms TO pko_knowledge_engineer;
+CREATE VIEW pko_knowledge_engineer.term_label_variants AS
+  SELECT concepts_sharing_wording, is_ambiguous_label, is_cross_scheme_duplicate_pref, label_kind, name, practitioner_mention_count, pref_wording, pref_wording_key, same_pref_wording_count, semantic_type_iri, term_label_variant_id, term_scheme, vocabulary_term, wording, wording_key FROM public.vw_term_label_variants;
+ALTER VIEW pko_knowledge_engineer.term_label_variants OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_engineer.term_label_variants TO pko_knowledge_engineer;
+CREATE VIEW pko_knowledge_engineer.stakeholder_lenses AS
+  SELECT exemplar_role, granularity_rank, label, name, needs_compliance_evidence, needs_exception_handling, needs_metrics, needs_step_guidance, needs_structured_constraints, preferred_form, required_granularity, semantic_type_iri, stakeholder_lens_id FROM public.vw_stakeholder_lenses;
+ALTER VIEW pko_knowledge_engineer.stakeholder_lenses OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_engineer.stakeholder_lenses TO pko_knowledge_engineer;
+CREATE VIEW pko_knowledge_engineer.procedure_lens_views AS
+  SELECT category_level_procedure_key, form, granularity, is_disconnected_silo, is_granularity_misfit, lens_granularity_rank, name, procedure, procedure_current_version, procedure_lens_view_id, projects_version, semantic_type_iri, stakeholder_lens, step_level_procedure_key, view_granularity_rank FROM public.vw_procedure_lens_views;
+ALTER VIEW pko_knowledge_engineer.procedure_lens_views OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_engineer.procedure_lens_views TO pko_knowledge_engineer;
+CREATE VIEW pko_knowledge_engineer.knowledge_traces AS
+  SELECT contradicted_document, contradicted_document_revised_at, derivation_route, derived_by_agent, derived_by_agent_kind, has_incomplete_provenance, is_aspect_unsupported_by_source_kind, is_document_origin, is_document_start_never_extended, is_document_start_never_validated, is_document_trailing_practice, is_machine_derived, is_self_validated, is_source_changed_since_taken, is_unfaithful_to_source, knowledge_trace_id, modeled_duration_minutes, name, prescribed_versus_enacted, procedure_version, provenance_statement, requirement, semantic_type_iri, source_collected_at, source_is_document, source_is_people_capture, source_is_practice_evidence, source_material, source_material_kind, source_revised_at, source_stated_duration_minutes, source_statement, step, step_elicited_extension_count, step_elicited_validation_count, target_kind, trace_role, traced_aspect, validated_at, validated_by_agent FROM public.vw_knowledge_traces;
+ALTER VIEW pko_knowledge_engineer.knowledge_traces OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_engineer.knowledge_traces TO pko_knowledge_engineer;
+CREATE VIEW pko_knowledge_engineer.collected_source_materials AS
+  SELECT captured_during_execution, changed_dependent_count, collected_at, collected_at_occasion, collected_source_material_id, complements_mining_run, contributing_expert, dependent_trace_count, encoded_at, encoded_into_version, expert_effort_hours, has_knowledge_affected_by_source_change, holds_reasoning_or_tacit_knowledge, is_captured_in_flow_of_work, is_dependency_invisible_to_change, is_document_source, is_modeled_before_organized, is_people_capture, is_practice_evidence, label, material_kind, name, organized_at, organized_into_scheme, procedure, produced_by_method_application, prompted_by_feedback, semantic_type_iri, source_document, source_document_revised_at FROM public.vw_collected_source_materials;
+ALTER VIEW pko_knowledge_engineer.collected_source_materials OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_engineer.collected_source_materials TO pko_knowledge_engineer;
+CREATE VIEW pko_knowledge_engineer.knowledge_search_events AS
+  SELECT channel, dwell_seconds, found_nothing_useful, gave_up_after_seeing_results, is_unlinked_failed_search, knowledge_search_event_id, linked_knowledge_gap, linked_usability_barrier, name, opened_projection, opened_segment, query_text, result_count, searched_at, searched_by_agent, seconds_before_abandoning, semantic_type_iri, sought_procedure_version, was_abandoned FROM public.vw_knowledge_search_events;
+ALTER VIEW pko_knowledge_engineer.knowledge_search_events OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_engineer.knowledge_search_events TO pko_knowledge_engineer;
+CREATE VIEW pko_knowledge_engineer.knowledge_methods AS
+  SELECT application_count, elicitation_tradeoff, elicitation_use_count, is_applied, knowledge_method_id, label, method_family, name, origin_reference, semantic_type_iri, summary, usage_count FROM public.vw_knowledge_methods;
+ALTER VIEW pko_knowledge_engineer.knowledge_methods OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_engineer.knowledge_methods TO pko_knowledge_engineer;
+CREATE VIEW pko_knowledge_engineer.knowledge_gaps AS
+  SELECT as_of_instant, blocking_kind, codified_as_fragment, days_open, drawn_out_by_session, evaluation_context, gap_cause, has_resolution_plan, holder_declined_to_share, identified_at, is_abandoned_unknown, is_blocking, is_gatekeeping_or_sabotage, is_known_and_unresolved, is_open, is_open_and_blocking, is_overdue_gap, is_ownerless_open_gap, is_required_gatekept_uncodified, is_unattributed_gatekeeping, knowledge_gap_id, name, open_blocking_gap_version_key, open_gap_version_key, owner_agent, owner_is_still_engaged, owner_organization, owner_role, owner_role_is_vacated, procedure_version, resolution_plan, semantic_type_iri, severity, siloed_within, statement, status, step, tolerance_days FROM public.vw_knowledge_gaps;
+ALTER VIEW pko_knowledge_engineer.knowledge_gaps OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_engineer.knowledge_gaps TO pko_knowledge_engineer;
+CREATE VIEW pko_knowledge_engineer.change_requests AS
+  SELECT approved_version_key, as_of_instant, authority_agent, authority_role, authority_role_label, awaits_authority_decision, backlog_version_key, blocks_an_open_gap, change_kind, change_request_id, days_pending, days_since_approval, decided_at, decision_latency_days, delay_is_downstream_of_me, evaluation_context, impact_assessment, implementation_latency_days, implemented_at, is_approved_decision, is_approved_not_implemented, is_decided, is_implemented, is_live_decision_backlog, is_my_blocking_backlog, is_my_decided_but_unlanded, is_my_decided_request, is_my_overdue_backlog, is_my_pending_decision, is_open, is_stalled, is_stalled_implementation, is_still_pending, name, open_change_version_key, owner_organization, procedure_version, requested_at, requested_by_agent, requester_is_authority, semantic_type_iri, stalled_implementation_version_key, status, title, touches_live_version, unlanded_version_key FROM public.vw_change_requests;
+ALTER VIEW pko_knowledge_engineer.change_requests OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_engineer.change_requests TO pko_knowledge_engineer;
+CREATE VIEW pko_knowledge_engineer.onboarding_records AS
+  SELECT as_of_instant, days_since_start, days_to_proficiency, evaluation_context, is_proficient, is_recent_start, is_starting_from_nothing, name, new_starter, onboarding_record_id, procedure, procedure_departed_only_count, procedure_repository_entry_count, proficient_at, semantic_type_iri, started_at, used_captured_knowledge FROM public.vw_onboarding_records;
+ALTER VIEW pko_knowledge_engineer.onboarding_records OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_engineer.onboarding_records TO pko_knowledge_engineer;
+CREATE VIEW pko_knowledge_engineer.communities_of_practice AS
+  SELECT ambient_absorption_count, cadence, community_of_practice_id, digital_know_how_count, employer_move_count, external_member_count, has_ambient_trade_know_how, has_own_vocabulary_and_norms, interconnected_know_how_count, is_circulation_ending_for_lack_of_apprentices, is_colocated_trade, is_cross_firm_practice_cluster, is_mandated_without_sharing_norm, label, name, norms, open_apprenticeship_places, organization, origin, own_vocabulary, person_carried_know_how_count, physical_know_how_count, purpose, recent_apprenticeship_count, semantic_type_iri, sharing_event_count, spans_physical_and_digital_with_humans, specialist_member_count, steward_role FROM public.vw_communities_of_practice;
+ALTER VIEW pko_knowledge_engineer.communities_of_practice OWNER TO postgres;
+GRANT SELECT ON pko_knowledge_engineer.communities_of_practice TO pko_knowledge_engineer;
+CREATE VIEW pko_sourcing_manager.provider_engagements AS
+  SELECT client_organization, documentation_ownership, has_knowledge_access_clause, is_active, is_knowledge_access_unsecured, is_one_way_learning, is_short_term_without_joint_knowledge, is_unplanned_knowledge_return, joint_deliverable_count, knowledge_duty_terms, knowledge_return_plan, lacks_knowledge_deliverables, name, obliges_knowledge_flow_back, provider, provider_engagement_id, provider_treats_know_how_as_differentiator, relied_dependency_count, required_deliverable_count, semantic_type_iri, sourcing_function, started_at, status, term_months, to_client_delivered_count, to_client_required_count, to_provider_delivered_count FROM public.vw_provider_engagements;
+ALTER VIEW pko_sourcing_manager.provider_engagements OWNER TO postgres;
+GRANT SELECT ON pko_sourcing_manager.provider_engagements TO pko_sourcing_manager;
+CREATE VIEW pko_sourcing_manager.knowledge_deliverables AS
+  SELECT delivered_at, direction, due_at, is_delivered, knowledge_deliverable_id, name, provider_engagement, semantic_type_iri, title FROM public.vw_knowledge_deliverables;
+ALTER VIEW pko_sourcing_manager.knowledge_deliverables OWNER TO postgres;
+GRANT SELECT ON pko_sourcing_manager.knowledge_deliverables TO pko_sourcing_manager;
+CREATE VIEW pko_sourcing_manager.knowledge_audits AS
+  SELECT conducted_at, conducted_by_agent, finding_count, knowledge_audit_id, name, organization, problem_framing, semantic_type_iri, title, treats_deficit_as_cost_problem FROM public.vw_knowledge_audits;
+ALTER VIEW pko_sourcing_manager.knowledge_audits OWNER TO postgres;
+GRANT SELECT ON pko_sourcing_manager.knowledge_audits TO pko_sourcing_manager;
+CREATE VIEW pko_sourcing_manager.knowledge_audit_items AS
+  SELECT client_organization, has_internal_shortfall, held_internal_level, internal_holding_team_count, is_coverage_gap, is_knowledge_dependency, is_single_team_silo, is_unnamed_finding, knowledge_area, knowledge_audit, knowledge_audit_item_id, knowledge_kind, name, named_knowledge_gap, needed_level, provider_held_level, provider_holding_knowledge, semantic_type_iri, sourcing_function FROM public.vw_knowledge_audit_items;
+ALTER VIEW pko_sourcing_manager.knowledge_audit_items OWNER TO postgres;
+GRANT SELECT ON pko_sourcing_manager.knowledge_audit_items TO pko_sourcing_manager;
+CREATE VIEW pko_sourcing_manager.sourcing_functions AS
+  SELECT audit_item_count, capture_initiative_count, claims_how_without_doing, client_organization, coverage_gap_count, delivers_own_product, dependency_count, designs_what_it_cannot_build, executing_organization, is_business_process_outsourcing, is_knowledge_process_outsourcing, is_method_knowledge_held_outside, is_outsourced, is_outsourced_vital_expertise_process, is_strategically_vital, is_unaudited_function, is_uncaptured_priority_process, is_vital_expertise_classed_non_core, is_vital_expertise_process, is_what_how_split, label, method_holder, method_shortfall_count, name, procedure, provider_ip_documentation_count, semantic_type_iri, sourced_since, sourcing_class, sourcing_function_id, sourcing_rationale, specification_audit_count, specification_holder, specification_shortfall_count, work_nature FROM public.vw_sourcing_functions;
+ALTER VIEW pko_sourcing_manager.sourcing_functions OWNER TO postgres;
+GRANT SELECT ON pko_sourcing_manager.sourcing_functions TO pko_sourcing_manager;
+CREATE VIEW pko_sourcing_manager.organizations AS
+  SELECT ai_fails_for_lack_of_captured_knowledge, audit_finding_count, captured_own_know_how_count, departed_holder_know_how_count, display_name, documentation_entry_count, eroded_in_stages, external_identifier, facility_carried_know_how_count, failed_ai_initiative_count, filled_knowledge_position_count, has_knowledge_findings_without_knowledge_staff, holds_know_how_in_people_plants_and_systems, is_hollowed_out_firm, lost_departed_know_how_count, memory_leaves_with_staff, name, organization_id, organization_type, owned_procedure_count, person_carried_know_how_count, product_delivery_function_count, provider_held_delivery_method_count, retained_departed_know_how_percent, semantic_type_iri, staged_decline_count, system_carried_know_how_count, transfer_given_count, treats_knowledge_work_as_unvalued, unallocated_documentation_count, unallocated_transfer_count FROM public.vw_organizations;
+ALTER VIEW pko_sourcing_manager.organizations OWNER TO postgres;
+GRANT SELECT ON pko_sourcing_manager.organizations TO pko_sourcing_manager;
+CREATE VIEW pko_sourcing_manager.knowledge_workforce_positions AS
+  SELECT discipline, filled_by_agent, knowledge_workforce_position_id, name, opened_at, organization, role, semantic_type_iri, status FROM public.vw_knowledge_workforce_positions;
+ALTER VIEW pko_sourcing_manager.knowledge_workforce_positions OWNER TO postgres;
+GRANT SELECT ON pko_sourcing_manager.knowledge_workforce_positions TO pko_sourcing_manager;
+CREATE VIEW pko_sourcing_manager.agents AS
+  SELECT accountability_assertion_count, agent_id, agent_kind, ai_task_completed_count, ai_task_completion_percent, answer_count, artifact_blast_radius_step_count, at_risk_reliance_count, attributed_artifact_count, boundary_violation_count, category_not_available_as_inference, community_count, contact_address, count_of_current_role_assignments, current_accountable_human_count, decision_count, departure_at, display_name, downstream_of_held_steps_count, draft_decision_count, draft_rewrite_rate_percent, has_artifact_blast_radius, has_at_risk_knowledge_reliance, has_produced_artifacts, inferred_category_count, is_ai_agent_not_filled_from_registry, is_ai_agent_without_accountable_human, is_ai_agent_without_model_version, is_below_task_completion_target, is_boundary_spanner, is_non_human, is_operating_outside_boundary, is_organization_agent, is_recognized_broker, is_still_engaged, is_unclassified_agent, is_unidentified_boundary_spanner, is_unrewarded_sharer, is_untracked_ai_consumer, lacks_runtime_knowledge_integration, lacks_time_to_mentor, located_know_how_count, name, organization, overridden_decision_count, overridden_draft_count, override_rate_percent, protected_mentoring_hours_per_week, recognition_count, registry_version_match_count, represents_organization, required_mentoring_hours_per_week, runtime_integration_count, search_event_count, semantic_type_iri, service_started_at, sna_identification_count, times_named_as_broker, transfers_given_count, version_or_employment_key FROM public.vw_agents;
+ALTER VIEW pko_sourcing_manager.agents OWNER TO postgres;
+GRANT SELECT ON pko_sourcing_manager.agents TO pko_sourcing_manager;
+CREATE VIEW pko_release_manager.procedures AS
+  SELECT adopted_by_organization, adoption_count, agent_intended_count, avg_days_to_proficiency_with_capture, avg_days_to_proficiency_without_capture, called_by_step_count, category_level_view_count, collected_material_count, compliance_document_count, compliance_review_step_count, current_version_key, days_with_capture_total, days_without_capture_total, departed_only_know_how_count, departing_veteran_know_how_count, execution_count, execution_feedback_entry_count, expert_acquisition_hours, failure_criterion_count, formalization_does_not_ease_onboarding, has_decayed_transfer_channel, has_no_explicit_steps, has_no_failure_criterion, has_no_stated_reason_for_existing, has_step_and_category_resolutions, has_transfer_shortfall_exposure, has_unengaged_stakeholder, hindered_by_count, in_work_capture_count, involves_compliance_review_role, is_capture_separate_from_work, is_captured_by_automation_alone, is_executed_without_feedback_loop, is_hindered_by_another_operation, is_inconsistently_categorized, is_missing_demanded_resolution, is_nested_procedure, is_regulated_but_unformalized, is_tacit_only_agent_target, is_template, is_template_instance, lacks_distinction_type_key, lacks_managed_controlled_vocabulary, lacks_type_distinction, lens_view_count, machine_authored_entry_count, managed_vocabulary_count, matching_distinction_count, measures_performance_without_business_link, name, outcome_measure_count, owner_organization, practitioner_relationship_count, privileges_single_stakeholder_view, procedure_id, procedure_type, procedure_type_definition, procedure_type_rank, proficient_with_capture_count, proficient_without_capture_count, purpose, recent_starter_count, repository_entry_count, required_by_regulation, semantic_type_iri, specified_step_total, stale_entry_count, step_level_view_count, strategic_alignment_count, target, target_count, template_procedure, title, type_distinguishing_facet, type_distinguishing_value, unengaged_stakeholder_count, unlinked_measure_count, untransferred_veteran_know_how_count FROM public.vw_procedures;
+ALTER VIEW pko_release_manager.procedures OWNER TO postgres;
+GRANT SELECT ON pko_release_manager.procedures TO pko_release_manager;
+CREATE VIEW pko_release_manager.procedure_versions AS
+  SELECT ai_artifact_consuming_input_count, ai_boundary_is_unevidenced, ai_consumption_count, ai_contribution_count, alternative_transition_count, approved_change_request_count, as_of_instant, awaited_decision_count, cadence_breach_count, changelog_description, coarse_top_level_step_count, complementary_method_count, compound_fragile_fragment_count, concentrated_witness_session_count, conditionless_step_count, consumer_sync_count, contains_steps_affected_by_ai_agent_change, control_taxonomy_is_incomplete, count_of_change_requests, count_of_open_blocking_gaps, count_of_open_knowledge_gaps, count_of_overdue_gaps, count_of_review_events, count_of_stale_fragments, count_of_steps, count_of_stewardship_assignments, count_of_unapproved_reliance_fragments, created_by_agent, created_by_agent_kind, critical_incident_count, day_deviating_run_count, day_run_count, days_document_trails_version, days_since_last_review, days_since_modified, declared_first_step_count, design_decision_count, document_lags_practice, drifted_mining_run_count, elicitation_evidence_count, elicitation_session_count, enables_relation_count, entry_step_id, evaluation_context, exception_count, execution_count, expected_duration_unit, expected_duration_value, expert_capture_count, experts_evaluate_ai_not_representation, explicit_holding_count, fallback_step, fallback_transition_count, feeds_unapproved_knowledge_to_machines, fine_top_level_step_count, first_step, first_step_disagrees_with_graph, fresh_mining_run_count, genuinely_overdue_fragment_count, governance_is_silent, graph_entry_step_count, hands_held_count, has_any_steward, has_approved_change_request, has_decision_in_flight, has_governance_record, has_no_exception_handling, has_open_blocking_gap, has_unrehearsed_control_entry, has_unresolved_mining_drift, has_unwitnessed_change, human_channel_count, human_step_count, human_sync_count, incident_session_count, incoming_supersession_count, indexed_segment_count, interview_session_count, is_approved_without_sme_signoff, is_blocked_on_pending_decision, is_cleanly_retired, is_current, is_current_without_motivation, is_disconnected_from_outcomes, is_documented_behind_practice, is_fit_to_execute, is_held_unfit_by_landed_decisions, is_in_cadence_breach, is_inadequate_for_use, is_inconsistent_across_shifts, is_live, is_live_and_unstewarded, is_live_model_untraced, is_live_with_blocking_gap, is_live_with_unrehearsed_control, is_live_without_recorded_decisions, is_load_bearing_orphan, is_managed_cadence_breach, is_not_query_validate_reason_ready, is_ready_for_execution, is_standardized_without_tacit_capture, is_still_referenced, is_studied_only_from_the_desk, is_under_specified_for_execution, is_unmodified_for_twelve_months, is_unreachable_knowledge, is_unremediated_cadence_breach, is_unstewarded, issued_at, judgment_held_outside_sop_count, judgment_unprobed_by_incidents, ke_field_session_count, ke_session_count, knowledge_base_is_concentrated, knowledge_is_staler_than_cadence, lacks_continuous_drift_detection, lacks_machine_interpretable_encoding, latest_source_document_modified_at, lives_in_hands_silence_and_negotiation, load_bearing_unapproved_count, machine_channel_count, machine_consumed_unapproved_count, machine_sync_count, mining_run_count, misses_a_required_elicitation_mode, mixes_granularity_at_one_level, mixes_human_and_software_steps, modified_at, modified_by_agent, modifier_is_authority, name, negotiated_practice_count, new_version_motivation, night_deviating_run_count, night_run_count, non_human_step_count, observation_session_count, open_change_request_count, open_high_severity_gap_count, open_question_annotation_count, outcome_measurement_count, overdue_review_count, overlaps_relation_count, owner_organization, prevents_relation_count, procedure, procedure_type_of_version, procedure_version_id, process_model_trace_count, profile_validated_submission_count, protocol_session_count, published_projection_count, reasoned_assertion_count, reconciled_divergence_count, relies_on_single_method, rests_on_compound_fragile_knowledge, rests_on_notation_only, runs_on_unapproved_knowledge, scoped_open_blocking_gap_count, search_count, search_success_percent, semantic_type_iri, served_assertion_count, serves_only_humans_or_only_machines, should_not_be_executable, situated_judgment_fragment_count, sme_ai_evaluation_count, sme_approval_count, specified_step_count, stalled_implementation_count, standardization_driver, status, status_is_pko, steps_without_ontology_type_count, steward_review_cadence_days, still_owns_valid_knowledge, structured_query_count, successful_search_count, tacit_form_fragment_count, tacit_fragment_count, tacit_holding_count, tacit_judgment_fragment_count, tacit_share_exceeds_explicit, title, trailing_practice_trace_count, undeclared_control_kind_count, unexercised_human_gate_count, unlanded_decision_count, unrehearsed_control_entry_count, unwatched_unowned_control_count, uses_ai_in_one_direction_only, uses_non_pko_status, valid_fragment_count, version_number, was_modified_since_last_review, workshop_session_count FROM public.vw_procedure_versions;
+ALTER VIEW pko_release_manager.procedure_versions OWNER TO postgres;
+GRANT SELECT ON pko_release_manager.procedure_versions TO pko_release_manager;
+CREATE VIEW pko_release_manager.steps AS
+  SELECT accountable_agent, activity_origin_trace_count, ai_artifact_input_count, ai_failure_count, all_sources_usable, approval_step_is_software_assigned, assigned_agent_kind, assigned_role, assigned_role_does_compliance_review, assigned_role_is_ungoverned, assigned_role_label, authoritative_stale_count, available_exception_count, binding_boundary_count, blocking_requirement_count, bottleneck_allocation_count, calls_procedure, child_step_count, coarse_top_level_version_key, collection_evidence_count, compliance_review_procedure_key, conditionless_version_key, consumes_ai_agent_artifact, context_sensitivity_count, control_kind, cue_count, danger_cue_count, decision_point_count, declared_fallback_step_key, declared_first_step_key, declared_verification_count, description, detail_level, deviated_run_count, dmn_decision_count, downstream_artifact_step_count, elicited_extension_count, elicited_validation_count, entry_step_key, expected_duration_minutes, expertise_level, failure_mode_count, fine_top_level_version_key, first_child_step, gate_free_reach_from_entry_count, gate_held_by_human, has_been_approached_by_software, has_collection_evidence, has_declared_control_kind, has_downstream_steps, has_incompleteness_cue, has_instruction_only, has_no_accountable_agent, has_postcondition, has_reported_reality_mismatch, incoming_transition_count, incompleteness_cue_count, input_variable_count, inputs_are_fresh, instruction, invariant_count, is_accountable_to_software, is_ai_failure_point, is_approval_step, is_blocking_control_on_rework_loop, is_bottleneck_step, is_composite_without_children, is_context_sensitive_but_unscoped, is_declared_fallback_step, is_declared_first_step, is_demonstrated_human_gate, is_drifted_from_practice, is_entry_step, is_gate_bypassed_publication, is_governed_by_unwarranted_boundary, is_human_approval_gate, is_isolation_without_lock, is_on_rework_loop, is_preparation_step, is_reachable_from_entry_without_human_gate, is_release_approval_gate, is_software_assigned, is_unexercised_human_gate, is_untraced_activity_in_traced_model, isolates_energy_source, knowledge_fragment_count, max_repetitions, min_repetitions, name, open_outdated_flag_count, output_variable_count, owner_organization, parent_step, parent_step_kind, parseable_condition_count, postcondition_count, precondition_count, prerequisite_downstream_count, prerequisite_is_downstream, prerequisite_step, procedure_version, reachable_step_count, reached_from_step_count, referenced_resource_count, regulatory_requirement_count, remedy_for_error, required_lock_count, required_protective_equipment_count, requires_human_confirmation, safety_critical_condition_count, self_reach_count, semantic_type_iri, software_execution_count, stage, stale_authoritative_binding_count, stale_binding_count, states_operational_knowledge, step_id, step_kind, step_number, step_procedure_type, title, tool_function_count, tool_use_rules_only_in_prose, undeclared_control_version_key, unexercised_gate_version_key, unscoped_sensitivity_count, untyped_version_key, unusable_binding_count, unwarranted_boundary_count, unwitnessed_blocking_count, verifies_step, version_entry_step_id, version_model_trace_count, version_procedure FROM public.vw_steps;
+ALTER VIEW pko_release_manager.steps OWNER TO postgres;
+GRANT SELECT ON pko_release_manager.steps TO pko_release_manager;
+CREATE VIEW pko_release_manager.step_transitions AS
+  SELECT avoids_human_approval_gate, condition, count_of_from_step_executions, count_of_observed_traversals, count_of_to_step_executions, decision_point_count, from_step, from_step_is_human_approval_gate, has_been_traversed, has_reachable_origin, has_reachable_target, is_never_exercised, is_recovery_path, is_undocumented_branch, is_unrehearsed_control_entry, is_untested_recovery_path, is_unwalked_recovery_path, name, priority, procedure_version, semantic_type_iri, step_transition_id, target_blocking_requirement_count, target_carries_blocking_control, to_step, to_step_is_human_approval_gate, transition_kind, unrehearsed_control_version_key FROM public.vw_step_transitions;
+ALTER VIEW pko_release_manager.step_transitions OWNER TO postgres;
+GRANT SELECT ON pko_release_manager.step_transitions TO pko_release_manager;
+CREATE VIEW pko_release_manager.procedure_executions AS
+  SELECT abandoned_failure_count, all_blocking_controls_evaluated, approval_chain_is_complete, approval_step_count, asserted_only_control_count, assurance_chain_is_circular, assurance_grade, assurance_is_mostly_asserted, attestation_blocker_summary, attestation_count, attestation_would_be_weakly_based, basis_changed_after_signature, campaign_silently_lost_audience, claims_completion_without_all_steps, clean_facility_key, cleared_legal_review_count, completed_step_count, computed_assurance_ratio, computedly_witnessed_control_count, confirmed_by_agent, context, control_breach_count, count_of_approval_executions, count_of_delivery_executions, delivered_count, delivered_without_approval, delivery_yield_percent, description, deviating_day_version_key, deviating_facility_key, deviating_night_version_key, deviating_step_count, diverged_from_specification, divergence_was_fully_governed, ended_at, evaluated_control_count, executed_by_agent, executed_on_machine, executed_version_is_fit, execution_status, expected_step_count, facility, feedback_count, has_abandoned_failures, has_any_independent_observation, has_been_attested, has_cleared_legal_review, has_delivered, has_human_approval, has_no_recorded_outcome, has_step_deviation, has_unrecorded_refusals, independent_human_observation_count, independently_confirmed_intent_count, intended_recipient_count, interested_party_assertion_count, invalid_approval_count, is_attestation_ready, is_structurally_complete, is_unconfirmed_completion, is_unreported_mistake, late_step_count, latest_attestation_instant, mishandled_refusal_count, name, observations, operational_record_uri, outcome, owner_organization, participant_count, post_attestation_score_count, preparation_step_count, procedure_execution_id, procedure_version, ran_clean, reached_recipient_count, requires_re_attestation, retention_breach_count, self_attested_approval_count, semantic_type_iri, send_decisions_are_entirely_self_witnessed, separation_assurance_note, separation_held_under_test, separation_is_vacuously_green, separation_of_duties_held, separation_violation_count, separation_was_testable, shift, signed_against_unfit_version, silently_dropped_count, started_at, status_change_count, title, total_delivery_attempt_count, unclean_step_count, unevaluated_blocking_total, ungoverned_divergence_count, unreachable_handling_failure_count, unrecorded_refusal_count, vacuously_clean_step_count FROM public.vw_procedure_executions;
+ALTER VIEW pko_release_manager.procedure_executions OWNER TO postgres;
+GRANT SELECT ON pko_release_manager.procedure_executions TO pko_release_manager;
+CREATE VIEW pko_release_manager.step_executions AS
+  SELECT actual_duration_minutes, all_clearances_are_unfalsified, approval_execution_key, approval_rests_on_self_attestation, approver_agent_key, assigned_role, available_exception_count_for_step, blocking_unmet_count, blocking_unmet_count_safe, broke_invariant, claims_pass_without_evidence, cleared_legal_review_key, completed_execution_key, completed_prerequisite_run_count, confirmed_by_agent, control_breach_execution_key, declared_check_count, description, deviation, deviation_execution_key, drafted_from_unusable_source, ended_at, evaluated_blocking_count, evaluated_requirement_count, evidence_position_is_weak, exceeds_max_repetitions, exception_invocation_count, executed_by_agent, executes_step_of_other_version, executing_agent_kind, execution_status, execution_version, executor_agent_kind, executor_authority_count, executor_held_required_role, executor_is_designated_agent, executor_is_human, executor_role_key, expected_blocking_count, expected_duration_minutes, expected_verification_count, failed_precondition_count, generated_entity_count, had_uninvoked_exception_available, has_any_declared_check, has_approved_change_coverage, has_deviation, has_deviation_note, has_governing_instrument, has_skipped_verification, has_unevaluated_blocking_control, has_unevaluated_blocking_requirement, human_confirmation_missing, ignored_danger_cue, incomplete_cue_observation_count, inputs_were_fresh_at_run, inputs_were_usable, is_approval_execution, is_blocked_by_incomplete_prerequisite, is_blocked_by_observed_cue, is_clean, is_completed, is_late, is_late_and_unexplained, is_legal_review_step, is_out_of_specified_order, is_substantively_clean, is_unauthorized_approval, is_unchecked_by_design, is_ungoverned_divergence, is_vacuously_clean, is_verification_passed, is_verified, lacks_required_confirmation, late_execution_key, name, non_human_approval, non_human_ran_human_step, owner_organization, performed_check_count, performed_verification_count, preparation_execution_key, prepared_by_this_agent_count, preparer_agent_key, previous_executed_step, previous_step_execution, procedure_execution, procedure_execution_when_unclean, proceeded_despite_failed_precondition, proceeded_past_blocking_control, ran_before_prerequisite_completed, ran_on_stale_authoritative_source, ran_on_stale_inputs, ran_under_exception, ran_without_declared_inputs, repetition_count, required_blocking_count, required_role_for_step, requires_human_confirmation, role_current_agent, self_attested_approval_execution_key, self_witnessed_verification_count, semantic_type_iri, separation_violation_execution_key, skipped_verification_count, software_did_human_work, software_execution_step_key, specified_transition_from_previous_count, stale_at_run_count, stale_authoritative_source_count, staleness_answer_is_tense_dependent, started_at, step, step_control_kind, step_execution_id, step_input_variable_count, step_is_approval, step_is_preparation, step_is_software_assigned, step_max_repetitions, step_prerequisite, step_requires_human_confirmation, unbacked_verification_count, unconfirmed_non_human_decision_count, uncorroborated_pass_count, unescalated_danger_cue_count, unevaluated_blocking_count, unevaluated_blocking_execution_key, unfalsified_clearance_count, ungoverned_divergence_execution_key, unresolved_issue_count, used_entity_count, vacuously_clean_execution_key, verification_result, version_of_step, violated_invariant_count, violates_separation_of_duties, was_executed_by_software, was_stale_when_i_ran_it FROM public.vw_step_executions;
+ALTER VIEW pko_release_manager.step_executions OWNER TO postgres;
+GRANT SELECT ON pko_release_manager.step_executions TO pko_release_manager;
+CREATE VIEW pko_release_manager.agent_upgrade_assessments AS
+  SELECT agent_upgrade_assessment_id, assessed_at, assessed_by_agent, assessment_method, attributed_artifact_count, candidate_agent, current_agent, listed_affected_step_count, listed_affected_steps_note, missed_traversed_impact, name, semantic_type_iri, traversed_downstream_step_count FROM public.vw_agent_upgrade_assessments;
+ALTER VIEW pko_release_manager.agent_upgrade_assessments OWNER TO postgres;
+GRANT SELECT ON pko_release_manager.agent_upgrade_assessments TO pko_release_manager;
+CREATE VIEW pko_release_manager.ai_registry_model_versions AS
+  SELECT ai_registry_model_version_id, dc_creator, dc_date, dc_description, dc_has_version, dc_identifier, dc_title, feed_received_at, graph_individual_count, is_live_but_unregistered_in_graph, live_production_deployment_count, name, registry_system, semantic_type_iri FROM public.vw_ai_registry_model_versions;
+ALTER VIEW pko_release_manager.ai_registry_model_versions OWNER TO postgres;
+GRANT SELECT ON pko_release_manager.ai_registry_model_versions TO pko_release_manager;
+CREATE VIEW pko_release_manager.role_assignments AS
+  SELECT agent, agent_kind, agent_role_key, agent_role_pair_key, agent_version_key, approving_authority_role, as_of_instant, authorization_decided_at, authorization_is_overdue_for_review, authorization_review_cadence_days, authorization_reviewed_at, authorizing_change_request, boundary_violation_count_for_assignment, comparison_is_evidentially_sound, covers_now, current_agent_key, days_since_authorization_review, decision_count, departed_role_key, error_correction_count, error_rate_percent, evaluation_context, exceeds_tolerable_error_rate, for_procedure_version, governance_evidence_count, has_any_boundary_violation, has_approving_authority, has_authorizing_change_request, has_dated_authorization, has_declared_suspension_condition, has_departed, has_sufficient_sample, has_ungrounded_governing_boundary, is_current, is_currently_valid, is_enforcement_role, is_human_to_non_human_handover, is_non_human_assignment, is_open_ended, is_operating_under_met_suspension_condition, is_scoped_to_retired_version, is_standing_unreviewed_automation, is_unauthorized_enforcement_agent, is_unauthorized_non_human_assignment, is_unconditioned_automation_handover, is_unmeasured_automation_handover, max_tolerable_error_rate_percent, minimum_decisions_for_comparison, name, overridden_decision_count, override_rate_percent, predecessor_agent_kind, predecessor_decision_count, predecessor_has_sufficient_sample, predecessor_lacks_validity_end, predecessor_override_rate_percent, predecessor_valid_to, quality_regressed_vs_predecessor, quality_verdict_is_unsupported, reason, receives_approval_notices_now, role, role_approval_step_count, role_assignment_id, role_when_covering, scoped_version_status, semantic_type_iri, single_override_swing_percent, status, supersedes_assignment, suspension_condition_met, unauthorized_enforcement_role_key, valid_from, valid_to, was_authorized_by_change_request FROM public.vw_role_assignments;
+ALTER VIEW pko_release_manager.role_assignments OWNER TO postgres;
+GRANT SELECT ON pko_release_manager.role_assignments TO pko_release_manager;
+CREATE VIEW pko_release_manager.roles AS
+  SELECT active_assignment_count, approval_step_count, backup_role_holder, capability_tag_count, compliance_review_tag_count, count_of_awaited_decisions, current_agent, current_agent_kind, current_assignment, current_assignment_valid_from, current_holder_name, currently_covered_assignment_count, departed_assignment_count, escalation_backup_role, has_compliance_review_capability, has_escalation_backup, has_lost_a_holder, has_no_current_holder, has_specializations, has_unfilled_escalation_backup, is_governed_by_lapsed_authority, is_missed_by_phrase_query, is_non_human_held, is_not_housed_in_department, is_production_release_approver, is_senior_variant_not_specialization, is_ungoverned_enforcement_role, is_ungoverned_non_human_role, is_vacated_role, label, name, organization, organization_type, preferred_knowledge_form, release_approval_step_count, responsibility, role_family, role_id, role_mention_count, semantic_type_iri, seniority_level, specialization_count, specialized_role_family, specializes_role, unauthorized_enforcement_assignment_count, unescalated_refusal_count, ungrounded_boundary_count, unresolved_role_mention_count FROM public.vw_roles;
+ALTER VIEW pko_release_manager.roles OWNER TO postgres;
+GRANT SELECT ON pko_release_manager.roles TO pko_release_manager;
+CREATE VIEW pko_release_manager.agents AS
+  SELECT accountability_assertion_count, agent_id, agent_kind, ai_task_completed_count, ai_task_completion_percent, answer_count, artifact_blast_radius_step_count, at_risk_reliance_count, attributed_artifact_count, boundary_violation_count, category_not_available_as_inference, community_count, contact_address, count_of_current_role_assignments, current_accountable_human_count, decision_count, departure_at, display_name, downstream_of_held_steps_count, draft_decision_count, draft_rewrite_rate_percent, has_artifact_blast_radius, has_at_risk_knowledge_reliance, has_produced_artifacts, inferred_category_count, is_ai_agent_not_filled_from_registry, is_ai_agent_without_accountable_human, is_ai_agent_without_model_version, is_below_task_completion_target, is_boundary_spanner, is_non_human, is_operating_outside_boundary, is_organization_agent, is_recognized_broker, is_still_engaged, is_unclassified_agent, is_unidentified_boundary_spanner, is_unrewarded_sharer, is_untracked_ai_consumer, lacks_runtime_knowledge_integration, lacks_time_to_mentor, located_know_how_count, name, organization, overridden_decision_count, overridden_draft_count, override_rate_percent, protected_mentoring_hours_per_week, recognition_count, registry_version_match_count, represents_organization, required_mentoring_hours_per_week, runtime_integration_count, search_event_count, semantic_type_iri, service_started_at, sna_identification_count, times_named_as_broker, transfers_given_count, version_or_employment_key FROM public.vw_agents;
+ALTER VIEW pko_release_manager.agents OWNER TO postgres;
+GRANT SELECT ON pko_release_manager.agents TO pko_release_manager;
+CREATE VIEW pko_release_manager.term_meaning_changes AS
+  SELECT changed_at, is_structural_change, name, new_meaning, prior_meaning, prior_meaning_since, recorded_by_agent, semantic_type_iri, span_days, term_meaning_change_id, vocabulary_term FROM public.vw_term_meaning_changes;
+ALTER VIEW pko_release_manager.term_meaning_changes OWNER TO postgres;
+GRANT SELECT ON pko_release_manager.term_meaning_changes TO pko_release_manager;
+CREATE VIEW pko_release_manager.vocabulary_terms AS
+  SELECT alt_label_practitioner_mention_count, alt_labels, broader_term, broader_term_parent, concept_iri, definition, definition_revised_at, has_stale_definition, has_structural_sense_shift_across_years, has_unreconciled_variant_phrasings, introduced_in_release, introduced_release_issued_at, is_organized_around_official_term, is_orphan_term, is_widely_adopted_term, latest_meaning_change_at, name, namespace_iri, orphan_term_vocabulary_key, pref_label, pref_label_practitioner_mention_count, represents_role, same_as_iri, scheme_governed_dimension, scope_note, semantic_type_iri, source_phrasing_count, structural_shift_count, unreconciled_phrasing_count, usage_count, vocabulary, vocabulary_term_id FROM public.vw_vocabulary_terms;
+ALTER VIEW pko_release_manager.vocabulary_terms OWNER TO postgres;
+GRANT SELECT ON pko_release_manager.vocabulary_terms TO pko_release_manager;
+CREATE VIEW pko_release_manager.artifact_handoffs AS
+  SELECT artifact_handoff_id, declared_consumer_step, declared_source_step, disagrees_with_declared_variable, from_step, name, semantic_type_iri, step_variable, to_step FROM public.vw_artifact_handoffs;
+ALTER VIEW pko_release_manager.artifact_handoffs OWNER TO postgres;
+GRANT SELECT ON pko_release_manager.artifact_handoffs TO pko_release_manager;
+CREATE VIEW pko_release_manager.execution_entities AS
+  SELECT attributed_to_agent, entity_label, entity_uri, executed_step, execution_entity_id, generated_execution_key, generating_agent, is_foreign_variable, is_usage_direction_mismatch, name, recorded_datatype, recorded_format, semantic_type_iri, step_execution, step_variable, usage, used_execution_key, variable_datatype, variable_direction, variable_expected_format, variable_step, violates_declared_datatype_or_format FROM public.vw_execution_entities;
+ALTER VIEW pko_release_manager.execution_entities OWNER TO postgres;
+GRANT SELECT ON pko_release_manager.execution_entities TO pko_release_manager;
+CREATE VIEW pko_ontology_authority.model_change_requests AS
+  SELECT acceptance_failure_total, accepted_with_failing_suite, accepted_without_structural_check, accepted_without_test_run, accepted_without_vocabulary_check, ai_to_human_move_unaudited, ai_to_human_move_without_compliance_review, approved_by_agent, approved_over_unresolved_objection, assessed_coverage_gap_count, assessed_inconsistent_count, assessed_inference_count, assessed_query_result_count, authority_agent, authority_review_skipped, authority_reviewed_at, change_layer, change_operation, classification, compliance_impact, coverage_checked_at, decided_at, declared_scale, deployed_without_target_release, disjointness_check_count, domain_change_spread_wrong_inferences, domain_inference_check_count, effective_at, governed_model, has_authority_review, human_integrity_check_count, impact_assessment, implementation_placement, integrity_check_count, integrity_decided_without_human, intuitive_disjointness_broke_individuals, is_accepted, is_accepted_without_named_approver, is_ai_to_human_move, is_minor_scope, is_misclassified_agent_swap, is_misrouted, is_modeling_change, is_schema_change, lacks_motivating_question, leaves_coverage_unchecked, lifecycle_change_by_unauthorized_agent, missed_altered_inferences, missed_altered_query_results, missed_inconsistent_instances, model_change_request_id, motivated_by_failing_question, motivating_question, motivation_kind, name, placement_decided_by_agent, placement_not_decided_by_authority, post_deploy_inconsistent_count, post_deploy_inference_count, post_deploy_query_result_count, range_consistency_check_count, requested_at, requested_by_agent, required_route, requires_authority_review, route, rule_key, semantic_type_iri, skipped_disjointness_review, skipped_domain_inference_review, skipped_range_review, stated_need, status, steward_agent, steward_approval_out_of_bounds, steward_own_change_unreviewed, structural_pass_count, target_release, title, unmotivated_and_not_returned, unresolved_objection_count, validation_run_count, vocabulary_pass_count, would_alter_inferences, would_alter_query_results, would_leave_coverage_incomplete, would_make_instances_inconsistent FROM public.vw_model_change_requests;
+ALTER VIEW pko_ontology_authority.model_change_requests OWNER TO postgres;
+GRANT SELECT ON pko_ontology_authority.model_change_requests TO pko_ontology_authority;
+CREATE VIEW pko_ontology_authority.change_validation_runs AS
+  SELECT change_validation_run_id, consistency_check_outcome, expected_chain_count, failure_count, failures_inspected_at, has_uninspected_failures, is_unconfirmed_consistency, misses_expected_inference, model_change_request, name, ran_at, release, run_purpose, semantic_type_iri, structural_check_outcome, test_count, test_suite, unproduced_chain_count, vocabulary_check_outcome FROM public.vw_change_validation_runs;
+ALTER VIEW pko_ontology_authority.change_validation_runs OWNER TO postgres;
+GRANT SELECT ON pko_ontology_authority.change_validation_runs TO pko_ontology_authority;
+CREATE VIEW pko_ontology_authority.change_integrity_checks AS
+  SELECT change_integrity_check_id, check_kind, checked_at, checked_by_agent, checker_kind, model_change_request, name, result, semantic_type_iri FROM public.vw_change_integrity_checks;
+ALTER VIEW pko_ontology_authority.change_integrity_checks OWNER TO postgres;
+GRANT SELECT ON pko_ontology_authority.change_integrity_checks TO pko_ontology_authority;
+CREATE VIEW pko_ontology_authority.change_impact_findings AS
+  SELECT affected_row_key, affected_table, change_impact_finding_id, description, detected_by_query, finding_kind, finding_stage, found_at, found_by_agent, model_change_request, name, query_language, semantic_type_iri FROM public.vw_change_impact_findings;
+ALTER VIEW pko_ontology_authority.change_impact_findings OWNER TO postgres;
+GRANT SELECT ON pko_ontology_authority.change_impact_findings TO pko_ontology_authority;
+CREATE VIEW pko_ontology_authority.competency_question_runs AS
+  SELECT answer_outcome, competency_question_run_id, cq_set_entry, defect_change_request, entry_is_original, is_baseline_regression, is_unfixed_wrong_answer, name, prior_run, prior_was_answerable, ran_at, rulebook_release, semantic_type_iri, was_answerable FROM public.vw_competency_question_runs;
+ALTER VIEW pko_ontology_authority.competency_question_runs OWNER TO postgres;
+GRANT SELECT ON pko_ontology_authority.competency_question_runs TO pko_ontology_authority;
+CREATE VIEW pko_ontology_authority.competency_question_set_entries AS
+  SELECT added_at, as_of_instant, competency_question_set_entry_id, days_since_added, evaluation_context, governance_use_count, governed_model, irrelevant_but_still_active, is_original_baseline, is_outgrown_baseline_question, name, relevance_verdict, role_question, semantic_type_iri, serves_every_governance_use, status, used_as_acceptance_criterion, used_as_test_driver, used_for_governance, used_for_scoping FROM public.vw_competency_question_set_entries;
+ALTER VIEW pko_ontology_authority.competency_question_set_entries OWNER TO postgres;
+GRANT SELECT ON pko_ontology_authority.competency_question_set_entries TO pko_ontology_authority;
+CREATE VIEW pko_ontology_authority.competency_question_reviews AS
+  SELECT competency_question_review_id, deprecation_candidates_raised, governed_model, name, outcome, questions_added, reviewed_at, reviewed_by_agent, semantic_type_iri FROM public.vw_competency_question_reviews;
+ALTER VIEW pko_ontology_authority.competency_question_reviews OWNER TO postgres;
+GRANT SELECT ON pko_ontology_authority.competency_question_reviews TO pko_ontology_authority;
+CREATE VIEW pko_ontology_authority.rulebook_releases AS
+  SELECT answerable_cq_run_count, approved_by_agent, breaking_release_with_unrevalidated_consumers, breaking_release_without_migration_plan, changelog, class_removal_or_rename_count, class_removal_without_major, consistent_run_count, consumer_count, cq_coverage_declined, cq_coverage_percent, cq_run_count, days_since_previous_release, declared_scale, expected_major, expected_minor, expected_patch, funding_note, governed_model, has_baseline_regression, inconsistent_disjointness_count, inconsistent_disjointness_without_major, invalidating_domain_range_count, invalidating_domain_range_without_major, is_breaking_release, is_current, is_declared_current_release, is_increment_inconsistent_with_scale, is_long_release_cycle, is_not_scored_against_criteria, is_release_without_recorded_changes, is_released_without_licence_or_permanent_id, is_unannounced_to_dependents, is_undocumented_version_decision, is_untagged_release, issued_at, license, log_entry_count, logical_change_count, migration_plan, minor_is_not_backward_compatible, model_current_release, name, namespace_prefix, non_additive_change_count, notified_consumer_count, passed_validation_at_release, patch_alters_logical_model, permanent_iri, pko_core_version_iri, pko_industry_version_iri, prev_cq_coverage_percent, prev_cq_run_count, prev_issued_at, prev_major, prev_minor, prev_patch, previous_release, profile_schema_path, profile_version, published_without_approval, regressed_baseline_count, released_despite_failed_validation, released_without_consistency_check, released_without_cq_task_test, revalidated_consumer_count, rulebook_commit, rulebook_release_id, rulebook_version, schema_addition_count, scored_criterion_count, stated_criterion_count, status, suite_lags_release, suite_update_count, validation_failure_total, validation_run_count, version_decided_by_agent, version_decision_rationale, version_major, version_minor, version_patch, well_formed_but_requirements_unshown FROM public.vw_rulebook_releases;
+ALTER VIEW pko_ontology_authority.rulebook_releases OWNER TO postgres;
+GRANT SELECT ON pko_ontology_authority.rulebook_releases TO pko_ontology_authority;
+CREATE VIEW pko_ontology_authority.instance_data_versions AS
+  SELECT conforms_to_release, data_version_label, governed_model, instance_data_version_id, logged_change_count, name, semantic_type_iri, snapshot_at FROM public.vw_instance_data_versions;
+ALTER VIEW pko_ontology_authority.instance_data_versions OWNER TO postgres;
+GRANT SELECT ON pko_ontology_authority.instance_data_versions TO pko_ontology_authority;
+CREATE VIEW pko_ontology_authority.external_dependency_revisions AS
+  SELECT affected_mapping_count, as_of_instant, days_since_published, evaluation_context, external_dependency_revision_id, is_untracked_revision, name, ontology_profile, published_at, revision_kind, revision_label, semantic_type_iri, tracked_at, tracked_by_agent FROM public.vw_external_dependency_revisions;
+ALTER VIEW pko_ontology_authority.external_dependency_revisions OWNER TO postgres;
+GRANT SELECT ON pko_ontology_authority.external_dependency_revisions TO pko_ontology_authority;
+CREATE VIEW pko_ontology_authority.model_expansion_requests AS
+  SELECT concept_count, decided_at, decided_by_agent, fit_decision, fit_decision_contradicts_concept_fit, governed_model, is_cross_function_expansion, model_domain_owner, model_expansion_request_id, name, requested_at, requested_by_agent, requesting_organization, requires_schema_extension, semantic_type_iri, uncovered_concept_count, workflow_description FROM public.vw_model_expansion_requests;
+ALTER VIEW pko_ontology_authority.model_expansion_requests OWNER TO postgres;
+GRANT SELECT ON pko_ontology_authority.model_expansion_requests TO pko_ontology_authority;
+CREATE VIEW pko_ontology_authority.term_meaning_changes AS
+  SELECT changed_at, is_structural_change, name, new_meaning, prior_meaning, prior_meaning_since, recorded_by_agent, semantic_type_iri, span_days, term_meaning_change_id, vocabulary_term FROM public.vw_term_meaning_changes;
+ALTER VIEW pko_ontology_authority.term_meaning_changes OWNER TO postgres;
+GRANT SELECT ON pko_ontology_authority.term_meaning_changes TO pko_ontology_authority;
+CREATE VIEW pko_ontology_authority.vocabulary_terms AS
+  SELECT alt_label_practitioner_mention_count, alt_labels, broader_term, broader_term_parent, concept_iri, definition, definition_revised_at, has_stale_definition, has_structural_sense_shift_across_years, has_unreconciled_variant_phrasings, introduced_in_release, introduced_release_issued_at, is_organized_around_official_term, is_orphan_term, is_widely_adopted_term, latest_meaning_change_at, name, namespace_iri, orphan_term_vocabulary_key, pref_label, pref_label_practitioner_mention_count, represents_role, same_as_iri, scheme_governed_dimension, scope_note, semantic_type_iri, source_phrasing_count, structural_shift_count, unreconciled_phrasing_count, usage_count, vocabulary, vocabulary_term_id FROM public.vw_vocabulary_terms;
+ALTER VIEW pko_ontology_authority.vocabulary_terms OWNER TO postgres;
+GRANT SELECT ON pko_ontology_authority.vocabulary_terms TO pko_ontology_authority;
+CREATE VIEW pko_ontology_authority.governed_models AS
+  SELECT as_of_instant, baseline_question_count, charter_count, collection_control_count, continuous_pipeline_stage_count, cq_review_count, cq_review_overdue, current_authority_agent, current_authority_role, current_charter, current_charter_count, current_release, current_steward_agent, current_steward_role, days_since_cq_review, days_since_registered, days_since_steward_activity, degradation_hidden_until_wrong_answer, documents_behind_count, domain_owning_organization, evaluation_context, expert_found_drift_count, experts_not_involved_throughout, first_control_adopted_at, governance_lapsed, governed_model_id, has_no_current_authority, has_no_current_steward, has_open_practice_drift, implementation_expert_count, intended_users, is_adopted_without_pilot, is_implemented_without_real_data, is_neglected_and_drifting, is_not_kept_current, is_ownerless, is_ownerless_past_a_year, is_procedure_without_change_authority, is_unmaintained, is_unmanageable_undocumented_work, is_without_originating_use_case, label, lacks_lifecycle_stage_control, last_cq_review_at, last_steward_activity_at, maintenance_expert_count, model_kind, name, open_practice_drift_count, organization_headcount, originating_use_case, pilot_count, pipeline_not_continuous, procedure, procedure_has_no_explicit_steps, publication_expert_count, real_data_mapping_run_count, registered_at, requirements_expert_count, requirements_purpose, requirements_spec_incomplete, retrieval_control_count, semantic_type_iri, stewardship_control_count, tooling_owner_role, use_control_count FROM public.vw_governed_models;
+ALTER VIEW pko_ontology_authority.governed_models OWNER TO postgres;
+GRANT SELECT ON pko_ontology_authority.governed_models TO pko_ontology_authority;
+CREATE VIEW pko_ontology_authority.ai_registry_model_versions AS
+  SELECT ai_registry_model_version_id, dc_creator, dc_date, dc_description, dc_has_version, dc_identifier, dc_title, feed_received_at, graph_individual_count, is_live_but_unregistered_in_graph, live_production_deployment_count, name, registry_system, semantic_type_iri FROM public.vw_ai_registry_model_versions;
+ALTER VIEW pko_ontology_authority.ai_registry_model_versions OWNER TO postgres;
+GRANT SELECT ON pko_ontology_authority.ai_registry_model_versions TO pko_ontology_authority;
+CREATE VIEW pko_ontology_authority.role_assignments AS
+  SELECT agent, agent_kind, agent_role_key, agent_role_pair_key, agent_version_key, approving_authority_role, as_of_instant, authorization_decided_at, authorization_is_overdue_for_review, authorization_review_cadence_days, authorization_reviewed_at, authorizing_change_request, boundary_violation_count_for_assignment, comparison_is_evidentially_sound, covers_now, current_agent_key, days_since_authorization_review, decision_count, departed_role_key, error_correction_count, error_rate_percent, evaluation_context, exceeds_tolerable_error_rate, for_procedure_version, governance_evidence_count, has_any_boundary_violation, has_approving_authority, has_authorizing_change_request, has_dated_authorization, has_declared_suspension_condition, has_departed, has_sufficient_sample, has_ungrounded_governing_boundary, is_current, is_currently_valid, is_enforcement_role, is_human_to_non_human_handover, is_non_human_assignment, is_open_ended, is_operating_under_met_suspension_condition, is_scoped_to_retired_version, is_standing_unreviewed_automation, is_unauthorized_enforcement_agent, is_unauthorized_non_human_assignment, is_unconditioned_automation_handover, is_unmeasured_automation_handover, max_tolerable_error_rate_percent, minimum_decisions_for_comparison, name, overridden_decision_count, override_rate_percent, predecessor_agent_kind, predecessor_decision_count, predecessor_has_sufficient_sample, predecessor_lacks_validity_end, predecessor_override_rate_percent, predecessor_valid_to, quality_regressed_vs_predecessor, quality_verdict_is_unsupported, reason, receives_approval_notices_now, role, role_approval_step_count, role_assignment_id, role_when_covering, scoped_version_status, semantic_type_iri, single_override_swing_percent, status, supersedes_assignment, suspension_condition_met, unauthorized_enforcement_role_key, valid_from, valid_to, was_authorized_by_change_request FROM public.vw_role_assignments;
+ALTER VIEW pko_ontology_authority.role_assignments OWNER TO postgres;
+GRANT SELECT ON pko_ontology_authority.role_assignments TO pko_ontology_authority;
+CREATE VIEW pko_ontology_authority.roles AS
+  SELECT active_assignment_count, approval_step_count, backup_role_holder, capability_tag_count, compliance_review_tag_count, count_of_awaited_decisions, current_agent, current_agent_kind, current_assignment, current_assignment_valid_from, current_holder_name, currently_covered_assignment_count, departed_assignment_count, escalation_backup_role, has_compliance_review_capability, has_escalation_backup, has_lost_a_holder, has_no_current_holder, has_specializations, has_unfilled_escalation_backup, is_governed_by_lapsed_authority, is_missed_by_phrase_query, is_non_human_held, is_not_housed_in_department, is_production_release_approver, is_senior_variant_not_specialization, is_ungoverned_enforcement_role, is_ungoverned_non_human_role, is_vacated_role, label, name, organization, organization_type, preferred_knowledge_form, release_approval_step_count, responsibility, role_family, role_id, role_mention_count, semantic_type_iri, seniority_level, specialization_count, specialized_role_family, specializes_role, unauthorized_enforcement_assignment_count, unescalated_refusal_count, ungrounded_boundary_count, unresolved_role_mention_count FROM public.vw_roles;
+ALTER VIEW pko_ontology_authority.roles OWNER TO postgres;
+GRANT SELECT ON pko_ontology_authority.roles TO pko_ontology_authority;
+CREATE VIEW pko_ontology_authority.agents AS
+  SELECT accountability_assertion_count, agent_id, agent_kind, ai_task_completed_count, ai_task_completion_percent, answer_count, artifact_blast_radius_step_count, at_risk_reliance_count, attributed_artifact_count, boundary_violation_count, category_not_available_as_inference, community_count, contact_address, count_of_current_role_assignments, current_accountable_human_count, decision_count, departure_at, display_name, downstream_of_held_steps_count, draft_decision_count, draft_rewrite_rate_percent, has_artifact_blast_radius, has_at_risk_knowledge_reliance, has_produced_artifacts, inferred_category_count, is_ai_agent_not_filled_from_registry, is_ai_agent_without_accountable_human, is_ai_agent_without_model_version, is_below_task_completion_target, is_boundary_spanner, is_non_human, is_operating_outside_boundary, is_organization_agent, is_recognized_broker, is_still_engaged, is_unclassified_agent, is_unidentified_boundary_spanner, is_unrewarded_sharer, is_untracked_ai_consumer, lacks_runtime_knowledge_integration, lacks_time_to_mentor, located_know_how_count, name, organization, overridden_decision_count, overridden_draft_count, override_rate_percent, protected_mentoring_hours_per_week, recognition_count, registry_version_match_count, represents_organization, required_mentoring_hours_per_week, runtime_integration_count, search_event_count, semantic_type_iri, service_started_at, sna_identification_count, times_named_as_broker, transfers_given_count, version_or_employment_key FROM public.vw_agents;
+ALTER VIEW pko_ontology_authority.agents OWNER TO postgres;
+GRANT SELECT ON pko_ontology_authority.agents TO pko_ontology_authority;
 
-DO $$ BEGIN RAISE NOTICE 'access-control: 12 principals, 202 policies, 202 views'; END $$;
+-- WARNING: catalog is AHEAD of the database. These granted fields
+-- do not exist in the live view yet, and were omitted. Run
+-- `effortless build` + init-db.sh to bring the database level.
+--   vw_artifact_handoffs: handoff_closure
+--   vw_step_transitions: leads_to_closure, leads_without_human_gate_closure
+
+DO $$ BEGIN RAISE NOTICE 'access-control: 20 principals, 772 policies, 753 views'; END $$;

@@ -88,7 +88,11 @@ def accessor_prelude_sql():
                     ("jwt_principal", "app.jwt_principal"),
                     ("jwt_organization", "app.jwt_organization"),
                     ("jwt_role", "app.jwt_role"),
-                    ("jwt_user", "app.jwt_user")]:
+                    ("jwt_user", "app.jwt_user"),
+                    # loop 15: the Agents row the caller acts as. Write policies
+                    # compare it to executed_by_agent / observed_by_agent so a
+                    # person can only record work in their own name.
+                    ("jwt_agent", "app.jwt_agent")]:
         w(f"CREATE OR REPLACE FUNCTION app.{fn}() RETURNS text")
         w("  LANGUAGE sql STABLE AS $$")
         w(f"    SELECT nullif(current_setting({sql_str(guc)}, true), '')")
@@ -244,6 +248,13 @@ def main():
             continue
         readable[(g["Principal"], fld["TargetTable"])].append(fld["FieldName"])
 
+    # ---- writable columns per (principal, table): FieldGrants.CanWrite -------
+    writable = defaultdict(list)
+    for g in grants:
+        fld = fields.get(g["TargetField"])
+        if g.get("CanWrite") and fld:
+            writable[(g["Principal"], fld["TargetTable"])].append(fld["FieldName"])
+
     L = []
     w = L.append
     w("-- ============================================================")
@@ -283,6 +294,11 @@ def main():
     w("  LOOP")
     w("    EXECUTE format('ALTER FUNCTION %s SECURITY DEFINER', r.sig);")
     w("    EXECUTE format('ALTER FUNCTION %s SET row_security = off', r.sig);")
+    # A SECURITY DEFINER function must pin its own search_path. The generated
+    # bodies call one another unqualified; a caller whose search_path is only
+    # its role schema (which is the whole point of a role schema) would otherwise
+    # get "function calc_... does not exist" from inside a function it may call.
+    w("    EXECUTE format('ALTER FUNCTION %s SET search_path = public', r.sig);")
     w("    n := n + 1;")
     w("  END LOOP;")
     w("  RAISE NOTICE 'access-control: % derivation functions marked "
@@ -310,6 +326,26 @@ def main():
         w(f"GRANT SELECT ON ALL TABLES IN SCHEMA public TO {role};")
         w(f"GRANT USAGE ON SCHEMA app TO {role};")
         w(f"GRANT EXECUTE ON ALL FUNCTIONS IN SCHEMA app TO {role};")
+    w("")
+
+    # ---- 3b. column-level write grants (loop 15) ----------------------------
+    # A write policy opens the ROW; this opens the COLUMNS, and only the ones a
+    # FieldGrants row marks CanWrite (which come from AppActionFields). A write
+    # policy with no writable column is refused: it would be a door with no handle.
+    w("-- Column-level INSERT/UPDATE: exactly the columns the role's actions name.")
+    for pol in policies:
+        cmd = pol["Command"].upper()
+        if cmd not in ("INSERT", "UPDATE"):
+            continue
+        p = by_id[pol["Principal"]]
+        tbl = tables.get(pol["TargetTable"])
+        if not tbl or not tbl.get("PhysicalTable"):
+            raise SystemExit(f"FATAL: {pol['AccessPolicyId']}: no physical table for {pol['TargetTable']}")
+        cols = sorted({snake(c) for c in writable.get((pol["Principal"], pol["TargetTable"]), [])})
+        if not cols:
+            raise SystemExit(f"FATAL: {pol['AccessPolicyId']} permits {cmd} on {pol['TargetTable']} "
+                             f"but no FieldGrants row gives {p['AccessPrincipalId']} a writable column there")
+        w(f"GRANT {cmd} ({', '.join(cols)}) ON public.{tbl['PhysicalTable']} TO {p['PgRoleName']};")
     w("")
 
     # ---- 4. RLS policies ---------------------------------------------------

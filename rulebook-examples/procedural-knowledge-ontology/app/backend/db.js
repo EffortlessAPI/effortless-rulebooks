@@ -26,6 +26,12 @@ export const DATABASE_URL =
   `postgresql://postgres@localhost:5432/erb_${ERB_DOMAIN.replace(/-/g, "_")}`;
 
 export const pool = new pg.Pool({ connectionString: DATABASE_URL, max: 10 });
+// An idle client whose connection is terminated (DROP DATABASE ... WITH (FORCE), which is what
+// init-db.sh and the app's own "Reset the story" do) emits 'error' on the pool. Unhandled, that
+// kills the process: the API would crash itself on every reset. The pool discards the dead client
+// and opens a fresh one on the next query, so logging it is the whole of the correct handling.
+pool.on("error", (err) => console.error(`[db] idle connection lost (${err.code || err.message}); the pool will reconnect`));
+
 
 /** Owner-level query. Bypasses RLS. Sign-in and admin tooling only. */
 export function adminQuery(text, params) {
@@ -66,14 +72,20 @@ export async function asPrincipal(claims, fn) {
               set_config('app.jwt_organization', $3, true),
               set_config('app.jwt_role',         $4, true),
               set_config('app.jwt_user',         $5, true),
-              set_config('app.jwt_is_admin',     $6, true)`,
+              set_config('app.jwt_is_admin',     $6, true),
+              set_config('app.jwt_agent',        $7, true)`,
       [claims.email || "", claims.principal || "", claims.organization || "",
        p.domain_role || "", claims.sub || "",
-       p.is_administrator ? "true" : "false"],
+       p.is_administrator ? "true" : "false", claims.agent || ""],
     );
 
     // From here on the connection has only the principal's rights.
     await client.query(`SET LOCAL ROLE ${quoteIdent(p.pg_role_name)}`);
+    // ...and only the principal's world. ALTER ROLE ... SET search_path applies
+    // at LOGIN, which SET ROLE is not, so without this an unqualified name
+    // resolves to the public BASE table: RLS still guards its rows, but it has
+    // none of the derived columns and none of the column narrowing.
+    await client.query(`SET LOCAL search_path = ${quoteIdent(p.schema_name)}`);
 
     const out = await fn(client, p);
     await client.query("COMMIT");
