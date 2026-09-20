@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import * as api from "../api";
 import { useRows, useSession } from "../session";
-import { ActionSheet, AppBar, Err, Loading, Sheet, Tag, fmtDay, fmtTime, human, useQuickAction, yn } from "../ui/kit";
+import { ActionSheet, AppBar, Err, ExplainerNote, Explains, Fact, KV, Loading, Sheet, Tag, Th, Why, fmtDay, fmtTime, human, useQuickAction, yn } from "../ui/kit";
 
 const LIVE_VERSION = "loto-v2.0.0"; // the version act-tech-start-lockout runs; AppActionFields fixes it
 
@@ -44,11 +44,12 @@ function Runs({ runs, onOpen }: { runs: ReturnType<typeof useRows>; onOpen: (id:
       <div className="section">My lockouts</div>
       <Err error={runs.error} />
       {!runs.rows ? <Loading /> : runs.rows.length === 0 ? <div className="empty">No lockouts in your name yet.</div> : runs.rows.map((r) => (
-        <div key={r.procedure_execution_id} className={`card pressable tight ${r.execution_status === "InProgress" ? "edge-amber" : r.execution_status === "Completed" ? "edge-green" : ""}`} onClick={() => onOpen(r.procedure_execution_id)}>
-          <div className="row"><div className="grow"><div className="h">{r.title || r.name}</div><div className="sub">{fmtTime(r.started_at)} · {human(r.executed_on_machine)} · {r.shift || "—"} shift</div></div>
-            <Tag tone={r.execution_status === "Completed" ? "green" : r.execution_status === "InProgress" ? "amber" : "grey"}>{r.execution_status.replace("InProgress", "In progress")}</Tag></div>
-          {r.observations && <div className="quote" style={{ marginTop: 10 }}>{r.observations}</div>}
-        </div>
+        <Explains key={r.procedure_execution_id} t="procedure_executions">
+        <div className={`card pressable tight ${r.execution_status === "InProgress" ? "edge-amber" : r.execution_status === "Completed" ? "edge-green" : ""}`} onClick={() => onOpen(r.procedure_execution_id)}>
+          <div className="row"><div className="grow"><div className="h">{r.title || r.name}<Why f="title" /></div><div className="sub">{fmtTime(r.started_at)}<Why f="started_at" /> · {human(r.executed_on_machine)}<Why f="executed_on_machine" /> · {r.shift || "—"} shift<Why f="shift" /></div></div>
+            <Tag tone={r.execution_status === "Completed" ? "green" : r.execution_status === "InProgress" ? "amber" : "grey"} f="execution_status">{r.execution_status.replace("InProgress", "In progress")}</Tag></div>
+          {r.observations && <div className="quote" style={{ marginTop: 10 }}>{r.observations}<Why f="observations" /></div>}
+        </div></Explains>
       ))}
       {starting && <ActionSheet actionId="act-tech-start-lockout" submitLabel="Start" onClose={() => setStarting(false)}
         onDone={async (r) => { await quick("act-tech-begin-step", { context: { ProcedureExecution: r.key, Step: "loto-01" } }, { silent: true }); onOpen(r.key); }} />}
@@ -61,23 +62,25 @@ function KnowHow({ list }: { list: ReturnType<typeof useRows> }) {
   return (
     <>
       <p className="sub" style={{ margin: "4px 4px 12px" }}>Know-how is skill that lives in a person. The register keeps a card for each one, and works out which are about to be lost.</p>
+      <ExplainerNote />
       <Err error={list.error} />
       {list.rows.map((k) => (
-        <div key={k.know_how_carrier_id} className="card">
-          {k.is_at_risk_of_imminent_loss && <div className="banner red">● At risk of imminent loss</div>}
-          {!k.is_at_risk_of_imminent_loss && k.is_captured && <div className="banner green">✓ Captured in the repository</div>}
-          <div className="h" style={{ marginBottom: 10 }}>{k.topic}</div>
-          <dl className="kv">
-            <dt>Held by</dt><dd className="fact">{human(k.holder_agent)}</dd>
-            <dt>Since</dt><dd className="fact">{new Date(k.held_since).getFullYear()}</dd>
-            <dt>In the written procedure</dt><dd className="fact">{yn(k.is_in_written_procedure)}</dd>
-            <dt>Passed on to anyone</dt><dd className={k.transfer_count > 0 ? "derived" : "bad"}>{k.transfer_count} {k.transfer_count === 1 ? "time" : "times"}</dd>
-            <dt>Written into the repository</dt><dd className={k.repository_entry_count > 0 ? "derived" : "bad"}>{k.repository_entry_count} {k.repository_entry_count === 1 ? "time" : "times"}</dd>
-            {k.holder_departure_at && <><dt>Holder departs</dt><dd className="fact">{fmtDay(k.holder_departure_at)}</dd>
-              <dt>Days until departure</dt><dd className={k.is_at_risk_of_imminent_loss ? "bad" : "derived"}>{k.days_until_holder_departure}</dd></>}
-          </dl>
+        <Explains key={k.know_how_carrier_id} t="know_how_carriers">
+        <div className="card">
+          {k.is_at_risk_of_imminent_loss && <div className="banner red">● At risk of imminent loss<Why f="is_at_risk_of_imminent_loss" label="at risk of imminent loss" /></div>}
+          {!k.is_at_risk_of_imminent_loss && k.is_captured && <div className="banner green">✓ Captured in the repository<Why f="is_captured" label="captured" /></div>}
+          <div className="h" style={{ marginBottom: 10 }}>{k.topic}<Why f="topic" /></div>
+          <KV t="know_how_carriers">
+            <Fact f="holder_agent" label="Held by" tone="fact">{human(k.holder_agent)}</Fact>
+            <Fact f="held_since" label="Since" tone="fact">{new Date(k.held_since).getFullYear()}</Fact>
+            <Fact f="is_in_written_procedure" label="In the written procedure" tone="fact">{yn(k.is_in_written_procedure)}</Fact>
+            <Fact f="transfer_count" label="Passed on to anyone" tone={k.transfer_count > 0 ? "derived" : "bad"}>{k.transfer_count} {k.transfer_count === 1 ? "time" : "times"}</Fact>
+            <Fact f="repository_entry_count" label="Written into the repository" tone={k.repository_entry_count > 0 ? "derived" : "bad"}>{k.repository_entry_count} {k.repository_entry_count === 1 ? "time" : "times"}</Fact>
+            {k.holder_departure_at && <><Fact f="holder_departure_at" label="Holder departs" tone="fact">{fmtDay(k.holder_departure_at)}</Fact>
+              <Fact f="days_until_holder_departure" label="Days until departure" tone={k.is_at_risk_of_imminent_loss ? "bad" : "derived"}>{k.days_until_holder_departure}</Fact></>}
+          </KV>
           <p className="provenance">Blue is what somebody recorded. Green and red are worked out by the rulebook from those facts; nobody typed the banner.</p>
-        </div>
+        </div></Explains>
       ))}
     </>
   );
@@ -86,19 +89,20 @@ function KnowHow({ list }: { list: ReturnType<typeof useRows> }) {
 function AnswerHistory({ list }: { list: ReturnType<typeof useRows> }) {
   if (!list.rows) return <Loading />;
   if (!list.rows.length) return <div className="empty">You have not asked the Copilot anything yet.</div>;
-  return (<>{list.rows.map((a) => (
-    <div key={a.assistant_answer_id} className={`answer ${a.task_outcome === "Failed" ? "safety" : ""}`}>
-      <div className="row wrap" style={{ marginBottom: 6 }}><span className="sub">{fmtTime(a.asked_at)} · {human(a.context_step || a.assumed_current_step)}</span>
-        <span className="grow" />{a.model_did_the_reasoning ? <Tag tone="red">language model did the reasoning</Tag> : <Tag tone="purple">{a.derivation_performed_by === "StructuredQuery" ? "structured query" : a.derivation_performed_by}</Tag>}</div>
+  return (<><ExplainerNote />{list.rows.map((a) => (
+    <Explains key={a.assistant_answer_id} t="assistant_answers">
+    <div className={`answer ${a.task_outcome === "Failed" ? "safety" : ""}`}>
+      <div className="row wrap" style={{ marginBottom: 6 }}><span className="sub">{fmtTime(a.asked_at)} · {human(a.context_step || a.assumed_current_step)}<Why f="assumed_current_step" /></span>
+        <span className="grow" />{a.model_did_the_reasoning ? <Tag tone="red" f="model_did_the_reasoning">language model did the reasoning</Tag> : <Tag tone="purple" f="derivation_performed_by">{a.derivation_performed_by === "StructuredQuery" ? "structured query" : a.derivation_performed_by}</Tag>}</div>
       <div className="q">“{a.question_text}”</div>
       <div className="a" style={a.task_outcome === "Failed" ? { color: "var(--red)" } : undefined}>{a.answer_text}</div>
       <div className="row wrap" style={{ marginTop: 10 }}>
-        {a.lost_track_of_state && <Tag tone="red">lost track of which step</Tag>}{a.contradicts_shared_model && <Tag tone="red">contradicts the procedure</Tag>}
-        {a.was_correct === true && <Tag tone="green">reviewed: correct</Tag>}{a.task_outcome && <Tag tone={a.task_outcome === "Failed" ? "solid-red" : "green"}>task {a.task_outcome.toLowerCase()}</Tag>}
-        <Tag tone="grey">{a.grounding_count} rows cited</Tag>
+        {a.lost_track_of_state && <Tag tone="red" f="lost_track_of_state">lost track of which step</Tag>}{a.contradicts_shared_model && <Tag tone="red" f="contradicts_shared_model">contradicts the procedure</Tag>}
+        {a.was_correct === true && <Tag tone="green" f="was_correct">reviewed: correct</Tag>}{a.task_outcome && <Tag tone={a.task_outcome === "Failed" ? "solid-red" : "green"} f="task_outcome">task {a.task_outcome.toLowerCase()}</Tag>}
+        <Tag tone="grey" f="grounding_count">{a.grounding_count} rows cited</Tag>
       </div>
-      {a.documented_inaccuracy && <p className="sub" style={{ marginTop: 8 }}>{a.documented_inaccuracy}</p>}
-    </div>))}</>);
+      {a.documented_inaccuracy && <p className="sub" style={{ marginTop: 8 }}>{a.documented_inaccuracy}<Why f="documented_inaccuracy" /></p>}
+    </div></Explains>))}</>);
 }
 
 // ------------------------------------------------------------------------------------------
@@ -122,8 +126,8 @@ function Lane({ version, run, execs, onChanged }: { version: string; run?: api.R
           <div key={s.step_id} id={`step-${s.step_id}`} className={cls}>
             <div className="num">{done && !isOpen ? "✓" : s.step_number}</div>
             <div className="body" onClick={() => !run && setPeek(peek === s.step_id ? null : s.step_id)} style={!run ? { cursor: "pointer" } : undefined}>
-              <div className="title">{s.title}</div>
-              {done && !isOpen && <div className="stamp">{human(done.executed_by_agent)} · {fmtTime(done.ended_at)}{done.verification_result === "WARN" ? " · left by a fallback" : ""}</div>}
+              <div className="title">{s.title}<Why t="steps" f="title" /></div>
+              {done && !isOpen && <div className="stamp">{human(done.executed_by_agent)} · {fmtTime(done.ended_at)}{done.verification_result === "WARN" ? " · left by a fallback" : ""}<Why t="step_executions" f="verification_result" /></div>}
               {(isOpen || (!run && peek === s.step_id)) && <StepBody step={s} run={run} exec={isOpen ? open : undefined} onChanged={onChanged} />}
             </div>
           </div>);
@@ -160,30 +164,31 @@ function StepBody({ step, run, exec, onChanged }: { step: api.Row; run?: api.Row
 
   return (
     <div className="stack" style={{ marginTop: 8 }} onClick={(e) => e.stopPropagation()}>
-      {step.instruction && <p className="sub" style={{ color: "var(--ink-2)" }}>{step.instruction}</p>}
-      {minds.rows?.map((m) => <div key={m.expert_cognition_id} className="quote">“{m.statement}”<span className="by">{human(m.agent)} · how an expert thinks about this step</span></div>)}
-      {values.rows?.map((v) => <div key={v.concept_ladder_rung_id} className="quote">“{v.statement}”<span className="by">why this step exists</span></div>)}
-      {energy.rows && energy.rows.length > 0 && <div className="row wrap">{energy.rows.map((e) => <Tag key={e.machine_energy_source_id} tone="blue">⚡ {e.energy_source.replace(/Energy$/, "")}</Tag>)}</div>}
-      {locks.rows && locks.rows.length > 0 && <div className="row wrap">{locks.rows.map((l) => <Tag key={l.step_lock_requirement_id} tone="grey">🔒 {human(l.lock_device).replace(/([a-z])([A-Z])/g, "$1 $2")}</Tag>)}</div>}
-      {conditions.rows?.map((c) => <div key={c.step_condition_id} className="sub"><b style={{ color: "var(--ink-2)" }}>{c.condition_kind === "Postcondition" ? "Must be true afterwards" : c.condition_kind === "Precondition" ? "Must be true first" : "Must stay true"}:</b> {c.statement}</div>)}
-      {fragments.rows?.map((f) => <div key={f.knowledge_fragment_id} className="quote">“{f.statement}”<span className="by">{f.knowledge_form === "Tacit" ? "what the veterans know" : f.knowledge_form.replace(/([a-z])([A-Z])/g, "$1 $2").toLowerCase()} · from {human(f.source_agent)}</span></div>)}
+      {step.instruction && <p className="sub" style={{ color: "var(--ink-2)" }}>{step.instruction}<Why t="steps" f="instruction" /></p>}
+      {minds.rows?.map((m) => <div key={m.expert_cognition_id} className="quote">“{m.statement}”<span className="by">{human(m.agent)} · how an expert thinks about this step<Why t="expert_cognitions" f="statement" /></span></div>)}
+      {values.rows?.map((v) => <div key={v.concept_ladder_rung_id} className="quote">“{v.statement}”<span className="by">why this step exists<Why t="concept_ladder_rungs" f="rung_kind" /></span></div>)}
+      {energy.rows && energy.rows.length > 0 && <div className="row wrap">{energy.rows.map((e) => <Tag key={e.machine_energy_source_id} tone="blue" t="machine_energy_sources" f="energy_source">⚡ {e.energy_source.replace(/Energy$/, "")}</Tag>)}</div>}
+      {locks.rows && locks.rows.length > 0 && <div className="row wrap">{locks.rows.map((l) => <Tag key={l.step_lock_requirement_id} tone="grey" t="step_lock_requirements" f="lock_device">🔒 {human(l.lock_device).replace(/([a-z])([A-Z])/g, "$1 $2")}</Tag>)}</div>}
+      {conditions.rows?.map((c) => <div key={c.step_condition_id} className="sub"><b style={{ color: "var(--ink-2)" }}>{c.condition_kind === "Postcondition" ? "Must be true afterwards" : c.condition_kind === "Precondition" ? "Must be true first" : "Must stay true"}<Why t="step_conditions" f="condition_kind" />:</b> {c.statement}</div>)}
+      {fragments.rows?.map((f) => <div key={f.knowledge_fragment_id} className="quote">“{f.statement}”<span className="by">{f.knowledge_form === "Tacit" ? "what the veterans know" : f.knowledge_form.replace(/([a-z])([A-Z])/g, "$1 $2").toLowerCase()}<Why t="knowledge_fragments" f="knowledge_form" /> · from {human(f.source_agent)}</span></div>)}
       {cues.rows?.map((c) => {
         const obs = seen.rows?.find((o) => o.step_cue === c.step_cue_id);
         return (
           <div key={c.step_cue_id} className={`cue ${c.signals_incomplete_step ? "danger" : ""} ${obs ? "seen" : ""}`}>
-            <div className="row top"><div className="grow"><div className="sub" style={{ fontWeight: 700, color: c.signals_incomplete_step ? "var(--red)" : "var(--green)" }}>{c.signals_incomplete_step ? "WARNING SIGN" : "WHAT YOU SHOULD SEE"} · {c.cue_kind.toLowerCase()}</div><div className="what">{c.description}</div></div>
+            <div className="row top"><div className="grow"><div className="sub" style={{ fontWeight: 700, color: c.signals_incomplete_step ? "var(--red)" : "var(--green)" }}>{c.signals_incomplete_step ? "WARNING SIGN" : "WHAT YOU SHOULD SEE"} · {c.cue_kind.toLowerCase()}<Why t="step_cues" f="cue_kind" /></div><div className="what">{c.description}<Why t="step_cues" f="description" /></div></div>
               {exec && !obs && c.signals_incomplete_step && <button className="btn sm danger" disabled={busy} onClick={() => quick("act-tech-observe-cue", { context: { StepExecution: exec.step_execution_id, StepCue: c.step_cue_id }, watch: exec.step_execution_id }).then(() => onChanged?.())}>I see this</button>}</div>
-            {c.signals_incomplete_step && <div className="row wrap" style={{ marginTop: 8 }}><Tag tone="red">means the step is not finished</Tag>{c.requires_escalation && <Tag tone="amber">goes to {human(c.escalate_to_role)}</Tag>}</div>}
-            {obs && <div className="row" style={{ marginTop: 10 }}><span className="grow sub">Recorded {fmtTime(obs.observed_at)}.{obs.was_escalated ? ` Sent to ${human(obs.escalated_to_agent)}${obs.acknowledged_at ? ", acknowledged." : ", not yet acknowledged."}` : ""}</span>
+            {c.signals_incomplete_step && <div className="row wrap" style={{ marginTop: 8 }}><Tag tone="red" t="step_cues" f="signals_incomplete_step">means the step is not finished</Tag>{c.requires_escalation && <Tag tone="amber" t="step_cues" f="requires_escalation">goes to {human(c.escalate_to_role)}</Tag>}</div>}
+            {obs && <div className="row" style={{ marginTop: 10 }}><span className="grow sub">Recorded {fmtTime(obs.observed_at)}.{obs.was_escalated ? ` Sent to ${human(obs.escalated_to_agent)}${obs.acknowledged_at ? ", acknowledged." : ", not yet acknowledged."}` : ""}<Why t="cue_observations" f="was_escalated" />{obs.is_awaiting_acknowledgement && <Why t="cue_observations" f="is_awaiting_acknowledgement" />}</span>
               {!obs.was_escalated && c.requires_escalation && <button className="btn sm amber" onClick={() => quick("act-tech-escalate", { key: obs.cue_observation_id, watch: obs.cue_observation_id })}>Escalate</button>}</div>}
           </div>);
       })}
       {exec && run && (
         <div className="nexts">
-          {exec.is_blocked_by_observed_cue && <div className="unsaved" style={{ background: "var(--red-wash)", color: "var(--red)", margin: 0 }}>A warning sign on this step means it is not finished. The normal next step is not offered.</div>}
+          {exec.is_blocked_by_observed_cue && <div className="unsaved" style={{ background: "var(--red-wash)", color: "var(--red)", margin: 0 }}>A warning sign on this step means it is not finished. The normal next step is not offered.<Why t="step_executions" f="is_blocked_by_observed_cue" label="blocked by an observed warning sign" /></div>}
           {ways.map((t) => (
             <button key={t.step_transition_id} className={`nextbtn ${t.transition_kind === "Fallback" ? "fallback" : t.transition_kind === "Alternative" ? "alt" : ""}`} disabled={busy} onClick={() => go(t)}>
               <span className="grow">{t.transition_kind === "Next" ? "Done → " : t.transition_kind === "Fallback" ? "Fallback → " : "Or → "}{label(t.to_step)}<small>{t.condition}</small></span>
+              <Why t="step_transitions" f="transition_kind" label={`this ${String(t.transition_kind).toLowerCase()} path`} />
             </button>))}
           {outs.rows && outs.rows.length === 0 && <button className="btn accent" onClick={() => setClosing(true)}>Finish this run</button>}
         </div>)}
@@ -220,10 +225,10 @@ function Ledger({ run, execs }: { run: api.Row; execs: api.Row[] }) {
   return (
     <div className="card">
       <div className="row" style={{ marginBottom: 10 }}><div className="grow"><div className="h">The procedure, and what happened</div><div className="sub">Two records, kept apart on purpose and compared step by step.</div></div></div>
-      <table className="t"><thead><tr><th style={{ color: "var(--blue)" }}>The procedure says</th><th style={{ color: "var(--amber)" }}>What happened</th></tr></thead><tbody>
+      <table className="t"><thead><tr><Th t="steps" f="title" style={{ color: "var(--blue)" }}>The procedure says</Th><Th t="step_executions" f="execution_status" style={{ color: "var(--amber)" }}>What happened</Th></tr></thead><tbody>
         {steps.rows?.map((s) => { const e = execs.filter((x) => x.step === s.step_id); return (
           <tr key={s.step_id}><td><b>{s.step_number}</b> {s.title}</td><td>{e.length === 0 ? <span className="cell-na">not carried out</span> : e.map((x) => (
-            <div key={x.step_execution_id}>{x.execution_status === "Completed" ? fmtTime(x.ended_at) : "in progress"} {x.verification_result === "WARN" && <Tag tone="amber">left by a fallback</Tag>} {x.is_blocked_by_observed_cue && <Tag tone="red">warning sign seen</Tag>} {x.is_out_of_specified_order && <Tag tone="red">out of order</Tag>}</div>))}</td></tr>); })}
+            <Explains key={x.step_execution_id} t="step_executions"><div>{x.execution_status === "Completed" ? fmtTime(x.ended_at) : "in progress"} {x.verification_result === "WARN" && <Tag tone="amber" f="verification_result">left by a fallback</Tag>} {x.is_blocked_by_observed_cue && <Tag tone="red" f="is_blocked_by_observed_cue">warning sign seen</Tag>} {x.is_out_of_specified_order && <Tag tone="red" f="is_out_of_specified_order">out of order</Tag>}</div></Explains>))}</td></tr>); })}
       </tbody></table>
     </div>);
 }

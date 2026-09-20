@@ -8,7 +8,15 @@ type Ctx = {
   action: (id: string) => api.Action; toasts: Toast[]; toast: (t: Omit<Toast, "id">) => void;
   /** bump to make every page re-read its views after a write */
   version: number; bump: () => void;
+  /** Show the explainers: every key value can say where it came from. Set on the sign-in page. */
+  explain: boolean; setExplain: (on: boolean) => void;
 };
+
+// A preference, not domain data, so it lives in the browser and not in the
+// rulebook. It is deliberately on by default: this register's whole claim is
+// that nobody typed the worked-out values, and a reader cannot check that claim
+// with the explainers switched off.
+const EXPLAIN_KEY = "pko.mobile.explain";
 const C = createContext<Ctx>(null as unknown as Ctx);
 export const useSession = () => useContext(C);
 
@@ -17,6 +25,10 @@ export function SessionProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(!!api.getToken());
   const [toasts, setToasts] = useState<Toast[]>([]);
   const [version, setVersion] = useState(0);
+  const [explain, setExplainState] = useState(() => localStorage.getItem(EXPLAIN_KEY) !== "off");
+  const setExplain = useCallback((on: boolean) => {
+    localStorage.setItem(EXPLAIN_KEY, on ? "on" : "off"); setExplainState(on);
+  }, []);
 
   useEffect(() => {
     if (!api.getToken()) return;
@@ -39,7 +51,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     return a;
   }, [shell]);
 
-  return <C.Provider value={{ shell, loading, signIn, signOut, action, toasts, toast, version, bump: () => setVersion((v) => v + 1) }}>{children}</C.Provider>;
+  return <C.Provider value={{ shell, loading, signIn, signOut, action, toasts, toast, version, bump: () => setVersion((v) => v + 1), explain, setExplain }}>{children}</C.Provider>;
 }
 
 /** Read rows from my schema; re-read whenever anything is written. Errors are shown, never swallowed. */

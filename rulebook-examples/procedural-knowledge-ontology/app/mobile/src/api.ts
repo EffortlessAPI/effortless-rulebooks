@@ -53,6 +53,34 @@ export type ActionResult = { action: string; label: string; table: string; key: 
 export const act = (id: string, body: { key?: string; context?: Row; values?: Row; watch?: string }) =>
   call<ActionResult>(`/api/app/action/${id}`, { method: "POST", body: JSON.stringify(body) });
 
+// --- provenance: where one value on screen came from -------------------------
+// Read from the rulebook's own field census, never assembled here. `column` is
+// resolved against information_schema, so a field the catalog claims but the
+// substrate does not have comes back unresolved rather than invented.
+export type CatalogField = {
+  rulebook_field_id: string; target_table: string; field_name: string;
+  field_type: "raw" | "calculated" | "lookup" | "aggregation" | "relationship";
+  datatype: string; formula: string | null; invented_for_question: string | null;
+  is_derived: boolean; is_witness: boolean;
+  measured_substantive_count: number; measured_distinct_value_count: number;
+  has_measured_data: boolean; is_discriminating: boolean;
+  disagreeing_substrate_count: number | string; is_substrate_contested: boolean;
+  semantic_type_iri: string;
+};
+export type FormulaInput = {
+  table: string; field: string; key: string; column: string; view: string; isLocal: boolean;
+  fieldType: string | null; datatype: string | null; isDerived: boolean | null;
+  formula: string | null; exists: boolean;
+};
+export type Provenance = {
+  field: CatalogField; view: string; column: string | null;
+  question: Row | null; loop: Row | null; role: Row | null; siblings: CatalogField[];
+  table: Row | null; mappings: Row[]; inputs: FormulaInput[];
+  reading: { populated: number; total: number } | null;
+};
+export const provenance = (table: string, column: string) =>
+  call<Provenance>(`/api/app/provenance/${table}/${column}`);
+
 export type Grounding = { table: string; key: string; why: string };
 export type Answer = { question: string; text: string; topic: string; safety: boolean; next: string | null; groundings: Grounding[]; retrievalMode: string; answeredBy: string };
 export const copilotQuestions = (step: string, stepExecution?: string) =>

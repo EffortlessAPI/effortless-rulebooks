@@ -9,7 +9,7 @@ const TONE: Record<string, string> = { "acme-plant": "#0f766e", "acme-corp": "#1
 const ORDER = ["acme-plant", "acme-corp", "acme-home-brands", "acme-engineering", "acme-finance", "acme-people", "acme-legal"];
 
 export default function SignIn() {
-  const { signIn } = useSession();
+  const { signIn, explain, setExplain } = useSession();
   const nav = useNavigate();
   const [people, setPeople] = useState<api.SignIn[] | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -22,6 +22,17 @@ export default function SignIn() {
         <h1>ACME Procedure Register</h1>
         <p>One card for each person at ACME. Each sign-in is its own database role, with its own schema: what you see, and what you may change, depends on who you are.</p>
       </div>
+      {/* The one switch that changes every screen. It belongs here because it is
+          a claim about the whole register, not a setting inside one page. */}
+      <button className="toggle" role="switch" aria-checked={explain} onClick={() => setExplain(!explain)} style={{ marginTop: 18 }}>
+        <span>Explain every value
+          <span className="rl" style={{ display: "block", fontWeight: 500 }}>
+            {explain ? <>A <b className="mono">ƒ</b> beside a value opens the rule behind it, the question a role asked for it, and whether it can tell anything apart.</>
+              : "Values are shown without their provenance."}
+          </span>
+        </span>
+        <span className="sw" />
+      </button>
       <Err error={error} />
       {orgs.map((org) => (
         <div key={org}>

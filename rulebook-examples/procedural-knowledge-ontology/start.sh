@@ -166,6 +166,19 @@ The app reads vw_<entity> views from this database. Create and load it:
   echo "  $n views available in $DATABASE_URL"
 }
 
+# Every 'f' mark in the app promises to explain a real field. This resolves each one
+# against the views the app will actually read and the RulebookFields census, so a mark
+# that would open an empty sheet is caught here instead of in front of someone.
+#
+# Non-fatal, for the same reason as the denial witnesses: a stale explainer is a display
+# defect, and refusing to boot over one makes it indistinguishable from a broken app.
+check_explainers() {
+  $PYTHON tools/check_explainer_coverage.py \
+    || echo "[start] WARNING: an explainer names a field the database does not have.
+[start] Its popup will open empty. See above; run tools/reconcile_field_catalog.py
+[start] if the field census is behind the schema."
+}
+
 ensure_deps() {
   [ -d app/backend/node_modules ]  || (banner "Installing API deps";  cd app/backend  && npm install --silent)
   [ -d app/frontend/node_modules ] || (banner "Installing admin console deps"; cd app/frontend && npm install --silent)
@@ -175,6 +188,7 @@ ensure_deps() {
 run_app() {
   banner "Preflight"
   preflight_db
+  check_explainers
   ensure_deps
 
   banner "Freeing ports"

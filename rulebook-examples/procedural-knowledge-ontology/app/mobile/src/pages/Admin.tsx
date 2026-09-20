@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import * as api from "../api";
 import { useRows, useSession } from "../session";
-import { ActionSheet, AppBar, Err, Loading, Tag, fmtDay, fmtTime, human } from "../ui/kit";
+import { ActionSheet, AppBar, Err, ExplainerNote, Explains, Loading, Tag, Th, Why, fmtTime, human } from "../ui/kit";
 
 type Tab = "coverage" | "actions" | "context" | "story";
 export default function Admin() {
@@ -29,40 +29,42 @@ function Coverage() {
   return (
     <>
       <p className="sub" style={{ margin: "6px 4px 14px", maxWidth: 860 }}>The model was built from five essays by Jessica Talisman. Each was broken into separate claims about what a system like this must represent, do, or answer, and the book has to prove each claim with data that can actually discriminate. Every claim below is our own paraphrase; nothing from the essays is reproduced.</p>
+      <ExplainerNote />
       <Err error={articles.error} />
+      <Explains t="source_articles">
       <div className="grid c3" style={{ gridTemplateColumns: "repeat(5, 1fr)" }}>{articles.rows.map((a) => (
         <button key={a.source_article_id} className={`card pressable ${a.is_fully_covered ? "edge-green" : "edge-amber"}`} style={{ marginBottom: 0, textAlign: "left", outline: sel === a.source_article_id ? "2px solid var(--blue)" : "none" }} onClick={() => setSel(a.source_article_id)}>
-          <div className="big derived">{Number(a.coverage_percent).toFixed(1)}<span style={{ fontSize: 16 }}>%</span></div>
-          <div className="sub" style={{ margin: "4px 0 8px" }}>{a.covered_claim_count} of {a.claim_count} claims proved</div><b style={{ fontSize: 13.5 }}>{a.title}</b><div className="sub">{a.author}</div></button>))}</div>
+          <div className="big derived">{Number(a.coverage_percent).toFixed(1)}<span style={{ fontSize: 16 }}>%</span><Why f="coverage_percent" /></div>
+          <div className="sub" style={{ margin: "4px 0 8px" }}>{a.covered_claim_count} of {a.claim_count} claims proved<Why f="covered_claim_count" label="claims proved" /></div><b style={{ fontSize: 13.5 }}>{a.title}</b><div className="sub">{a.author}</div></button>))}</div></Explains>
       {sel && (<><div className="row" style={{ margin: "18px 4px 8px" }}><div className="section grow" style={{ margin: 0 }}>Claims <span className="count">{claims.rows?.length ?? "·"}</span></div><button className="tab" aria-selected={only} onClick={() => setOnly(!only)}>Only the ones not yet proved</button></div>
-        <div className="card" style={{ padding: 0 }}><table className="t"><tbody>{claims.rows?.map((c) => (<>
-          <tr key={c.article_claim_id} className="click" onClick={() => setOpen(open === c.article_claim_id ? null : c.article_claim_id)}><td style={{ width: 110 }}><span className="mono">{c.section_ref}</span></td><td>{c.claim_text}</td><td style={{ width: 130 }}><Tag tone="grey">{String(c.claim_kind).replace(/([a-z])([A-Z])/g, "$1 $2").toLowerCase()}</Tag></td><td style={{ width: 120 }}>{c.is_covered ? <Tag tone="green">proved</Tag> : <Tag tone="solid-red">not yet proved</Tag>}</td></tr>
-          {open === c.article_claim_id && <tr key={c.article_claim_id + "e"}><td /><td colSpan={3}><Evidence claim={c.article_claim_id} /></td></tr>}</>))}</tbody></table></div></>)}
+        <div className="card" style={{ padding: 0 }}><Explains t="article_claims"><table className="t"><tbody>{claims.rows?.map((c) => (<>
+          <tr key={c.article_claim_id} className="click" onClick={() => setOpen(open === c.article_claim_id ? null : c.article_claim_id)}><td style={{ width: 110 }}><span className="mono">{c.section_ref}</span></td><td>{c.claim_text}</td><td style={{ width: 130 }}><Tag tone="grey" f="claim_kind">{String(c.claim_kind).replace(/([a-z])([A-Z])/g, "$1 $2").toLowerCase()}</Tag></td><td style={{ width: 120 }}>{c.is_covered ? <Tag tone="green" f="is_covered">proved</Tag> : <Tag tone="solid-red" f="is_covered">not yet proved</Tag>}</td></tr>
+          {open === c.article_claim_id && <tr key={c.article_claim_id + "e"}><td /><td colSpan={3}><Evidence claim={c.article_claim_id} /></td></tr>}</>))}</tbody></table></Explains></div></>)}
       <p className="provenance">Procedural Knowledge Ontology 2.0.0 by Valentina Anita Carriero, Mario Scrocca, Ilaria Baroni, Antonia Azzini and Irene Celino (Cefriel), CC BY 4.0. This model aligns to PKO; it is not an official PKO distribution and no endorsement is implied.</p>
     </>);
 }
 function Evidence({ claim }: { claim: string }) {
   const ev = useRows("claim_evidence", { article_claim: claim });
-  return (<>{ev.rows?.map((e) => <div key={e.claim_evidence_id} className="ground" style={{ background: e.is_valid ? "var(--green-wash)" : "var(--red-wash)" }}><code>{e.rulebook_field || e.rulebook_table || e.role_question || e.ontology_profile || e.knowledge_method || e.procedure}</code><span>{e.justification}{e.field_is_discriminating === false ? " (does not discriminate over the seed data)" : ""}</span></div>)}{ev.rows?.length === 0 && <span className="sub">No evidence offered yet.</span>}</>);
+  return (<Explains t="claim_evidence">{ev.rows?.map((e) => <div key={e.claim_evidence_id} className="ground" style={{ background: e.is_valid ? "var(--green-wash)" : "var(--red-wash)" }}><code>{e.rulebook_field || e.rulebook_table || e.role_question || e.ontology_profile || e.knowledge_method || e.procedure}</code><span>{e.justification}{e.field_is_discriminating === false ? " (does not discriminate over the seed data)" : ""}<Why f="is_valid" label="whether this evidence holds" /></span></div>)}{ev.rows?.length === 0 && <span className="sub">No evidence offered yet.</span>}</Explains>);
 }
 
 function Actions() {
   const actions = useRows("app_actions", {}, "story_episode,owning_role,app_action_id");
-  return (<div className="card" style={{ padding: 0 }}><table className="t"><thead><tr><th>Role</th><th>May</th><th>Writes</th><th>Permitted by</th><th>Then the book re-works</th><th>Proven to refuse others?</th></tr></thead><tbody>
-    {actions.rows?.map((a) => <tr key={a.app_action_id}><td>{human(a.owning_role)}</td><td><b>{a.label}</b><div className="sub">{a.description}</div></td><td><span className="mono">{a.operation} {a.target_table}</span><div className="sub">{a.input_field_count} columns</div></td>
-      <td>{a.is_unpermitted ? <Tag tone="solid-red">nothing permits this</Tag> : <span className="mono">{a.policy}</span>}{a.policy_command_disagrees && <Tag tone="red">wrong command</Tag>}</td><td><span className="rule">{a.watched_field}</span></td><td>{a.is_unproven_write ? <Tag tone="amber">not yet</Tag> : <Tag tone="green">{a.policy_denial_test_count} tests</Tag>}</td></tr>)}</tbody></table></div>);
+  return (<div className="card" style={{ padding: 0 }}><Explains t="app_actions"><table className="t"><thead><tr><Th f="owning_role">Role</Th><Th f="label">May</Th><Th f="target_table">Writes</Th><Th f="policy">Permitted by</Th><Th f="watched_field">Then the book re-works</Th><Th f="is_unproven_write">Proven to refuse others?</Th></tr></thead><tbody>
+    {actions.rows?.map((a) => <tr key={a.app_action_id}><td>{human(a.owning_role)}</td><td><b>{a.label}</b><div className="sub">{a.description}</div></td><td><span className="mono">{a.operation} {a.target_table}</span><div className="sub">{a.input_field_count} columns<Why f="input_field_count" /></div></td>
+      <td>{a.is_unpermitted ? <Tag tone="solid-red" f="is_unpermitted">nothing permits this</Tag> : <span className="mono">{a.policy}</span>}{a.policy_command_disagrees && <Tag tone="red" f="policy_command_disagrees">wrong command</Tag>}</td><td><span className="rule">{a.watched_field}</span></td><td>{a.is_unproven_write ? <Tag tone="amber" f="is_unproven_write">not yet</Tag> : <Tag tone="green" f="policy_denial_test_count">{a.policy_denial_test_count} tests</Tag>}</td></tr>)}</tbody></table></Explains></div>);
 }
 
 function Context() {
   const ctx = useRows("evaluation_contexts", { is_current: true }); const risk = useRows("know_how_carriers", { is_at_risk_of_imminent_loss: true });
   const leaving = useRows("know_how_carriers", { holder_agent: "tomas-reyes" }); const [edit, setEdit] = useState(false); const c = ctx.rows?.[0];
   if (!c) return <Loading />;
-  return (<div className="grid c2"><div className="card"><div className="sub">Every time-dependent answer in this book is judged as of</div><div className="big fact" style={{ margin: "8px 0 4px", fontSize: 30 }}>{fmtTime(c.as_of_instant)}</div><p className="sub">{c.rationale}</p>
+  return (<div className="grid c2"><div className="card"><div className="sub">Every time-dependent answer in this book is judged as of</div><div className="big fact" style={{ margin: "8px 0 4px", fontSize: 30 }}>{fmtTime(c.as_of_instant)}<Why t="evaluation_contexts" f="as_of_instant" /></div><p className="sub">{c.rationale}</p>
     <button className="btn accent" style={{ marginTop: 16 }} onClick={() => setEdit(true)}>Move the date</button>
     <p className="provenance">The date is a row in <code>EvaluationContexts</code>, not the wall clock, so the same question gives the same answer tomorrow. Moving it re-judges every freshness, overdue and departure answer at once.</p></div>
-    <div><div className="section" style={{ marginTop: 0 }}>Skills at risk of imminent loss, as of that date <span className="count">{risk.rows?.length ?? "·"}</span></div>
-      {risk.rows?.length === 0 && <div className="card edge-green"><b className="derived">Nothing is at risk.</b></div>}{risk.rows?.map((k) => <div key={k.know_how_carrier_id} className="card tight edge-red"><b>{k.topic}</b><div className="sub">{human(k.holder_agent)} · {k.days_until_holder_departure} days</div></div>)}
-      <div className="section">Tomas Reyes</div>{leaving.rows?.map((k) => <div key={k.know_how_carrier_id} className={`card tight ${k.is_captured ? "edge-green" : ""}`}><b>{k.topic}</b><div className="row wrap" style={{ marginTop: 6 }}><Tag tone="grey">{k.days_until_holder_departure} days until departure</Tag><Tag tone={k.is_captured ? "green" : "grey"}>{k.is_captured ? "captured" : "not written down"}</Tag><Tag tone={k.transfer_count ? "green" : "grey"}>passed on {k.transfer_count}×</Tag></div></div>)}</div>
+    <Explains t="know_how_carriers"><div><div className="section" style={{ marginTop: 0 }}>Skills at risk of imminent loss, as of that date <span className="count">{risk.rows?.length ?? "·"}</span></div>
+      {risk.rows?.length === 0 && <div className="card edge-green"><b className="derived">Nothing is at risk.</b></div>}{risk.rows?.map((k) => <div key={k.know_how_carrier_id} className="card tight edge-red"><b>{k.topic}</b><div className="sub">{human(k.holder_agent)} · {k.days_until_holder_departure} days<Why f="days_until_holder_departure" /></div></div>)}
+      <div className="section">Tomas Reyes</div>{leaving.rows?.map((k) => <div key={k.know_how_carrier_id} className={`card tight ${k.is_captured ? "edge-green" : ""}`}><b>{k.topic}</b><div className="row wrap" style={{ marginTop: 6 }}><Tag tone="grey" f="days_until_holder_departure">{k.days_until_holder_departure} days until departure</Tag><Tag tone={k.is_captured ? "green" : "grey"} f="is_captured">{k.is_captured ? "captured" : "not written down"}</Tag><Tag tone={k.transfer_count ? "green" : "grey"} f="transfer_count">passed on {k.transfer_count}×</Tag></div></div>)}</div></Explains>
     {edit && <ActionSheet actionId="act-admin-move-instant" recordKey={c.evaluation_context_id} watch="khc12-tomas-bleed" onClose={() => setEdit(false)} onDone={() => location.reload()} />}</div>);
 }
 

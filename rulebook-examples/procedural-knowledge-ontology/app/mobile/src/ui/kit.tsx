@@ -1,4 +1,4 @@
-import { useEffect, useState, type ReactNode } from "react";
+import { createContext, useContext, useEffect, useState, type CSSProperties, type ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import * as api from "../api";
 import { useSession } from "../session";
@@ -27,7 +27,7 @@ export function Device({ kind, children }: { kind: "phone" | "tablet"; children:
 }
 
 export function AppBar({ title, eyebrow }: { title: string; eyebrow?: string }) {
-  const { shell, signOut } = useSession();
+  const { shell, signOut, explain, setExplain } = useSession();
   const nav = useNavigate();
   const [open, setOpen] = useState(false);
   if (!shell) return null;
@@ -47,6 +47,9 @@ export function AppBar({ title, eyebrow }: { title: string; eyebrow?: string }) 
             <dt>Things I may change</dt><dd className="derived">{shell.actions.length}</dd>
           </dl></div>
           <p className="provenance">This sign-in is a Postgres role with its own schema. A table that is not listed above does not exist for it, and the {shell.actions.length} changes it may make are rows in <code>AppActions</code>, each permitted by a row policy.</p>
+          <button className="toggle" role="switch" aria-checked={explain} style={{ marginTop: 14, marginBottom: 0 }} onClick={() => setExplain(!explain)}>
+            <span>Explain every value</span><span className="sw" />
+          </button>
           {shell.claims.is_admin && <button className="btn ghost" style={{ marginTop: 14 }} onClick={() => { setOpen(false); nav("/admin"); }}>Admin</button>}
           <button className="btn" style={{ marginTop: 10 }} onClick={() => { signOut(); nav("/"); }}>Sign out</button>
         </Sheet>
@@ -66,9 +69,210 @@ export function Sheet({ title, desc, onClose, children }: { title: string; desc?
   );
 }
 
-export const Tag = ({ tone, children }: { tone: "red" | "green" | "amber" | "blue" | "purple" | "grey" | "black" | "solid-red"; children: ReactNode }) => <span className={`tag ${tone}`}>{children}</span>;
+export const Tag = ({ tone, f, t, children }: { tone: "red" | "green" | "amber" | "blue" | "purple" | "grey" | "black" | "solid-red"; f?: string; t?: string; children: ReactNode }) =>
+  <span className={`tag ${tone}`}>{children}{f && <Why f={f} t={t} />}</span>;
 export const Err = ({ error }: { error: string | null }) => (error ? <div className="err">{error}</div> : null);
 export const Loading = () => <div className="empty">Reading the views…</div>;
+
+// ---------------------------------------------------------------------------
+// Provenance, everywhere a value is shown.
+//
+// Every key value on screen can say where it came from, and the answer is the
+// rulebook's own field census — not a tooltip somebody wrote. An explainer
+// names a (table, column) pair; the server resolves it and refuses loudly if
+// the catalog has never heard of it, so a typo here shows as a red error rather
+// than an empty popup that reads like "this value came from nowhere".
+//
+// Naming the pair is deliberately explicit. The label beside a value is prose
+// ("In the written procedure"), and guessing the column from it would be the
+// app inventing provenance, which is the one thing this screen must not do.
+// ---------------------------------------------------------------------------
+
+/** The table whose columns the explainers in this subtree name. */
+const TableCtx = createContext<string | null>(null);
+export const Explains = ({ t, children }: { t: string; children: ReactNode }) => <TableCtx.Provider value={t}>{children}</TableCtx.Provider>;
+
+/** PascalCase or snake_case to something a person reads. */
+export const fieldLabel = (name: string) =>
+  name.replace(/_/g, " ").replace(/([a-z0-9])([A-Z])/g, "$1 $2").toLowerCase().replace(/^./, (c) => c.toUpperCase());
+
+/**
+ * The affordance: a quiet mark beside a value that opens its provenance.
+ * Renders nothing when the explainers are switched off at sign-in.
+ */
+export function Why({ f, t, label }: { f: string; t?: string; label?: string }) {
+  const { explain } = useSession();
+  const inherited = useContext(TableCtx);
+  const [open, setOpen] = useState(false);
+  const table = t ?? inherited;
+  if (!explain) return null;
+  if (!table) {
+    // Never a silent no-op: an explainer with no table can explain nothing.
+    throw new Error(`<Why f="${f}"> names no table. Pass t="<table>", or wrap the block in <Explains t="<table>">.`);
+  }
+  return (
+    <>
+      <button className="why" title={`Where does ${label || fieldLabel(f)} come from?`} aria-label={`Where does ${label || fieldLabel(f)} come from?`}
+        onClick={(e) => { e.stopPropagation(); e.preventDefault(); setOpen(true); }}>ƒ</button>
+      {open && <FieldSheet t={table} f={f} onClose={() => setOpen(false)} />}
+    </>
+  );
+}
+
+/** A `<dl class="kv">` whose rows are `<Fact>`s, all naming columns of one table. */
+export const KV = ({ t, children, style }: { t: string; children: ReactNode; style?: CSSProperties }) =>
+  <Explains t={t}><dl className="kv" style={style}>{children}</dl></Explains>;
+
+/** One labelled value inside a `<KV>`, with its own explainer. */
+export const Fact = ({ f, label, tone, children }: { f: string; label: string; tone?: "fact" | "derived" | "bad" | ""; children: ReactNode }) => (
+  <><dt>{label}<Why f={f} label={label} /></dt><dd className={tone || undefined}>{children}</dd></>
+);
+
+/** An inline value that is not in a `<KV>` — a cell, a stat, a sentence. */
+export const Val = ({ f, t, tone, children }: { f: string; t?: string; tone?: "fact" | "derived" | "bad" | ""; children: ReactNode }) => (
+  <b className={tone || undefined}>{children}<Why f={f} t={t} /></b>
+);
+
+/** A table heading that explains its column. */
+export const Th = ({ f, t, children, style }: { f: string; t?: string; children: ReactNode; style?: CSSProperties }) => (
+  <th style={style}>{children}<Why f={f} t={t} /></th>
+);
+
+/** A headline number with its caption, e.g. the counts a closure worked out. */
+export const Big = ({ f, t, caption, tone, children }: { f: string; t?: string; caption: string; tone?: string; children: ReactNode }) => (
+  <div><div className="big" style={tone ? { color: tone } : undefined}>{children}</div><div className="sub">{caption}<Why f={f} t={t} label={caption} /></div></div>
+);
+
+/** Said once per screen, so the mark is discoverable without a manual. Hidden with the explainers. */
+export function ExplainerNote() {
+  const { explain } = useSession();
+  if (!explain) return null;
+  return (
+    <div className="explainer-note">
+      <b className="mono" style={{ fontSize: 14 }}>ƒ</b>
+      <span>Tap the mark beside any value to see the rule behind it, the question a named role asked for it, and how much of the data it actually speaks about. Switch it off in your account.</span>
+    </div>
+  );
+}
+
+const KIND: Record<string, string> = {
+  raw: "Somebody recorded this. It is typed in by a person or stamped by the app — the rulebook does not work it out.",
+  calculated: "The rulebook works this out from other values. Nobody types it, and nobody can type over it.",
+  lookup: "The rulebook copies this from a related record, so the two can never disagree.",
+  aggregation: "The rulebook counts or adds this up across related records every time it is read.",
+  relationship: "A link to another record. The rulebook keeps it pointing at something real.",
+};
+
+/** The popup. One field, and a trail back through the fields it was worked out from. */
+export function FieldSheet({ t, f, onClose }: { t: string; f: string; onClose: () => void }) {
+  const [trail, setTrail] = useState<{ t: string; f: string }[]>([{ t, f }]);
+  const at = trail[trail.length - 1];
+  const [p, setP] = useState<api.Provenance | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let live = true; setP(null); setError(null);
+    api.provenance(at.t, at.f).then((x) => live && setP(x)).catch((e) => live && setError(e.message));
+    return () => { live = false; };
+  }, [at.t, at.f]);
+
+  const fld = p?.field;
+  const title = fld ? fieldLabel(fld.field_name) : fieldLabel(at.f);
+  return (
+    <Sheet title={title} desc={`${at.t}.${at.f}`} onClose={onClose}>
+      {trail.length > 1 && (
+        <button className="btn ghost sm" style={{ marginBottom: 12 }} onClick={() => setTrail((x) => x.slice(0, -1))}>
+          ‹ back to {fieldLabel(trail[trail.length - 2].f)}
+        </button>
+      )}
+      <Err error={error} />
+      {!p && !error && <Loading />}
+      {p && fld && (
+        <>
+          <div className="card tight">
+            <div className="row wrap" style={{ marginBottom: 8 }}>
+              <Tag tone={fld.is_derived ? "green" : fld.field_type === "relationship" ? "blue" : "blue"}>{fld.field_type}</Tag>
+              <Tag tone="grey">{fld.datatype}</Tag>
+              {fld.is_witness && <Tag tone="purple">a witness</Tag>}
+              {fld.is_substrate_contested && <Tag tone="red">{fld.disagreeing_substrate_count} substrates disagree</Tag>}
+            </div>
+            <p className="sub" style={{ color: "var(--ink-2)" }}>{KIND[fld.field_type] || fld.field_type}</p>
+          </div>
+
+          {fld.formula && (
+            <div className="card tight">
+              <div className="section" style={{ margin: "0 0 6px" }}>The rule, as the rulebook states it</div>
+              <div className="rule" style={{ overflowWrap: "anywhere" }}>{fld.formula}</div>
+              <p className="provenance">This is the whole definition. The transpiler turned it into the SQL behind <code>{p.view}.{p.column}</code>; the same text built every other substrate.</p>
+            </div>
+          )}
+
+          {p.inputs.length > 0 && (
+            <div className="card tight">
+              <div className="section" style={{ margin: "0 0 6px" }}>Worked out from <span className="count">{p.inputs.length}</span></div>
+              {p.inputs.map((i) => (
+                <div key={i.key} className="row" style={{ padding: "6px 0", borderTop: "1px solid var(--line)" }}>
+                  <span className="grow">
+                    <b className={i.isDerived ? "derived" : "fact"}>{fieldLabel(i.field)}</b>
+                    {!i.isLocal && <span className="sub"> · from {i.table}</span>}
+                    {!i.exists && <span className="sub" style={{ color: "var(--red)" }}> · the catalog cannot place this reference</span>}
+                  </span>
+                  {i.exists && i.isLocal
+                    ? <button className="btn sm ghost" onClick={() => setTrail((x) => [...x, { t: at.t, f: i.column }])}>Why?</button>
+                    : <Tag tone="grey">{i.fieldType || "unknown"}</Tag>}
+                </div>
+              ))}
+              {p.inputs.some((i) => !i.isLocal) && <p className="provenance">A value from another table is reached through a link, one hop at a time. Open that record to follow it further.</p>}
+            </div>
+          )}
+
+          {p.question ? (
+            <div className="card tight">
+              <div className="section" style={{ margin: "0 0 6px" }}>This field exists because somebody asked</div>
+              <div className="quote">“{p.question.question_text}”<span className="by">asked by {human(String(p.question.asking_role))}{p.role?.label ? ` · ${p.role.label}` : ""}</span></div>
+              {p.question.why_it_matters && <p className="sub" style={{ marginTop: 8, color: "var(--ink-2)" }}>{String(p.question.why_it_matters)}</p>}
+              {p.question.answerable_before === false && <div style={{ marginTop: 8 }}><Tag tone="amber">the model could not answer this before</Tag></div>}
+              {p.loop && <p className="provenance" style={{ marginTop: 10 }}><b>Round {String(p.loop.loop_number)}: {String(p.loop.title).replace(/^Loop \d+: /, "")}</b>{p.loop.premise ? ` — ${p.loop.premise}` : ""}</p>}
+              {p.siblings.length > 0 && (
+                <div className="row wrap" style={{ marginTop: 10 }}>
+                  <span className="sub" style={{ width: "100%" }}>Answered together with:</span>
+                  {p.siblings.slice(0, 8).map((s) => <Tag key={s.rulebook_field_id} tone="grey">{fieldLabel(s.field_name)}</Tag>)}
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className="card tight">
+              <div className="section" style={{ margin: "0 0 6px" }}>No question is recorded behind this field</div>
+              <p className="sub">It predates the exercise that tied every new field to a named role's question. Inventing a motivation for it now would be making something up, so the record stays empty.</p>
+            </div>
+          )}
+
+          <div className="card tight">
+            <div className="section" style={{ margin: "0 0 6px" }}>Can it tell anything apart?</div>
+            <dl className="kv">
+              <dt>Rows that carry a value</dt><dd className="derived">{p.reading ? `${p.reading.populated} of ${p.reading.total}` : "—"}</dd>
+              <dt>Different values across the data</dt><dd className={fld.is_discriminating ? "derived" : "bad"}>{fld.measured_distinct_value_count}</dd>
+              <dt>Substrates that disagree</dt><dd className={fld.is_substrate_contested ? "bad" : "derived"}>{fld.disagreeing_substrate_count}</dd>
+            </dl>
+            {!fld.is_discriminating && <p className="sub" style={{ marginTop: 8, color: "var(--red)" }}>This column reads the same on every row, so it cannot separate one record from another. It looks like a working field and states nothing.</p>}
+          </div>
+
+          {p.table && (
+            <div className="card tight">
+              <div className="section" style={{ margin: "0 0 6px" }}>What kind of thing this is a fact about</div>
+              <p className="sub"><b>{String(p.table.rulebook_table_id)}</b>{p.table.subject_area ? ` · ${String(p.table.subject_area)}` : ""} · {String(p.table.field_count)} fields</p>
+              <div className="row wrap" style={{ marginTop: 8 }}>
+                {p.mappings.map((m, i) => <Tag key={i} tone={m.mapping_relation === "exact" ? "green" : m.mapping_relation === "extension" ? "purple" : "blue"}>{String(m.mapping_relation)}: {String(m.target_iri).split(/[#/]/).pop()}</Tag>)}
+                {p.mappings.length === 0 && <Tag tone="grey">no standard term recorded</Tag>}
+              </div>
+              <p className="provenance">A green term is PKO's own; blue reuses another published standard; purple is this model's extension, named as one rather than dressed up as standard.</p>
+            </div>
+          )}
+        </>
+      )}
+    </Sheet>
+  );
+}
 
 /** The words shown after a write: what the book worked out differently. */
 export function describeWatched(w: api.Watched | null) {

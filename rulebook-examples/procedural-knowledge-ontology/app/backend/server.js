@@ -348,44 +348,7 @@ app.get("/api/admin/provenance/:table/:field", h(async (req, res) => {
   if (!row) {
     return res.status(404).json({ error: `No catalog entry for ${table}.${field}` });
   }
-
-  let question = null, loop = null, role = null, siblings = [];
-  if (row.invented_for_question) {
-    [question] = await readView("vw_role_questions", {
-      where: "role_question_id = $1", params: [row.invented_for_question],
-    });
-    if (question) {
-      [loop] = await readView("vw_witness_loops", {
-        where: "witness_loop_id = $1", params: [question.witness_loop],
-      });
-      [role] = await readView("vw_roles", {
-        where: "role_id = $1", params: [question.asking_role],
-      });
-      siblings = await readView("vw_rulebook_fields", {
-        where: "invented_for_question = $1", params: [row.invented_for_question],
-        orderBy: "target_table, field_name",
-      });
-    }
-  }
-
-  // What does the field currently READ? The whole point of provenance is to
-  // end at a value, not at a description of one.
-  let reading = null;
-  if (row.is_derived) {
-    const view = `vw_${String(row.target_table).replace(/([a-z0-9])([A-Z])/g, "$1_$2").toLowerCase()}`;
-    const col = String(row.field_name).replace(/([a-z0-9])([A-Z])/g, "$1_$2").toLowerCase();
-    const { rows: exists } = await pool.query(
-      `SELECT 1 FROM information_schema.columns
-       WHERE table_schema='public' AND table_name=$1 AND column_name=$2`, [view, col]);
-    if (exists.length) {
-      const { rows } = await pool.query(
-        `SELECT count(*) FILTER (WHERE "${col}" IS NOT NULL)::int AS populated,
-                count(*)::int AS total FROM ${view}`);
-      reading = rows[0];
-    }
-  }
-
-  res.json({ field: row, question, loop, role, siblings, reading });
+  res.json(await provenanceOf(row));
 }));
 
 // ===========================================================================
@@ -529,6 +492,98 @@ function formulaDeps(formula, homeTable) {
   }
   return out;
 }
+
+// --- one field's whole provenance, assembled once ---------------------------
+// Two doors open onto this: the administrator's register asks by rulebook name
+// (Steps.IsLate), and every role experience asks by the column it just put on
+// screen (steps.is_late). They must answer the same thing, so there is one
+// implementation and no second copy to drift.
+//
+// Every part is a column of a vw_* row: the field's type and formula from the
+// catalog, the question that invented it, that question's loop and asking role,
+// the sibling fields invented for the same question, the table's semantic
+// mapping, and the fields the formula reads. Nothing here computes a domain
+// value — `reading` counts populated rows so the explainer can end at how much
+// of the data this field actually speaks about, which is the non-vacuity bar.
+async function provenanceOf(row) {
+  const table = row.target_table;
+  const view = `vw_${snake(table)}`;
+  // The real column, from the index built against information_schema at boot.
+  const hit = [...CAT_BY_COL.entries()].find(([, f]) => f.rulebook_field_id === row.rulebook_field_id);
+  const column = hit ? hit[0].slice(view.length + 1) : null;
+
+  let question = null, loop = null, role = null, siblings = [];
+  if (row.invented_for_question) {
+    [question] = await readView("vw_role_questions", {
+      where: "role_question_id = $1", params: [row.invented_for_question],
+    });
+    if (question) {
+      [loop] = await readView("vw_witness_loops", {
+        where: "witness_loop_id = $1", params: [question.witness_loop],
+      });
+      [role] = await readView("vw_roles", {
+        where: "role_id = $1", params: [question.asking_role],
+      });
+      siblings = await readView("vw_rulebook_fields", {
+        where: "invented_for_question = $1 AND rulebook_field_id <> $2",
+        params: [row.invented_for_question, row.rulebook_field_id],
+        orderBy: "target_table, field_name",
+      });
+    }
+  }
+
+  const [tableRow] = await readView("vw_rulebook_tables", {
+    where: "rulebook_table_id = $1", params: [table],
+  });
+  const mappings = await readView("vw_semantic_mappings", {
+    where: "source_path = $1", params: [table], orderBy: "mapping_relation",
+  });
+
+  // What the field currently READS. Provenance has to end at a value, not at a
+  // description of one. The column name came from information_schema, not from
+  // the request, so interpolating it here is safe.
+  let reading = null;
+  if (column) {
+    const { rows } = await pool.query(
+      `SELECT count(*) FILTER (WHERE "${column}" IS NOT NULL)::int AS populated,
+              count(*)::int AS total FROM ${view}`);
+    reading = rows[0];
+  }
+
+  return { field: row, view, column, question, loop, role, siblings,
+           table: tableRow ?? null, mappings,
+           inputs: formulaDeps(row.formula, table), reading };
+}
+
+// --- the other door: any role, about a column it just displayed -------------
+// The role experiences name a (table, column) pair for every key value they
+// show, and this answers it. Provenance obeys the same boundary as the data: a
+// column the signed-in role's own view does not carry does not exist for it, so
+// neither does its story. A pair the catalog cannot place is a 404 that names
+// the defect — never an empty popup, which would read as "this value came from
+// nowhere" when the truth is "the app explains a field the rulebook lost".
+app.get("/api/app/provenance/:table/:column", requireAuth, h(async (req, res) => {
+  const table = String(req.params.table), column = String(req.params.column);
+  const ok = (s) => /^[a-z][a-z0-9_]*$/.test(s);
+  if (!ok(table) || !ok(column)) {
+    return res.status(400).json({ error: "bad_identifier", detail: `${table}.${column}` });
+  }
+  const visible = await asPrincipal(req.claims, async (client, p) => (await client.query(
+    `SELECT 1 FROM information_schema.columns
+      WHERE table_schema = $1 AND table_name = $2 AND column_name = $3`,
+    [p.schema_name, table, column])).rowCount > 0);
+  if (!visible) {
+    return res.status(404).json({ error: "not_in_your_schema",
+      detail: `${table}.${column} is not a column ${req.claims.principal} may read.` });
+  }
+  const row = CAT_BY_COL.get(`vw_${table}|${column}`);
+  if (!row) {
+    return res.status(404).json({ error: "not_in_catalog",
+      detail: `vw_${table}.${column} is a real column that no RulebookFields row claims. ` +
+              `Run tools/reconcile_field_catalog.py — the app and the catalog disagree.` });
+  }
+  res.json(await provenanceOf(row));
+}));
 
 // --- the catalog of tables, for the explorer index -------------------------
 app.get("/api/explore/tables", h(async (_req, res) => {
