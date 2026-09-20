@@ -31,6 +31,10 @@ export const pool = new pg.Pool({ connectionString: DATABASE_URL, max: 10 });
 // kills the process: the API would crash itself on every reset. The pool discards the dead client
 // and opens a fresh one on the next query, so logging it is the whole of the correct handling.
 pool.on("error", (err) => console.error(`[db] idle connection lost (${err.code || err.message}); the pool will reconnect`));
+// The pool's handler only covers a client while it sits idle IN the pool. A client that is checked
+// out, or that pg-pool has already removed, emits 'error' on itself, and that killed the API when
+// init-db.sh was run from a terminal (2026-09-20). Every client therefore carries its own handler.
+pool.on("connect", (client) => client.on("error", (err) => console.error(`[db] connection lost (${err.code || err.message})`)));
 
 
 /** Owner-level query. Bypasses RLS. Sign-in and admin tooling only. */
