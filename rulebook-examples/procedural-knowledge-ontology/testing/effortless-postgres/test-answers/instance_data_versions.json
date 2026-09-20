@@ -1,0 +1,22 @@
+[
+  {
+    "instance_data_version_id": "idv-2026-07-01",
+    "name": "data-2026.07.01",
+    "governed_model": "gm-pko-rulebook",
+    "data_version_label": "data-2026.07.01",
+    "snapshot_at": "2026-07-01 09:00:00-05:00",
+    "conforms_to_release": "pko-release-0.10.1",
+    "logged_change_count": 1,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#InstanceDataVersion"
+  },
+  {
+    "instance_data_version_id": "idv-2026-07-15",
+    "name": "data-2026.07.15",
+    "governed_model": "gm-pko-rulebook",
+    "data_version_label": "data-2026.07.15",
+    "snapshot_at": "2026-07-15 09:00:00-05:00",
+    "conforms_to_release": "pko-release-0.10.2",
+    "logged_change_count": 1,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#InstanceDataVersion"
+  }
+]

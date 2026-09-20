@@ -1,0 +1,34 @@
+[
+  {
+    "execution_participant_id": "ep-0708-lin",
+    "procedure_execution": "exec-loto-0708-north-day",
+    "agent": "lin-zhao",
+    "participation_role": "Verifier",
+    "semantic_type_iri": "http://www.w3.org/ns/prov#Association",
+    "name": null
+  },
+  {
+    "execution_participant_id": "ep-0714-lin",
+    "procedure_execution": "exec-loto-0714-north-day",
+    "agent": "lin-zhao",
+    "participation_role": "Verifier",
+    "semantic_type_iri": "http://www.w3.org/ns/prov#Association",
+    "name": null
+  },
+  {
+    "execution_participant_id": "ep-0714-tomas",
+    "procedure_execution": "exec-loto-0714-north-day",
+    "agent": "tomas-reyes",
+    "participation_role": "Supervisor",
+    "semantic_type_iri": "http://www.w3.org/ns/prov#Association",
+    "name": null
+  },
+  {
+    "execution_participant_id": "ep-dep0301-omar",
+    "procedure_execution": "exec-deploy-2026-03-01",
+    "agent": "omar-haddad",
+    "participation_role": "Observer",
+    "semantic_type_iri": "http://www.w3.org/ns/prov#Association",
+    "name": null
+  }
+]

@@ -62,6 +62,13 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         }
 
         public string? SemanticTypeIri { get; set; }
+        // Formula KnowHowTopic (rulebook: =INDEX(KnowHowCarriers!{{Topic}}, MATCH({{KnowHow}}, KnowHowCarriers!{{KnowHowCarrierId}}, 0)))
+        [NotMapped]
+        public string? KnowHowTopic
+        {
+            get => F.AsString(F.Memo(this, "KnowHowTopic", () => F.Lookup<KnowHowCarrier>(this, "KnowHowCarriers", "KnowHowCarrierId", __c => __c.KnowHowCarriers, __r => F.Of(__r.KnowHowCarrierId), F.Of(this.KnowHow), __r => F.Of(__r.Topic), () => F.Of(new KnowHowCarrier().Topic)))); set { }
+        }
+
 
         public string? KnowHow { get; set; }
         public string? FromAgent { get; set; }

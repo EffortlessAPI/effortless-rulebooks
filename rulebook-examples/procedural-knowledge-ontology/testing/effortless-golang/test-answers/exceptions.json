@@ -10,7 +10,7 @@
     "fallback_role": "controller",
     "status": "Active",
     "active_exception_step_key": "close-06",
-    "semantic_type_iri": "urn:effortless:pko-extension#Exception"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#Exception"
   },
   {
     "exception_id": "exc-ledger-outage",
@@ -23,7 +23,7 @@
     "fallback_role": "close-automation",
     "status": "Active",
     "active_exception_step_key": "close-02",
-    "semantic_type_iri": "urn:effortless:pko-extension#Exception"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#Exception"
   },
   {
     "exception_id": "exc-no-sms-consent",
@@ -36,7 +36,7 @@
     "fallback_role": "notification-publisher",
     "status": "Active",
     "active_exception_step_key": "policy-07",
-    "semantic_type_iri": "urn:effortless:pko-extension#Exception"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#Exception"
   },
   {
     "exception_id": "exc-unreachable",
@@ -49,6 +49,6 @@
     "fallback_role": "process-steward",
     "status": "Active",
     "active_exception_step_key": "policy-08",
-    "semantic_type_iri": "urn:effortless:pko-extension#Exception"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#Exception"
   }
 ]

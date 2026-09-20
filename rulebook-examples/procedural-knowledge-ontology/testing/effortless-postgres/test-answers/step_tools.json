@@ -30,6 +30,12 @@
     "tool": "close-workpaper"
   },
   {
+    "step_tool_id": "st-loto06-gauge",
+    "name": "loto-06 / pressure-gauge",
+    "step": "loto-06",
+    "tool": "pressure-gauge"
+  },
+  {
     "step_tool_id": "st-policy02",
     "name": "policy-02 / knowledge-capture-form",
     "step": "policy-02",

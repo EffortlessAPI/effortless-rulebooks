@@ -16,7 +16,7 @@ from rulebook_edit import agg, calc, idx, lookup, raw, rel  # noqa: E402
 
 PKO = "https://w3id.org/pko#"
 IND = "https://w3id.org/pko/industry#"
-EXT = "urn:effortless:pko-extension#"
+EXT = "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#"
 PPLAN = "http://purl.org/net/p-plan#"
 PROV = "http://www.w3.org/ns/prov#"
 EV = "eval-current"

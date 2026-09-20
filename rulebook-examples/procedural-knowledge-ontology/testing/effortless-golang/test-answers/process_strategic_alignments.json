@@ -1,0 +1,50 @@
+[
+  {
+    "process_strategic_alignment_id": "psa-close",
+    "name": "quarter-end-close serves acme-finance",
+    "procedure": "quarter-end-close",
+    "organization": "acme-finance",
+    "mission_statement": "Report results that can be trusted.",
+    "rationale": "External reporting deadlines and control requirements.",
+    "value_created": "Accurate, timely, evidenced financial statements.",
+    "trade_offs": "Finance staff overtime at every quarter end.",
+    "states_no_trade_off": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ProcessStrategicAlignment"
+  },
+  {
+    "process_strategic_alignment_id": "psa-convmaint",
+    "name": "conveyor-maintenance serves acme-plant",
+    "procedure": "conveyor-maintenance",
+    "organization": "acme-plant",
+    "mission_statement": "Every worker goes home uninjured.",
+    "rationale": "Worn rollers jam the line and tempt people to clear it by hand.",
+    "value_created": "Fewer jams and unplanned stops.",
+    "trade_offs": "",
+    "states_no_trade_off": true,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ProcessStrategicAlignment"
+  },
+  {
+    "process_strategic_alignment_id": "psa-deploy",
+    "name": "production-deployment serves acme-engineering",
+    "procedure": "production-deployment",
+    "organization": "acme-engineering",
+    "mission_statement": "Customers can rely on the platform.",
+    "rationale": "Unreviewed changes caused the 2025 outage; change control policy requires recorded approval.",
+    "value_created": "Fewer failed changes; auditable approvals; risk-proportionate review.",
+    "trade_offs": "The human gate slows hotfixes; the AI classifier adds model-upgrade risk of its own.",
+    "states_no_trade_off": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ProcessStrategicAlignment"
+  },
+  {
+    "process_strategic_alignment_id": "psa-loto",
+    "name": "lockout-tagout serves acme-plant",
+    "procedure": "lockout-tagout",
+    "organization": "acme-plant",
+    "mission_statement": "Every worker goes home uninjured.",
+    "rationale": "Stored and live energy injure people servicing equipment; the energy control standard makes the procedure mandatory.",
+    "value_created": "No energy-release injuries; regulatory compliance; machines serviced without guesswork.",
+    "trade_offs": "Adds about an hour of downtime to every maintenance job and needs a second verifier on every shift.",
+    "states_no_trade_off": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ProcessStrategicAlignment"
+  }
+]

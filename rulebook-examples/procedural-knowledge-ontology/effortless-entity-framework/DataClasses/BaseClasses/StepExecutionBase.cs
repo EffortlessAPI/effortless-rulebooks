@@ -884,6 +884,27 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             get => F.AsBool(F.Memo(this, "IsBlockedByIncompletePrerequisite", () => F.And(F.Bool3(F.IsNotBlank(F.Of(this.StepPrerequisite))), F.Bool3(F.Eq(F.Of(this.CompletedPrerequisiteRunCount), F.I(0))), F.Bool3(F.Ne(F.Nullif(F.Of(this.ExecutionStatus)), F.S("Completed")))))); set { }
         }
 
+        // Formula OwnerOrganization (rulebook: =INDEX(ProcedureExecutions!{{OwnerOrganization}}, MATCH({{ProcedureExecution}}, ProcedureExecutions!{{ProcedureExecutionId}}, 0)))
+        [NotMapped]
+        public string? OwnerOrganization
+        {
+            get => F.AsString(F.Memo(this, "OwnerOrganization", () => F.Lookup<ProcedureExecution>(this, "ProcedureExecutions", "ProcedureExecutionId", __c => __c.ProcedureExecutions, __r => F.Of(__r.ProcedureExecutionId), F.Of(this.ProcedureExecution), __r => F.Of(__r.OwnerOrganization), () => F.Of(new ProcedureExecution().OwnerOrganization)))); set { }
+        }
+
+        // Formula IncompleteCueObservationCount (rulebook: =COUNTIFS(CueObservations!{{StepExecution}}, {{StepExecutionId}}, CueObservations!{{CueSignalsIncompleteStep}}, TRUE))
+        [NotMapped]
+        public int? IncompleteCueObservationCount
+        {
+            get => F.AsInt(F.Memo(this, "IncompleteCueObservationCount", () => F.Integer((base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<CueObservation>(base.SoAContext, "CueObservations", __c => __c.CueObservations), __r => F.CritField(F.Of(__r.StepExecution), F.Of(this.StepExecutionId)) && F.CritLiteral(F.Of(__r.CueSignalsIncompleteStep), F.B(true))))))); set { }
+        }
+
+        // Formula IsBlockedByObservedCue (rulebook: ={{IncompleteCueObservationCount}} > 0)
+        [NotMapped]
+        public bool? IsBlockedByObservedCue
+        {
+            get => F.AsBool(F.Memo(this, "IsBlockedByObservedCue", () => F.Cmp(F.Of(this.IncompleteCueObservationCount), ">", F.I(0)))); set { }
+        }
+
 
         public string? ProcedureExecution { get; set; }
         public string? Step { get; set; }

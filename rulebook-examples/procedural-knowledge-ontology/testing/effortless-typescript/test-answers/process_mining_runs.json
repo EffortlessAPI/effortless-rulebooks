@@ -18,7 +18,12 @@
     "procedure_version_is_live": false,
     "is_drift_on_live_version": false,
     "drifted_mining_run_key": "",
-    "semantic_type_iri": "urn:effortless:pko-extension#ProcessMiningRun"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ProcessMiningRun",
+    "people_capture_complement_count": 0,
+    "is_deviation_unexplained_by_people": true,
+    "undocumented_path_count": 0,
+    "has_undocumented_enacted_path": false,
+    "conformance_percent": 20
   },
   {
     "process_mining_run_id": "pmr-close-v11-cutoff-bypass",
@@ -39,7 +44,12 @@
     "procedure_version_is_live": true,
     "is_drift_on_live_version": true,
     "drifted_mining_run_key": "close-v1.1.0",
-    "semantic_type_iri": "urn:effortless:pko-extension#ProcessMiningRun"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ProcessMiningRun",
+    "people_capture_complement_count": 0,
+    "is_deviation_unexplained_by_people": true,
+    "undocumented_path_count": 0,
+    "has_undocumented_enacted_path": false,
+    "conformance_percent": 38
   },
   {
     "process_mining_run_id": "pmr-close-v11-q3",
@@ -60,7 +70,38 @@
     "procedure_version_is_live": true,
     "is_drift_on_live_version": false,
     "drifted_mining_run_key": "",
-    "semantic_type_iri": "urn:effortless:pko-extension#ProcessMiningRun"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ProcessMiningRun",
+    "people_capture_complement_count": 0,
+    "is_deviation_unexplained_by_people": true,
+    "undocumented_path_count": 0,
+    "has_undocumented_enacted_path": false,
+    "conformance_percent": 83
+  },
+  {
+    "process_mining_run_id": "pmr-deploy-v320-ci",
+    "name": "CI/CD pipeline event log / 2026-07-18T14:00:00+00:00",
+    "procedure_version": "deploy-v3.2.0",
+    "event_log_source": "CI/CD pipeline event log",
+    "mined_at": "2026-07-18T09:00:00-05:00",
+    "discovered_variant_count": 3,
+    "conforming_variant_count": 2,
+    "deviation_description": "One hotfix variant rolls out with no approval event.",
+    "evaluation_context": "eval-current",
+    "as_of_instant": "2026-07-19T13:00:00-05:00",
+    "conformance_rate": 0.6666666666666666,
+    "is_conformant": false,
+    "has_major_drift_from_documentation": false,
+    "days_since_mined": 1,
+    "is_stale_mining_evidence": false,
+    "procedure_version_is_live": true,
+    "is_drift_on_live_version": false,
+    "drifted_mining_run_key": "",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ProcessMiningRun",
+    "people_capture_complement_count": 1,
+    "is_deviation_unexplained_by_people": false,
+    "undocumented_path_count": 2,
+    "has_undocumented_enacted_path": true,
+    "conformance_percent": 67
   },
   {
     "process_mining_run_id": "pmr-policy-v1-notify",
@@ -81,6 +122,11 @@
     "procedure_version_is_live": true,
     "is_drift_on_live_version": false,
     "drifted_mining_run_key": "",
-    "semantic_type_iri": "urn:effortless:pko-extension#ProcessMiningRun"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ProcessMiningRun",
+    "people_capture_complement_count": 0,
+    "is_deviation_unexplained_by_people": false,
+    "undocumented_path_count": 0,
+    "has_undocumented_enacted_path": false,
+    "conformance_percent": 100
   }
 ]

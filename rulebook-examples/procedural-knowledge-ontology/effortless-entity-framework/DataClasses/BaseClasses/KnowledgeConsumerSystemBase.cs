@@ -87,6 +87,22 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         }
 
         public string? SemanticTypeIri { get; set; }
+        public bool? IsComputationallyQueryable { get; set; }
+        public bool? IsComputationallyValidatable { get; set; }
+        // Formula HoldsComputationallyEncodedProcedureKnowledge (rulebook: =AND({{HoldsProcedureKnowledge}}, {{IsComputationallyQueryable}}, {{IsComputationallyValidatable}}, {{HasReasoner}}))
+        [NotMapped]
+        public bool? HoldsComputationallyEncodedProcedureKnowledge
+        {
+            get => F.AsBool(F.Memo(this, "HoldsComputationallyEncodedProcedureKnowledge", () => F.And(F.IsTrueV(F.Of(this.HoldsProcedureKnowledge)), F.IsTrueV(F.Of(this.IsComputationallyQueryable)), F.IsTrueV(F.Of(this.IsComputationallyValidatable)), F.IsTrueV(F.Of(this.HasReasoner))))); set { }
+        }
+
+        // Formula StoresProcedureKnowledgeWithoutComputationalAccess (rulebook: =AND({{HoldsProcedureKnowledge}}, {{HoldsComputationallyEncodedProcedureKnowledge}} = FALSE))
+        [NotMapped]
+        public bool? StoresProcedureKnowledgeWithoutComputationalAccess
+        {
+            get => F.AsBool(F.Memo(this, "StoresProcedureKnowledgeWithoutComputationalAccess", () => F.And(F.IsTrueV(F.Of(this.HoldsProcedureKnowledge)), F.Bool3(F.Eq(F.Of(this.HoldsComputationallyEncodedProcedureKnowledge), F.B(false)))))); set { }
+        }
+
 
         public string? Organization { get; set; }
 

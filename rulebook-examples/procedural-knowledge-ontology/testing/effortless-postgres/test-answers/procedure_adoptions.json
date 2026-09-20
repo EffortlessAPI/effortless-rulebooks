@@ -1,0 +1,32 @@
+[
+  {
+    "procedure_adoption_id": "adopt-close-corp",
+    "name": "acme-corp adopts quarter-end-close",
+    "procedure": "quarter-end-close",
+    "organization": "acme-corp",
+    "adopted_at": "2025-10-01 09:00:00-05:00",
+    "adoption_mode": "AsIs",
+    "is_adoption_mode_unstated": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ProcedureAdoption"
+  },
+  {
+    "procedure_adoption_id": "adopt-deploy-plant",
+    "name": "acme-plant adopts production-deployment",
+    "procedure": "production-deployment",
+    "organization": "acme-plant",
+    "adopted_at": "2026-03-15 09:00:00-05:00",
+    "adoption_mode": "",
+    "is_adoption_mode_unstated": true,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ProcedureAdoption"
+  },
+  {
+    "procedure_adoption_id": "adopt-loto-corp",
+    "name": "acme-corp adopts lockout-tagout",
+    "procedure": "lockout-tagout",
+    "organization": "acme-corp",
+    "adopted_at": "2026-05-21 09:00:00-05:00",
+    "adoption_mode": "Extended",
+    "is_adoption_mode_unstated": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ProcedureAdoption"
+  }
+]

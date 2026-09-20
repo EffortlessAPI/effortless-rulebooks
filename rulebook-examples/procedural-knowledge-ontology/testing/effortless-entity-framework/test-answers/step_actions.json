@@ -30,6 +30,12 @@
     "name": "close-06 / approve-close"
   },
   {
+    "step_action_id": "sa-loto05-applylock",
+    "step": "loto-05",
+    "action": "apply-lock",
+    "name": "loto-05 / apply-lock"
+  },
+  {
     "step_action_id": "sa-policy02",
     "step": "policy-02",
     "action": "interview-practitioner",

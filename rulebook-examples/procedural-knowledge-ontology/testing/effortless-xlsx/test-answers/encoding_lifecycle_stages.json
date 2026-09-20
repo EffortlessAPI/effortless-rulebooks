@@ -1,0 +1,62 @@
+[
+  {
+    "encoding_lifecycle_stage_id": "codify",
+    "label": "Codify",
+    "stage_order": 4,
+    "activity": "Structure it into steps, conditions and decisions.",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#EncodingLifecycleStage",
+    "name": "Codify",
+    "annotation_count": 0,
+    "is_stage_without_feedback": true
+  },
+  {
+    "encoding_lifecycle_stage_id": "collect",
+    "label": "Collect",
+    "stage_order": 1,
+    "activity": "Elicit knowledge from practitioners, documents and logs.",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#EncodingLifecycleStage",
+    "name": "Collect",
+    "annotation_count": 2,
+    "is_stage_without_feedback": false
+  },
+  {
+    "encoding_lifecycle_stage_id": "document",
+    "label": "Document",
+    "stage_order": 3,
+    "activity": "Write it down as readable procedures.",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#EncodingLifecycleStage",
+    "name": "Document",
+    "annotation_count": 2,
+    "is_stage_without_feedback": false
+  },
+  {
+    "encoding_lifecycle_stage_id": "encode",
+    "label": "Encode",
+    "stage_order": 5,
+    "activity": "Express it in a machine-interpretable model.",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#EncodingLifecycleStage",
+    "name": "Encode",
+    "annotation_count": 3,
+    "is_stage_without_feedback": false
+  },
+  {
+    "encoding_lifecycle_stage_id": "operationalize",
+    "label": "Operationalize",
+    "stage_order": 6,
+    "activity": "Put it to work in execution, retrieval and AI.",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#EncodingLifecycleStage",
+    "name": "Operationalize",
+    "annotation_count": 2,
+    "is_stage_without_feedback": false
+  },
+  {
+    "encoding_lifecycle_stage_id": "store",
+    "label": "Store",
+    "stage_order": 2,
+    "activity": "Keep what was collected where it can be found again.",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#EncodingLifecycleStage",
+    "name": "Store",
+    "annotation_count": 0,
+    "is_stage_without_feedback": true
+  }
+]

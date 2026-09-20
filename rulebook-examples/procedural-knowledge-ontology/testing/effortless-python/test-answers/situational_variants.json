@@ -1,0 +1,62 @@
+[
+  {
+    "situational_variant_id": "var-deploy-eu-freeze",
+    "procedure": "production-deployment",
+    "label": "EU change-freeze hold",
+    "situation": "An EU change freeze overlaps the change window.",
+    "adaptation": "Hold the rollout at the gate until the freeze lifts unless the VP approves.",
+    "applicability_scope": "scope-deploy-enterprise-eu",
+    "expert_agent": "grace-holloway",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#SituationalVariant",
+    "name": "EU change-freeze hold",
+    "scope_dimension_count": 4,
+    "scope_states_conditions": true,
+    "has_no_applicability_dimension": false,
+    "diverges_without_stated_conditions": false
+  },
+  {
+    "situational_variant_id": "var-deploy-hotfix-no-canary",
+    "procedure": "production-deployment",
+    "label": "Hotfix without canary",
+    "situation": "A security hotfix is urgent.",
+    "adaptation": "Skip the canary stage and roll out to every region at once.",
+    "applicability_scope": "scope-deploy-hotfix",
+    "expert_agent": "grace-holloway",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#SituationalVariant",
+    "name": "Hotfix without canary",
+    "scope_dimension_count": 1,
+    "scope_states_conditions": false,
+    "has_no_applicability_dimension": false,
+    "diverges_without_stated_conditions": true
+  },
+  {
+    "situational_variant_id": "var-loto-night-self-verify",
+    "procedure": "lockout-tagout",
+    "label": "Night self-verification",
+    "situation": "No second verifier is on shift.",
+    "adaptation": "The technician re-reads every gauge a second time himself.",
+    "applicability_scope": null,
+    "expert_agent": "ken-watanabe",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#SituationalVariant",
+    "name": "Night self-verification",
+    "scope_dimension_count": 0,
+    "scope_states_conditions": false,
+    "has_no_applicability_dimension": true,
+    "diverges_without_stated_conditions": true
+  },
+  {
+    "situational_variant_id": "var-loto-press7-accumulator",
+    "procedure": "lockout-tagout",
+    "label": "Press 7 accumulator bleed-down",
+    "situation": "Press with a hydraulic accumulator retrofit.",
+    "adaptation": "Bleed the accumulator through the retrofit valve before isolating the hydraulic supply.",
+    "applicability_scope": "scope-press7-retrofit",
+    "expert_agent": "tomas-reyes",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#SituationalVariant",
+    "name": "Press 7 accumulator bleed-down",
+    "scope_dimension_count": 3,
+    "scope_states_conditions": true,
+    "has_no_applicability_dimension": false,
+    "diverges_without_stated_conditions": false
+  }
+]

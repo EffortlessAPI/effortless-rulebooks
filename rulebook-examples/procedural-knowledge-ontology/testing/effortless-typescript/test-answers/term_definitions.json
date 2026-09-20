@@ -1,0 +1,47 @@
+[
+  {
+    "term_definition_id": "td-drift-observations",
+    "name": "DriftObservations definition",
+    "rulebook_table": "DriftObservations",
+    "includes": "Any observed gap between the model and the organization.",
+    "excludes": "Nothing.",
+    "neighboring_terms": "Related to issues.",
+    "drafted_by_agent": "ontology-assistant-1-2",
+    "drafter_kind": "AIAgent",
+    "drafted_at": "2026-07-01T09:00:00-05:00",
+    "revised_by_agent": null,
+    "revised_at": null,
+    "ai_draft_adopted_unrevised": true,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#TermDefinition"
+  },
+  {
+    "term_definition_id": "td-model-charters",
+    "name": "ModelCharters definition",
+    "rulebook_table": "ModelCharters",
+    "includes": "A period during which named roles steward and hold authority over one governed model.",
+    "excludes": "Role assignments of individual agents; review events.",
+    "neighboring_terms": "Sits beside RoleAssignments and StewardshipAssignments.",
+    "drafted_by_agent": "ontology-assistant-1-2",
+    "drafter_kind": "AIAgent",
+    "drafted_at": "2026-06-20T09:00:00-05:00",
+    "revised_by_agent": "sam-adeyemi",
+    "revised_at": "2026-06-22T09:00:00-05:00",
+    "ai_draft_adopted_unrevised": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#TermDefinition"
+  },
+  {
+    "term_definition_id": "td-procedure-versions",
+    "name": "ProcedureVersions definition",
+    "rulebook_table": "ProcedureVersions",
+    "includes": "A versioned specification of a procedure.",
+    "excludes": "Executions of that specification.",
+    "neighboring_terms": "Specialized by nothing; linked to Procedures and ProcedureExecutions.",
+    "drafted_by_agent": "sam-adeyemi",
+    "drafter_kind": "Human",
+    "drafted_at": "2026-05-02T09:00:00-05:00",
+    "revised_by_agent": "nadia-petrova",
+    "revised_at": "2026-05-04T09:00:00-05:00",
+    "ai_draft_adopted_unrevised": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#TermDefinition"
+  }
+]

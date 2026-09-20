@@ -1,0 +1,68 @@
+[
+  {
+    "machine_energy_source_id": "mes-conveyor3-electrical",
+    "machine": "conveyor-3",
+    "energy_source": "ElectricalEnergy",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#MachineEnergySource",
+    "name": null,
+    "machine_procedure_version": null,
+    "isolation_step_count": null,
+    "is_unisolated_energy_source": null,
+    "unisolated_machine_key": null
+  },
+  {
+    "machine_energy_source_id": "mes-conveyor3-gravitational",
+    "machine": "conveyor-3",
+    "energy_source": "GravitationalEnergy",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#MachineEnergySource",
+    "name": null,
+    "machine_procedure_version": null,
+    "isolation_step_count": null,
+    "is_unisolated_energy_source": null,
+    "unisolated_machine_key": null
+  },
+  {
+    "machine_energy_source_id": "mes-conveyor3-pneumatic",
+    "machine": "conveyor-3",
+    "energy_source": "PneumaticEnergy",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#MachineEnergySource",
+    "name": null,
+    "machine_procedure_version": null,
+    "isolation_step_count": null,
+    "is_unisolated_energy_source": null,
+    "unisolated_machine_key": null
+  },
+  {
+    "machine_energy_source_id": "mes-mixer2-electrical",
+    "machine": "mixer-2",
+    "energy_source": "ElectricalEnergy",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#MachineEnergySource",
+    "name": null,
+    "machine_procedure_version": null,
+    "isolation_step_count": null,
+    "is_unisolated_energy_source": null,
+    "unisolated_machine_key": null
+  },
+  {
+    "machine_energy_source_id": "mes-press7-electrical",
+    "machine": "press-7",
+    "energy_source": "ElectricalEnergy",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#MachineEnergySource",
+    "name": null,
+    "machine_procedure_version": null,
+    "isolation_step_count": null,
+    "is_unisolated_energy_source": null,
+    "unisolated_machine_key": null
+  },
+  {
+    "machine_energy_source_id": "mes-press7-hydraulic",
+    "machine": "press-7",
+    "energy_source": "HydraulicEnergy",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#MachineEnergySource",
+    "name": null,
+    "machine_procedure_version": null,
+    "isolation_step_count": null,
+    "is_unisolated_energy_source": null,
+    "unisolated_machine_key": null
+  }
+]

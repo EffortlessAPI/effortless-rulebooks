@@ -1,0 +1,72 @@
+[
+  {
+    "tactical_resource_allocation_id": "tra-deploy01-runners",
+    "step": "deploy-01",
+    "facility": null,
+    "resource_label": "CI runner hours",
+    "resource_kind": "Equipment",
+    "available_units_per_week": 400,
+    "demanded_units_per_week": 320,
+    "adjustment_decision": "",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#TacticalResourceAllocation",
+    "name": null,
+    "utilization_percent": null,
+    "is_bottleneck": null
+  },
+  {
+    "tactical_resource_allocation_id": "tra-deploy03-approver",
+    "step": "deploy-03",
+    "facility": null,
+    "resource_label": "Release manager approval slots",
+    "resource_kind": "People",
+    "available_units_per_week": 20,
+    "demanded_units_per_week": 12,
+    "adjustment_decision": "",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#TacticalResourceAllocation",
+    "name": null,
+    "utilization_percent": null,
+    "is_bottleneck": null
+  },
+  {
+    "tactical_resource_allocation_id": "tra-loto05-padlocks-north",
+    "step": "loto-05",
+    "facility": "plant-north",
+    "resource_label": "Personal padlocks at the north lockout station",
+    "resource_kind": "Equipment",
+    "available_units_per_week": 40,
+    "demanded_units_per_week": 46,
+    "adjustment_decision": "Order twelve padlocks and reconcile the station inventory every shift.",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#TacticalResourceAllocation",
+    "name": null,
+    "utilization_percent": null,
+    "is_bottleneck": null
+  },
+  {
+    "tactical_resource_allocation_id": "tra-loto06-gauges",
+    "step": "loto-06",
+    "facility": "plant-north",
+    "resource_label": "Calibrated pressure gauges",
+    "resource_kind": "Tooling",
+    "available_units_per_week": 10,
+    "demanded_units_per_week": 6,
+    "adjustment_decision": "",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#TacticalResourceAllocation",
+    "name": null,
+    "utilization_percent": null,
+    "is_bottleneck": null
+  },
+  {
+    "tactical_resource_allocation_id": "tra-loto06-night-verifier",
+    "step": "loto-06",
+    "facility": "plant-south",
+    "resource_label": "Night-shift zero-energy verifier hours",
+    "resource_kind": "People",
+    "available_units_per_week": 2,
+    "demanded_units_per_week": 6,
+    "adjustment_decision": "Fill the night safety deputy role before adding night lockouts.",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#TacticalResourceAllocation",
+    "name": null,
+    "utilization_percent": null,
+    "is_bottleneck": null
+  }
+]

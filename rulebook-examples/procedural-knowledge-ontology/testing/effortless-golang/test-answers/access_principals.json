@@ -14,7 +14,7 @@
     "visible_table_count": 5,
     "has_no_access": false,
     "is_over_privileged": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AccessPrincipal"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AccessPrincipal"
   },
   {
     "access_principal_id": "principal-close-automation",
@@ -27,11 +27,11 @@
     "organization_scope": "acme-finance",
     "role_label": "Close Automation Operator",
     "policy_count": 3,
-    "grant_count": 23,
+    "grant_count": 27,
     "visible_table_count": 3,
     "has_no_access": false,
     "is_over_privileged": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AccessPrincipal"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AccessPrincipal"
   },
   {
     "access_principal_id": "principal-communications-manager",
@@ -48,7 +48,7 @@
     "visible_table_count": 6,
     "has_no_access": false,
     "is_over_privileged": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AccessPrincipal"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AccessPrincipal"
   },
   {
     "access_principal_id": "principal-controller",
@@ -65,7 +65,7 @@
     "visible_table_count": 8,
     "has_no_access": false,
     "is_over_privileged": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AccessPrincipal"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AccessPrincipal"
   },
   {
     "access_principal_id": "principal-employment-counsel",
@@ -82,7 +82,7 @@
     "visible_table_count": 5,
     "has_no_access": false,
     "is_over_privileged": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AccessPrincipal"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AccessPrincipal"
   },
   {
     "access_principal_id": "principal-finance-analyst",
@@ -99,7 +99,7 @@
     "visible_table_count": 7,
     "has_no_access": false,
     "is_over_privileged": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AccessPrincipal"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AccessPrincipal"
   },
   {
     "access_principal_id": "principal-hr-policy-owner",
@@ -116,7 +116,7 @@
     "visible_table_count": 6,
     "has_no_access": false,
     "is_over_privileged": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AccessPrincipal"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AccessPrincipal"
   },
   {
     "access_principal_id": "principal-knowledge-authority",
@@ -128,12 +128,46 @@
     "is_administrator": true,
     "organization_scope": "acme-finance",
     "role_label": "Procedural Knowledge Authority",
-    "policy_count": 74,
-    "grant_count": 1603,
-    "visible_table_count": 74,
+    "policy_count": 261,
+    "grant_count": 5167,
+    "visible_table_count": 261,
     "has_no_access": false,
     "is_over_privileged": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AccessPrincipal"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AccessPrincipal"
+  },
+  {
+    "access_principal_id": "principal-knowledge-engineer",
+    "name": "Knowledge Engineer",
+    "label": "Knowledge Engineer",
+    "domain_role": "knowledge-engineer",
+    "pg_role_name": "pko_knowledge_engineer",
+    "schema_name": "pko_knowledge_engineer",
+    "is_administrator": false,
+    "organization_scope": "acme-corp",
+    "role_label": "Knowledge Engineer",
+    "policy_count": 55,
+    "grant_count": 1714,
+    "visible_table_count": 51,
+    "has_no_access": false,
+    "is_over_privileged": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AccessPrincipal"
+  },
+  {
+    "access_principal_id": "principal-maintenance-technician",
+    "name": "Maintenance Technician",
+    "label": "Maintenance Technician",
+    "domain_role": "maintenance-technician",
+    "pg_role_name": "pko_maintenance_technician",
+    "schema_name": "pko_maintenance_technician",
+    "is_administrator": false,
+    "organization_scope": "acme-plant",
+    "role_label": "Maintenance Technician",
+    "policy_count": 35,
+    "grant_count": 1174,
+    "visible_table_count": 28,
+    "has_no_access": false,
+    "is_over_privileged": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AccessPrincipal"
   },
   {
     "access_principal_id": "principal-notification-publisher",
@@ -150,7 +184,75 @@
     "visible_table_count": 5,
     "has_no_access": false,
     "is_over_privileged": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AccessPrincipal"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AccessPrincipal"
+  },
+  {
+    "access_principal_id": "principal-ontology-authority",
+    "name": "Ontology Authority",
+    "label": "Ontology Authority",
+    "domain_role": "ontology-authority",
+    "pg_role_name": "pko_ontology_authority",
+    "schema_name": "pko_ontology_authority",
+    "is_administrator": false,
+    "organization_scope": "acme-corp",
+    "role_label": "Ontology Authority",
+    "policy_count": 19,
+    "grant_count": 599,
+    "visible_table_count": 18,
+    "has_no_access": false,
+    "is_over_privileged": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AccessPrincipal"
+  },
+  {
+    "access_principal_id": "principal-plant-assistant",
+    "name": "Plant Assistant",
+    "label": "Plant Assistant",
+    "domain_role": "plant-assistant",
+    "pg_role_name": "pko_plant_assistant",
+    "schema_name": "pko_plant_assistant",
+    "is_administrator": false,
+    "organization_scope": "acme-plant",
+    "role_label": "Plant Assistant",
+    "policy_count": 16,
+    "grant_count": 886,
+    "visible_table_count": 16,
+    "has_no_access": false,
+    "is_over_privileged": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AccessPrincipal"
+  },
+  {
+    "access_principal_id": "principal-plant-operations-manager",
+    "name": "Plant Operations Manager",
+    "label": "Plant Operations Manager",
+    "domain_role": "plant-operations-manager",
+    "pg_role_name": "pko_plant_operations_manager",
+    "schema_name": "pko_plant_operations_manager",
+    "is_administrator": false,
+    "organization_scope": "acme-plant",
+    "role_label": "Plant Operations Manager",
+    "policy_count": 18,
+    "grant_count": 846,
+    "visible_table_count": 17,
+    "has_no_access": false,
+    "is_over_privileged": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AccessPrincipal"
+  },
+  {
+    "access_principal_id": "principal-plant-safety-officer",
+    "name": "Plant Safety Officer",
+    "label": "Plant Safety Officer",
+    "domain_role": "plant-safety-officer",
+    "pg_role_name": "pko_plant_safety_officer",
+    "schema_name": "pko_plant_safety_officer",
+    "is_administrator": false,
+    "organization_scope": "acme-plant",
+    "role_label": "Plant Safety Officer",
+    "policy_count": 36,
+    "grant_count": 1305,
+    "visible_table_count": 33,
+    "has_no_access": false,
+    "is_over_privileged": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AccessPrincipal"
   },
   {
     "access_principal_id": "principal-policy-drafting-agent",
@@ -167,7 +269,7 @@
     "visible_table_count": 4,
     "has_no_access": false,
     "is_over_privileged": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AccessPrincipal"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AccessPrincipal"
   },
   {
     "access_principal_id": "principal-process-steward",
@@ -179,12 +281,46 @@
     "is_administrator": true,
     "organization_scope": "acme-people",
     "role_label": "Procedural Knowledge Steward",
-    "policy_count": 74,
-    "grant_count": 1603,
-    "visible_table_count": 74,
+    "policy_count": 262,
+    "grant_count": 5167,
+    "visible_table_count": 261,
     "has_no_access": false,
     "is_over_privileged": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AccessPrincipal"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AccessPrincipal"
+  },
+  {
+    "access_principal_id": "principal-release-manager",
+    "name": "Release Manager",
+    "label": "Release Manager",
+    "domain_role": "release-manager",
+    "pg_role_name": "pko_release_manager",
+    "schema_name": "pko_release_manager",
+    "is_administrator": false,
+    "organization_scope": "acme-engineering",
+    "role_label": "Release Manager",
+    "policy_count": 15,
+    "grant_count": 968,
+    "visible_table_count": 15,
+    "has_no_access": false,
+    "is_over_privileged": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AccessPrincipal"
+  },
+  {
+    "access_principal_id": "principal-sourcing-manager",
+    "name": "Strategic Sourcing Manager",
+    "label": "Strategic Sourcing Manager",
+    "domain_role": "sourcing-manager",
+    "pg_role_name": "pko_sourcing_manager",
+    "schema_name": "pko_sourcing_manager",
+    "is_administrator": false,
+    "organization_scope": "acme-home-brands",
+    "role_label": "Strategic Sourcing Manager",
+    "policy_count": 10,
+    "grant_count": 200,
+    "visible_table_count": 8,
+    "has_no_access": false,
+    "is_over_privileged": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AccessPrincipal"
   },
   {
     "access_principal_id": "principal-variance-review-agent",
@@ -197,10 +333,10 @@
     "organization_scope": "acme-finance",
     "role_label": "Variance Review Agent",
     "policy_count": 5,
-    "grant_count": 35,
+    "grant_count": 39,
     "visible_table_count": 5,
     "has_no_access": false,
     "is_over_privileged": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AccessPrincipal"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AccessPrincipal"
   }
 ]

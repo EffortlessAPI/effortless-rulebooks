@@ -1,0 +1,32 @@
+[
+  {
+    "agent_upgrade_assessment_id": "upg-risk-241-250-graph",
+    "current_agent": "risk-classifier-2-4-1",
+    "candidate_agent": "risk-classifier-2-5-0",
+    "assessed_at": "2026-07-17 14:00:00",
+    "assessment_method": "GraphTraversal",
+    "assessed_by_agent": "ines-moreau",
+    "listed_affected_step_count": 3,
+    "listed_affected_steps_note": "deploy-03, deploy-04 and deploy-05, found by traversing the artifact flow from the classifier.",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AgentUpgradeAssessment",
+    "name": "risk-classifier-2-4-1 -> risk-classifier-2-5-0 (GraphTraversal)",
+    "attributed_artifact_count": 2,
+    "traversed_downstream_step_count": "#VALUE!",
+    "missed_traversed_impact": "#VALUE!"
+  },
+  {
+    "agent_upgrade_assessment_id": "upg-risk-241-250-ticket",
+    "current_agent": "risk-classifier-2-4-1",
+    "candidate_agent": "risk-classifier-2-5-0",
+    "assessed_at": "2026-07-10 14:00:00",
+    "assessment_method": "ChangeTicket",
+    "assessed_by_agent": "grace-holloway",
+    "listed_affected_step_count": 1,
+    "listed_affected_steps_note": "Release approval gate (deploy-03) reads the risk class.",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AgentUpgradeAssessment",
+    "name": "risk-classifier-2-4-1 -> risk-classifier-2-5-0 (ChangeTicket)",
+    "attributed_artifact_count": 2,
+    "traversed_downstream_step_count": "#VALUE!",
+    "missed_traversed_impact": "#VALUE!"
+  }
+]

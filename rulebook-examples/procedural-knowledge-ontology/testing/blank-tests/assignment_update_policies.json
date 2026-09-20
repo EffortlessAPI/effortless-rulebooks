@@ -1,0 +1,32 @@
+[
+  {
+    "assignment_update_policy_id": "aup-ai-agents",
+    "label": "AI agent role fills",
+    "trigger_owner_role": "vp-engineering",
+    "update_sla_hours": 72,
+    "model_drives_routing": true,
+    "adopted_at": "2025-05-01T00:00:00-05:00",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AssignmentUpdatePolicy",
+    "name": null
+  },
+  {
+    "assignment_update_policy_id": "aup-eng-operations",
+    "label": "Engineering operations rotas (SRE, rollout, build)",
+    "trigger_owner_role": null,
+    "update_sla_hours": 0,
+    "model_drives_routing": true,
+    "adopted_at": "2024-11-01T00:00:00-05:00",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AssignmentUpdatePolicy",
+    "name": null
+  },
+  {
+    "assignment_update_policy_id": "aup-release-approvers",
+    "label": "Release approval roles",
+    "trigger_owner_role": "vp-engineering",
+    "update_sla_hours": 24,
+    "model_drives_routing": true,
+    "adopted_at": "2025-05-01T00:00:00-05:00",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AssignmentUpdatePolicy",
+    "name": null
+  }
+]

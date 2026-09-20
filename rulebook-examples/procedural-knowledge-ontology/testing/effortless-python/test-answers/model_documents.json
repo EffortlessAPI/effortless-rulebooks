@@ -1,0 +1,62 @@
+[
+  {
+    "model_document_id": "doc-article-coverage",
+    "governed_model": "gm-pko-rulebook",
+    "title": "ARTICLE-COVERAGE.md",
+    "document_kind": "Evaluation",
+    "documented_release": "pko-release-1.0.0",
+    "last_updated_at": "2026-07-18T09:00:00-05:00",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ModelDocument",
+    "name": "ARTICLE-COVERAGE.md",
+    "model_current_release": "pko-release-1.0.0",
+    "is_behind_current_release": false
+  },
+  {
+    "model_document_id": "doc-changelog",
+    "governed_model": "gm-pko-rulebook",
+    "title": "CHANGELOG.md",
+    "document_kind": "VersionNotes",
+    "documented_release": "pko-release-0.10.1",
+    "last_updated_at": "2026-06-24T09:00:00-05:00",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ModelDocument",
+    "name": "CHANGELOG.md",
+    "model_current_release": "pko-release-1.0.0",
+    "is_behind_current_release": true
+  },
+  {
+    "model_document_id": "doc-pko-alignment",
+    "governed_model": "gm-pko-rulebook",
+    "title": "PKO-ALIGNMENT.md",
+    "document_kind": "Documentation",
+    "documented_release": "pko-release-0.10.0",
+    "last_updated_at": "2026-06-12T09:00:00-05:00",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ModelDocument",
+    "name": "PKO-ALIGNMENT.md",
+    "model_current_release": "pko-release-1.0.0",
+    "is_behind_current_release": true
+  },
+  {
+    "model_document_id": "doc-readme",
+    "governed_model": "gm-pko-rulebook",
+    "title": "README.md",
+    "document_kind": "Documentation",
+    "documented_release": "pko-release-1.0.0",
+    "last_updated_at": "2026-07-19T11:30:00-05:00",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ModelDocument",
+    "name": "README.md",
+    "model_current_release": "pko-release-1.0.0",
+    "is_behind_current_release": false
+  },
+  {
+    "model_document_id": "doc-witness-loops",
+    "governed_model": "gm-pko-rulebook",
+    "title": "WITNESS-LOOPS.md",
+    "document_kind": "Requirements",
+    "documented_release": "pko-release-1.0.0",
+    "last_updated_at": "2026-07-18T09:00:00-05:00",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ModelDocument",
+    "name": "WITNESS-LOOPS.md",
+    "model_current_release": "pko-release-1.0.0",
+    "is_behind_current_release": false
+  }
+]

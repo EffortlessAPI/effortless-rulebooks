@@ -1,0 +1,20 @@
+[
+  {
+    "regulatory_framework_id": "reg-change-control",
+    "label": "Production change control policy",
+    "jurisdiction": "ACME internal audit",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RegulatoryFramework",
+    "name": "Production change control policy",
+    "requirement_count": 1,
+    "required_procedure_count": 1
+  },
+  {
+    "regulatory_framework_id": "reg-hazardous-energy",
+    "label": "Hazardous energy control standard",
+    "jurisdiction": "National occupational safety regulator",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RegulatoryFramework",
+    "name": "Hazardous energy control standard",
+    "requirement_count": 2,
+    "required_procedure_count": 2
+  }
+]

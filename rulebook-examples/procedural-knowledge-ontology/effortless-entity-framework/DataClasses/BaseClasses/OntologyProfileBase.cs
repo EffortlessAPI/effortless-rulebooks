@@ -111,9 +111,34 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             get => F.AsBool(F.Memo(this, "SkipsAdoptionPath", () => F.And(F.Bool3(F.Cmp(F.Nullif(F.Of(this.AdoptionStage)), ">", F.I(1))), F.Bool3(F.Or(F.Bool3(F.IsBlank(F.Of(this.PrerequisiteProfile))), F.Bool3(F.IsBlank(F.Of(this.PrerequisiteAdoptedAt))), F.Bool3(F.Cmp(F.Of(this.PrerequisiteAdoptedAt), ">", F.Nullif(F.Of(this.AdoptedAt))))))))); set { }
         }
 
+        public DateTimeOffset? NamespaceCheckedAt { get; set; }
+        public int? NamespaceHttpStatus { get; set; }
+        public bool? NamespaceServesRdf { get; set; }
+        // Formula NamespaceIsHttp (rulebook: =OR(LEFT({{NamespaceIri}}, 7) = "http://", LEFT({{NamespaceIri}}, 8) = "https://"))
+        [NotMapped]
+        public bool? NamespaceIsHttp
+        {
+            get => F.AsBool(F.Memo(this, "NamespaceIsHttp", () => F.Or(F.Bool3(F.Eq(F.Left(F.Of(this.NamespaceIri), F.I(7)), F.S("http://"))), F.Bool3(F.Eq(F.Left(F.Of(this.NamespaceIri), F.I(8)), F.S("https://")))))); set { }
+        }
+
+        // Formula NamespaceDereferences (rulebook: =AND({{NamespaceIsHttp}}, {{NamespaceHttpStatus}} = 200))
+        [NotMapped]
+        public bool? NamespaceDereferences
+        {
+            get => F.AsBool(F.Memo(this, "NamespaceDereferences", () => F.And(F.Bool3(F.Of(this.NamespaceIsHttp)), F.Bool3(F.Eq(F.Nullif(F.Of(this.NamespaceHttpStatus)), F.I(200)))))); set { }
+        }
+
+        // Formula PublishesFollowingLinkedDataPrinciples (rulebook: =AND({{NamespaceDereferences}}, {{NamespaceServesRdf}}, {{MappingCount}} > 0))
+        [NotMapped]
+        public bool? PublishesFollowingLinkedDataPrinciples
+        {
+            get => F.AsBool(F.Memo(this, "PublishesFollowingLinkedDataPrinciples", () => F.And(F.Bool3(F.Of(this.NamespaceDereferences)), F.IsTrueV(F.Of(this.NamespaceServesRdf)), F.Bool3(F.Cmp(F.Of(this.MappingCount), ">", F.I(0)))))); set { }
+        }
+
 
         public string? EvaluationContext { get; set; }
         public string? PrerequisiteProfile { get; set; }
+        public string? SupportingProgramme { get; set; }
 
         private EvaluationContext _evaluationContextRef;
 
@@ -198,6 +223,50 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     if (_ontologyProfile != null)
                     {
                         PrerequisiteProfile = _ontologyProfile.OntologyProfileId;
+                    }
+                }
+            }
+        }
+
+        private OntologySupportProgramme _ontologySupportProgramme;
+
+        [ForeignKey("SupportingProgramme")]
+        public virtual OntologySupportProgramme OntologySupportProgramme
+        {
+            get
+            {
+                if (_ontologySupportProgramme == null && !string.IsNullOrEmpty(SupportingProgramme))
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access OntologySupportProgramme - no database context is set. SupportingProgramme: " + SupportingProgramme + ".");
+                        }
+                        return null;
+                    }
+                    _ontologySupportProgramme = base.SoAContext.OntologySupportProgrammes.Find(SupportingProgramme);
+                    if (_ontologySupportProgramme != null)
+                    {
+                        base.SoAContext.Attach(_ontologySupportProgramme);
+                    }
+                }
+                return _ontologySupportProgramme;
+            }
+            set
+            {
+                if (_ontologySupportProgramme != value)
+                {
+                    _ontologySupportProgramme = value;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_ontologySupportProgramme != null)
+                    {
+                        SupportingProgramme = _ontologySupportProgramme.OntologySupportProgrammeId;
                     }
                 }
             }
@@ -483,6 +552,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         {
             _ = this.EvaluationContextRef;
             _ = this.OntologyProfile;
+            _ = this.OntologySupportProgramme;
             _ = this.OntologyProfiles;
             _ = this.SemanticMappings;
             _ = this.ClaimEvidence;

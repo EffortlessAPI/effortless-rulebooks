@@ -1,0 +1,37 @@
+[
+  {
+    "level_pyramid_question_id": "operational|how",
+    "level": "operational",
+    "question_kind": "how",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#LevelPyramidQuestion",
+    "name": "operational answers how"
+  },
+  {
+    "level_pyramid_question_id": "operational|where",
+    "level": "operational",
+    "question_kind": "where",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#LevelPyramidQuestion",
+    "name": "operational answers where"
+  },
+  {
+    "level_pyramid_question_id": "strategic|who",
+    "level": "strategic",
+    "question_kind": "who",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#LevelPyramidQuestion",
+    "name": "strategic answers who"
+  },
+  {
+    "level_pyramid_question_id": "strategic|why",
+    "level": "strategic",
+    "question_kind": "why",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#LevelPyramidQuestion",
+    "name": "strategic answers why"
+  },
+  {
+    "level_pyramid_question_id": "tactical|what",
+    "level": "tactical",
+    "question_kind": "what",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#LevelPyramidQuestion",
+    "name": "tactical answers what"
+  }
+]

@@ -1,0 +1,20 @@
+[
+  {
+    "scheme_refinement_id": "sr-lockout-night-notes",
+    "name": "voc-lockout-activities refined 2026-07-12T15:00:00+00:00",
+    "vocabulary": "voc-lockout-activities",
+    "refined_at": "2026-07-12 10:00:00-05:00",
+    "triggered_by_material": "csm-loto-fieldnotes-night",
+    "change_summary": "Added the practitioners' 'verify dead' as an alternative label and a scope note separating verification from restart try-out.",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#SchemeRefinement"
+  },
+  {
+    "scheme_refinement_id": "sr-lockout-process-map",
+    "name": "voc-lockout-activities refined 2026-05-11T15:00:00+00:00",
+    "vocabulary": "voc-lockout-activities",
+    "refined_at": "2026-05-11 10:00:00-05:00",
+    "triggered_by_material": "csm-loto-process-map",
+    "change_summary": "Split energy isolation into accumulator bleed-down after the map showed veterans treat it as its own activity.",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#SchemeRefinement"
+  }
+]

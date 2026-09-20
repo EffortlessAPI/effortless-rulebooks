@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import * as api from "../api";
 import { useRows, useSession } from "../session";
+import { Totals } from "../ui/register";
 import { ActionSheet, AppBar, Err, ExplainerNote, Explains, Fact, KV, Loading, Sheet, Tag, Th, Why, fmtDay, fmtTime, human, useQuickAction, yn } from "../ui/kit";
 
 const LIVE_VERSION = "loto-v2.0.0"; // the version act-tech-start-lockout runs; AppActionFields fixes it
@@ -27,9 +28,20 @@ export default function Lockout() {
       </div>
       <div className="content">
         {tab === "runs" && <Runs runs={runs} onOpen={setRunId} />}
-        {tab === "procedure" && <Lane version={LIVE_VERSION} />}
+        {tab === "procedure" && <>
+          <Totals id="by-kind" title="Everything the register knows, by kind" items={[
+            { f: "explicit_fragment_count", label: "explicit: written down" },
+            { f: "tacit_fragment_count", label: "tacit: lives in practiced hands" },
+            { f: "implicit_fragment_count", label: "implicit: done, never said" },
+            { f: "situated_judgment_fragment_count", label: "judgment for one situation" }]} />
+          <Lane version={LIVE_VERSION} /></>}
         {tab === "know" && <KnowHow list={knowHow} />}
-        {tab === "copilot" && <AnswerHistory list={answers} />}
+        {tab === "copilot" && <>
+          <Totals id="answer-totals" title="Every answer on record, to anyone" items={[
+            { f: "assistant_answer_count", label: "answers" },
+            { f: "model_reasoned_answer_count", label: "the language model did the reasoning itself", tone: "bad" },
+            { f: "model_reasoned_failed_answer_count", label: "of those, the task failed", tone: "bad" }]} />
+          <AnswerHistory list={answers} /></>}
       </div>
     </>
   );
@@ -49,6 +61,12 @@ function Runs({ runs, onOpen }: { runs: ReturnType<typeof useRows>; onOpen: (id:
           <div className="row"><div className="grow"><div className="h">{r.title || r.name}<Why f="title" /></div><div className="sub">{fmtTime(r.started_at)}<Why f="started_at" /> · {human(r.executed_on_machine)}<Why f="executed_on_machine" /> · {r.shift || "—"} shift<Why f="shift" /></div></div>
             <Tag tone={r.execution_status === "Completed" ? "green" : r.execution_status === "InProgress" ? "amber" : "grey"} f="execution_status">{r.execution_status.replace("InProgress", "In progress")}</Tag></div>
           {r.observations && <div className="quote" style={{ marginTop: 10 }}>{r.observations}<Why f="observations" /></div>}
+          {r.stopped_at_knowledge_gap && <div className="stopped-at" style={{ marginTop: 12 }}>
+            <div className="sub" style={{ fontWeight: 700, color: "var(--amber)" }}>This run stopped at a knowledge gap<Why f="stopped_at_knowledge_gap" /></div>
+            <div className="quote" style={{ marginTop: 6 }}>{r.stopped_at_gap_statement}<span className="by">knowledge gap · {String(r.stopped_at_gap_status).toLowerCase()}<Why f="stopped_at_gap_status" /></span></div>
+            {r.stopped_at_gap_change_title && <div className="row wrap" style={{ marginTop: 8 }}><Tag tone={r.stopped_at_gap_change_status === "Approved" ? "green" : "amber"} f="stopped_at_gap_change_status">change {String(r.stopped_at_gap_change_status).toLowerCase()}</Tag>
+              <span className="sub" style={{ color: "var(--ink-2)" }}>{r.stopped_at_gap_change_title}<Why f="stopped_at_gap_change_title" /></span></div>}
+          </div>}
         </div></Explains>
       ))}
       {starting && <ActionSheet actionId="act-tech-start-lockout" submitLabel="Start" onClose={() => setStarting(false)}
@@ -127,13 +145,31 @@ function Lane({ version, run, execs, onChanged }: { version: string; run?: api.R
             <div className="num">{done && !isOpen ? "✓" : s.step_number}</div>
             <div className="body" onClick={() => !run && setPeek(peek === s.step_id ? null : s.step_id)} style={!run ? { cursor: "pointer" } : undefined}>
               <div className="title">{s.title}<Why t="steps" f="title" /></div>
-              {done && !isOpen && <div className="stamp">{human(done.executed_by_agent)} · {fmtTime(done.ended_at)}{done.verification_result === "WARN" ? " · left by a fallback" : ""}<Why t="step_executions" f="verification_result" /></div>}
+              {!isOpen && mine.filter((e) => e.execution_status === "Completed").map((d) => <Done key={d.step_execution_id} d={d} />)}
               {(isOpen || (!run && peek === s.step_id)) && <StepBody step={s} run={run} exec={isOpen ? open : undefined} onChanged={onChanged} />}
             </div>
           </div>);
       })}
     </div>
   );
+}
+
+// One finished execution of a step: who, when, the verdict they recorded, what they wrote down, and
+// every condition that was checked on it. A step can read PASS while a condition checked on it did
+// not hold; both are shown, because the record holds both (loop 18).
+function Done({ d }: { d: api.Row }) {
+  const checks = useRows("condition_checks", { step_execution: d.step_execution_id }, "checked_at");
+  const conds = useRows(checks.rows?.length ? "step_conditions" : null, { step: d.step });
+  const say = (c: string) => conds.rows?.find((x) => x.step_condition_id === c)?.statement || "";
+  return (
+    <div id={`done-${d.step_execution_id}`} className="done-exec">
+      <div className="stamp">{human(d.executed_by_agent)} · {fmtTime(d.ended_at)} · <b className={`verdict ${d.verification_result === "PASS" ? "pass" : ""}`}>{d.verification_result === "WARN" ? "left by a fallback" : d.verification_result}</b><Why t="step_executions" f="verification_result" /></div>
+      {d.deviation && <div className="deviation">“{d.deviation}”<Why t="step_executions" f="deviation" /></div>}
+      {checks.rows?.map((c) => (
+        <div key={c.condition_check_id} id={`check-${c.condition_check_id}`} className={`check ${c.held ? "held" : "failed"}`}>
+          <b>{c.held ? "held" : "did not hold"}</b><Why t="condition_checks" f="held" /> · {say(c.step_condition)} <span className="sub">checked {fmtTime(c.checked_at)}</span>
+        </div>))}
+    </div>);
 }
 
 function StepBody({ step, run, exec, onChanged }: { step: api.Row; run?: api.Row; exec?: api.Row; onChanged?: () => void }) {
@@ -147,6 +183,7 @@ function StepBody({ step, run, exec, onChanged }: { step: api.Row; run?: api.Row
   const outs = useRows("step_transitions", { from_step: id }, "priority");
   const energy = useRows(step.step_number === "01" && run?.executed_on_machine ? "machine_energy_sources" : null, { machine: run?.executed_on_machine ?? "" });
   const seen = useRows(exec ? "cue_observations" : null, { step_execution: exec?.step_execution_id ?? "" });
+  const checks = useRows(exec ? "condition_checks" : null, { step_execution: exec?.step_execution_id ?? "" });
   const allSteps = useRows("steps", { procedure_version: step.procedure_version });
   const quick = useQuickAction();
   const [busy, setBusy] = useState(false); const [closing, setClosing] = useState(false);
@@ -154,7 +191,9 @@ function StepBody({ step, run, exec, onChanged }: { step: api.Row; run?: api.Row
 
   // The way forward is the step's outgoing transitions. Once a warning sign that means "not finished"
   // has been recorded (StepExecutions.IsBlockedByObservedCue, a rulebook formula), only a fallback is offered.
-  const ways = (outs.rows || []).filter((t) => !exec?.is_blocked_by_observed_cue || t.transition_kind === "Fallback");
+  // A check that recorded "did not hold" blocks the step the same way (StepExecutions.IsBlockedByFailedPrecondition, loop 20).
+  const blocked = !!(exec?.is_blocked_by_observed_cue || exec?.is_blocked_by_failed_precondition);
+  const ways = (outs.rows || []).filter((t) => !blocked || t.transition_kind === "Fallback");
   const go = async (t: api.Row) => {
     if (!exec || !run) return; setBusy(true);
     const ok = await quick("act-tech-complete-step", { key: exec.step_execution_id, context: { VerificationResult: t.transition_kind === "Next" ? "PASS" : "WARN" } }, { silent: true });
@@ -169,7 +208,17 @@ function StepBody({ step, run, exec, onChanged }: { step: api.Row; run?: api.Row
       {values.rows?.map((v) => <div key={v.concept_ladder_rung_id} className="quote">“{v.statement}”<span className="by">why this step exists<Why t="concept_ladder_rungs" f="rung_kind" /></span></div>)}
       {energy.rows && energy.rows.length > 0 && <div className="row wrap">{energy.rows.map((e) => <Tag key={e.machine_energy_source_id} tone="blue" t="machine_energy_sources" f="energy_source">⚡ {e.energy_source.replace(/Energy$/, "")}</Tag>)}</div>}
       {locks.rows && locks.rows.length > 0 && <div className="row wrap">{locks.rows.map((l) => <Tag key={l.step_lock_requirement_id} tone="grey" t="step_lock_requirements" f="lock_device">🔒 {human(l.lock_device).replace(/([a-z])([A-Z])/g, "$1 $2")}</Tag>)}</div>}
-      {conditions.rows?.map((c) => <div key={c.step_condition_id} className="sub"><b style={{ color: "var(--ink-2)" }}>{c.condition_kind === "Postcondition" ? "Must be true afterwards" : c.condition_kind === "Precondition" ? "Must be true first" : "Must stay true"}<Why t="step_conditions" f="condition_kind" />:</b> {c.statement}</div>)}
+      {conditions.rows?.map((c) => {
+        const chk = checks.rows?.find((k) => k.step_condition === c.step_condition_id);
+        return (
+          <div key={c.step_condition_id} id={`cond-${c.step_condition_id}`} className={`cond ${chk ? (chk.held ? "held" : "failed") : ""}`}>
+            <div className="sub"><b style={{ color: "var(--ink-2)" }}>{c.condition_kind === "Postcondition" ? "Must be true afterwards" : c.condition_kind === "Precondition" ? "Must be true first" : "Must stay true"}<Why t="step_conditions" f="condition_kind" />:</b> {c.statement}</div>
+            {exec && !chk && <div className="row" style={{ gap: 8, marginTop: 6 }}>
+              <button className="btn sm" disabled={busy} onClick={() => quick("act-tech-check-condition", { context: { StepExecution: exec.step_execution_id, StepCondition: c.step_condition_id }, values: { Held: true }, watch: exec.step_execution_id }).then(() => onChanged?.())}>Yes, it holds</button>
+              <button className="btn sm danger" disabled={busy} onClick={() => quick("act-tech-check-condition", { context: { StepExecution: exec.step_execution_id, StepCondition: c.step_condition_id }, values: { Held: false }, watch: exec.step_execution_id }).then(() => onChanged?.())}>No, it does not</button></div>}
+            {chk && <div className={`check ${chk.held ? "held" : "failed"}`} style={{ marginTop: 4 }}><b>{chk.held ? "held" : "did not hold"}</b><Why t="condition_checks" f="held" /> <span className="sub">checked {fmtTime(chk.checked_at)}</span></div>}
+          </div>);
+      })}
       {fragments.rows?.map((f) => <div key={f.knowledge_fragment_id} className="quote">“{f.statement}”<span className="by">{f.knowledge_form === "Tacit" ? "what the veterans know" : f.knowledge_form.replace(/([a-z])([A-Z])/g, "$1 $2").toLowerCase()}<Why t="knowledge_fragments" f="knowledge_form" /> · from {human(f.source_agent)}</span></div>)}
       {cues.rows?.map((c) => {
         const obs = seen.rows?.find((o) => o.step_cue === c.step_cue_id);
@@ -185,6 +234,7 @@ function StepBody({ step, run, exec, onChanged }: { step: api.Row; run?: api.Row
       {exec && run && (
         <div className="nexts">
           {exec.is_blocked_by_observed_cue && <div className="unsaved" style={{ background: "var(--red-wash)", color: "var(--red)", margin: 0 }}>A warning sign on this step means it is not finished. The normal next step is not offered.<Why t="step_executions" f="is_blocked_by_observed_cue" label="blocked by an observed warning sign" /></div>}
+          {exec.is_blocked_by_failed_precondition && <div id="blocked-by-check" className="unsaved" style={{ background: "var(--red-wash)", color: "var(--red)", margin: 0 }}>A check on this step said no. It cannot be marked done. The only way forward is the way out.<Why t="step_executions" f="is_blocked_by_failed_precondition" label="blocked by a check that did not hold" /></div>}
           {ways.map((t) => (
             <button key={t.step_transition_id} className={`nextbtn ${t.transition_kind === "Fallback" ? "fallback" : t.transition_kind === "Alternative" ? "alt" : ""}`} disabled={busy} onClick={() => go(t)}>
               <span className="grow">{t.transition_kind === "Next" ? "Done → " : t.transition_kind === "Fallback" ? "Fallback → " : "Or → "}{label(t.to_step)}<small>{t.condition}</small></span>
@@ -230,6 +280,10 @@ function Ledger({ run, execs }: { run: api.Row; execs: api.Row[] }) {
           <tr key={s.step_id}><td><b>{s.step_number}</b> {s.title}</td><td>{e.length === 0 ? <span className="cell-na">not carried out</span> : e.map((x) => (
             <Explains key={x.step_execution_id} t="step_executions"><div>{x.execution_status === "Completed" ? fmtTime(x.ended_at) : "in progress"} {x.verification_result === "WARN" && <Tag tone="amber" f="verification_result">left by a fallback</Tag>} {x.is_blocked_by_observed_cue && <Tag tone="red" f="is_blocked_by_observed_cue">warning sign seen</Tag>} {x.is_out_of_specified_order && <Tag tone="red" f="is_out_of_specified_order">out of order</Tag>}</div></Explains>))}</td></tr>); })}
       </tbody></table>
+      <div style={{ marginTop: 14 }}><Totals id="order-totals" title="Every run on record, not only this one" items={[
+        { f: "step_execution_count", label: "step executions" },
+        { f: "out_of_order_step_execution_count", label: "out of the specified order", tone: "bad" },
+        { f: "early_start_step_execution_count", label: "began before the step they depend on had finished", tone: "bad" }]} /></div>
     </div>);
 }
 

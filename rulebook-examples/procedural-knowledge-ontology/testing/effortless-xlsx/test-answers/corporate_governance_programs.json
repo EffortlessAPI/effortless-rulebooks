@@ -1,0 +1,44 @@
+[
+  {
+    "corporate_governance_program_id": "gp-hb-compliance-2016",
+    "organization": "acme-home-brands",
+    "label": "Enterprise compliance and records governance",
+    "sponsor_discipline": "Legal",
+    "launched_at": "2016-09-01 05:00:00",
+    "covers_compliance": true,
+    "covers_data_quality": false,
+    "covers_information_management": false,
+    "covers_knowledge_management": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CorporateGovernanceProgram",
+    "name": "Enterprise compliance and records governance",
+    "is_compliance_only": true
+  },
+  {
+    "corporate_governance_program_id": "gp-hb-engineering-records-2004",
+    "organization": "acme-home-brands",
+    "label": "Engineering records and knowledge programme",
+    "sponsor_discipline": "Engineering",
+    "launched_at": "2004-05-01 05:00:00",
+    "covers_compliance": true,
+    "covers_data_quality": true,
+    "covers_information_management": true,
+    "covers_knowledge_management": true,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CorporateGovernanceProgram",
+    "name": "Engineering records and knowledge programme",
+    "is_compliance_only": false
+  },
+  {
+    "corporate_governance_program_id": "gp-plant-information-2021",
+    "organization": "acme-plant",
+    "label": "Plant information and knowledge governance",
+    "sponsor_discipline": "Engineering",
+    "launched_at": "2021-03-01 06:00:00",
+    "covers_compliance": true,
+    "covers_data_quality": false,
+    "covers_information_management": true,
+    "covers_knowledge_management": true,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CorporateGovernanceProgram",
+    "name": "Plant information and knowledge governance",
+    "is_compliance_only": false
+  }
+]

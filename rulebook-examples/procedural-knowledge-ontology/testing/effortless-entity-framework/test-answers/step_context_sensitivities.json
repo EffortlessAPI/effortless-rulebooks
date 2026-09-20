@@ -1,0 +1,46 @@
+[
+  {
+    "step_context_sensitivity_id": "scs-deploy03-freeze",
+    "step": "deploy-03",
+    "context_factor": "Circumstance",
+    "description": "An EU change freeze is in force.",
+    "effect_on_significance": "Approval must also check the freeze calendar.",
+    "applicability_scope": "scope-deploy-enterprise-eu",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#StepContextSensitivity",
+    "name": "deploy-03 / Circumstance",
+    "unscoped_step_key": ""
+  },
+  {
+    "step_context_sensitivity_id": "scs-loto03-press7",
+    "step": "loto-03",
+    "context_factor": "Circumstance",
+    "description": "The press being shut down carries an accumulator retrofit.",
+    "effect_on_significance": "Shutting down no longer removes stored hydraulic energy.",
+    "applicability_scope": null,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#StepContextSensitivity",
+    "name": "loto-03 / Circumstance",
+    "unscoped_step_key": "loto-03"
+  },
+  {
+    "step_context_sensitivity_id": "scs-loto05-padlocks",
+    "step": "loto-05",
+    "context_factor": "Resource",
+    "description": "Padlock inventory runs short at the north station.",
+    "effect_on_significance": "Shared locks break the one-person-one-lock rule the step exists for.",
+    "applicability_scope": "scope-plant-north-day",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#StepContextSensitivity",
+    "name": "loto-05 / Resource",
+    "unscoped_step_key": ""
+  },
+  {
+    "step_context_sensitivity_id": "scs-loto06-night-performer",
+    "step": "loto-06",
+    "context_factor": "Performer",
+    "description": "On nights a deputy, not the safety officer, verifies zero energy.",
+    "effect_on_significance": "The verification becomes the only independent check on the isolation.",
+    "applicability_scope": "scope-plant-south-night",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#StepContextSensitivity",
+    "name": "loto-06 / Performer",
+    "unscoped_step_key": ""
+  }
+]

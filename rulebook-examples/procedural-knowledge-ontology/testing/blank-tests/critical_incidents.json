@@ -1,0 +1,50 @@
+[
+  {
+    "critical_incident_id": "ci7-conveyor5-handover",
+    "procedure_version": "loto-v2.0.0",
+    "step": "loto-08",
+    "elicitation_session": "el7-loto-cit",
+    "narrator": "tomas-reyes",
+    "occurred_at": "2026-02-10T22:00:00-05:00",
+    "outcome": "WentWell",
+    "account": "A lockout spanning the shift change was handed over and released without incident.",
+    "revealed_judgment": null,
+    "judgment_fragment": null,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CriticalIncident",
+    "name": null,
+    "is_adverse_or_improvised": null,
+    "has_surfaced_judgment": null
+  },
+  {
+    "critical_incident_id": "ci7-mixer2-second-drive",
+    "procedure_version": "loto-v2.0.0",
+    "step": "loto-04",
+    "elicitation_session": "el7-loto-cit",
+    "narrator": "victor-hale",
+    "occurred_at": "2025-11-12T02:40:00-05:00",
+    "outcome": "WentBadly",
+    "account": "The second drive of mixer 2 restarted the auger while the first was locked out.",
+    "revealed_judgment": "Treat any machine with a retrofitted drive as two machines to isolate.",
+    "judgment_fragment": "kf7-loto-mixer2",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CriticalIncident",
+    "name": null,
+    "is_adverse_or_improvised": null,
+    "has_surfaced_judgment": null
+  },
+  {
+    "critical_incident_id": "ci7-press3-gauge-lied",
+    "procedure_version": "loto-v2.0.0",
+    "step": "loto-04b",
+    "elicitation_session": "el7-loto-cit",
+    "narrator": "tomas-reyes",
+    "occurred_at": "2024-08-03T10:15:00-05:00",
+    "outcome": "Improvised",
+    "account": "The gauge read zero but the ram drifted; Tomas closed the valve again and waited for the hiss to stop.",
+    "revealed_judgment": "Do not trust the downstream gauge on press 3; listen for the bleed.",
+    "judgment_fragment": "kf7-loto-hiss",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CriticalIncident",
+    "name": null,
+    "is_adverse_or_improvised": null,
+    "has_surfaced_judgment": null
+  }
+]

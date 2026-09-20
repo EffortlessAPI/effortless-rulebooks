@@ -30,6 +30,12 @@
     "name": null
   },
   {
+    "step_tool_id": "st-loto06-gauge",
+    "step": "loto-06",
+    "tool": "pressure-gauge",
+    "name": null
+  },
+  {
     "step_tool_id": "st-policy02",
     "step": "policy-02",
     "tool": "knowledge-capture-form",

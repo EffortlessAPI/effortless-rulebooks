@@ -1,0 +1,42 @@
+[
+  {
+    "model_consumer_id": "cons-deploy-risk-context",
+    "label": "Risk classifier grounding context",
+    "consumer_kind": "AIAgent",
+    "depends_on_model": "gm-pko-rulebook",
+    "conformance_substrate": null,
+    "owner_role": "release-manager",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ModelConsumer",
+    "name": null
+  },
+  {
+    "model_consumer_id": "cons-owl",
+    "label": "OWL/SHACL substrate",
+    "consumer_kind": "Substrate",
+    "depends_on_model": "gm-pko-rulebook",
+    "conformance_substrate": "effortless-owl",
+    "owner_role": "knowledge-engineer",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ModelConsumer",
+    "name": null
+  },
+  {
+    "model_consumer_id": "cons-postgres",
+    "label": "Postgres substrate",
+    "consumer_kind": "Substrate",
+    "depends_on_model": "gm-pko-rulebook",
+    "conformance_substrate": "effortless-postgres",
+    "owner_role": "knowledge-engineer",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ModelConsumer",
+    "name": null
+  },
+  {
+    "model_consumer_id": "cons-procedure-register",
+    "label": "Procedure Register app",
+    "consumer_kind": "Application",
+    "depends_on_model": "gm-pko-rulebook",
+    "conformance_substrate": null,
+    "owner_role": "process-steward",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ModelConsumer",
+    "name": null
+  }
+]

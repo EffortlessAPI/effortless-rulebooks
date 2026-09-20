@@ -1,0 +1,83 @@
+[
+  {
+    "role_capability_tag_id": "rct-auditor-compliance",
+    "name": "internal-compliance-auditor can vt-cap-compliance-review",
+    "role": "internal-compliance-auditor",
+    "capability_term": "vt-cap-compliance-review",
+    "capability_scheme_dimension": "AgentCapability",
+    "is_tag_outside_capability_scheme": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RoleCapabilityTag"
+  },
+  {
+    "role_capability_tag_id": "rct-controller-compliance",
+    "name": "controller can vt-cap-compliance-review",
+    "role": "controller",
+    "capability_term": "vt-cap-compliance-review",
+    "capability_scheme_dimension": "AgentCapability",
+    "is_tag_outside_capability_scheme": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RoleCapabilityTag"
+  },
+  {
+    "role_capability_tag_id": "rct-pipeline-deployment",
+    "name": "deployment-automation can vt-cap-automated-deployment",
+    "role": "deployment-automation",
+    "capability_term": "vt-cap-automated-deployment",
+    "capability_scheme_dimension": "AgentCapability",
+    "is_tag_outside_capability_scheme": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RoleCapabilityTag"
+  },
+  {
+    "role_capability_tag_id": "rct-release-compliance",
+    "name": "release-manager can vt-cap-compliance-review",
+    "role": "release-manager",
+    "capability_term": "vt-cap-compliance-review",
+    "capability_scheme_dimension": "AgentCapability",
+    "is_tag_outside_capability_scheme": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RoleCapabilityTag"
+  },
+  {
+    "role_capability_tag_id": "rct-risk-scoring",
+    "name": "change-risk-classifier can vt-cap-risk-scoring",
+    "role": "change-risk-classifier",
+    "capability_term": "vt-cap-risk-scoring",
+    "capability_scheme_dimension": "AgentCapability",
+    "is_tag_outside_capability_scheme": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RoleCapabilityTag"
+  },
+  {
+    "role_capability_tag_id": "rct-safety-compliance",
+    "name": "plant-safety-officer can vt-cap-compliance-review",
+    "role": "plant-safety-officer",
+    "capability_term": "vt-cap-compliance-review",
+    "capability_scheme_dimension": "AgentCapability",
+    "is_tag_outside_capability_scheme": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RoleCapabilityTag"
+  },
+  {
+    "role_capability_tag_id": "rct-safety-validation",
+    "name": "plant-safety-officer can vt-cap-validation",
+    "role": "plant-safety-officer",
+    "capability_term": "vt-cap-validation",
+    "capability_scheme_dimension": "AgentCapability",
+    "is_tag_outside_capability_scheme": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RoleCapabilityTag"
+  },
+  {
+    "role_capability_tag_id": "rct-sre-validation",
+    "name": "site-reliability-engineer can vt-cap-validation",
+    "role": "site-reliability-engineer",
+    "capability_term": "vt-cap-validation",
+    "capability_scheme_dimension": "AgentCapability",
+    "is_tag_outside_capability_scheme": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RoleCapabilityTag"
+  },
+  {
+    "role_capability_tag_id": "rct-tech-plant-quality",
+    "name": "maintenance-technician can vt-plantq-quality-control",
+    "role": "maintenance-technician",
+    "capability_term": "vt-plantq-quality-control",
+    "capability_scheme_dimension": "QualityConcern",
+    "is_tag_outside_capability_scheme": true,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RoleCapabilityTag"
+  }
+]

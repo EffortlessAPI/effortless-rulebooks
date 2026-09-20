@@ -1,5 +1,12 @@
 [
   {
+    "action_id": "apply-lock",
+    "name": "Apply personal lock and tag",
+    "label": "Apply personal lock and tag",
+    "definition": "Attach one's own lock and tag to an isolation point.",
+    "semantic_type_iri": "https://w3id.org/pko#Action"
+  },
+  {
     "action_id": "approve-close",
     "name": "Approve close",
     "label": "Approve close",

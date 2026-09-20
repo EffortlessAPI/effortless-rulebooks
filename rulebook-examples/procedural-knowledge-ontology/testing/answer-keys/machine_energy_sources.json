@@ -1,0 +1,68 @@
+[
+  {
+    "machine_energy_source_id": "mes-conveyor3-electrical",
+    "machine": "conveyor-3",
+    "energy_source": "ElectricalEnergy",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#MachineEnergySource",
+    "name": "conveyor-3 / ElectricalEnergy",
+    "machine_procedure_version": "loto-v2.0.0",
+    "isolation_step_count": 1,
+    "is_unisolated_energy_source": false,
+    "unisolated_machine_key": null
+  },
+  {
+    "machine_energy_source_id": "mes-conveyor3-gravitational",
+    "machine": "conveyor-3",
+    "energy_source": "GravitationalEnergy",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#MachineEnergySource",
+    "name": "conveyor-3 / GravitationalEnergy",
+    "machine_procedure_version": "loto-v2.0.0",
+    "isolation_step_count": 1,
+    "is_unisolated_energy_source": false,
+    "unisolated_machine_key": null
+  },
+  {
+    "machine_energy_source_id": "mes-conveyor3-pneumatic",
+    "machine": "conveyor-3",
+    "energy_source": "PneumaticEnergy",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#MachineEnergySource",
+    "name": "conveyor-3 / PneumaticEnergy",
+    "machine_procedure_version": "loto-v2.0.0",
+    "isolation_step_count": 1,
+    "is_unisolated_energy_source": false,
+    "unisolated_machine_key": null
+  },
+  {
+    "machine_energy_source_id": "mes-mixer2-electrical",
+    "machine": "mixer-2",
+    "energy_source": "ElectricalEnergy",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#MachineEnergySource",
+    "name": "mixer-2 / ElectricalEnergy",
+    "machine_procedure_version": "loto-v2.0.0",
+    "isolation_step_count": 1,
+    "is_unisolated_energy_source": false,
+    "unisolated_machine_key": null
+  },
+  {
+    "machine_energy_source_id": "mes-press7-electrical",
+    "machine": "press-7",
+    "energy_source": "ElectricalEnergy",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#MachineEnergySource",
+    "name": "press-7 / ElectricalEnergy",
+    "machine_procedure_version": "loto-v2.0.0",
+    "isolation_step_count": 1,
+    "is_unisolated_energy_source": false,
+    "unisolated_machine_key": null
+  },
+  {
+    "machine_energy_source_id": "mes-press7-hydraulic",
+    "machine": "press-7",
+    "energy_source": "HydraulicEnergy",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#MachineEnergySource",
+    "name": "press-7 / HydraulicEnergy",
+    "machine_procedure_version": "loto-v2.0.0",
+    "isolation_step_count": 0,
+    "is_unisolated_energy_source": true,
+    "unisolated_machine_key": "press-7"
+  }
+]

@@ -1,0 +1,47 @@
+[
+  {
+    "machine_id": "conveyor-3",
+    "label": "Conveyor line 3",
+    "machine_type": "belt-conveyor",
+    "facility": "plant-north",
+    "manufactured_by": "northfield-conveyor",
+    "configuration_kind": "Standard",
+    "governing_procedure_version": "loto-v2.0.0",
+    "semantic_type_iri": "https://w3id.org/pko/industry#Machine",
+    "name": "Conveyor line 3",
+    "energy_source_count": 3,
+    "unisolated_energy_source_count": 0,
+    "is_non_standard_configuration": false,
+    "has_unisolated_energy_source": false
+  },
+  {
+    "machine_id": "mixer-2",
+    "label": "Mixer 2 (twin-drive conversion)",
+    "machine_type": "industrial-mixer",
+    "facility": "plant-north",
+    "manufactured_by": "northfield-conveyor",
+    "configuration_kind": "NonStandard",
+    "governing_procedure_version": "loto-v2.0.0",
+    "semantic_type_iri": "https://w3id.org/pko/industry#Machine",
+    "name": "Mixer 2 (twin-drive conversion)",
+    "energy_source_count": 1,
+    "unisolated_energy_source_count": 0,
+    "is_non_standard_configuration": true,
+    "has_unisolated_energy_source": false
+  },
+  {
+    "machine_id": "press-7",
+    "label": "Press 7 (accumulator retrofit)",
+    "machine_type": "hydraulic-press",
+    "facility": "plant-south",
+    "manufactured_by": "baxter-hydraulics",
+    "configuration_kind": "NonStandard",
+    "governing_procedure_version": "loto-v2.0.0",
+    "semantic_type_iri": "https://w3id.org/pko/industry#Machine",
+    "name": "Press 7 (accumulator retrofit)",
+    "energy_source_count": 2,
+    "unisolated_energy_source_count": 1,
+    "is_non_standard_configuration": true,
+    "has_unisolated_energy_source": true
+  }
+]

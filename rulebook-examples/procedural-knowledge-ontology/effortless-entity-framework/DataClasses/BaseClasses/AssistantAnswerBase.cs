@@ -249,6 +249,20 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         }
 
         public string? SemanticTypeIri { get; set; }
+        // Formula OwnerOrganization (rulebook: =INDEX(StepExecutions!{{OwnerOrganization}}, MATCH({{StepExecution}}, StepExecutions!{{StepExecutionId}}, 0)))
+        [NotMapped]
+        public string? OwnerOrganization
+        {
+            get => F.AsString(F.Memo(this, "OwnerOrganization", () => F.Lookup<StepExecution>(this, "StepExecutions", "StepExecutionId", __c => __c.StepExecutions, __r => F.Of(__r.StepExecutionId), F.Of(this.StepExecution), __r => F.Of(__r.OwnerOrganization), () => F.Of(new StepExecution().OwnerOrganization)))); set { }
+        }
+
+        // Formula ModelReasonedAndTaskFailed (rulebook: =AND({{ModelDidTheReasoning}}, {{TaskOutcome}} = "Failed"))
+        [NotMapped]
+        public bool? ModelReasonedAndTaskFailed
+        {
+            get => F.AsBool(F.Memo(this, "ModelReasonedAndTaskFailed", () => F.And(F.Bool3(F.Of(this.ModelDidTheReasoning)), F.Bool3(F.Eq(F.Nullif(F.Of(this.TaskOutcome)), F.S("Failed")))))); set { }
+        }
+
 
         public string? AnsweringAgent { get; set; }
         public string? AskedByAgent { get; set; }

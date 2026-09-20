@@ -1,0 +1,98 @@
+[
+  {
+    "procedure_facet_assignment_id": "pfa-cir-audience",
+    "procedure": "customer-incident-response",
+    "facet": "facet-audience",
+    "facet_value": "SupportStaff",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ProcedureFacetAssignment",
+    "name": null
+  },
+  {
+    "procedure_facet_assignment_id": "pfa-close-domain",
+    "procedure": "quarter-end-close",
+    "facet": "facet-functional-domain",
+    "facet_value": "Finance",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ProcedureFacetAssignment",
+    "name": null
+  },
+  {
+    "procedure_facet_assignment_id": "pfa-convmaint-hazard",
+    "procedure": "conveyor-maintenance",
+    "facet": "facet-hazard",
+    "facet_value": "HazardousEnergy",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ProcedureFacetAssignment",
+    "name": null
+  },
+  {
+    "procedure_facet_assignment_id": "pfa-deploy-change",
+    "procedure": "production-deployment",
+    "facet": "facet-change-type",
+    "facet_value": "ProductionChange",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ProcedureFacetAssignment",
+    "name": null
+  },
+  {
+    "procedure_facet_assignment_id": "pfa-deploy-domain",
+    "procedure": "production-deployment",
+    "facet": "facet-functional-domain",
+    "facet_value": "Technology",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ProcedureFacetAssignment",
+    "name": null
+  },
+  {
+    "procedure_facet_assignment_id": "pfa-forklift-domain",
+    "procedure": "forklift-daily-inspection",
+    "facet": "facet-functional-domain",
+    "facet_value": "Operations",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ProcedureFacetAssignment",
+    "name": null
+  },
+  {
+    "procedure_facet_assignment_id": "pfa-forklift-hazard",
+    "procedure": "forklift-daily-inspection",
+    "facet": "facet-hazard",
+    "facet_value": "MobileEquipment",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ProcedureFacetAssignment",
+    "name": null
+  },
+  {
+    "procedure_facet_assignment_id": "pfa-loto-domain",
+    "procedure": "lockout-tagout",
+    "facet": "facet-functional-domain",
+    "facet_value": "Operations",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ProcedureFacetAssignment",
+    "name": null
+  },
+  {
+    "procedure_facet_assignment_id": "pfa-loto-hazard",
+    "procedure": "lockout-tagout",
+    "facet": "facet-hazard",
+    "facet_value": "HazardousEnergy",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ProcedureFacetAssignment",
+    "name": null
+  },
+  {
+    "procedure_facet_assignment_id": "pfa-loto-template-hazard",
+    "procedure": "loto-template",
+    "facet": "facet-hazard",
+    "facet_value": "HazardousEnergy",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ProcedureFacetAssignment",
+    "name": null
+  },
+  {
+    "procedure_facet_assignment_id": "pfa-policy-audience",
+    "procedure": "workforce-policy-notification",
+    "facet": "facet-audience",
+    "facet_value": "Workforce",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ProcedureFacetAssignment",
+    "name": null
+  },
+  {
+    "procedure_facet_assignment_id": "pfa-press-hazard",
+    "procedure": "press-changeover",
+    "facet": "facet-hazard",
+    "facet_value": "HazardousEnergy",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ProcedureFacetAssignment",
+    "name": null
+  }
+]

@@ -1,0 +1,50 @@
+[
+  {
+    "knowledge_audit_id": "audit-corp-2024",
+    "organization": "acme-corp",
+    "title": "Shared services cost review 2024",
+    "conducted_at": "2024-11-01 14:00:00",
+    "conducted_by_agent": "priya-raman",
+    "problem_framing": "CostEfficiency",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#KnowledgeAudit",
+    "name": "acme-corp: Shared services cost review 2024",
+    "finding_count": 0,
+    "treats_deficit_as_cost_problem": false
+  },
+  {
+    "knowledge_audit_id": "audit-eng-2026",
+    "organization": "acme-engineering",
+    "title": "Release and model operations knowledge audit",
+    "conducted_at": "2026-06-10 14:00:00",
+    "conducted_by_agent": "sam-adeyemi",
+    "problem_framing": "KnowledgeDeficit",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#KnowledgeAudit",
+    "name": "acme-engineering: Release and model operations knowledge audit",
+    "finding_count": 1,
+    "treats_deficit_as_cost_problem": false
+  },
+  {
+    "knowledge_audit_id": "audit-hb-2025",
+    "organization": "acme-home-brands",
+    "title": "Supplier cost and efficiency review 2025",
+    "conducted_at": "2025-09-15 14:00:00",
+    "conducted_by_agent": "claire-dubois",
+    "problem_framing": "CostEfficiency",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#KnowledgeAudit",
+    "name": "acme-home-brands: Supplier cost and efficiency review 2025",
+    "finding_count": 2,
+    "treats_deficit_as_cost_problem": true
+  },
+  {
+    "knowledge_audit_id": "audit-plant-2026",
+    "organization": "acme-plant",
+    "title": "Plant process knowledge audit 2026",
+    "conducted_at": "2026-05-20 14:00:00",
+    "conducted_by_agent": "sam-adeyemi",
+    "problem_framing": "KnowledgeDeficit",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#KnowledgeAudit",
+    "name": "acme-plant: Plant process knowledge audit 2026",
+    "finding_count": 2,
+    "treats_deficit_as_cost_problem": false
+  }
+]

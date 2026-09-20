@@ -1,0 +1,57 @@
+[
+  {
+    "level_capture_strategy_id": "lcs-operational-explicit",
+    "level": "operational",
+    "knowledge_form": "Explicit",
+    "knowledge_method": "DocumentAnalysis",
+    "transfer_mode": "Codified",
+    "description": "Steps, conditions and cues encoded from the SOP into the procedure register.",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#LevelCaptureStrategy",
+    "name": null,
+    "contradicts_knowledge_form": null
+  },
+  {
+    "level_capture_strategy_id": "lcs-operational-tacit",
+    "level": "operational",
+    "knowledge_form": "Tacit",
+    "knowledge_method": "Shadowing",
+    "transfer_mode": "InPerson",
+    "description": "New technicians shadow veterans through lockouts on retrofitted machines.",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#LevelCaptureStrategy",
+    "name": null,
+    "contradicts_knowledge_form": null
+  },
+  {
+    "level_capture_strategy_id": "lcs-strategic-explicit",
+    "level": "strategic",
+    "knowledge_form": "Explicit",
+    "knowledge_method": "DocumentAnalysis",
+    "transfer_mode": "Codified",
+    "description": "Annual safety strategy memos and board risk reports.",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#LevelCaptureStrategy",
+    "name": null,
+    "contradicts_knowledge_form": null
+  },
+  {
+    "level_capture_strategy_id": "lcs-tactical-explicit",
+    "level": "tactical",
+    "knowledge_form": "Explicit",
+    "knowledge_method": "ProcessMining",
+    "transfer_mode": "Codified",
+    "description": "Waiting time per step mined from the maintenance system's event log.",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#LevelCaptureStrategy",
+    "name": null,
+    "contradicts_knowledge_form": null
+  },
+  {
+    "level_capture_strategy_id": "lcs-tactical-tacit",
+    "level": "tactical",
+    "knowledge_form": "Tacit",
+    "knowledge_method": "CriticalIncidentTechnique",
+    "transfer_mode": "Codified",
+    "description": "Shift planners' heuristics for staffing verifiers written up once as a wiki page.",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#LevelCaptureStrategy",
+    "name": null,
+    "contradicts_knowledge_form": null
+  }
+]

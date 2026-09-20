@@ -1,0 +1,16 @@
+[
+  {
+    "faq_target_id": "Procedure",
+    "name": "Procedure",
+    "label": "Procedure",
+    "faq_count": 2,
+    "semantic_type_iri": "https://w3id.org/pko#FAQTarget"
+  },
+  {
+    "faq_target_id": "Step",
+    "name": "Step",
+    "label": "Step",
+    "faq_count": 2,
+    "semantic_type_iri": "https://w3id.org/pko#FAQTarget"
+  }
+]

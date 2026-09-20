@@ -54,6 +54,28 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         }
 
         public string? SemanticTypeIri { get; set; }
+        // Formula OwnerOrganization (rulebook: =INDEX(StepExecutions!{{OwnerOrganization}}, MATCH({{StepExecution}}, StepExecutions!{{StepExecutionId}}, 0)))
+        [NotMapped]
+        public string? OwnerOrganization
+        {
+            get => F.AsString(F.Memo(this, "OwnerOrganization", () => F.Lookup<StepExecution>(this, "StepExecutions", "StepExecutionId", __c => __c.StepExecutions, __r => F.Of(__r.StepExecutionId), F.Of(this.StepExecution), __r => F.Of(__r.OwnerOrganization), () => F.Of(new StepExecution().OwnerOrganization)))); set { }
+        }
+
+        // Formula CueSignalsIncompleteStep (rulebook: =INDEX(StepCues!{{SignalsIncompleteStep}}, MATCH({{StepCue}}, StepCues!{{StepCueId}}, 0)))
+        [NotMapped]
+        public bool? CueSignalsIncompleteStep
+        {
+            get => F.AsBool(F.Memo(this, "CueSignalsIncompleteStep", () => F.Lookup<StepCue>(this, "StepCues", "StepCueId", __c => __c.StepCues, __r => F.Of(__r.StepCueId), F.Of(this.StepCue), __r => F.Of(__r.SignalsIncompleteStep), () => F.Of(new StepCue().SignalsIncompleteStep)))); set { }
+        }
+
+        public DateTimeOffset? AcknowledgedAt { get; set; }
+        // Formula IsAwaitingAcknowledgement (rulebook: =AND({{WasEscalated}} = TRUE, {{AcknowledgedAt}} = ""))
+        [NotMapped]
+        public bool? IsAwaitingAcknowledgement
+        {
+            get => F.AsBool(F.Memo(this, "IsAwaitingAcknowledgement", () => F.And(F.Bool3(F.Eq(F.Nullif(F.Of(this.WasEscalated)), F.B(true))), F.Bool3(F.IsBlank(F.Of(this.AcknowledgedAt)))))); set { }
+        }
+
 
         public string? StepExecution { get; set; }
         public string? StepCue { get; set; }

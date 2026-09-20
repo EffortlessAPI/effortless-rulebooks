@@ -1,0 +1,35 @@
+[
+  {
+    "abundant_knowledge_gap_id": "curated-to-user-and-use-case",
+    "label": "Knowledge curated to a user and a use case",
+    "gap_kind": "CuratedToUserAndUseCase",
+    "description": "The same procedure shaped for who is asking and what they are doing: the granularity, form and detail an operator on the floor needs differ from what an auditor or a manager needs.",
+    "why_abundance_does_not_supply_it": "Abundance makes the curation problem worse, not better. Without a recorded lens, more material means more to sift at the moment of use.",
+    "represented_by_table": "ProcedureLensViews",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AbundantKnowledgeGap",
+    "name": "Knowledge curated to a user and a use case",
+    "representing_table_row_count": 15
+  },
+  {
+    "abundant_knowledge_gap_id": "human-judgment",
+    "label": "Human judgment",
+    "gap_kind": "HumanJudgment",
+    "description": "The judgment a person supplies that no volume of recorded information contains: what an experienced worker decides when the readings are ambiguous, and the human feedback that corrects an automated system.",
+    "why_abundance_does_not_supply_it": "Judgment is exercised, not retrieved. More documents describing a step do not decide whether this particular accumulator has finished bleeding down.",
+    "represented_by_table": "ExpertCognitions",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AbundantKnowledgeGap",
+    "name": "Human judgment",
+    "representing_table_row_count": 3
+  },
+  {
+    "abundant_knowledge_gap_id": "undiscovered-tacit-knowledge",
+    "label": "Tacit knowledge nobody has uncovered yet",
+    "gap_kind": "UndiscoveredTacitKnowledge",
+    "description": "Knowledge that is held and used but has never been written down, so it is absent from every repository until somebody deliberately elicits it.",
+    "why_abundance_does_not_supply_it": "It was never in the corpus. Searching more of what was written cannot return something that only exists in a practitioner\u0027s hands and ears.",
+    "represented_by_table": "KnowledgeFragments",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AbundantKnowledgeGap",
+    "name": "Tacit knowledge nobody has uncovered yet",
+    "representing_table_row_count": 12
+  }
+]

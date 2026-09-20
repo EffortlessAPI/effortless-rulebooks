@@ -1,0 +1,67 @@
+[
+  {
+    "knowledge_conversion_id": "kc7-combine-into-v2",
+    "name": "Combination: The hiss fragment combined with SOP step 4b into loto-v2.0.0",
+    "elicitation_session": null,
+    "result_fragment": "kf7-loto-hiss",
+    "conversion_mode": "Combination",
+    "from_form": "Explicit",
+    "to_form": "Explicit",
+    "description": "The hiss fragment combined with SOP step 4b into loto-v2.0.0.",
+    "occurred_at": "2026-05-20T09:00:00-05:00",
+    "is_mode_inconsistent_with_forms": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#KnowledgeConversion"
+  },
+  {
+    "knowledge_conversion_id": "kc7-externalize-hiss",
+    "name": "Externalization: Tomas's bleed cue stated as a conditioned fragment.",
+    "elicitation_session": "el7-loto-interview",
+    "result_fragment": "kf7-loto-hiss",
+    "conversion_mode": "Externalization",
+    "from_form": "Tacit",
+    "to_form": "Explicit",
+    "description": "Tomas's bleed cue stated as a conditioned fragment.",
+    "occurred_at": "2026-03-10T11:00:00-05:00",
+    "is_mode_inconsistent_with_forms": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#KnowledgeConversion"
+  },
+  {
+    "knowledge_conversion_id": "kc7-internalize-aisha",
+    "name": "Internalization: Aisha rehearsed the v2 bleed check until it became habit.",
+    "elicitation_session": null,
+    "result_fragment": "kf7-loto-hiss",
+    "conversion_mode": "Internalization",
+    "from_form": "Explicit",
+    "to_form": "Tacit",
+    "description": "Aisha rehearsed the v2 bleed check until it became habit.",
+    "occurred_at": "2026-06-15T09:00:00-05:00",
+    "is_mode_inconsistent_with_forms": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#KnowledgeConversion"
+  },
+  {
+    "knowledge_conversion_id": "kc7-retyped-note",
+    "name": "Externalization: The press 3 manual margin note retyped into the rulebook was",
+    "elicitation_session": null,
+    "result_fragment": "kf7-loto-bleed-twice",
+    "conversion_mode": "Externalization",
+    "from_form": "Explicit",
+    "to_form": "Explicit",
+    "description": "The press 3 manual margin note retyped into the rulebook was logged as an externalization.",
+    "occurred_at": "2026-05-20T09:00:00-05:00",
+    "is_mode_inconsistent_with_forms": true,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#KnowledgeConversion"
+  },
+  {
+    "knowledge_conversion_id": "kc7-socialize-hand-on-valve",
+    "name": "Socialization: Ken picked up the hand-on-valve pause by working beside Toma",
+    "elicitation_session": "el7-loto-shadow",
+    "result_fragment": null,
+    "conversion_mode": "Socialization",
+    "from_form": "Tacit",
+    "to_form": "Tacit",
+    "description": "Ken picked up the hand-on-valve pause by working beside Tomas for years.",
+    "occurred_at": "2026-03-17T12:00:00-05:00",
+    "is_mode_inconsistent_with_forms": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#KnowledgeConversion"
+  }
+]

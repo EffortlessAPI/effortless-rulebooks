@@ -1,0 +1,36 @@
+[
+  {
+    "workflow_view_divergence_id": "wd7-loto-last-tag",
+    "name": "loto-08: The day crew removes all of its tags at  / The night crew removes the last day-crew",
+    "elicitation_session": "el7-loto-workshop",
+    "procedure_version": "loto-v2.0.0",
+    "step": "loto-08",
+    "view_a": "The day crew removes all of its tags at the end of its shift.",
+    "holder_a": "tomas-reyes",
+    "view_b": "The night crew removes the last day-crew tag after its own walkdown.",
+    "holder_b": "rosa-delgado",
+    "reconciled_statement": "The crew that performs the walkdown removes the last tag and records the hand-off.",
+    "reconciled_at": "2026-04-15T16:30:00-05:00",
+    "reconciled_into_fragment": "kf7-loto-tag-handover",
+    "is_reconciled": true,
+    "is_surfaced_but_unreconciled": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#WorkflowViewDivergence"
+  },
+  {
+    "workflow_view_divergence_id": "wd7-loto-notify-timing",
+    "name": "loto-02: Operators are notified before the machin / Operators are notified only once shutdow",
+    "elicitation_session": "el7-loto-workshop",
+    "procedure_version": "loto-v2.0.0",
+    "step": "loto-02",
+    "view_a": "Operators are notified before the machine is shut down.",
+    "holder_a": "lin-zhao",
+    "view_b": "Operators are notified only once shutdown starts, so the line is not stopped early.",
+    "holder_b": "hana-kowalski",
+    "reconciled_statement": null,
+    "reconciled_at": null,
+    "reconciled_into_fragment": null,
+    "is_reconciled": false,
+    "is_surfaced_but_unreconciled": true,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#WorkflowViewDivergence"
+  }
+]

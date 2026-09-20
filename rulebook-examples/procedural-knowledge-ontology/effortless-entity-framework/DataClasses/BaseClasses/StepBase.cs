@@ -787,6 +787,13 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             get => F.AsString(F.Memo(this, "DeclaredFallbackStepKey", () => (F.Truthy(F.IsTrueV(F.Of(this.IsDeclaredFallbackStep))) ? F.Of(this.StepId) : F.S("")))); set { }
         }
 
+        // Formula OwnerOrganization (rulebook: =INDEX(ProcedureVersions!{{OwnerOrganization}}, MATCH({{ProcedureVersion}}, ProcedureVersions!{{ProcedureVersionId}}, 0)))
+        [NotMapped]
+        public string? OwnerOrganization
+        {
+            get => F.AsString(F.Memo(this, "OwnerOrganization", () => F.Lookup<ProcedureVersion>(this, "ProcedureVersions", "ProcedureVersionId", __c => __c.ProcedureVersions, __r => F.Of(__r.ProcedureVersionId), F.Of(this.ProcedureVersion), __r => F.Of(__r.OwnerOrganization), () => F.Of(new ProcedureVersion().OwnerOrganization)))); set { }
+        }
+
 
         public string? ProcedureVersion { get; set; }
         public string? AssignedRole { get; set; }

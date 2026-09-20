@@ -1,0 +1,74 @@
+[
+  {
+    "procedure_target_id": "target-close-ledger",
+    "name": "Corporate general ledger",
+    "procedure": "quarter-end-close",
+    "label": "Corporate general ledger",
+    "target_kind": "DataSystem",
+    "machine": null,
+    "machine_is_non_standard": false,
+    "handling_failure_mode_count": 0,
+    "is_unhandled_non_standard_target": false,
+    "semantic_type_iri": "https://w3id.org/pko#ProcedureTarget"
+  },
+  {
+    "procedure_target_id": "target-deploy-platform",
+    "name": "Customer-facing platform",
+    "procedure": "production-deployment",
+    "label": "Customer-facing platform",
+    "target_kind": "Service",
+    "machine": null,
+    "machine_is_non_standard": false,
+    "handling_failure_mode_count": 0,
+    "is_unhandled_non_standard_target": false,
+    "semantic_type_iri": "https://w3id.org/pko#ProcedureTarget"
+  },
+  {
+    "procedure_target_id": "target-loto-conveyor3",
+    "name": "Conveyor line 3",
+    "procedure": "lockout-tagout",
+    "label": "Conveyor line 3",
+    "target_kind": "Machine",
+    "machine": "conveyor-3",
+    "machine_is_non_standard": false,
+    "handling_failure_mode_count": 0,
+    "is_unhandled_non_standard_target": false,
+    "semantic_type_iri": "https://w3id.org/pko#ProcedureTarget"
+  },
+  {
+    "procedure_target_id": "target-loto-mixer2",
+    "name": "Mixer 2",
+    "procedure": "lockout-tagout",
+    "label": "Mixer 2",
+    "target_kind": "Machine",
+    "machine": "mixer-2",
+    "machine_is_non_standard": true,
+    "handling_failure_mode_count": 0,
+    "is_unhandled_non_standard_target": true,
+    "semantic_type_iri": "https://w3id.org/pko#ProcedureTarget"
+  },
+  {
+    "procedure_target_id": "target-loto-press7",
+    "name": "Press 7",
+    "procedure": "lockout-tagout",
+    "label": "Press 7",
+    "target_kind": "Machine",
+    "machine": "press-7",
+    "machine_is_non_standard": true,
+    "handling_failure_mode_count": 1,
+    "is_unhandled_non_standard_target": false,
+    "semantic_type_iri": "https://w3id.org/pko#ProcedureTarget"
+  },
+  {
+    "procedure_target_id": "target-policy-workforce",
+    "name": "Affected workforce",
+    "procedure": "workforce-policy-notification",
+    "label": "Affected workforce",
+    "target_kind": "Population",
+    "machine": null,
+    "machine_is_non_standard": false,
+    "handling_failure_mode_count": 0,
+    "is_unhandled_non_standard_target": false,
+    "semantic_type_iri": "https://w3id.org/pko#ProcedureTarget"
+  }
+]

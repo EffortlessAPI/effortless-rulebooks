@@ -256,7 +256,7 @@ EVIDENCE = {
                      "Each row records that the organization's meaning of a controlled term changed (prior and new meaning, when); "
                      "VocabularyTerms.HasStaleDefinition reads it against the term's definition, e.g. 'release' still defined the 2024 way.")],
     "ont4-c08": [fld("VocabularyTerms.NamespaceIri",
-                     "The namespace each concept belongs to; re-homed terms such as 'given name' carry the local urn:effortless:pko-extension# "
+                     "The namespace each concept belongs to; re-homed terms such as 'given name' carry the local https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension# "
                      "namespace in place of FOAF's.")],
     "ont4-c09": [fld("VocabularyTerms.ConceptIri", "A globally unique IRI for every controlled concept, mapped to the RDF 1.1 IRI identifier.")],
     "ont4-c10": [fld("OntologyProfiles.Version",
@@ -329,7 +329,7 @@ EVIDENCE = {
     "ont4-i09": [fld("ExternalStandardTerms.RehomingKeptExternalNamespace",
                      "Fires when a deprecated FOAF personal-name term said to be re-homed still sits in FOAF's namespace. The local copy of "
                      "foaf:family_name kept http://xmlns.com/foaf/0.1/ as its namespace, so it fires; 'given name' was moved into "
-                     "urn:effortless:pko-extension# and linked to foaf:givenname, the illustration done correctly, and does not.")],
+                     "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension# and linked to foaf:givenname, the illustration done correctly, and does not.")],
     "ont4-i12": [fld("VocabularyTerms.HasStructuralSenseShiftAcrossYears",
                      "Fires when what a term refers to changed shape after holding for about two years or more. 'release' meant an engineer "
                      "copying a tagged build from January 2024 and, since January 2026, a risk-classified change through a human gate and a "

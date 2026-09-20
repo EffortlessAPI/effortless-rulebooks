@@ -33,6 +33,9 @@ ALTER TABLE ontology_profiles ADD CONSTRAINT fk_ontology_profiles_evaluation_con
 ALTER TABLE ontology_profiles DROP CONSTRAINT IF EXISTS fk_ontology_profiles_prerequisite_profile;
 ALTER TABLE ontology_profiles ADD CONSTRAINT fk_ontology_profiles_prerequisite_profile
   FOREIGN KEY (prerequisite_profile) REFERENCES ontology_profiles (ontology_profile_id);
+ALTER TABLE ontology_profiles DROP CONSTRAINT IF EXISTS fk_ontology_profiles_supporting_programme;
+ALTER TABLE ontology_profiles ADD CONSTRAINT fk_ontology_profiles_supporting_programme
+  FOREIGN KEY (supporting_programme) REFERENCES ontology_support_programmes (ontology_support_programme_id);
 
 -- Agents
 ALTER TABLE agents DROP CONSTRAINT IF EXISTS fk_agents_organization;
@@ -389,6 +392,9 @@ ALTER TABLE knowledge_gaps ADD CONSTRAINT fk_knowledge_gaps_drawn_out_by_session
 ALTER TABLE knowledge_gaps DROP CONSTRAINT IF EXISTS fk_knowledge_gaps_codified_as_fragment;
 ALTER TABLE knowledge_gaps ADD CONSTRAINT fk_knowledge_gaps_codified_as_fragment
   FOREIGN KEY (codified_as_fragment) REFERENCES knowledge_fragments (knowledge_fragment_id);
+ALTER TABLE knowledge_gaps DROP CONSTRAINT IF EXISTS fk_knowledge_gaps_answered_by_model_change_request;
+ALTER TABLE knowledge_gaps ADD CONSTRAINT fk_knowledge_gaps_answered_by_model_change_request
+  FOREIGN KEY (answered_by_model_change_request) REFERENCES model_change_requests (model_change_request_id);
 
 -- FAQs
 ALTER TABLE faqs DROP CONSTRAINT IF EXISTS fk_faqs_procedure_version;
@@ -434,6 +440,9 @@ ALTER TABLE procedure_executions ADD CONSTRAINT fk_procedure_executions_facility
 ALTER TABLE procedure_executions DROP CONSTRAINT IF EXISTS fk_procedure_executions_executed_on_machine;
 ALTER TABLE procedure_executions ADD CONSTRAINT fk_procedure_executions_executed_on_machine
   FOREIGN KEY (executed_on_machine) REFERENCES machines (machine_id);
+ALTER TABLE procedure_executions DROP CONSTRAINT IF EXISTS fk_procedure_executions_stopped_at_knowledge_gap;
+ALTER TABLE procedure_executions ADD CONSTRAINT fk_procedure_executions_stopped_at_knowledge_gap
+  FOREIGN KEY (stopped_at_knowledge_gap) REFERENCES knowledge_gaps (knowledge_gap_id);
 
 -- StepExecutions
 ALTER TABLE step_executions DROP CONSTRAINT IF EXISTS fk_step_executions_procedure_execution;
@@ -1150,6 +1159,9 @@ ALTER TABLE execution_entities ADD CONSTRAINT fk_execution_entities_step_variabl
 ALTER TABLE step_conditions DROP CONSTRAINT IF EXISTS fk_step_conditions_step;
 ALTER TABLE step_conditions ADD CONSTRAINT fk_step_conditions_step
   FOREIGN KEY (step) REFERENCES steps (step_id);
+ALTER TABLE step_conditions DROP CONSTRAINT IF EXISTS fk_step_conditions_enforces_requirement;
+ALTER TABLE step_conditions ADD CONSTRAINT fk_step_conditions_enforces_requirement
+  FOREIGN KEY (enforces_requirement) REFERENCES requirements (requirement_id);
 
 -- ConditionChecks
 ALTER TABLE condition_checks DROP CONSTRAINT IF EXISTS fk_condition_checks_step_execution;
@@ -2684,4 +2696,17 @@ ALTER TABLE app_action_fields DROP CONSTRAINT IF EXISTS fk_app_action_fields_tar
 ALTER TABLE app_action_fields ADD CONSTRAINT fk_app_action_fields_target_field
   FOREIGN KEY (target_field) REFERENCES rulebook_fields (rulebook_field_id);
 
--- 734 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).
+-- AbundantKnowledgeGaps
+ALTER TABLE abundant_knowledge_gaps DROP CONSTRAINT IF EXISTS fk_abundant_knowledge_gaps_represented_by_table;
+ALTER TABLE abundant_knowledge_gaps ADD CONSTRAINT fk_abundant_knowledge_gaps_represented_by_table
+  FOREIGN KEY (represented_by_table) REFERENCES rulebook_tables (rulebook_table_id);
+
+-- OntologySupportProgrammes
+ALTER TABLE ontology_support_programmes DROP CONSTRAINT IF EXISTS fk_ontology_support_programmes_acronym;
+ALTER TABLE ontology_support_programmes ADD CONSTRAINT fk_ontology_support_programmes_acronym
+  FOREIGN KEY (acronym) REFERENCES ontology_support_programmes (ontology_support_programme_id);
+ALTER TABLE ontology_support_programmes DROP CONSTRAINT IF EXISTS fk_ontology_support_programmes_evaluation_context;
+ALTER TABLE ontology_support_programmes ADD CONSTRAINT fk_ontology_support_programmes_evaluation_context
+  FOREIGN KEY (evaluation_context) REFERENCES evaluation_contexts (evaluation_context_id);
+
+-- 741 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).

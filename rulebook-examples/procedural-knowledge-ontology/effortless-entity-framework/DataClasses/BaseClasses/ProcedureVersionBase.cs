@@ -1273,6 +1273,13 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             get => F.AsInt(F.Memo(this, "GraphEntryStepCount", () => F.Integer((base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<Step>(base.SoAContext, "Steps", __c => __c.Steps), __r => F.CritField(F.Of(__r.ProcedureVersion), F.Of(this.ProcedureVersionId)) && F.CritLiteral(F.Of(__r.IsEntryStep), F.B(true))))))); set { }
         }
 
+        // Formula OwnerOrganization (rulebook: =INDEX(Procedures!{{OwnerOrganization}}, MATCH({{Procedure}}, Procedures!{{ProcedureId}}, 0)))
+        [NotMapped]
+        public string? OwnerOrganization
+        {
+            get => F.AsString(F.Memo(this, "OwnerOrganization", () => F.Lookup<Procedure>(this, "Procedures", "ProcedureId", __c => __c.Procedures, __r => F.Of(__r.ProcedureId), F.Of(this.Procedure), __r => F.Of(__r.OwnerOrganization), () => F.Of(new Procedure().OwnerOrganization)))); set { }
+        }
+
 
         public string? Procedure { get; set; }
         public string? Status { get; set; }

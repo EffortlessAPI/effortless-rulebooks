@@ -24,7 +24,7 @@ from collections import OrderedDict
 from pathlib import Path
 
 RB = Path("effortless-rulebook/procedural-knowledge-ontology-rulebook.json")
-QUESTION_IRI = "urn:effortless:pko-extension#RoleQuestion"
+QUESTION_IRI = "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RoleQuestion"
 
 # Fields a formula may reference that are not columns.
 FORMULA_FUNCS = {

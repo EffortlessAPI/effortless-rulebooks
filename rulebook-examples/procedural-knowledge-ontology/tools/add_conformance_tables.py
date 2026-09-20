@@ -28,7 +28,7 @@ import json
 import sys
 
 RB = "effortless-rulebook/procedural-knowledge-ontology-rulebook.json"
-IRI = "urn:effortless:pko-extension#"
+IRI = "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#"
 QUESTION = "q-auditor-substrate-agreement"
 
 

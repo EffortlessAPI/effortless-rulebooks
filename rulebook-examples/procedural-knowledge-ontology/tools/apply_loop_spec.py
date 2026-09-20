@@ -58,9 +58,18 @@ def apply(rb, mod) -> dict:
             loop_fields.update(f"{name}.{f['name']}" for f in fields)
         if name in mapped_paths:
             continue  # the spec maps this table to a real ontology term; it is not an extension
+        # The class IRI is SINGULAR -- it is what the rows are typed with and how ontologies
+        # name classes (pko:Procedure, not pko:Procedures). It comes from the table's own
+        # <Entity>Id, never from stripping a trailing "s": that turns StepProtectiveEquipment
+        # into StepProtectiveEquipmen. Minting it from the plural table name left 132 classes
+        # declared that no instance was ever a member of; see tools/align_extension_class_iris.py.
+        pk = rb[name]["schema"][0]["name"]
+        if not pk.endswith("Id"):
+            raise SystemExit(f"{name}: leading field {pk!r} is not an <Entity>Id (cr-25); "
+                             f"cannot name its class.")
         upsert_rows(rb, "SemanticMappings", [OrderedDict([
             ("SemanticMappingId", f"map-{name}"), ("SourcePath", name), ("MappingKind", "class"),
-            ("TargetIri", f"{EXT}{name}"), ("MappingRelation", "extension"),
+            ("TargetIri", f"{EXT}{pk[:-2]}"), ("MappingRelation", "extension"),
             ("OntologyProfile", "erb-pko-extension-1.0.0"),
             ("Notes", f"Added by {loop['WitnessLoopId']}; not part of PKO 2.0.0.")])])
 

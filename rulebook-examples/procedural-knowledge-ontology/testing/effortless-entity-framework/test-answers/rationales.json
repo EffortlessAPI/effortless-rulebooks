@@ -7,7 +7,7 @@
     "statement": "The model accelerates triage; materiality, anomaly context, and acceptance remain human judgments.",
     "status": "Approved",
     "authority_role": "controller",
-    "semantic_type_iri": "urn:effortless:pko-extension#Rationale",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#Rationale",
     "name": "Why AI ranks but does not close variances"
   },
   {
@@ -18,7 +18,7 @@
     "statement": "Independent review prevents self-certification and makes accountability legible.",
     "status": "Approved",
     "authority_role": "controller",
-    "semantic_type_iri": "urn:effortless:pko-extension#Rationale",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#Rationale",
     "name": "Why the preparer cannot approve"
   },
   {
@@ -29,7 +29,7 @@
     "statement": "Drafting is reversible assistance; legal and organizational commitments require human authority.",
     "status": "Approved",
     "authority_role": "hr-policy-owner",
-    "semantic_type_iri": "urn:effortless:pko-extension#Rationale",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#Rationale",
     "name": "Why AI may draft but not approve"
   },
   {
@@ -40,7 +40,7 @@
     "statement": "Email carries complete policy context; consented SMS provides timely notice and a link without becoming the legal record.",
     "status": "Approved",
     "authority_role": "communications-manager",
-    "semantic_type_iri": "urn:effortless:pko-extension#Rationale",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#Rationale",
     "name": "Why both email and SMS exist"
   }
 ]

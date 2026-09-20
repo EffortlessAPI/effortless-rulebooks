@@ -1,0 +1,32 @@
+[
+  {
+    "process_knowledge_level_id": "operational",
+    "label": "Operational",
+    "planning_horizon": "Shift and task",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ProcessKnowledgeLevel",
+    "name": null,
+    "tacit_strategy_count": null,
+    "explicit_strategy_count": null,
+    "lacks_capture_strategy_for_either_form": null
+  },
+  {
+    "process_knowledge_level_id": "strategic",
+    "label": "Strategic",
+    "planning_horizon": "Years",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ProcessKnowledgeLevel",
+    "name": null,
+    "tacit_strategy_count": null,
+    "explicit_strategy_count": null,
+    "lacks_capture_strategy_for_either_form": null
+  },
+  {
+    "process_knowledge_level_id": "tactical",
+    "label": "Tactical",
+    "planning_horizon": "Weeks to a quarter",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ProcessKnowledgeLevel",
+    "name": null,
+    "tacit_strategy_count": null,
+    "explicit_strategy_count": null,
+    "lacks_capture_strategy_for_either_form": null
+  }
+]

@@ -1,0 +1,54 @@
+[
+  {
+    "capability_decline_id": "cd12-eng-training",
+    "organization": "acme-engineering",
+    "stage": "EngineerTraining",
+    "decline_started_at": "2024-01-01T00:00:00-06:00",
+    "preceding_stage_decline": null,
+    "evidence": "Release engineering apprenticeship paused.",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CapabilityDecline",
+    "name": "acme-engineering: EngineerTraining",
+    "preceding_stage": null,
+    "preceding_decline_started_at": null,
+    "follows_preceding_stage_decline": false
+  },
+  {
+    "capability_decline_id": "cd12-plant-facility",
+    "organization": "acme-plant",
+    "stage": "FacilityInvestment",
+    "decline_started_at": "2011-01-01T00:00:00-06:00",
+    "preceding_stage_decline": null,
+    "evidence": "Plant South tooling capital budget frozen.",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CapabilityDecline",
+    "name": "acme-plant: FacilityInvestment",
+    "preceding_stage": null,
+    "preceding_decline_started_at": null,
+    "follows_preceding_stage_decline": false
+  },
+  {
+    "capability_decline_id": "cd12-plant-training",
+    "organization": "acme-plant",
+    "stage": "EngineerTraining",
+    "decline_started_at": "2015-01-01T00:00:00-06:00",
+    "preceding_stage_decline": "cd12-plant-facility",
+    "evidence": "Process engineer rotation program cut.",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CapabilityDecline",
+    "name": "acme-plant: EngineerTraining",
+    "preceding_stage": "FacilityInvestment",
+    "preceding_decline_started_at": "2011-01-01T00:00:00-06:00",
+    "follows_preceding_stage_decline": true
+  },
+  {
+    "capability_decline_id": "cd12-plant-upkeep",
+    "organization": "acme-plant",
+    "stage": "KnowHowUpkeep",
+    "decline_started_at": "2020-01-01T00:00:00-06:00",
+    "preceding_stage_decline": "cd12-plant-training",
+    "evidence": "Press line how-to-make binders no longer revised.",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CapabilityDecline",
+    "name": "acme-plant: KnowHowUpkeep",
+    "preceding_stage": "EngineerTraining",
+    "preceding_decline_started_at": "2015-01-01T00:00:00-06:00",
+    "follows_preceding_stage_decline": true
+  }
+]

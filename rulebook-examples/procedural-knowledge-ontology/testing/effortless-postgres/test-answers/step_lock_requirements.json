@@ -1,0 +1,23 @@
+[
+  {
+    "step_lock_requirement_id": "slr-loto04a-breaker",
+    "name": "loto-04a / CircuitBreakerLockout",
+    "step": "loto-04a",
+    "lock_device": "CircuitBreakerLockout",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#StepLockRequirement"
+  },
+  {
+    "step_lock_requirement_id": "slr-loto04b-valve",
+    "name": "loto-04b / BallValveLockout",
+    "step": "loto-04b",
+    "lock_device": "BallValveLockout",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#StepLockRequirement"
+  },
+  {
+    "step_lock_requirement_id": "slr-loto05-padlock",
+    "name": "loto-05 / StandardPadlock",
+    "step": "loto-05",
+    "lock_device": "StandardPadlock",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#StepLockRequirement"
+  }
+]

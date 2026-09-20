@@ -4,2204 +4,2204 @@
     "name": "admin-board -\u003e admin-checks",
     "from_route": "admin-board",
     "to_route": "admin-checks",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-admin-board--admin-witnesses",
     "name": "admin-board -\u003e admin-witnesses",
     "from_route": "admin-board",
     "to_route": "admin-witnesses",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-admin-catalog-drift--admin-board",
     "name": "admin-catalog-drift -\u003e admin-board",
     "from_route": "admin-catalog-drift",
     "to_route": "admin-board",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-admin-catalog-drift--explorer-inferences",
     "name": "admin-catalog-drift -\u003e explorer-inferences",
     "from_route": "admin-catalog-drift",
     "to_route": "explorer-inferences",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-admin-checks--admin-board",
     "name": "admin-checks -\u003e admin-board",
     "from_route": "admin-checks",
     "to_route": "admin-board",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-admin-checks--admin-question-defence",
     "name": "admin-checks -\u003e admin-question-defence",
     "from_route": "admin-checks",
     "to_route": "admin-question-defence",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-admin-loops--admin-question-defence",
     "name": "admin-loops -\u003e admin-question-defence",
     "from_route": "admin-loops",
     "to_route": "admin-question-defence",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-admin-loops--shared-field-provenance",
     "name": "admin-loops -\u003e shared-field-provenance",
     "from_route": "admin-loops",
     "to_route": "shared-field-provenance",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-admin-provenance--admin-loops",
     "name": "admin-provenance -\u003e admin-loops",
     "from_route": "admin-provenance",
     "to_route": "admin-loops",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-admin-provenance--shared-field-provenance",
     "name": "admin-provenance -\u003e shared-field-provenance",
     "from_route": "admin-provenance",
     "to_route": "shared-field-provenance",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-admin-question-defence--admin-checks",
     "name": "admin-question-defence -\u003e admin-checks",
     "from_route": "admin-question-defence",
     "to_route": "admin-checks",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-admin-question-defence--admin-loops",
     "name": "admin-question-defence -\u003e admin-loops",
     "from_route": "admin-question-defence",
     "to_route": "admin-loops",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-admin-question-defence--admin-route-map",
     "name": "admin-question-defence -\u003e admin-route-map",
     "from_route": "admin-question-defence",
     "to_route": "admin-route-map",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-admin-route-map--admin-question-defence",
     "name": "admin-route-map -\u003e admin-question-defence",
     "from_route": "admin-route-map",
     "to_route": "admin-question-defence",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-admin-route-map--explorer-tables",
     "name": "admin-route-map -\u003e explorer-tables",
     "from_route": "admin-route-map",
     "to_route": "explorer-tables",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-admin-vacuous--admin-loops",
     "name": "admin-vacuous -\u003e admin-loops",
     "from_route": "admin-vacuous",
     "to_route": "admin-loops",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-admin-vacuous--admin-witnesses",
     "name": "admin-vacuous -\u003e admin-witnesses",
     "from_route": "admin-vacuous",
     "to_route": "admin-witnesses",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-admin-witnesses--admin-vacuous",
     "name": "admin-witnesses -\u003e admin-vacuous",
     "from_route": "admin-witnesses",
     "to_route": "admin-vacuous",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-admin-witnesses--shared-field-provenance",
     "name": "admin-witnesses -\u003e shared-field-provenance",
     "from_route": "admin-witnesses",
     "to_route": "shared-field-provenance",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-analyst-blocking-unmet--analyst-never-evaluated",
     "name": "analyst-blocking-unmet -\u003e analyst-never-evaluated",
     "from_route": "analyst-blocking-unmet",
     "to_route": "analyst-never-evaluated",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-analyst-blocking-unmet--shared-requirement-detail",
     "name": "analyst-blocking-unmet -\u003e shared-requirement-detail",
     "from_route": "analyst-blocking-unmet",
     "to_route": "shared-requirement-detail",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-analyst-clean-but-uncovered--analyst-mute-clearance",
     "name": "analyst-clean-but-uncovered -\u003e analyst-mute-clearance",
     "from_route": "analyst-clean-but-uncovered",
     "to_route": "analyst-mute-clearance",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-analyst-clean-but-uncovered--controller-mute-controls",
     "name": "analyst-clean-but-uncovered -\u003e controller-mute-controls",
     "from_route": "analyst-clean-but-uncovered",
     "to_route": "controller-mute-controls",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-analyst-evidence-quality--cfo-witness-chain",
     "name": "analyst-evidence-quality -\u003e cfo-witness-chain",
     "from_route": "analyst-evidence-quality",
     "to_route": "cfo-witness-chain",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-analyst-evidence-quality--controller-asserted-controls",
     "name": "analyst-evidence-quality -\u003e controller-asserted-controls",
     "from_route": "analyst-evidence-quality",
     "to_route": "controller-asserted-controls",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-analyst-home--analyst-blocking-unmet",
     "name": "analyst-home -\u003e analyst-blocking-unmet",
     "from_route": "analyst-home",
     "to_route": "analyst-blocking-unmet",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-analyst-home--analyst-late-steps",
     "name": "analyst-home -\u003e analyst-late-steps",
     "from_route": "analyst-home",
     "to_route": "analyst-late-steps",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-analyst-home--shared-step-execution-detail",
     "name": "analyst-home -\u003e shared-step-execution-detail",
     "from_route": "analyst-home",
     "to_route": "shared-step-execution-detail",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-analyst-late-steps--shared-exception-detail",
     "name": "analyst-late-steps -\u003e shared-exception-detail",
     "from_route": "analyst-late-steps",
     "to_route": "shared-exception-detail",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-analyst-late-steps--shared-step-execution-detail",
     "name": "analyst-late-steps -\u003e shared-step-execution-detail",
     "from_route": "analyst-late-steps",
     "to_route": "shared-step-execution-detail",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-analyst-mute-clearance--analyst-clean-but-uncovered",
     "name": "analyst-mute-clearance -\u003e analyst-clean-but-uncovered",
     "from_route": "analyst-mute-clearance",
     "to_route": "analyst-clean-but-uncovered",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-analyst-mute-clearance--controller-mute-controls",
     "name": "analyst-mute-clearance -\u003e controller-mute-controls",
     "from_route": "analyst-mute-clearance",
     "to_route": "controller-mute-controls",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-analyst-never-evaluated--analyst-blocking-unmet",
     "name": "analyst-never-evaluated -\u003e analyst-blocking-unmet",
     "from_route": "analyst-never-evaluated",
     "to_route": "analyst-blocking-unmet",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-analyst-never-evaluated--controller-mute-controls",
     "name": "analyst-never-evaluated -\u003e controller-mute-controls",
     "from_route": "analyst-never-evaluated",
     "to_route": "controller-mute-controls",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-analyst-source-freshness--analyst-stale-then-vs-now",
     "name": "analyst-source-freshness -\u003e analyst-stale-then-vs-now",
     "from_route": "analyst-source-freshness",
     "to_route": "analyst-stale-then-vs-now",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-analyst-source-freshness--shared-operational-binding-detail",
     "name": "analyst-source-freshness -\u003e shared-operational-binding-detail",
     "from_route": "analyst-source-freshness",
     "to_route": "shared-operational-binding-detail",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-analyst-stale-then-vs-now--analyst-source-freshness",
     "name": "analyst-stale-then-vs-now -\u003e analyst-source-freshness",
     "from_route": "analyst-stale-then-vs-now",
     "to_route": "analyst-source-freshness",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-analyst-stale-then-vs-now--shared-evaluation-context",
     "name": "analyst-stale-then-vs-now -\u003e shared-evaluation-context",
     "from_route": "analyst-stale-then-vs-now",
     "to_route": "shared-evaluation-context",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-analyst-verification-performed--analyst-evidence-quality",
     "name": "analyst-verification-performed -\u003e analyst-evidence-quality",
     "from_route": "analyst-verification-performed",
     "to_route": "analyst-evidence-quality",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-analyst-verification-performed--shared-verification-outcomes",
     "name": "analyst-verification-performed -\u003e shared-verification-outcomes",
     "from_route": "analyst-verification-performed",
     "to_route": "shared-verification-outcomes",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-analyst-witness-coverage--cfo-typed-conclusions",
     "name": "analyst-witness-coverage -\u003e cfo-typed-conclusions",
     "from_route": "analyst-witness-coverage",
     "to_route": "cfo-typed-conclusions",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-analyst-witness-coverage--cfo-unwitnessed-controls",
     "name": "analyst-witness-coverage -\u003e cfo-unwitnessed-controls",
     "from_route": "analyst-witness-coverage",
     "to_route": "cfo-unwitnessed-controls",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-authority-elicitation-monoculture--authority-orphaned-provenance",
     "name": "authority-elicitation-monoculture -\u003e authority-orphaned-provenance",
     "from_route": "authority-elicitation-monoculture",
     "to_route": "authority-orphaned-provenance",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-authority-elicitation-monoculture--shared-elicitation-detail",
     "name": "authority-elicitation-monoculture -\u003e shared-elicitation-detail",
     "from_route": "authority-elicitation-monoculture",
     "to_route": "shared-elicitation-detail",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-authority-expired-ratifier--shared-authority-boundary-detail",
     "name": "authority-expired-ratifier -\u003e shared-authority-boundary-detail",
     "from_route": "authority-expired-ratifier",
     "to_route": "shared-authority-boundary-detail",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-authority-expired-ratifier--variance-boundary-ratification",
     "name": "authority-expired-ratifier -\u003e variance-boundary-ratification",
     "from_route": "authority-expired-ratifier",
     "to_route": "variance-boundary-ratification",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-authority-fragment-decay--authority-home",
     "name": "authority-fragment-decay -\u003e authority-home",
     "from_route": "authority-fragment-decay",
     "to_route": "authority-home",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-authority-fragment-decay--variance-knowledge-currency",
     "name": "authority-fragment-decay -\u003e variance-knowledge-currency",
     "from_route": "authority-fragment-decay",
     "to_route": "variance-knowledge-currency",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-authority-home--authority-fragment-decay",
     "name": "authority-home -\u003e authority-fragment-decay",
     "from_route": "authority-home",
     "to_route": "authority-fragment-decay",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-authority-home--authority-unapproved-live",
     "name": "authority-home -\u003e authority-unapproved-live",
     "from_route": "authority-home",
     "to_route": "authority-unapproved-live",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-authority-home--shared-knowledge-fragment-detail",
     "name": "authority-home -\u003e shared-knowledge-fragment-detail",
     "from_route": "authority-home",
     "to_route": "shared-knowledge-fragment-detail",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-authority-known-unknowns--shared-knowledge-gap-detail",
     "name": "authority-known-unknowns -\u003e shared-knowledge-gap-detail",
     "from_route": "authority-known-unknowns",
     "to_route": "shared-knowledge-gap-detail",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-authority-known-unknowns--steward-open-gaps",
     "name": "authority-known-unknowns -\u003e steward-open-gaps",
     "from_route": "authority-known-unknowns",
     "to_route": "steward-open-gaps",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-authority-machine-consumers--authority-unapproved-live",
     "name": "authority-machine-consumers -\u003e authority-unapproved-live",
     "from_route": "authority-machine-consumers",
     "to_route": "authority-unapproved-live",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-authority-machine-consumers--hr-ai-boundary",
     "name": "authority-machine-consumers -\u003e hr-ai-boundary",
     "from_route": "authority-machine-consumers",
     "to_route": "hr-ai-boundary",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-authority-orphaned-provenance--authority-elicitation-monoculture",
     "name": "authority-orphaned-provenance -\u003e authority-elicitation-monoculture",
     "from_route": "authority-orphaned-provenance",
     "to_route": "authority-elicitation-monoculture",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-authority-orphaned-provenance--hr-departed-holders",
     "name": "authority-orphaned-provenance -\u003e hr-departed-holders",
     "from_route": "authority-orphaned-provenance",
     "to_route": "hr-departed-holders",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-authority-review-date-inferred--authority-fragment-decay",
     "name": "authority-review-date-inferred -\u003e authority-fragment-decay",
     "from_route": "authority-review-date-inferred",
     "to_route": "authority-fragment-decay",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-authority-review-date-inferred--shared-field-provenance",
     "name": "authority-review-date-inferred -\u003e shared-field-provenance",
     "from_route": "authority-review-date-inferred",
     "to_route": "shared-field-provenance",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-authority-stale-elicitation--hr-knowledge-half-life",
     "name": "authority-stale-elicitation -\u003e hr-knowledge-half-life",
     "from_route": "authority-stale-elicitation",
     "to_route": "hr-knowledge-half-life",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-authority-stale-elicitation--shared-elicitation-detail",
     "name": "authority-stale-elicitation -\u003e shared-elicitation-detail",
     "from_route": "authority-stale-elicitation",
     "to_route": "shared-elicitation-detail",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-authority-unapproved-live--authority-machine-consumers",
     "name": "authority-unapproved-live -\u003e authority-machine-consumers",
     "from_route": "authority-unapproved-live",
     "to_route": "authority-machine-consumers",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-authority-unapproved-live--hr-load-bearing-claim",
     "name": "authority-unapproved-live -\u003e hr-load-bearing-claim",
     "from_route": "authority-unapproved-live",
     "to_route": "hr-load-bearing-claim",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-authority-unwitnessed-change--controller-home",
     "name": "authority-unwitnessed-change -\u003e controller-home",
     "from_route": "authority-unwitnessed-change",
     "to_route": "controller-home",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-authority-unwitnessed-change--shared-change-request-detail",
     "name": "authority-unwitnessed-change -\u003e shared-change-request-detail",
     "from_route": "authority-unwitnessed-change",
     "to_route": "shared-change-request-detail",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-cfo-assurance-grade--cfo-unwitnessed-controls",
     "name": "cfo-assurance-grade -\u003e cfo-unwitnessed-controls",
     "from_route": "cfo-assurance-grade",
     "to_route": "cfo-unwitnessed-controls",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-cfo-assurance-grade--controller-mute-controls",
     "name": "cfo-assurance-grade -\u003e controller-mute-controls",
     "from_route": "cfo-assurance-grade",
     "to_route": "controller-mute-controls",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-cfo-attestation-detail--cfo-home",
     "name": "cfo-attestation-detail -\u003e cfo-home",
     "from_route": "cfo-attestation-detail",
     "to_route": "cfo-home",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-cfo-attestation-detail--shared-step-execution-detail",
     "name": "cfo-attestation-detail -\u003e shared-step-execution-detail",
     "from_route": "cfo-attestation-detail",
     "to_route": "shared-step-execution-detail",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-cfo-authority-map--controller-authority-validity",
     "name": "cfo-authority-map -\u003e controller-authority-validity",
     "from_route": "cfo-authority-map",
     "to_route": "controller-authority-validity",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-cfo-authority-map--shared-exception-detail",
     "name": "cfo-authority-map -\u003e shared-exception-detail",
     "from_route": "cfo-authority-map",
     "to_route": "shared-exception-detail",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-cfo-blockers--cfo-home",
     "name": "cfo-blockers -\u003e cfo-home",
     "from_route": "cfo-blockers",
     "to_route": "cfo-home",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-cfo-blockers--controller-conformance",
     "name": "cfo-blockers -\u003e controller-conformance",
     "from_route": "cfo-blockers",
     "to_route": "controller-conformance",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-cfo-changed-since-signing--cfo-signature-dependencies",
     "name": "cfo-changed-since-signing -\u003e cfo-signature-dependencies",
     "from_route": "cfo-changed-since-signing",
     "to_route": "cfo-signature-dependencies",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-cfo-changed-since-signing--shared-change-request-detail",
     "name": "cfo-changed-since-signing -\u003e shared-change-request-detail",
     "from_route": "cfo-changed-since-signing",
     "to_route": "shared-change-request-detail",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-cfo-home--cfo-assurance-grade",
     "name": "cfo-home -\u003e cfo-assurance-grade",
     "from_route": "cfo-home",
     "to_route": "cfo-assurance-grade",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-cfo-home--cfo-blockers",
     "name": "cfo-home -\u003e cfo-blockers",
     "from_route": "cfo-home",
     "to_route": "cfo-blockers",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-cfo-home--cfo-signature-dependencies",
     "name": "cfo-home -\u003e cfo-signature-dependencies",
     "from_route": "cfo-home",
     "to_route": "cfo-signature-dependencies",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-cfo-my-approvals--cfo-witness-chain",
     "name": "cfo-my-approvals -\u003e cfo-witness-chain",
     "from_route": "cfo-my-approvals",
     "to_route": "cfo-witness-chain",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-cfo-my-approvals--shared-step-execution-detail",
     "name": "cfo-my-approvals -\u003e shared-step-execution-detail",
     "from_route": "cfo-my-approvals",
     "to_route": "shared-step-execution-detail",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-cfo-restatement--cfo-assurance-grade",
     "name": "cfo-restatement -\u003e cfo-assurance-grade",
     "from_route": "cfo-restatement",
     "to_route": "cfo-assurance-grade",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-cfo-restatement--shared-evaluation-context",
     "name": "cfo-restatement -\u003e shared-evaluation-context",
     "from_route": "cfo-restatement",
     "to_route": "shared-evaluation-context",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-cfo-signature-dependencies--cfo-changed-since-signing",
     "name": "cfo-signature-dependencies -\u003e cfo-changed-since-signing",
     "from_route": "cfo-signature-dependencies",
     "to_route": "cfo-changed-since-signing",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-cfo-signature-dependencies--cfo-home",
     "name": "cfo-signature-dependencies -\u003e cfo-home",
     "from_route": "cfo-signature-dependencies",
     "to_route": "cfo-home",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-cfo-typed-conclusions--cfo-unwitnessed-controls",
     "name": "cfo-typed-conclusions -\u003e cfo-unwitnessed-controls",
     "from_route": "cfo-typed-conclusions",
     "to_route": "cfo-unwitnessed-controls",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-cfo-typed-conclusions--controller-asserted-controls",
     "name": "cfo-typed-conclusions -\u003e controller-asserted-controls",
     "from_route": "cfo-typed-conclusions",
     "to_route": "controller-asserted-controls",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-cfo-unwitnessed-controls--cfo-assurance-grade",
     "name": "cfo-unwitnessed-controls -\u003e cfo-assurance-grade",
     "from_route": "cfo-unwitnessed-controls",
     "to_route": "cfo-assurance-grade",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-cfo-unwitnessed-controls--shared-requirement-detail",
     "name": "cfo-unwitnessed-controls -\u003e shared-requirement-detail",
     "from_route": "cfo-unwitnessed-controls",
     "to_route": "shared-requirement-detail",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-cfo-witness-chain--cfo-my-approvals",
     "name": "cfo-witness-chain -\u003e cfo-my-approvals",
     "from_route": "cfo-witness-chain",
     "to_route": "cfo-my-approvals",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-cfo-witness-chain--shared-verification-outcomes",
     "name": "cfo-witness-chain -\u003e shared-verification-outcomes",
     "from_route": "cfo-witness-chain",
     "to_route": "shared-verification-outcomes",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-close-auto-authority--publisher-my-authorization",
     "name": "close-auto-authority -\u003e publisher-my-authorization",
     "from_route": "close-auto-authority",
     "to_route": "publisher-my-authorization",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-close-auto-authority--shared-role-assignment-detail",
     "name": "close-auto-authority -\u003e shared-role-assignment-detail",
     "from_route": "close-auto-authority",
     "to_route": "shared-role-assignment-detail",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-close-auto-controls--analyst-never-evaluated",
     "name": "close-auto-controls -\u003e analyst-never-evaluated",
     "from_route": "close-auto-controls",
     "to_route": "analyst-never-evaluated",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-close-auto-controls--controller-home",
     "name": "close-auto-controls -\u003e controller-home",
     "from_route": "close-auto-controls",
     "to_route": "controller-home",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-close-auto-drift--variance-override-signal",
     "name": "close-auto-drift -\u003e variance-override-signal",
     "from_route": "close-auto-drift",
     "to_route": "variance-override-signal",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-close-auto-drift--variance-quality-baseline",
     "name": "close-auto-drift -\u003e variance-quality-baseline",
     "from_route": "close-auto-drift",
     "to_route": "variance-quality-baseline",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-close-auto-home--close-auto-authority",
     "name": "close-auto-home -\u003e close-auto-authority",
     "from_route": "close-auto-home",
     "to_route": "close-auto-authority",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-close-auto-home--close-auto-inputs",
     "name": "close-auto-home -\u003e close-auto-inputs",
     "from_route": "close-auto-home",
     "to_route": "close-auto-inputs",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-close-auto-home--close-auto-last-run",
     "name": "close-auto-home -\u003e close-auto-last-run",
     "from_route": "close-auto-home",
     "to_route": "close-auto-last-run",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-close-auto-inputs--analyst-source-freshness",
     "name": "close-auto-inputs -\u003e analyst-source-freshness",
     "from_route": "close-auto-inputs",
     "to_route": "analyst-source-freshness",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-close-auto-inputs--shared-operational-binding-detail",
     "name": "close-auto-inputs -\u003e shared-operational-binding-detail",
     "from_route": "close-auto-inputs",
     "to_route": "shared-operational-binding-detail",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-close-auto-last-run--close-auto-home",
     "name": "close-auto-last-run -\u003e close-auto-home",
     "from_route": "close-auto-last-run",
     "to_route": "close-auto-home",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-close-auto-last-run--shared-step-execution-detail",
     "name": "close-auto-last-run -\u003e shared-step-execution-detail",
     "from_route": "close-auto-last-run",
     "to_route": "shared-step-execution-detail",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-comms-approval-authority--comms-template-drift",
     "name": "comms-approval-authority -\u003e comms-template-drift",
     "from_route": "comms-approval-authority",
     "to_route": "comms-template-drift",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-comms-approval-authority--counsel-legal-review",
     "name": "comms-approval-authority -\u003e counsel-legal-review",
     "from_route": "comms-approval-authority",
     "to_route": "counsel-legal-review",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-comms-authorization-override--comms-approval-authority",
     "name": "comms-authorization-override -\u003e comms-approval-authority",
     "from_route": "comms-authorization-override",
     "to_route": "comms-approval-authority",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-comms-authorization-override--publisher-refusals",
     "name": "comms-authorization-override -\u003e publisher-refusals",
     "from_route": "comms-authorization-override",
     "to_route": "publisher-refusals",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-comms-engagement--comms-yield",
     "name": "comms-engagement -\u003e comms-yield",
     "from_route": "comms-engagement",
     "to_route": "comms-yield",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-comms-engagement--shared-delivery-detail",
     "name": "comms-engagement -\u003e shared-delivery-detail",
     "from_route": "comms-engagement",
     "to_route": "shared-delivery-detail",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-comms-failed-deliveries--comms-yield",
     "name": "comms-failed-deliveries -\u003e comms-yield",
     "from_route": "comms-failed-deliveries",
     "to_route": "comms-yield",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-comms-failed-deliveries--shared-recipient-detail",
     "name": "comms-failed-deliveries -\u003e shared-recipient-detail",
     "from_route": "comms-failed-deliveries",
     "to_route": "shared-recipient-detail",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-comms-frozen-approval--comms-template-drift",
     "name": "comms-frozen-approval -\u003e comms-template-drift",
     "from_route": "comms-frozen-approval",
     "to_route": "comms-template-drift",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-comms-frozen-approval--counsel-retention",
     "name": "comms-frozen-approval -\u003e counsel-retention",
     "from_route": "comms-frozen-approval",
     "to_route": "counsel-retention",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-comms-frozen-approval--hr-what-was-sent",
     "name": "comms-frozen-approval -\u003e hr-what-was-sent",
     "from_route": "comms-frozen-approval",
     "to_route": "hr-what-was-sent",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-comms-home--comms-failed-deliveries",
     "name": "comms-home -\u003e comms-failed-deliveries",
     "from_route": "comms-home",
     "to_route": "comms-failed-deliveries",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-comms-home--comms-yield",
     "name": "comms-home -\u003e comms-yield",
     "from_route": "comms-home",
     "to_route": "comms-yield",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-comms-home--shared-delivery-detail",
     "name": "comms-home -\u003e shared-delivery-detail",
     "from_route": "comms-home",
     "to_route": "shared-delivery-detail",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-comms-optout--comms-sms-limits",
     "name": "comms-optout -\u003e comms-sms-limits",
     "from_route": "comms-optout",
     "to_route": "comms-sms-limits",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-comms-optout--counsel-consent",
     "name": "comms-optout -\u003e counsel-consent",
     "from_route": "comms-optout",
     "to_route": "counsel-consent",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-comms-sms-limits--comms-optout",
     "name": "comms-sms-limits -\u003e comms-optout",
     "from_route": "comms-sms-limits",
     "to_route": "comms-optout",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-comms-sms-limits--publisher-content-gate",
     "name": "comms-sms-limits -\u003e publisher-content-gate",
     "from_route": "comms-sms-limits",
     "to_route": "publisher-content-gate",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-comms-suppression--counsel-unreachable",
     "name": "comms-suppression -\u003e counsel-unreachable",
     "from_route": "comms-suppression",
     "to_route": "counsel-unreachable",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-comms-suppression--publisher-refusals",
     "name": "comms-suppression -\u003e publisher-refusals",
     "from_route": "comms-suppression",
     "to_route": "publisher-refusals",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-comms-template-drift--comms-frozen-approval",
     "name": "comms-template-drift -\u003e comms-frozen-approval",
     "from_route": "comms-template-drift",
     "to_route": "comms-frozen-approval",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-comms-template-drift--shared-template-detail",
     "name": "comms-template-drift -\u003e shared-template-detail",
     "from_route": "comms-template-drift",
     "to_route": "shared-template-detail",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-comms-yield--comms-failed-deliveries",
     "name": "comms-yield -\u003e comms-failed-deliveries",
     "from_route": "comms-yield",
     "to_route": "comms-failed-deliveries",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-comms-yield--comms-suppression",
     "name": "comms-yield -\u003e comms-suppression",
     "from_route": "comms-yield",
     "to_route": "comms-suppression",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-comms-yield--publisher-refusals",
     "name": "comms-yield -\u003e publisher-refusals",
     "from_route": "comms-yield",
     "to_route": "publisher-refusals",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-controller-ai-boundary--hr-ai-boundary",
     "name": "controller-ai-boundary -\u003e hr-ai-boundary",
     "from_route": "controller-ai-boundary",
     "to_route": "hr-ai-boundary",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-controller-ai-boundary--variance-boundary",
     "name": "controller-ai-boundary -\u003e variance-boundary",
     "from_route": "controller-ai-boundary",
     "to_route": "variance-boundary",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-controller-asserted-controls--analyst-evidence-quality",
     "name": "controller-asserted-controls -\u003e analyst-evidence-quality",
     "from_route": "controller-asserted-controls",
     "to_route": "analyst-evidence-quality",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-controller-asserted-controls--cfo-typed-conclusions",
     "name": "controller-asserted-controls -\u003e cfo-typed-conclusions",
     "from_route": "controller-asserted-controls",
     "to_route": "cfo-typed-conclusions",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-controller-authority-validity--cfo-authority-map",
     "name": "controller-authority-validity -\u003e cfo-authority-map",
     "from_route": "controller-authority-validity",
     "to_route": "cfo-authority-map",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-controller-authority-validity--shared-role-assignment-detail",
     "name": "controller-authority-validity -\u003e shared-role-assignment-detail",
     "from_route": "controller-authority-validity",
     "to_route": "shared-role-assignment-detail",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-controller-conformance--controller-ungoverned-divergence",
     "name": "controller-conformance -\u003e controller-ungoverned-divergence",
     "from_route": "controller-conformance",
     "to_route": "controller-ungoverned-divergence",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-controller-conformance--shared-step-execution-detail",
     "name": "controller-conformance -\u003e shared-step-execution-detail",
     "from_route": "controller-conformance",
     "to_route": "shared-step-execution-detail",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-controller-control-detail--controller-home",
     "name": "controller-control-detail -\u003e controller-home",
     "from_route": "controller-control-detail",
     "to_route": "controller-home",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-controller-control-detail--shared-requirement-detail",
     "name": "controller-control-detail -\u003e shared-requirement-detail",
     "from_route": "controller-control-detail",
     "to_route": "shared-requirement-detail",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-controller-home--controller-mute-controls",
     "name": "controller-home -\u003e controller-mute-controls",
     "from_route": "controller-home",
     "to_route": "controller-mute-controls",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-controller-home--controller-witness-scope",
     "name": "controller-home -\u003e controller-witness-scope",
     "from_route": "controller-home",
     "to_route": "controller-witness-scope",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-controller-home--shared-requirement-detail",
     "name": "controller-home -\u003e shared-requirement-detail",
     "from_route": "controller-home",
     "to_route": "shared-requirement-detail",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-controller-mute-controls--analyst-mute-clearance",
     "name": "controller-mute-controls -\u003e analyst-mute-clearance",
     "from_route": "controller-mute-controls",
     "to_route": "analyst-mute-clearance",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-controller-mute-controls--cfo-assurance-grade",
     "name": "controller-mute-controls -\u003e cfo-assurance-grade",
     "from_route": "controller-mute-controls",
     "to_route": "cfo-assurance-grade",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-controller-mute-controls--controller-home",
     "name": "controller-mute-controls -\u003e controller-home",
     "from_route": "controller-mute-controls",
     "to_route": "controller-home",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-controller-separation--controller-authority-validity",
     "name": "controller-separation -\u003e controller-authority-validity",
     "from_route": "controller-separation",
     "to_route": "controller-authority-validity",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-controller-separation--shared-step-execution-detail",
     "name": "controller-separation -\u003e shared-step-execution-detail",
     "from_route": "controller-separation",
     "to_route": "shared-step-execution-detail",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-controller-ungoverned-divergence--controller-conformance",
     "name": "controller-ungoverned-divergence -\u003e controller-conformance",
     "from_route": "controller-ungoverned-divergence",
     "to_route": "controller-conformance",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-controller-ungoverned-divergence--shared-change-request-detail",
     "name": "controller-ungoverned-divergence -\u003e shared-change-request-detail",
     "from_route": "controller-ungoverned-divergence",
     "to_route": "shared-change-request-detail",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-controller-ungoverned-divergence--shared-exception-detail",
     "name": "controller-ungoverned-divergence -\u003e shared-exception-detail",
     "from_route": "controller-ungoverned-divergence",
     "to_route": "shared-exception-detail",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-controller-witness-scope--controller-mute-controls",
     "name": "controller-witness-scope -\u003e controller-mute-controls",
     "from_route": "controller-witness-scope",
     "to_route": "controller-mute-controls",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-controller-witness-scope--shared-requirement-detail",
     "name": "controller-witness-scope -\u003e shared-requirement-detail",
     "from_route": "controller-witness-scope",
     "to_route": "shared-requirement-detail",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-counsel-consent--publisher-permission-gate",
     "name": "counsel-consent -\u003e publisher-permission-gate",
     "from_route": "counsel-consent",
     "to_route": "publisher-permission-gate",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-counsel-consent--shared-delivery-detail",
     "name": "counsel-consent -\u003e shared-delivery-detail",
     "from_route": "counsel-consent",
     "to_route": "shared-delivery-detail",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-counsel-home--counsel-consent",
     "name": "counsel-home -\u003e counsel-consent",
     "from_route": "counsel-home",
     "to_route": "counsel-consent",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-counsel-home--counsel-legal-review",
     "name": "counsel-home -\u003e counsel-legal-review",
     "from_route": "counsel-home",
     "to_route": "counsel-legal-review",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-counsel-home--counsel-quiet-hours",
     "name": "counsel-home -\u003e counsel-quiet-hours",
     "from_route": "counsel-home",
     "to_route": "counsel-quiet-hours",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-counsel-home--counsel-retention",
     "name": "counsel-home -\u003e counsel-retention",
     "from_route": "counsel-home",
     "to_route": "counsel-retention",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-counsel-legal-review--comms-approval-authority",
     "name": "counsel-legal-review -\u003e comms-approval-authority",
     "from_route": "counsel-legal-review",
     "to_route": "comms-approval-authority",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-counsel-legal-review--shared-review-event-detail",
     "name": "counsel-legal-review -\u003e shared-review-event-detail",
     "from_route": "counsel-legal-review",
     "to_route": "shared-review-event-detail",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-counsel-quiet-hours--publisher-timing-gate",
     "name": "counsel-quiet-hours -\u003e publisher-timing-gate",
     "from_route": "counsel-quiet-hours",
     "to_route": "publisher-timing-gate",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-counsel-quiet-hours--shared-delivery-detail",
     "name": "counsel-quiet-hours -\u003e shared-delivery-detail",
     "from_route": "counsel-quiet-hours",
     "to_route": "shared-delivery-detail",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-counsel-retention--comms-frozen-approval",
     "name": "counsel-retention -\u003e comms-frozen-approval",
     "from_route": "counsel-retention",
     "to_route": "comms-frozen-approval",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-counsel-retention--shared-delivery-detail",
     "name": "counsel-retention -\u003e shared-delivery-detail",
     "from_route": "counsel-retention",
     "to_route": "shared-delivery-detail",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-counsel-unreachable--comms-suppression",
     "name": "counsel-unreachable -\u003e comms-suppression",
     "from_route": "counsel-unreachable",
     "to_route": "comms-suppression",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-counsel-unreachable--shared-recipient-detail",
     "name": "counsel-unreachable -\u003e shared-recipient-detail",
     "from_route": "counsel-unreachable",
     "to_route": "shared-recipient-detail",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-explorer-inferences--explorer-tables",
     "name": "explorer-inferences -\u003e explorer-tables",
     "from_route": "explorer-inferences",
     "to_route": "explorer-tables",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-explorer-inferences--shared-field-provenance",
     "name": "explorer-inferences -\u003e shared-field-provenance",
     "from_route": "explorer-inferences",
     "to_route": "shared-field-provenance",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-explorer-record--explorer-table-detail",
     "name": "explorer-record -\u003e explorer-table-detail",
     "from_route": "explorer-record",
     "to_route": "explorer-table-detail",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-explorer-record--shared-field-provenance",
     "name": "explorer-record -\u003e shared-field-provenance",
     "from_route": "explorer-record",
     "to_route": "shared-field-provenance",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-explorer-table-detail--explorer-record",
     "name": "explorer-table-detail -\u003e explorer-record",
     "from_route": "explorer-table-detail",
     "to_route": "explorer-record",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-explorer-table-detail--shared-field-provenance",
     "name": "explorer-table-detail -\u003e shared-field-provenance",
     "from_route": "explorer-table-detail",
     "to_route": "shared-field-provenance",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-explorer-tables--explorer-inferences",
     "name": "explorer-tables -\u003e explorer-inferences",
     "from_route": "explorer-tables",
     "to_route": "explorer-inferences",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-explorer-tables--explorer-table-detail",
     "name": "explorer-tables -\u003e explorer-table-detail",
     "from_route": "explorer-tables",
     "to_route": "explorer-table-detail",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-hr-ai-boundary--controller-ai-boundary",
     "name": "hr-ai-boundary -\u003e controller-ai-boundary",
     "from_route": "hr-ai-boundary",
     "to_route": "controller-ai-boundary",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-hr-ai-boundary--policy-agent-commitment-boundary",
     "name": "hr-ai-boundary -\u003e policy-agent-commitment-boundary",
     "from_route": "hr-ai-boundary",
     "to_route": "policy-agent-commitment-boundary",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-hr-backlog--hr-backlog-downstream",
     "name": "hr-backlog -\u003e hr-backlog-downstream",
     "from_route": "hr-backlog",
     "to_route": "hr-backlog-downstream",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-hr-backlog--shared-change-request-detail",
     "name": "hr-backlog -\u003e shared-change-request-detail",
     "from_route": "hr-backlog",
     "to_route": "shared-change-request-detail",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-hr-backlog-downstream--hr-backlog",
     "name": "hr-backlog-downstream -\u003e hr-backlog",
     "from_route": "hr-backlog-downstream",
     "to_route": "hr-backlog",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-hr-backlog-downstream--steward-open-gaps",
     "name": "hr-backlog-downstream -\u003e steward-open-gaps",
     "from_route": "hr-backlog-downstream",
     "to_route": "steward-open-gaps",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-hr-departed-holders--authority-orphaned-provenance",
     "name": "hr-departed-holders -\u003e authority-orphaned-provenance",
     "from_route": "hr-departed-holders",
     "to_route": "authority-orphaned-provenance",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-hr-departed-holders--shared-role-assignment-detail",
     "name": "hr-departed-holders -\u003e shared-role-assignment-detail",
     "from_route": "hr-departed-holders",
     "to_route": "shared-role-assignment-detail",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-hr-home--hr-backlog",
     "name": "hr-home -\u003e hr-backlog",
     "from_route": "hr-home",
     "to_route": "hr-backlog",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-hr-home--hr-load-bearing-claim",
     "name": "hr-home -\u003e hr-load-bearing-claim",
     "from_route": "hr-home",
     "to_route": "hr-load-bearing-claim",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-hr-home--hr-unapproved-claims",
     "name": "hr-home -\u003e hr-unapproved-claims",
     "from_route": "hr-home",
     "to_route": "hr-unapproved-claims",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-hr-knowledge-half-life--authority-stale-elicitation",
     "name": "hr-knowledge-half-life -\u003e authority-stale-elicitation",
     "from_route": "hr-knowledge-half-life",
     "to_route": "authority-stale-elicitation",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-hr-knowledge-half-life--steward-cadence",
     "name": "hr-knowledge-half-life -\u003e steward-cadence",
     "from_route": "hr-knowledge-half-life",
     "to_route": "steward-cadence",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-hr-load-bearing-claim--hr-unapproved-claims",
     "name": "hr-load-bearing-claim -\u003e hr-unapproved-claims",
     "from_route": "hr-load-bearing-claim",
     "to_route": "hr-unapproved-claims",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-hr-load-bearing-claim--shared-exception-detail",
     "name": "hr-load-bearing-claim -\u003e shared-exception-detail",
     "from_route": "hr-load-bearing-claim",
     "to_route": "shared-exception-detail",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-hr-my-decisions--shared-change-request-detail",
     "name": "hr-my-decisions -\u003e shared-change-request-detail",
     "from_route": "hr-my-decisions",
     "to_route": "shared-change-request-detail",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-hr-my-decisions--steward-approved-never-lands",
     "name": "hr-my-decisions -\u003e steward-approved-never-lands",
     "from_route": "hr-my-decisions",
     "to_route": "steward-approved-never-lands",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-hr-unapproved-claims--hr-load-bearing-claim",
     "name": "hr-unapproved-claims -\u003e hr-load-bearing-claim",
     "from_route": "hr-unapproved-claims",
     "to_route": "hr-load-bearing-claim",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-hr-unapproved-claims--shared-knowledge-fragment-detail",
     "name": "hr-unapproved-claims -\u003e shared-knowledge-fragment-detail",
     "from_route": "hr-unapproved-claims",
     "to_route": "shared-knowledge-fragment-detail",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-hr-what-was-sent--comms-frozen-approval",
     "name": "hr-what-was-sent -\u003e comms-frozen-approval",
     "from_route": "hr-what-was-sent",
     "to_route": "comms-frozen-approval",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-hr-what-was-sent--shared-delivery-detail",
     "name": "hr-what-was-sent -\u003e shared-delivery-detail",
     "from_route": "hr-what-was-sent",
     "to_route": "shared-delivery-detail",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-policy-agent-approval-chain--comms-approval-authority",
     "name": "policy-agent-approval-chain -\u003e comms-approval-authority",
     "from_route": "policy-agent-approval-chain",
     "to_route": "comms-approval-authority",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-policy-agent-approval-chain--counsel-legal-review",
     "name": "policy-agent-approval-chain -\u003e counsel-legal-review",
     "from_route": "policy-agent-approval-chain",
     "to_route": "counsel-legal-review",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-policy-agent-assignment--shared-role-assignment-detail",
     "name": "policy-agent-assignment -\u003e shared-role-assignment-detail",
     "from_route": "policy-agent-assignment",
     "to_route": "shared-role-assignment-detail",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-policy-agent-assignment--variance-authority",
     "name": "policy-agent-assignment -\u003e variance-authority",
     "from_route": "policy-agent-assignment",
     "to_route": "variance-authority",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-policy-agent-commitment-boundary--hr-ai-boundary",
     "name": "policy-agent-commitment-boundary -\u003e hr-ai-boundary",
     "from_route": "policy-agent-commitment-boundary",
     "to_route": "hr-ai-boundary",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-policy-agent-commitment-boundary--variance-boundary",
     "name": "policy-agent-commitment-boundary -\u003e variance-boundary",
     "from_route": "policy-agent-commitment-boundary",
     "to_route": "variance-boundary",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-policy-agent-home--policy-agent-assignment",
     "name": "policy-agent-home -\u003e policy-agent-assignment",
     "from_route": "policy-agent-home",
     "to_route": "policy-agent-assignment",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-policy-agent-home--policy-agent-sources",
     "name": "policy-agent-home -\u003e policy-agent-sources",
     "from_route": "policy-agent-home",
     "to_route": "policy-agent-sources",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-policy-agent-rewrite--shared-step-execution-detail",
     "name": "policy-agent-rewrite -\u003e shared-step-execution-detail",
     "from_route": "policy-agent-rewrite",
     "to_route": "shared-step-execution-detail",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-policy-agent-rewrite--variance-override-signal",
     "name": "policy-agent-rewrite -\u003e variance-override-signal",
     "from_route": "policy-agent-rewrite",
     "to_route": "variance-override-signal",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-policy-agent-sources--close-auto-inputs",
     "name": "policy-agent-sources -\u003e close-auto-inputs",
     "from_route": "policy-agent-sources",
     "to_route": "close-auto-inputs",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-policy-agent-sources--shared-operational-binding-detail",
     "name": "policy-agent-sources -\u003e shared-operational-binding-detail",
     "from_route": "policy-agent-sources",
     "to_route": "shared-operational-binding-detail",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-publisher-authorization-gate--comms-approval-authority",
     "name": "publisher-authorization-gate -\u003e comms-approval-authority",
     "from_route": "publisher-authorization-gate",
     "to_route": "comms-approval-authority",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-publisher-authorization-gate--policy-agent-approval-chain",
     "name": "publisher-authorization-gate -\u003e policy-agent-approval-chain",
     "from_route": "publisher-authorization-gate",
     "to_route": "policy-agent-approval-chain",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-publisher-content-gate--comms-optout",
     "name": "publisher-content-gate -\u003e comms-optout",
     "from_route": "publisher-content-gate",
     "to_route": "comms-optout",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-publisher-content-gate--comms-sms-limits",
     "name": "publisher-content-gate -\u003e comms-sms-limits",
     "from_route": "publisher-content-gate",
     "to_route": "comms-sms-limits",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-publisher-deferred--comms-suppression",
     "name": "publisher-deferred -\u003e comms-suppression",
     "from_route": "publisher-deferred",
     "to_route": "comms-suppression",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-publisher-deferred--publisher-timing-gate",
     "name": "publisher-deferred -\u003e publisher-timing-gate",
     "from_route": "publisher-deferred",
     "to_route": "publisher-timing-gate",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-publisher-home--publisher-authorization-gate",
     "name": "publisher-home -\u003e publisher-authorization-gate",
     "from_route": "publisher-home",
     "to_route": "publisher-authorization-gate",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-publisher-home--publisher-content-gate",
     "name": "publisher-home -\u003e publisher-content-gate",
     "from_route": "publisher-home",
     "to_route": "publisher-content-gate",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-publisher-home--publisher-permission-gate",
     "name": "publisher-home -\u003e publisher-permission-gate",
     "from_route": "publisher-home",
     "to_route": "publisher-permission-gate",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-publisher-home--publisher-timing-gate",
     "name": "publisher-home -\u003e publisher-timing-gate",
     "from_route": "publisher-home",
     "to_route": "publisher-timing-gate",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-publisher-my-authorization--shared-role-assignment-detail",
     "name": "publisher-my-authorization -\u003e shared-role-assignment-detail",
     "from_route": "publisher-my-authorization",
     "to_route": "shared-role-assignment-detail",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-publisher-my-authorization--variance-authority",
     "name": "publisher-my-authorization -\u003e variance-authority",
     "from_route": "publisher-my-authorization",
     "to_route": "variance-authority",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-publisher-obligations--comms-engagement",
     "name": "publisher-obligations -\u003e comms-engagement",
     "from_route": "publisher-obligations",
     "to_route": "comms-engagement",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-publisher-obligations--shared-delivery-detail",
     "name": "publisher-obligations -\u003e shared-delivery-detail",
     "from_route": "publisher-obligations",
     "to_route": "shared-delivery-detail",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-publisher-permission-gate--counsel-consent",
     "name": "publisher-permission-gate -\u003e counsel-consent",
     "from_route": "publisher-permission-gate",
     "to_route": "counsel-consent",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-publisher-permission-gate--shared-recipient-detail",
     "name": "publisher-permission-gate -\u003e shared-recipient-detail",
     "from_route": "publisher-permission-gate",
     "to_route": "shared-recipient-detail",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-publisher-refusal-artifacts--comms-suppression",
     "name": "publisher-refusal-artifacts -\u003e comms-suppression",
     "from_route": "publisher-refusal-artifacts",
     "to_route": "comms-suppression",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-publisher-refusal-artifacts--publisher-refusals",
     "name": "publisher-refusal-artifacts -\u003e publisher-refusals",
     "from_route": "publisher-refusal-artifacts",
     "to_route": "publisher-refusals",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-publisher-refusals--comms-suppression",
     "name": "publisher-refusals -\u003e comms-suppression",
     "from_route": "publisher-refusals",
     "to_route": "comms-suppression",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-publisher-refusals--publisher-refusal-artifacts",
     "name": "publisher-refusals -\u003e publisher-refusal-artifacts",
     "from_route": "publisher-refusals",
     "to_route": "publisher-refusal-artifacts",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-publisher-refusals--shared-exception-detail",
     "name": "publisher-refusals -\u003e shared-exception-detail",
     "from_route": "publisher-refusals",
     "to_route": "shared-exception-detail",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-publisher-sole-witness--cfo-witness-chain",
     "name": "publisher-sole-witness -\u003e cfo-witness-chain",
     "from_route": "publisher-sole-witness",
     "to_route": "cfo-witness-chain",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-publisher-sole-witness--controller-asserted-controls",
     "name": "publisher-sole-witness -\u003e controller-asserted-controls",
     "from_route": "publisher-sole-witness",
     "to_route": "controller-asserted-controls",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-publisher-timing-gate--counsel-quiet-hours",
     "name": "publisher-timing-gate -\u003e counsel-quiet-hours",
     "from_route": "publisher-timing-gate",
     "to_route": "counsel-quiet-hours",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-publisher-timing-gate--publisher-deferred",
     "name": "publisher-timing-gate -\u003e publisher-deferred",
     "from_route": "publisher-timing-gate",
     "to_route": "publisher-deferred",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-shared-authority-boundary-detail--authority-expired-ratifier",
     "name": "shared-authority-boundary-detail -\u003e authority-expired-ratifier",
     "from_route": "shared-authority-boundary-detail",
     "to_route": "authority-expired-ratifier",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-shared-authority-boundary-detail--variance-boundary",
     "name": "shared-authority-boundary-detail -\u003e variance-boundary",
     "from_route": "shared-authority-boundary-detail",
     "to_route": "variance-boundary",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-shared-change-request-detail--hr-backlog",
     "name": "shared-change-request-detail -\u003e hr-backlog",
     "from_route": "shared-change-request-detail",
     "to_route": "hr-backlog",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-shared-change-request-detail--steward-stalled-changes",
     "name": "shared-change-request-detail -\u003e steward-stalled-changes",
     "from_route": "shared-change-request-detail",
     "to_route": "steward-stalled-changes",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-shared-delivery-detail--comms-frozen-approval",
     "name": "shared-delivery-detail -\u003e comms-frozen-approval",
     "from_route": "shared-delivery-detail",
     "to_route": "comms-frozen-approval",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-shared-delivery-detail--comms-yield",
     "name": "shared-delivery-detail -\u003e comms-yield",
     "from_route": "shared-delivery-detail",
     "to_route": "comms-yield",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-shared-elicitation-detail--authority-elicitation-monoculture",
     "name": "shared-elicitation-detail -\u003e authority-elicitation-monoculture",
     "from_route": "shared-elicitation-detail",
     "to_route": "authority-elicitation-monoculture",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-shared-elicitation-detail--authority-stale-elicitation",
     "name": "shared-elicitation-detail -\u003e authority-stale-elicitation",
     "from_route": "shared-elicitation-detail",
     "to_route": "authority-stale-elicitation",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-shared-evaluation-context--analyst-stale-then-vs-now",
     "name": "shared-evaluation-context -\u003e analyst-stale-then-vs-now",
     "from_route": "shared-evaluation-context",
     "to_route": "analyst-stale-then-vs-now",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-shared-evaluation-context--cfo-restatement",
     "name": "shared-evaluation-context -\u003e cfo-restatement",
     "from_route": "shared-evaluation-context",
     "to_route": "cfo-restatement",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-shared-exception-detail--analyst-late-steps",
     "name": "shared-exception-detail -\u003e analyst-late-steps",
     "from_route": "shared-exception-detail",
     "to_route": "analyst-late-steps",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-shared-exception-detail--publisher-refusals",
     "name": "shared-exception-detail -\u003e publisher-refusals",
     "from_route": "shared-exception-detail",
     "to_route": "publisher-refusals",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-shared-field-provenance--authority-review-date-inferred",
     "name": "shared-field-provenance -\u003e authority-review-date-inferred",
     "from_route": "shared-field-provenance",
     "to_route": "authority-review-date-inferred",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-shared-field-provenance--steward-hardcoded-predicates",
     "name": "shared-field-provenance -\u003e steward-hardcoded-predicates",
     "from_route": "shared-field-provenance",
     "to_route": "steward-hardcoded-predicates",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-shared-knowledge-fragment-detail--authority-fragment-decay",
     "name": "shared-knowledge-fragment-detail -\u003e authority-fragment-decay",
     "from_route": "shared-knowledge-fragment-detail",
     "to_route": "authority-fragment-decay",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-shared-knowledge-fragment-detail--hr-load-bearing-claim",
     "name": "shared-knowledge-fragment-detail -\u003e hr-load-bearing-claim",
     "from_route": "shared-knowledge-fragment-detail",
     "to_route": "hr-load-bearing-claim",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-shared-knowledge-gap-detail--authority-known-unknowns",
     "name": "shared-knowledge-gap-detail -\u003e authority-known-unknowns",
     "from_route": "shared-knowledge-gap-detail",
     "to_route": "authority-known-unknowns",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-shared-knowledge-gap-detail--steward-open-gaps",
     "name": "shared-knowledge-gap-detail -\u003e steward-open-gaps",
     "from_route": "shared-knowledge-gap-detail",
     "to_route": "steward-open-gaps",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-shared-operational-binding-detail--analyst-source-freshness",
     "name": "shared-operational-binding-detail -\u003e analyst-source-freshness",
     "from_route": "shared-operational-binding-detail",
     "to_route": "analyst-source-freshness",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-shared-operational-binding-detail--close-auto-inputs",
     "name": "shared-operational-binding-detail -\u003e close-auto-inputs",
     "from_route": "shared-operational-binding-detail",
     "to_route": "close-auto-inputs",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-shared-procedure-version-detail--controller-conformance",
     "name": "shared-procedure-version-detail -\u003e controller-conformance",
     "from_route": "shared-procedure-version-detail",
     "to_route": "controller-conformance",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-shared-procedure-version-detail--steward-orphans",
     "name": "shared-procedure-version-detail -\u003e steward-orphans",
     "from_route": "shared-procedure-version-detail",
     "to_route": "steward-orphans",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-shared-recipient-detail--comms-suppression",
     "name": "shared-recipient-detail -\u003e comms-suppression",
     "from_route": "shared-recipient-detail",
     "to_route": "comms-suppression",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-shared-recipient-detail--counsel-consent",
     "name": "shared-recipient-detail -\u003e counsel-consent",
     "from_route": "shared-recipient-detail",
     "to_route": "counsel-consent",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-shared-requirement-detail--controller-witness-scope",
     "name": "shared-requirement-detail -\u003e controller-witness-scope",
     "from_route": "shared-requirement-detail",
     "to_route": "controller-witness-scope",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-shared-requirement-detail--shared-step-execution-detail",
     "name": "shared-requirement-detail -\u003e shared-step-execution-detail",
     "from_route": "shared-requirement-detail",
     "to_route": "shared-step-execution-detail",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-shared-review-event-detail--counsel-legal-review",
     "name": "shared-review-event-detail -\u003e counsel-legal-review",
     "from_route": "shared-review-event-detail",
     "to_route": "counsel-legal-review",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-shared-review-event-detail--steward-cadence",
     "name": "shared-review-event-detail -\u003e steward-cadence",
     "from_route": "shared-review-event-detail",
     "to_route": "steward-cadence",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-shared-role-assignment-detail--controller-authority-validity",
     "name": "shared-role-assignment-detail -\u003e controller-authority-validity",
     "from_route": "shared-role-assignment-detail",
     "to_route": "controller-authority-validity",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-shared-role-assignment-detail--variance-authority",
     "name": "shared-role-assignment-detail -\u003e variance-authority",
     "from_route": "shared-role-assignment-detail",
     "to_route": "variance-authority",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-shared-step-execution-detail--shared-requirement-detail",
     "name": "shared-step-execution-detail -\u003e shared-requirement-detail",
     "from_route": "shared-step-execution-detail",
     "to_route": "shared-requirement-detail",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-shared-step-execution-detail--shared-verification-outcomes",
     "name": "shared-step-execution-detail -\u003e shared-verification-outcomes",
     "from_route": "shared-step-execution-detail",
     "to_route": "shared-verification-outcomes",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-shared-template-detail--comms-approval-authority",
     "name": "shared-template-detail -\u003e comms-approval-authority",
     "from_route": "shared-template-detail",
     "to_route": "comms-approval-authority",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-shared-template-detail--comms-template-drift",
     "name": "shared-template-detail -\u003e comms-template-drift",
     "from_route": "shared-template-detail",
     "to_route": "comms-template-drift",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-shared-transition-detail--shared-step-execution-detail",
     "name": "shared-transition-detail -\u003e shared-step-execution-detail",
     "from_route": "shared-transition-detail",
     "to_route": "shared-step-execution-detail",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-shared-transition-detail--steward-fallbacks",
     "name": "shared-transition-detail -\u003e steward-fallbacks",
     "from_route": "shared-transition-detail",
     "to_route": "steward-fallbacks",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-shared-verification-outcomes--analyst-verification-performed",
     "name": "shared-verification-outcomes -\u003e analyst-verification-performed",
     "from_route": "shared-verification-outcomes",
     "to_route": "analyst-verification-performed",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-shared-verification-outcomes--cfo-witness-chain",
     "name": "shared-verification-outcomes -\u003e cfo-witness-chain",
     "from_route": "shared-verification-outcomes",
     "to_route": "cfo-witness-chain",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-steward-approved-never-lands--cfo-blockers",
     "name": "steward-approved-never-lands -\u003e cfo-blockers",
     "from_route": "steward-approved-never-lands",
     "to_route": "cfo-blockers",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-steward-approved-never-lands--hr-my-decisions",
     "name": "steward-approved-never-lands -\u003e hr-my-decisions",
     "from_route": "steward-approved-never-lands",
     "to_route": "hr-my-decisions",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-steward-archived-still-referenced--shared-procedure-version-detail",
     "name": "steward-archived-still-referenced -\u003e shared-procedure-version-detail",
     "from_route": "steward-archived-still-referenced",
     "to_route": "shared-procedure-version-detail",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-steward-archived-still-referenced--steward-orphans",
     "name": "steward-archived-still-referenced -\u003e steward-orphans",
     "from_route": "steward-archived-still-referenced",
     "to_route": "steward-orphans",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-steward-cadence--shared-review-event-detail",
     "name": "steward-cadence -\u003e shared-review-event-detail",
     "from_route": "steward-cadence",
     "to_route": "shared-review-event-detail",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-steward-cadence--steward-cadence-remediation",
     "name": "steward-cadence -\u003e steward-cadence-remediation",
     "from_route": "steward-cadence",
     "to_route": "steward-cadence-remediation",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-steward-cadence-remediation--shared-change-request-detail",
     "name": "steward-cadence-remediation -\u003e shared-change-request-detail",
     "from_route": "steward-cadence-remediation",
     "to_route": "shared-change-request-detail",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-steward-cadence-remediation--steward-cadence",
     "name": "steward-cadence-remediation -\u003e steward-cadence",
     "from_route": "steward-cadence-remediation",
     "to_route": "steward-cadence",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-steward-fallback-criticality--controller-home",
     "name": "steward-fallback-criticality -\u003e controller-home",
     "from_route": "steward-fallback-criticality",
     "to_route": "controller-home",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-steward-fallback-criticality--steward-fallbacks",
     "name": "steward-fallback-criticality -\u003e steward-fallbacks",
     "from_route": "steward-fallback-criticality",
     "to_route": "steward-fallbacks",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-steward-fallbacks--shared-transition-detail",
     "name": "steward-fallbacks -\u003e shared-transition-detail",
     "from_route": "steward-fallbacks",
     "to_route": "shared-transition-detail",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-steward-fallbacks--steward-fallback-criticality",
     "name": "steward-fallbacks -\u003e steward-fallback-criticality",
     "from_route": "steward-fallbacks",
     "to_route": "steward-fallback-criticality",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-steward-hardcoded-predicates--shared-field-provenance",
     "name": "steward-hardcoded-predicates -\u003e shared-field-provenance",
     "from_route": "steward-hardcoded-predicates",
     "to_route": "shared-field-provenance",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-steward-hardcoded-predicates--steward-home",
     "name": "steward-hardcoded-predicates -\u003e steward-home",
     "from_route": "steward-hardcoded-predicates",
     "to_route": "steward-home",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-steward-home--steward-cadence",
     "name": "steward-home -\u003e steward-cadence",
     "from_route": "steward-home",
     "to_route": "steward-cadence",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-steward-home--steward-fallbacks",
     "name": "steward-home -\u003e steward-fallbacks",
     "from_route": "steward-home",
     "to_route": "steward-fallbacks",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-steward-home--steward-open-gaps",
     "name": "steward-home -\u003e steward-open-gaps",
     "from_route": "steward-home",
     "to_route": "steward-open-gaps",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-steward-home--steward-orphans",
     "name": "steward-home -\u003e steward-orphans",
     "from_route": "steward-home",
     "to_route": "steward-orphans",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-steward-open-gaps--hr-backlog-downstream",
     "name": "steward-open-gaps -\u003e hr-backlog-downstream",
     "from_route": "steward-open-gaps",
     "to_route": "hr-backlog-downstream",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-steward-open-gaps--shared-knowledge-gap-detail",
     "name": "steward-open-gaps -\u003e shared-knowledge-gap-detail",
     "from_route": "steward-open-gaps",
     "to_route": "shared-knowledge-gap-detail",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-steward-orphans--shared-procedure-version-detail",
     "name": "steward-orphans -\u003e shared-procedure-version-detail",
     "from_route": "steward-orphans",
     "to_route": "shared-procedure-version-detail",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-steward-orphans--steward-archived-still-referenced",
     "name": "steward-orphans -\u003e steward-archived-still-referenced",
     "from_route": "steward-orphans",
     "to_route": "steward-archived-still-referenced",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-steward-stalled-changes--hr-backlog",
     "name": "steward-stalled-changes -\u003e hr-backlog",
     "from_route": "steward-stalled-changes",
     "to_route": "hr-backlog",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-steward-stalled-changes--shared-change-request-detail",
     "name": "steward-stalled-changes -\u003e shared-change-request-detail",
     "from_route": "steward-stalled-changes",
     "to_route": "shared-change-request-detail",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-variance-authority--shared-role-assignment-detail",
     "name": "variance-authority -\u003e shared-role-assignment-detail",
     "from_route": "variance-authority",
     "to_route": "shared-role-assignment-detail",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-variance-authority--variance-handover",
     "name": "variance-authority -\u003e variance-handover",
     "from_route": "variance-authority",
     "to_route": "variance-handover",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-variance-boundary--hr-ai-boundary",
     "name": "variance-boundary -\u003e hr-ai-boundary",
     "from_route": "variance-boundary",
     "to_route": "hr-ai-boundary",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-variance-boundary--variance-boundary-ratification",
     "name": "variance-boundary -\u003e variance-boundary-ratification",
     "from_route": "variance-boundary",
     "to_route": "variance-boundary-ratification",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-variance-boundary-ratification--authority-expired-ratifier",
     "name": "variance-boundary-ratification -\u003e authority-expired-ratifier",
     "from_route": "variance-boundary-ratification",
     "to_route": "authority-expired-ratifier",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-variance-boundary-ratification--variance-boundary",
     "name": "variance-boundary-ratification -\u003e variance-boundary",
     "from_route": "variance-boundary-ratification",
     "to_route": "variance-boundary",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-variance-handover--controller-ai-boundary",
     "name": "variance-handover -\u003e controller-ai-boundary",
     "from_route": "variance-handover",
     "to_route": "controller-ai-boundary",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-variance-handover--variance-authority",
     "name": "variance-handover -\u003e variance-authority",
     "from_route": "variance-handover",
     "to_route": "variance-authority",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-variance-home--variance-authority",
     "name": "variance-home -\u003e variance-authority",
     "from_route": "variance-home",
     "to_route": "variance-authority",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-variance-home--variance-boundary",
     "name": "variance-home -\u003e variance-boundary",
     "from_route": "variance-home",
     "to_route": "variance-boundary",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-variance-home--variance-knowledge-currency",
     "name": "variance-home -\u003e variance-knowledge-currency",
     "from_route": "variance-home",
     "to_route": "variance-knowledge-currency",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-variance-human-confirmation--controller-ai-boundary",
     "name": "variance-human-confirmation -\u003e controller-ai-boundary",
     "from_route": "variance-human-confirmation",
     "to_route": "controller-ai-boundary",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-variance-human-confirmation--shared-step-execution-detail",
     "name": "variance-human-confirmation -\u003e shared-step-execution-detail",
     "from_route": "variance-human-confirmation",
     "to_route": "shared-step-execution-detail",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-variance-knowledge-currency--authority-fragment-decay",
     "name": "variance-knowledge-currency -\u003e authority-fragment-decay",
     "from_route": "variance-knowledge-currency",
     "to_route": "authority-fragment-decay",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-variance-knowledge-currency--shared-knowledge-fragment-detail",
     "name": "variance-knowledge-currency -\u003e shared-knowledge-fragment-detail",
     "from_route": "variance-knowledge-currency",
     "to_route": "shared-knowledge-fragment-detail",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-variance-override-signal--close-auto-drift",
     "name": "variance-override-signal -\u003e close-auto-drift",
     "from_route": "variance-override-signal",
     "to_route": "close-auto-drift",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-variance-override-signal--variance-human-confirmation",
     "name": "variance-override-signal -\u003e variance-human-confirmation",
     "from_route": "variance-override-signal",
     "to_route": "variance-human-confirmation",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-variance-quality-baseline--close-auto-drift",
     "name": "variance-quality-baseline -\u003e close-auto-drift",
     "from_route": "variance-quality-baseline",
     "to_route": "close-auto-drift",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-variance-quality-baseline--variance-sample-size",
     "name": "variance-quality-baseline -\u003e variance-sample-size",
     "from_route": "variance-quality-baseline",
     "to_route": "variance-sample-size",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-variance-sample-size--variance-quality-baseline",
     "name": "variance-sample-size -\u003e variance-quality-baseline",
     "from_route": "variance-sample-size",
     "to_route": "variance-quality-baseline",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-variance-stop-condition--close-auto-home",
     "name": "variance-stop-condition -\u003e close-auto-home",
     "from_route": "variance-stop-condition",
     "to_route": "close-auto-home",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   },
   {
     "app_route_reference_id": "rr-variance-stop-condition--publisher-permission-gate",
     "name": "variance-stop-condition -\u003e publisher-permission-gate",
     "from_route": "variance-stop-condition",
     "to_route": "publisher-permission-gate",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteReference"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRouteReference"
   }
 ]

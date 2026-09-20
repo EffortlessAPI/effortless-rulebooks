@@ -99,7 +99,7 @@
     "is_self_witnessed_decision": true,
     "is_independently_confirmed": true,
     "independently_confirmed_execution_key": "exec-policy-hr4821",
-    "semantic_type_iri": "urn:effortless:pko-extension#SendIntent"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#SendIntent"
   },
   {
     "send_intent_id": "si-002",
@@ -201,7 +201,7 @@
     "is_self_witnessed_decision": true,
     "is_independently_confirmed": false,
     "independently_confirmed_execution_key": "",
-    "semantic_type_iri": "urn:effortless:pko-extension#SendIntent"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#SendIntent"
   },
   {
     "send_intent_id": "si-003",
@@ -303,7 +303,7 @@
     "is_self_witnessed_decision": true,
     "is_independently_confirmed": false,
     "independently_confirmed_execution_key": "",
-    "semantic_type_iri": "urn:effortless:pko-extension#SendIntent"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#SendIntent"
   },
   {
     "send_intent_id": "si-004",
@@ -405,7 +405,7 @@
     "is_self_witnessed_decision": true,
     "is_independently_confirmed": false,
     "independently_confirmed_execution_key": "",
-    "semantic_type_iri": "urn:effortless:pko-extension#SendIntent"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#SendIntent"
   },
   {
     "send_intent_id": "si-005",
@@ -507,7 +507,7 @@
     "is_self_witnessed_decision": true,
     "is_independently_confirmed": false,
     "independently_confirmed_execution_key": "",
-    "semantic_type_iri": "urn:effortless:pko-extension#SendIntent"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#SendIntent"
   },
   {
     "send_intent_id": "si-006",
@@ -609,7 +609,7 @@
     "is_self_witnessed_decision": true,
     "is_independently_confirmed": false,
     "independently_confirmed_execution_key": "",
-    "semantic_type_iri": "urn:effortless:pko-extension#SendIntent"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#SendIntent"
   },
   {
     "send_intent_id": "si-007",
@@ -711,6 +711,6 @@
     "is_self_witnessed_decision": true,
     "is_independently_confirmed": true,
     "independently_confirmed_execution_key": "exec-policy-hr4821",
-    "semantic_type_iri": "urn:effortless:pko-extension#SendIntent"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#SendIntent"
   }
 ]

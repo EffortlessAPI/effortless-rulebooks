@@ -19,7 +19,9 @@
     "cadence_drift_days": 31,
     "promise_and_behavior_disagree": false,
     "cadence_breach_version_key": "close-v1.1.0",
-    "semantic_type_iri": "https://w3id.org/pko#ReviewEvent"
+    "semantic_type_iri": "https://w3id.org/pko#ReviewEvent",
+    "version_modified_at": "2026-07-02T15:00:00-05:00",
+    "review_did_not_refresh_modified": false
   },
   {
     "review_event_id": "review-close-q2",
@@ -41,7 +43,9 @@
     "cadence_drift_days": -73,
     "promise_and_behavior_disagree": false,
     "cadence_breach_version_key": "",
-    "semantic_type_iri": "http://www.w3.org/ns/prov#Activity"
+    "semantic_type_iri": "http://www.w3.org/ns/prov#Activity",
+    "version_modified_at": "2026-07-02T15:00:00-05:00",
+    "review_did_not_refresh_modified": true
   },
   {
     "review_event_id": "review-policy-prelaunch",
@@ -63,6 +67,8 @@
     "cadence_drift_days": -59,
     "promise_and_behavior_disagree": false,
     "cadence_breach_version_key": "",
-    "semantic_type_iri": "http://www.w3.org/ns/prov#Activity"
+    "semantic_type_iri": "http://www.w3.org/ns/prov#Activity",
+    "version_modified_at": "2026-07-18T16:30:00-05:00",
+    "review_did_not_refresh_modified": false
   }
 ]

@@ -1,0 +1,123 @@
+[
+  {
+    "relation_type_id": "Blocks",
+    "name": "blocks",
+    "label": "blocks",
+    "family": "Causal",
+    "inverse_label": "is blocked by",
+    "is_defined": false,
+    "realized_by": "Proposed by a technician; never ratified",
+    "usage_count": 1,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RelationType"
+  },
+  {
+    "relation_type_id": "Enables",
+    "name": "enables",
+    "label": "enables",
+    "family": "Causal",
+    "inverse_label": "is enabled by",
+    "is_defined": true,
+    "realized_by": "",
+    "usage_count": 2,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RelationType"
+  },
+  {
+    "relation_type_id": "GovernedBy",
+    "name": "governed by",
+    "label": "governed by",
+    "family": "Role",
+    "inverse_label": "governs",
+    "is_defined": true,
+    "realized_by": "StepRequirements",
+    "usage_count": 0,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RelationType"
+  },
+  {
+    "relation_type_id": "Overlaps",
+    "name": "overlaps",
+    "label": "overlaps",
+    "family": "Temporal",
+    "inverse_label": "overlaps",
+    "is_defined": true,
+    "realized_by": "",
+    "usage_count": 1,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RelationType"
+  },
+  {
+    "relation_type_id": "PartOf",
+    "name": "part of",
+    "label": "part of",
+    "family": "Compositional",
+    "inverse_label": "comprises",
+    "is_defined": true,
+    "realized_by": "Steps.ParentStep",
+    "usage_count": 0,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RelationType"
+  },
+  {
+    "relation_type_id": "PerformedBy",
+    "name": "performed by",
+    "label": "performed by",
+    "family": "Role",
+    "inverse_label": "performs",
+    "is_defined": true,
+    "realized_by": "StepExecutions.ExecutedByAgent",
+    "usage_count": 0,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RelationType"
+  },
+  {
+    "relation_type_id": "Precedes",
+    "name": "precedes",
+    "label": "precedes",
+    "family": "Temporal",
+    "inverse_label": "follows",
+    "is_defined": true,
+    "realized_by": "StepTransitions with TransitionKind Next",
+    "usage_count": 0,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RelationType"
+  },
+  {
+    "relation_type_id": "Prevents",
+    "name": "prevents",
+    "label": "prevents",
+    "family": "Causal",
+    "inverse_label": "is prevented by",
+    "is_defined": true,
+    "realized_by": "",
+    "usage_count": 1,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RelationType"
+  },
+  {
+    "relation_type_id": "Produces",
+    "name": "produces",
+    "label": "produces",
+    "family": "Causal",
+    "inverse_label": "is produced by",
+    "is_defined": true,
+    "realized_by": "StepVariables with Direction Output",
+    "usage_count": 0,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RelationType"
+  },
+  {
+    "relation_type_id": "Requires",
+    "name": "requires",
+    "label": "requires",
+    "family": "Causal",
+    "inverse_label": "is required by",
+    "is_defined": true,
+    "realized_by": "Steps.PrerequisiteStep",
+    "usage_count": 0,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RelationType"
+  },
+  {
+    "relation_type_id": "ResponsibleFor",
+    "name": "responsible for",
+    "label": "responsible for",
+    "family": "Role",
+    "inverse_label": "is the responsibility of",
+    "is_defined": true,
+    "realized_by": "Steps.AssignedRole",
+    "usage_count": 0,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RelationType"
+  }
+]

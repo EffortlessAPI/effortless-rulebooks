@@ -1,0 +1,20 @@
+[
+  {
+    "machine_type_id": "belt-conveyor",
+    "label": "Belt conveyor",
+    "semantic_type_iri": "https://w3id.org/pko/industry#MachineType",
+    "name": null
+  },
+  {
+    "machine_type_id": "hydraulic-press",
+    "label": "Hydraulic press",
+    "semantic_type_iri": "https://w3id.org/pko/industry#MachineType",
+    "name": null
+  },
+  {
+    "machine_type_id": "industrial-mixer",
+    "label": "Industrial mixer",
+    "semantic_type_iri": "https://w3id.org/pko/industry#MachineType",
+    "name": null
+  }
+]

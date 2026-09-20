@@ -1,0 +1,29 @@
+[
+  {
+    "model_pilot_id": "pilot-close-q1",
+    "name": "gm-quarter-end-close pilot: Q1 2025 close",
+    "governed_model": "gm-quarter-end-close",
+    "site": "Q1 2025 close",
+    "started_at": "2025-03-25 09:00:00-05:00",
+    "finding": "Added the feed timestamp check.",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ModelPilot"
+  },
+  {
+    "model_pilot_id": "pilot-loto-north",
+    "name": "gm-lockout-tagout pilot: North assembly hall",
+    "governed_model": "gm-lockout-tagout",
+    "site": "North assembly hall",
+    "started_at": "2026-05-25 09:00:00-05:00",
+    "finding": "Capped zero-energy verification at two attempts.",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ModelPilot"
+  },
+  {
+    "model_pilot_id": "pilot-pko-register",
+    "name": "gm-pko-rulebook pilot: Finance close team",
+    "governed_model": "gm-pko-rulebook",
+    "site": "Finance close team",
+    "started_at": "2026-02-01 08:00:00-06:00",
+    "finding": "Split witnesses by role after controllers could not find their questions.",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ModelPilot"
+  }
+]

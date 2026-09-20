@@ -1,0 +1,67 @@
+[
+  {
+    "concept_ladder_rung_id": "cl7-bleed-down1",
+    "elicitation_session": "el7-loto-ladder",
+    "step": "loto-04b",
+    "ladder_level": -1,
+    "rung_kind": "Subprocess",
+    "statement": "Close the supply valve at the drop, then open the bleed.",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ConceptLadderRung",
+    "name": "loto-04b Subprocess: Close the supply valve at the drop, then open the ",
+    "step_top_level": 2,
+    "is_ultimate_goal": false,
+    "is_decomposition_rung": true
+  },
+  {
+    "concept_ladder_rung_id": "cl7-bleed-down2",
+    "elicitation_session": "el7-loto-ladder",
+    "step": "loto-04b",
+    "ladder_level": -1,
+    "rung_kind": "Condition",
+    "statement": "Only once the accumulator gauge reads below five psi.",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ConceptLadderRung",
+    "name": "loto-04b Condition: Only once the accumulator gauge reads below five p",
+    "step_top_level": 2,
+    "is_ultimate_goal": false,
+    "is_decomposition_rung": true
+  },
+  {
+    "concept_ladder_rung_id": "cl7-bleed-up1",
+    "elicitation_session": "el7-loto-ladder",
+    "step": "loto-04b",
+    "ladder_level": 1,
+    "rung_kind": "Goal",
+    "statement": "No trapped air can move the clamp while hands are in the die.",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ConceptLadderRung",
+    "name": "loto-04b Goal: No trapped air can move the clamp while hands are ",
+    "step_top_level": 2,
+    "is_ultimate_goal": false,
+    "is_decomposition_rung": false
+  },
+  {
+    "concept_ladder_rung_id": "cl7-bleed-up2",
+    "elicitation_session": "el7-loto-ladder",
+    "step": "loto-04b",
+    "ladder_level": 2,
+    "rung_kind": "Value",
+    "statement": "Nobody\u0027s hand is ever inside a machine that can move.",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ConceptLadderRung",
+    "name": "loto-04b Value: Nobody\u0027s hand is ever inside a machine that can mo",
+    "step_top_level": 2,
+    "is_ultimate_goal": true,
+    "is_decomposition_rung": false
+  },
+  {
+    "concept_ladder_rung_id": "cl7-lock-up1",
+    "elicitation_session": "el7-loto-ladder",
+    "step": "loto-05",
+    "ladder_level": 1,
+    "rung_kind": "Value",
+    "statement": "Each person keeps control of their own safety.",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ConceptLadderRung",
+    "name": "loto-05 Value: Each person keeps control of their own safety.",
+    "step_top_level": 1,
+    "is_ultimate_goal": true,
+    "is_decomposition_rung": false
+  }
+]

@@ -39,7 +39,7 @@
     "is_unexplained_override": true,
     "error_correction_role_assignment_key": "",
     "boundary_violation_role_assignment_key": "",
-    "semantic_type_iri": "urn:effortless:pko-extension#AgentDecisionRecord"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AgentDecisionRecord"
   },
   {
     "agent_decision_record_id": "adr-close-freeze-q2",
@@ -81,7 +81,7 @@
     "is_unexplained_override": false,
     "error_correction_role_assignment_key": "",
     "boundary_violation_role_assignment_key": "",
-    "semantic_type_iri": "urn:effortless:pko-extension#AgentDecisionRecord"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AgentDecisionRecord"
   },
   {
     "agent_decision_record_id": "adr-close-post-q2",
@@ -123,6 +123,6 @@
     "is_unexplained_override": false,
     "error_correction_role_assignment_key": "",
     "boundary_violation_role_assignment_key": "",
-    "semantic_type_iri": "urn:effortless:pko-extension#AgentDecisionRecord"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AgentDecisionRecord"
   }
 ]

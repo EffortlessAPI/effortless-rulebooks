@@ -19,7 +19,7 @@ from collections import OrderedDict
 from pathlib import Path
 
 RB = Path("effortless-rulebook/procedural-knowledge-ontology-rulebook.json")
-IRI = "urn:effortless:pko-extension#TestCase"
+IRI = "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#TestCase"
 
 META_TABLES = {"WitnessLoops", "RoleQuestions", "RulebookFields", "TestCases",
                "TestSuites", "__meta__", "ERBVersions", "ERBCustomizations"}

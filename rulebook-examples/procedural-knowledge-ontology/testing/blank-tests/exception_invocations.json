@@ -7,7 +7,7 @@
     "approved_by_agent": "devon-okafor",
     "invoked_at": "2026-07-19T09:24:00-05:00",
     "handling_applied": "Used the digitally signed 09:07 trial-balance snapshot and opened blocking incident issue-close-feed. No spreadsheet substitution.",
-    "semantic_type_iri": "urn:effortless:pko-extension#ExceptionInvocation",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ExceptionInvocation",
     "name": null,
     "expected_handling": null,
     "required_approval_role": null,

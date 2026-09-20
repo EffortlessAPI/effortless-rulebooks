@@ -11,7 +11,10 @@
     "pitch": "Decide whether the attestation can be signed, and what the green actually rests on.",
     "sort_order": 1,
     "route_count": 12,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoleProfile"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoleProfile",
+    "device": "tablet",
+    "home_route": "/cfo",
+    "home_title": "Chief Financial Officer"
   },
   {
     "app_role_profile_id": "profile-close-automation",
@@ -25,7 +28,10 @@
     "pitch": "Confirm I am authorized and my inputs are fresh before I run.",
     "sort_order": 9,
     "route_count": 6,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoleProfile"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoleProfile",
+    "device": "tablet",
+    "home_route": "/close-automation",
+    "home_title": "Close Automation Operator"
   },
   {
     "app_role_profile_id": "profile-communications-manager",
@@ -39,7 +45,10 @@
     "pitch": "Follow a message from my approval to whether anyone actually got it.",
     "sort_order": 6,
     "route_count": 11,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoleProfile"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoleProfile",
+    "device": "tablet",
+    "home_route": "/communications-manager",
+    "home_title": "Employee Communications Manager"
   },
   {
     "app_role_profile_id": "profile-controller",
@@ -53,7 +62,10 @@
     "pitch": "Prove the close controls worked — not merely that nothing failed.",
     "sort_order": 2,
     "route_count": 10,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoleProfile"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoleProfile",
+    "device": "tablet",
+    "home_route": "/controller",
+    "home_title": "Corporate Controller"
   },
   {
     "app_role_profile_id": "profile-employment-counsel",
@@ -67,7 +79,10 @@
     "pitch": "Hold the four legal gates: consent, quiet hours, review, retention.",
     "sort_order": 5,
     "route_count": 6,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoleProfile"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoleProfile",
+    "device": "tablet",
+    "home_route": "/employment-counsel",
+    "home_title": "Employment Counsel"
   },
   {
     "app_role_profile_id": "profile-finance-analyst",
@@ -81,7 +96,10 @@
     "pitch": "Check my own steps before somebody else does.",
     "sort_order": 3,
     "route_count": 11,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoleProfile"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoleProfile",
+    "device": "tablet",
+    "home_route": "/finance-analyst",
+    "home_title": "Finance Analyst"
   },
   {
     "app_role_profile_id": "profile-hr-policy-owner",
@@ -95,7 +113,10 @@
     "pitch": "See what is live in my name and what is waiting on me.",
     "sort_order": 4,
     "route_count": 10,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoleProfile"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoleProfile",
+    "device": "tablet",
+    "home_route": "/hr-policy-owner",
+    "home_title": "People Policy Owner"
   },
   {
     "app_role_profile_id": "profile-knowledge-authority",
@@ -109,7 +130,44 @@
     "pitch": "Approve semantic change, and know what the model's claims rest on.",
     "sort_order": 8,
     "route_count": 11,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoleProfile"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoleProfile",
+    "device": "tablet",
+    "home_route": "/knowledge-authority",
+    "home_title": "Procedural Knowledge Authority"
+  },
+  {
+    "app_role_profile_id": "profile-knowledge-engineer",
+    "name": "Knowledge Engineer (human)",
+    "role": "knowledge-engineer",
+    "display_label": "Knowledge Engineer",
+    "role_kind": "human",
+    "accent_color": "#1d4ed8",
+    "icon_mark": "notebook",
+    "icon_png_base64": null,
+    "pitch": "Get it out of people's heads: collect it, organize it, encode it, and prove where it came from.",
+    "sort_order": 25,
+    "route_count": 0,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoleProfile",
+    "device": "tablet",
+    "home_route": "/knowledge-engineer/workbench",
+    "home_title": "Capture Workbench"
+  },
+  {
+    "app_role_profile_id": "profile-maintenance-technician",
+    "name": "Maintenance Technician (human)",
+    "role": "maintenance-technician",
+    "display_label": "Maintenance Technician",
+    "role_kind": "human",
+    "accent_color": "#0f766e",
+    "icon_mark": "padlock",
+    "icon_png_base64": null,
+    "pitch": "Lock it out, step by step, with what the veterans know beside each step.",
+    "sort_order": 21,
+    "route_count": 0,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoleProfile",
+    "device": "phone",
+    "home_route": "/maintenance-technician/my-lockout",
+    "home_title": "My Lockout"
   },
   {
     "app_role_profile_id": "profile-notification-publisher",
@@ -123,7 +181,78 @@
     "pitch": "Clear four gates before transmitting, and leave a record of every refusal.",
     "sort_order": 12,
     "route_count": 11,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoleProfile"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoleProfile",
+    "device": "tablet",
+    "home_route": "/notification-publisher",
+    "home_title": "Notification Publisher"
+  },
+  {
+    "app_role_profile_id": "profile-ontology-authority",
+    "name": "Ontology Authority (human)",
+    "role": "ontology-authority",
+    "display_label": "Ontology Authority",
+    "role_kind": "human",
+    "accent_color": "#6d28d9",
+    "icon_mark": "scales",
+    "icon_png_base64": null,
+    "pitch": "Be the second pair of eyes on anything that changes what the book concludes.",
+    "sort_order": 28,
+    "route_count": 0,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoleProfile",
+    "device": "tablet",
+    "home_route": "/ontology-authority/change-board",
+    "home_title": "Change Board"
+  },
+  {
+    "app_role_profile_id": "profile-plant-assistant",
+    "name": "Plant Assistant (software)",
+    "role": "plant-assistant",
+    "display_label": "Plant Assistant",
+    "role_kind": "software",
+    "accent_color": "#7c3aed",
+    "icon_mark": "spark",
+    "icon_png_base64": null,
+    "pitch": "Answer from the book, show the rows I used, and never guess the next step.",
+    "sort_order": 22,
+    "route_count": 0,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoleProfile",
+    "device": "phone",
+    "home_route": "/plant-assistant/ask",
+    "home_title": "Ask the Copilot"
+  },
+  {
+    "app_role_profile_id": "profile-plant-operations-manager",
+    "name": "Plant Operations Manager (human)",
+    "role": "plant-operations-manager",
+    "display_label": "Plant Operations Manager",
+    "role_kind": "human",
+    "accent_color": "#b45309",
+    "icon_mark": "factory",
+    "icon_png_base64": null,
+    "pitch": "Know who is proficient, what is about to walk out of the door, and what is waiting on me.",
+    "sort_order": 24,
+    "route_count": 0,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoleProfile",
+    "device": "phone",
+    "home_route": "/plant-operations-manager/floor",
+    "home_title": "The Floor, This Quarter"
+  },
+  {
+    "app_role_profile_id": "profile-plant-safety-officer",
+    "name": "Plant Safety Officer (human)",
+    "role": "plant-safety-officer",
+    "display_label": "Plant Safety Officer",
+    "role_kind": "human",
+    "accent_color": "#b91c1c",
+    "icon_mark": "shield",
+    "icon_png_base64": null,
+    "pitch": "See every warning sign that reached me, and every one that should have.",
+    "sort_order": 23,
+    "route_count": 0,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoleProfile",
+    "device": "phone",
+    "home_route": "/plant-safety-officer/desk",
+    "home_title": "Safety Desk"
   },
   {
     "app_role_profile_id": "profile-policy-drafting-agent",
@@ -137,7 +266,10 @@
     "pitch": "Confirm my sources are approved and I have not created a commitment.",
     "sort_order": 11,
     "route_count": 6,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoleProfile"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoleProfile",
+    "device": "tablet",
+    "home_route": "/policy-drafting-agent",
+    "home_title": "Policy Drafting Agent"
   },
   {
     "app_role_profile_id": "profile-process-steward",
@@ -151,7 +283,44 @@
     "pitch": "Keep procedural knowledge current, owned, and exercised.",
     "sort_order": 7,
     "route_count": 11,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoleProfile"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoleProfile",
+    "device": "tablet",
+    "home_route": "/process-steward/plan-versus-reality",
+    "home_title": "Plan Versus Reality"
+  },
+  {
+    "app_role_profile_id": "profile-release-manager",
+    "name": "Release Manager (human)",
+    "role": "release-manager",
+    "display_label": "Release Manager",
+    "role_kind": "human",
+    "accent_color": "#4338ca",
+    "icon_mark": "rocket",
+    "icon_png_base64": null,
+    "pitch": "Before I upgrade an agent, show me everything it touches, not what I remembered.",
+    "sort_order": 27,
+    "route_count": 0,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoleProfile",
+    "device": "tablet",
+    "home_route": "/release-manager/release-gate",
+    "home_title": "Release Gate"
+  },
+  {
+    "app_role_profile_id": "profile-sourcing-manager",
+    "name": "Strategic Sourcing Manager (human)",
+    "role": "sourcing-manager",
+    "display_label": "Strategic Sourcing Manager",
+    "role_kind": "human",
+    "accent_color": "#0369a1",
+    "icon_mark": "handshake",
+    "icon_png_base64": null,
+    "pitch": "For every company we depend on: who owns the know-how, and can we get it back?",
+    "sort_order": 26,
+    "route_count": 0,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoleProfile",
+    "device": "tablet",
+    "home_route": "/sourcing-manager/what-we-still-know",
+    "home_title": "What We Still Know"
   },
   {
     "app_role_profile_id": "profile-variance-review-agent",
@@ -165,6 +334,9 @@
     "pitch": "Check my authority, my boundary, and my quality against the human baseline.",
     "sort_order": 10,
     "route_count": 11,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoleProfile"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoleProfile",
+    "device": "tablet",
+    "home_route": "/variance-review-agent",
+    "home_title": "Variance Review Agent"
   }
 ]

@@ -10,7 +10,7 @@ Targeted insertion; only adds its own keys.
 import json, os, sys
 
 RB = "effortless-rulebook/procedural-knowledge-ontology-rulebook.json"
-IRI = "urn:effortless:pko-extension#"
+IRI = "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#"
 
 def f(name, dt, typ, nullable=True, desc="", formula=None, related=None):
     d = {"name": name, "datatype": dt, "type": typ, "nullable": nullable, "Description": desc}

@@ -308,7 +308,7 @@ def import_process(rulebook: dict[str, Any], process: Mapping[str, Any], default
                 "Statement": str(rationale.get("statement") or ""),
                 "Status": str(rationale.get("status") or "Reviewed"),
                 "AuthorityRole": str(rationale.get("authority_role") or next(iter(role_map.values()), "")),
-                "SemanticTypeIri": "urn:effortless:pko-extension#Rationale",
+                "SemanticTypeIri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#Rationale",
             },
         )
 
@@ -335,7 +335,7 @@ def import_process(rulebook: dict[str, Any], process: Mapping[str, Any], default
                 "ApprovalRole": approval,
                 "FallbackRole": fallback,
                 "Status": str(exception.get("status") or "Active"),
-                "SemanticTypeIri": "urn:effortless:pko-extension#Exception",
+                "SemanticTypeIri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#Exception",
             },
         )
 

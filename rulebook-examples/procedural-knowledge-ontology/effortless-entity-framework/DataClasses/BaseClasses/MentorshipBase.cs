@@ -59,6 +59,13 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             get => F.AsBool(F.Memo(this, "IsRecentApprenticeship", () => F.And(F.Bool3(F.Eq(F.Nullif(F.Of(this.MentorshipForm)), F.S("Apprenticeship"))), F.Bool3(F.Cmp(F.Of(this.DaysSinceStarted), ">=", F.I(0))), F.Bool3(F.Cmp(F.Of(this.DaysSinceStarted), "<=", F.I(1095)))))); set { }
         }
 
+        // Formula CommunityLabel (rulebook: =INDEX(CommunitiesOfPractice!{{Label}}, MATCH({{CommunityOfPractice}}, CommunitiesOfPractice!{{CommunityOfPracticeId}}, 0)))
+        [NotMapped]
+        public string? CommunityLabel
+        {
+            get => F.AsString(F.Memo(this, "CommunityLabel", () => F.Lookup<CommunitiesOfPractice>(this, "CommunitiesOfPractice", "CommunityOfPracticeId", __c => __c.CommunitiesOfPractice, __r => F.Of(__r.CommunityOfPracticeId), F.Of(this.CommunityOfPractice), __r => F.Of(__r.Label), () => F.Of(new CommunitiesOfPractice().Label)))); set { }
+        }
+
 
         public string? CommunityOfPractice { get; set; }
         public string? MentorAgent { get; set; }

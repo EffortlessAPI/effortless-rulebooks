@@ -1,0 +1,18 @@
+[
+  {
+    "step_resource_id": "sres-loto03-press7map",
+    "step": "loto-03",
+    "resource": "res-loto-isolation-map-press7",
+    "relation": "Isolation map for the retrofitted press",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#StepResource",
+    "name": "loto-03 / res-loto-isolation-map-press7"
+  },
+  {
+    "step_resource_id": "sres-loto07-video",
+    "step": "loto-07",
+    "resource": "res-loto-training-video",
+    "relation": "Training reference",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#StepResource",
+    "name": "loto-07 / res-loto-training-video"
+  }
+]

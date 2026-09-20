@@ -25,7 +25,7 @@
     "is_independent_human_observation": true,
     "independent_observation_execution_key": "exec-close-2026-q2",
     "parent_procedure_execution_of_outcome": "exec-close-2026-q2",
-    "semantic_type_iri": "urn:effortless:pko-extension#VerificationOutcome"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#VerificationOutcome"
   },
   {
     "verification_outcome_id": "vo-close02",
@@ -53,7 +53,7 @@
     "is_independent_human_observation": false,
     "independent_observation_execution_key": "",
     "parent_procedure_execution_of_outcome": "exec-close-2026-q2",
-    "semantic_type_iri": "urn:effortless:pko-extension#VerificationOutcome"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#VerificationOutcome"
   },
   {
     "verification_outcome_id": "vo-close03",
@@ -81,7 +81,7 @@
     "is_independent_human_observation": false,
     "independent_observation_execution_key": "",
     "parent_procedure_execution_of_outcome": "exec-close-2026-q2",
-    "semantic_type_iri": "urn:effortless:pko-extension#VerificationOutcome"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#VerificationOutcome"
   },
   {
     "verification_outcome_id": "vo-close05",
@@ -109,6 +109,6 @@
     "is_independent_human_observation": false,
     "independent_observation_execution_key": "",
     "parent_procedure_execution_of_outcome": "exec-close-2026-q2",
-    "semantic_type_iri": "urn:effortless:pko-extension#VerificationOutcome"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#VerificationOutcome"
   }
 ]

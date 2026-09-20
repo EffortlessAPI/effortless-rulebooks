@@ -1158,6 +1158,141 @@ RETURNS TIMESTAMPTZ AS $$
   SELECT (SELECT adopted_at FROM ontology_profiles WHERE ontology_profile_id = p_ontology_profile_id);
 $$ LANGUAGE sql STABLE;
 
+-- get_ontology_profiles_namespace_checked_at
+-- Helper function: Get NamespaceCheckedAt from OntologyProfiles by OntologyProfileId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_ontology_profiles_namespace_checked_at(p_ontology_profile_id TEXT)
+RETURNS TIMESTAMPTZ AS $$
+  SELECT (SELECT namespace_checked_at FROM ontology_profiles WHERE ontology_profile_id = p_ontology_profile_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_ontology_profiles_namespace_http_status
+-- Helper function: Get NamespaceHttpStatus from OntologyProfiles by OntologyProfileId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_ontology_profiles_namespace_http_status(p_ontology_profile_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (SELECT namespace_http_status FROM ontology_profiles WHERE ontology_profile_id = p_ontology_profile_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_ontology_profiles_namespace_serves_rdf
+-- Helper function: Get NamespaceServesRdf from OntologyProfiles by OntologyProfileId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_ontology_profiles_namespace_serves_rdf(p_ontology_profile_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (SELECT namespace_serves_rdf FROM ontology_profiles WHERE ontology_profile_id = p_ontology_profile_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_ontology_support_programmes_label
+-- Helper function: Get Label from OntologySupportProgrammes by OntologySupportProgrammeId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_ontology_support_programmes_label(p_ontology_support_programme_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT label FROM ontology_support_programmes WHERE ontology_support_programme_id = p_ontology_support_programme_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_ontology_support_programmes_acronym
+-- Helper function: Get Acronym from OntologySupportProgrammes by OntologySupportProgrammeId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_ontology_support_programmes_acronym(p_ontology_support_programme_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT acronym FROM ontology_support_programmes WHERE ontology_support_programme_id = p_ontology_support_programme_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_ontology_support_programmes_funder
+-- Helper function: Get Funder from OntologySupportProgrammes by OntologySupportProgrammeId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_ontology_support_programmes_funder(p_ontology_support_programme_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT funder FROM ontology_support_programmes WHERE ontology_support_programme_id = p_ontology_support_programme_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_ontology_support_programmes_grant_reference
+-- Helper function: Get GrantReference from OntologySupportProgrammes by OntologySupportProgrammeId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_ontology_support_programmes_grant_reference(p_ontology_support_programme_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT grant_reference FROM ontology_support_programmes WHERE ontology_support_programme_id = p_ontology_support_programme_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_ontology_support_programmes_programme_iri
+-- Helper function: Get ProgrammeIri from OntologySupportProgrammes by OntologySupportProgrammeId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_ontology_support_programmes_programme_iri(p_ontology_support_programme_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT programme_iri FROM ontology_support_programmes WHERE ontology_support_programme_id = p_ontology_support_programme_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_ontology_support_programmes_coordinator
+-- Helper function: Get Coordinator from OntologySupportProgrammes by OntologySupportProgrammeId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_ontology_support_programmes_coordinator(p_ontology_support_programme_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT coordinator FROM ontology_support_programmes WHERE ontology_support_programme_id = p_ontology_support_programme_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_ontology_support_programmes_started_on
+-- Helper function: Get StartedOn from OntologySupportProgrammes by OntologySupportProgrammeId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_ontology_support_programmes_started_on(p_ontology_support_programme_id TEXT)
+RETURNS TIMESTAMPTZ AS $$
+  SELECT (SELECT started_on FROM ontology_support_programmes WHERE ontology_support_programme_id = p_ontology_support_programme_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_ontology_support_programmes_ends_on
+-- Helper function: Get EndsOn from OntologySupportProgrammes by OntologySupportProgrammeId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_ontology_support_programmes_ends_on(p_ontology_support_programme_id TEXT)
+RETURNS TIMESTAMPTZ AS $$
+  SELECT (SELECT ends_on FROM ontology_support_programmes WHERE ontology_support_programme_id = p_ontology_support_programme_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_ontology_support_programmes_is_industry_focused
+-- Helper function: Get IsIndustryFocused from OntologySupportProgrammes by OntologySupportProgrammeId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_ontology_support_programmes_is_industry_focused(p_ontology_support_programme_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (SELECT is_industry_focused FROM ontology_support_programmes WHERE ontology_support_programme_id = p_ontology_support_programme_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_ontology_support_programmes_our_successor_steward
+-- Helper function: Get OurSuccessorSteward from OntologySupportProgrammes by OntologySupportProgrammeId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_ontology_support_programmes_our_successor_steward(p_ontology_support_programme_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT our_successor_steward FROM ontology_support_programmes WHERE ontology_support_programme_id = p_ontology_support_programme_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_ontology_support_programmes_why_recorded
+-- Helper function: Get WhyRecorded from OntologySupportProgrammes by OntologySupportProgrammeId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_ontology_support_programmes_why_recorded(p_ontology_support_programme_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT why_recorded FROM ontology_support_programmes WHERE ontology_support_programme_id = p_ontology_support_programme_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_ontology_support_programmes_semantic_type_iri
+-- Helper function: Get SemanticTypeIri from OntologySupportProgrammes by OntologySupportProgrammeId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_ontology_support_programmes_semantic_type_iri(p_ontology_support_programme_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT semantic_type_iri FROM ontology_support_programmes WHERE ontology_support_programme_id = p_ontology_support_programme_id);
+$$ LANGUAGE sql STABLE;
+
 -- calc_ontology_profiles_name
 -- Field: OntologyProfiles.Name
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -1258,6 +1393,36 @@ RETURNS BOOLEAN AS $$
   WITH __erb_dedup_v1 AS (SELECT calc_ontology_profiles_prerequisite_adopted_at(p_ontology_profile_id) AS val) SELECT ((COALESCE(COALESCE(((SELECT adoption_stage FROM ontology_profiles WHERE ontology_profile_id = p_ontology_profile_id))::NUMERIC, 0) > 1, FALSE) AND COALESCE((COALESCE((SELECT NULLIF(prerequisite_profile, '') FROM ontology_profiles WHERE ontology_profile_id = p_ontology_profile_id) IS NULL, FALSE) OR COALESCE((SELECT val FROM __erb_dedup_v1) IS NULL, FALSE) OR COALESCE(COALESCE(((SELECT val FROM __erb_dedup_v1) > (SELECT adopted_at::timestamptz FROM ontology_profiles WHERE ontology_profile_id = p_ontology_profile_id)), FALSE), FALSE)), FALSE)));
 $$ LANGUAGE sql STABLE;
 
+-- calc_ontology_profiles_namespace_is_http
+-- Field: OntologyProfiles.NamespaceIsHttp
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_ontology_profiles_namespace_is_http(p_ontology_profile_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((COALESCE(COALESCE(LEFT(((SELECT NULLIF(namespace_iri, '') FROM ontology_profiles WHERE ontology_profile_id = p_ontology_profile_id))::text, (7)::integer), '') = 'http://', FALSE) OR COALESCE(COALESCE(LEFT(((SELECT NULLIF(namespace_iri, '') FROM ontology_profiles WHERE ontology_profile_id = p_ontology_profile_id))::text, (8)::integer), '') = 'https://', FALSE)))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_ontology_profiles_namespace_dereferences
+-- Field: OntologyProfiles.NamespaceDereferences
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_ontology_profiles_namespace_dereferences(p_ontology_profile_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((COALESCE(calc_ontology_profiles_namespace_is_http(p_ontology_profile_id), FALSE) AND COALESCE(COALESCE(((SELECT namespace_http_status FROM ontology_profiles WHERE ontology_profile_id = p_ontology_profile_id))::NUMERIC, 0) = 200, FALSE)));
+$$ LANGUAGE sql STABLE;
+
+-- calc_ontology_profiles_publishes_following_linked_data_principl
+-- Field: OntologyProfiles.PublishesFollowingLinkedDataPrinciples
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_ontology_profiles_publishes_following_linked_data_principl(p_ontology_profile_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((COALESCE(calc_ontology_profiles_namespace_dereferences(p_ontology_profile_id), FALSE) AND COALESCE(COALESCE((SELECT namespace_serves_rdf FROM ontology_profiles WHERE ontology_profile_id = p_ontology_profile_id), FALSE), FALSE) AND COALESCE(COALESCE((calc_ontology_profiles_mapping_count(p_ontology_profile_id))::NUMERIC, 0) > 0, FALSE)));
+$$ LANGUAGE sql STABLE;
+
 -- calc_evaluation_contexts_name
 -- Field: EvaluationContexts.Name
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -1266,6 +1431,156 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_evaluation_contexts_name(p_evaluation_context_id TEXT)
 RETURNS TEXT AS $$
   SELECT (CONCAT((SELECT NULLIF(label, '') FROM evaluation_contexts WHERE evaluation_context_id = p_evaluation_context_id), ' @ ', erb_datetime_text(((SELECT as_of_instant::timestamptz FROM evaluation_contexts WHERE evaluation_context_id = p_evaluation_context_id))::timestamptz)))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_evaluation_contexts_explicit_fragment_count
+-- Field: EvaluationContexts.ExplicitFragmentCount
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_evaluation_contexts_explicit_fragment_count(p_evaluation_context_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM knowledge_fragments WHERE knowledge_form = 'Explicit'))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_evaluation_contexts_tacit_fragment_count
+-- Field: EvaluationContexts.TacitFragmentCount
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_evaluation_contexts_tacit_fragment_count(p_evaluation_context_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM knowledge_fragments WHERE knowledge_form = 'Tacit'))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_evaluation_contexts_implicit_fragment_count
+-- Field: EvaluationContexts.ImplicitFragmentCount
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_evaluation_contexts_implicit_fragment_count(p_evaluation_context_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM knowledge_fragments WHERE knowledge_form = 'Implicit'))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_evaluation_contexts_situated_judgment_fragment_count
+-- Field: EvaluationContexts.SituatedJudgmentFragmentCount
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_evaluation_contexts_situated_judgment_fragment_count(p_evaluation_context_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM knowledge_fragments WHERE knowledge_form = 'SituatedJudgment'))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_evaluation_contexts_model_reasoned_answer_count
+-- Field: EvaluationContexts.ModelReasonedAnswerCount
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_evaluation_contexts_model_reasoned_answer_count(p_evaluation_context_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM assistant_answers WHERE calc_assistant_answers_model_did_the_reasoning(assistant_answer_id) = TRUE))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_evaluation_contexts_otherwise_reasoned_answer_count
+-- Field: EvaluationContexts.OtherwiseReasonedAnswerCount
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_evaluation_contexts_otherwise_reasoned_answer_count(p_evaluation_context_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM assistant_answers WHERE calc_assistant_answers_model_did_the_reasoning(assistant_answer_id) = FALSE))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_evaluation_contexts_assistant_answer_count
+-- Field: EvaluationContexts.AssistantAnswerCount
+-- Type: calculated | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_evaluation_contexts_assistant_answer_count(p_evaluation_context_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_evaluation_contexts_model_reasoned_answer_count(p_evaluation_context_id)) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_evaluation_contexts_otherwise_reasoned_answer_count(p_evaluation_context_id)) AS v) __safe_numeric), 0)))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_evaluation_contexts_model_reasoned_failed_answer_count
+-- Field: EvaluationContexts.ModelReasonedFailedAnswerCount
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_evaluation_contexts_model_reasoned_failed_answer_count(p_evaluation_context_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM assistant_answers WHERE calc_assistant_answers_model_reasoned_and_task_failed(assistant_answer_id) = TRUE))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_evaluation_contexts_out_of_order_step_execution_count
+-- Field: EvaluationContexts.OutOfOrderStepExecutionCount
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_evaluation_contexts_out_of_order_step_execution_count(p_evaluation_context_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM step_executions WHERE calc_step_executions_is_out_of_specified_order(step_execution_id) = TRUE))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_evaluation_contexts_in_order_step_execution_count
+-- Field: EvaluationContexts.InOrderStepExecutionCount
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_evaluation_contexts_in_order_step_execution_count(p_evaluation_context_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM step_executions WHERE calc_step_executions_is_out_of_specified_order(step_execution_id) = FALSE))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_evaluation_contexts_step_execution_count
+-- Field: EvaluationContexts.StepExecutionCount
+-- Type: calculated | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_evaluation_contexts_step_execution_count(p_evaluation_context_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_evaluation_contexts_out_of_order_step_execution_count(p_evaluation_context_id)) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_evaluation_contexts_in_order_step_execution_count(p_evaluation_context_id)) AS v) __safe_numeric), 0)))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_evaluation_contexts_early_start_step_execution_count
+-- Field: EvaluationContexts.EarlyStartStepExecutionCount
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_evaluation_contexts_early_start_step_execution_count(p_evaluation_context_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM step_executions WHERE calc_step_executions_ran_before_prerequisite_completed(step_execution_id) = TRUE))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_evaluation_contexts_exact_mapping_count
+-- Field: EvaluationContexts.ExactMappingCount
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_evaluation_contexts_exact_mapping_count(p_evaluation_context_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM semantic_mappings WHERE mapping_relation = 'exact'))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_evaluation_contexts_aligned_mapping_count
+-- Field: EvaluationContexts.AlignedMappingCount
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_evaluation_contexts_aligned_mapping_count(p_evaluation_context_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM semantic_mappings WHERE mapping_relation = 'aligned'))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_evaluation_contexts_extension_mapping_count
+-- Field: EvaluationContexts.ExtensionMappingCount
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_evaluation_contexts_extension_mapping_count(p_evaluation_context_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM semantic_mappings WHERE mapping_relation = 'extension'))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_organizations_name
@@ -3592,6 +3907,17 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_mentorships_as_of_instant(p_mentorship_id TEXT)
 RETURNS TIMESTAMPTZ AS $$
   SELECT (SELECT as_of_instant::timestamptz FROM evaluation_contexts WHERE evaluation_context_id = (SELECT evaluation_context FROM mentorships WHERE mentorship_id = p_mentorship_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_mentorships_community_label
+-- Field: Mentorships.CommunityLabel
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: Label from related CommunitiesOfPractice
+
+
+CREATE OR REPLACE FUNCTION calc_mentorships_community_label(p_mentorship_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT label::text FROM communities_of_practice WHERE community_of_practice_id = (SELECT community_of_practice FROM mentorships WHERE mentorship_id = p_mentorship_id));
 $$ LANGUAGE sql STABLE;
 
 -- get_communities_of_practice_label
@@ -8359,6 +8685,15 @@ RETURNS TEXT AS $$
   SELECT (SELECT formula FROM rulebook_fields WHERE rulebook_field_id = p_rulebook_field_id);
 $$ LANGUAGE sql STABLE;
 
+-- get_rulebook_fields_related_to
+-- Helper function: Get RelatedTo from RulebookFields by RulebookFieldId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_rulebook_fields_related_to(p_rulebook_field_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT related_to FROM rulebook_fields WHERE rulebook_field_id = p_rulebook_field_id);
+$$ LANGUAGE sql STABLE;
+
 -- get_rulebook_fields_measured_substantive_count
 -- Helper function: Get MeasuredSubstantiveCount from RulebookFields by RulebookFieldId
 -- Used for join-free cross-table references in aggregations
@@ -8787,6 +9122,46 @@ RETURNS BOOLEAN AS $$
   SELECT ((COALESCE(calc_requirements_is_bound_to_any_step(p_requirement_id), FALSE) AND COALESCE(COALESCE((calc_requirements_constraint_trace_count(p_requirement_id))::NUMERIC, 0) = 0, FALSE)));
 $$ LANGUAGE sql STABLE;
 
+-- calc_requirements_recorded_pass_count
+-- Field: Requirements.RecordedPassCount
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_requirements_recorded_pass_count(p_requirement_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COALESCE(SUM((calc_step_requirements_pass_count_on_step(step_requirement_id))::numeric), 0) FROM step_requirements WHERE requirement = p_requirement_id))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_requirements_is_passed_but_never_evaluated
+-- Field: Requirements.IsPassedButNeverEvaluated
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_requirements_is_passed_but_never_evaluated(p_requirement_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((COALESCE(calc_requirements_is_inoperative_control(p_requirement_id), FALSE) AND COALESCE(COALESCE((calc_requirements_recorded_pass_count(p_requirement_id))::NUMERIC, 0) > 0, FALSE)));
+$$ LANGUAGE sql STABLE;
+
+-- calc_requirements_failed_check_count
+-- Field: Requirements.FailedCheckCount
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_requirements_failed_check_count(p_requirement_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM condition_checks WHERE calc_condition_checks_failed_check_requirement_key(condition_check_id) = (SELECT NULLIF(requirement_id, '') FROM requirements WHERE requirement_id = p_requirement_id)))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_requirements_is_breached_but_never_failed
+-- Field: Requirements.IsBreachedButNeverFailed
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_requirements_is_breached_but_never_failed(p_requirement_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((COALESCE(COALESCE((calc_requirements_failed_check_count(p_requirement_id))::NUMERIC, 0) > 0, FALSE) AND COALESCE(NOT (COALESCE(calc_requirements_has_ever_produced_negative(p_requirement_id), FALSE)), FALSE)));
+$$ LANGUAGE sql STABLE;
+
 -- calc_step_requirements_requirement_is_blocking
 -- Field: StepRequirements.RequirementIsBlocking
 -- Type: lookup | DataType: boolean | Returns: BOOLEAN
@@ -8979,6 +9354,16 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_step_requirements_unexercised_binding_requirement_key(p_step_requirement_id TEXT)
 RETURNS TEXT AS $$
   SELECT (CASE WHEN calc_step_requirements_is_unexercised_blocking_binding(p_step_requirement_id) THEN ((SELECT NULLIF(requirement, '') FROM step_requirements WHERE step_requirement_id = p_step_requirement_id))::text ELSE ('')::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_step_requirements_pass_count_on_step
+-- Field: StepRequirements.PassCountOnStep
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_step_requirements_pass_count_on_step(p_step_requirement_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM step_executions WHERE step = (SELECT NULLIF(step, '') FROM step_requirements WHERE step_requirement_id = p_step_requirement_id) AND verification_result = 'PASS'))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_step_verifications_name
@@ -10441,6 +10826,28 @@ RETURNS TEXT AS $$
   SELECT calc_procedure_versions_owner_organization((SELECT procedure_version FROM knowledge_gaps WHERE knowledge_gap_id = p_knowledge_gap_id));
 $$ LANGUAGE sql STABLE;
 
+-- calc_knowledge_gaps_answering_change_title
+-- Field: KnowledgeGaps.AnsweringChangeTitle
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: Title from related ModelChangeRequests
+
+
+CREATE OR REPLACE FUNCTION calc_knowledge_gaps_answering_change_title(p_knowledge_gap_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT title::text FROM model_change_requests WHERE model_change_request_id = (SELECT answered_by_model_change_request FROM knowledge_gaps WHERE knowledge_gap_id = p_knowledge_gap_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_knowledge_gaps_answering_change_status
+-- Field: KnowledgeGaps.AnsweringChangeStatus
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: Status from related ModelChangeRequests
+
+
+CREATE OR REPLACE FUNCTION calc_knowledge_gaps_answering_change_status(p_knowledge_gap_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT status::text FROM model_change_requests WHERE model_change_request_id = (SELECT answered_by_model_change_request FROM knowledge_gaps WHERE knowledge_gap_id = p_knowledge_gap_id));
+$$ LANGUAGE sql STABLE;
+
 -- get_knowledge_fragments_knowledge_form
 -- Helper function: Get KnowledgeForm from KnowledgeFragments by KnowledgeFragmentId
 -- Used for join-free cross-table references in aggregations
@@ -10556,6 +10963,168 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION get_knowledge_fragments_stated_conditions(p_knowledge_fragment_id TEXT)
 RETURNS TEXT AS $$
   SELECT (SELECT stated_conditions FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_model_change_requests_title
+-- Helper function: Get Title from ModelChangeRequests by ModelChangeRequestId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_model_change_requests_title(p_model_change_request_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT title FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_model_change_requests_stated_need
+-- Helper function: Get StatedNeed from ModelChangeRequests by ModelChangeRequestId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_model_change_requests_stated_need(p_model_change_request_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT stated_need FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_model_change_requests_requested_at
+-- Helper function: Get RequestedAt from ModelChangeRequests by ModelChangeRequestId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_model_change_requests_requested_at(p_model_change_request_id TEXT)
+RETURNS TIMESTAMPTZ AS $$
+  SELECT (SELECT requested_at FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_model_change_requests_motivation_kind
+-- Helper function: Get MotivationKind from ModelChangeRequests by ModelChangeRequestId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_model_change_requests_motivation_kind(p_model_change_request_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT motivation_kind FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_model_change_requests_change_layer
+-- Helper function: Get ChangeLayer from ModelChangeRequests by ModelChangeRequestId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_model_change_requests_change_layer(p_model_change_request_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT change_layer FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_model_change_requests_change_operation
+-- Helper function: Get ChangeOperation from ModelChangeRequests by ModelChangeRequestId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_model_change_requests_change_operation(p_model_change_request_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT change_operation FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_model_change_requests_classification
+-- Helper function: Get Classification from ModelChangeRequests by ModelChangeRequestId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_model_change_requests_classification(p_model_change_request_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT classification FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_model_change_requests_route
+-- Helper function: Get Route from ModelChangeRequests by ModelChangeRequestId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_model_change_requests_route(p_model_change_request_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT route FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_model_change_requests_declared_scale
+-- Helper function: Get DeclaredScale from ModelChangeRequests by ModelChangeRequestId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_model_change_requests_declared_scale(p_model_change_request_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT declared_scale FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_model_change_requests_status
+-- Helper function: Get Status from ModelChangeRequests by ModelChangeRequestId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_model_change_requests_status(p_model_change_request_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT status FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_model_change_requests_impact_assessment
+-- Helper function: Get ImpactAssessment from ModelChangeRequests by ModelChangeRequestId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_model_change_requests_impact_assessment(p_model_change_request_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT impact_assessment FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_model_change_requests_coverage_checked_at
+-- Helper function: Get CoverageCheckedAt from ModelChangeRequests by ModelChangeRequestId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_model_change_requests_coverage_checked_at(p_model_change_request_id TEXT)
+RETURNS TIMESTAMPTZ AS $$
+  SELECT (SELECT coverage_checked_at FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_model_change_requests_authority_reviewed_at
+-- Helper function: Get AuthorityReviewedAt from ModelChangeRequests by ModelChangeRequestId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_model_change_requests_authority_reviewed_at(p_model_change_request_id TEXT)
+RETURNS TIMESTAMPTZ AS $$
+  SELECT (SELECT authority_reviewed_at FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_model_change_requests_decided_at
+-- Helper function: Get DecidedAt from ModelChangeRequests by ModelChangeRequestId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_model_change_requests_decided_at(p_model_change_request_id TEXT)
+RETURNS TIMESTAMPTZ AS $$
+  SELECT (SELECT decided_at FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_model_change_requests_implementation_placement
+-- Helper function: Get ImplementationPlacement from ModelChangeRequests by ModelChangeRequestId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_model_change_requests_implementation_placement(p_model_change_request_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT implementation_placement FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_model_change_requests_compliance_impact
+-- Helper function: Get ComplianceImpact from ModelChangeRequests by ModelChangeRequestId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_model_change_requests_compliance_impact(p_model_change_request_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT compliance_impact FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_model_change_requests_effective_at
+-- Helper function: Get EffectiveAt from ModelChangeRequests by ModelChangeRequestId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_model_change_requests_effective_at(p_model_change_request_id TEXT)
+RETURNS TIMESTAMPTZ AS $$
+  SELECT (SELECT effective_at FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_model_change_requests_semantic_type_iri
+-- Helper function: Get SemanticTypeIri from ModelChangeRequests by ModelChangeRequestId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_model_change_requests_semantic_type_iri(p_model_change_request_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT semantic_type_iri FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id);
 $$ LANGUAGE sql STABLE;
 
 -- calc_knowledge_gaps_name
@@ -10827,6 +11396,50 @@ RETURNS TEXT AS $$
   SELECT calc_procedure_versions_owner_organization((SELECT procedure_version FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id));
 $$ LANGUAGE sql STABLE;
 
+-- calc_procedure_executions_stopped_at_gap_statement
+-- Field: ProcedureExecutions.StoppedAtGapStatement
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: Statement from related KnowledgeGaps
+
+
+CREATE OR REPLACE FUNCTION calc_procedure_executions_stopped_at_gap_statement(p_procedure_execution_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT statement::text FROM knowledge_gaps WHERE knowledge_gap_id = (SELECT stopped_at_knowledge_gap FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_procedure_executions_stopped_at_gap_status
+-- Field: ProcedureExecutions.StoppedAtGapStatus
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: Status from related KnowledgeGaps
+
+
+CREATE OR REPLACE FUNCTION calc_procedure_executions_stopped_at_gap_status(p_procedure_execution_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT status::text FROM knowledge_gaps WHERE knowledge_gap_id = (SELECT stopped_at_knowledge_gap FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_procedure_executions_stopped_at_gap_change_title
+-- Field: ProcedureExecutions.StoppedAtGapChangeTitle
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: AnsweringChangeTitle from related KnowledgeGaps
+
+
+CREATE OR REPLACE FUNCTION calc_procedure_executions_stopped_at_gap_change_title(p_procedure_execution_id TEXT)
+RETURNS TEXT AS $$
+  SELECT calc_knowledge_gaps_answering_change_title((SELECT stopped_at_knowledge_gap FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_procedure_executions_stopped_at_gap_change_status
+-- Field: ProcedureExecutions.StoppedAtGapChangeStatus
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: AnsweringChangeStatus from related KnowledgeGaps
+
+
+CREATE OR REPLACE FUNCTION calc_procedure_executions_stopped_at_gap_change_status(p_procedure_execution_id TEXT)
+RETURNS TEXT AS $$
+  SELECT calc_knowledge_gaps_answering_change_status((SELECT stopped_at_knowledge_gap FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id));
+$$ LANGUAGE sql STABLE;
+
 -- get_facilities_label
 -- Helper function: Get Label from Facilities by FacilityId
 -- Used for join-free cross-table references in aggregations
@@ -10879,6 +11492,96 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION get_machines_semantic_type_iri(p_machine_id TEXT)
 RETURNS TEXT AS $$
   SELECT (SELECT semantic_type_iri FROM machines WHERE machine_id = p_machine_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_knowledge_gaps_statement
+-- Helper function: Get Statement from KnowledgeGaps by KnowledgeGapId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_knowledge_gaps_statement(p_knowledge_gap_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT statement FROM knowledge_gaps WHERE knowledge_gap_id = p_knowledge_gap_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_knowledge_gaps_severity
+-- Helper function: Get Severity from KnowledgeGaps by KnowledgeGapId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_knowledge_gaps_severity(p_knowledge_gap_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT severity FROM knowledge_gaps WHERE knowledge_gap_id = p_knowledge_gap_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_knowledge_gaps_blocking_kind
+-- Helper function: Get BlockingKind from KnowledgeGaps by KnowledgeGapId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_knowledge_gaps_blocking_kind(p_knowledge_gap_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT blocking_kind FROM knowledge_gaps WHERE knowledge_gap_id = p_knowledge_gap_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_knowledge_gaps_status
+-- Helper function: Get Status from KnowledgeGaps by KnowledgeGapId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_knowledge_gaps_status(p_knowledge_gap_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT status FROM knowledge_gaps WHERE knowledge_gap_id = p_knowledge_gap_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_knowledge_gaps_identified_at
+-- Helper function: Get IdentifiedAt from KnowledgeGaps by KnowledgeGapId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_knowledge_gaps_identified_at(p_knowledge_gap_id TEXT)
+RETURNS TIMESTAMPTZ AS $$
+  SELECT (SELECT identified_at FROM knowledge_gaps WHERE knowledge_gap_id = p_knowledge_gap_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_knowledge_gaps_resolution_plan
+-- Helper function: Get ResolutionPlan from KnowledgeGaps by KnowledgeGapId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_knowledge_gaps_resolution_plan(p_knowledge_gap_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT resolution_plan FROM knowledge_gaps WHERE knowledge_gap_id = p_knowledge_gap_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_knowledge_gaps_semantic_type_iri
+-- Helper function: Get SemanticTypeIri from KnowledgeGaps by KnowledgeGapId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_knowledge_gaps_semantic_type_iri(p_knowledge_gap_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT semantic_type_iri FROM knowledge_gaps WHERE knowledge_gap_id = p_knowledge_gap_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_knowledge_gaps_gap_cause
+-- Helper function: Get GapCause from KnowledgeGaps by KnowledgeGapId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_knowledge_gaps_gap_cause(p_knowledge_gap_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT gap_cause FROM knowledge_gaps WHERE knowledge_gap_id = p_knowledge_gap_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_knowledge_gaps_holder_declined_to_share
+-- Helper function: Get HolderDeclinedToShare from KnowledgeGaps by KnowledgeGapId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_knowledge_gaps_holder_declined_to_share(p_knowledge_gap_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (SELECT holder_declined_to_share FROM knowledge_gaps WHERE knowledge_gap_id = p_knowledge_gap_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_knowledge_gaps_siloed_within
+-- Helper function: Get SiloedWithin from KnowledgeGaps by KnowledgeGapId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_knowledge_gaps_siloed_within(p_knowledge_gap_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT siloed_within FROM knowledge_gaps WHERE knowledge_gap_id = p_knowledge_gap_id);
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_executions_name
@@ -14669,6 +15372,17 @@ RETURNS BOOLEAN AS $$
   WITH __erb_dedup_v1 AS (SELECT calc_message_templates_transmitted_delivery_count(p_message_template_id) AS val) SELECT ((COALESCE(COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) > 0, FALSE) AND COALESCE(COALESCE(calc_message_templates_unanswered_delivery_count(p_message_template_id), 0) = COALESCE((SELECT val FROM __erb_dedup_v1), 0), FALSE)));
 $$ LANGUAGE sql STABLE;
 
+-- calc_semantic_mappings_profile_namespace_dereferences
+-- Field: SemanticMappings.ProfileNamespaceDereferences
+-- Type: lookup | DataType: boolean | Returns: BOOLEAN
+-- Lookup: NamespaceDereferences from related OntologyProfiles
+
+
+CREATE OR REPLACE FUNCTION calc_semantic_mappings_profile_namespace_dereferences(p_semantic_mapping_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT calc_ontology_profiles_namespace_dereferences((SELECT ontology_profile FROM semantic_mappings WHERE semantic_mapping_id = p_semantic_mapping_id));
+$$ LANGUAGE sql STABLE;
+
 -- calc_semantic_mappings_name
 -- Field: SemanticMappings.Name
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -14696,7 +15410,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_semantic_mappings_is_non_resolvable_term_iri(p_semantic_mapping_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(COALESCE((SELECT NULLIF(mapping_relation, '') FROM semantic_mappings WHERE semantic_mapping_id = p_semantic_mapping_id), '') = 'extension', FALSE) AND COALESCE(COALESCE(LEFT(((SELECT NULLIF(target_iri, '') FROM semantic_mappings WHERE semantic_mapping_id = p_semantic_mapping_id))::text, (4)::integer), '') <> 'http', FALSE)))::boolean;
+  SELECT ((COALESCE(COALESCE(LEFT(((SELECT NULLIF(target_iri, '') FROM semantic_mappings WHERE semantic_mapping_id = p_semantic_mapping_id))::text, (4)::integer), '') <> 'http', FALSE) OR COALESCE((COALESCE((SELECT NULLIF(ontology_profile, '') FROM semantic_mappings WHERE semantic_mapping_id = p_semantic_mapping_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE(calc_semantic_mappings_profile_namespace_dereferences(p_semantic_mapping_id), FALSE) = FALSE, FALSE)), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_witness_loops_name
@@ -18662,6 +19376,46 @@ RETURNS BOOLEAN AS $$
   SELECT ((COALESCE(COALESCE((SELECT NULLIF(subject_area, '') FROM rulebook_tables WHERE rulebook_table_id = p_rulebook_table_id), '') = 'governance', FALSE) AND COALESCE(COALESCE((calc_rulebook_tables_policy_count(p_rulebook_table_id))::NUMERIC, 0) = 0, FALSE)));
 $$ LANGUAGE sql STABLE;
 
+-- calc_rulebook_tables_unrestricted_non_admin_policy_count
+-- Field: RulebookTables.UnrestrictedNonAdminPolicyCount
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_rulebook_tables_unrestricted_non_admin_policy_count(p_rulebook_table_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM access_policies WHERE target_table = (SELECT NULLIF(rulebook_table_id, '') FROM rulebook_tables WHERE rulebook_table_id = p_rulebook_table_id) AND calc_access_policies_is_unrestricted_non_admin_grant(access_policy_id) = TRUE))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_rulebook_tables_restricted_non_admin_policy_count
+-- Field: RulebookTables.RestrictedNonAdminPolicyCount
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_rulebook_tables_restricted_non_admin_policy_count(p_rulebook_table_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM access_policies WHERE target_table = (SELECT NULLIF(rulebook_table_id, '') FROM rulebook_tables WHERE rulebook_table_id = p_rulebook_table_id) AND calc_access_policies_is_unrestricted_non_admin_grant(access_policy_id) = FALSE AND calc_access_policies_principal_is_admin(access_policy_id) = FALSE))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_rulebook_tables_is_readable_in_full_by_non_admin
+-- Field: RulebookTables.IsReadableInFullByNonAdmin
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_rulebook_tables_is_readable_in_full_by_non_admin(p_rulebook_table_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (COALESCE((calc_rulebook_tables_unrestricted_non_admin_policy_count(p_rulebook_table_id))::NUMERIC, 0) > 0)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_rulebook_tables_is_controlled_for_every_non_admin
+-- Field: RulebookTables.IsControlledForEveryNonAdmin
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_rulebook_tables_is_controlled_for_every_non_admin(p_rulebook_table_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((COALESCE(COALESCE((calc_rulebook_tables_restricted_non_admin_policy_count(p_rulebook_table_id))::NUMERIC, 0) > 0, FALSE) AND COALESCE(COALESCE((calc_rulebook_tables_unrestricted_non_admin_policy_count(p_rulebook_table_id))::NUMERIC, 0) = 0, FALSE)));
+$$ LANGUAGE sql STABLE;
+
 -- calc_access_principals_organization_scope
 -- Field: AccessPrincipals.OrganizationScope
 -- Type: lookup | DataType: string | Returns: TEXT
@@ -19132,7 +19886,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_role_schema_views_column_count(p_role_schema_view_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM field_grants WHERE calc_field_grants_grant_key_when_readable(field_grant_id) = calc_role_schema_views_grant_key(p_role_schema_view_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM field_grants WHERE principal = (SELECT NULLIF(principal, '') FROM role_schema_views WHERE role_schema_view_id = p_role_schema_view_id) AND can_read = TRUE AND calc_field_grants_field_table(field_grant_id) = (SELECT NULLIF(target_table, '') FROM role_schema_views WHERE role_schema_view_id = p_role_schema_view_id)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_role_schema_views_is_full_width
@@ -19610,6 +20364,16 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_process_mining_runs_has_undocumented_enacted_path(p_process_mining_run_id TEXT)
 RETURNS BOOLEAN AS $$
   SELECT (COALESCE((calc_process_mining_runs_undocumented_path_count(p_process_mining_run_id))::NUMERIC, 0) > 0)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_process_mining_runs_conformance_percent
+-- Field: ProcessMiningRuns.ConformancePercent
+-- Type: calculated | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_process_mining_runs_conformance_percent(p_process_mining_run_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (ROUND(((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_process_mining_runs_conformance_rate(p_process_mining_run_id)) AS v) __safe_numeric), 0) * COALESCE(100, 0)))::NUMERIC, (0)::INTEGER))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_vocabularies_name
@@ -22509,6 +23273,17 @@ RETURNS TEXT AS $$
   SELECT (SELECT condition_kind::text FROM step_conditions WHERE step_condition_id = (SELECT step_condition FROM condition_checks WHERE condition_check_id = p_condition_check_id));
 $$ LANGUAGE sql STABLE;
 
+-- calc_condition_checks_enforced_requirement
+-- Field: ConditionChecks.EnforcedRequirement
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: EnforcesRequirement from related StepConditions
+
+
+CREATE OR REPLACE FUNCTION calc_condition_checks_enforced_requirement(p_condition_check_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT enforces_requirement::text FROM step_conditions WHERE step_condition_id = (SELECT step_condition FROM condition_checks WHERE condition_check_id = p_condition_check_id));
+$$ LANGUAGE sql STABLE;
+
 -- get_step_conditions_condition_kind
 -- Helper function: Get ConditionKind from StepConditions by StepConditionId
 -- Used for join-free cross-table references in aggregations
@@ -22602,6 +23377,16 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_condition_checks_violated_invariant_execution_key(p_condition_check_id TEXT)
 RETURNS TEXT AS $$
   SELECT (CASE WHEN calc_condition_checks_is_violated_invariant(p_condition_check_id) THEN ((SELECT NULLIF(step_execution, '') FROM condition_checks WHERE condition_check_id = p_condition_check_id))::text ELSE ('')::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_condition_checks_failed_check_requirement_key
+-- Field: ConditionChecks.FailedCheckRequirementKey
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_condition_checks_failed_check_requirement_key(p_condition_check_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN COALESCE((SELECT held FROM condition_checks WHERE condition_check_id = p_condition_check_id), FALSE) = FALSE THEN (calc_condition_checks_enforced_requirement(p_condition_check_id))::text ELSE ('')::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_failure_modes_escalation_role_has_no_holder
@@ -24788,6 +25573,26 @@ RETURNS BOOLEAN AS $$
   SELECT ((COALESCE(COALESCE((SELECT NULLIF(system_kind, '') FROM knowledge_consumer_systems WHERE knowledge_consumer_system_id = p_knowledge_consumer_system_id), '') = 'KnowledgeGraphPlatform', FALSE) AND COALESCE(COALESCE((calc_knowledge_consumer_systems_platform_capability_count(p_knowledge_consumer_system_id))::NUMERIC, 0) < 4, FALSE)));
 $$ LANGUAGE sql STABLE;
 
+-- calc_knowledge_consumer_systems_holds_computationally_encoded_p
+-- Field: KnowledgeConsumerSystems.HoldsComputationallyEncodedProcedureKnowledge
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_knowledge_consumer_systems_holds_computationally_encoded_p(p_knowledge_consumer_system_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((COALESCE(COALESCE((SELECT holds_procedure_knowledge FROM knowledge_consumer_systems WHERE knowledge_consumer_system_id = p_knowledge_consumer_system_id), FALSE), FALSE) AND COALESCE(COALESCE((SELECT is_computationally_queryable FROM knowledge_consumer_systems WHERE knowledge_consumer_system_id = p_knowledge_consumer_system_id), FALSE), FALSE) AND COALESCE(COALESCE((SELECT is_computationally_validatable FROM knowledge_consumer_systems WHERE knowledge_consumer_system_id = p_knowledge_consumer_system_id), FALSE), FALSE) AND COALESCE(COALESCE((SELECT has_reasoner FROM knowledge_consumer_systems WHERE knowledge_consumer_system_id = p_knowledge_consumer_system_id), FALSE), FALSE)))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_knowledge_consumer_systems_stores_procedure_knowledge_with
+-- Field: KnowledgeConsumerSystems.StoresProcedureKnowledgeWithoutComputationalAccess
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_knowledge_consumer_systems_stores_procedure_knowledge_with(p_knowledge_consumer_system_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((COALESCE(COALESCE((SELECT holds_procedure_knowledge FROM knowledge_consumer_systems WHERE knowledge_consumer_system_id = p_knowledge_consumer_system_id), FALSE), FALSE) AND COALESCE(COALESCE(calc_knowledge_consumer_systems_holds_computationally_encoded_p(p_knowledge_consumer_system_id), FALSE) = FALSE, FALSE)))::boolean;
+$$ LANGUAGE sql STABLE;
+
 -- calc_consumer_system_syncs_system_audience
 -- Field: ConsumerSystemSyncs.SystemAudience
 -- Type: lookup | DataType: string | Returns: TEXT
@@ -24976,6 +25781,24 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION get_knowledge_consumer_systems_semantic_type_iri(p_knowledge_consumer_system_id TEXT)
 RETURNS TEXT AS $$
   SELECT (SELECT semantic_type_iri FROM knowledge_consumer_systems WHERE knowledge_consumer_system_id = p_knowledge_consumer_system_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_knowledge_consumer_systems_is_computationally_queryable
+-- Helper function: Get IsComputationallyQueryable from KnowledgeConsumerSystems by KnowledgeConsumerSystemId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_knowledge_consumer_systems_is_computationally_queryable(p_knowledge_consumer_system_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (SELECT is_computationally_queryable FROM knowledge_consumer_systems WHERE knowledge_consumer_system_id = p_knowledge_consumer_system_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_knowledge_consumer_systems_is_computationally_validatable
+-- Helper function: Get IsComputationallyValidatable from KnowledgeConsumerSystems by KnowledgeConsumerSystemId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_knowledge_consumer_systems_is_computationally_validatable(p_knowledge_consumer_system_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (SELECT is_computationally_validatable FROM knowledge_consumer_systems WHERE knowledge_consumer_system_id = p_knowledge_consumer_system_id);
 $$ LANGUAGE sql STABLE;
 
 -- calc_consumer_system_syncs_name
@@ -26220,6 +27043,16 @@ RETURNS BOOLEAN AS $$
   SELECT ((COALESCE(COALESCE((SELECT NULLIF(retrieval_mode, '') FROM assistant_answers WHERE assistant_answer_id = p_assistant_answer_id), '') = 'StructuredQuery', FALSE) AND COALESCE(COALESCE((SELECT was_correct FROM assistant_answers WHERE assistant_answer_id = p_assistant_answer_id), FALSE) = FALSE, FALSE) AND COALESCE(COALESCE((calc_assistant_answers_stale_grounding_count(p_assistant_answer_id))::NUMERIC, 0) > 0, FALSE)));
 $$ LANGUAGE sql STABLE;
 
+-- calc_assistant_answers_model_reasoned_and_task_failed
+-- Field: AssistantAnswers.ModelReasonedAndTaskFailed
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_assistant_answers_model_reasoned_and_task_failed(p_assistant_answer_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((COALESCE(calc_assistant_answers_model_did_the_reasoning(p_assistant_answer_id), FALSE) AND COALESCE(COALESCE((SELECT NULLIF(task_outcome, '') FROM assistant_answers WHERE assistant_answer_id = p_assistant_answer_id), '') = 'Failed', FALSE)))::boolean;
+$$ LANGUAGE sql STABLE;
+
 -- calc_answer_groundings_assertion_is_stale
 -- Field: AnswerGroundings.AssertionIsStale
 -- Type: lookup | DataType: boolean | Returns: BOOLEAN
@@ -26855,96 +27688,6 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION get_encoding_lifecycle_stages_semantic_type_iri(p_encoding_lifecycle_stage_id TEXT)
 RETURNS TEXT AS $$
   SELECT (SELECT semantic_type_iri FROM encoding_lifecycle_stages WHERE encoding_lifecycle_stage_id = p_encoding_lifecycle_stage_id);
-$$ LANGUAGE sql STABLE;
-
--- get_knowledge_gaps_statement
--- Helper function: Get Statement from KnowledgeGaps by KnowledgeGapId
--- Used for join-free cross-table references in aggregations
-
-CREATE OR REPLACE FUNCTION get_knowledge_gaps_statement(p_knowledge_gap_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (SELECT statement FROM knowledge_gaps WHERE knowledge_gap_id = p_knowledge_gap_id);
-$$ LANGUAGE sql STABLE;
-
--- get_knowledge_gaps_severity
--- Helper function: Get Severity from KnowledgeGaps by KnowledgeGapId
--- Used for join-free cross-table references in aggregations
-
-CREATE OR REPLACE FUNCTION get_knowledge_gaps_severity(p_knowledge_gap_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (SELECT severity FROM knowledge_gaps WHERE knowledge_gap_id = p_knowledge_gap_id);
-$$ LANGUAGE sql STABLE;
-
--- get_knowledge_gaps_blocking_kind
--- Helper function: Get BlockingKind from KnowledgeGaps by KnowledgeGapId
--- Used for join-free cross-table references in aggregations
-
-CREATE OR REPLACE FUNCTION get_knowledge_gaps_blocking_kind(p_knowledge_gap_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (SELECT blocking_kind FROM knowledge_gaps WHERE knowledge_gap_id = p_knowledge_gap_id);
-$$ LANGUAGE sql STABLE;
-
--- get_knowledge_gaps_status
--- Helper function: Get Status from KnowledgeGaps by KnowledgeGapId
--- Used for join-free cross-table references in aggregations
-
-CREATE OR REPLACE FUNCTION get_knowledge_gaps_status(p_knowledge_gap_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (SELECT status FROM knowledge_gaps WHERE knowledge_gap_id = p_knowledge_gap_id);
-$$ LANGUAGE sql STABLE;
-
--- get_knowledge_gaps_identified_at
--- Helper function: Get IdentifiedAt from KnowledgeGaps by KnowledgeGapId
--- Used for join-free cross-table references in aggregations
-
-CREATE OR REPLACE FUNCTION get_knowledge_gaps_identified_at(p_knowledge_gap_id TEXT)
-RETURNS TIMESTAMPTZ AS $$
-  SELECT (SELECT identified_at FROM knowledge_gaps WHERE knowledge_gap_id = p_knowledge_gap_id);
-$$ LANGUAGE sql STABLE;
-
--- get_knowledge_gaps_resolution_plan
--- Helper function: Get ResolutionPlan from KnowledgeGaps by KnowledgeGapId
--- Used for join-free cross-table references in aggregations
-
-CREATE OR REPLACE FUNCTION get_knowledge_gaps_resolution_plan(p_knowledge_gap_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (SELECT resolution_plan FROM knowledge_gaps WHERE knowledge_gap_id = p_knowledge_gap_id);
-$$ LANGUAGE sql STABLE;
-
--- get_knowledge_gaps_semantic_type_iri
--- Helper function: Get SemanticTypeIri from KnowledgeGaps by KnowledgeGapId
--- Used for join-free cross-table references in aggregations
-
-CREATE OR REPLACE FUNCTION get_knowledge_gaps_semantic_type_iri(p_knowledge_gap_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (SELECT semantic_type_iri FROM knowledge_gaps WHERE knowledge_gap_id = p_knowledge_gap_id);
-$$ LANGUAGE sql STABLE;
-
--- get_knowledge_gaps_gap_cause
--- Helper function: Get GapCause from KnowledgeGaps by KnowledgeGapId
--- Used for join-free cross-table references in aggregations
-
-CREATE OR REPLACE FUNCTION get_knowledge_gaps_gap_cause(p_knowledge_gap_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (SELECT gap_cause FROM knowledge_gaps WHERE knowledge_gap_id = p_knowledge_gap_id);
-$$ LANGUAGE sql STABLE;
-
--- get_knowledge_gaps_holder_declined_to_share
--- Helper function: Get HolderDeclinedToShare from KnowledgeGaps by KnowledgeGapId
--- Used for join-free cross-table references in aggregations
-
-CREATE OR REPLACE FUNCTION get_knowledge_gaps_holder_declined_to_share(p_knowledge_gap_id TEXT)
-RETURNS BOOLEAN AS $$
-  SELECT (SELECT holder_declined_to_share FROM knowledge_gaps WHERE knowledge_gap_id = p_knowledge_gap_id);
-$$ LANGUAGE sql STABLE;
-
--- get_knowledge_gaps_siloed_within
--- Helper function: Get SiloedWithin from KnowledgeGaps by KnowledgeGapId
--- Used for join-free cross-table references in aggregations
-
-CREATE OR REPLACE FUNCTION get_knowledge_gaps_siloed_within(p_knowledge_gap_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (SELECT siloed_within FROM knowledge_gaps WHERE knowledge_gap_id = p_knowledge_gap_id);
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_annotations_name
@@ -29224,168 +29967,6 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_change_authority_rules_is_rule_bypassed(p_change_authority_rule_id TEXT)
 RETURNS BOOLEAN AS $$
   SELECT (COALESCE((calc_change_authority_rules_misrouted_request_count(p_change_authority_rule_id))::NUMERIC, 0) > 0)::boolean;
-$$ LANGUAGE sql STABLE;
-
--- get_model_change_requests_title
--- Helper function: Get Title from ModelChangeRequests by ModelChangeRequestId
--- Used for join-free cross-table references in aggregations
-
-CREATE OR REPLACE FUNCTION get_model_change_requests_title(p_model_change_request_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (SELECT title FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id);
-$$ LANGUAGE sql STABLE;
-
--- get_model_change_requests_stated_need
--- Helper function: Get StatedNeed from ModelChangeRequests by ModelChangeRequestId
--- Used for join-free cross-table references in aggregations
-
-CREATE OR REPLACE FUNCTION get_model_change_requests_stated_need(p_model_change_request_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (SELECT stated_need FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id);
-$$ LANGUAGE sql STABLE;
-
--- get_model_change_requests_requested_at
--- Helper function: Get RequestedAt from ModelChangeRequests by ModelChangeRequestId
--- Used for join-free cross-table references in aggregations
-
-CREATE OR REPLACE FUNCTION get_model_change_requests_requested_at(p_model_change_request_id TEXT)
-RETURNS TIMESTAMPTZ AS $$
-  SELECT (SELECT requested_at FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id);
-$$ LANGUAGE sql STABLE;
-
--- get_model_change_requests_motivation_kind
--- Helper function: Get MotivationKind from ModelChangeRequests by ModelChangeRequestId
--- Used for join-free cross-table references in aggregations
-
-CREATE OR REPLACE FUNCTION get_model_change_requests_motivation_kind(p_model_change_request_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (SELECT motivation_kind FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id);
-$$ LANGUAGE sql STABLE;
-
--- get_model_change_requests_change_layer
--- Helper function: Get ChangeLayer from ModelChangeRequests by ModelChangeRequestId
--- Used for join-free cross-table references in aggregations
-
-CREATE OR REPLACE FUNCTION get_model_change_requests_change_layer(p_model_change_request_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (SELECT change_layer FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id);
-$$ LANGUAGE sql STABLE;
-
--- get_model_change_requests_change_operation
--- Helper function: Get ChangeOperation from ModelChangeRequests by ModelChangeRequestId
--- Used for join-free cross-table references in aggregations
-
-CREATE OR REPLACE FUNCTION get_model_change_requests_change_operation(p_model_change_request_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (SELECT change_operation FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id);
-$$ LANGUAGE sql STABLE;
-
--- get_model_change_requests_classification
--- Helper function: Get Classification from ModelChangeRequests by ModelChangeRequestId
--- Used for join-free cross-table references in aggregations
-
-CREATE OR REPLACE FUNCTION get_model_change_requests_classification(p_model_change_request_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (SELECT classification FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id);
-$$ LANGUAGE sql STABLE;
-
--- get_model_change_requests_route
--- Helper function: Get Route from ModelChangeRequests by ModelChangeRequestId
--- Used for join-free cross-table references in aggregations
-
-CREATE OR REPLACE FUNCTION get_model_change_requests_route(p_model_change_request_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (SELECT route FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id);
-$$ LANGUAGE sql STABLE;
-
--- get_model_change_requests_declared_scale
--- Helper function: Get DeclaredScale from ModelChangeRequests by ModelChangeRequestId
--- Used for join-free cross-table references in aggregations
-
-CREATE OR REPLACE FUNCTION get_model_change_requests_declared_scale(p_model_change_request_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (SELECT declared_scale FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id);
-$$ LANGUAGE sql STABLE;
-
--- get_model_change_requests_status
--- Helper function: Get Status from ModelChangeRequests by ModelChangeRequestId
--- Used for join-free cross-table references in aggregations
-
-CREATE OR REPLACE FUNCTION get_model_change_requests_status(p_model_change_request_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (SELECT status FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id);
-$$ LANGUAGE sql STABLE;
-
--- get_model_change_requests_impact_assessment
--- Helper function: Get ImpactAssessment from ModelChangeRequests by ModelChangeRequestId
--- Used for join-free cross-table references in aggregations
-
-CREATE OR REPLACE FUNCTION get_model_change_requests_impact_assessment(p_model_change_request_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (SELECT impact_assessment FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id);
-$$ LANGUAGE sql STABLE;
-
--- get_model_change_requests_coverage_checked_at
--- Helper function: Get CoverageCheckedAt from ModelChangeRequests by ModelChangeRequestId
--- Used for join-free cross-table references in aggregations
-
-CREATE OR REPLACE FUNCTION get_model_change_requests_coverage_checked_at(p_model_change_request_id TEXT)
-RETURNS TIMESTAMPTZ AS $$
-  SELECT (SELECT coverage_checked_at FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id);
-$$ LANGUAGE sql STABLE;
-
--- get_model_change_requests_authority_reviewed_at
--- Helper function: Get AuthorityReviewedAt from ModelChangeRequests by ModelChangeRequestId
--- Used for join-free cross-table references in aggregations
-
-CREATE OR REPLACE FUNCTION get_model_change_requests_authority_reviewed_at(p_model_change_request_id TEXT)
-RETURNS TIMESTAMPTZ AS $$
-  SELECT (SELECT authority_reviewed_at FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id);
-$$ LANGUAGE sql STABLE;
-
--- get_model_change_requests_decided_at
--- Helper function: Get DecidedAt from ModelChangeRequests by ModelChangeRequestId
--- Used for join-free cross-table references in aggregations
-
-CREATE OR REPLACE FUNCTION get_model_change_requests_decided_at(p_model_change_request_id TEXT)
-RETURNS TIMESTAMPTZ AS $$
-  SELECT (SELECT decided_at FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id);
-$$ LANGUAGE sql STABLE;
-
--- get_model_change_requests_implementation_placement
--- Helper function: Get ImplementationPlacement from ModelChangeRequests by ModelChangeRequestId
--- Used for join-free cross-table references in aggregations
-
-CREATE OR REPLACE FUNCTION get_model_change_requests_implementation_placement(p_model_change_request_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (SELECT implementation_placement FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id);
-$$ LANGUAGE sql STABLE;
-
--- get_model_change_requests_compliance_impact
--- Helper function: Get ComplianceImpact from ModelChangeRequests by ModelChangeRequestId
--- Used for join-free cross-table references in aggregations
-
-CREATE OR REPLACE FUNCTION get_model_change_requests_compliance_impact(p_model_change_request_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (SELECT compliance_impact FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id);
-$$ LANGUAGE sql STABLE;
-
--- get_model_change_requests_effective_at
--- Helper function: Get EffectiveAt from ModelChangeRequests by ModelChangeRequestId
--- Used for join-free cross-table references in aggregations
-
-CREATE OR REPLACE FUNCTION get_model_change_requests_effective_at(p_model_change_request_id TEXT)
-RETURNS TIMESTAMPTZ AS $$
-  SELECT (SELECT effective_at FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id);
-$$ LANGUAGE sql STABLE;
-
--- get_model_change_requests_semantic_type_iri
--- Helper function: Get SemanticTypeIri from ModelChangeRequests by ModelChangeRequestId
--- Used for join-free cross-table references in aggregations
-
-CREATE OR REPLACE FUNCTION get_model_change_requests_semantic_type_iri(p_model_change_request_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (SELECT semantic_type_iri FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id);
 $$ LANGUAGE sql STABLE;
 
 -- calc_change_impact_findings_name
@@ -33383,6 +33964,17 @@ RETURNS INTEGER AS $$
   SELECT calc_agents_count_of_current_role_assignments((SELECT recipient_agent FROM knowledge_transfers WHERE knowledge_transfer_id = p_knowledge_transfer_id));
 $$ LANGUAGE sql STABLE;
 
+-- calc_knowledge_transfers_know_how_topic
+-- Field: KnowledgeTransfers.KnowHowTopic
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: Topic from related KnowHowCarriers
+
+
+CREATE OR REPLACE FUNCTION calc_knowledge_transfers_know_how_topic(p_knowledge_transfer_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT topic::text FROM know_how_carriers WHERE know_how_carrier_id = (SELECT know_how FROM knowledge_transfers WHERE knowledge_transfer_id = p_knowledge_transfer_id));
+$$ LANGUAGE sql STABLE;
+
 -- calc_knowledge_transfers_name
 -- Field: KnowledgeTransfers.Name
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -34817,6 +35409,98 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_app_action_fields_writes_derived_field(p_app_action_field_id TEXT)
 RETURNS BOOLEAN AS $$
   WITH __erb_dedup_v1 AS (SELECT calc_app_action_fields_target_field_type(p_app_action_field_id) AS val) SELECT ((COALESCE((SELECT NULLIF(target_field, '') FROM app_action_fields WHERE app_action_field_id = p_app_action_field_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE((SELECT val FROM __erb_dedup_v1), '') <> 'raw', FALSE) AND COALESCE(COALESCE((SELECT val FROM __erb_dedup_v1), '') <> 'relationship', FALSE)))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_abundant_knowledge_gaps_representing_table_row_count
+-- Field: AbundantKnowledgeGaps.RepresentingTableRowCount
+-- Type: lookup | DataType: integer | Returns: INTEGER
+-- Lookup: MeasuredRowCount from related RulebookTables
+
+
+CREATE OR REPLACE FUNCTION calc_abundant_knowledge_gaps_representing_table_row_count(p_abundant_knowledge_gap_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (SELECT measured_row_count::integer FROM rulebook_tables WHERE rulebook_table_id = (SELECT represented_by_table FROM abundant_knowledge_gaps WHERE abundant_knowledge_gap_id = p_abundant_knowledge_gap_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_abundant_knowledge_gaps_name
+-- Field: AbundantKnowledgeGaps.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_abundant_knowledge_gaps_name(p_abundant_knowledge_gap_id TEXT)
+RETURNS TEXT AS $$
+  SELECT ((SELECT NULLIF(label, '') FROM abundant_knowledge_gaps WHERE abundant_knowledge_gap_id = p_abundant_knowledge_gap_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_ontology_support_programmes_as_of_instant
+-- Field: OntologySupportProgrammes.AsOfInstant
+-- Type: lookup | DataType: datetime | Returns: TIMESTAMPTZ
+-- Lookup: AsOfInstant from related EvaluationContexts
+
+
+CREATE OR REPLACE FUNCTION calc_ontology_support_programmes_as_of_instant(p_ontology_support_programme_id TEXT)
+RETURNS TIMESTAMPTZ AS $$
+  SELECT (SELECT as_of_instant::timestamptz FROM evaluation_contexts WHERE evaluation_context_id = (SELECT evaluation_context FROM ontology_support_programmes WHERE ontology_support_programme_id = p_ontology_support_programme_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_ontology_support_programmes_name
+-- Field: OntologySupportProgrammes.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_ontology_support_programmes_name(p_ontology_support_programme_id TEXT)
+RETURNS TEXT AS $$
+  SELECT ((SELECT NULLIF(label, '') FROM ontology_support_programmes WHERE ontology_support_programme_id = p_ontology_support_programme_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_ontology_support_programmes_supported_profile_count
+-- Field: OntologySupportProgrammes.SupportedProfileCount
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_ontology_support_programmes_supported_profile_count(p_ontology_support_programme_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM ontology_profiles WHERE supporting_programme = (SELECT NULLIF(ontology_support_programme_id, '') FROM ontology_support_programmes WHERE ontology_support_programme_id = p_ontology_support_programme_id)))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_ontology_support_programmes_has_ended
+-- Field: OntologySupportProgrammes.HasEnded
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_ontology_support_programmes_has_ended(p_ontology_support_programme_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((COALESCE((SELECT ends_on::timestamptz FROM ontology_support_programmes WHERE ontology_support_programme_id = p_ontology_support_programme_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE(((SELECT ends_on::timestamptz FROM ontology_support_programmes WHERE ontology_support_programme_id = p_ontology_support_programme_id) < calc_ontology_support_programmes_as_of_instant(p_ontology_support_programme_id)), FALSE), FALSE)))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_ontology_support_programmes_days_until_programme_ends
+-- Field: OntologySupportProgrammes.DaysUntilProgrammeEnds
+-- Type: calculated | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_ontology_support_programmes_days_until_programme_ends(p_ontology_support_programme_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (CASE WHEN (SELECT ends_on::timestamptz FROM ontology_support_programmes WHERE ontology_support_programme_id = p_ontology_support_programme_id) IS NULL THEN (0)::text ELSE (((((SELECT ends_on::timestamptz FROM ontology_support_programmes WHERE ontology_support_programme_id = p_ontology_support_programme_id))::timestamptz AT TIME ZONE 'UTC')::date - ((calc_ontology_support_programmes_as_of_instant(p_ontology_support_programme_id))::timestamptz AT TIME ZONE 'UTC')::date))::text END)::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_ontology_support_programmes_is_ended_with_no_steward_named
+-- Field: OntologySupportProgrammes.IsEndedWithNoStewardNamed
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_ontology_support_programmes_is_ended_with_no_steward_named(p_ontology_support_programme_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((COALESCE(calc_ontology_support_programmes_has_ended(p_ontology_support_programme_id), FALSE) AND COALESCE((SELECT NULLIF(our_successor_steward, '') FROM ontology_support_programmes WHERE ontology_support_programme_id = p_ontology_support_programme_id) IS NULL, FALSE)))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_ontology_support_programmes_is_ending_soon_with_no_steward
+-- Field: OntologySupportProgrammes.IsEndingSoonWithNoStewardNamed
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_ontology_support_programmes_is_ending_soon_with_no_steward(p_ontology_support_programme_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((COALESCE(COALESCE(calc_ontology_support_programmes_has_ended(p_ontology_support_programme_id), FALSE) = FALSE, FALSE) AND COALESCE((SELECT ends_on::timestamptz FROM ontology_support_programmes WHERE ontology_support_programme_id = p_ontology_support_programme_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE((calc_ontology_support_programmes_days_until_programme_ends(p_ontology_support_programme_id))::NUMERIC, 0) <= 180, FALSE) AND COALESCE((SELECT NULLIF(our_successor_steward, '') FROM ontology_support_programmes WHERE ontology_support_programme_id = p_ontology_support_programme_id) IS NULL, FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- ============================================================================

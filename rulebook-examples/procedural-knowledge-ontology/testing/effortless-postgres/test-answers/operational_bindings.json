@@ -21,7 +21,7 @@
     "resource_is_approved": false,
     "is_usable_for_drafting": false,
     "step_when_unusable": "close-02",
-    "semantic_type_iri": "urn:effortless:pko-extension#OperationalBinding"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#OperationalBinding"
   },
   {
     "operational_binding_id": "bind-policy-consent",
@@ -45,7 +45,7 @@
     "resource_is_approved": false,
     "is_usable_for_drafting": false,
     "step_when_unusable": "policy-07",
-    "semantic_type_iri": "urn:effortless:pko-extension#OperationalBinding"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#OperationalBinding"
   },
   {
     "operational_binding_id": "bind-policy-email",
@@ -69,7 +69,7 @@
     "resource_is_approved": false,
     "is_usable_for_drafting": false,
     "step_when_unusable": "policy-07",
-    "semantic_type_iri": "urn:effortless:pko-extension#OperationalBinding"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#OperationalBinding"
   },
   {
     "operational_binding_id": "bind-policy-sms",
@@ -93,7 +93,7 @@
     "resource_is_approved": false,
     "is_usable_for_drafting": false,
     "step_when_unusable": "policy-07",
-    "semantic_type_iri": "urn:effortless:pko-extension#OperationalBinding"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#OperationalBinding"
   },
   {
     "operational_binding_id": "bind-policy-ticket",
@@ -117,6 +117,6 @@
     "resource_is_approved": false,
     "is_usable_for_drafting": false,
     "step_when_unusable": "policy-01",
-    "semantic_type_iri": "urn:effortless:pko-extension#OperationalBinding"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#OperationalBinding"
   }
 ]

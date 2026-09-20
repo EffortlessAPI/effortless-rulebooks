@@ -185,12 +185,68 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             }
         }
 
+        private ObservableCollection<StepCue> _stepCues;
+
+        [InverseProperty("FailureMode")]
+        public virtual ObservableCollection<StepCue> StepCues
+        {
+            get
+            {
+                if (_stepCues == null)
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access StepCues - no database context is set. FailureModeId: " + this.FailureModeId + ".");
+                        }
+                        _stepCues = new ObservableCollection<StepCue>();
+                    }
+                    else
+                    {
+                        var items = base.SoAContext.StepCues.Where(x => x.SignalsFailureMode == this.FailureModeId).ToList<StepCue>();
+                        _stepCues = new ObservableCollection<StepCue>(items);
+                        if (items.Any())
+                        {
+                            base.SoAContext.AttachRange(items);
+                        }
+                    }
+                    _stepCues.CollectionChanged += StepCues_CollectionChanged;
+                }
+                return _stepCues;
+            }
+            private set
+            {
+                if (_stepCues != null)
+                {
+                    _stepCues.CollectionChanged -= StepCues_CollectionChanged;
+                }
+                _stepCues = value;
+                if (_stepCues != null)
+                {
+                    _stepCues.CollectionChanged += StepCues_CollectionChanged;
+                }
+            }
+        }
+
+        private void StepCues_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems != null)
+            {
+                foreach (var item in e.NewItems.Cast<StepCue>())
+                {
+                    item.SignalsFailureMode = this.FailureModeId;
+                }
+            }
+        }
+
 
         protected override void LazyLoadProperties()
         {
             _ = this.StepRef;
             _ = this.ProcedureTargetRef;
             _ = this.Role;
+            _ = this.StepCues;
         }
 
         public override string ToString()

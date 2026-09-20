@@ -9,7 +9,8 @@
     "addressed_by_resource": "res-close-sop-pdf",
     "status": "Answered",
     "semantic_type_iri": "https://w3id.org/pko#UserQuestionOccurrence",
-    "name": "Why did the FX variance appear only after the cutover?"
+    "name": "Why did the FX variance appear only after the cutover?",
+    "is_unaddressed_question": false
   },
   {
     "user_question_id": "q-policy-ai",
@@ -21,6 +22,33 @@
     "addressed_by_resource": "res-policy-source",
     "status": "Answered",
     "semantic_type_iri": "https://w3id.org/pko#UserQuestionOccurrence",
-    "name": "Can the drafting AI add a new legal exception if it seems reasonable?"
+    "name": "Can the drafting AI add a new legal exception if it seems reasonable?",
+    "is_unaddressed_question": false
+  },
+  {
+    "user_question_id": "uq-loto-gauge",
+    "step_execution": "se-loto0714-06",
+    "asked_by_agent": "aisha-bello",
+    "asked_at": "2026-07-14 15:30:00",
+    "question_text": "The gauge flickers just above zero. Is that zero?",
+    "resolved_by_faq": "faq-loto-gauge",
+    "addressed_by_resource": "res-loto-v2-spec",
+    "status": "Answered",
+    "semantic_type_iri": "https://w3id.org/pko#UserQuestionOccurrence",
+    "name": "The gauge flickers just above zero. Is that zero?",
+    "is_unaddressed_question": false
+  },
+  {
+    "user_question_id": "uq-loto-press7",
+    "step_execution": "se-loto0709-03",
+    "asked_by_agent": "ken-watanabe",
+    "asked_at": "2026-07-10 03:20:00",
+    "question_text": "Does the press-7 retrofit use the standard isolation map?",
+    "resolved_by_faq": null,
+    "addressed_by_resource": null,
+    "status": "Open",
+    "semantic_type_iri": "https://w3id.org/pko#UserQuestionOccurrence",
+    "name": "Does the press-7 retrofit use the standard isolation map?",
+    "is_unaddressed_question": true
   }
 ]

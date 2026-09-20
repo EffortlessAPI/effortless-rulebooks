@@ -1,0 +1,58 @@
+[
+  {
+    "change_authority_rule_id": "gm-pko-rulebook|Documentation",
+    "name": "gm-pko-rulebook Documentation",
+    "governed_model": "gm-pko-rulebook",
+    "change_layer": "Documentation",
+    "permitted_role": "knowledge-engineer",
+    "approval_role": "knowledge-engineer",
+    "required_route": "DataOperations",
+    "when_permitted": "Any time, as a patch.",
+    "breakage_response": "Revert the documentation commit.",
+    "misrouted_request_count": 0,
+    "is_rule_bypassed": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ChangeAuthorityRule"
+  },
+  {
+    "change_authority_rule_id": "gm-pko-rulebook|Instance",
+    "name": "gm-pko-rulebook Instance",
+    "governed_model": "gm-pko-rulebook",
+    "change_layer": "Instance",
+    "permitted_role": "knowledge-engineer",
+    "approval_role": "knowledge-engineer",
+    "required_route": "DataOperations",
+    "when_permitted": "Any time, as a versioned data load.",
+    "breakage_response": "Restore the previous instance data version and re-run the loader.",
+    "misrouted_request_count": 0,
+    "is_rule_bypassed": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ChangeAuthorityRule"
+  },
+  {
+    "change_authority_rule_id": "gm-pko-rulebook|Schema",
+    "name": "gm-pko-rulebook Schema",
+    "governed_model": "gm-pko-rulebook",
+    "change_layer": "Schema",
+    "permitted_role": "knowledge-engineer",
+    "approval_role": "ontology-authority",
+    "required_route": "Governance",
+    "when_permitted": "Only through a change request with an impact assessment and a validation run.",
+    "breakage_response": "Roll back to the prior-state commit, open a defect change request, notify every consumer.",
+    "misrouted_request_count": 1,
+    "is_rule_bypassed": true,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ChangeAuthorityRule"
+  },
+  {
+    "change_authority_rule_id": "gm-pko-rulebook|Vocabulary",
+    "name": "gm-pko-rulebook Vocabulary",
+    "governed_model": "gm-pko-rulebook",
+    "change_layer": "Vocabulary",
+    "permitted_role": "knowledge-engineer",
+    "approval_role": "ontology-authority",
+    "required_route": "Governance",
+    "when_permitted": "Only through a change request reviewed by the authority.",
+    "breakage_response": "Withdraw the term and re-publish the vocabulary.",
+    "misrouted_request_count": 0,
+    "is_rule_bypassed": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ChangeAuthorityRule"
+  }
+]

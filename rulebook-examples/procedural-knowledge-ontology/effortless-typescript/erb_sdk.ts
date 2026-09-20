@@ -682,6 +682,20 @@ export interface OntologyProfilesRow {
   prerequisite_adopted_at: string | null;
   /** TRUE when a later-stage standard was adopted before the earlier-stage standard it builds on, or with none. */
   skips_adoption_path: boolean | null;
+  /** The funded programme that produced or supported this vocabulary. */
+  supporting_programme: string | null;
+  /** When the namespace was last fetched by tools/check_namespace_resolution.py. */
+  namespace_checked_at: string | null;
+  /** HTTP status the namespace returned when last fetched. */
+  namespace_http_status: number | null;
+  /** Whether fetching the namespace with an RDF Accept header returned RDF. */
+  namespace_serves_rdf: boolean | null;
+  /** Whether the namespace is an HTTP(S) URI, the first Linked Data requirement, rather than a urn: or other non-resolvable identifier. */
+  namespace_is_http: boolean | null;
+  /** The namespace is an HTTP URI and fetching it actually returned a document. */
+  namespace_dereferences: boolean | null;
+  /** The vocabulary is published the way Linked Data requires: an HTTP URI that resolves, serves RDF when asked for it, and carries links to other terms. */
+  publishes_following_linked_data_principles: boolean | null;
   _erb_errors?: Record<string, string>;
 }
 
@@ -712,6 +726,13 @@ const ontologyProfilesFieldTypes: Record<string, FieldType> = {
   prerequisite_profile: "*string",
   prerequisite_adopted_at: "*string",
   skips_adoption_path: "*bool",
+  supporting_programme: "*string",
+  namespace_checked_at: "*string",
+  namespace_http_status: "*int",
+  namespace_serves_rdf: "*bool",
+  namespace_is_http: "*bool",
+  namespace_dereferences: "*bool",
+  publishes_following_linked_data_principles: "*bool",
 };
 
 /** Computes the Name calculated field.
@@ -770,6 +791,27 @@ export function calcOntologyProfilesSkipsAdoptionPath(tc: OntologyProfilesRow): 
   return toBoolPtr(erbAnd(erbBool3(erbCmp(erbNullif(vInt(tc.adoption_stage)), ">", vI(1))), erbBool3(erbOr(erbBool3(erbIsBlank(vStr(tc.prerequisite_profile))), erbBool3(erbIsBlank(vStr(tc.prerequisite_adopted_at))), erbBool3(erbCmp(vStr(tc.prerequisite_adopted_at), ">", erbNullif(vStr(tc.adopted_at))))))));
 }
 
+/** Computes the NamespaceIsHttp calculated field.
+ *  Whether the namespace is an HTTP(S) URI, the first Linked Data requirement, rather than a urn: or other non-resolvable identifier.
+ *  Formula: =OR(LEFT({{NamespaceIri}}, 7) = "http://", LEFT({{NamespaceIri}}, 8) = "https://") */
+export function calcOntologyProfilesNamespaceIsHttp(tc: OntologyProfilesRow): boolean | null {
+  return toBoolPtr(erbOr(erbBool3(erbEq(erbLeft(vStr(tc.namespace_iri), vI(7)), vS("http://"))), erbBool3(erbEq(erbLeft(vStr(tc.namespace_iri), vI(8)), vS("https://")))));
+}
+
+/** Computes the NamespaceDereferences calculated field.
+ *  The namespace is an HTTP URI and fetching it actually returned a document.
+ *  Formula: =AND({{NamespaceIsHttp}}, {{NamespaceHttpStatus}} = 200) */
+export function calcOntologyProfilesNamespaceDereferences(tc: OntologyProfilesRow): boolean | null {
+  return toBoolPtr(erbAnd(erbBool3(vBool(tc.namespace_is_http)), erbBool3(erbEq(erbNullif(vInt(tc.namespace_http_status)), vI(200)))));
+}
+
+/** Computes the PublishesFollowingLinkedDataPrinciples calculated field.
+ *  The vocabulary is published the way Linked Data requires: an HTTP URI that resolves, serves RDF when asked for it, and carries links to other terms.
+ *  Formula: =AND({{NamespaceDereferences}}, {{NamespaceServesRdf}}, {{MappingCount}} > 0) */
+export function calcOntologyProfilesPublishesFollowingLinkedDataPrinciples(tc: OntologyProfilesRow): boolean | null {
+  return toBoolPtr(erbAnd(erbBool3(vBool(tc.namespace_dereferences)), erbIsTrue(vBool(tc.namespace_serves_rdf)), erbBool3(erbCmp(vInt(tc.mapping_count), ">", vI(0)))));
+}
+
 /** Computes every calculated field of the row in dependency order. */
 export function computeOntologyProfiles(tc: OntologyProfilesRow): OntologyProfilesRow {
   // Level 1
@@ -778,11 +820,14 @@ export function computeOntologyProfiles(tc: OntologyProfilesRow): OntologyProfil
   calcGuard(tc, ontologyProfilesFieldTypes, "days_since_major_revision", () => { tc.days_since_major_revision = calcOntologyProfilesDaysSinceMajorRevision(tc); });
   calcGuard(tc, ontologyProfilesFieldTypes, "days_since_dependency_reviewed", () => { tc.days_since_dependency_reviewed = calcOntologyProfilesDaysSinceDependencyReviewed(tc); });
   calcGuard(tc, ontologyProfilesFieldTypes, "skips_adoption_path", () => { tc.skips_adoption_path = calcOntologyProfilesSkipsAdoptionPath(tc); });
+  calcGuard(tc, ontologyProfilesFieldTypes, "namespace_is_http", () => { tc.namespace_is_http = calcOntologyProfilesNamespaceIsHttp(tc); });
   // Level 2
   calcGuard(tc, ontologyProfilesFieldTypes, "requires_frequent_review", () => { tc.requires_frequent_review = calcOntologyProfilesRequiresFrequentReview(tc); });
   calcGuard(tc, ontologyProfilesFieldTypes, "change_rate_profile", () => { tc.change_rate_profile = calcOntologyProfilesChangeRateProfile(tc); });
+  calcGuard(tc, ontologyProfilesFieldTypes, "namespace_dereferences", () => { tc.namespace_dereferences = calcOntologyProfilesNamespaceDereferences(tc); });
   // Level 3
   calcGuard(tc, ontologyProfilesFieldTypes, "is_review_overdue_for_change_rate", () => { tc.is_review_overdue_for_change_rate = calcOntologyProfilesIsReviewOverdueForChangeRate(tc); });
+  calcGuard(tc, ontologyProfilesFieldTypes, "publishes_following_linked_data_principles", () => { tc.publishes_following_linked_data_principles = calcOntologyProfilesPublishesFollowingLinkedDataPrinciples(tc); });
   return tc;
 }
 
@@ -812,6 +857,36 @@ export interface EvaluationContextsRow {
   rationale: string | null;
   /** Extension class IRI. */
   semantic_type_iri: string | null;
+  /** Pieces of knowledge on record, judged at this instant, that are written down. */
+  explicit_fragment_count: number | null;
+  /** Pieces of knowledge on record that live in practiced hands and were drawn out of a person. */
+  tacit_fragment_count: number | null;
+  /** Pieces of knowledge on record that everybody acts on and nobody had ever stated. */
+  implicit_fragment_count: number | null;
+  /** Pieces of knowledge on record that are a judgment call for one situation. */
+  situated_judgment_fragment_count: number | null;
+  /** Assistant answers on record where the language model did the reasoning itself. */
+  model_reasoned_answer_count: number | null;
+  /** Assistant answers on record where the reasoning was done by a query or a reasoner, or none was needed. */
+  otherwise_reasoned_answer_count: number | null;
+  /** Every assistant answer on record. */
+  assistant_answer_count: number | null;
+  /** Of the answers the language model reasoned out itself, how many of the tasks failed. */
+  model_reasoned_failed_answer_count: number | null;
+  /** Step executions on record that were carried out of the order the procedure specifies. */
+  out_of_order_step_execution_count: number | null;
+  /** Step executions on record that followed the order the procedure specifies. */
+  in_order_step_execution_count: number | null;
+  /** Every step execution on record. */
+  step_execution_count: number | null;
+  /** Step executions on record that began before the step they depend on had finished. */
+  early_start_step_execution_count: number | null;
+  /** Concepts of this book that map exactly onto a term PKO itself defines. */
+  exact_mapping_count: number | null;
+  /** Concepts of this book that map onto one of the older standards PKO reuses. */
+  aligned_mapping_count: number | null;
+  /** Concepts of this book that PKO does not define: the book's own extensions, labelled as such. */
+  extension_mapping_count: number | null;
   _erb_errors?: Record<string, string>;
 }
 
@@ -823,6 +898,21 @@ const evaluationContextsFieldTypes: Record<string, FieldType> = {
   is_current: "*bool",
   rationale: "*string",
   semantic_type_iri: "*string",
+  explicit_fragment_count: "*int",
+  tacit_fragment_count: "*int",
+  implicit_fragment_count: "*int",
+  situated_judgment_fragment_count: "*int",
+  model_reasoned_answer_count: "*int",
+  otherwise_reasoned_answer_count: "*int",
+  assistant_answer_count: "*int",
+  model_reasoned_failed_answer_count: "*int",
+  out_of_order_step_execution_count: "*int",
+  in_order_step_execution_count: "*int",
+  step_execution_count: "*int",
+  early_start_step_execution_count: "*int",
+  exact_mapping_count: "*int",
+  aligned_mapping_count: "*int",
+  extension_mapping_count: "*int",
 };
 
 /** Computes the Name calculated field.
@@ -832,10 +922,26 @@ export function calcEvaluationContextsName(tc: EvaluationContextsRow): string | 
   return toStringPtr(erbConcat(erbText(vStr(tc.label)), vS(" @ "), erbDatetimeText(vStrPlain(tc.as_of_instant))));
 }
 
+/** Computes the AssistantAnswerCount calculated field.
+ *  Every assistant answer on record.
+ *  Formula: ={{ModelReasonedAnswerCount}} + {{OtherwiseReasonedAnswerCount}} */
+export function calcEvaluationContextsAssistantAnswerCount(tc: EvaluationContextsRow): number | null {
+  return toIntPtr(erbInteger(erbAdd(vInt(tc.model_reasoned_answer_count), vInt(tc.otherwise_reasoned_answer_count))));
+}
+
+/** Computes the StepExecutionCount calculated field.
+ *  Every step execution on record.
+ *  Formula: ={{OutOfOrderStepExecutionCount}} + {{InOrderStepExecutionCount}} */
+export function calcEvaluationContextsStepExecutionCount(tc: EvaluationContextsRow): number | null {
+  return toIntPtr(erbInteger(erbAdd(vInt(tc.out_of_order_step_execution_count), vInt(tc.in_order_step_execution_count))));
+}
+
 /** Computes every calculated field of the row in dependency order. */
 export function computeEvaluationContexts(tc: EvaluationContextsRow): EvaluationContextsRow {
   // Level 1
   calcGuard(tc, evaluationContextsFieldTypes, "name", () => { tc.name = calcEvaluationContextsName(tc); });
+  calcGuard(tc, evaluationContextsFieldTypes, "assistant_answer_count", () => { tc.assistant_answer_count = calcEvaluationContextsAssistantAnswerCount(tc); });
+  calcGuard(tc, evaluationContextsFieldTypes, "step_execution_count", () => { tc.step_execution_count = calcEvaluationContextsStepExecutionCount(tc); });
   return tc;
 }
 
@@ -2534,6 +2640,8 @@ export interface MentorshipsRow {
   days_since_started: number | null;
   /** TRUE for an apprenticeship started within three years. */
   is_recent_apprenticeship: boolean | null;
+  /** The name of the community of practice this mentorship belongs to. */
+  community_label: string | null;
   _erb_errors?: Record<string, string>;
 }
 
@@ -2556,6 +2664,7 @@ const mentorshipsFieldTypes: Record<string, FieldType> = {
   is_active: "*bool",
   days_since_started: "*int",
   is_recent_apprenticeship: "*bool",
+  community_label: "*string",
 };
 
 /** Computes the Name calculated field.
@@ -3590,6 +3699,8 @@ export interface ProcedureVersionsRow {
   declared_first_step_count: number | null;
   /** Steps of the version with no incoming transition. */
   graph_entry_step_count: number | null;
+  /** The organization that owns the procedure this row belongs to, one hop at a time from Procedures.OwnerOrganization. A row policy compares it to the caller's organization, so a plant sign-in never sees the finance close. */
+  owner_organization: string | null;
   _erb_errors?: Record<string, string>;
 }
 
@@ -3789,6 +3900,7 @@ const procedureVersionsFieldTypes: Record<string, FieldType> = {
   first_step_disagrees_with_graph: "*bool",
   declared_first_step_count: "*int",
   graph_entry_step_count: "*int",
+  owner_organization: "*string",
 };
 
 /** Computes the Name calculated field.
@@ -4843,6 +4955,8 @@ export interface StepsRow {
   declared_first_step_key: string | null;
   /** Step key when declared the fallback. */
   declared_fallback_step_key: string | null;
+  /** The organization that owns the procedure this row belongs to, one hop at a time from Procedures.OwnerOrganization. A row policy compares it to the caller's organization, so a plant sign-in never sees the finance close. */
+  owner_organization: string | null;
   _erb_errors?: Record<string, string>;
 }
 
@@ -4981,6 +5095,7 @@ const stepsFieldTypes: Record<string, FieldType> = {
   is_declared_fallback_step: "*bool",
   declared_first_step_key: "*string",
   declared_fallback_step_key: "*string",
+  owner_organization: "*string",
 };
 
 /** Computes the Name calculated field.
@@ -7283,6 +7398,8 @@ export interface KnowledgeFragmentsRow {
   corroboration_count: number | null;
   /** TRUE for approved knowledge no second session or practitioner supports. */
   rests_on_single_data_point: boolean | null;
+  /** The organization that owns the procedure this row belongs to, one hop at a time from Procedures.OwnerOrganization. A row policy compares it to the caller's organization, so a plant sign-in never sees the finance close. */
+  owner_organization: string | null;
   _erb_errors?: Record<string, string>;
 }
 
@@ -7375,6 +7492,7 @@ const knowledgeFragmentsFieldTypes: Record<string, FieldType> = {
   is_flattened_to_brittle_rule: "*bool",
   corroboration_count: "*int",
   rests_on_single_data_point: "*bool",
+  owner_organization: "*string",
 };
 
 /** Computes the Name calculated field.
@@ -7873,6 +7991,14 @@ export interface KnowledgeGapsRow {
   is_unattributed_gatekeeping: boolean | null;
   /** TRUE for blocking gatekept or sabotaged knowledge never drawn out and codified. */
   is_required_gatekept_uncodified: boolean | null;
+  /** The organization that owns the procedure this row belongs to, one hop at a time from Procedures.OwnerOrganization. A row policy compares it to the caller's organization, so a plant sign-in never sees the finance close. */
+  owner_organization: string | null;
+  /** The change to the book that was raised to close this gap, when there is one. */
+  answered_by_model_change_request: string | null;
+  /** What the change that answers this gap asks for. */
+  answering_change_title: string | null;
+  /** Where the change that answers this gap has got to. */
+  answering_change_status: string | null;
   _erb_errors?: Record<string, string>;
 }
 
@@ -7914,6 +8040,10 @@ const knowledgeGapsFieldTypes: Record<string, FieldType> = {
   is_gatekeeping_or_sabotage: "*bool",
   is_unattributed_gatekeeping: "*bool",
   is_required_gatekept_uncodified: "*bool",
+  owner_organization: "*string",
+  answered_by_model_change_request: "*string",
+  answering_change_title: "*string",
+  answering_change_status: "*string",
 };
 
 /** Computes the Name calculated field.
@@ -8392,6 +8522,18 @@ export interface ProcedureExecutionsRow {
   feedback_count: number | null;
   /** TRUE when an execution deviated from its steps and nobody filed any feedback about it. */
   is_unreported_mistake: boolean | null;
+  /** The organization that owns the procedure this row belongs to, one hop at a time from Procedures.OwnerOrganization. A row policy compares it to the caller's organization, so a plant sign-in never sees the finance close. */
+  owner_organization: string | null;
+  /** The knowledge gap this run stopped at: the procedure had no answer, so the run ended instead of someone guessing. */
+  stopped_at_knowledge_gap: string | null;
+  /** What nobody knows, in the gap this run stopped at. */
+  stopped_at_gap_statement: string | null;
+  /** Whether the gap this run stopped at is still open. */
+  stopped_at_gap_status: string | null;
+  /** The change to the book that answers the gap this run stopped at. */
+  stopped_at_gap_change_title: string | null;
+  /** Where the change that answers this run's gap has got to. */
+  stopped_at_gap_change_status: string | null;
   _erb_errors?: Record<string, string>;
 }
 
@@ -8495,6 +8637,12 @@ const procedureExecutionsFieldTypes: Record<string, FieldType> = {
   has_no_recorded_outcome: "*bool",
   feedback_count: "*int",
   is_unreported_mistake: "*bool",
+  owner_organization: "*string",
+  stopped_at_knowledge_gap: "*string",
+  stopped_at_gap_statement: "*string",
+  stopped_at_gap_status: "*string",
+  stopped_at_gap_change_title: "*string",
+  stopped_at_gap_change_status: "*string",
 };
 
 /** Computes the Name calculated field.
@@ -9134,6 +9282,12 @@ export interface StepExecutionsRow {
   broke_invariant: boolean | null;
   /** TRUE for an unfinished step whose prerequisite has not completed in the same execution. */
   is_blocked_by_incomplete_prerequisite: boolean | null;
+  /** The organization that owns the procedure this row belongs to, one hop at a time from Procedures.OwnerOrganization. A row policy compares it to the caller's organization, so a plant sign-in never sees the finance close. */
+  owner_organization: string | null;
+  /** Warning signs observed on this step execution that mean the step is not finished. */
+  incomplete_cue_observation_count: number | null;
+  /** A warning sign that means 'not finished' was seen on this step execution, so the normal next step must not be offered; only a fallback is. */
+  is_blocked_by_observed_cue: boolean | null;
   _erb_errors?: Record<string, string>;
 }
 
@@ -9274,6 +9428,9 @@ const stepExecutionsFieldTypes: Record<string, FieldType> = {
   deviation_execution_key: "*string",
   broke_invariant: "*bool",
   is_blocked_by_incomplete_prerequisite: "*bool",
+  owner_organization: "*string",
+  incomplete_cue_observation_count: "*int",
+  is_blocked_by_observed_cue: "*bool",
 };
 
 /** Computes the Name calculated field.
@@ -9787,6 +9944,13 @@ export function calcStepExecutionsIsBlockedByIncompletePrerequisite(tc: StepExec
   return toBoolPtr(erbAnd(erbBool3(erbIsNotBlank(vStr(tc.step_prerequisite))), erbBool3(erbEq(vInt(tc.completed_prerequisite_run_count), vI(0))), erbBool3(erbNe(erbNullif(vStr(tc.execution_status)), vS("Completed")))));
 }
 
+/** Computes the IsBlockedByObservedCue calculated field.
+ *  A warning sign that means 'not finished' was seen on this step execution, so the normal next step must not be offered; only a fallback is.
+ *  Formula: ={{IncompleteCueObservationCount}} > 0 */
+export function calcStepExecutionsIsBlockedByObservedCue(tc: StepExecutionsRow): boolean | null {
+  return toBoolPtr(erbCmp(vInt(tc.incomplete_cue_observation_count), ">", vI(0)));
+}
+
 /** Computes every calculated field of the row in dependency order. */
 export function computeStepExecutions(tc: StepExecutionsRow): StepExecutionsRow {
   // Level 1
@@ -9831,6 +9995,7 @@ export function computeStepExecutions(tc: StepExecutionsRow): StepExecutionsRow 
   calcGuard(tc, stepExecutionsFieldTypes, "ran_before_prerequisite_completed", () => { tc.ran_before_prerequisite_completed = calcStepExecutionsRanBeforePrerequisiteCompleted(tc); });
   calcGuard(tc, stepExecutionsFieldTypes, "broke_invariant", () => { tc.broke_invariant = calcStepExecutionsBrokeInvariant(tc); });
   calcGuard(tc, stepExecutionsFieldTypes, "is_blocked_by_incomplete_prerequisite", () => { tc.is_blocked_by_incomplete_prerequisite = calcStepExecutionsIsBlockedByIncompletePrerequisite(tc); });
+  calcGuard(tc, stepExecutionsFieldTypes, "is_blocked_by_observed_cue", () => { tc.is_blocked_by_observed_cue = calcStepExecutionsIsBlockedByObservedCue(tc); });
   // Level 2
   calcGuard(tc, stepExecutionsFieldTypes, "is_late", () => { tc.is_late = calcStepExecutionsIsLate(tc); });
   calcGuard(tc, stepExecutionsFieldTypes, "has_unevaluated_blocking_control", () => { tc.has_unevaluated_blocking_control = calcStepExecutionsHasUnevaluatedBlockingControl(tc); });
@@ -10804,6 +10969,8 @@ export interface ChangeRequestsRow {
   is_approved_decision: boolean | null;
   /** Extension class IRI. */
   semantic_type_iri: string | null;
+  /** The organization that owns the procedure this row belongs to, one hop at a time from Procedures.OwnerOrganization. A row policy compares it to the caller's organization, so a plant sign-in never sees the finance close. */
+  owner_organization: string | null;
   _erb_errors?: Record<string, string>;
 }
 
@@ -10853,6 +11020,7 @@ const changeRequestsFieldTypes: Record<string, FieldType> = {
   approved_version_key: "*string",
   is_approved_decision: "*bool",
   semantic_type_iri: "*string",
+  owner_organization: "*string",
 };
 
 /** Computes the Name calculated field.
@@ -11780,13 +11948,15 @@ export interface SemanticMappingsRow {
   mapping_relation: string | null;
   /** Versioned ontology profile containing the target term. */
   ontology_profile: string | null;
+  /** Whether the profile's namespace answered when it was last fetched. */
+  profile_namespace_dereferences: boolean | null;
   /** Mapping semantics and boundaries. */
   notes: string | null;
   /** A term in a reused standard that already means what this extension term means. */
   available_standard_iri: string | null;
   /** TRUE when an extension term was minted although a reused standard already has one. */
   reinvents_standard_term: boolean | null;
-  /** TRUE when a term was published under an identifier that is not an HTTP IRI, so it cannot be looked up and linked. */
+  /** The term cannot be looked up: either its IRI is not an HTTP URI, or the namespace it lives in did not answer when it was last fetched. Measured, not inferred from the IRI's spelling. */
   is_non_resolvable_term_iri: boolean | null;
   _erb_errors?: Record<string, string>;
 }
@@ -11799,6 +11969,7 @@ const semanticMappingsFieldTypes: Record<string, FieldType> = {
   target_iri: "*string",
   mapping_relation: "*string",
   ontology_profile: "*string",
+  profile_namespace_dereferences: "*bool",
   notes: "*string",
   available_standard_iri: "*string",
   reinvents_standard_term: "*bool",
@@ -11820,10 +11991,10 @@ export function calcSemanticMappingsReinventsStandardTerm(tc: SemanticMappingsRo
 }
 
 /** Computes the IsNonResolvableTermIri calculated field.
- *  TRUE when a term was published under an identifier that is not an HTTP IRI, so it cannot be looked up and linked.
- *  Formula: =AND({{MappingRelation}} = "extension", LEFT({{TargetIri}}, 4) <> "http") */
+ *  The term cannot be looked up: either its IRI is not an HTTP URI, or the namespace it lives in did not answer when it was last fetched. Measured, not inferred from the IRI's spelling.
+ *  Formula: =OR(LEFT({{TargetIri}}, 4) <> "http", AND({{OntologyProfile}} <> "", {{ProfileNamespaceDereferences}} = FALSE)) */
 export function calcSemanticMappingsIsNonResolvableTermIri(tc: SemanticMappingsRow): boolean | null {
-  return toBoolPtr(erbAnd(erbBool3(erbEq(erbNullif(vStr(tc.mapping_relation)), vS("extension"))), erbBool3(erbNe(erbLeft(vStr(tc.target_iri), vI(4)), vS("http")))));
+  return toBoolPtr(erbOr(erbBool3(erbNe(erbLeft(vStr(tc.target_iri), vI(4)), vS("http"))), erbBool3(erbAnd(erbBool3(erbIsNotBlank(vStr(tc.ontology_profile))), erbBool3(erbEq(vBool(tc.profile_namespace_dereferences), vB(false)))))));
 }
 
 /** Computes every calculated field of the row in dependency order. */
@@ -12013,6 +12184,8 @@ export interface RulebookFieldsRow {
   datatype: string | null;
   /** The field's formula when it is derived. Null for raw and relationship fields. */
   formula: string | null;
+  /** For a relationship field, the table it points at. Structural catalog metadata beside FieldType and Datatype; the published vocabulary reads it to give each object property its range. */
+  related_to: string | null;
   /** The role question that motivated this field's existence. Null for fields that predate the witness-loop exercise. */
   invented_for_question: string | null;
   /** TRUE when this field is computed rather than stored. */
@@ -12044,6 +12217,7 @@ const rulebookFieldsFieldTypes: Record<string, FieldType> = {
   field_type: "*string",
   datatype: "*string",
   formula: "*string",
+  related_to: "*string",
   invented_for_question: "*string",
   is_derived: "*bool",
   is_witness: "*bool",
@@ -12809,7 +12983,7 @@ export function loadVerificationOutcomesRows(file: string): VerificationOutcomes
 
 // =============================================================================
 // OBSERVEDTRANSITIONS TABLE
-// The proxy above cannot tell a walked fallback from a happy-path step that happens to share an endpoint. PKO models Transition as a first-class thing; its execution counterpart is missing. Without a table that records WHICH transition a step execution arrived by, 'has this fallback ever been walked' is permanently unanswerable rather than merely unanswered. This is an extension (urn:effortless:pko-extension#ObservedTransition), not a native PKO term.
+// The proxy above cannot tell a walked fallback from a happy-path step that happens to share an endpoint. PKO models Transition as a first-class thing; its execution counterpart is missing. Without a table that records WHICH transition a step execution arrived by, 'has this fallback ever been walked' is permanently unanswerable rather than merely unanswered. This is an extension (https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ObservedTransition), not a native PKO term.
 // =============================================================================
 
 /** A row in the ObservedTransitions table. */
@@ -14952,7 +15126,7 @@ export function loadAgentDecisionRecordsRows(file: string): AgentDecisionRecords
 
 // =============================================================================
 // DELIVEREDCOMMUNICATIONS TABLE
-// Everything above is a proxy for the real question, which is instance-level: THIS message, to THIS recipient, rendered from THIS template, authorized by THIS approval. The model has MessageTemplates and CommunicationPolicies as specifications and no record of a single thing ever sent. Without an instance table, 'can I show that what was sent matched what I approved' is permanently unanswerable rather than merely unanswered — and it is the question a disputing employee actually asks. Extension term (urn:effortless:pko-extension#DeliveredCommunication); PKO has no native class for a delivered artifact instance.
+// Everything above is a proxy for the real question, which is instance-level: THIS message, to THIS recipient, rendered from THIS template, authorized by THIS approval. The model has MessageTemplates and CommunicationPolicies as specifications and no record of a single thing ever sent. Without an instance table, 'can I show that what was sent matched what I approved' is permanently unanswerable rather than merely unanswered — and it is the question a disputing employee actually asks. Extension term (https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#DeliveredCommunication); PKO has no native class for a delivered artifact instance.
 // =============================================================================
 
 /** A row in the DeliveredCommunications table. */
@@ -15530,6 +15704,12 @@ export interface AppRoleProfilesRow {
   route_count: number | null;
   /** Semantic type IRI for this row. An extension: PKO does not model application presentation. */
   semantic_type_iri: string | null;
+  /** The device this role's experience is designed for: phone or tablet. */
+  device: string | null;
+  /** The route this role lands on after signing in. */
+  home_route: string | null;
+  /** The title of that home page, as the role would say it. */
+  home_title: string | null;
   _erb_errors?: Record<string, string>;
 }
 
@@ -15546,6 +15726,9 @@ const appRoleProfilesFieldTypes: Record<string, FieldType> = {
   sort_order: "*float64",
   route_count: "*float64",
   semantic_type_iri: "*string",
+  device: "*string",
+  home_route: "*string",
+  home_title: "*string",
 };
 
 /** Computes the Name calculated field.
@@ -15880,6 +16063,14 @@ export interface RulebookTablesRow {
   lacks_semantic_type_convention: boolean | null;
   /** TRUE for a governance table no access policy controls. */
   is_unsecured_governance_record: boolean | null;
+  /** How many of this table's row policies name a principal who is not an administrator and carry no row predicate, so that principal reads every row of the table. */
+  unrestricted_non_admin_policy_count: number | null;
+  /** How many of this table's row policies name a principal who is not an administrator and do cut the rows that principal sees. */
+  restricted_non_admin_policy_count: number | null;
+  /** Some principal who is not an administrator can read every row of this table: a policy exists, so the table is secured, but it controls nothing. This is the violation an access review looks for, and it is the reason 'has a policy' is not the test. */
+  is_readable_in_full_by_non_admin: boolean | null;
+  /** Every non-administrator who can reach this table reaches it through a policy that cuts rows. The table is not merely policed; access to it is controlled. */
+  is_controlled_for_every_non_admin: boolean | null;
   _erb_errors?: Record<string, string>;
 }
 
@@ -15907,6 +16098,10 @@ const rulebookTablesFieldTypes: Record<string, FieldType> = {
   semantic_type_iri_field_count: "*int",
   lacks_semantic_type_convention: "*bool",
   is_unsecured_governance_record: "*bool",
+  unrestricted_non_admin_policy_count: "*int",
+  restricted_non_admin_policy_count: "*int",
+  is_readable_in_full_by_non_admin: "*bool",
+  is_controlled_for_every_non_admin: "*bool",
 };
 
 /** Computes the Name calculated field.
@@ -15958,6 +16153,20 @@ export function calcRulebookTablesIsUnsecuredGovernanceRecord(tc: RulebookTables
   return toBoolPtr(erbAnd(erbBool3(erbEq(erbNullif(vStr(tc.subject_area)), vS("governance"))), erbBool3(erbEq(vNum(tc.policy_count), vI(0)))));
 }
 
+/** Computes the IsReadableInFullByNonAdmin calculated field.
+ *  Some principal who is not an administrator can read every row of this table: a policy exists, so the table is secured, but it controls nothing. This is the violation an access review looks for, and it is the reason 'has a policy' is not the test.
+ *  Formula: ={{UnrestrictedNonAdminPolicyCount}} > 0 */
+export function calcRulebookTablesIsReadableInFullByNonAdmin(tc: RulebookTablesRow): boolean | null {
+  return toBoolPtr(erbCmp(vInt(tc.unrestricted_non_admin_policy_count), ">", vI(0)));
+}
+
+/** Computes the IsControlledForEveryNonAdmin calculated field.
+ *  Every non-administrator who can reach this table reaches it through a policy that cuts rows. The table is not merely policed; access to it is controlled.
+ *  Formula: =AND({{RestrictedNonAdminPolicyCount}} > 0, {{UnrestrictedNonAdminPolicyCount}} = 0) */
+export function calcRulebookTablesIsControlledForEveryNonAdmin(tc: RulebookTablesRow): boolean | null {
+  return toBoolPtr(erbAnd(erbBool3(erbCmp(vInt(tc.restricted_non_admin_policy_count), ">", vI(0))), erbBool3(erbEq(vInt(tc.unrestricted_non_admin_policy_count), vI(0)))));
+}
+
 /** Computes every calculated field of the row in dependency order. */
 export function computeRulebookTables(tc: RulebookTablesRow): RulebookTablesRow {
   // Level 1
@@ -15968,6 +16177,8 @@ export function computeRulebookTables(tc: RulebookTablesRow): RulebookTablesRow 
   calcGuard(tc, rulebookTablesFieldTypes, "is_unaligned_to_standard", () => { tc.is_unaligned_to_standard = calcRulebookTablesIsUnalignedToStandard(tc); });
   calcGuard(tc, rulebookTablesFieldTypes, "lacks_semantic_type_convention", () => { tc.lacks_semantic_type_convention = calcRulebookTablesLacksSemanticTypeConvention(tc); });
   calcGuard(tc, rulebookTablesFieldTypes, "is_unsecured_governance_record", () => { tc.is_unsecured_governance_record = calcRulebookTablesIsUnsecuredGovernanceRecord(tc); });
+  calcGuard(tc, rulebookTablesFieldTypes, "is_readable_in_full_by_non_admin", () => { tc.is_readable_in_full_by_non_admin = calcRulebookTablesIsReadableInFullByNonAdmin(tc); });
+  calcGuard(tc, rulebookTablesFieldTypes, "is_controlled_for_every_non_admin", () => { tc.is_controlled_for_every_non_admin = calcRulebookTablesIsControlledForEveryNonAdmin(tc); });
   return tc;
 }
 
@@ -16933,6 +17144,8 @@ export interface ProcessMiningRunsRow {
   undocumented_path_count: number | null;
   /** TRUE when the enacted flow the run reconstructed contains a path the documentation lacks. */
   has_undocumented_enacted_path: boolean | null;
+  /** The share of the paths people really took that match the documented procedure, as a whole percent. */
+  conformance_percent: number | null;
   _erb_errors?: Record<string, string>;
 }
 
@@ -16960,6 +17173,7 @@ const processMiningRunsFieldTypes: Record<string, FieldType> = {
   is_deviation_unexplained_by_people: "*bool",
   undocumented_path_count: "*int",
   has_undocumented_enacted_path: "*bool",
+  conformance_percent: "*int",
 };
 
 /** Computes the Name calculated field.
@@ -17032,6 +17246,13 @@ export function calcProcessMiningRunsHasUndocumentedEnactedPath(tc: ProcessMinin
   return toBoolPtr(erbCmp(vInt(tc.undocumented_path_count), ">", vI(0)));
 }
 
+/** Computes the ConformancePercent calculated field.
+ *  The share of the paths people really took that match the documented procedure, as a whole percent.
+ *  Formula: =ROUND({{ConformanceRate}} * 100, 0) */
+export function calcProcessMiningRunsConformancePercent(tc: ProcessMiningRunsRow): number | null {
+  return toIntPtr(erbInteger(erbRound(erbMul(vNum(tc.conformance_rate), vI(100)), vI(0))));
+}
+
 /** Computes every calculated field of the row in dependency order. */
 export function computeProcessMiningRuns(tc: ProcessMiningRunsRow): ProcessMiningRunsRow {
   // Level 1
@@ -17044,6 +17265,7 @@ export function computeProcessMiningRuns(tc: ProcessMiningRunsRow): ProcessMinin
   calcGuard(tc, processMiningRunsFieldTypes, "is_conformant", () => { tc.is_conformant = calcProcessMiningRunsIsConformant(tc); });
   calcGuard(tc, processMiningRunsFieldTypes, "has_major_drift_from_documentation", () => { tc.has_major_drift_from_documentation = calcProcessMiningRunsHasMajorDriftFromDocumentation(tc); });
   calcGuard(tc, processMiningRunsFieldTypes, "is_stale_mining_evidence", () => { tc.is_stale_mining_evidence = calcProcessMiningRunsIsStaleMiningEvidence(tc); });
+  calcGuard(tc, processMiningRunsFieldTypes, "conformance_percent", () => { tc.conformance_percent = calcProcessMiningRunsConformancePercent(tc); });
   // Level 3
   calcGuard(tc, processMiningRunsFieldTypes, "is_drift_on_live_version", () => { tc.is_drift_on_live_version = calcProcessMiningRunsIsDriftOnLiveVersion(tc); });
   // Level 4
@@ -20510,6 +20732,14 @@ export interface StepCuesRow {
   incomplete_cue_step_key: string | null;
   /** Semantic type IRI. */
   semantic_type_iri: string | null;
+  /** How a technician on the floor would ask about this warning sign. The assistant offers it verbatim. */
+  operator_question: string | null;
+  /** The failure mode this warning sign is evidence of. Its recorded response is the assistant's answer. */
+  signals_failure_mode: string | null;
+  /** What to do, from the failure mode this sign points at. */
+  failure_mode_response: string | null;
+  /** A sign that means 'not finished' but points at no failure mode, so neither the runner nor the assistant can say what to do about it. */
+  is_unanswerable_sign: boolean | null;
   _erb_errors?: Record<string, string>;
 }
 
@@ -20527,6 +20757,10 @@ const stepCuesFieldTypes: Record<string, FieldType> = {
   danger_cue_step_key: "*string",
   incomplete_cue_step_key: "*string",
   semantic_type_iri: "*string",
+  operator_question: "*string",
+  signals_failure_mode: "*string",
+  failure_mode_response: "*string",
+  is_unanswerable_sign: "*bool",
 };
 
 /** Computes the Name calculated field.
@@ -20550,12 +20784,20 @@ export function calcStepCuesIncompleteCueStepKey(tc: StepCuesRow): string | null
   return toStringPtr(erbIf(erbIsTrue(vBool(tc.signals_incomplete_step)), () => vStr(tc.step), () => vS("")));
 }
 
+/** Computes the IsUnanswerableSign calculated field.
+ *  A sign that means 'not finished' but points at no failure mode, so neither the runner nor the assistant can say what to do about it.
+ *  Formula: =AND({{SignalsIncompleteStep}} = TRUE, {{SignalsFailureMode}} = "") */
+export function calcStepCuesIsUnanswerableSign(tc: StepCuesRow): boolean | null {
+  return toBoolPtr(erbAnd(erbBool3(erbEq(erbNullif(vBool(tc.signals_incomplete_step)), vB(true))), erbBool3(erbIsBlank(vStr(tc.signals_failure_mode)))));
+}
+
 /** Computes every calculated field of the row in dependency order. */
 export function computeStepCues(tc: StepCuesRow): StepCuesRow {
   // Level 1
   calcGuard(tc, stepCuesFieldTypes, "name", () => { tc.name = calcStepCuesName(tc); });
   calcGuard(tc, stepCuesFieldTypes, "danger_cue_step_key", () => { tc.danger_cue_step_key = calcStepCuesDangerCueStepKey(tc); });
   calcGuard(tc, stepCuesFieldTypes, "incomplete_cue_step_key", () => { tc.incomplete_cue_step_key = calcStepCuesIncompleteCueStepKey(tc); });
+  calcGuard(tc, stepCuesFieldTypes, "is_unanswerable_sign", () => { tc.is_unanswerable_sign = calcStepCuesIsUnanswerableSign(tc); });
   return tc;
 }
 
@@ -20597,6 +20839,14 @@ export interface CueObservationsRow {
   unescalated_execution_key: string | null;
   /** Semantic type IRI. */
   semantic_type_iri: string | null;
+  /** The organization that owns the procedure this row belongs to, one hop at a time from Procedures.OwnerOrganization. A row policy compares it to the caller's organization, so a plant sign-in never sees the finance close. */
+  owner_organization: string | null;
+  /** Whether the observed warning sign means the step is not finished. */
+  cue_signals_incomplete_step: boolean | null;
+  /** When the person it was escalated to acknowledged it. Blank until they do. */
+  acknowledged_at: string | null;
+  /** Escalated to someone who has not acknowledged it yet: the safety desk's inbox. */
+  is_awaiting_acknowledgement: boolean | null;
   _erb_errors?: Record<string, string>;
 }
 
@@ -20614,6 +20864,10 @@ const cueObservationsFieldTypes: Record<string, FieldType> = {
   unescalated_cue_key: "*string",
   unescalated_execution_key: "*string",
   semantic_type_iri: "*string",
+  owner_organization: "*string",
+  cue_signals_incomplete_step: "*bool",
+  acknowledged_at: "*string",
+  is_awaiting_acknowledgement: "*bool",
 };
 
 /** Computes the Name calculated field.
@@ -20644,11 +20898,19 @@ export function calcCueObservationsUnescalatedExecutionKey(tc: CueObservationsRo
   return toStringPtr(erbIf(erbBool3(vBool(tc.is_unescalated_danger_cue)), () => vStr(tc.step_execution), () => vS("")));
 }
 
+/** Computes the IsAwaitingAcknowledgement calculated field.
+ *  Escalated to someone who has not acknowledged it yet: the safety desk's inbox.
+ *  Formula: =AND({{WasEscalated}} = TRUE, {{AcknowledgedAt}} = "") */
+export function calcCueObservationsIsAwaitingAcknowledgement(tc: CueObservationsRow): boolean | null {
+  return toBoolPtr(erbAnd(erbBool3(erbEq(erbNullif(vBool(tc.was_escalated)), vB(true))), erbBool3(erbIsBlank(vStr(tc.acknowledged_at)))));
+}
+
 /** Computes every calculated field of the row in dependency order. */
 export function computeCueObservations(tc: CueObservationsRow): CueObservationsRow {
   // Level 1
   calcGuard(tc, cueObservationsFieldTypes, "name", () => { tc.name = calcCueObservationsName(tc); });
   calcGuard(tc, cueObservationsFieldTypes, "is_unescalated_danger_cue", () => { tc.is_unescalated_danger_cue = calcCueObservationsIsUnescalatedDangerCue(tc); });
+  calcGuard(tc, cueObservationsFieldTypes, "is_awaiting_acknowledgement", () => { tc.is_awaiting_acknowledgement = calcCueObservationsIsAwaitingAcknowledgement(tc); });
   // Level 2
   calcGuard(tc, cueObservationsFieldTypes, "unescalated_cue_key", () => { tc.unescalated_cue_key = calcCueObservationsUnescalatedCueKey(tc); });
   calcGuard(tc, cueObservationsFieldTypes, "unescalated_execution_key", () => { tc.unescalated_execution_key = calcCueObservationsUnescalatedExecutionKey(tc); });
@@ -22400,6 +22662,8 @@ export interface TermLabelVariantsRow {
   wording: string | null;
   /** Scheme the concept belongs to. */
   term_scheme: string | null;
+  /** The preferred label of the concept this wording belongs to. What a vocabulary search answers with, whichever wording was typed. */
+  term_pref_label: string | null;
   /** Scheme and wording. */
   wording_key: string | null;
   /** Scheme and wording for a preferred label. */
@@ -22428,6 +22692,7 @@ const termLabelVariantsFieldTypes: Record<string, FieldType> = {
   label_kind: "*string",
   wording: "*string",
   term_scheme: "*string",
+  term_pref_label: "*string",
   wording_key: "*string",
   pref_wording_key: "*string",
   concepts_sharing_wording: "*int",
@@ -23320,6 +23585,14 @@ export interface KnowledgeConsumerSystemsRow {
   is_immature_graph_platform: boolean | null;
   /** Semantic type IRI. */
   semantic_type_iri: string | null;
+  /** Whether the procedure knowledge this system holds can be queried structurally, rather than only opened and read by a person. */
+  is_computationally_queryable: boolean | null;
+  /** Whether the procedure knowledge this system holds can be checked automatically against rules. */
+  is_computationally_validatable: boolean | null;
+  /** The system holds procedure knowledge in a form that can be queried, validated and reasoned over computationally -- the shift that encoded representations made possible. */
+  holds_computationally_encoded_procedure_knowledge: boolean | null;
+  /** The system holds procedure knowledge that no machine can query, validate or reason over: storage without encoding. */
+  stores_procedure_knowledge_without_computational_access: boolean | null;
   _erb_errors?: Record<string, string>;
 }
 
@@ -23349,6 +23622,10 @@ const knowledgeConsumerSystemsFieldTypes: Record<string, FieldType> = {
   platform_capability_count: "*int",
   is_immature_graph_platform: "*bool",
   semantic_type_iri: "*string",
+  is_computationally_queryable: "*bool",
+  is_computationally_validatable: "*bool",
+  holds_computationally_encoded_procedure_knowledge: "*bool",
+  stores_procedure_knowledge_without_computational_access: "*bool",
 };
 
 /** Computes the Name calculated field.
@@ -23393,6 +23670,20 @@ export function calcKnowledgeConsumerSystemsIsImmatureGraphPlatform(tc: Knowledg
   return toBoolPtr(erbAnd(erbBool3(erbEq(erbNullif(vStr(tc.system_kind)), vS("KnowledgeGraphPlatform"))), erbBool3(erbCmp(vInt(tc.platform_capability_count), "<", vI(4)))));
 }
 
+/** Computes the HoldsComputationallyEncodedProcedureKnowledge calculated field.
+ *  The system holds procedure knowledge in a form that can be queried, validated and reasoned over computationally -- the shift that encoded representations made possible.
+ *  Formula: =AND({{HoldsProcedureKnowledge}}, {{IsComputationallyQueryable}}, {{IsComputationallyValidatable}}, {{HasReasoner}}) */
+export function calcKnowledgeConsumerSystemsHoldsComputationallyEncodedProcedureKnowledge(tc: KnowledgeConsumerSystemsRow): boolean | null {
+  return toBoolPtr(erbAnd(erbIsTrue(vBool(tc.holds_procedure_knowledge)), erbIsTrue(vBool(tc.is_computationally_queryable)), erbIsTrue(vBool(tc.is_computationally_validatable)), erbIsTrue(vBool(tc.has_reasoner))));
+}
+
+/** Computes the StoresProcedureKnowledgeWithoutComputationalAccess calculated field.
+ *  The system holds procedure knowledge that no machine can query, validate or reason over: storage without encoding.
+ *  Formula: =AND({{HoldsProcedureKnowledge}}, {{HoldsComputationallyEncodedProcedureKnowledge}} = FALSE) */
+export function calcKnowledgeConsumerSystemsStoresProcedureKnowledgeWithoutComputationalAccess(tc: KnowledgeConsumerSystemsRow): boolean | null {
+  return toBoolPtr(erbAnd(erbIsTrue(vBool(tc.holds_procedure_knowledge)), erbBool3(erbEq(vBool(tc.holds_computationally_encoded_procedure_knowledge), vB(false)))));
+}
+
 /** Computes every calculated field of the row in dependency order. */
 export function computeKnowledgeConsumerSystems(tc: KnowledgeConsumerSystemsRow): KnowledgeConsumerSystemsRow {
   // Level 1
@@ -23401,8 +23692,10 @@ export function computeKnowledgeConsumerSystems(tc: KnowledgeConsumerSystemsRow)
   calcGuard(tc, knowledgeConsumerSystemsFieldTypes, "is_unlinked_toolchain_component", () => { tc.is_unlinked_toolchain_component = calcKnowledgeConsumerSystemsIsUnlinkedToolchainComponent(tc); });
   calcGuard(tc, knowledgeConsumerSystemsFieldTypes, "semantic_layer_component_count", () => { tc.semantic_layer_component_count = calcKnowledgeConsumerSystemsSemanticLayerComponentCount(tc); });
   calcGuard(tc, knowledgeConsumerSystemsFieldTypes, "platform_capability_count", () => { tc.platform_capability_count = calcKnowledgeConsumerSystemsPlatformCapabilityCount(tc); });
+  calcGuard(tc, knowledgeConsumerSystemsFieldTypes, "holds_computationally_encoded_procedure_knowledge", () => { tc.holds_computationally_encoded_procedure_knowledge = calcKnowledgeConsumerSystemsHoldsComputationallyEncodedProcedureKnowledge(tc); });
   // Level 2
   calcGuard(tc, knowledgeConsumerSystemsFieldTypes, "is_immature_graph_platform", () => { tc.is_immature_graph_platform = calcKnowledgeConsumerSystemsIsImmatureGraphPlatform(tc); });
+  calcGuard(tc, knowledgeConsumerSystemsFieldTypes, "stores_procedure_knowledge_without_computational_access", () => { tc.stores_procedure_knowledge_without_computational_access = calcKnowledgeConsumerSystemsStoresProcedureKnowledgeWithoutComputationalAccess(tc); });
   return tc;
 }
 
@@ -24468,6 +24761,10 @@ export interface AssistantAnswersRow {
   wrong_because_graph_was_stale: boolean | null;
   /** Semantic type IRI. */
   semantic_type_iri: string | null;
+  /** The organization that owns the procedure this row belongs to, one hop at a time from Procedures.OwnerOrganization. A row policy compares it to the caller's organization, so a plant sign-in never sees the finance close. */
+  owner_organization: string | null;
+  /** The language model did the reasoning for this answer itself, and the task it was asked about ended in failure. */
+  model_reasoned_and_task_failed: boolean | null;
   _erb_errors?: Record<string, string>;
 }
 
@@ -24529,6 +24826,8 @@ const assistantAnswersFieldTypes: Record<string, FieldType> = {
   model_did_the_reasoning: "*bool",
   wrong_because_graph_was_stale: "*bool",
   semantic_type_iri: "*string",
+  owner_organization: "*string",
+  model_reasoned_and_task_failed: "*bool",
 };
 
 /** Computes the Name calculated field.
@@ -24650,6 +24949,13 @@ export function calcAssistantAnswersWrongBecauseGraphWasStale(tc: AssistantAnswe
   return toBoolPtr(erbAnd(erbBool3(erbEq(erbNullif(vStr(tc.retrieval_mode)), vS("StructuredQuery"))), erbBool3(erbEq(erbNullif(vBool(tc.was_correct)), vB(false))), erbBool3(erbCmp(vInt(tc.stale_grounding_count), ">", vI(0)))));
 }
 
+/** Computes the ModelReasonedAndTaskFailed calculated field.
+ *  The language model did the reasoning for this answer itself, and the task it was asked about ended in failure.
+ *  Formula: =AND({{ModelDidTheReasoning}}, {{TaskOutcome}} = "Failed") */
+export function calcAssistantAnswersModelReasonedAndTaskFailed(tc: AssistantAnswersRow): boolean | null {
+  return toBoolPtr(erbAnd(erbBool3(vBool(tc.model_did_the_reasoning)), erbBool3(erbEq(erbNullif(vStr(tc.task_outcome)), vS("Failed")))));
+}
+
 /** Computes every calculated field of the row in dependency order. */
 export function computeAssistantAnswers(tc: AssistantAnswersRow): AssistantAnswersRow {
   // Level 1
@@ -24670,6 +24976,8 @@ export function computeAssistantAnswers(tc: AssistantAnswersRow): AssistantAnswe
   calcGuard(tc, assistantAnswersFieldTypes, "document_interpretation_erred", () => { tc.document_interpretation_erred = calcAssistantAnswersDocumentInterpretationErred(tc); });
   calcGuard(tc, assistantAnswersFieldTypes, "model_did_the_reasoning", () => { tc.model_did_the_reasoning = calcAssistantAnswersModelDidTheReasoning(tc); });
   calcGuard(tc, assistantAnswersFieldTypes, "wrong_because_graph_was_stale", () => { tc.wrong_because_graph_was_stale = calcAssistantAnswersWrongBecauseGraphWasStale(tc); });
+  // Level 2
+  calcGuard(tc, assistantAnswersFieldTypes, "model_reasoned_and_task_failed", () => { tc.model_reasoned_and_task_failed = calcAssistantAnswersModelReasonedAndTaskFailed(tc); });
   return tc;
 }
 
@@ -33408,6 +33716,8 @@ export interface KnowledgeTransfersRow {
   is_ambient_absorption_by_non_practitioner: boolean | null;
   /** Semantic type IRI. */
   semantic_type_iri: string | null;
+  /** What was handed over, in words: the topic of the know-how. */
+  know_how_topic: string | null;
   _erb_errors?: Record<string, string>;
 }
 
@@ -33427,6 +33737,7 @@ const knowledgeTransfersFieldTypes: Record<string, FieldType> = {
   is_social_network_channel: "*bool",
   is_ambient_absorption_by_non_practitioner: "*bool",
   semantic_type_iri: "*string",
+  know_how_topic: "*string",
 };
 
 /** Computes the Name calculated field.
@@ -35067,8 +35378,384 @@ export function loadArtifactHandoffsRows(file: string): ArtifactHandoffsRow[] {
   return loadRows(file, { fields: artifactHandoffsFieldTypes }) as unknown as ArtifactHandoffsRow[];
 }
 
+// =============================================================================
+// APPACTIONS TABLE
+// One row per thing a role may DO in the app: the base table it writes, the operation, the access policy that permits it, and the derived value the page highlights afterwards. The app has no per-action endpoint; it executes these rows.
+// =============================================================================
+
+/** A row in the AppActions table. */
+export interface AppActionsRow {
+  /** Stable key, e.g. act-tech-start-lockout. */
+  app_action_id: string;
+  /** Display name. */
+  name: string | null;
+  /** The button's words. */
+  label: string | null;
+  /** The role that performs this action. */
+  owning_role: string | null;
+  /** The app route the action appears on. */
+  route_path: string | null;
+  /** The base table written. */
+  target_table: string | null;
+  /** INSERT or UPDATE, spelled as the policy's Command is. */
+  operation: string | null;
+  /** The write policy that permits it. Blank means nothing permits it. */
+  policy: string | null;
+  /** The derived value the page highlights after the write. */
+  watched_field: string | null;
+  /** The episode of the video series that performs this action on camera. */
+  story_episode: number | null;
+  /** What the action means, in the role's words. */
+  description: string | null;
+  /** The permitting policy's SQL command. */
+  policy_command: string | null;
+  /** Denial tests that exercise the permitting policy. */
+  policy_denial_test_count: number | null;
+  /** Whether the highlighted value is a boolean witness. */
+  watched_field_is_witness: boolean | null;
+  /** Fields this action writes. */
+  input_field_count: number | null;
+  /** No access policy permits this action, so the database would refuse it. */
+  is_unpermitted: boolean | null;
+  /** The permitting policy is for a different SQL command than the action performs. */
+  policy_command_disagrees: boolean | null;
+  /** Permitted, but no denial test proves the policy refuses anyone else. */
+  is_unproven_write: boolean | null;
+  /** Extension IRI. */
+  semantic_type_iri: string | null;
+  _erb_errors?: Record<string, string>;
+}
+
+const appActionsFieldTypes: Record<string, FieldType> = {
+  app_action_id: "string",
+  name: "*string",
+  label: "*string",
+  owning_role: "*string",
+  route_path: "*string",
+  target_table: "*string",
+  operation: "*string",
+  policy: "*string",
+  watched_field: "*string",
+  story_episode: "*int",
+  description: "*string",
+  policy_command: "*string",
+  policy_denial_test_count: "*int",
+  watched_field_is_witness: "*bool",
+  input_field_count: "*int",
+  is_unpermitted: "*bool",
+  policy_command_disagrees: "*bool",
+  is_unproven_write: "*bool",
+  semantic_type_iri: "*string",
+};
+
+/** Computes the Name calculated field.
+ *  Display name.
+ *  Formula: ={{Label}} */
+export function calcAppActionsName(tc: AppActionsRow): string | null {
+  return toStringPtr(vStr(tc.label));
+}
+
+/** Computes the IsUnpermitted calculated field.
+ *  No access policy permits this action, so the database would refuse it.
+ *  Formula: ={{Policy}} = "" */
+export function calcAppActionsIsUnpermitted(tc: AppActionsRow): boolean | null {
+  return toBoolPtr(erbIsBlank(vStr(tc.policy)));
+}
+
+/** Computes the PolicyCommandDisagrees calculated field.
+ *  The permitting policy is for a different SQL command than the action performs.
+ *  Formula: =AND({{Policy}} <> "", {{Operation}} <> {{PolicyCommand}}) */
+export function calcAppActionsPolicyCommandDisagrees(tc: AppActionsRow): boolean | null {
+  return toBoolPtr(erbAnd(erbBool3(erbIsNotBlank(vStr(tc.policy))), erbBool3(erbNe(erbNullif(vStr(tc.operation)), vStr(tc.policy_command)))));
+}
+
+/** Computes the IsUnprovenWrite calculated field.
+ *  Permitted, but no denial test proves the policy refuses anyone else.
+ *  Formula: =AND({{Policy}} <> "", {{PolicyDenialTestCount}} = 0) */
+export function calcAppActionsIsUnprovenWrite(tc: AppActionsRow): boolean | null {
+  return toBoolPtr(erbAnd(erbBool3(erbIsNotBlank(vStr(tc.policy))), erbBool3(erbEq(vInt(tc.policy_denial_test_count), vI(0)))));
+}
+
+/** Computes every calculated field of the row in dependency order. */
+export function computeAppActions(tc: AppActionsRow): AppActionsRow {
+  // Level 1
+  calcGuard(tc, appActionsFieldTypes, "name", () => { tc.name = calcAppActionsName(tc); });
+  calcGuard(tc, appActionsFieldTypes, "is_unpermitted", () => { tc.is_unpermitted = calcAppActionsIsUnpermitted(tc); });
+  calcGuard(tc, appActionsFieldTypes, "policy_command_disagrees", () => { tc.policy_command_disagrees = calcAppActionsPolicyCommandDisagrees(tc); });
+  calcGuard(tc, appActionsFieldTypes, "is_unproven_write", () => { tc.is_unproven_write = calcAppActionsIsUnprovenWrite(tc); });
+  return tc;
+}
+
+/** Reads AppActions rows from a JSON array file. */
+export function loadAppActionsRows(file: string): AppActionsRow[] {
+  return loadRows(file, { fields: appActionsFieldTypes }) as unknown as AppActionsRow[];
+}
+
+// =============================================================================
+// APPACTIONFIELDS TABLE
+// The fields one action writes, one row each, and where each value comes from: typed by the person, picked from a list, fixed by the action, or stamped by the server.
+// =============================================================================
+
+/** A row in the AppActionFields table. */
+export interface AppActionFieldsRow {
+  /** Stable key. */
+  app_action_field_id: string;
+  /** Display name. */
+  name: string | null;
+  /** The action. */
+  app_action: string | null;
+  /** The field written. */
+  target_field: string | null;
+  /** The label shown beside the input. */
+  field_label: string | null;
+  /** text, longtext, note (a long text that may be left empty), choice, toggle, date, fixed, or server. */
+  input_kind: string | null;
+  /** For fixed: the value. For server: what is stamped (agent, instant, id, iri). */
+  fixed_value: string | null;
+  /** For choice: the table whose rows are offered. */
+  choices_from: string | null;
+  /** Position in the form. */
+  sort_order: number | null;
+  /** raw, relationship, calculated, lookup or aggregation. */
+  target_field_type: string | null;
+  /** The action tries to write a value the model works out for itself. That is never allowed. */
+  writes_derived_field: boolean | null;
+  /** Extension IRI. */
+  semantic_type_iri: string | null;
+  _erb_errors?: Record<string, string>;
+}
+
+const appActionFieldsFieldTypes: Record<string, FieldType> = {
+  app_action_field_id: "string",
+  name: "*string",
+  app_action: "*string",
+  target_field: "*string",
+  field_label: "*string",
+  input_kind: "*string",
+  fixed_value: "*string",
+  choices_from: "*string",
+  sort_order: "*int",
+  target_field_type: "*string",
+  writes_derived_field: "*bool",
+  semantic_type_iri: "*string",
+};
+
+/** Computes the Name calculated field.
+ *  Display name.
+ *  Formula: ={{AppAction}} & " / " & {{FieldLabel}} */
+export function calcAppActionFieldsName(tc: AppActionFieldsRow): string | null {
+  return toStringPtr(erbConcat(erbText(vStr(tc.app_action)), vS(" / "), erbText(vStr(tc.field_label))));
+}
+
+/** Computes the WritesDerivedField calculated field.
+ *  The action tries to write a value the model works out for itself. That is never allowed.
+ *  Formula: =AND({{TargetField}} <> "", {{TargetFieldType}} <> "raw", {{TargetFieldType}} <> "relationship") */
+export function calcAppActionFieldsWritesDerivedField(tc: AppActionFieldsRow): boolean | null {
+  return toBoolPtr(erbAnd(erbBool3(erbIsNotBlank(vStr(tc.target_field))), erbBool3(erbNe(vStr(tc.target_field_type), vS("raw"))), erbBool3(erbNe(vStr(tc.target_field_type), vS("relationship")))));
+}
+
+/** Computes every calculated field of the row in dependency order. */
+export function computeAppActionFields(tc: AppActionFieldsRow): AppActionFieldsRow {
+  // Level 1
+  calcGuard(tc, appActionFieldsFieldTypes, "name", () => { tc.name = calcAppActionFieldsName(tc); });
+  calcGuard(tc, appActionFieldsFieldTypes, "writes_derived_field", () => { tc.writes_derived_field = calcAppActionFieldsWritesDerivedField(tc); });
+  return tc;
+}
+
+/** Reads AppActionFields rows from a JSON array file. */
+export function loadAppActionFieldsRows(file: string): AppActionFieldsRow[] {
+  return loadRows(file, { fields: appActionFieldsFieldTypes }) as unknown as AppActionFieldsRow[];
+}
+
+// =============================================================================
+// ABUNDANTKNOWLEDGEGAPS TABLE
+// The kinds of knowledge that an abundance of information does not supply, each pointing at the table in this model that represents it. One row per kind named in the source material's 'paradox of abundant knowledge'.
+// =============================================================================
+
+/** A row in the AbundantKnowledgeGaps table. */
+export interface AbundantKnowledgeGapsRow {
+  /** Readable key for the kind of knowledge. */
+  abundant_knowledge_gap_id: string;
+  /** Display name. */
+  name: string | null;
+  /** Short name of this kind of knowledge. */
+  label: string | null;
+  /** HumanJudgment | UndiscoveredTacitKnowledge | CuratedToUserAndUseCase. */
+  gap_kind: string | null;
+  /** What this kind of knowledge is. */
+  description: string | null;
+  /** Why having more information available does not produce this kind of knowledge. */
+  why_abundance_does_not_supply_it: string | null;
+  /** The table in this model that holds this kind of knowledge. */
+  represented_by_table: string | null;
+  /** Rows measured in the representing table, from the field catalog. This is how much of this kind of knowledge the model actually holds; a kind that is named but held nowhere reads zero. Deliberately a count rather than a yes/no: all three kinds are represented here, so a boolean would be all-true and would state nothing, while the counts differ and say which kind is thinnest. */
+  representing_table_row_count: number | null;
+  /** Semantic type. */
+  semantic_type_iri: string | null;
+  _erb_errors?: Record<string, string>;
+}
+
+const abundantKnowledgeGapsFieldTypes: Record<string, FieldType> = {
+  abundant_knowledge_gap_id: "string",
+  name: "*string",
+  label: "*string",
+  gap_kind: "*string",
+  description: "*string",
+  why_abundance_does_not_supply_it: "*string",
+  represented_by_table: "*string",
+  representing_table_row_count: "*int",
+  semantic_type_iri: "*string",
+};
+
+/** Computes the Name calculated field.
+ *  Display name.
+ *  Formula: ={{Label}} */
+export function calcAbundantKnowledgeGapsName(tc: AbundantKnowledgeGapsRow): string | null {
+  return toStringPtr(vStr(tc.label));
+}
+
+/** Computes every calculated field of the row in dependency order. */
+export function computeAbundantKnowledgeGaps(tc: AbundantKnowledgeGapsRow): AbundantKnowledgeGapsRow {
+  // Level 1
+  calcGuard(tc, abundantKnowledgeGapsFieldTypes, "name", () => { tc.name = calcAbundantKnowledgeGapsName(tc); });
+  return tc;
+}
+
+/** Reads AbundantKnowledgeGaps rows from a JSON array file. */
+export function loadAbundantKnowledgeGapsRows(file: string): AbundantKnowledgeGapsRow[] {
+  return loadRows(file, { fields: abundantKnowledgeGapsFieldTypes }) as unknown as AbundantKnowledgeGapsRow[];
+}
+
+// =============================================================================
+// ONTOLOGYSUPPORTPROGRAMMES TABLE
+// Funded research programmes that produced or supported the ontologies this model reuses. Recorded so the ontology authority can see what happens to a reused vocabulary when the programme behind it ends.
+// =============================================================================
+
+/** A row in the OntologySupportProgrammes table. */
+export interface OntologySupportProgrammesRow {
+  /** Readable key for the programme. */
+  ontology_support_programme_id: string;
+  /** Display name. */
+  name: string | null;
+  /** Full programme title. */
+  label: string | null;
+  /** Programme acronym. */
+  acronym: string | null;
+  /** Body that funded the programme. */
+  funder: string | null;
+  /** Grant agreement number, as published by the funder. */
+  grant_reference: string | null;
+  /** Public record of the programme. */
+  programme_iri: string | null;
+  /** Organization coordinating the programme. */
+  coordinator: string | null;
+  /** Programme start date, as published by the funder. */
+  started_on: string | null;
+  /** Programme end date, as published by the funder. */
+  ends_on: string | null;
+  /** Whether the programme's purpose is ontology development for industry. */
+  is_industry_focused: boolean | null;
+  /** Who this organization relies on to maintain the terms it took from this programme once the programme ends. Blank means nobody has been named. */
+  our_successor_steward: string | null;
+  /** Why the ontology authority tracks this programme, whether or not anything has been adopted from it yet. */
+  why_recorded: string | null;
+  /** The instant this row is judged against. */
+  evaluation_context: string | null;
+  /** The modelled instant. */
+  as_of_instant: string | null;
+  /** Ontology profiles in this model that name this programme. */
+  supported_profile_count: number | null;
+  /** Whether the programme has ended as of the modelled instant. */
+  has_ended: boolean | null;
+  /** Days from the modelled instant to the programme's end date. */
+  days_until_programme_ends: number | null;
+  /** The programme has ended and this organization has named nobody to maintain what it took from it. */
+  is_ended_with_no_steward_named: boolean | null;
+  /** The programme has not ended yet, ends within six months of the modelled instant, and nobody here has been named to maintain what we took from it. This is the window in which something can still be done about it. */
+  is_ending_soon_with_no_steward_named: boolean | null;
+  /** Semantic type. */
+  semantic_type_iri: string | null;
+  _erb_errors?: Record<string, string>;
+}
+
+const ontologySupportProgrammesFieldTypes: Record<string, FieldType> = {
+  ontology_support_programme_id: "string",
+  name: "*string",
+  label: "*string",
+  acronym: "*string",
+  funder: "*string",
+  grant_reference: "*string",
+  programme_iri: "*string",
+  coordinator: "*string",
+  started_on: "*string",
+  ends_on: "*string",
+  is_industry_focused: "*bool",
+  our_successor_steward: "*string",
+  why_recorded: "*string",
+  evaluation_context: "*string",
+  as_of_instant: "*string",
+  supported_profile_count: "*int",
+  has_ended: "*bool",
+  days_until_programme_ends: "*int",
+  is_ended_with_no_steward_named: "*bool",
+  is_ending_soon_with_no_steward_named: "*bool",
+  semantic_type_iri: "*string",
+};
+
+/** Computes the Name calculated field.
+ *  Display name.
+ *  Formula: ={{Label}} */
+export function calcOntologySupportProgrammesName(tc: OntologySupportProgrammesRow): string | null {
+  return toStringPtr(vStr(tc.label));
+}
+
+/** Computes the HasEnded calculated field.
+ *  Whether the programme has ended as of the modelled instant.
+ *  Formula: =AND({{EndsOn}} <> "", {{EndsOn}} < {{AsOfInstant}}) */
+export function calcOntologySupportProgrammesHasEnded(tc: OntologySupportProgrammesRow): boolean | null {
+  return toBoolPtr(erbAnd(erbBool3(erbIsNotBlank(vStr(tc.ends_on))), erbBool3(erbCmp(erbNullif(vStr(tc.ends_on)), "<", vStr(tc.as_of_instant)))));
+}
+
+/** Computes the DaysUntilProgrammeEnds calculated field.
+ *  Days from the modelled instant to the programme's end date.
+ *  Formula: =IF({{EndsOn}} = "", 0, DATETIME_DIFF({{EndsOn}}, {{AsOfInstant}}, "days")) */
+export function calcOntologySupportProgrammesDaysUntilProgrammeEnds(tc: OntologySupportProgrammesRow): number | null {
+  return toIntPtr(erbInteger(erbIf(erbBool3(erbIsBlank(vStr(tc.ends_on))), () => vI(0), () => erbDatetimeDiff(vStr(tc.ends_on), vStr(tc.as_of_instant), vS("days")))));
+}
+
+/** Computes the IsEndedWithNoStewardNamed calculated field.
+ *  The programme has ended and this organization has named nobody to maintain what it took from it.
+ *  Formula: =AND({{HasEnded}}, {{OurSuccessorSteward}} = "") */
+export function calcOntologySupportProgrammesIsEndedWithNoStewardNamed(tc: OntologySupportProgrammesRow): boolean | null {
+  return toBoolPtr(erbAnd(erbBool3(vBool(tc.has_ended)), erbBool3(erbIsBlank(vStr(tc.our_successor_steward)))));
+}
+
+/** Computes the IsEndingSoonWithNoStewardNamed calculated field.
+ *  The programme has not ended yet, ends within six months of the modelled instant, and nobody here has been named to maintain what we took from it. This is the window in which something can still be done about it.
+ *  Formula: =AND({{HasEnded}} = FALSE, {{EndsOn}} <> "", {{DaysUntilProgrammeEnds}} <= 180, {{OurSuccessorSteward}} = "") */
+export function calcOntologySupportProgrammesIsEndingSoonWithNoStewardNamed(tc: OntologySupportProgrammesRow): boolean | null {
+  return toBoolPtr(erbAnd(erbBool3(erbEq(vBool(tc.has_ended), vB(false))), erbBool3(erbIsNotBlank(vStr(tc.ends_on))), erbBool3(erbCmp(vInt(tc.days_until_programme_ends), "<=", vI(180))), erbBool3(erbIsBlank(vStr(tc.our_successor_steward)))));
+}
+
+/** Computes every calculated field of the row in dependency order. */
+export function computeOntologySupportProgrammes(tc: OntologySupportProgrammesRow): OntologySupportProgrammesRow {
+  // Level 1
+  calcGuard(tc, ontologySupportProgrammesFieldTypes, "name", () => { tc.name = calcOntologySupportProgrammesName(tc); });
+  calcGuard(tc, ontologySupportProgrammesFieldTypes, "has_ended", () => { tc.has_ended = calcOntologySupportProgrammesHasEnded(tc); });
+  calcGuard(tc, ontologySupportProgrammesFieldTypes, "days_until_programme_ends", () => { tc.days_until_programme_ends = calcOntologySupportProgrammesDaysUntilProgrammeEnds(tc); });
+  // Level 2
+  calcGuard(tc, ontologySupportProgrammesFieldTypes, "is_ended_with_no_steward_named", () => { tc.is_ended_with_no_steward_named = calcOntologySupportProgrammesIsEndedWithNoStewardNamed(tc); });
+  calcGuard(tc, ontologySupportProgrammesFieldTypes, "is_ending_soon_with_no_steward_named", () => { tc.is_ending_soon_with_no_steward_named = calcOntologySupportProgrammesIsEndingSoonWithNoStewardNamed(tc); });
+  return tc;
+}
+
+/** Reads OntologySupportProgrammes rows from a JSON array file. */
+export function loadOntologySupportProgrammesRows(file: string): OntologySupportProgrammesRow[] {
+  return loadRows(file, { fields: ontologySupportProgrammesFieldTypes }) as unknown as OntologySupportProgrammesRow[];
+}
+
 /** Bounds the runner's passes over the dataset. */
-export const calculatedFieldCount = 1676;
+export const calculatedFieldCount = 1702;
 
 /** Every table, in rulebook order. */
 export const erbTables: TableSpec[] = [
@@ -35113,7 +35800,20 @@ export const erbTables: TableSpec[] = [
   { name: "EvaluationContexts", file: "evaluation_contexts", rulebookRows: 1, fields: evaluationContextsFieldTypes,
     compute: (row: any) => computeEvaluationContexts(row as EvaluationContextsRow),
     lookups: [],
-    aggregations: [] },
+    aggregations: [
+      { field: "explicit_fragment_count", op: "COUNTIFS", table: "knowledge_fragments", criteria: [{ range: "knowledge_form", kind: "literal", literal: vS("Explicit") }] },
+      { field: "tacit_fragment_count", op: "COUNTIFS", table: "knowledge_fragments", criteria: [{ range: "knowledge_form", kind: "literal", literal: vS("Tacit") }] },
+      { field: "implicit_fragment_count", op: "COUNTIFS", table: "knowledge_fragments", criteria: [{ range: "knowledge_form", kind: "literal", literal: vS("Implicit") }] },
+      { field: "situated_judgment_fragment_count", op: "COUNTIFS", table: "knowledge_fragments", criteria: [{ range: "knowledge_form", kind: "literal", literal: vS("SituatedJudgment") }] },
+      { field: "model_reasoned_answer_count", op: "COUNTIFS", table: "assistant_answers", criteria: [{ range: "model_did_the_reasoning", kind: "literal", literal: vB(true) }] },
+      { field: "otherwise_reasoned_answer_count", op: "COUNTIFS", table: "assistant_answers", criteria: [{ range: "model_did_the_reasoning", kind: "literal", literal: vB(false) }] },
+      { field: "model_reasoned_failed_answer_count", op: "COUNTIFS", table: "assistant_answers", criteria: [{ range: "model_reasoned_and_task_failed", kind: "literal", literal: vB(true) }] },
+      { field: "out_of_order_step_execution_count", op: "COUNTIFS", table: "step_executions", criteria: [{ range: "is_out_of_specified_order", kind: "literal", literal: vB(true) }] },
+      { field: "in_order_step_execution_count", op: "COUNTIFS", table: "step_executions", criteria: [{ range: "is_out_of_specified_order", kind: "literal", literal: vB(false) }] },
+      { field: "early_start_step_execution_count", op: "COUNTIFS", table: "step_executions", criteria: [{ range: "ran_before_prerequisite_completed", kind: "literal", literal: vB(true) }] },
+      { field: "exact_mapping_count", op: "COUNTIFS", table: "semantic_mappings", criteria: [{ range: "mapping_relation", kind: "literal", literal: vS("exact") }] },
+      { field: "aligned_mapping_count", op: "COUNTIFS", table: "semantic_mappings", criteria: [{ range: "mapping_relation", kind: "literal", literal: vS("aligned") }] },
+      { field: "extension_mapping_count", op: "COUNTIFS", table: "semantic_mappings", criteria: [{ range: "mapping_relation", kind: "literal", literal: vS("extension") }] },] },
   { name: "Organizations", file: "organizations", rulebookRows: 18, fields: organizationsFieldTypes,
     compute: (row: any) => computeOrganizations(row as OrganizationsRow),
     lookups: [],
@@ -35222,7 +35922,8 @@ export const erbTables: TableSpec[] = [
   { name: "Mentorships", file: "mentorships", rulebookRows: 5, fields: mentorshipsFieldTypes,
     compute: (row: any) => computeMentorships(row as MentorshipsRow),
     lookups: [
-      { field: "as_of_instant", target: "evaluation_contexts", ret: "as_of_instant", key: "evaluation_context", match: "evaluation_context_id" },],
+      { field: "as_of_instant", target: "evaluation_contexts", ret: "as_of_instant", key: "evaluation_context", match: "evaluation_context_id" },
+      { field: "community_label", target: "communities_of_practice", ret: "label", key: "community_of_practice", match: "community_of_practice_id" },],
     aggregations: [] },
   { name: "ProcedureTypes", file: "procedure_types", rulebookRows: 17, fields: procedureTypesFieldTypes,
     compute: (row: any) => computeProcedureTypes(row as ProcedureTypesRow),
@@ -35282,7 +35983,8 @@ export const erbTables: TableSpec[] = [
       { field: "modifier_is_authority", target: "agents", ret: "agent_kind", key: "modified_by_agent", match: "agent_id" },
       { field: "status_is_pko", target: "lifecycle_statuses", ret: "is_pko_status", key: "status", match: "lifecycle_status_id" },
       { field: "procedure_type_of_version", target: "procedures", ret: "procedure_type", key: "procedure", match: "procedure_id" },
-      { field: "created_by_agent_kind", target: "agents", ret: "agent_kind", key: "created_by_agent", match: "agent_id" },],
+      { field: "created_by_agent_kind", target: "agents", ret: "agent_kind", key: "created_by_agent", match: "agent_id" },
+      { field: "owner_organization", target: "procedures", ret: "owner_organization", key: "procedure", match: "procedure_id" },],
     aggregations: [
       { field: "count_of_steps", op: "COUNTIFS", table: "steps", criteria: [{ range: "procedure_version", kind: "field", field: "procedure_version_id" }] },
       { field: "count_of_open_knowledge_gaps", op: "COUNTIFS", table: "knowledge_gaps", criteria: [{ range: "procedure_version", kind: "field", field: "procedure_version_id" }, { range: "status", kind: "literal", literal: vS("Open") }] },
@@ -35400,7 +36102,8 @@ export const erbTables: TableSpec[] = [
       { field: "version_procedure", target: "procedure_versions", ret: "procedure", key: "procedure_version", match: "procedure_version_id" },
       { field: "assigned_role_does_compliance_review", target: "roles", ret: "has_compliance_review_capability", key: "assigned_role", match: "role_id" },
       { field: "step_procedure_type", target: "procedure_versions", ret: "procedure_type_of_version", key: "procedure_version", match: "procedure_version_id" },
-      { field: "version_model_trace_count", target: "procedure_versions", ret: "process_model_trace_count", key: "procedure_version", match: "procedure_version_id" },],
+      { field: "version_model_trace_count", target: "procedure_versions", ret: "process_model_trace_count", key: "procedure_version", match: "procedure_version_id" },
+      { field: "owner_organization", target: "procedure_versions", ret: "owner_organization", key: "procedure_version", match: "procedure_version_id" },],
     aggregations: [
       { field: "blocking_requirement_count", op: "COUNTIFS", table: "step_requirements", criteria: [{ range: "blocking_step_key", kind: "field", field: "step_id" }] },
       { field: "stale_binding_count", op: "COUNTIFS", table: "operational_bindings", criteria: [{ range: "stale_binding_step_key", kind: "field", field: "step_id" }] },
@@ -35562,7 +36265,8 @@ export const erbTables: TableSpec[] = [
       { field: "owner_role_assignment_valid_from", target: "roles", ret: "current_assignment_valid_from", key: "owner_role", match: "role_id" },
       { field: "consuming_step_is_software_assigned", target: "steps", ret: "is_software_assigned", key: "step", match: "step_id" },
       { field: "consuming_step_agent_kind", target: "steps", ret: "assigned_agent_kind", key: "step", match: "step_id" },
-      { field: "owner_role_is_vacated", target: "roles", ret: "is_vacated_role", key: "owner_role", match: "role_id" },],
+      { field: "owner_role_is_vacated", target: "roles", ret: "is_vacated_role", key: "owner_role", match: "role_id" },
+      { field: "owner_organization", target: "procedure_versions", ret: "owner_organization", key: "procedure_version", match: "procedure_version_id" },],
     aggregations: [
       { field: "is_invoked_by_an_exception", op: "COUNTIFS", table: "exceptions", criteria: [{ range: "trigger_step", kind: "field", field: "step" }] },
       { field: "ratified_boundary_count", op: "COUNTIFS", table: "authority_boundaries", criteria: [{ range: "ratifying_fragment_key", kind: "field", field: "knowledge_fragment_id" }] },
@@ -35573,7 +36277,10 @@ export const erbTables: TableSpec[] = [
       { field: "as_of_instant", target: "evaluation_contexts", ret: "as_of_instant", key: "evaluation_context", match: "evaluation_context_id" },
       { field: "owner_agent", target: "roles", ret: "current_agent", key: "owner_role", match: "role_id" },
       { field: "owner_is_still_engaged", target: "agents", ret: "is_still_engaged", key: "owner_agent", match: "agent_id" },
-      { field: "owner_role_is_vacated", target: "roles", ret: "is_vacated_role", key: "owner_role", match: "role_id" },],
+      { field: "owner_role_is_vacated", target: "roles", ret: "is_vacated_role", key: "owner_role", match: "role_id" },
+      { field: "owner_organization", target: "procedure_versions", ret: "owner_organization", key: "procedure_version", match: "procedure_version_id" },
+      { field: "answering_change_title", target: "model_change_requests", ret: "title", key: "answered_by_model_change_request", match: "model_change_request_id" },
+      { field: "answering_change_status", target: "model_change_requests", ret: "status", key: "answered_by_model_change_request", match: "model_change_request_id" },],
     aggregations: [] },
   { name: "FAQs", file: "fa_qs", rulebookRows: 4, fields: fAQsFieldTypes,
     compute: (row: any) => computeFAQs(row as FAQsRow),
@@ -35588,7 +36295,12 @@ export const erbTables: TableSpec[] = [
     compute: (row: any) => computeProcedureExecutions(row as ProcedureExecutionsRow),
     lookups: [
       { field: "expected_step_count", target: "procedure_versions", ret: "specified_step_count", key: "procedure_version", match: "procedure_version_id" },
-      { field: "executed_version_is_fit", target: "procedure_versions", ret: "is_fit_to_execute", key: "procedure_version", match: "procedure_version_id" },],
+      { field: "executed_version_is_fit", target: "procedure_versions", ret: "is_fit_to_execute", key: "procedure_version", match: "procedure_version_id" },
+      { field: "owner_organization", target: "procedure_versions", ret: "owner_organization", key: "procedure_version", match: "procedure_version_id" },
+      { field: "stopped_at_gap_statement", target: "knowledge_gaps", ret: "statement", key: "stopped_at_knowledge_gap", match: "knowledge_gap_id" },
+      { field: "stopped_at_gap_status", target: "knowledge_gaps", ret: "status", key: "stopped_at_knowledge_gap", match: "knowledge_gap_id" },
+      { field: "stopped_at_gap_change_title", target: "knowledge_gaps", ret: "answering_change_title", key: "stopped_at_knowledge_gap", match: "knowledge_gap_id" },
+      { field: "stopped_at_gap_change_status", target: "knowledge_gaps", ret: "answering_change_status", key: "stopped_at_knowledge_gap", match: "knowledge_gap_id" },],
     aggregations: [
       { field: "completed_step_count", op: "COUNTIFS", table: "step_executions", criteria: [{ range: "completed_execution_key", kind: "field", field: "procedure_execution_id" }] },
       { field: "control_breach_count", op: "COUNTIFS", table: "step_executions", criteria: [{ range: "control_breach_execution_key", kind: "field", field: "procedure_execution_id" }] },
@@ -35656,7 +36368,8 @@ export const erbTables: TableSpec[] = [
       { field: "execution_version", target: "procedure_executions", ret: "procedure_version", key: "procedure_execution", match: "procedure_execution_id" },
       { field: "step_max_repetitions", target: "steps", ret: "max_repetitions", key: "step", match: "step_id" },
       { field: "step_input_variable_count", target: "steps", ret: "input_variable_count", key: "step", match: "step_id" },
-      { field: "step_prerequisite", target: "steps", ret: "prerequisite_step", key: "step", match: "step_id" },],
+      { field: "step_prerequisite", target: "steps", ret: "prerequisite_step", key: "step", match: "step_id" },
+      { field: "owner_organization", target: "procedure_executions", ret: "owner_organization", key: "procedure_execution", match: "procedure_execution_id" },],
     aggregations: [
       { field: "blocking_unmet_count", op: "COUNTIFS", table: "requirement_satisfactions", criteria: [{ range: "step_execution", kind: "field", field: "step_execution_id" }, { range: "is_blocking_and_unmet", kind: "literal", literal: vB(true) }] },
       { field: "blocking_unmet_count_safe", op: "COUNTIFS", table: "requirement_satisfactions", criteria: [{ range: "blocking_unmet_step_key", kind: "field", field: "step_execution_id" }] },
@@ -35680,7 +36393,8 @@ export const erbTables: TableSpec[] = [
       { field: "unescalated_danger_cue_count", op: "COUNTIFS", table: "cue_observations", criteria: [{ range: "unescalated_execution_key", kind: "field", field: "step_execution_id" }] },
       { field: "used_entity_count", op: "COUNTIFS", table: "execution_entities", criteria: [{ range: "used_execution_key", kind: "field", field: "step_execution_id" }] },
       { field: "generated_entity_count", op: "COUNTIFS", table: "execution_entities", criteria: [{ range: "generated_execution_key", kind: "field", field: "step_execution_id" }] },
-      { field: "completed_prerequisite_run_count", op: "COUNTIFS", table: "step_executions", criteria: [{ range: "step", kind: "field", field: "step_prerequisite" }, { range: "procedure_execution", kind: "field", field: "procedure_execution" }, { range: "execution_status", kind: "literal", literal: vS("Completed") }] },] },
+      { field: "completed_prerequisite_run_count", op: "COUNTIFS", table: "step_executions", criteria: [{ range: "step", kind: "field", field: "step_prerequisite" }, { range: "procedure_execution", kind: "field", field: "procedure_execution" }, { range: "execution_status", kind: "literal", literal: vS("Completed") }] },
+      { field: "incomplete_cue_observation_count", op: "COUNTIFS", table: "cue_observations", criteria: [{ range: "step_execution", kind: "field", field: "step_execution_id" }, { range: "cue_signals_incomplete_step", kind: "literal", literal: vB(true) }] },] },
   { name: "RequirementSatisfactions", file: "requirement_satisfactions", rulebookRows: 8, fields: requirementSatisfactionsFieldTypes,
     compute: (row: any) => computeRequirementSatisfactions(row as RequirementSatisfactionsRow),
     lookups: [
@@ -35732,7 +36446,8 @@ export const erbTables: TableSpec[] = [
       { field: "as_of_instant", target: "evaluation_contexts", ret: "as_of_instant", key: "evaluation_context", match: "evaluation_context_id" },
       { field: "authority_agent", target: "roles", ret: "current_agent", key: "authority_role", match: "role_id" },
       { field: "authority_role_label", target: "roles", ret: "label", key: "authority_role", match: "role_id" },
-      { field: "touches_live_version", target: "procedure_versions", ret: "is_live", key: "procedure_version", match: "procedure_version_id" },],
+      { field: "touches_live_version", target: "procedure_versions", ret: "is_live", key: "procedure_version", match: "procedure_version_id" },
+      { field: "owner_organization", target: "procedure_versions", ret: "owner_organization", key: "procedure_version", match: "procedure_version_id" },],
     aggregations: [] },
   { name: "ReviewEvents", file: "review_events", rulebookRows: 3, fields: reviewEventsFieldTypes,
     compute: (row: any) => computeReviewEvents(row as ReviewEventsRow),
@@ -35769,21 +36484,22 @@ export const erbTables: TableSpec[] = [
       { field: "drifted_send_count", op: "COUNTIFS", table: "message_deliveries", criteria: [{ range: "drifted_send_template_key", kind: "field", field: "message_template_id" }] },
       { field: "unanswered_delivery_count", op: "COUNTIFS", table: "message_deliveries", criteria: [{ range: "unanswered_template_key", kind: "field", field: "message_template_id" }] },
       { field: "transmitted_delivery_count", op: "COUNTIFS", table: "message_deliveries", criteria: [{ range: "transmitted_template_key", kind: "field", field: "message_template_id" }] },] },
-  { name: "SemanticMappings", file: "semantic_mappings", rulebookRows: 299, fields: semanticMappingsFieldTypes,
+  { name: "SemanticMappings", file: "semantic_mappings", rulebookRows: 357, fields: semanticMappingsFieldTypes,
     compute: (row: any) => computeSemanticMappings(row as SemanticMappingsRow),
-    lookups: [],
+    lookups: [
+      { field: "profile_namespace_dereferences", target: "ontology_profiles", ret: "namespace_dereferences", key: "ontology_profile", match: "ontology_profile_id" },],
     aggregations: [] },
-  { name: "WitnessLoops", file: "witness_loops", rulebookRows: 13, fields: witnessLoopsFieldTypes,
+  { name: "WitnessLoops", file: "witness_loops", rulebookRows: 16, fields: witnessLoopsFieldTypes,
     compute: (row: any) => computeWitnessLoops(row as WitnessLoopsRow),
     lookups: [],
     aggregations: [
       { field: "question_count", op: "COUNTIFS", table: "role_questions", criteria: [{ range: "witness_loop", kind: "field", field: "witness_loop_id" }] },] },
-  { name: "RoleQuestions", file: "role_questions", rulebookRows: 425, fields: roleQuestionsFieldTypes,
+  { name: "RoleQuestions", file: "role_questions", rulebookRows: 442, fields: roleQuestionsFieldTypes,
     compute: (row: any) => computeRoleQuestions(row as RoleQuestionsRow),
     lookups: [],
     aggregations: [
       { field: "predicate_count", op: "COUNTIFS", table: "rulebook_fields", criteria: [{ range: "invented_for_question", kind: "field", field: "role_question_id" }] },] },
-  { name: "RulebookFields", file: "rulebook_fields", rulebookRows: 5058, fields: rulebookFieldsFieldTypes,
+  { name: "RulebookFields", file: "rulebook_fields", rulebookRows: 5185, fields: rulebookFieldsFieldTypes,
     compute: (row: any) => computeRulebookFields(row as RulebookFieldsRow),
     lookups: [],
     aggregations: [
@@ -35928,7 +36644,7 @@ export const erbTables: TableSpec[] = [
       { field: "version_is_fit_now", target: "procedure_executions", ret: "executed_version_is_fit", key: "procedure_execution", match: "procedure_execution_id" },
       { field: "assurance_grade_now", target: "procedure_executions", ret: "assurance_grade", key: "procedure_execution", match: "procedure_execution_id" },],
     aggregations: [] },
-  { name: "AppRoleProfiles", file: "app_role_profiles", rulebookRows: 12, fields: appRoleProfilesFieldTypes,
+  { name: "AppRoleProfiles", file: "app_role_profiles", rulebookRows: 20, fields: appRoleProfilesFieldTypes,
     compute: (row: any) => computeAppRoleProfiles(row as AppRoleProfilesRow),
     lookups: [],
     aggregations: [
@@ -35952,7 +36668,7 @@ export const erbTables: TableSpec[] = [
     compute: (row: any) => computeAppRouteReferences(row as AppRouteReferencesRow),
     lookups: [],
     aggregations: [] },
-  { name: "RulebookTables", file: "rulebook_tables", rulebookRows: 260, fields: rulebookTablesFieldTypes,
+  { name: "RulebookTables", file: "rulebook_tables", rulebookRows: 264, fields: rulebookTablesFieldTypes,
     compute: (row: any) => computeRulebookTables(row as RulebookTablesRow),
     lookups: [],
     aggregations: [
@@ -35962,8 +36678,10 @@ export const erbTables: TableSpec[] = [
       { field: "semantic_mapping_count", op: "COUNTIFS", table: "semantic_mappings", criteria: [{ range: "source_path", kind: "field", field: "rulebook_table_id" }] },
       { field: "exact_mapping_count", op: "COUNTIFS", table: "semantic_mappings", criteria: [{ range: "source_path", kind: "field", field: "rulebook_table_id" }, { range: "mapping_relation", kind: "literal", literal: vS("exact") }] },
       { field: "aligned_mapping_count", op: "COUNTIFS", table: "semantic_mappings", criteria: [{ range: "source_path", kind: "field", field: "rulebook_table_id" }, { range: "mapping_relation", kind: "literal", literal: vS("aligned") }] },
-      { field: "semantic_type_iri_field_count", op: "COUNTIFS", table: "rulebook_fields", criteria: [{ range: "target_table", kind: "field", field: "rulebook_table_id" }, { range: "field_name", kind: "literal", literal: vS("SemanticTypeIri") }] },] },
-  { name: "AccessPrincipals", file: "access_principals", rulebookRows: 12, fields: accessPrincipalsFieldTypes,
+      { field: "semantic_type_iri_field_count", op: "COUNTIFS", table: "rulebook_fields", criteria: [{ range: "target_table", kind: "field", field: "rulebook_table_id" }, { range: "field_name", kind: "literal", literal: vS("SemanticTypeIri") }] },
+      { field: "unrestricted_non_admin_policy_count", op: "COUNTIFS", table: "access_policies", criteria: [{ range: "target_table", kind: "field", field: "rulebook_table_id" }, { range: "is_unrestricted_non_admin_grant", kind: "literal", literal: vB(true) }] },
+      { field: "restricted_non_admin_policy_count", op: "COUNTIFS", table: "access_policies", criteria: [{ range: "target_table", kind: "field", field: "rulebook_table_id" }, { range: "is_unrestricted_non_admin_grant", kind: "literal", literal: vB(false) }, { range: "principal_is_admin", kind: "literal", literal: vB(false) }] },] },
+  { name: "AccessPrincipals", file: "access_principals", rulebookRows: 20, fields: accessPrincipalsFieldTypes,
     compute: (row: any) => computeAccessPrincipals(row as AccessPrincipalsRow),
     lookups: [
       { field: "organization_scope", target: "roles", ret: "organization", key: "domain_role", match: "role_id" },
@@ -35972,32 +36690,32 @@ export const erbTables: TableSpec[] = [
       { field: "policy_count", op: "COUNTIFS", table: "access_policies", criteria: [{ range: "principal", kind: "field", field: "access_principal_id" }] },
       { field: "grant_count", op: "COUNTIFS", table: "field_grants", criteria: [{ range: "principal", kind: "field", field: "access_principal_id" }] },
       { field: "visible_table_count", op: "COUNTIFS", table: "role_schema_views", criteria: [{ range: "principal", kind: "field", field: "access_principal_id" }] },] },
-  { name: "AccessPolicies", file: "access_policies", rulebookRows: 202, fields: accessPoliciesFieldTypes,
+  { name: "AccessPolicies", file: "access_policies", rulebookRows: 781, fields: accessPoliciesFieldTypes,
     compute: (row: any) => computeAccessPolicies(row as AccessPoliciesRow),
     lookups: [
       { field: "principal_is_admin", target: "access_principals", ret: "is_administrator", key: "principal", match: "access_principal_id" },],
     aggregations: [
       { field: "denial_test_count", op: "COUNTIFS", table: "access_denial_tests", criteria: [{ range: "target_policy", kind: "field", field: "access_policy_id" }] },] },
-  { name: "FieldGrants", file: "field_grants", rulebookRows: 3639, fields: fieldGrantsFieldTypes,
+  { name: "FieldGrants", file: "field_grants", rulebookRows: 18467, fields: fieldGrantsFieldTypes,
     compute: (row: any) => computeFieldGrants(row as FieldGrantsRow),
     lookups: [
       { field: "field_table", target: "rulebook_fields", ret: "target_table", key: "target_field", match: "rulebook_field_id" },
       { field: "field_name", target: "rulebook_fields", ret: "field_name", key: "target_field", match: "rulebook_field_id" },
       { field: "field_is_derived", target: "rulebook_fields", ret: "is_derived", key: "target_field", match: "rulebook_field_id" },],
     aggregations: [] },
-  { name: "RoleSchemas", file: "role_schemas", rulebookRows: 12, fields: roleSchemasFieldTypes,
+  { name: "RoleSchemas", file: "role_schemas", rulebookRows: 20, fields: roleSchemasFieldTypes,
     compute: (row: any) => computeRoleSchemas(row as RoleSchemasRow),
     lookups: [],
     aggregations: [
       { field: "view_count", op: "COUNTIFS", table: "role_schema_views", criteria: [{ range: "role_schema", kind: "field", field: "role_schema_id" }] },] },
-  { name: "RoleSchemaViews", file: "role_schema_views", rulebookRows: 202, fields: roleSchemaViewsFieldTypes,
+  { name: "RoleSchemaViews", file: "role_schema_views", rulebookRows: 762, fields: roleSchemaViewsFieldTypes,
     compute: (row: any) => computeRoleSchemaViews(row as RoleSchemaViewsRow),
     lookups: [
       { field: "schema_name", target: "role_schemas", ret: "schema_name", key: "role_schema", match: "role_schema_id" },
       { field: "source_view", target: "rulebook_tables", ret: "physical_view", key: "target_table", match: "rulebook_table_id" },
       { field: "table_field_count", target: "rulebook_tables", ret: "field_count", key: "target_table", match: "rulebook_table_id" },],
     aggregations: [
-      { field: "column_count", op: "COUNTIFS", table: "field_grants", criteria: [{ range: "grant_key_when_readable", kind: "field", field: "grant_key" }] },] },
+      { field: "column_count", op: "COUNTIFS", table: "field_grants", criteria: [{ range: "principal", kind: "field", field: "principal" }, { range: "can_read", kind: "literal", literal: vB(true) }, { range: "field_table", kind: "field", field: "target_table" }] },] },
   { name: "JwtClaimMappings", file: "jwt_claim_mappings", rulebookRows: 4, fields: jwtClaimMappingsFieldTypes,
     compute: (row: any) => computeJwtClaimMappings(row as JwtClaimMappingsRow),
     lookups: [],
@@ -36007,14 +36725,14 @@ export const erbTables: TableSpec[] = [
     compute: (row: any) => computeAccessDenialTests(row as AccessDenialTestsRow),
     lookups: [],
     aggregations: [] },
-  { name: "AppUsers", file: "app_users", rulebookRows: 10, fields: appUsersFieldTypes,
+  { name: "AppUsers", file: "app_users", rulebookRows: 20, fields: appUsersFieldTypes,
     compute: (row: any) => computeAppUsers(row as AppUsersRow),
     lookups: [
       { field: "agent_kind", target: "agents", ret: "agent_kind", key: "linked_agent", match: "agent_id" },
       { field: "organization", target: "agents", ret: "organization", key: "linked_agent", match: "agent_id" },],
     aggregations: [
       { field: "assignment_count", op: "COUNTIFS", table: "principal_assignments", criteria: [{ range: "app_user", kind: "field", field: "app_user_id" }] },] },
-  { name: "PrincipalAssignments", file: "principal_assignments", rulebookRows: 12, fields: principalAssignmentsFieldTypes,
+  { name: "PrincipalAssignments", file: "principal_assignments", rulebookRows: 22, fields: principalAssignmentsFieldTypes,
     compute: (row: any) => computePrincipalAssignments(row as PrincipalAssignmentsRow),
     lookups: [
       { field: "principal_is_admin", target: "access_principals", ret: "is_administrator", key: "principal", match: "access_principal_id" },
@@ -36112,7 +36830,7 @@ export const erbTables: TableSpec[] = [
       { field: "substrate", target: "field_disagreements", ret: "substrate", key: "field_disagreement", match: "field_disagreement_id" },
       { field: "rulebook_field", target: "field_disagreements", ret: "rulebook_field", key: "field_disagreement", match: "field_disagreement_id" },],
     aggregations: [] },
-  { name: "KnowledgeMethods", file: "knowledge_methods", rulebookRows: 25, fields: knowledgeMethodsFieldTypes,
+  { name: "KnowledgeMethods", file: "knowledge_methods", rulebookRows: 26, fields: knowledgeMethodsFieldTypes,
     compute: (row: any) => computeKnowledgeMethods(row as KnowledgeMethodsRow),
     lookups: [],
     aggregations: [
@@ -36132,7 +36850,7 @@ export const erbTables: TableSpec[] = [
       { field: "evidence_count", op: "COUNTIFS", table: "claim_evidence", criteria: [{ range: "article_claim", kind: "field", field: "article_claim_id" }] },
       { field: "valid_evidence_count", op: "COUNTIFS", table: "claim_evidence", criteria: [{ range: "article_claim", kind: "field", field: "article_claim_id" }, { range: "is_valid", kind: "literal", literal: vB(true) }] },
       { field: "agreed_evidence_count", op: "COUNTIFS", table: "claim_evidence", criteria: [{ range: "article_claim", kind: "field", field: "article_claim_id" }, { range: "is_agreed_evidence", kind: "literal", literal: vB(true) }] },] },
-  { name: "ClaimEvidence", file: "claim_evidence", rulebookRows: 895, fields: claimEvidenceFieldTypes,
+  { name: "ClaimEvidence", file: "claim_evidence", rulebookRows: 900, fields: claimEvidenceFieldTypes,
     compute: (row: any) => computeClaimEvidence(row as ClaimEvidenceRow),
     lookups: [
       { field: "claim_kind", target: "article_claims", ret: "claim_kind", key: "article_claim", match: "article_claim_id" },
@@ -36148,7 +36866,7 @@ export const erbTables: TableSpec[] = [
       { field: "method_is_applied", target: "knowledge_methods", ret: "is_applied", key: "knowledge_method", match: "knowledge_method_id" },
       { field: "procedure_execution_count", target: "procedures", ret: "execution_count", key: "procedure", match: "procedure_id" },],
     aggregations: [] },
-  { name: "MethodApplications", file: "method_applications", rulebookRows: 19, fields: methodApplicationsFieldTypes,
+  { name: "MethodApplications", file: "method_applications", rulebookRows: 20, fields: methodApplicationsFieldTypes,
     compute: (row: any) => computeMethodApplications(row as MethodApplicationsRow),
     lookups: [],
     aggregations: [] },
@@ -36271,14 +36989,17 @@ export const erbTables: TableSpec[] = [
     aggregations: [] },
   { name: "StepCues", file: "step_cues", rulebookRows: 4, fields: stepCuesFieldTypes,
     compute: (row: any) => computeStepCues(row as StepCuesRow),
-    lookups: [],
+    lookups: [
+      { field: "failure_mode_response", target: "failure_modes", ret: "response", key: "signals_failure_mode", match: "failure_mode_id" },],
     aggregations: [
       { field: "observation_count", op: "COUNTIFS", table: "cue_observations", criteria: [{ range: "step_cue", kind: "field", field: "step_cue_id" }] },
       { field: "unescalated_observation_count", op: "COUNTIFS", table: "cue_observations", criteria: [{ range: "unescalated_cue_key", kind: "field", field: "step_cue_id" }] },] },
   { name: "CueObservations", file: "cue_observations", rulebookRows: 3, fields: cueObservationsFieldTypes,
     compute: (row: any) => computeCueObservations(row as CueObservationsRow),
     lookups: [
-      { field: "cue_requires_escalation", target: "step_cues", ret: "requires_escalation", key: "step_cue", match: "step_cue_id" },],
+      { field: "cue_requires_escalation", target: "step_cues", ret: "requires_escalation", key: "step_cue", match: "step_cue_id" },
+      { field: "owner_organization", target: "step_executions", ret: "owner_organization", key: "step_execution", match: "step_execution_id" },
+      { field: "cue_signals_incomplete_step", target: "step_cues", ret: "signals_incomplete_step", key: "step_cue", match: "step_cue_id" },],
     aggregations: [] },
   { name: "DecisionPoints", file: "decision_points", rulebookRows: 5, fields: decisionPointsFieldTypes,
     compute: (row: any) => computeDecisionPoints(row as DecisionPointsRow),
@@ -36390,7 +37111,8 @@ export const erbTables: TableSpec[] = [
   { name: "TermLabelVariants", file: "term_label_variants", rulebookRows: 53, fields: termLabelVariantsFieldTypes,
     compute: (row: any) => computeTermLabelVariants(row as TermLabelVariantsRow),
     lookups: [
-      { field: "term_scheme", target: "vocabulary_terms", ret: "vocabulary", key: "vocabulary_term", match: "vocabulary_term_id" },],
+      { field: "term_scheme", target: "vocabulary_terms", ret: "vocabulary", key: "vocabulary_term", match: "vocabulary_term_id" },
+      { field: "term_pref_label", target: "vocabulary_terms", ret: "pref_label", key: "vocabulary_term", match: "vocabulary_term_id" },],
     aggregations: [
       { field: "concepts_sharing_wording", op: "COUNTIFS", table: "term_label_variants", criteria: [{ range: "wording_key", kind: "field", field: "wording_key" }] },
       { field: "practitioner_mention_count", op: "COUNTIFS", table: "source_term_mentions", criteria: [{ range: "wording_key", kind: "field", field: "wording_key" }, { range: "mention_origin", kind: "literal", literal: vS("Practitioner") }] },
@@ -36520,7 +37242,8 @@ export const erbTables: TableSpec[] = [
       { field: "execution_of_context", target: "step_executions", ret: "procedure_execution", key: "step_execution", match: "step_execution_id" },
       { field: "context_step", target: "step_executions", ret: "step", key: "step_execution", match: "step_execution_id" },
       { field: "recommended_step_regulatory_count", target: "steps", ret: "regulatory_requirement_count", key: "recommended_step", match: "step_id" },
-      { field: "recommended_step_needs_human", target: "steps", ret: "requires_human_confirmation", key: "recommended_step", match: "step_id" },],
+      { field: "recommended_step_needs_human", target: "steps", ret: "requires_human_confirmation", key: "recommended_step", match: "step_id" },
+      { field: "owner_organization", target: "step_executions", ret: "owner_organization", key: "step_execution", match: "step_execution_id" },],
     aggregations: [
       { field: "grounding_count", op: "COUNTIFS", table: "answer_groundings", criteria: [{ range: "assistant_answer", kind: "field", field: "assistant_answer_id" }] },
       { field: "own_knowledge_grounding_count", op: "COUNTIFS", table: "answer_groundings", criteria: [{ range: "assistant_answer", kind: "field", field: "assistant_answer_id" }, { range: "is_from_own_knowledge", kind: "literal", literal: vB(true) }] },
@@ -37009,7 +37732,8 @@ export const erbTables: TableSpec[] = [
     compute: (row: any) => computeKnowledgeTransfers(row as KnowledgeTransfersRow),
     lookups: [
       { field: "from_organization", target: "agents", ret: "organization", key: "from_agent", match: "agent_id" },
-      { field: "recipient_role_count", target: "agents", ret: "count_of_current_role_assignments", key: "recipient_agent", match: "agent_id" },],
+      { field: "recipient_role_count", target: "agents", ret: "count_of_current_role_assignments", key: "recipient_agent", match: "agent_id" },
+      { field: "know_how_topic", target: "know_how_carriers", ret: "topic", key: "know_how", match: "know_how_carrier_id" },],
     aggregations: [] },
   { name: "KnowledgeRepositoryEntries", file: "knowledge_repository_entries", rulebookRows: 8, fields: knowledgeRepositoryEntriesFieldTypes,
     compute: (row: any) => computeKnowledgeRepositoryEntries(row as KnowledgeRepositoryEntriesRow),
@@ -37111,6 +37835,30 @@ export const erbTables: TableSpec[] = [
       { field: "declared_source_step", target: "step_variables", ret: "source_step", key: "step_variable", match: "step_variable_id" },
       { field: "declared_consumer_step", target: "step_variables", ret: "step", key: "step_variable", match: "step_variable_id" },],
     aggregations: [] },
+  { name: "AppActions", file: "app_actions", rulebookRows: 20, fields: appActionsFieldTypes,
+    compute: (row: any) => computeAppActions(row as AppActionsRow),
+    lookups: [
+      { field: "policy_command", target: "access_policies", ret: "command", key: "policy", match: "access_policy_id" },
+      { field: "policy_denial_test_count", target: "access_policies", ret: "denial_test_count", key: "policy", match: "access_policy_id" },
+      { field: "watched_field_is_witness", target: "rulebook_fields", ret: "is_witness", key: "watched_field", match: "rulebook_field_id" },],
+    aggregations: [
+      { field: "input_field_count", op: "COUNTIFS", table: "app_action_fields", criteria: [{ range: "app_action", kind: "field", field: "app_action_id" }] },] },
+  { name: "AppActionFields", file: "app_action_fields", rulebookRows: 100, fields: appActionFieldsFieldTypes,
+    compute: (row: any) => computeAppActionFields(row as AppActionFieldsRow),
+    lookups: [
+      { field: "target_field_type", target: "rulebook_fields", ret: "field_type", key: "target_field", match: "rulebook_field_id" },],
+    aggregations: [] },
+  { name: "AbundantKnowledgeGaps", file: "abundant_knowledge_gaps", rulebookRows: 3, fields: abundantKnowledgeGapsFieldTypes,
+    compute: (row: any) => computeAbundantKnowledgeGaps(row as AbundantKnowledgeGapsRow),
+    lookups: [
+      { field: "representing_table_row_count", target: "rulebook_tables", ret: "measured_row_count", key: "represented_by_table", match: "rulebook_table_id" },],
+    aggregations: [] },
+  { name: "OntologySupportProgrammes", file: "ontology_support_programmes", rulebookRows: 2, fields: ontologySupportProgrammesFieldTypes,
+    compute: (row: any) => computeOntologySupportProgrammes(row as OntologySupportProgrammesRow),
+    lookups: [
+      { field: "as_of_instant", target: "evaluation_contexts", ret: "as_of_instant", key: "evaluation_context", match: "evaluation_context_id" },],
+    aggregations: [
+      { field: "supported_profile_count", op: "COUNTIFS", table: "ontology_profiles", criteria: [{ range: "supporting_programme", kind: "field", field: "ontology_support_programme_id" }] },] },
 ];
 
 /** Materializes each vw_<entity>_closure view aggregations read. */

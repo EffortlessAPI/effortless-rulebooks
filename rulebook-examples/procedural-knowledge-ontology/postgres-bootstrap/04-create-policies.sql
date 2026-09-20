@@ -266,6 +266,8 @@ ALTER TABLE model_data_mapping_runs ENABLE ROW LEVEL SECURITY;
 ALTER TABLE artifact_handoffs ENABLE ROW LEVEL SECURITY;
 ALTER TABLE app_actions ENABLE ROW LEVEL SECURITY;
 ALTER TABLE app_action_fields ENABLE ROW LEVEL SECURITY;
+ALTER TABLE abundant_knowledge_gaps ENABLE ROW LEVEL SECURITY;
+ALTER TABLE ontology_support_programmes ENABLE ROW LEVEL SECURITY;
 
 -- TODO: Add specific RLS policies based on your security requirements
 -- Example:

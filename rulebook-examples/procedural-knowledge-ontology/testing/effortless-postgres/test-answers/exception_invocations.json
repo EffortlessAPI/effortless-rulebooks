@@ -20,6 +20,6 @@
     "approver_prepared_count": "0",
     "delegated_to_preparer": false,
     "is_ungoverned_invocation": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#ExceptionInvocation"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ExceptionInvocation"
   }
 ]

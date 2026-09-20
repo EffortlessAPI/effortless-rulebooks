@@ -1,0 +1,47 @@
+[
+  {
+    "process_design_decision_id": "pdd-deploy-gate",
+    "procedure_version": "deploy-v3.2.0",
+    "step": "deploy-03",
+    "decision": "Classify risk before the human release gate.",
+    "rationale": "The approver decides on a risk class rather than raw test output.",
+    "decided_by_agent": "grace-holloway",
+    "decided_at": "2025-12-20T09:00:00-05:00",
+    "recorded_at": "2025-12-21T09:00:00-05:00",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ProcessDesignDecision",
+    "name": "Classify risk before the human release gate.",
+    "is_commitment_without_rationale": false,
+    "days_before_recorded": 1,
+    "is_recorded_after_the_fact": false
+  },
+  {
+    "process_design_decision_id": "pdd-loto-night-deputy",
+    "procedure_version": "loto-v2.0.0",
+    "step": "loto-06",
+    "decision": "Escalate night-shift residual energy to the night safety deputy.",
+    "rationale": "",
+    "decided_by_agent": "lin-zhao",
+    "decided_at": "2026-05-18T09:00:00-05:00",
+    "recorded_at": "2026-07-10T09:00:00-05:00",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ProcessDesignDecision",
+    "name": "Escalate night-shift residual energy to the night safety dep",
+    "is_commitment_without_rationale": true,
+    "days_before_recorded": 53,
+    "is_recorded_after_the_fact": true
+  },
+  {
+    "process_design_decision_id": "pdd-loto-verify-cap",
+    "procedure_version": "loto-v2.0.0",
+    "step": "loto-06",
+    "decision": "Cap zero-energy verification at two attempts.",
+    "rationale": "A third attempt means isolation failed; it becomes an escalation, not another try.",
+    "decided_by_agent": "lin-zhao",
+    "decided_at": "2026-05-15T09:00:00-05:00",
+    "recorded_at": "2026-05-15T09:00:00-05:00",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ProcessDesignDecision",
+    "name": "Cap zero-energy verification at two attempts.",
+    "is_commitment_without_rationale": false,
+    "days_before_recorded": 0,
+    "is_recorded_after_the_fact": false
+  }
+]

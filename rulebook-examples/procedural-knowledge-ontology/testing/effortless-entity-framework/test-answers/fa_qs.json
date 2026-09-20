@@ -8,7 +8,23 @@
     "question": "Where are close workpapers stored?",
     "answer": "In the controlled close evidence repository linked from the execution record; email attachments are not the system of record.",
     "semantic_type_iri": "https://w3id.org/pko#FrequentlyAskedQuestion",
-    "name": "Where are close workpapers stored?"
+    "name": "Where are close workpapers stored?",
+    "resolution_count": 1,
+    "is_unused_faq": false
+  },
+  {
+    "faq_id": "faq-loto-gauge",
+    "procedure_version": "loto-v2.0.0",
+    "step": "loto-06",
+    "category": "Safety",
+    "target_kind": "Step",
+    "question": "What if the gauge reads slightly above zero?",
+    "answer": "It is not zero. Keep locks on, bleed again, and escalate if it persists.",
+    "resource": "res-loto-faq-page",
+    "semantic_type_iri": "https://w3id.org/pko#FrequentlyAskedQuestion",
+    "name": "What if the gauge reads slightly above zero?",
+    "resolution_count": 1,
+    "is_unused_faq": false
   },
   {
     "faq_id": "faq-policy-ai",
@@ -19,7 +35,9 @@
     "question": "Can the drafting AI approve a workforce policy?",
     "answer": "No. It may draft from approved sources, but a human policy owner and legal reviewer must approve the commitments.",
     "semantic_type_iri": "https://w3id.org/pko#FrequentlyAskedQuestion",
-    "name": "Can the drafting AI approve a workforce policy?"
+    "name": "Can the drafting AI approve a workforce policy?",
+    "resolution_count": 1,
+    "is_unused_faq": false
   },
   {
     "faq_id": "faq-policy-optout",
@@ -30,6 +48,8 @@
     "question": "What happens when an employee opts out of SMS?",
     "answer": "The pipeline suppresses SMS and continues through the approved email channel.",
     "semantic_type_iri": "https://w3id.org/pko#FrequentlyAskedQuestion",
-    "name": "What happens when an employee opts out of SMS?"
+    "name": "What happens when an employee opts out of SMS?",
+    "resolution_count": 0,
+    "is_unused_faq": true
   }
 ]

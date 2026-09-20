@@ -1,0 +1,167 @@
+[
+  {
+    "change_integrity_check_id": "cic-01-disjointness",
+    "model_change_request": "mcr-01",
+    "check_kind": "Disjointness",
+    "checked_by_agent": "sam-adeyemi",
+    "checked_at": "2026-04-09T09:00:00-05:00",
+    "result": "Clean",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ChangeIntegrityCheck",
+    "name": "mcr-01 Disjointness",
+    "checker_kind": "Human"
+  },
+  {
+    "change_integrity_check_id": "cic-01-domaininference",
+    "model_change_request": "mcr-01",
+    "check_kind": "DomainInference",
+    "checked_by_agent": "sam-adeyemi",
+    "checked_at": "2026-04-09T09:00:00-05:00",
+    "result": "Clean",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ChangeIntegrityCheck",
+    "name": "mcr-01 DomainInference",
+    "checker_kind": "Human"
+  },
+  {
+    "change_integrity_check_id": "cic-01-rangeconsistency",
+    "model_change_request": "mcr-01",
+    "check_kind": "RangeConsistency",
+    "checked_by_agent": "sam-adeyemi",
+    "checked_at": "2026-04-09T09:00:00-05:00",
+    "result": "Clean",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ChangeIntegrityCheck",
+    "name": "mcr-01 RangeConsistency",
+    "checker_kind": "Human"
+  },
+  {
+    "change_integrity_check_id": "cic-03-disjointness",
+    "model_change_request": "mcr-03",
+    "check_kind": "Disjointness",
+    "checked_by_agent": "sam-adeyemi",
+    "checked_at": "2026-06-05T09:00:00-05:00",
+    "result": "Clean",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ChangeIntegrityCheck",
+    "name": "mcr-03 Disjointness",
+    "checker_kind": "Human"
+  },
+  {
+    "change_integrity_check_id": "cic-03-domaininference",
+    "model_change_request": "mcr-03",
+    "check_kind": "DomainInference",
+    "checked_by_agent": "ontology-assistant-1-2",
+    "checked_at": "2026-06-05T09:00:00-05:00",
+    "result": "Clean",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ChangeIntegrityCheck",
+    "name": "mcr-03 DomainInference",
+    "checker_kind": "AIAgent"
+  },
+  {
+    "change_integrity_check_id": "cic-03-rangeconsistency",
+    "model_change_request": "mcr-03",
+    "check_kind": "RangeConsistency",
+    "checked_by_agent": "lin-zhao",
+    "checked_at": "2026-06-06T09:00:00-05:00",
+    "result": "ViolationFound",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ChangeIntegrityCheck",
+    "name": "mcr-03 RangeConsistency",
+    "checker_kind": "Human"
+  },
+  {
+    "change_integrity_check_id": "cic-04-disjointness",
+    "model_change_request": "mcr-04",
+    "check_kind": "Disjointness",
+    "checked_by_agent": "ontology-assistant-1-2",
+    "checked_at": "2026-06-19T09:00:00-05:00",
+    "result": "Clean",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ChangeIntegrityCheck",
+    "name": "mcr-04 Disjointness",
+    "checker_kind": "AIAgent"
+  },
+  {
+    "change_integrity_check_id": "cic-05-disjointness",
+    "model_change_request": "mcr-05",
+    "check_kind": "Disjointness",
+    "checked_by_agent": "sam-adeyemi",
+    "checked_at": "2026-06-21T09:00:00-05:00",
+    "result": "Clean",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ChangeIntegrityCheck",
+    "name": "mcr-05 Disjointness",
+    "checker_kind": "Human"
+  },
+  {
+    "change_integrity_check_id": "cic-05-domaininference",
+    "model_change_request": "mcr-05",
+    "check_kind": "DomainInference",
+    "checked_by_agent": "sam-adeyemi",
+    "checked_at": "2026-06-21T09:00:00-05:00",
+    "result": "Clean",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ChangeIntegrityCheck",
+    "name": "mcr-05 DomainInference",
+    "checker_kind": "Human"
+  },
+  {
+    "change_integrity_check_id": "cic-15-disjointness",
+    "model_change_request": "mcr-15",
+    "check_kind": "Disjointness",
+    "checked_by_agent": "sam-adeyemi",
+    "checked_at": "2026-07-08T09:00:00-05:00",
+    "result": "Clean",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ChangeIntegrityCheck",
+    "name": "mcr-15 Disjointness",
+    "checker_kind": "Human"
+  },
+  {
+    "change_integrity_check_id": "cic-15-domaininference",
+    "model_change_request": "mcr-15",
+    "check_kind": "DomainInference",
+    "checked_by_agent": "sam-adeyemi",
+    "checked_at": "2026-07-08T09:00:00-05:00",
+    "result": "Clean",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ChangeIntegrityCheck",
+    "name": "mcr-15 DomainInference",
+    "checker_kind": "Human"
+  },
+  {
+    "change_integrity_check_id": "cic-15-rangeconsistency",
+    "model_change_request": "mcr-15",
+    "check_kind": "RangeConsistency",
+    "checked_by_agent": "sam-adeyemi",
+    "checked_at": "2026-07-08T09:00:00-05:00",
+    "result": "Clean",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ChangeIntegrityCheck",
+    "name": "mcr-15 RangeConsistency",
+    "checker_kind": "Human"
+  },
+  {
+    "change_integrity_check_id": "cic-18-disjointness",
+    "model_change_request": "mcr-18",
+    "check_kind": "Disjointness",
+    "checked_by_agent": "nadia-petrova",
+    "checked_at": "2026-07-09T09:00:00-05:00",
+    "result": "Clean",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ChangeIntegrityCheck",
+    "name": "mcr-18 Disjointness",
+    "checker_kind": "Human"
+  },
+  {
+    "change_integrity_check_id": "cic-18-domaininference",
+    "model_change_request": "mcr-18",
+    "check_kind": "DomainInference",
+    "checked_by_agent": "sam-adeyemi",
+    "checked_at": "2026-07-09T09:00:00-05:00",
+    "result": "Clean",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ChangeIntegrityCheck",
+    "name": "mcr-18 DomainInference",
+    "checker_kind": "Human"
+  },
+  {
+    "change_integrity_check_id": "cic-18-rangeconsistency",
+    "model_change_request": "mcr-18",
+    "check_kind": "RangeConsistency",
+    "checked_by_agent": "sam-adeyemi",
+    "checked_at": "2026-07-09T09:00:00-05:00",
+    "result": "Clean",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ChangeIntegrityCheck",
+    "name": "mcr-18 RangeConsistency",
+    "checker_kind": "Human"
+  }
+]

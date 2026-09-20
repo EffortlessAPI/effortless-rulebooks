@@ -131,7 +131,7 @@ TABLES = [
       rel("AppAction", "AppActions", "The action."),
       rel("TargetField", "RulebookFields", "The field written."),
       raw("FieldLabel", "string", "The label shown beside the input."),
-      raw("InputKind", "string", "text, longtext, choice, toggle, date, fixed, or server."),
+      raw("InputKind", "string", "text, longtext, note (a long text that may be left empty), choice, toggle, date, fixed, or server."),
       raw("FixedValue", "string", "For fixed: the value. For server: what is stamped (agent, instant, id, iri)."),
       raw("ChoicesFrom", "string", "For choice: the table whose rows are offered."),
       raw("SortOrder", "integer", "Position in the form."),

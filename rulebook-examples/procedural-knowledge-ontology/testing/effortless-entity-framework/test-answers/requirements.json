@@ -40,7 +40,10 @@
     "is_evidenced_holding_control": true,
     "accountable_agent": null,
     "controlled_term": "vt-reconciliation",
-    "uses_controlled_vocabulary": true
+    "uses_controlled_vocabulary": true,
+    "is_regulatory_requirement": false,
+    "constraint_trace_count": 0,
+    "is_untraced_bound_constraint": true
   },
   {
     "requirement_id": "req-close-cutoff",
@@ -83,7 +86,10 @@
     "is_evidenced_holding_control": true,
     "accountable_agent": null,
     "controlled_term": "vt-cutoff",
-    "uses_controlled_vocabulary": true
+    "uses_controlled_vocabulary": true,
+    "is_regulatory_requirement": false,
+    "constraint_trace_count": 0,
+    "is_untraced_bound_constraint": true
   },
   {
     "requirement_id": "req-close-evidence",
@@ -126,7 +132,10 @@
     "has_meaningful_sample": true,
     "accountable_agent": null,
     "controlled_term": "vt-evidence-retention",
-    "uses_controlled_vocabulary": true
+    "uses_controlled_vocabulary": true,
+    "is_regulatory_requirement": false,
+    "constraint_trace_count": 0,
+    "is_untraced_bound_constraint": true
   },
   {
     "requirement_id": "req-close-human-approval",
@@ -169,7 +178,10 @@
     "has_meaningful_sample": true,
     "accountable_agent": null,
     "controlled_term": "vt-human-approval-gate",
-    "uses_controlled_vocabulary": true
+    "uses_controlled_vocabulary": true,
+    "is_regulatory_requirement": false,
+    "constraint_trace_count": 0,
+    "is_untraced_bound_constraint": true
   },
   {
     "requirement_id": "req-close-separation",
@@ -212,7 +224,145 @@
     "is_evidenced_holding_control": true,
     "accountable_agent": null,
     "controlled_term": "vt-segregation",
-    "uses_controlled_vocabulary": true
+    "uses_controlled_vocabulary": true,
+    "is_regulatory_requirement": false,
+    "constraint_trace_count": 0,
+    "is_untraced_bound_constraint": true
+  },
+  {
+    "requirement_id": "req-deploy-approval",
+    "label": "Recorded release approval",
+    "requirement_type": "Approval",
+    "statement": "No production rollout without a recorded release approval.",
+    "rationale": "Change control",
+    "is_blocking": true,
+    "accountable_role": "release-manager",
+    "regulatory_framework": "reg-change-control",
+    "semantic_type_iri": "https://w3id.org/pko#Requirement",
+    "name": "Recorded release approval",
+    "satisfaction_record_count": 0,
+    "step_binding_count": 1,
+    "is_bound_to_any_step": true,
+    "has_ever_been_evaluated": false,
+    "negative_outcome_count": 0,
+    "is_inoperative_control": true,
+    "is_decorative_control": false,
+    "has_ever_produced_negative": false,
+    "is_unfalsified_control": false,
+    "claims_a_witness_field": false,
+    "named_witness_field_exists": false,
+    "derived_has_computed_witness": false,
+    "witness_claim_is_unverified": false,
+    "is_unwitnessed_blocking_control": true,
+    "witness_fire_count": 0,
+    "witness_has_never_fired": false,
+    "evaluation_sample_size": 0,
+    "has_meaningful_sample": true,
+    "is_untested_witness": false,
+    "is_evidenced_holding_control": false,
+    "control_assurance_state": "Inoperative",
+    "unexercised_binding_count": 1,
+    "witness_is_partially_scoped": false,
+    "accountable_agent": "grace-holloway",
+    "has_named_owner": true,
+    "is_orphaned_blocking_control": false,
+    "is_unwatched_and_unowned": false,
+    "attestation_exposure_note": "Owned but unwitnessed: rests on human judgement.",
+    "unwatched_unowned_flag": "",
+    "uses_controlled_vocabulary": false,
+    "is_regulatory_requirement": true,
+    "constraint_trace_count": 1,
+    "is_untraced_bound_constraint": false
+  },
+  {
+    "requirement_id": "req-loto-personal-lock",
+    "label": "One person, one lock",
+    "requirement_type": "Safety",
+    "statement": "Every person working on the machine applies and removes their own lock.",
+    "rationale": "Hazardous energy control",
+    "is_blocking": true,
+    "accountable_role": "plant-safety-officer",
+    "regulatory_framework": "reg-hazardous-energy",
+    "semantic_type_iri": "https://w3id.org/pko#Requirement",
+    "name": "One person, one lock",
+    "satisfaction_record_count": 0,
+    "step_binding_count": 1,
+    "is_bound_to_any_step": true,
+    "has_ever_been_evaluated": false,
+    "negative_outcome_count": 0,
+    "is_inoperative_control": true,
+    "is_decorative_control": false,
+    "has_ever_produced_negative": false,
+    "is_unfalsified_control": false,
+    "claims_a_witness_field": false,
+    "named_witness_field_exists": false,
+    "derived_has_computed_witness": false,
+    "witness_claim_is_unverified": false,
+    "is_unwitnessed_blocking_control": true,
+    "witness_fire_count": 0,
+    "witness_has_never_fired": false,
+    "evaluation_sample_size": 0,
+    "has_meaningful_sample": true,
+    "is_untested_witness": false,
+    "is_evidenced_holding_control": false,
+    "control_assurance_state": "Inoperative",
+    "unexercised_binding_count": 1,
+    "witness_is_partially_scoped": false,
+    "accountable_agent": "lin-zhao",
+    "has_named_owner": true,
+    "is_orphaned_blocking_control": false,
+    "is_unwatched_and_unowned": false,
+    "attestation_exposure_note": "Owned but unwitnessed: rests on human judgement.",
+    "unwatched_unowned_flag": "",
+    "uses_controlled_vocabulary": false,
+    "is_regulatory_requirement": true,
+    "constraint_trace_count": 0,
+    "is_untraced_bound_constraint": true
+  },
+  {
+    "requirement_id": "req-loto-zero-energy",
+    "label": "Zero energy before work",
+    "requirement_type": "Safety",
+    "statement": "No maintenance starts until zero energy is verified at every isolation point.",
+    "rationale": "Hazardous energy control",
+    "is_blocking": true,
+    "accountable_role": "plant-safety-officer",
+    "regulatory_framework": "reg-hazardous-energy",
+    "semantic_type_iri": "https://w3id.org/pko#Requirement",
+    "name": "Zero energy before work",
+    "satisfaction_record_count": 0,
+    "step_binding_count": 1,
+    "is_bound_to_any_step": true,
+    "has_ever_been_evaluated": false,
+    "negative_outcome_count": 0,
+    "is_inoperative_control": true,
+    "is_decorative_control": false,
+    "has_ever_produced_negative": false,
+    "is_unfalsified_control": false,
+    "claims_a_witness_field": false,
+    "named_witness_field_exists": false,
+    "derived_has_computed_witness": false,
+    "witness_claim_is_unverified": false,
+    "is_unwitnessed_blocking_control": true,
+    "witness_fire_count": 0,
+    "witness_has_never_fired": false,
+    "evaluation_sample_size": 0,
+    "has_meaningful_sample": true,
+    "is_untested_witness": false,
+    "is_evidenced_holding_control": false,
+    "control_assurance_state": "Inoperative",
+    "unexercised_binding_count": 1,
+    "witness_is_partially_scoped": false,
+    "accountable_agent": "lin-zhao",
+    "has_named_owner": true,
+    "is_orphaned_blocking_control": false,
+    "is_unwatched_and_unowned": false,
+    "attestation_exposure_note": "Owned but unwitnessed: rests on human judgement.",
+    "unwatched_unowned_flag": "",
+    "uses_controlled_vocabulary": false,
+    "is_regulatory_requirement": true,
+    "constraint_trace_count": 1,
+    "is_untraced_bound_constraint": false
   },
   {
     "requirement_id": "req-policy-accessibility",
@@ -255,7 +405,10 @@
     "has_meaningful_sample": true,
     "accountable_agent": null,
     "controlled_term": "vt-accessibility",
-    "uses_controlled_vocabulary": true
+    "uses_controlled_vocabulary": true,
+    "is_regulatory_requirement": false,
+    "constraint_trace_count": 0,
+    "is_untraced_bound_constraint": true
   },
   {
     "requirement_id": "req-policy-consent",
@@ -298,7 +451,10 @@
     "has_meaningful_sample": true,
     "accountable_agent": null,
     "controlled_term": "vt-consent",
-    "uses_controlled_vocabulary": true
+    "uses_controlled_vocabulary": true,
+    "is_regulatory_requirement": false,
+    "constraint_trace_count": 0,
+    "is_untraced_bound_constraint": true
   },
   {
     "requirement_id": "req-policy-human-approval",
@@ -340,7 +496,10 @@
     "named_witness_field_exists": false,
     "has_meaningful_sample": true,
     "accountable_agent": null,
-    "uses_controlled_vocabulary": false
+    "uses_controlled_vocabulary": false,
+    "is_regulatory_requirement": false,
+    "constraint_trace_count": 0,
+    "is_untraced_bound_constraint": true
   },
   {
     "requirement_id": "req-policy-legal",
@@ -383,7 +542,10 @@
     "has_meaningful_sample": true,
     "accountable_agent": null,
     "controlled_term": "vt-legal-review",
-    "uses_controlled_vocabulary": true
+    "uses_controlled_vocabulary": true,
+    "is_regulatory_requirement": false,
+    "constraint_trace_count": 0,
+    "is_untraced_bound_constraint": true
   },
   {
     "requirement_id": "req-policy-optout",
@@ -426,7 +588,10 @@
     "has_meaningful_sample": true,
     "accountable_agent": null,
     "controlled_term": "vt-optout",
-    "uses_controlled_vocabulary": true
+    "uses_controlled_vocabulary": true,
+    "is_regulatory_requirement": false,
+    "constraint_trace_count": 0,
+    "is_untraced_bound_constraint": true
   },
   {
     "requirement_id": "req-policy-quiet-hours",
@@ -469,7 +634,10 @@
     "has_meaningful_sample": true,
     "accountable_agent": null,
     "controlled_term": "vt-quiet-hours",
-    "uses_controlled_vocabulary": true
+    "uses_controlled_vocabulary": true,
+    "is_regulatory_requirement": false,
+    "constraint_trace_count": 0,
+    "is_untraced_bound_constraint": true
   },
   {
     "requirement_id": "req-policy-retention",
@@ -512,7 +680,10 @@
     "has_meaningful_sample": true,
     "accountable_agent": null,
     "controlled_term": "vt-evidence-retention",
-    "uses_controlled_vocabulary": true
+    "uses_controlled_vocabulary": true,
+    "is_regulatory_requirement": false,
+    "constraint_trace_count": 0,
+    "is_untraced_bound_constraint": true
   },
   {
     "requirement_id": "req-policy-source",
@@ -554,6 +725,9 @@
     "named_witness_field_exists": false,
     "has_meaningful_sample": true,
     "accountable_agent": null,
-    "uses_controlled_vocabulary": false
+    "uses_controlled_vocabulary": false,
+    "is_regulatory_requirement": false,
+    "constraint_trace_count": 0,
+    "is_untraced_bound_constraint": true
   }
 ]

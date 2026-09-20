@@ -15,7 +15,7 @@
     "overall_score": 98.36,
     "imperfect_substrate_count": 7,
     "is_fully_conformant": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#ConformanceRun"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ConformanceRun"
   },
   {
     "conformance_run_id": "run-20260913-203118",
@@ -33,7 +33,7 @@
     "overall_score": 98.15,
     "imperfect_substrate_count": 7,
     "is_fully_conformant": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#ConformanceRun"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ConformanceRun"
   },
   {
     "conformance_run_id": "run-20260914-083430",
@@ -51,7 +51,7 @@
     "overall_score": 99.56,
     "imperfect_substrate_count": 3,
     "is_fully_conformant": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#ConformanceRun"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ConformanceRun"
   },
   {
     "conformance_run_id": "run-20260914-223223",
@@ -59,7 +59,7 @@
     "ran_on": "2026-09-14T22:32:23-05:00",
     "rulebook_commit": "c377d831",
     "answer_key_author": "compile-rulebook",
-    "is_latest": true,
+    "is_latest": false,
     "notes": "Plain build against the published tools (all eight at v2026.09.14.*), no local overrides; first run after the ERB build parameters and the EdgeFilterColumn closure shipped",
     "substrate_count": 7,
     "perfect_substrate_count": 5,
@@ -69,6 +69,24 @@
     "overall_score": 99.87,
     "imperfect_substrate_count": 2,
     "is_fully_conformant": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#ConformanceRun"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ConformanceRun"
+  },
+  {
+    "conformance_run_id": "run-20260914-231633",
+    "name": "run-20260914-231633",
+    "ran_on": "2026-09-14T23:16:33-05:00",
+    "rulebook_commit": "37d660d4",
+    "answer_key_author": "compile-rulebook",
+    "is_latest": true,
+    "notes": "rulebook-to-owl v2026.09.14.2309: COUNTIFS keyed on a non-PK field of the row, verbatim __key on every individual (keys containing '|'), blank-safe concatenation under erbBlankLogic=coerce, '#' inside a string literal compared whole, a scalar wrapped around an aggregation, and a refusal when two tables share a PK value (RulebookReleases key renamed pko-release-1.0.0). OWL 100%; every substrate with a closure engine agrees on all 67,616 cells; only xlsx (no closure engine) is short.",
+    "substrate_count": 7,
+    "perfect_substrate_count": 6,
+    "cells_tested": 473312,
+    "cells_passed": 473107,
+    "cells_failed": 205,
+    "overall_score": 99.96,
+    "imperfect_substrate_count": 1,
+    "is_fully_conformant": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ConformanceRun"
   }
 ]

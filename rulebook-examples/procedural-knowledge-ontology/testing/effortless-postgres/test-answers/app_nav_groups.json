@@ -4,160 +4,160 @@
     "name": "Assurance",
     "group_label": "Assurance",
     "route_count": "5",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppNavGroup"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppNavGroup"
   },
   {
     "app_nav_group_id": "attest",
     "name": "Attestation",
     "group_label": "Attestation",
     "route_count": "4",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppNavGroup"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppNavGroup"
   },
   {
     "app_nav_group_id": "audience",
     "name": "Audience",
     "group_label": "Audience",
     "route_count": "2",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppNavGroup"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppNavGroup"
   },
   {
     "app_nav_group_id": "authority",
     "name": "Authority",
     "group_label": "Authority",
     "route_count": "4",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppNavGroup"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppNavGroup"
   },
   {
     "app_nav_group_id": "backlog",
     "name": "My Backlog",
     "group_label": "My Backlog",
     "route_count": "3",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppNavGroup"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppNavGroup"
   },
   {
     "app_nav_group_id": "cadence",
     "name": "Cadence",
     "group_label": "Cadence",
     "route_count": "3",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppNavGroup"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppNavGroup"
   },
   {
     "app_nav_group_id": "compliance",
     "name": "Compliance",
     "group_label": "Compliance",
     "route_count": "8",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppNavGroup"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppNavGroup"
   },
   {
     "app_nav_group_id": "conformance",
     "name": "Conformance",
     "group_label": "Conformance",
     "route_count": "2",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppNavGroup"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppNavGroup"
   },
   {
     "app_nav_group_id": "controls",
     "name": "Controls",
     "group_label": "Controls",
     "route_count": "4",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppNavGroup"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppNavGroup"
   },
   {
     "app_nav_group_id": "delivery",
     "name": "Delivery",
     "group_label": "Delivery",
     "route_count": "5",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppNavGroup"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppNavGroup"
   },
   {
     "app_nav_group_id": "evidence",
     "name": "Evidence",
     "group_label": "Evidence",
     "route_count": "5",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppNavGroup"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppNavGroup"
   },
   {
     "app_nav_group_id": "execution",
     "name": "Execution",
     "group_label": "Execution",
     "route_count": "6",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppNavGroup"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppNavGroup"
   },
   {
     "app_nav_group_id": "governance",
     "name": "Governance",
     "group_label": "Governance",
     "route_count": "20",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppNavGroup"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppNavGroup"
   },
   {
     "app_nav_group_id": "inferences",
     "name": "Inferences",
     "group_label": "Inferences",
     "route_count": "4",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppNavGroup"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppNavGroup"
   },
   {
     "app_nav_group_id": "knowledge",
     "name": "Knowledge",
     "group_label": "Knowledge",
     "route_count": "11",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppNavGroup"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppNavGroup"
   },
   {
     "app_nav_group_id": "loops",
     "name": "Loops",
     "group_label": "Loops",
     "route_count": "2",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppNavGroup"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppNavGroup"
   },
   {
     "app_nav_group_id": "model",
     "name": "The Model",
     "group_label": "The Model",
     "route_count": "4",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppNavGroup"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppNavGroup"
   },
   {
     "app_nav_group_id": "ownership",
     "name": "Ownership",
     "group_label": "Ownership",
     "route_count": "5",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppNavGroup"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppNavGroup"
   },
   {
     "app_nav_group_id": "provenance",
     "name": "Provenance",
     "group_label": "Provenance",
     "route_count": "1",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppNavGroup"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppNavGroup"
   },
   {
     "app_nav_group_id": "quality",
     "name": "Quality",
     "group_label": "Quality",
     "route_count": "7",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppNavGroup"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppNavGroup"
   },
   {
     "app_nav_group_id": "readiness",
     "name": "Readiness",
     "group_label": "Readiness",
     "route_count": "13",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppNavGroup"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppNavGroup"
   },
   {
     "app_nav_group_id": "selfcheck",
     "name": "Self-check",
     "group_label": "Self-check",
     "route_count": "7",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppNavGroup"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppNavGroup"
   },
   {
     "app_nav_group_id": "witnesses",
     "name": "Witnesses",
     "group_label": "Witnesses",
     "route_count": "2",
-    "semantic_type_iri": "urn:effortless:pko-extension#AppNavGroup"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppNavGroup"
   }
 ]

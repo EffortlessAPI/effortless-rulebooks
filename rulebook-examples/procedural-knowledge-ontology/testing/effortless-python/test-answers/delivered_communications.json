@@ -11,7 +11,7 @@
     "rendered_content_hash": null,
     "approved_content_hash": null,
     "delivery_status": "NotYetSent",
-    "semantic_type_iri": "urn:effortless:pko-extension#DeliveredCommunication",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#DeliveredCommunication",
     "name": "Email -> emp-anon-0001 @ ",
     "has_authorization": false,
     "is_defensible": false,

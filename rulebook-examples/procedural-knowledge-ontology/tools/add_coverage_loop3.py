@@ -15,7 +15,7 @@ from collections import OrderedDict
 from pathlib import Path
 
 RB = Path("effortless-rulebook/procedural-knowledge-ontology-rulebook.json")
-EXT = "urn:effortless:pko-extension#"
+EXT = "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#"
 
 
 def load():

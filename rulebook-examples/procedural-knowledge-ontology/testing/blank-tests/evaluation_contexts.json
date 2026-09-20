@@ -5,7 +5,22 @@
     "as_of_instant": "2026-07-19T13:00:00-05:00",
     "is_current": true,
     "rationale": "Shortly after the Q3 close execution and the policy notification run, so both procedure families have completed executions to witness against. Fixed as data so freshness and overdue answers are reproducible.",
-    "semantic_type_iri": "urn:effortless:pko-extension#EvaluationContext",
-    "name": null
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#EvaluationContext",
+    "name": null,
+    "explicit_fragment_count": null,
+    "tacit_fragment_count": null,
+    "implicit_fragment_count": null,
+    "situated_judgment_fragment_count": null,
+    "model_reasoned_answer_count": null,
+    "otherwise_reasoned_answer_count": null,
+    "assistant_answer_count": null,
+    "model_reasoned_failed_answer_count": null,
+    "out_of_order_step_execution_count": null,
+    "in_order_step_execution_count": null,
+    "step_execution_count": null,
+    "early_start_step_execution_count": null,
+    "exact_mapping_count": null,
+    "aligned_mapping_count": null,
+    "extension_mapping_count": null
   }
 ]

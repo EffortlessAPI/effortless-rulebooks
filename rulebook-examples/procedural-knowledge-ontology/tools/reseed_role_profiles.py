@@ -18,7 +18,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 RB = os.path.join(ROOT, "effortless-rulebook",
                   "procedural-knowledge-ontology-rulebook.json")
-IRI = "urn:effortless:pko-extension#"
+IRI = "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#"
 
 
 def snake(n):

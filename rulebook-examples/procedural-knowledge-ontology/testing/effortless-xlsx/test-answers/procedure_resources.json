@@ -5,7 +5,8 @@
     "resource": "res-erp-api",
     "relation": "references",
     "name": "close-v1.1.0 / res-erp-api",
-    "relation_iri": "http://purl.org/dc/terms/references"
+    "relation_iri": "http://purl.org/dc/terms/references",
+    "resource_modified_at": "2026-07-19 13:00:00"
   },
   {
     "procedure_resource_id": "pr-close-check",
@@ -13,7 +14,8 @@
     "resource": "res-close-checklist",
     "relation": "references",
     "name": "close-v1.1.0 / res-close-checklist",
-    "relation_iri": "http://purl.org/dc/terms/references"
+    "relation_iri": "http://purl.org/dc/terms/references",
+    "resource_modified_at": "2026-07-02 20:00:00"
   },
   {
     "procedure_resource_id": "pr-close-source",
@@ -21,7 +23,35 @@
     "resource": "res-close-sop-pdf",
     "relation": "wasExtractedFrom",
     "name": "close-v1.1.0 / res-close-sop-pdf",
-    "relation_iri": "https://w3id.org/pko#wasExtractedFrom"
+    "relation_iri": "https://w3id.org/pko#wasExtractedFrom",
+    "resource_modified_at": "2026-04-01 14:00:00"
+  },
+  {
+    "procedure_resource_id": "pr-deploy-runbook",
+    "procedure_version": "deploy-v3.2.0",
+    "resource": "res-deploy-runbook",
+    "relation": "wasExtractedFrom",
+    "name": "deploy-v3.2.0 / res-deploy-runbook",
+    "relation_iri": "https://w3id.org/pko#wasExtractedFrom",
+    "resource_modified_at": "2026-01-02 14:00:00"
+  },
+  {
+    "procedure_resource_id": "pr-loto2-sop",
+    "procedure_version": "loto-v2.0.0",
+    "resource": "res-loto-sop-2019",
+    "relation": "wasExtractedFrom",
+    "name": "loto-v2.0.0 / res-loto-sop-2019",
+    "relation_iri": "https://w3id.org/pko#wasExtractedFrom",
+    "resource_modified_at": "2019-03-01 14:00:00"
+  },
+  {
+    "procedure_resource_id": "pr-loto2-spec",
+    "procedure_version": "loto-v2.0.0",
+    "resource": "res-loto-v2-spec",
+    "relation": "references",
+    "name": "loto-v2.0.0 / res-loto-v2-spec",
+    "relation_iri": "http://purl.org/dc/terms/references",
+    "resource_modified_at": "2026-05-20 14:00:00"
   },
   {
     "procedure_resource_id": "pr-policy-consent",
@@ -29,7 +59,8 @@
     "resource": "res-consent-registry",
     "relation": "references",
     "name": "policy-v1.0.0 / res-consent-registry",
-    "relation_iri": "http://purl.org/dc/terms/references"
+    "relation_iri": "http://purl.org/dc/terms/references",
+    "resource_modified_at": "2026-07-19 16:45:00"
   },
   {
     "procedure_resource_id": "pr-policy-email",
@@ -37,7 +68,8 @@
     "resource": "res-email-template",
     "relation": "references",
     "name": "policy-v1.0.0 / res-email-template",
-    "relation_iri": "http://purl.org/dc/terms/references"
+    "relation_iri": "http://purl.org/dc/terms/references",
+    "resource_modified_at": "2026-07-18 21:30:00"
   },
   {
     "procedure_resource_id": "pr-policy-sms",
@@ -45,7 +77,8 @@
     "resource": "res-sms-template",
     "relation": "references",
     "name": "policy-v1.0.0 / res-sms-template",
-    "relation_iri": "http://purl.org/dc/terms/references"
+    "relation_iri": "http://purl.org/dc/terms/references",
+    "resource_modified_at": "2026-07-18 21:30:00"
   },
   {
     "procedure_resource_id": "pr-policy-source",
@@ -53,7 +86,8 @@
     "resource": "res-policy-source",
     "relation": "wasExtractedFrom",
     "name": "policy-v1.0.0 / res-policy-source",
-    "relation_iri": "https://w3id.org/pko#wasExtractedFrom"
+    "relation_iri": "https://w3id.org/pko#wasExtractedFrom",
+    "resource_modified_at": "2026-07-18 21:30:00"
   },
   {
     "procedure_resource_id": "pr-policy-ticket",
@@ -61,6 +95,16 @@
     "resource": "res-change-ticket",
     "relation": "references",
     "name": "policy-v1.0.0 / res-change-ticket",
-    "relation_iri": "http://purl.org/dc/terms/references"
+    "relation_iri": "http://purl.org/dc/terms/references",
+    "resource_modified_at": "2026-07-19 15:30:00"
+  },
+  {
+    "procedure_resource_id": "pr-press-pdf",
+    "procedure_version": "press-changeover-v1.0.0",
+    "resource": "res-press-changeover-pdf",
+    "relation": "references",
+    "name": "press-changeover-v1.0.0 / res-press-changeover-pdf",
+    "relation_iri": "http://purl.org/dc/terms/references",
+    "resource_modified_at": "2024-06-01 14:00:00"
   }
 ]

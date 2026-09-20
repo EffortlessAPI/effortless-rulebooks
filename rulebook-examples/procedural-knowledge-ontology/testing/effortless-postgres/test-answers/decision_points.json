@@ -1,0 +1,67 @@
+[
+  {
+    "decision_point_id": "dp-close05-expedite",
+    "name": "close-05: Is aggregate variance below materiality?",
+    "step": "close-05",
+    "governing_transition": "close-05-expedite-close-07",
+    "question": "Is aggregate variance below materiality?",
+    "deciding_factors": "",
+    "default_outcome": "Full review.",
+    "dmn_decision_key": "close-expedite",
+    "has_no_deciding_factors": true,
+    "semantic_type_iri": "https://www.omg.org/spec/DMN/20191111/MODEL/Decision",
+    "is_dmn_encoded": true
+  },
+  {
+    "decision_point_id": "dp-deploy02-unscorable",
+    "name": "deploy-02: Can the classifier score this change, or must it g",
+    "step": "deploy-02",
+    "governing_transition": null,
+    "question": "Can the classifier score this change, or must it go to the release manager unscored?",
+    "deciding_factors": "Change touches services with no incident history; classifier confidence below threshold.",
+    "default_outcome": "Score the change.",
+    "dmn_decision_key": "",
+    "has_no_deciding_factors": false,
+    "semantic_type_iri": "https://www.omg.org/spec/DMN/20191111/MODEL/Decision",
+    "is_dmn_encoded": false
+  },
+  {
+    "decision_point_id": "dp-deploy03-approve",
+    "name": "deploy-03: Approve the release?",
+    "step": "deploy-03",
+    "governing_transition": "deploy-03-reject-deploy-01",
+    "question": "Approve the release?",
+    "deciding_factors": "Risk class; test results; change window.",
+    "default_outcome": "Approve.",
+    "dmn_decision_key": "release-approval",
+    "has_no_deciding_factors": false,
+    "semantic_type_iri": "https://www.omg.org/spec/DMN/20191111/MODEL/Decision",
+    "is_dmn_encoded": true
+  },
+  {
+    "decision_point_id": "dp-loto06-reverify",
+    "name": "loto-06: Is a reading doubtful enough to verify once more?",
+    "step": "loto-06",
+    "governing_transition": "loto-06-repeat-loto-06",
+    "question": "Is a reading doubtful enough to verify once more?",
+    "deciding_factors": "Needle flicker; reading taken before the bleed finished.",
+    "default_outcome": "No repeat.",
+    "dmn_decision_key": "reverify-decision",
+    "has_no_deciding_factors": false,
+    "semantic_type_iri": "https://www.omg.org/spec/DMN/20191111/MODEL/Decision",
+    "is_dmn_encoded": true
+  },
+  {
+    "decision_point_id": "dp-loto06-zero",
+    "name": "loto-06: Does every isolation point read zero?",
+    "step": "loto-06",
+    "governing_transition": "loto-06-fallback-loto-09",
+    "question": "Does every isolation point read zero?",
+    "deciding_factors": "Gauge readings; start-button try-out; any hiss.",
+    "default_outcome": "Proceed to maintenance.",
+    "dmn_decision_key": "zero-energy-decision",
+    "has_no_deciding_factors": false,
+    "semantic_type_iri": "https://www.omg.org/spec/DMN/20191111/MODEL/Decision",
+    "is_dmn_encoded": true
+  }
+]

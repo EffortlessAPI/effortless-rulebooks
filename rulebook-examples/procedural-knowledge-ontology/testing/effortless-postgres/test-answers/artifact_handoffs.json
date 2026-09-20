@@ -1,0 +1,134 @@
+[
+  {
+    "artifact_handoff_id": "ah-deploy02-candidate",
+    "name": "deploy-01 -> deploy-02",
+    "step_variable": "var-deploy02-in-candidate",
+    "from_step": "deploy-01",
+    "to_step": "deploy-02",
+    "declared_source_step": "deploy-01",
+    "declared_consumer_step": "deploy-02",
+    "disagrees_with_declared_variable": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ArtifactHandoff"
+  },
+  {
+    "artifact_handoff_id": "ah-deploy03-risk",
+    "name": "deploy-02 -> deploy-03",
+    "step_variable": "var-deploy03-in-risk",
+    "from_step": "deploy-02",
+    "to_step": "deploy-03",
+    "declared_source_step": "deploy-02",
+    "declared_consumer_step": "deploy-03",
+    "disagrees_with_declared_variable": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ArtifactHandoff"
+  },
+  {
+    "artifact_handoff_id": "ah-deploy04-approval",
+    "name": "deploy-03 -> deploy-04",
+    "step_variable": "var-deploy04-in-approval",
+    "from_step": "deploy-03",
+    "to_step": "deploy-04",
+    "declared_source_step": "deploy-03",
+    "declared_consumer_step": "deploy-04",
+    "disagrees_with_declared_variable": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ArtifactHandoff"
+  },
+  {
+    "artifact_handoff_id": "ah-deploy04-candidate",
+    "name": "deploy-01 -> deploy-04",
+    "step_variable": "var-deploy04-in-candidate",
+    "from_step": "deploy-01",
+    "to_step": "deploy-04",
+    "declared_source_step": "deploy-01",
+    "declared_consumer_step": "deploy-04",
+    "disagrees_with_declared_variable": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ArtifactHandoff"
+  },
+  {
+    "artifact_handoff_id": "ah-deploy05-deployment",
+    "name": "deploy-04 -> deploy-05",
+    "step_variable": "var-deploy05-in-deployment",
+    "from_step": "deploy-04",
+    "to_step": "deploy-05",
+    "declared_source_step": "deploy-04",
+    "declared_consumer_step": "deploy-05",
+    "disagrees_with_declared_variable": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ArtifactHandoff"
+  },
+  {
+    "artifact_handoff_id": "ah-deploy05-deployment-misrecorded",
+    "name": "deploy-03 -> deploy-05",
+    "step_variable": "var-deploy05-in-deployment",
+    "from_step": "deploy-03",
+    "to_step": "deploy-05",
+    "declared_source_step": "deploy-04",
+    "declared_consumer_step": "deploy-05",
+    "disagrees_with_declared_variable": true,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ArtifactHandoff"
+  },
+  {
+    "artifact_handoff_id": "ah-deploy05-risk",
+    "name": "deploy-02 -> deploy-05",
+    "step_variable": "var-deploy05-in-risk",
+    "from_step": "deploy-02",
+    "to_step": "deploy-05",
+    "declared_source_step": "deploy-02",
+    "declared_consumer_step": "deploy-05",
+    "disagrees_with_declared_variable": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ArtifactHandoff"
+  },
+  {
+    "artifact_handoff_id": "ah-loto03-workorder",
+    "name": "loto-01 -> loto-03",
+    "step_variable": "var-loto03-in-workorder",
+    "from_step": "loto-01",
+    "to_step": "loto-03",
+    "declared_source_step": "loto-01",
+    "declared_consumer_step": "loto-03",
+    "disagrees_with_declared_variable": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ArtifactHandoff"
+  },
+  {
+    "artifact_handoff_id": "ah-loto05-isolation",
+    "name": "loto-04 -> loto-05",
+    "step_variable": "var-loto05-in-isolation",
+    "from_step": "loto-04",
+    "to_step": "loto-05",
+    "declared_source_step": "loto-04",
+    "declared_consumer_step": "loto-05",
+    "disagrees_with_declared_variable": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ArtifactHandoff"
+  },
+  {
+    "artifact_handoff_id": "ah-loto06-isolation",
+    "name": "loto-04 -> loto-06",
+    "step_variable": "var-loto06-in-isolation",
+    "from_step": "loto-04",
+    "to_step": "loto-06",
+    "declared_source_step": "loto-04",
+    "declared_consumer_step": "loto-06",
+    "disagrees_with_declared_variable": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ArtifactHandoff"
+  },
+  {
+    "artifact_handoff_id": "ah-loto07-zeroenergy",
+    "name": "loto-06 -> loto-07",
+    "step_variable": "var-loto07-in-zeroenergy",
+    "from_step": "loto-06",
+    "to_step": "loto-07",
+    "declared_source_step": "loto-06",
+    "declared_consumer_step": "loto-07",
+    "disagrees_with_declared_variable": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ArtifactHandoff"
+  },
+  {
+    "artifact_handoff_id": "ah-loto08-maintlog",
+    "name": "loto-07 -> loto-08",
+    "step_variable": "var-loto08-in-maintlog",
+    "from_step": "loto-07",
+    "to_step": "loto-08",
+    "declared_source_step": "loto-07",
+    "declared_consumer_step": "loto-08",
+    "disagrees_with_declared_variable": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ArtifactHandoff"
+  }
+]

@@ -166,6 +166,27 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             get => F.AsBool(F.Memo(this, "IsRequiredGatekeptUncodified", () => F.And(F.Bool3(F.Of(this.IsGatekeepingOrSabotage)), F.Bool3(F.Eq(F.Nullif(F.Of(this.BlockingKind)), F.S("Blocking"))), F.Bool3(F.IsBlank(F.Of(this.CodifiedAsFragment)))))); set { }
         }
 
+        // Formula OwnerOrganization (rulebook: =INDEX(ProcedureVersions!{{OwnerOrganization}}, MATCH({{ProcedureVersion}}, ProcedureVersions!{{ProcedureVersionId}}, 0)))
+        [NotMapped]
+        public string? OwnerOrganization
+        {
+            get => F.AsString(F.Memo(this, "OwnerOrganization", () => F.Lookup<ProcedureVersion>(this, "ProcedureVersions", "ProcedureVersionId", __c => __c.ProcedureVersions, __r => F.Of(__r.ProcedureVersionId), F.Of(this.ProcedureVersion), __r => F.Of(__r.OwnerOrganization), () => F.Of(new ProcedureVersion().OwnerOrganization)))); set { }
+        }
+
+        // Formula AnsweringChangeTitle (rulebook: =INDEX(ModelChangeRequests!{{Title}}, MATCH({{AnsweredByModelChangeRequest}}, ModelChangeRequests!{{ModelChangeRequestId}}, 0)))
+        [NotMapped]
+        public string? AnsweringChangeTitle
+        {
+            get => F.AsString(F.Memo(this, "AnsweringChangeTitle", () => F.Lookup<ModelChangeRequest>(this, "ModelChangeRequests", "ModelChangeRequestId", __c => __c.ModelChangeRequests, __r => F.Of(__r.ModelChangeRequestId), F.Of(this.AnsweredByModelChangeRequest), __r => F.Of(__r.Title), () => F.Of(new ModelChangeRequest().Title)))); set { }
+        }
+
+        // Formula AnsweringChangeStatus (rulebook: =INDEX(ModelChangeRequests!{{Status}}, MATCH({{AnsweredByModelChangeRequest}}, ModelChangeRequests!{{ModelChangeRequestId}}, 0)))
+        [NotMapped]
+        public string? AnsweringChangeStatus
+        {
+            get => F.AsString(F.Memo(this, "AnsweringChangeStatus", () => F.Lookup<ModelChangeRequest>(this, "ModelChangeRequests", "ModelChangeRequestId", __c => __c.ModelChangeRequests, __r => F.Of(__r.ModelChangeRequestId), F.Of(this.AnsweredByModelChangeRequest), __r => F.Of(__r.Status), () => F.Of(new ModelChangeRequest().Status)))); set { }
+        }
+
 
         public string? ProcedureVersion { get; set; }
         public string? Step { get; set; }
@@ -173,6 +194,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string? EvaluationContext { get; set; }
         public string? DrawnOutBySession { get; set; }
         public string? CodifiedAsFragment { get; set; }
+        public string? AnsweredByModelChangeRequest { get; set; }
 
         private ProcedureVersion _procedureVersionRef;
 
@@ -438,6 +460,105 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             }
         }
 
+        private ModelChangeRequest _modelChangeRequest;
+
+        [ForeignKey("AnsweredByModelChangeRequest")]
+        public virtual ModelChangeRequest ModelChangeRequest
+        {
+            get
+            {
+                if (_modelChangeRequest == null && !string.IsNullOrEmpty(AnsweredByModelChangeRequest))
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access ModelChangeRequest - no database context is set. AnsweredByModelChangeRequest: " + AnsweredByModelChangeRequest + ".");
+                        }
+                        return null;
+                    }
+                    _modelChangeRequest = base.SoAContext.ModelChangeRequests.Find(AnsweredByModelChangeRequest);
+                    if (_modelChangeRequest != null)
+                    {
+                        base.SoAContext.Attach(_modelChangeRequest);
+                    }
+                }
+                return _modelChangeRequest;
+            }
+            set
+            {
+                if (_modelChangeRequest != value)
+                {
+                    _modelChangeRequest = value;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_modelChangeRequest != null)
+                    {
+                        AnsweredByModelChangeRequest = _modelChangeRequest.ModelChangeRequestId;
+                    }
+                }
+            }
+        }
+
+        private ObservableCollection<ProcedureExecution> _procedureExecutions;
+
+        [InverseProperty("KnowledgeGap")]
+        public virtual ObservableCollection<ProcedureExecution> ProcedureExecutions
+        {
+            get
+            {
+                if (_procedureExecutions == null)
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access ProcedureExecutions - no database context is set. KnowledgeGapId: " + this.KnowledgeGapId + ".");
+                        }
+                        _procedureExecutions = new ObservableCollection<ProcedureExecution>();
+                    }
+                    else
+                    {
+                        var items = base.SoAContext.ProcedureExecutions.Where(x => x.StoppedAtKnowledgeGap == this.KnowledgeGapId).ToList<ProcedureExecution>();
+                        _procedureExecutions = new ObservableCollection<ProcedureExecution>(items);
+                        if (items.Any())
+                        {
+                            base.SoAContext.AttachRange(items);
+                        }
+                    }
+                    _procedureExecutions.CollectionChanged += ProcedureExecutions_CollectionChanged;
+                }
+                return _procedureExecutions;
+            }
+            private set
+            {
+                if (_procedureExecutions != null)
+                {
+                    _procedureExecutions.CollectionChanged -= ProcedureExecutions_CollectionChanged;
+                }
+                _procedureExecutions = value;
+                if (_procedureExecutions != null)
+                {
+                    _procedureExecutions.CollectionChanged += ProcedureExecutions_CollectionChanged;
+                }
+            }
+        }
+
+        private void ProcedureExecutions_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems != null)
+            {
+                foreach (var item in e.NewItems.Cast<ProcedureExecution>())
+                {
+                    item.StoppedAtKnowledgeGap = this.KnowledgeGapId;
+                }
+            }
+        }
+
         private ObservableCollection<ModelAnnotation> _modelAnnotations;
 
         [InverseProperty("KnowledgeGap")]
@@ -612,6 +733,8 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             _ = this.EvaluationContextRef;
             _ = this.ElicitationSession;
             _ = this.KnowledgeFragment;
+            _ = this.ModelChangeRequest;
+            _ = this.ProcedureExecutions;
             _ = this.ModelAnnotations;
             _ = this.KnowledgeSearchEvents;
             _ = this.KnowledgeAuditItems;

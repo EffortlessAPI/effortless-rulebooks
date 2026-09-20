@@ -93,7 +93,7 @@
     "is_unchased_acknowledgement": false,
     "is_exhausted_follow_up": false,
     "needs_human_escalation": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#MessageDelivery"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#MessageDelivery"
   },
   {
     "message_delivery_id": "md-002",
@@ -189,7 +189,7 @@
     "is_unchased_acknowledgement": false,
     "is_exhausted_follow_up": false,
     "needs_human_escalation": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#MessageDelivery"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#MessageDelivery"
   },
   {
     "message_delivery_id": "md-003",
@@ -285,7 +285,7 @@
     "is_unchased_acknowledgement": false,
     "is_exhausted_follow_up": false,
     "needs_human_escalation": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#MessageDelivery"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#MessageDelivery"
   },
   {
     "message_delivery_id": "md-004",
@@ -381,7 +381,7 @@
     "is_unchased_acknowledgement": false,
     "is_exhausted_follow_up": false,
     "needs_human_escalation": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#MessageDelivery"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#MessageDelivery"
   },
   {
     "message_delivery_id": "md-005",
@@ -477,7 +477,7 @@
     "is_unchased_acknowledgement": false,
     "is_exhausted_follow_up": false,
     "needs_human_escalation": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#MessageDelivery"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#MessageDelivery"
   },
   {
     "message_delivery_id": "md-006",
@@ -573,6 +573,6 @@
     "is_unchased_acknowledgement": false,
     "is_exhausted_follow_up": false,
     "needs_human_escalation": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#MessageDelivery"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#MessageDelivery"
   }
 ]

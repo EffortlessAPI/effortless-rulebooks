@@ -25,7 +25,7 @@ import { mintClaimsFor } from "./auth.js";
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(HERE, "../..");
-const IRI = "urn:effortless:pko-extension#";
+const IRI = "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#";
 
 const snake = (n) => n.replace(/(?<!^)(?=[A-Z])/g, "_").toLowerCase().replace(/_+/g, "_");
 const ident = (s) => {

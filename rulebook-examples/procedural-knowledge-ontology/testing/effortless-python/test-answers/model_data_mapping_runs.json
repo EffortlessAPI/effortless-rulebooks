@@ -1,0 +1,38 @@
+[
+  {
+    "model_data_mapping_run_id": "map-close-2026-07",
+    "governed_model": "gm-quarter-end-close",
+    "data_origin": "Real",
+    "triples_produced": 15400,
+    "ran_at": "2026-07-03T09:00:00-05:00",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ModelDataMappingRun",
+    "name": "gm-quarter-end-close mapping Real"
+  },
+  {
+    "model_data_mapping_run_id": "map-loto-2026-07",
+    "governed_model": "gm-lockout-tagout",
+    "data_origin": "Real",
+    "triples_produced": 9200,
+    "ran_at": "2026-07-12T09:00:00-05:00",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ModelDataMappingRun",
+    "name": "gm-lockout-tagout mapping Real"
+  },
+  {
+    "model_data_mapping_run_id": "map-pko-2026-07",
+    "governed_model": "gm-pko-rulebook",
+    "data_origin": "Real",
+    "triples_produced": 184000,
+    "ran_at": "2026-07-15T09:00:00-05:00",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ModelDataMappingRun",
+    "name": "gm-pko-rulebook mapping Real"
+  },
+  {
+    "model_data_mapping_run_id": "map-policy-synthetic",
+    "governed_model": "gm-workforce-policy",
+    "data_origin": "Synthetic",
+    "triples_produced": 3100,
+    "ran_at": "2026-06-10T09:00:00-05:00",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ModelDataMappingRun",
+    "name": "gm-workforce-policy mapping Synthetic"
+  }
+]

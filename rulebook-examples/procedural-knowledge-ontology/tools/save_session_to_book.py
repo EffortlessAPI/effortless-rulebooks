@@ -28,7 +28,7 @@ ROOT = os.path.dirname(HERE)
 # PKO_RULEBOOK points a test at a scratch copy, as it does for tools/rulebook_edit.py.
 RB = os.environ.get("PKO_RULEBOOK") or os.path.join(ROOT, "effortless-rulebook", "procedural-knowledge-ontology-rulebook.json")
 DB = os.environ.get("DATABASE_URL", "postgresql://postgres@localhost:5432/erb_procedural_knowledge_ontology")
-IRI = "urn:effortless:pko-extension#"
+IRI = "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#"
 
 
 def snake(n):

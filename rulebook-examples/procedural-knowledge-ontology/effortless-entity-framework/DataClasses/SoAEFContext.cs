@@ -311,6 +311,10 @@ namespace SqlOnAir.DotNet.Lib.DataClasses
         public DbSet<ModelActivityExpert> ModelActivityExperts { get; set; }
         public DbSet<ModelDataMappingRun> ModelDataMappingRuns { get; set; }
         public DbSet<ArtifactHandoff> ArtifactHandoffs { get; set; }
+        public DbSet<AppAction> AppActions { get; set; }
+        public DbSet<AppActionField> AppActionFields { get; set; }
+        public DbSet<AbundantKnowledgeGap> AbundantKnowledgeGaps { get; set; }
+        public DbSet<OntologySupportProgramme> OntologySupportProgrammes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -343,6 +347,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses
                 .HasOne(e => e.OntologyProfile)
                 .WithMany(f => f.OntologyProfiles)
                 .HasForeignKey(f => f.PrerequisiteProfile)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<OntologyProfile>()
+                .HasOne(e => e.OntologySupportProgramme)
+                .WithMany(f => f.OntologyProfiles)
+                .HasForeignKey(f => f.SupportingProgramme)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<Agent>()
                 .HasOne(e => e.OrganizationRef)
@@ -824,6 +833,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses
                 .WithMany(f => f.KnowledgeGaps)
                 .HasForeignKey(f => f.CodifiedAsFragment)
                 .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<KnowledgeGap>()
+                .HasOne(e => e.ModelChangeRequest)
+                .WithMany(f => f.KnowledgeGaps)
+                .HasForeignKey(f => f.AnsweredByModelChangeRequest)
+                .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<FAQ>()
                 .HasOne(e => e.ProcedureVersionRef)
                 .WithMany(f => f.FAQs)
@@ -888,6 +902,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses
                 .HasOne(e => e.Machine)
                 .WithMany(f => f.ProcedureExecutions)
                 .HasForeignKey(f => f.ExecutedOnMachine)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<ProcedureExecution>()
+                .HasOne(e => e.KnowledgeGap)
+                .WithMany(f => f.ProcedureExecutions)
+                .HasForeignKey(f => f.StoppedAtKnowledgeGap)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<StepExecution>()
                 .HasOne(e => e.ProcedureExecutionRef)
@@ -1833,6 +1852,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses
                 .HasOne(e => e.Role)
                 .WithMany(f => f.StepCues)
                 .HasForeignKey(f => f.EscalateToRole)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<StepCue>()
+                .HasOne(e => e.FailureMode)
+                .WithMany(f => f.StepCues)
+                .HasForeignKey(f => f.SignalsFailureMode)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<CueObservation>()
                 .HasOne(e => e.StepExecutionRef)
@@ -3818,6 +3842,46 @@ namespace SqlOnAir.DotNet.Lib.DataClasses
                 .HasOne(e => e.StepRef)
                 .WithMany(f => f.ToStepArtifactHandoffs)
                 .HasForeignKey(f => f.ToStep)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<AppAction>()
+                .HasOne(e => e.Role)
+                .WithMany(f => f.AppActions)
+                .HasForeignKey(f => f.OwningRole)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<AppAction>()
+                .HasOne(e => e.RulebookTable)
+                .WithMany(f => f.AppActions)
+                .HasForeignKey(f => f.TargetTable)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<AppAction>()
+                .HasOne(e => e.AccessPolicy)
+                .WithMany(f => f.AppActions)
+                .HasForeignKey(f => f.Policy)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<AppAction>()
+                .HasOne(e => e.RulebookField)
+                .WithMany(f => f.AppActions)
+                .HasForeignKey(f => f.WatchedField)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<AppActionField>()
+                .HasOne(e => e.AppActionRef)
+                .WithMany(f => f.AppActionFields)
+                .HasForeignKey(f => f.AppAction)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<AppActionField>()
+                .HasOne(e => e.RulebookField)
+                .WithMany(f => f.AppActionFields)
+                .HasForeignKey(f => f.TargetField)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<AbundantKnowledgeGap>()
+                .HasOne(e => e.RulebookTable)
+                .WithMany(f => f.AbundantKnowledgeGaps)
+                .HasForeignKey(f => f.RepresentedByTable)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<OntologySupportProgramme>()
+                .HasOne(e => e.EvaluationContextRef)
+                .WithMany(f => f.OntologySupportProgrammes)
+                .HasForeignKey(f => f.EvaluationContext)
                 .OnDelete(DeleteBehavior.Restrict);
         }
 

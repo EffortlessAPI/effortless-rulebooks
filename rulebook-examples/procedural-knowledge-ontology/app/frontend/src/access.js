@@ -369,7 +369,7 @@ export function wireAccess(root, rerender) {
           CheckPredicate: row.check_predicate || "",
           Rationale: row.rationale || "",
           ReferencesInference: /calc_\w+\(/.test(pred.value),
-          SemanticTypeIri: "urn:effortless:pko-extension#AccessPolicy",
+          SemanticTypeIri: "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AccessPolicy",
         },
       });
     }
@@ -389,7 +389,7 @@ export function wireAccess(root, rerender) {
             `fg-${principal.replace("principal-", "")}-${fieldId}`,
           Principal: principal, TargetField: fieldId,
           CanRead: true, CanWrite: false, MaskStrategy: "plain",
-          SemanticTypeIri: "urn:effortless:pko-extension#FieldGrant",
+          SemanticTypeIri: "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#FieldGrant",
         },
       });
     } else if (existing) {

@@ -1,5 +1,48 @@
 [
   {
+    "issue_occurrence_id": "issue-0709-residual",
+    "step_execution": "se-loto0709-07",
+    "error": "err-residual-energy",
+    "encountered_by_agent": "ken-watanabe",
+    "occurred_at": "2026-07-10T01:40:00-05:00",
+    "issue_cause": "The press accumulator was never bled.",
+    "issue_solution": "Stopped work, escalated, bled the accumulator and re-verified.",
+    "status": "Resolved",
+    "semantic_type_iri": "https://w3id.org/pko#IssueOccurrence",
+    "redesign_change_request": "cr13-loto2-accumulator-bleed",
+    "name": "err-residual-energy @ 2026-07-10T06:40:00\u002B00:00",
+    "is_unresolved": false,
+    "step_execution_when_unresolved": "",
+    "executed_step": "loto-07",
+    "failed_condition_count_on_run": 1,
+    "coincided_with_failed_condition": true,
+    "has_no_recorded_solution": false,
+    "redesign_implemented_at": "2026-07-13T09:00:00-05:00",
+    "is_failure_without_landed_redesign": false,
+    "improvement_cycle_path": "Observed at loto-07 by ken-watanabe; recorded as err-residual-energy (The press accumulator was never bled.); redesigned by cr13-loto2-accumulator-bleed"
+  },
+  {
+    "issue_occurrence_id": "issue-0714-lockmissing",
+    "step_execution": "se-loto0714-05",
+    "error": "err-lock-missing",
+    "encountered_by_agent": "aisha-bello",
+    "occurred_at": "2026-07-14T09:00:00-05:00",
+    "issue_cause": "Two personal padlocks missing.",
+    "issue_solution": "",
+    "status": "Open",
+    "semantic_type_iri": "https://w3id.org/pko#IssueOccurrence",
+    "name": "err-lock-missing @ 2026-07-14T14:00:00\u002B00:00",
+    "is_unresolved": true,
+    "step_execution_when_unresolved": "se-loto0714-05",
+    "executed_step": "loto-05",
+    "failed_condition_count_on_run": 0,
+    "coincided_with_failed_condition": false,
+    "has_no_recorded_solution": true,
+    "redesign_implemented_at": null,
+    "is_failure_without_landed_redesign": true,
+    "improvement_cycle_path": ""
+  },
+  {
     "issue_occurrence_id": "issue-close-feed",
     "step_execution": "se-close02",
     "error": "err-feed-stale",
@@ -11,7 +54,14 @@
     "semantic_type_iri": "https://w3id.org/pko#IssueOccurrence",
     "name": "err-feed-stale @ 2026-06-30T22:12:00\u002B00:00",
     "is_unresolved": false,
-    "step_execution_when_unresolved": ""
+    "step_execution_when_unresolved": "",
+    "executed_step": "close-02",
+    "failed_condition_count_on_run": 0,
+    "coincided_with_failed_condition": false,
+    "has_no_recorded_solution": false,
+    "redesign_implemented_at": null,
+    "is_failure_without_landed_redesign": true,
+    "improvement_cycle_path": ""
   },
   {
     "issue_occurrence_id": "issue-policy-sms",
@@ -25,6 +75,13 @@
     "semantic_type_iri": "https://w3id.org/pko#IssueOccurrence",
     "name": "err-sms-throttle @ 2026-07-19T14:30:00\u002B00:00",
     "is_unresolved": true,
-    "step_execution_when_unresolved": "se-policy04"
+    "step_execution_when_unresolved": "se-policy04",
+    "executed_step": "policy-04",
+    "failed_condition_count_on_run": 0,
+    "coincided_with_failed_condition": false,
+    "has_no_recorded_solution": false,
+    "redesign_implemented_at": null,
+    "is_failure_without_landed_redesign": true,
+    "improvement_cycle_path": ""
   }
 ]

@@ -1,0 +1,44 @@
+[
+  {
+    "staleness_query_run_id": "sqr-loto-0715",
+    "name": "gm-lockout-tagout staleness run",
+    "governed_model": "gm-lockout-tagout",
+    "ran_at": "2026-07-15T09:00:00-05:00",
+    "ran_by_agent": "ontology-assistant-1-2",
+    "runner_kind": "AIAgent",
+    "threshold_days": 365,
+    "query_text": "SELECT procedure_version_id FROM vw_procedure_versions WHERE is_unmodified_for_twelve_months",
+    "stale_workflow_count": 1,
+    "surfaced_to_steward_at": null,
+    "not_surfaced_to_steward": true,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#StalenessQueryRun"
+  },
+  {
+    "staleness_query_run_id": "sqr-pko-0601",
+    "name": "gm-pko-rulebook staleness run",
+    "governed_model": "gm-pko-rulebook",
+    "ran_at": "2026-06-01T09:00:00-05:00",
+    "ran_by_agent": "ontology-assistant-1-2",
+    "runner_kind": "AIAgent",
+    "threshold_days": 365,
+    "query_text": "SELECT procedure_version_id FROM vw_procedure_versions WHERE is_unmodified_for_twelve_months",
+    "stale_workflow_count": 0,
+    "surfaced_to_steward_at": null,
+    "not_surfaced_to_steward": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#StalenessQueryRun"
+  },
+  {
+    "staleness_query_run_id": "sqr-pko-0701",
+    "name": "gm-pko-rulebook staleness run",
+    "governed_model": "gm-pko-rulebook",
+    "ran_at": "2026-07-01T09:00:00-05:00",
+    "ran_by_agent": "ontology-assistant-1-2",
+    "runner_kind": "AIAgent",
+    "threshold_days": 365,
+    "query_text": "SELECT procedure_version_id FROM vw_procedure_versions WHERE is_unmodified_for_twelve_months",
+    "stale_workflow_count": 1,
+    "surfaced_to_steward_at": "2026-07-01T10:00:00-05:00",
+    "not_surfaced_to_steward": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#StalenessQueryRun"
+  }
+]

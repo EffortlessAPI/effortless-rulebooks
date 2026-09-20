@@ -1,1613 +1,5 @@
 [
   {
-    "cell_disagreement_id": "effortless-owl|AccessDenialTests.Name|deny-cfo-send-intents",
-    "name": "effortless-owl|AccessDenialTests.Name @ deny-cfo-send-intents",
-    "field_disagreement": "effortless-owl|AccessDenialTests.Name",
-    "record_id": "deny-cfo-send-intents",
-    "expected_value": "\"principal-cfo must not see \"",
-    "actual_value": "null",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "AccessDenialTests.Name",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|AccessDenialTests.Name|deny-cfo-step-executions",
-    "name": "effortless-owl|AccessDenialTests.Name @ deny-cfo-step-executions",
-    "field_disagreement": "effortless-owl|AccessDenialTests.Name",
-    "record_id": "deny-cfo-step-executions",
-    "expected_value": "\"principal-cfo must not see \"",
-    "actual_value": "null",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "AccessDenialTests.Name",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|AccessDenialTests.Name|deny-close-automation-change-requests",
-    "name": "effortless-owl|AccessDenialTests.Name @ deny-close-automation-change-requests",
-    "field_disagreement": "effortless-owl|AccessDenialTests.Name",
-    "record_id": "deny-close-automation-change-requests",
-    "expected_value": "\"principal-close-automation must not see \"",
-    "actual_value": "null",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "AccessDenialTests.Name",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|AccessDenialTests.Name|deny-close-automation-recipients",
-    "name": "effortless-owl|AccessDenialTests.Name @ deny-close-automation-recipients",
-    "field_disagreement": "effortless-owl|AccessDenialTests.Name",
-    "record_id": "deny-close-automation-recipients",
-    "expected_value": "\"principal-close-automation must not see \"",
-    "actual_value": "null",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "AccessDenialTests.Name",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|AccessDenialTests.Name|deny-employment-counsel-step-executions",
-    "name": "effortless-owl|AccessDenialTests.Name @ deny-employment-counsel-step-executions",
-    "field_disagreement": "effortless-owl|AccessDenialTests.Name",
-    "record_id": "deny-employment-counsel-step-executions",
-    "expected_value": "\"principal-employment-counsel must not see \"",
-    "actual_value": "null",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "AccessDenialTests.Name",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|AccessDenialTests.Name|deny-notification-publisher-knowledge-fragments",
-    "name": "effortless-owl|AccessDenialTests.Name @ deny-notification-publisher-knowledge-fragments",
-    "field_disagreement": "effortless-owl|AccessDenialTests.Name",
-    "record_id": "deny-notification-publisher-knowledge-fragments",
-    "expected_value": "\"principal-notification-publisher must not see \"",
-    "actual_value": "null",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "AccessDenialTests.Name",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|AccessDenialTests.Name|deny-policy-drafting-agent-recipients",
-    "name": "effortless-owl|AccessDenialTests.Name @ deny-policy-drafting-agent-recipients",
-    "field_disagreement": "effortless-owl|AccessDenialTests.Name",
-    "record_id": "deny-policy-drafting-agent-recipients",
-    "expected_value": "\"principal-policy-drafting-agent must not see \"",
-    "actual_value": "null",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "AccessDenialTests.Name",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|AccessDenialTests.Name|deny-variance-review-agent-recipients",
-    "name": "effortless-owl|AccessDenialTests.Name @ deny-variance-review-agent-recipients",
-    "field_disagreement": "effortless-owl|AccessDenialTests.Name",
-    "record_id": "deny-variance-review-agent-recipients",
-    "expected_value": "\"principal-variance-review-agent must not see \"",
-    "actual_value": "null",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "AccessDenialTests.Name",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|AppRoleProfiles.RouteCount|profile-cfo",
-    "name": "effortless-owl|AppRoleProfiles.RouteCount @ profile-cfo",
-    "field_disagreement": "effortless-owl|AppRoleProfiles.RouteCount",
-    "record_id": "profile-cfo",
-    "expected_value": "12",
-    "actual_value": "0",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "AppRoleProfiles.RouteCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|AppRoleProfiles.RouteCount|profile-close-automation",
-    "name": "effortless-owl|AppRoleProfiles.RouteCount @ profile-close-automation",
-    "field_disagreement": "effortless-owl|AppRoleProfiles.RouteCount",
-    "record_id": "profile-close-automation",
-    "expected_value": "6",
-    "actual_value": "0",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "AppRoleProfiles.RouteCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|AppRoleProfiles.RouteCount|profile-communications-manager",
-    "name": "effortless-owl|AppRoleProfiles.RouteCount @ profile-communications-manager",
-    "field_disagreement": "effortless-owl|AppRoleProfiles.RouteCount",
-    "record_id": "profile-communications-manager",
-    "expected_value": "11",
-    "actual_value": "0",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "AppRoleProfiles.RouteCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|AppRoleProfiles.RouteCount|profile-controller",
-    "name": "effortless-owl|AppRoleProfiles.RouteCount @ profile-controller",
-    "field_disagreement": "effortless-owl|AppRoleProfiles.RouteCount",
-    "record_id": "profile-controller",
-    "expected_value": "10",
-    "actual_value": "0",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "AppRoleProfiles.RouteCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|AppRoleProfiles.RouteCount|profile-employment-counsel",
-    "name": "effortless-owl|AppRoleProfiles.RouteCount @ profile-employment-counsel",
-    "field_disagreement": "effortless-owl|AppRoleProfiles.RouteCount",
-    "record_id": "profile-employment-counsel",
-    "expected_value": "6",
-    "actual_value": "0",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "AppRoleProfiles.RouteCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|AppRoleProfiles.RouteCount|profile-finance-analyst",
-    "name": "effortless-owl|AppRoleProfiles.RouteCount @ profile-finance-analyst",
-    "field_disagreement": "effortless-owl|AppRoleProfiles.RouteCount",
-    "record_id": "profile-finance-analyst",
-    "expected_value": "11",
-    "actual_value": "0",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "AppRoleProfiles.RouteCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|AppRoleProfiles.RouteCount|profile-hr-policy-owner",
-    "name": "effortless-owl|AppRoleProfiles.RouteCount @ profile-hr-policy-owner",
-    "field_disagreement": "effortless-owl|AppRoleProfiles.RouteCount",
-    "record_id": "profile-hr-policy-owner",
-    "expected_value": "10",
-    "actual_value": "0",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "AppRoleProfiles.RouteCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|AppRoleProfiles.RouteCount|profile-knowledge-authority",
-    "name": "effortless-owl|AppRoleProfiles.RouteCount @ profile-knowledge-authority",
-    "field_disagreement": "effortless-owl|AppRoleProfiles.RouteCount",
-    "record_id": "profile-knowledge-authority",
-    "expected_value": "11",
-    "actual_value": "0",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "AppRoleProfiles.RouteCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|AppRoleProfiles.RouteCount|profile-notification-publisher",
-    "name": "effortless-owl|AppRoleProfiles.RouteCount @ profile-notification-publisher",
-    "field_disagreement": "effortless-owl|AppRoleProfiles.RouteCount",
-    "record_id": "profile-notification-publisher",
-    "expected_value": "11",
-    "actual_value": "0",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "AppRoleProfiles.RouteCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|AppRoleProfiles.RouteCount|profile-policy-drafting-agent",
-    "name": "effortless-owl|AppRoleProfiles.RouteCount @ profile-policy-drafting-agent",
-    "field_disagreement": "effortless-owl|AppRoleProfiles.RouteCount",
-    "record_id": "profile-policy-drafting-agent",
-    "expected_value": "6",
-    "actual_value": "0",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "AppRoleProfiles.RouteCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|AppRoleProfiles.RouteCount|profile-process-steward",
-    "name": "effortless-owl|AppRoleProfiles.RouteCount @ profile-process-steward",
-    "field_disagreement": "effortless-owl|AppRoleProfiles.RouteCount",
-    "record_id": "profile-process-steward",
-    "expected_value": "11",
-    "actual_value": "0",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "AppRoleProfiles.RouteCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|AppRoleProfiles.RouteCount|profile-variance-review-agent",
-    "name": "effortless-owl|AppRoleProfiles.RouteCount @ profile-variance-review-agent",
-    "field_disagreement": "effortless-owl|AppRoleProfiles.RouteCount",
-    "record_id": "profile-variance-review-agent",
-    "expected_value": "11",
-    "actual_value": "0",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "AppRoleProfiles.RouteCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|CellDisagreements.Name|effortless-entity-framework|Steps.IsBlockingControlOnReworkLoop|close-03",
-    "name": "effortless-owl|CellDisagreements.Name @ effortless-entity-framework|Steps.IsBlockingControlOnReworkLoop|close-03",
-    "field_disagreement": "effortless-owl|CellDisagreements.Name",
-    "record_id": "effortless-entity-framework|Steps.IsBlockingControlOnReworkLoop|close-03",
-    "expected_value": "\"effortless-entity-framework|Steps.IsBlockingControlOnReworkLoop @ close-03\"",
-    "actual_value": "\"effortless-entity-framework-Steps.IsBlockingControlOnReworkLoop @ close-03\"",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "CellDisagreements.Name",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|CellDisagreements.Name|effortless-entity-framework|Steps.IsBlockingControlOnReworkLoop|close-05",
-    "name": "effortless-owl|CellDisagreements.Name @ effortless-entity-framework|Steps.IsBlockingControlOnReworkLoop|close-05",
-    "field_disagreement": "effortless-owl|CellDisagreements.Name",
-    "record_id": "effortless-entity-framework|Steps.IsBlockingControlOnReworkLoop|close-05",
-    "expected_value": "\"effortless-entity-framework|Steps.IsBlockingControlOnReworkLoop @ close-05\"",
-    "actual_value": "\"effortless-entity-framework-Steps.IsBlockingControlOnReworkLoop @ close-05\"",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "CellDisagreements.Name",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|CellDisagreements.Name|effortless-entity-framework|Steps.IsBlockingControlOnReworkLoop|close-06",
-    "name": "effortless-owl|CellDisagreements.Name @ effortless-entity-framework|Steps.IsBlockingControlOnReworkLoop|close-06",
-    "field_disagreement": "effortless-owl|CellDisagreements.Name",
-    "record_id": "effortless-entity-framework|Steps.IsBlockingControlOnReworkLoop|close-06",
-    "expected_value": "\"effortless-entity-framework|Steps.IsBlockingControlOnReworkLoop @ close-06\"",
-    "actual_value": "\"effortless-entity-framework-Steps.IsBlockingControlOnReworkLoop @ close-06\"",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "CellDisagreements.Name",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|CellDisagreements.Name|effortless-entity-framework|Steps.IsBlockingControlOnReworkLoop|policy-03",
-    "name": "effortless-owl|CellDisagreements.Name @ effortless-entity-framework|Steps.IsBlockingControlOnReworkLoop|policy-03",
-    "field_disagreement": "effortless-owl|CellDisagreements.Name",
-    "record_id": "effortless-entity-framework|Steps.IsBlockingControlOnReworkLoop|policy-03",
-    "expected_value": "\"effortless-entity-framework|Steps.IsBlockingControlOnReworkLoop @ policy-03\"",
-    "actual_value": "\"effortless-entity-framework-Steps.IsBlockingControlOnReworkLoop @ policy-03\"",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "CellDisagreements.Name",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|CellDisagreements.Name|effortless-entity-framework|Steps.IsBlockingControlOnReworkLoop|policy-04",
-    "name": "effortless-owl|CellDisagreements.Name @ effortless-entity-framework|Steps.IsBlockingControlOnReworkLoop|policy-04",
-    "field_disagreement": "effortless-owl|CellDisagreements.Name",
-    "record_id": "effortless-entity-framework|Steps.IsBlockingControlOnReworkLoop|policy-04",
-    "expected_value": "\"effortless-entity-framework|Steps.IsBlockingControlOnReworkLoop @ policy-04\"",
-    "actual_value": "\"effortless-entity-framework-Steps.IsBlockingControlOnReworkLoop @ policy-04\"",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "CellDisagreements.Name",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|CellDisagreements.Name|effortless-entity-framework|Steps.IsBlockingControlOnReworkLoop|policy-06",
-    "name": "effortless-owl|CellDisagreements.Name @ effortless-entity-framework|Steps.IsBlockingControlOnReworkLoop|policy-06",
-    "field_disagreement": "effortless-owl|CellDisagreements.Name",
-    "record_id": "effortless-entity-framework|Steps.IsBlockingControlOnReworkLoop|policy-06",
-    "expected_value": "\"effortless-entity-framework|Steps.IsBlockingControlOnReworkLoop @ policy-06\"",
-    "actual_value": "\"effortless-entity-framework-Steps.IsBlockingControlOnReworkLoop @ policy-06\"",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "CellDisagreements.Name",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|CellDisagreements.Name|effortless-entity-framework|Steps.IsBlockingControlOnReworkLoop|policy-07",
-    "name": "effortless-owl|CellDisagreements.Name @ effortless-entity-framework|Steps.IsBlockingControlOnReworkLoop|policy-07",
-    "field_disagreement": "effortless-owl|CellDisagreements.Name",
-    "record_id": "effortless-entity-framework|Steps.IsBlockingControlOnReworkLoop|policy-07",
-    "expected_value": "\"effortless-entity-framework|Steps.IsBlockingControlOnReworkLoop @ policy-07\"",
-    "actual_value": "\"effortless-entity-framework-Steps.IsBlockingControlOnReworkLoop @ policy-07\"",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "CellDisagreements.Name",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|CellDisagreements.Name|effortless-entity-framework|Steps.IsOnReworkLoop|close-03",
-    "name": "effortless-owl|CellDisagreements.Name @ effortless-entity-framework|Steps.IsOnReworkLoop|close-03",
-    "field_disagreement": "effortless-owl|CellDisagreements.Name",
-    "record_id": "effortless-entity-framework|Steps.IsOnReworkLoop|close-03",
-    "expected_value": "\"effortless-entity-framework|Steps.IsOnReworkLoop @ close-03\"",
-    "actual_value": "\"effortless-entity-framework-Steps.IsOnReworkLoop @ close-03\"",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "CellDisagreements.Name",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|CellDisagreements.Name|effortless-entity-framework|Steps.IsOnReworkLoop|close-04",
-    "name": "effortless-owl|CellDisagreements.Name @ effortless-entity-framework|Steps.IsOnReworkLoop|close-04",
-    "field_disagreement": "effortless-owl|CellDisagreements.Name",
-    "record_id": "effortless-entity-framework|Steps.IsOnReworkLoop|close-04",
-    "expected_value": "\"effortless-entity-framework|Steps.IsOnReworkLoop @ close-04\"",
-    "actual_value": "\"effortless-entity-framework-Steps.IsOnReworkLoop @ close-04\"",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "CellDisagreements.Name",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|CellDisagreements.Name|effortless-entity-framework|Steps.IsOnReworkLoop|close-05",
-    "name": "effortless-owl|CellDisagreements.Name @ effortless-entity-framework|Steps.IsOnReworkLoop|close-05",
-    "field_disagreement": "effortless-owl|CellDisagreements.Name",
-    "record_id": "effortless-entity-framework|Steps.IsOnReworkLoop|close-05",
-    "expected_value": "\"effortless-entity-framework|Steps.IsOnReworkLoop @ close-05\"",
-    "actual_value": "\"effortless-entity-framework-Steps.IsOnReworkLoop @ close-05\"",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "CellDisagreements.Name",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|CellDisagreements.Name|effortless-entity-framework|Steps.IsOnReworkLoop|close-06",
-    "name": "effortless-owl|CellDisagreements.Name @ effortless-entity-framework|Steps.IsOnReworkLoop|close-06",
-    "field_disagreement": "effortless-owl|CellDisagreements.Name",
-    "record_id": "effortless-entity-framework|Steps.IsOnReworkLoop|close-06",
-    "expected_value": "\"effortless-entity-framework|Steps.IsOnReworkLoop @ close-06\"",
-    "actual_value": "\"effortless-entity-framework-Steps.IsOnReworkLoop @ close-06\"",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "CellDisagreements.Name",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|CellDisagreements.Name|effortless-entity-framework|Steps.IsOnReworkLoop|policy-03",
-    "name": "effortless-owl|CellDisagreements.Name @ effortless-entity-framework|Steps.IsOnReworkLoop|policy-03",
-    "field_disagreement": "effortless-owl|CellDisagreements.Name",
-    "record_id": "effortless-entity-framework|Steps.IsOnReworkLoop|policy-03",
-    "expected_value": "\"effortless-entity-framework|Steps.IsOnReworkLoop @ policy-03\"",
-    "actual_value": "\"effortless-entity-framework-Steps.IsOnReworkLoop @ policy-03\"",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "CellDisagreements.Name",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|CellDisagreements.Name|effortless-entity-framework|Steps.IsOnReworkLoop|policy-04",
-    "name": "effortless-owl|CellDisagreements.Name @ effortless-entity-framework|Steps.IsOnReworkLoop|policy-04",
-    "field_disagreement": "effortless-owl|CellDisagreements.Name",
-    "record_id": "effortless-entity-framework|Steps.IsOnReworkLoop|policy-04",
-    "expected_value": "\"effortless-entity-framework|Steps.IsOnReworkLoop @ policy-04\"",
-    "actual_value": "\"effortless-entity-framework-Steps.IsOnReworkLoop @ policy-04\"",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "CellDisagreements.Name",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|CellDisagreements.Name|effortless-entity-framework|Steps.IsOnReworkLoop|policy-06",
-    "name": "effortless-owl|CellDisagreements.Name @ effortless-entity-framework|Steps.IsOnReworkLoop|policy-06",
-    "field_disagreement": "effortless-owl|CellDisagreements.Name",
-    "record_id": "effortless-entity-framework|Steps.IsOnReworkLoop|policy-06",
-    "expected_value": "\"effortless-entity-framework|Steps.IsOnReworkLoop @ policy-06\"",
-    "actual_value": "\"effortless-entity-framework-Steps.IsOnReworkLoop @ policy-06\"",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "CellDisagreements.Name",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|CellDisagreements.Name|effortless-entity-framework|Steps.IsOnReworkLoop|policy-07",
-    "name": "effortless-owl|CellDisagreements.Name @ effortless-entity-framework|Steps.IsOnReworkLoop|policy-07",
-    "field_disagreement": "effortless-owl|CellDisagreements.Name",
-    "record_id": "effortless-entity-framework|Steps.IsOnReworkLoop|policy-07",
-    "expected_value": "\"effortless-entity-framework|Steps.IsOnReworkLoop @ policy-07\"",
-    "actual_value": "\"effortless-entity-framework-Steps.IsOnReworkLoop @ policy-07\"",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "CellDisagreements.Name",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|CellDisagreements.Name|effortless-entity-framework|Steps.ReachableStepCount|close-01",
-    "name": "effortless-owl|CellDisagreements.Name @ effortless-entity-framework|Steps.ReachableStepCount|close-01",
-    "field_disagreement": "effortless-owl|CellDisagreements.Name",
-    "record_id": "effortless-entity-framework|Steps.ReachableStepCount|close-01",
-    "expected_value": "\"effortless-entity-framework|Steps.ReachableStepCount @ close-01\"",
-    "actual_value": "\"effortless-entity-framework-Steps.ReachableStepCount @ close-01\"",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "CellDisagreements.Name",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|CellDisagreements.Name|effortless-entity-framework|Steps.ReachableStepCount|close-02",
-    "name": "effortless-owl|CellDisagreements.Name @ effortless-entity-framework|Steps.ReachableStepCount|close-02",
-    "field_disagreement": "effortless-owl|CellDisagreements.Name",
-    "record_id": "effortless-entity-framework|Steps.ReachableStepCount|close-02",
-    "expected_value": "\"effortless-entity-framework|Steps.ReachableStepCount @ close-02\"",
-    "actual_value": "\"effortless-entity-framework-Steps.ReachableStepCount @ close-02\"",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "CellDisagreements.Name",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|CellDisagreements.Name|effortless-entity-framework|Steps.ReachableStepCount|close-03",
-    "name": "effortless-owl|CellDisagreements.Name @ effortless-entity-framework|Steps.ReachableStepCount|close-03",
-    "field_disagreement": "effortless-owl|CellDisagreements.Name",
-    "record_id": "effortless-entity-framework|Steps.ReachableStepCount|close-03",
-    "expected_value": "\"effortless-entity-framework|Steps.ReachableStepCount @ close-03\"",
-    "actual_value": "\"effortless-entity-framework-Steps.ReachableStepCount @ close-03\"",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "CellDisagreements.Name",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|CellDisagreements.Name|effortless-entity-framework|Steps.ReachableStepCount|close-04",
-    "name": "effortless-owl|CellDisagreements.Name @ effortless-entity-framework|Steps.ReachableStepCount|close-04",
-    "field_disagreement": "effortless-owl|CellDisagreements.Name",
-    "record_id": "effortless-entity-framework|Steps.ReachableStepCount|close-04",
-    "expected_value": "\"effortless-entity-framework|Steps.ReachableStepCount @ close-04\"",
-    "actual_value": "\"effortless-entity-framework-Steps.ReachableStepCount @ close-04\"",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "CellDisagreements.Name",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|CellDisagreements.Name|effortless-entity-framework|Steps.ReachableStepCount|close-05",
-    "name": "effortless-owl|CellDisagreements.Name @ effortless-entity-framework|Steps.ReachableStepCount|close-05",
-    "field_disagreement": "effortless-owl|CellDisagreements.Name",
-    "record_id": "effortless-entity-framework|Steps.ReachableStepCount|close-05",
-    "expected_value": "\"effortless-entity-framework|Steps.ReachableStepCount @ close-05\"",
-    "actual_value": "\"effortless-entity-framework-Steps.ReachableStepCount @ close-05\"",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "CellDisagreements.Name",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|DeliveredCommunications.Name|dc-hr4821-email-001",
-    "name": "effortless-owl|DeliveredCommunications.Name @ dc-hr4821-email-001",
-    "field_disagreement": "effortless-owl|DeliveredCommunications.Name",
-    "record_id": "dc-hr4821-email-001",
-    "expected_value": "\"Email -\u003e emp-anon-0001 @ \"",
-    "actual_value": "null",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "DeliveredCommunications.Name",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|KnowledgeFragments.FragilitySignalCount|kf-policy-channel",
-    "name": "effortless-owl|KnowledgeFragments.FragilitySignalCount @ kf-policy-channel",
-    "field_disagreement": "effortless-owl|KnowledgeFragments.FragilitySignalCount",
-    "record_id": "kf-policy-channel",
-    "expected_value": "2",
-    "actual_value": "1",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "KnowledgeFragments.FragilitySignalCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|KnowledgeFragments.FragilitySignalCount|kf-policy-manager-route",
-    "name": "effortless-owl|KnowledgeFragments.FragilitySignalCount @ kf-policy-manager-route",
-    "field_disagreement": "effortless-owl|KnowledgeFragments.FragilitySignalCount",
-    "record_id": "kf-policy-manager-route",
-    "expected_value": "2",
-    "actual_value": "1",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "KnowledgeFragments.FragilitySignalCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|KnowledgeFragments.HasOperationalReliance|kf-policy-channel",
-    "name": "effortless-owl|KnowledgeFragments.HasOperationalReliance @ kf-policy-channel",
-    "field_disagreement": "effortless-owl|KnowledgeFragments.HasOperationalReliance",
-    "record_id": "kf-policy-channel",
-    "expected_value": "true",
-    "actual_value": "false",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "KnowledgeFragments.HasOperationalReliance",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|KnowledgeFragments.HasOperationalReliance|kf-policy-manager-route",
-    "name": "effortless-owl|KnowledgeFragments.HasOperationalReliance @ kf-policy-manager-route",
-    "field_disagreement": "effortless-owl|KnowledgeFragments.HasOperationalReliance",
-    "record_id": "kf-policy-manager-route",
-    "expected_value": "true",
-    "actual_value": "false",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "KnowledgeFragments.HasOperationalReliance",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|KnowledgeFragments.IsInvokedByAnException|kf-policy-channel",
-    "name": "effortless-owl|KnowledgeFragments.IsInvokedByAnException @ kf-policy-channel",
-    "field_disagreement": "effortless-owl|KnowledgeFragments.IsInvokedByAnException",
-    "record_id": "kf-policy-channel",
-    "expected_value": "1",
-    "actual_value": "0",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "KnowledgeFragments.IsInvokedByAnException",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|KnowledgeFragments.IsInvokedByAnException|kf-policy-manager-route",
-    "name": "effortless-owl|KnowledgeFragments.IsInvokedByAnException @ kf-policy-manager-route",
-    "field_disagreement": "effortless-owl|KnowledgeFragments.IsInvokedByAnException",
-    "record_id": "kf-policy-manager-route",
-    "expected_value": "1",
-    "actual_value": "0",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "KnowledgeFragments.IsInvokedByAnException",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|KnowledgeFragments.IsUnapprovedAndOperationallyLive|kf-policy-manager-route",
-    "name": "effortless-owl|KnowledgeFragments.IsUnapprovedAndOperationallyLive @ kf-policy-manager-route",
-    "field_disagreement": "effortless-owl|KnowledgeFragments.IsUnapprovedAndOperationallyLive",
-    "record_id": "kf-policy-manager-route",
-    "expected_value": "true",
-    "actual_value": "false",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "KnowledgeFragments.IsUnapprovedAndOperationallyLive",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|KnowledgeFragments.RelianceSurfaceCount|kf-policy-channel",
-    "name": "effortless-owl|KnowledgeFragments.RelianceSurfaceCount @ kf-policy-channel",
-    "field_disagreement": "effortless-owl|KnowledgeFragments.RelianceSurfaceCount",
-    "record_id": "kf-policy-channel",
-    "expected_value": "1",
-    "actual_value": "0",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "KnowledgeFragments.RelianceSurfaceCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|KnowledgeFragments.RelianceSurfaceCount|kf-policy-manager-route",
-    "name": "effortless-owl|KnowledgeFragments.RelianceSurfaceCount @ kf-policy-manager-route",
-    "field_disagreement": "effortless-owl|KnowledgeFragments.RelianceSurfaceCount",
-    "record_id": "kf-policy-manager-route",
-    "expected_value": "1",
-    "actual_value": "0",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "KnowledgeFragments.RelianceSurfaceCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|ProcedureVersionLinks.SupersededVersionKey|close-v1.0.0-to-v1.1.0",
-    "name": "effortless-owl|ProcedureVersionLinks.SupersededVersionKey @ close-v1.0.0-to-v1.1.0",
-    "field_disagreement": "effortless-owl|ProcedureVersionLinks.SupersededVersionKey",
-    "record_id": "close-v1.0.0-to-v1.1.0",
-    "expected_value": "\"close-v1.0.0\"",
-    "actual_value": "null",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "ProcedureVersionLinks.SupersededVersionKey",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|ProcedureVersions.DaysSinceLastReview|close-v1.1.0",
-    "name": "effortless-owl|ProcedureVersions.DaysSinceLastReview @ close-v1.1.0",
-    "field_disagreement": "effortless-owl|ProcedureVersions.DaysSinceLastReview",
-    "record_id": "close-v1.1.0",
-    "expected_value": "17",
-    "actual_value": "null",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "ProcedureVersions.DaysSinceLastReview",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|ProcedureVersions.DaysSinceLastReview|policy-v1.0.0",
-    "name": "effortless-owl|ProcedureVersions.DaysSinceLastReview @ policy-v1.0.0",
-    "field_disagreement": "effortless-owl|ProcedureVersions.DaysSinceLastReview",
-    "record_id": "policy-v1.0.0",
-    "expected_value": "1",
-    "actual_value": "null",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "ProcedureVersions.DaysSinceLastReview",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|ProcedureVersions.IncomingSupersessionCount|close-v1.0.0",
-    "name": "effortless-owl|ProcedureVersions.IncomingSupersessionCount @ close-v1.0.0",
-    "field_disagreement": "effortless-owl|ProcedureVersions.IncomingSupersessionCount",
-    "record_id": "close-v1.0.0",
-    "expected_value": "1",
-    "actual_value": "0",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "ProcedureVersions.IncomingSupersessionCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|ProcedureVersions.IsCleanlyRetired|close-v1.0.0",
-    "name": "effortless-owl|ProcedureVersions.IsCleanlyRetired @ close-v1.0.0",
-    "field_disagreement": "effortless-owl|ProcedureVersions.IsCleanlyRetired",
-    "record_id": "close-v1.0.0",
-    "expected_value": "false",
-    "actual_value": "true",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "ProcedureVersions.IsCleanlyRetired",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|ProcedureVersions.IsLoadBearingOrphan|close-v1.0.0",
-    "name": "effortless-owl|ProcedureVersions.IsLoadBearingOrphan @ close-v1.0.0",
-    "field_disagreement": "effortless-owl|ProcedureVersions.IsLoadBearingOrphan",
-    "record_id": "close-v1.0.0",
-    "expected_value": "true",
-    "actual_value": "false",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "ProcedureVersions.IsLoadBearingOrphan",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|ProcedureVersions.IsStillReferenced|close-v1.0.0",
-    "name": "effortless-owl|ProcedureVersions.IsStillReferenced @ close-v1.0.0",
-    "field_disagreement": "effortless-owl|ProcedureVersions.IsStillReferenced",
-    "record_id": "close-v1.0.0",
-    "expected_value": "true",
-    "actual_value": "false",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "ProcedureVersions.IsStillReferenced",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|RulebookReleases.Name|erb-pko-1.0.0",
-    "name": "effortless-owl|RulebookReleases.Name @ erb-pko-1.0.0",
-    "field_disagreement": "effortless-owl|RulebookReleases.Name",
-    "record_id": "erb-pko-1.0.0",
-    "expected_value": "\"1.0.0 / PKO https://w3id.org/pko/2.0.0\"",
-    "actual_value": "null",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "RulebookReleases.Name",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|StepTransitions.CountOfFromStepExecutions|close-01-to-close-02",
-    "name": "effortless-owl|StepTransitions.CountOfFromStepExecutions @ close-01-to-close-02",
-    "field_disagreement": "effortless-owl|StepTransitions.CountOfFromStepExecutions",
-    "record_id": "close-01-to-close-02",
-    "expected_value": "1",
-    "actual_value": "0",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "StepTransitions.CountOfFromStepExecutions",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|StepTransitions.CountOfFromStepExecutions|close-02-to-close-03",
-    "name": "effortless-owl|StepTransitions.CountOfFromStepExecutions @ close-02-to-close-03",
-    "field_disagreement": "effortless-owl|StepTransitions.CountOfFromStepExecutions",
-    "record_id": "close-02-to-close-03",
-    "expected_value": "1",
-    "actual_value": "0",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "StepTransitions.CountOfFromStepExecutions",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|StepTransitions.CountOfFromStepExecutions|close-03-to-close-04",
-    "name": "effortless-owl|StepTransitions.CountOfFromStepExecutions @ close-03-to-close-04",
-    "field_disagreement": "effortless-owl|StepTransitions.CountOfFromStepExecutions",
-    "record_id": "close-03-to-close-04",
-    "expected_value": "1",
-    "actual_value": "0",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "StepTransitions.CountOfFromStepExecutions",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|StepTransitions.CountOfFromStepExecutions|close-04-fallback-close-03",
-    "name": "effortless-owl|StepTransitions.CountOfFromStepExecutions @ close-04-fallback-close-03",
-    "field_disagreement": "effortless-owl|StepTransitions.CountOfFromStepExecutions",
-    "record_id": "close-04-fallback-close-03",
-    "expected_value": "1",
-    "actual_value": "0",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "StepTransitions.CountOfFromStepExecutions",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|StepTransitions.CountOfFromStepExecutions|close-04-to-close-05",
-    "name": "effortless-owl|StepTransitions.CountOfFromStepExecutions @ close-04-to-close-05",
-    "field_disagreement": "effortless-owl|StepTransitions.CountOfFromStepExecutions",
-    "record_id": "close-04-to-close-05",
-    "expected_value": "1",
-    "actual_value": "0",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "StepTransitions.CountOfFromStepExecutions",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|StepTransitions.CountOfFromStepExecutions|close-05-expedite-close-07",
-    "name": "effortless-owl|StepTransitions.CountOfFromStepExecutions @ close-05-expedite-close-07",
-    "field_disagreement": "effortless-owl|StepTransitions.CountOfFromStepExecutions",
-    "record_id": "close-05-expedite-close-07",
-    "expected_value": "1",
-    "actual_value": "0",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "StepTransitions.CountOfFromStepExecutions",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|StepTransitions.CountOfFromStepExecutions|close-05-to-close-06",
-    "name": "effortless-owl|StepTransitions.CountOfFromStepExecutions @ close-05-to-close-06",
-    "field_disagreement": "effortless-owl|StepTransitions.CountOfFromStepExecutions",
-    "record_id": "close-05-to-close-06",
-    "expected_value": "1",
-    "actual_value": "0",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "StepTransitions.CountOfFromStepExecutions",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|StepTransitions.CountOfFromStepExecutions|close-06-return-close-04",
-    "name": "effortless-owl|StepTransitions.CountOfFromStepExecutions @ close-06-return-close-04",
-    "field_disagreement": "effortless-owl|StepTransitions.CountOfFromStepExecutions",
-    "record_id": "close-06-return-close-04",
-    "expected_value": "1",
-    "actual_value": "0",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "StepTransitions.CountOfFromStepExecutions",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|StepTransitions.CountOfFromStepExecutions|close-06-to-close-07",
-    "name": "effortless-owl|StepTransitions.CountOfFromStepExecutions @ close-06-to-close-07",
-    "field_disagreement": "effortless-owl|StepTransitions.CountOfFromStepExecutions",
-    "record_id": "close-06-to-close-07",
-    "expected_value": "1",
-    "actual_value": "0",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "StepTransitions.CountOfFromStepExecutions",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|StepTransitions.CountOfFromStepExecutions|close-07-to-close-08",
-    "name": "effortless-owl|StepTransitions.CountOfFromStepExecutions @ close-07-to-close-08",
-    "field_disagreement": "effortless-owl|StepTransitions.CountOfFromStepExecutions",
-    "record_id": "close-07-to-close-08",
-    "expected_value": "1",
-    "actual_value": "0",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "StepTransitions.CountOfFromStepExecutions",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|StepTransitions.CountOfFromStepExecutions|policy-01-to-policy-02",
-    "name": "effortless-owl|StepTransitions.CountOfFromStepExecutions @ policy-01-to-policy-02",
-    "field_disagreement": "effortless-owl|StepTransitions.CountOfFromStepExecutions",
-    "record_id": "policy-01-to-policy-02",
-    "expected_value": "1",
-    "actual_value": "0",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "StepTransitions.CountOfFromStepExecutions",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|StepTransitions.CountOfFromStepExecutions|policy-02-to-policy-03",
-    "name": "effortless-owl|StepTransitions.CountOfFromStepExecutions @ policy-02-to-policy-03",
-    "field_disagreement": "effortless-owl|StepTransitions.CountOfFromStepExecutions",
-    "record_id": "policy-02-to-policy-03",
-    "expected_value": "1",
-    "actual_value": "0",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "StepTransitions.CountOfFromStepExecutions",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|StepTransitions.CountOfFromStepExecutions|policy-03-to-policy-04",
-    "name": "effortless-owl|StepTransitions.CountOfFromStepExecutions @ policy-03-to-policy-04",
-    "field_disagreement": "effortless-owl|StepTransitions.CountOfFromStepExecutions",
-    "record_id": "policy-03-to-policy-04",
-    "expected_value": "1",
-    "actual_value": "0",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "StepTransitions.CountOfFromStepExecutions",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|StepTransitions.CountOfFromStepExecutions|policy-04-return-policy-03",
-    "name": "effortless-owl|StepTransitions.CountOfFromStepExecutions @ policy-04-return-policy-03",
-    "field_disagreement": "effortless-owl|StepTransitions.CountOfFromStepExecutions",
-    "record_id": "policy-04-return-policy-03",
-    "expected_value": "1",
-    "actual_value": "0",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "StepTransitions.CountOfFromStepExecutions",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|StepTransitions.CountOfFromStepExecutions|policy-04-to-policy-05",
-    "name": "effortless-owl|StepTransitions.CountOfFromStepExecutions @ policy-04-to-policy-05",
-    "field_disagreement": "effortless-owl|StepTransitions.CountOfFromStepExecutions",
-    "record_id": "policy-04-to-policy-05",
-    "expected_value": "1",
-    "actual_value": "0",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "StepTransitions.CountOfFromStepExecutions",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|StepTransitions.CountOfToStepExecutions|close-01-to-close-02",
-    "name": "effortless-owl|StepTransitions.CountOfToStepExecutions @ close-01-to-close-02",
-    "field_disagreement": "effortless-owl|StepTransitions.CountOfToStepExecutions",
-    "record_id": "close-01-to-close-02",
-    "expected_value": "1",
-    "actual_value": "0",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "StepTransitions.CountOfToStepExecutions",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|StepTransitions.CountOfToStepExecutions|close-02-to-close-03",
-    "name": "effortless-owl|StepTransitions.CountOfToStepExecutions @ close-02-to-close-03",
-    "field_disagreement": "effortless-owl|StepTransitions.CountOfToStepExecutions",
-    "record_id": "close-02-to-close-03",
-    "expected_value": "1",
-    "actual_value": "0",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "StepTransitions.CountOfToStepExecutions",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|StepTransitions.CountOfToStepExecutions|close-03-to-close-04",
-    "name": "effortless-owl|StepTransitions.CountOfToStepExecutions @ close-03-to-close-04",
-    "field_disagreement": "effortless-owl|StepTransitions.CountOfToStepExecutions",
-    "record_id": "close-03-to-close-04",
-    "expected_value": "1",
-    "actual_value": "0",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "StepTransitions.CountOfToStepExecutions",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|StepTransitions.CountOfToStepExecutions|close-04-fallback-close-03",
-    "name": "effortless-owl|StepTransitions.CountOfToStepExecutions @ close-04-fallback-close-03",
-    "field_disagreement": "effortless-owl|StepTransitions.CountOfToStepExecutions",
-    "record_id": "close-04-fallback-close-03",
-    "expected_value": "1",
-    "actual_value": "0",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "StepTransitions.CountOfToStepExecutions",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|StepTransitions.CountOfToStepExecutions|close-04-to-close-05",
-    "name": "effortless-owl|StepTransitions.CountOfToStepExecutions @ close-04-to-close-05",
-    "field_disagreement": "effortless-owl|StepTransitions.CountOfToStepExecutions",
-    "record_id": "close-04-to-close-05",
-    "expected_value": "1",
-    "actual_value": "0",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "StepTransitions.CountOfToStepExecutions",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|StepTransitions.CountOfToStepExecutions|close-05-expedite-close-07",
-    "name": "effortless-owl|StepTransitions.CountOfToStepExecutions @ close-05-expedite-close-07",
-    "field_disagreement": "effortless-owl|StepTransitions.CountOfToStepExecutions",
-    "record_id": "close-05-expedite-close-07",
-    "expected_value": "1",
-    "actual_value": "0",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "StepTransitions.CountOfToStepExecutions",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|StepTransitions.CountOfToStepExecutions|close-05-to-close-06",
-    "name": "effortless-owl|StepTransitions.CountOfToStepExecutions @ close-05-to-close-06",
-    "field_disagreement": "effortless-owl|StepTransitions.CountOfToStepExecutions",
-    "record_id": "close-05-to-close-06",
-    "expected_value": "1",
-    "actual_value": "0",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "StepTransitions.CountOfToStepExecutions",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|StepTransitions.CountOfToStepExecutions|close-06-return-close-04",
-    "name": "effortless-owl|StepTransitions.CountOfToStepExecutions @ close-06-return-close-04",
-    "field_disagreement": "effortless-owl|StepTransitions.CountOfToStepExecutions",
-    "record_id": "close-06-return-close-04",
-    "expected_value": "1",
-    "actual_value": "0",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "StepTransitions.CountOfToStepExecutions",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|StepTransitions.CountOfToStepExecutions|close-06-to-close-07",
-    "name": "effortless-owl|StepTransitions.CountOfToStepExecutions @ close-06-to-close-07",
-    "field_disagreement": "effortless-owl|StepTransitions.CountOfToStepExecutions",
-    "record_id": "close-06-to-close-07",
-    "expected_value": "1",
-    "actual_value": "0",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "StepTransitions.CountOfToStepExecutions",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|StepTransitions.CountOfToStepExecutions|close-07-to-close-08",
-    "name": "effortless-owl|StepTransitions.CountOfToStepExecutions @ close-07-to-close-08",
-    "field_disagreement": "effortless-owl|StepTransitions.CountOfToStepExecutions",
-    "record_id": "close-07-to-close-08",
-    "expected_value": "1",
-    "actual_value": "0",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "StepTransitions.CountOfToStepExecutions",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|StepTransitions.CountOfToStepExecutions|policy-01-to-policy-02",
-    "name": "effortless-owl|StepTransitions.CountOfToStepExecutions @ policy-01-to-policy-02",
-    "field_disagreement": "effortless-owl|StepTransitions.CountOfToStepExecutions",
-    "record_id": "policy-01-to-policy-02",
-    "expected_value": "1",
-    "actual_value": "0",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "StepTransitions.CountOfToStepExecutions",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|StepTransitions.CountOfToStepExecutions|policy-02-to-policy-03",
-    "name": "effortless-owl|StepTransitions.CountOfToStepExecutions @ policy-02-to-policy-03",
-    "field_disagreement": "effortless-owl|StepTransitions.CountOfToStepExecutions",
-    "record_id": "policy-02-to-policy-03",
-    "expected_value": "1",
-    "actual_value": "0",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "StepTransitions.CountOfToStepExecutions",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|StepTransitions.CountOfToStepExecutions|policy-03-to-policy-04",
-    "name": "effortless-owl|StepTransitions.CountOfToStepExecutions @ policy-03-to-policy-04",
-    "field_disagreement": "effortless-owl|StepTransitions.CountOfToStepExecutions",
-    "record_id": "policy-03-to-policy-04",
-    "expected_value": "1",
-    "actual_value": "0",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "StepTransitions.CountOfToStepExecutions",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|StepTransitions.CountOfToStepExecutions|policy-04-return-policy-03",
-    "name": "effortless-owl|StepTransitions.CountOfToStepExecutions @ policy-04-return-policy-03",
-    "field_disagreement": "effortless-owl|StepTransitions.CountOfToStepExecutions",
-    "record_id": "policy-04-return-policy-03",
-    "expected_value": "1",
-    "actual_value": "0",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "StepTransitions.CountOfToStepExecutions",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|StepTransitions.HasReachableOrigin|close-01-to-close-02",
-    "name": "effortless-owl|StepTransitions.HasReachableOrigin @ close-01-to-close-02",
-    "field_disagreement": "effortless-owl|StepTransitions.HasReachableOrigin",
-    "record_id": "close-01-to-close-02",
-    "expected_value": "true",
-    "actual_value": "false",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "StepTransitions.HasReachableOrigin",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|StepTransitions.HasReachableOrigin|close-02-to-close-03",
-    "name": "effortless-owl|StepTransitions.HasReachableOrigin @ close-02-to-close-03",
-    "field_disagreement": "effortless-owl|StepTransitions.HasReachableOrigin",
-    "record_id": "close-02-to-close-03",
-    "expected_value": "true",
-    "actual_value": "false",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "StepTransitions.HasReachableOrigin",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|StepTransitions.HasReachableOrigin|close-03-to-close-04",
-    "name": "effortless-owl|StepTransitions.HasReachableOrigin @ close-03-to-close-04",
-    "field_disagreement": "effortless-owl|StepTransitions.HasReachableOrigin",
-    "record_id": "close-03-to-close-04",
-    "expected_value": "true",
-    "actual_value": "false",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "StepTransitions.HasReachableOrigin",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|StepTransitions.HasReachableOrigin|close-04-fallback-close-03",
-    "name": "effortless-owl|StepTransitions.HasReachableOrigin @ close-04-fallback-close-03",
-    "field_disagreement": "effortless-owl|StepTransitions.HasReachableOrigin",
-    "record_id": "close-04-fallback-close-03",
-    "expected_value": "true",
-    "actual_value": "false",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "StepTransitions.HasReachableOrigin",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|StepTransitions.HasReachableOrigin|close-04-to-close-05",
-    "name": "effortless-owl|StepTransitions.HasReachableOrigin @ close-04-to-close-05",
-    "field_disagreement": "effortless-owl|StepTransitions.HasReachableOrigin",
-    "record_id": "close-04-to-close-05",
-    "expected_value": "true",
-    "actual_value": "false",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "StepTransitions.HasReachableOrigin",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|StepTransitions.HasReachableOrigin|close-05-expedite-close-07",
-    "name": "effortless-owl|StepTransitions.HasReachableOrigin @ close-05-expedite-close-07",
-    "field_disagreement": "effortless-owl|StepTransitions.HasReachableOrigin",
-    "record_id": "close-05-expedite-close-07",
-    "expected_value": "true",
-    "actual_value": "false",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "StepTransitions.HasReachableOrigin",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|StepTransitions.HasReachableOrigin|close-05-to-close-06",
-    "name": "effortless-owl|StepTransitions.HasReachableOrigin @ close-05-to-close-06",
-    "field_disagreement": "effortless-owl|StepTransitions.HasReachableOrigin",
-    "record_id": "close-05-to-close-06",
-    "expected_value": "true",
-    "actual_value": "false",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "StepTransitions.HasReachableOrigin",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|StepTransitions.HasReachableOrigin|close-06-return-close-04",
-    "name": "effortless-owl|StepTransitions.HasReachableOrigin @ close-06-return-close-04",
-    "field_disagreement": "effortless-owl|StepTransitions.HasReachableOrigin",
-    "record_id": "close-06-return-close-04",
-    "expected_value": "true",
-    "actual_value": "false",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "StepTransitions.HasReachableOrigin",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|StepTransitions.HasReachableOrigin|close-06-to-close-07",
-    "name": "effortless-owl|StepTransitions.HasReachableOrigin @ close-06-to-close-07",
-    "field_disagreement": "effortless-owl|StepTransitions.HasReachableOrigin",
-    "record_id": "close-06-to-close-07",
-    "expected_value": "true",
-    "actual_value": "false",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "StepTransitions.HasReachableOrigin",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|StepTransitions.HasReachableOrigin|close-07-to-close-08",
-    "name": "effortless-owl|StepTransitions.HasReachableOrigin @ close-07-to-close-08",
-    "field_disagreement": "effortless-owl|StepTransitions.HasReachableOrigin",
-    "record_id": "close-07-to-close-08",
-    "expected_value": "true",
-    "actual_value": "false",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "StepTransitions.HasReachableOrigin",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|StepTransitions.HasReachableOrigin|policy-01-to-policy-02",
-    "name": "effortless-owl|StepTransitions.HasReachableOrigin @ policy-01-to-policy-02",
-    "field_disagreement": "effortless-owl|StepTransitions.HasReachableOrigin",
-    "record_id": "policy-01-to-policy-02",
-    "expected_value": "true",
-    "actual_value": "false",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "StepTransitions.HasReachableOrigin",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|StepTransitions.HasReachableOrigin|policy-02-to-policy-03",
-    "name": "effortless-owl|StepTransitions.HasReachableOrigin @ policy-02-to-policy-03",
-    "field_disagreement": "effortless-owl|StepTransitions.HasReachableOrigin",
-    "record_id": "policy-02-to-policy-03",
-    "expected_value": "true",
-    "actual_value": "false",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "StepTransitions.HasReachableOrigin",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|StepTransitions.HasReachableOrigin|policy-03-to-policy-04",
-    "name": "effortless-owl|StepTransitions.HasReachableOrigin @ policy-03-to-policy-04",
-    "field_disagreement": "effortless-owl|StepTransitions.HasReachableOrigin",
-    "record_id": "policy-03-to-policy-04",
-    "expected_value": "true",
-    "actual_value": "false",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "StepTransitions.HasReachableOrigin",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|StepTransitions.HasReachableOrigin|policy-04-return-policy-03",
-    "name": "effortless-owl|StepTransitions.HasReachableOrigin @ policy-04-return-policy-03",
-    "field_disagreement": "effortless-owl|StepTransitions.HasReachableOrigin",
-    "record_id": "policy-04-return-policy-03",
-    "expected_value": "true",
-    "actual_value": "false",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "StepTransitions.HasReachableOrigin",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|StepTransitions.HasReachableOrigin|policy-04-to-policy-05",
-    "name": "effortless-owl|StepTransitions.HasReachableOrigin @ policy-04-to-policy-05",
-    "field_disagreement": "effortless-owl|StepTransitions.HasReachableOrigin",
-    "record_id": "policy-04-to-policy-05",
-    "expected_value": "true",
-    "actual_value": "false",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "StepTransitions.HasReachableOrigin",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|StepTransitions.HasReachableTarget|close-01-to-close-02",
-    "name": "effortless-owl|StepTransitions.HasReachableTarget @ close-01-to-close-02",
-    "field_disagreement": "effortless-owl|StepTransitions.HasReachableTarget",
-    "record_id": "close-01-to-close-02",
-    "expected_value": "true",
-    "actual_value": "false",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "StepTransitions.HasReachableTarget",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|StepTransitions.HasReachableTarget|close-02-to-close-03",
-    "name": "effortless-owl|StepTransitions.HasReachableTarget @ close-02-to-close-03",
-    "field_disagreement": "effortless-owl|StepTransitions.HasReachableTarget",
-    "record_id": "close-02-to-close-03",
-    "expected_value": "true",
-    "actual_value": "false",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "StepTransitions.HasReachableTarget",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|StepTransitions.HasReachableTarget|close-03-to-close-04",
-    "name": "effortless-owl|StepTransitions.HasReachableTarget @ close-03-to-close-04",
-    "field_disagreement": "effortless-owl|StepTransitions.HasReachableTarget",
-    "record_id": "close-03-to-close-04",
-    "expected_value": "true",
-    "actual_value": "false",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "StepTransitions.HasReachableTarget",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|StepTransitions.HasReachableTarget|close-04-fallback-close-03",
-    "name": "effortless-owl|StepTransitions.HasReachableTarget @ close-04-fallback-close-03",
-    "field_disagreement": "effortless-owl|StepTransitions.HasReachableTarget",
-    "record_id": "close-04-fallback-close-03",
-    "expected_value": "true",
-    "actual_value": "false",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "StepTransitions.HasReachableTarget",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|StepTransitions.HasReachableTarget|close-04-to-close-05",
-    "name": "effortless-owl|StepTransitions.HasReachableTarget @ close-04-to-close-05",
-    "field_disagreement": "effortless-owl|StepTransitions.HasReachableTarget",
-    "record_id": "close-04-to-close-05",
-    "expected_value": "true",
-    "actual_value": "false",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "StepTransitions.HasReachableTarget",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|StepTransitions.HasReachableTarget|close-05-expedite-close-07",
-    "name": "effortless-owl|StepTransitions.HasReachableTarget @ close-05-expedite-close-07",
-    "field_disagreement": "effortless-owl|StepTransitions.HasReachableTarget",
-    "record_id": "close-05-expedite-close-07",
-    "expected_value": "true",
-    "actual_value": "false",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "StepTransitions.HasReachableTarget",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|StepTransitions.HasReachableTarget|close-05-to-close-06",
-    "name": "effortless-owl|StepTransitions.HasReachableTarget @ close-05-to-close-06",
-    "field_disagreement": "effortless-owl|StepTransitions.HasReachableTarget",
-    "record_id": "close-05-to-close-06",
-    "expected_value": "true",
-    "actual_value": "false",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "StepTransitions.HasReachableTarget",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|StepTransitions.HasReachableTarget|close-06-return-close-04",
-    "name": "effortless-owl|StepTransitions.HasReachableTarget @ close-06-return-close-04",
-    "field_disagreement": "effortless-owl|StepTransitions.HasReachableTarget",
-    "record_id": "close-06-return-close-04",
-    "expected_value": "true",
-    "actual_value": "false",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "StepTransitions.HasReachableTarget",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|StepTransitions.HasReachableTarget|close-06-to-close-07",
-    "name": "effortless-owl|StepTransitions.HasReachableTarget @ close-06-to-close-07",
-    "field_disagreement": "effortless-owl|StepTransitions.HasReachableTarget",
-    "record_id": "close-06-to-close-07",
-    "expected_value": "true",
-    "actual_value": "false",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "StepTransitions.HasReachableTarget",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|StepTransitions.HasReachableTarget|close-07-to-close-08",
-    "name": "effortless-owl|StepTransitions.HasReachableTarget @ close-07-to-close-08",
-    "field_disagreement": "effortless-owl|StepTransitions.HasReachableTarget",
-    "record_id": "close-07-to-close-08",
-    "expected_value": "true",
-    "actual_value": "false",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "StepTransitions.HasReachableTarget",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|StepTransitions.HasReachableTarget|policy-01-to-policy-02",
-    "name": "effortless-owl|StepTransitions.HasReachableTarget @ policy-01-to-policy-02",
-    "field_disagreement": "effortless-owl|StepTransitions.HasReachableTarget",
-    "record_id": "policy-01-to-policy-02",
-    "expected_value": "true",
-    "actual_value": "false",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "StepTransitions.HasReachableTarget",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|StepTransitions.HasReachableTarget|policy-02-to-policy-03",
-    "name": "effortless-owl|StepTransitions.HasReachableTarget @ policy-02-to-policy-03",
-    "field_disagreement": "effortless-owl|StepTransitions.HasReachableTarget",
-    "record_id": "policy-02-to-policy-03",
-    "expected_value": "true",
-    "actual_value": "false",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "StepTransitions.HasReachableTarget",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|StepTransitions.HasReachableTarget|policy-03-to-policy-04",
-    "name": "effortless-owl|StepTransitions.HasReachableTarget @ policy-03-to-policy-04",
-    "field_disagreement": "effortless-owl|StepTransitions.HasReachableTarget",
-    "record_id": "policy-03-to-policy-04",
-    "expected_value": "true",
-    "actual_value": "false",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "StepTransitions.HasReachableTarget",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|StepTransitions.HasReachableTarget|policy-04-return-policy-03",
-    "name": "effortless-owl|StepTransitions.HasReachableTarget @ policy-04-return-policy-03",
-    "field_disagreement": "effortless-owl|StepTransitions.HasReachableTarget",
-    "record_id": "policy-04-return-policy-03",
-    "expected_value": "true",
-    "actual_value": "false",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "StepTransitions.HasReachableTarget",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|StepTransitions.IsNeverExercised|close-01-to-close-02",
-    "name": "effortless-owl|StepTransitions.IsNeverExercised @ close-01-to-close-02",
-    "field_disagreement": "effortless-owl|StepTransitions.IsNeverExercised",
-    "record_id": "close-01-to-close-02",
-    "expected_value": "false",
-    "actual_value": "true",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "StepTransitions.IsNeverExercised",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|StepTransitions.IsNeverExercised|close-02-to-close-03",
-    "name": "effortless-owl|StepTransitions.IsNeverExercised @ close-02-to-close-03",
-    "field_disagreement": "effortless-owl|StepTransitions.IsNeverExercised",
-    "record_id": "close-02-to-close-03",
-    "expected_value": "false",
-    "actual_value": "true",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "StepTransitions.IsNeverExercised",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|StepTransitions.IsNeverExercised|close-03-to-close-04",
-    "name": "effortless-owl|StepTransitions.IsNeverExercised @ close-03-to-close-04",
-    "field_disagreement": "effortless-owl|StepTransitions.IsNeverExercised",
-    "record_id": "close-03-to-close-04",
-    "expected_value": "false",
-    "actual_value": "true",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "StepTransitions.IsNeverExercised",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|StepTransitions.IsNeverExercised|close-04-fallback-close-03",
-    "name": "effortless-owl|StepTransitions.IsNeverExercised @ close-04-fallback-close-03",
-    "field_disagreement": "effortless-owl|StepTransitions.IsNeverExercised",
-    "record_id": "close-04-fallback-close-03",
-    "expected_value": "false",
-    "actual_value": "true",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "StepTransitions.IsNeverExercised",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|StepTransitions.IsNeverExercised|close-04-to-close-05",
-    "name": "effortless-owl|StepTransitions.IsNeverExercised @ close-04-to-close-05",
-    "field_disagreement": "effortless-owl|StepTransitions.IsNeverExercised",
-    "record_id": "close-04-to-close-05",
-    "expected_value": "false",
-    "actual_value": "true",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "StepTransitions.IsNeverExercised",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|StepTransitions.IsNeverExercised|close-05-expedite-close-07",
-    "name": "effortless-owl|StepTransitions.IsNeverExercised @ close-05-expedite-close-07",
-    "field_disagreement": "effortless-owl|StepTransitions.IsNeverExercised",
-    "record_id": "close-05-expedite-close-07",
-    "expected_value": "false",
-    "actual_value": "true",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "StepTransitions.IsNeverExercised",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|StepTransitions.IsNeverExercised|close-05-to-close-06",
-    "name": "effortless-owl|StepTransitions.IsNeverExercised @ close-05-to-close-06",
-    "field_disagreement": "effortless-owl|StepTransitions.IsNeverExercised",
-    "record_id": "close-05-to-close-06",
-    "expected_value": "false",
-    "actual_value": "true",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "StepTransitions.IsNeverExercised",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|StepTransitions.IsNeverExercised|close-06-return-close-04",
-    "name": "effortless-owl|StepTransitions.IsNeverExercised @ close-06-return-close-04",
-    "field_disagreement": "effortless-owl|StepTransitions.IsNeverExercised",
-    "record_id": "close-06-return-close-04",
-    "expected_value": "false",
-    "actual_value": "true",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "StepTransitions.IsNeverExercised",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|StepTransitions.IsNeverExercised|close-06-to-close-07",
-    "name": "effortless-owl|StepTransitions.IsNeverExercised @ close-06-to-close-07",
-    "field_disagreement": "effortless-owl|StepTransitions.IsNeverExercised",
-    "record_id": "close-06-to-close-07",
-    "expected_value": "false",
-    "actual_value": "true",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "StepTransitions.IsNeverExercised",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|StepTransitions.IsNeverExercised|close-07-to-close-08",
-    "name": "effortless-owl|StepTransitions.IsNeverExercised @ close-07-to-close-08",
-    "field_disagreement": "effortless-owl|StepTransitions.IsNeverExercised",
-    "record_id": "close-07-to-close-08",
-    "expected_value": "false",
-    "actual_value": "true",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "StepTransitions.IsNeverExercised",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|StepTransitions.IsNeverExercised|policy-01-to-policy-02",
-    "name": "effortless-owl|StepTransitions.IsNeverExercised @ policy-01-to-policy-02",
-    "field_disagreement": "effortless-owl|StepTransitions.IsNeverExercised",
-    "record_id": "policy-01-to-policy-02",
-    "expected_value": "false",
-    "actual_value": "true",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "StepTransitions.IsNeverExercised",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|StepTransitions.IsNeverExercised|policy-02-to-policy-03",
-    "name": "effortless-owl|StepTransitions.IsNeverExercised @ policy-02-to-policy-03",
-    "field_disagreement": "effortless-owl|StepTransitions.IsNeverExercised",
-    "record_id": "policy-02-to-policy-03",
-    "expected_value": "false",
-    "actual_value": "true",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "StepTransitions.IsNeverExercised",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|StepTransitions.IsNeverExercised|policy-03-to-policy-04",
-    "name": "effortless-owl|StepTransitions.IsNeverExercised @ policy-03-to-policy-04",
-    "field_disagreement": "effortless-owl|StepTransitions.IsNeverExercised",
-    "record_id": "policy-03-to-policy-04",
-    "expected_value": "false",
-    "actual_value": "true",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "StepTransitions.IsNeverExercised",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|StepTransitions.IsNeverExercised|policy-04-return-policy-03",
-    "name": "effortless-owl|StepTransitions.IsNeverExercised @ policy-04-return-policy-03",
-    "field_disagreement": "effortless-owl|StepTransitions.IsNeverExercised",
-    "record_id": "policy-04-return-policy-03",
-    "expected_value": "false",
-    "actual_value": "true",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "StepTransitions.IsNeverExercised",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|StepTransitions.IsUntestedRecoveryPath|close-04-fallback-close-03",
-    "name": "effortless-owl|StepTransitions.IsUntestedRecoveryPath @ close-04-fallback-close-03",
-    "field_disagreement": "effortless-owl|StepTransitions.IsUntestedRecoveryPath",
-    "record_id": "close-04-fallback-close-03",
-    "expected_value": "false",
-    "actual_value": "true",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "StepTransitions.IsUntestedRecoveryPath",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|StepTransitions.IsUntestedRecoveryPath|close-05-expedite-close-07",
-    "name": "effortless-owl|StepTransitions.IsUntestedRecoveryPath @ close-05-expedite-close-07",
-    "field_disagreement": "effortless-owl|StepTransitions.IsUntestedRecoveryPath",
-    "record_id": "close-05-expedite-close-07",
-    "expected_value": "false",
-    "actual_value": "true",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "StepTransitions.IsUntestedRecoveryPath",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|StepTransitions.IsUntestedRecoveryPath|close-06-return-close-04",
-    "name": "effortless-owl|StepTransitions.IsUntestedRecoveryPath @ close-06-return-close-04",
-    "field_disagreement": "effortless-owl|StepTransitions.IsUntestedRecoveryPath",
-    "record_id": "close-06-return-close-04",
-    "expected_value": "false",
-    "actual_value": "true",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "StepTransitions.IsUntestedRecoveryPath",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
-    "cell_disagreement_id": "effortless-owl|StepTransitions.IsUntestedRecoveryPath|policy-04-return-policy-03",
-    "name": "effortless-owl|StepTransitions.IsUntestedRecoveryPath @ policy-04-return-policy-03",
-    "field_disagreement": "effortless-owl|StepTransitions.IsUntestedRecoveryPath",
-    "record_id": "policy-04-return-policy-03",
-    "expected_value": "false",
-    "actual_value": "true",
-    "reason": "wrong/null value",
-    "substrate": "effortless-owl",
-    "rulebook_field": "StepTransitions.IsUntestedRecoveryPath",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
-  },
-  {
     "cell_disagreement_id": "effortless-xlsx|AgentDecisionRecords.ReviewLatencyMinutes|adr-close-extract-q2",
     "name": "effortless-xlsx|AgentDecisionRecords.ReviewLatencyMinutes @ adr-close-extract-q2",
     "field_disagreement": "effortless-xlsx|AgentDecisionRecords.ReviewLatencyMinutes",
@@ -1617,7 +9,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "AgentDecisionRecords.ReviewLatencyMinutes",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|AgentDecisionRecords.ReviewLatencyMinutes|adr-close-freeze-q2",
@@ -1629,7 +21,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "AgentDecisionRecords.ReviewLatencyMinutes",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|AgentDecisionRecords.ReviewLatencyMinutes|adr-close-post-q2",
@@ -1641,7 +33,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "AgentDecisionRecords.ReviewLatencyMinutes",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|FAQs.Name|faq-close-workpapers",
@@ -1653,7 +45,7 @@
     "reason": "missing entity file",
     "substrate": "effortless-xlsx",
     "rulebook_field": "FAQs.Name",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|FAQs.Name|faq-policy-ai",
@@ -1665,7 +57,7 @@
     "reason": "missing entity file",
     "substrate": "effortless-xlsx",
     "rulebook_field": "FAQs.Name",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|FAQs.Name|faq-policy-optout",
@@ -1677,7 +69,7 @@
     "reason": "missing entity file",
     "substrate": "effortless-xlsx",
     "rulebook_field": "FAQs.Name",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|MessageDeliveries.HasOptOutPhrase|md-001",
@@ -1689,7 +81,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "MessageDeliveries.HasOptOutPhrase",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|MessageDeliveries.HasOptOutPhrase|md-002",
@@ -1701,7 +93,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "MessageDeliveries.HasOptOutPhrase",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|MessageDeliveries.HasOptOutPhrase|md-005",
@@ -1713,7 +105,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "MessageDeliveries.HasOptOutPhrase",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|MessageDeliveries.IsMissingRequiredOptOut|md-005",
@@ -1725,7 +117,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "MessageDeliveries.IsMissingRequiredOptOut",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|MessageDeliveries.IsOptOutAtRiskOfTruncation|md-005",
@@ -1737,7 +129,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "MessageDeliveries.IsOptOutAtRiskOfTruncation",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|MessageDeliveries.IsOptOutInFirstSegment|md-001",
@@ -1749,7 +141,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "MessageDeliveries.IsOptOutInFirstSegment",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|MessageDeliveries.IsOptOutInFirstSegment|md-002",
@@ -1761,7 +153,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "MessageDeliveries.IsOptOutInFirstSegment",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|MessageDeliveries.IsOptOutInFirstSegment|md-005",
@@ -1773,7 +165,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "MessageDeliveries.IsOptOutInFirstSegment",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|MessageDeliveries.OptOutPhrasePosition|md-001",
@@ -1785,7 +177,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "MessageDeliveries.OptOutPhrasePosition",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|MessageDeliveries.OptOutPhrasePosition|md-002",
@@ -1797,7 +189,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "MessageDeliveries.OptOutPhrasePosition",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|MessageDeliveries.OptOutPhrasePosition|md-005",
@@ -1809,7 +201,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "MessageDeliveries.OptOutPhrasePosition",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|ProcedureExecutions.LatestAttestationInstant|exec-close-2026-q2",
@@ -1821,7 +213,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "ProcedureExecutions.LatestAttestationInstant",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|ProcedureExecutions.LatestAttestationInstant|exec-policy-hr4821",
@@ -1833,7 +225,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "ProcedureExecutions.LatestAttestationInstant",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|ProcedureExecutions.PostAttestationScoreCount|exec-close-2026-q2",
@@ -1845,7 +237,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "ProcedureExecutions.PostAttestationScoreCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|ProcedureExecutions.PostAttestationScoreCount|exec-policy-hr4821",
@@ -1857,7 +249,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "ProcedureExecutions.PostAttestationScoreCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|ProcedureVersions.DaysSinceLastReview|close-v1.0.0",
@@ -1869,7 +261,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "ProcedureVersions.DaysSinceLastReview",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|ProcedureVersions.EntryStepId|close-v1.1.0",
@@ -1881,7 +273,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "ProcedureVersions.EntryStepId",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|ProcedureVersions.EntryStepId|policy-v1.0.0",
@@ -1893,7 +285,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "ProcedureVersions.EntryStepId",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|ProcedureVersions.WasModifiedSinceLastReview|close-v1.0.0",
@@ -1905,7 +297,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "ProcedureVersions.WasModifiedSinceLastReview",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|RequirementSatisfactions.AttestationInstantForRun|sat-close-balance",
@@ -1917,7 +309,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "RequirementSatisfactions.AttestationInstantForRun",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|RequirementSatisfactions.AttestationInstantForRun|sat-close-cutoff",
@@ -1929,7 +321,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "RequirementSatisfactions.AttestationInstantForRun",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|RequirementSatisfactions.AttestationInstantForRun|sat-close-evidence",
@@ -1941,7 +333,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "RequirementSatisfactions.AttestationInstantForRun",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|RequirementSatisfactions.AttestationInstantForRun|sat-close-human",
@@ -1953,7 +345,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "RequirementSatisfactions.AttestationInstantForRun",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|RequirementSatisfactions.AttestationInstantForRun|sat-close-separation",
@@ -1965,7 +357,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "RequirementSatisfactions.AttestationInstantForRun",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|RequirementSatisfactions.AttestationInstantForRun|sat-close08-evidence",
@@ -1977,7 +369,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "RequirementSatisfactions.AttestationInstantForRun",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|RequirementSatisfactions.AttestationInstantForRun|sat-policy-legal",
@@ -1989,7 +381,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "RequirementSatisfactions.AttestationInstantForRun",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|RequirementSatisfactions.AttestationInstantForRun|sat-policy-source",
@@ -2001,7 +393,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "RequirementSatisfactions.AttestationInstantForRun",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|RequirementSatisfactions.PostAttestationScoreExecutionKey|sat-close-balance",
@@ -2013,7 +405,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "RequirementSatisfactions.PostAttestationScoreExecutionKey",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|RequirementSatisfactions.PostAttestationScoreExecutionKey|sat-close-cutoff",
@@ -2025,7 +417,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "RequirementSatisfactions.PostAttestationScoreExecutionKey",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|RequirementSatisfactions.PostAttestationScoreExecutionKey|sat-close-evidence",
@@ -2037,7 +429,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "RequirementSatisfactions.PostAttestationScoreExecutionKey",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|RequirementSatisfactions.PostAttestationScoreExecutionKey|sat-close-human",
@@ -2049,7 +441,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "RequirementSatisfactions.PostAttestationScoreExecutionKey",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|RequirementSatisfactions.PostAttestationScoreExecutionKey|sat-close-separation",
@@ -2061,7 +453,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "RequirementSatisfactions.PostAttestationScoreExecutionKey",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|RequirementSatisfactions.PostAttestationScoreExecutionKey|sat-close08-evidence",
@@ -2073,7 +465,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "RequirementSatisfactions.PostAttestationScoreExecutionKey",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|RequirementSatisfactions.PostAttestationScoreExecutionKey|sat-policy-legal",
@@ -2085,7 +477,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "RequirementSatisfactions.PostAttestationScoreExecutionKey",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|RequirementSatisfactions.PostAttestationScoreExecutionKey|sat-policy-source",
@@ -2097,7 +489,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "RequirementSatisfactions.PostAttestationScoreExecutionKey",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|RequirementSatisfactions.WasScoredAfterAttestation|sat-close-balance",
@@ -2109,7 +501,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "RequirementSatisfactions.WasScoredAfterAttestation",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|RequirementSatisfactions.WasScoredAfterAttestation|sat-close-cutoff",
@@ -2121,7 +513,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "RequirementSatisfactions.WasScoredAfterAttestation",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|RequirementSatisfactions.WasScoredAfterAttestation|sat-close-evidence",
@@ -2133,7 +525,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "RequirementSatisfactions.WasScoredAfterAttestation",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|RequirementSatisfactions.WasScoredAfterAttestation|sat-close-human",
@@ -2145,7 +537,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "RequirementSatisfactions.WasScoredAfterAttestation",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|RequirementSatisfactions.WasScoredAfterAttestation|sat-close-separation",
@@ -2157,7 +549,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "RequirementSatisfactions.WasScoredAfterAttestation",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|RequirementSatisfactions.WasScoredAfterAttestation|sat-close08-evidence",
@@ -2169,7 +561,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "RequirementSatisfactions.WasScoredAfterAttestation",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|RequirementSatisfactions.WasScoredAfterAttestation|sat-policy-legal",
@@ -2181,7 +573,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "RequirementSatisfactions.WasScoredAfterAttestation",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|RequirementSatisfactions.WasScoredAfterAttestation|sat-policy-source",
@@ -2193,7 +585,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "RequirementSatisfactions.WasScoredAfterAttestation",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|RoleAssignments.IsHumanToNonHumanHandover|ra-new-variance",
@@ -2205,7 +597,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "RoleAssignments.IsHumanToNonHumanHandover",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|RoleAssignments.IsUnconditionedAutomationHandover|ra-new-variance",
@@ -2217,7 +609,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "RoleAssignments.IsUnconditionedAutomationHandover",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|RoleAssignments.PredecessorAgentKind|ra-new-variance",
@@ -2229,7 +621,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "RoleAssignments.PredecessorAgentKind",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.GateFreeReachFromEntryCount|close-01",
@@ -2241,7 +633,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.GateFreeReachFromEntryCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.GateFreeReachFromEntryCount|close-02",
@@ -2253,7 +645,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.GateFreeReachFromEntryCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.GateFreeReachFromEntryCount|close-03",
@@ -2265,7 +657,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.GateFreeReachFromEntryCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.GateFreeReachFromEntryCount|close-04",
@@ -2277,7 +669,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.GateFreeReachFromEntryCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.GateFreeReachFromEntryCount|close-05",
@@ -2289,7 +681,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.GateFreeReachFromEntryCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.GateFreeReachFromEntryCount|close-06",
@@ -2301,7 +693,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.GateFreeReachFromEntryCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.GateFreeReachFromEntryCount|close-07",
@@ -2313,7 +705,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.GateFreeReachFromEntryCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.GateFreeReachFromEntryCount|close-08",
@@ -2325,7 +717,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.GateFreeReachFromEntryCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.GateFreeReachFromEntryCount|policy-01",
@@ -2337,7 +729,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.GateFreeReachFromEntryCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.GateFreeReachFromEntryCount|policy-02",
@@ -2349,7 +741,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.GateFreeReachFromEntryCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.GateFreeReachFromEntryCount|policy-03",
@@ -2361,7 +753,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.GateFreeReachFromEntryCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.GateFreeReachFromEntryCount|policy-04",
@@ -2373,7 +765,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.GateFreeReachFromEntryCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.GateFreeReachFromEntryCount|policy-05",
@@ -2385,7 +777,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.GateFreeReachFromEntryCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.GateFreeReachFromEntryCount|policy-06",
@@ -2397,7 +789,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.GateFreeReachFromEntryCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.GateFreeReachFromEntryCount|policy-07",
@@ -2409,7 +801,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.GateFreeReachFromEntryCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.GateFreeReachFromEntryCount|policy-08",
@@ -2421,7 +813,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.GateFreeReachFromEntryCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.GateFreeReachFromEntryCount|policy-09",
@@ -2433,7 +825,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.GateFreeReachFromEntryCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.IsBlockingControlOnReworkLoop|close-01",
@@ -2445,7 +837,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.IsBlockingControlOnReworkLoop",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.IsBlockingControlOnReworkLoop|close-02",
@@ -2457,7 +849,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.IsBlockingControlOnReworkLoop",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.IsBlockingControlOnReworkLoop|close-03",
@@ -2469,7 +861,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.IsBlockingControlOnReworkLoop",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.IsBlockingControlOnReworkLoop|close-04",
@@ -2481,7 +873,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.IsBlockingControlOnReworkLoop",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.IsBlockingControlOnReworkLoop|close-05",
@@ -2493,7 +885,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.IsBlockingControlOnReworkLoop",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.IsBlockingControlOnReworkLoop|close-06",
@@ -2505,7 +897,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.IsBlockingControlOnReworkLoop",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.IsBlockingControlOnReworkLoop|close-07",
@@ -2517,7 +909,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.IsBlockingControlOnReworkLoop",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.IsBlockingControlOnReworkLoop|close-08",
@@ -2529,7 +921,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.IsBlockingControlOnReworkLoop",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.IsBlockingControlOnReworkLoop|policy-01",
@@ -2541,7 +933,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.IsBlockingControlOnReworkLoop",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.IsBlockingControlOnReworkLoop|policy-02",
@@ -2553,7 +945,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.IsBlockingControlOnReworkLoop",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.IsBlockingControlOnReworkLoop|policy-03",
@@ -2565,7 +957,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.IsBlockingControlOnReworkLoop",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.IsBlockingControlOnReworkLoop|policy-04",
@@ -2577,7 +969,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.IsBlockingControlOnReworkLoop",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.IsBlockingControlOnReworkLoop|policy-05",
@@ -2589,7 +981,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.IsBlockingControlOnReworkLoop",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.IsBlockingControlOnReworkLoop|policy-06",
@@ -2601,7 +993,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.IsBlockingControlOnReworkLoop",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.IsBlockingControlOnReworkLoop|policy-07",
@@ -2613,7 +1005,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.IsBlockingControlOnReworkLoop",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.IsBlockingControlOnReworkLoop|policy-08",
@@ -2625,7 +1017,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.IsBlockingControlOnReworkLoop",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.IsBlockingControlOnReworkLoop|policy-09",
@@ -2637,7 +1029,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.IsBlockingControlOnReworkLoop",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.IsGateBypassedPublication|close-01",
@@ -2649,7 +1041,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.IsGateBypassedPublication",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.IsGateBypassedPublication|close-02",
@@ -2661,7 +1053,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.IsGateBypassedPublication",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.IsGateBypassedPublication|close-03",
@@ -2673,7 +1065,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.IsGateBypassedPublication",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.IsGateBypassedPublication|close-04",
@@ -2685,7 +1077,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.IsGateBypassedPublication",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.IsGateBypassedPublication|close-05",
@@ -2697,7 +1089,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.IsGateBypassedPublication",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.IsGateBypassedPublication|close-06",
@@ -2709,7 +1101,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.IsGateBypassedPublication",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.IsGateBypassedPublication|close-07",
@@ -2721,7 +1113,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.IsGateBypassedPublication",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.IsGateBypassedPublication|close-08",
@@ -2733,7 +1125,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.IsGateBypassedPublication",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.IsGateBypassedPublication|policy-01",
@@ -2745,7 +1137,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.IsGateBypassedPublication",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.IsGateBypassedPublication|policy-02",
@@ -2757,7 +1149,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.IsGateBypassedPublication",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.IsGateBypassedPublication|policy-03",
@@ -2769,7 +1161,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.IsGateBypassedPublication",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.IsGateBypassedPublication|policy-04",
@@ -2781,7 +1173,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.IsGateBypassedPublication",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.IsGateBypassedPublication|policy-05",
@@ -2793,7 +1185,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.IsGateBypassedPublication",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.IsGateBypassedPublication|policy-06",
@@ -2805,7 +1197,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.IsGateBypassedPublication",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.IsGateBypassedPublication|policy-07",
@@ -2817,7 +1209,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.IsGateBypassedPublication",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.IsGateBypassedPublication|policy-08",
@@ -2829,7 +1221,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.IsGateBypassedPublication",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.IsGateBypassedPublication|policy-09",
@@ -2841,7 +1233,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.IsGateBypassedPublication",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.IsOnReworkLoop|close-01",
@@ -2853,7 +1245,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.IsOnReworkLoop",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.IsOnReworkLoop|close-02",
@@ -2865,7 +1257,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.IsOnReworkLoop",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.IsOnReworkLoop|close-03",
@@ -2877,7 +1269,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.IsOnReworkLoop",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.IsOnReworkLoop|close-04",
@@ -2889,7 +1281,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.IsOnReworkLoop",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.IsOnReworkLoop|close-05",
@@ -2901,7 +1293,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.IsOnReworkLoop",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.IsOnReworkLoop|close-06",
@@ -2913,7 +1305,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.IsOnReworkLoop",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.IsOnReworkLoop|close-07",
@@ -2925,7 +1317,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.IsOnReworkLoop",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.IsOnReworkLoop|close-08",
@@ -2937,7 +1329,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.IsOnReworkLoop",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.IsOnReworkLoop|policy-01",
@@ -2949,7 +1341,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.IsOnReworkLoop",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.IsOnReworkLoop|policy-02",
@@ -2961,7 +1353,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.IsOnReworkLoop",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.IsOnReworkLoop|policy-03",
@@ -2973,7 +1365,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.IsOnReworkLoop",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.IsOnReworkLoop|policy-04",
@@ -2985,7 +1377,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.IsOnReworkLoop",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.IsOnReworkLoop|policy-05",
@@ -2997,7 +1389,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.IsOnReworkLoop",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.IsOnReworkLoop|policy-06",
@@ -3009,7 +1401,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.IsOnReworkLoop",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.IsOnReworkLoop|policy-07",
@@ -3021,7 +1413,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.IsOnReworkLoop",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.IsOnReworkLoop|policy-08",
@@ -3033,7 +1425,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.IsOnReworkLoop",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.IsOnReworkLoop|policy-09",
@@ -3045,7 +1437,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.IsOnReworkLoop",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.IsReachableFromEntryWithoutHumanGate|close-01",
@@ -3057,7 +1449,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.IsReachableFromEntryWithoutHumanGate",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.IsReachableFromEntryWithoutHumanGate|close-02",
@@ -3069,7 +1461,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.IsReachableFromEntryWithoutHumanGate",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.IsReachableFromEntryWithoutHumanGate|close-03",
@@ -3081,7 +1473,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.IsReachableFromEntryWithoutHumanGate",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.IsReachableFromEntryWithoutHumanGate|close-04",
@@ -3093,7 +1485,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.IsReachableFromEntryWithoutHumanGate",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.IsReachableFromEntryWithoutHumanGate|close-05",
@@ -3105,7 +1497,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.IsReachableFromEntryWithoutHumanGate",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.IsReachableFromEntryWithoutHumanGate|close-06",
@@ -3117,7 +1509,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.IsReachableFromEntryWithoutHumanGate",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.IsReachableFromEntryWithoutHumanGate|close-07",
@@ -3129,7 +1521,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.IsReachableFromEntryWithoutHumanGate",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.IsReachableFromEntryWithoutHumanGate|close-08",
@@ -3141,7 +1533,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.IsReachableFromEntryWithoutHumanGate",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.IsReachableFromEntryWithoutHumanGate|policy-01",
@@ -3153,7 +1545,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.IsReachableFromEntryWithoutHumanGate",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.IsReachableFromEntryWithoutHumanGate|policy-02",
@@ -3165,7 +1557,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.IsReachableFromEntryWithoutHumanGate",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.IsReachableFromEntryWithoutHumanGate|policy-03",
@@ -3177,7 +1569,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.IsReachableFromEntryWithoutHumanGate",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.IsReachableFromEntryWithoutHumanGate|policy-04",
@@ -3189,7 +1581,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.IsReachableFromEntryWithoutHumanGate",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.IsReachableFromEntryWithoutHumanGate|policy-05",
@@ -3201,7 +1593,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.IsReachableFromEntryWithoutHumanGate",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.IsReachableFromEntryWithoutHumanGate|policy-06",
@@ -3213,7 +1605,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.IsReachableFromEntryWithoutHumanGate",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.IsReachableFromEntryWithoutHumanGate|policy-07",
@@ -3225,7 +1617,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.IsReachableFromEntryWithoutHumanGate",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.IsReachableFromEntryWithoutHumanGate|policy-08",
@@ -3237,7 +1629,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.IsReachableFromEntryWithoutHumanGate",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.IsReachableFromEntryWithoutHumanGate|policy-09",
@@ -3249,7 +1641,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.IsReachableFromEntryWithoutHumanGate",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.ReachableStepCount|close-01",
@@ -3261,7 +1653,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.ReachableStepCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.ReachableStepCount|close-02",
@@ -3273,7 +1665,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.ReachableStepCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.ReachableStepCount|close-03",
@@ -3285,7 +1677,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.ReachableStepCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.ReachableStepCount|close-04",
@@ -3297,7 +1689,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.ReachableStepCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.ReachableStepCount|close-05",
@@ -3309,7 +1701,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.ReachableStepCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.ReachableStepCount|close-06",
@@ -3321,7 +1713,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.ReachableStepCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.ReachableStepCount|close-07",
@@ -3333,7 +1725,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.ReachableStepCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.ReachableStepCount|close-08",
@@ -3345,7 +1737,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.ReachableStepCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.ReachableStepCount|policy-01",
@@ -3357,7 +1749,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.ReachableStepCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.ReachableStepCount|policy-02",
@@ -3369,7 +1761,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.ReachableStepCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.ReachableStepCount|policy-03",
@@ -3381,7 +1773,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.ReachableStepCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.ReachableStepCount|policy-04",
@@ -3393,7 +1785,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.ReachableStepCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.ReachableStepCount|policy-05",
@@ -3405,7 +1797,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.ReachableStepCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.ReachableStepCount|policy-06",
@@ -3417,7 +1809,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.ReachableStepCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.ReachableStepCount|policy-07",
@@ -3429,7 +1821,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.ReachableStepCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.ReachableStepCount|policy-08",
@@ -3441,7 +1833,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.ReachableStepCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.ReachableStepCount|policy-09",
@@ -3453,7 +1845,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.ReachableStepCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.ReachedFromStepCount|close-01",
@@ -3465,7 +1857,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.ReachedFromStepCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.ReachedFromStepCount|close-02",
@@ -3477,7 +1869,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.ReachedFromStepCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.ReachedFromStepCount|close-03",
@@ -3489,7 +1881,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.ReachedFromStepCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.ReachedFromStepCount|close-04",
@@ -3501,7 +1893,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.ReachedFromStepCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.ReachedFromStepCount|close-05",
@@ -3513,7 +1905,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.ReachedFromStepCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.ReachedFromStepCount|close-06",
@@ -3525,7 +1917,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.ReachedFromStepCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.ReachedFromStepCount|close-07",
@@ -3537,7 +1929,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.ReachedFromStepCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.ReachedFromStepCount|close-08",
@@ -3549,7 +1941,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.ReachedFromStepCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.ReachedFromStepCount|policy-01",
@@ -3561,7 +1953,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.ReachedFromStepCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.ReachedFromStepCount|policy-02",
@@ -3573,7 +1965,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.ReachedFromStepCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.ReachedFromStepCount|policy-03",
@@ -3585,7 +1977,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.ReachedFromStepCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.ReachedFromStepCount|policy-04",
@@ -3597,7 +1989,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.ReachedFromStepCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.ReachedFromStepCount|policy-05",
@@ -3609,7 +2001,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.ReachedFromStepCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.ReachedFromStepCount|policy-06",
@@ -3621,7 +2013,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.ReachedFromStepCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.ReachedFromStepCount|policy-07",
@@ -3633,7 +2025,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.ReachedFromStepCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.ReachedFromStepCount|policy-08",
@@ -3645,7 +2037,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.ReachedFromStepCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.ReachedFromStepCount|policy-09",
@@ -3657,7 +2049,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.ReachedFromStepCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.SelfReachCount|close-01",
@@ -3669,7 +2061,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.SelfReachCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.SelfReachCount|close-02",
@@ -3681,7 +2073,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.SelfReachCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.SelfReachCount|close-03",
@@ -3693,7 +2085,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.SelfReachCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.SelfReachCount|close-04",
@@ -3705,7 +2097,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.SelfReachCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.SelfReachCount|close-05",
@@ -3717,7 +2109,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.SelfReachCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.SelfReachCount|close-06",
@@ -3729,7 +2121,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.SelfReachCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.SelfReachCount|close-07",
@@ -3741,7 +2133,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.SelfReachCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.SelfReachCount|close-08",
@@ -3753,7 +2145,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.SelfReachCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.SelfReachCount|policy-01",
@@ -3765,7 +2157,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.SelfReachCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.SelfReachCount|policy-02",
@@ -3777,7 +2169,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.SelfReachCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.SelfReachCount|policy-03",
@@ -3789,7 +2181,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.SelfReachCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.SelfReachCount|policy-04",
@@ -3801,7 +2193,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.SelfReachCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.SelfReachCount|policy-05",
@@ -3813,7 +2205,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.SelfReachCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.SelfReachCount|policy-06",
@@ -3825,7 +2217,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.SelfReachCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.SelfReachCount|policy-07",
@@ -3837,7 +2229,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.SelfReachCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.SelfReachCount|policy-08",
@@ -3849,7 +2241,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.SelfReachCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.SelfReachCount|policy-09",
@@ -3861,7 +2253,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.SelfReachCount",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.VersionEntryStepId|close-01",
@@ -3873,7 +2265,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.VersionEntryStepId",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.VersionEntryStepId|close-02",
@@ -3885,7 +2277,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.VersionEntryStepId",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.VersionEntryStepId|close-03",
@@ -3897,7 +2289,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.VersionEntryStepId",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.VersionEntryStepId|close-04",
@@ -3909,7 +2301,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.VersionEntryStepId",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.VersionEntryStepId|close-05",
@@ -3921,7 +2313,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.VersionEntryStepId",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.VersionEntryStepId|close-06",
@@ -3933,7 +2325,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.VersionEntryStepId",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.VersionEntryStepId|close-07",
@@ -3945,7 +2337,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.VersionEntryStepId",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.VersionEntryStepId|close-08",
@@ -3957,7 +2349,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.VersionEntryStepId",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.VersionEntryStepId|policy-01",
@@ -3969,7 +2361,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.VersionEntryStepId",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.VersionEntryStepId|policy-02",
@@ -3981,7 +2373,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.VersionEntryStepId",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.VersionEntryStepId|policy-03",
@@ -3993,7 +2385,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.VersionEntryStepId",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.VersionEntryStepId|policy-04",
@@ -4005,7 +2397,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.VersionEntryStepId",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.VersionEntryStepId|policy-05",
@@ -4017,7 +2409,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.VersionEntryStepId",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.VersionEntryStepId|policy-06",
@@ -4029,7 +2421,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.VersionEntryStepId",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.VersionEntryStepId|policy-07",
@@ -4041,7 +2433,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.VersionEntryStepId",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.VersionEntryStepId|policy-08",
@@ -4053,7 +2445,7 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.VersionEntryStepId",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   },
   {
     "cell_disagreement_id": "effortless-xlsx|Steps.VersionEntryStepId|policy-09",
@@ -4065,6 +2457,6 @@
     "reason": "wrong/null value",
     "substrate": "effortless-xlsx",
     "rulebook_field": "Steps.VersionEntryStepId",
-    "semantic_type_iri": "urn:effortless:pko-extension#CellDisagreement"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CellDisagreement"
   }
 ]

@@ -20,7 +20,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from rulebook_edit import agg, calc, idx, lookup, raw, rel  # noqa: E402
 
-EXT = "urn:effortless:pko-extension#"
+EXT = "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#"
 PROV = "http://www.w3.org/ns/prov#"
 DCT = "http://purl.org/dc/terms/"
 EV = "eval-current"
@@ -739,7 +739,7 @@ _HANDOFFS = [  # (id, input variable, from step, to step)
 ROWS = {
     "ArtifactHandoffs": [
         {"ArtifactHandoffId": i, "StepVariable": v, "FromStep": f, "ToStep": t,
-         "SemanticTypeIri": "urn:effortless:pko-extension#ArtifactHandoff"} for i, v, f, t in _HANDOFFS],
+         "SemanticTypeIri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ArtifactHandoff"} for i, v, f, t in _HANDOFFS],
     "Organizations": _rows(["OrganizationId", "DisplayName", "OrganizationType", "ExternalIdentifier"],
                            ("acme-home-brands", "ACME Home Brands", "Company", "org-007"),
                            ("meridian-contract-mfg", "Meridian Contract Manufacturing (fictional)", "ServiceProvider", "prv-201"),

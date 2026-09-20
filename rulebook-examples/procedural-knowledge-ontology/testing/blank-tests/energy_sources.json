@@ -1,0 +1,30 @@
+[
+  {
+    "energy_source_id": "ElectricalEnergy",
+    "label": "Electrical",
+    "pko_individual_iri": "https://w3id.org/pko/industry#ElectricalEnergy",
+    "semantic_type_iri": "https://w3id.org/pko/industry#EnergySource",
+    "name": null
+  },
+  {
+    "energy_source_id": "GravitationalEnergy",
+    "label": "Gravitational",
+    "pko_individual_iri": "https://w3id.org/pko/industry#GravitationalEnergy",
+    "semantic_type_iri": "https://w3id.org/pko/industry#EnergySource",
+    "name": null
+  },
+  {
+    "energy_source_id": "HydraulicEnergy",
+    "label": "Hydraulic",
+    "pko_individual_iri": "https://w3id.org/pko/industry#HydraulicEnergy",
+    "semantic_type_iri": "https://w3id.org/pko/industry#EnergySource",
+    "name": null
+  },
+  {
+    "energy_source_id": "PneumaticEnergy",
+    "label": "Pneumatic",
+    "pko_individual_iri": "https://w3id.org/pko/industry#PneumaticEnergy",
+    "semantic_type_iri": "https://w3id.org/pko/industry#EnergySource",
+    "name": null
+  }
+]

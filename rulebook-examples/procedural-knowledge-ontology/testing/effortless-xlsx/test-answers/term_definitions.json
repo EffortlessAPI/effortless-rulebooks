@@ -1,0 +1,47 @@
+[
+  {
+    "term_definition_id": "td-drift-observations",
+    "rulebook_table": "DriftObservations",
+    "includes": "Any observed gap between the model and the organization.",
+    "excludes": "Nothing.",
+    "neighboring_terms": "Related to issues.",
+    "drafted_by_agent": "ontology-assistant-1-2",
+    "drafted_at": "2026-07-01 14:00:00",
+    "revised_by_agent": null,
+    "revised_at": null,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#TermDefinition",
+    "name": "DriftObservations definition",
+    "drafter_kind": "AIAgent",
+    "ai_draft_adopted_unrevised": true
+  },
+  {
+    "term_definition_id": "td-model-charters",
+    "rulebook_table": "ModelCharters",
+    "includes": "A period during which named roles steward and hold authority over one governed model.",
+    "excludes": "Role assignments of individual agents; review events.",
+    "neighboring_terms": "Sits beside RoleAssignments and StewardshipAssignments.",
+    "drafted_by_agent": "ontology-assistant-1-2",
+    "drafted_at": "2026-06-20 14:00:00",
+    "revised_by_agent": "sam-adeyemi",
+    "revised_at": "2026-06-22 14:00:00",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#TermDefinition",
+    "name": "ModelCharters definition",
+    "drafter_kind": "AIAgent",
+    "ai_draft_adopted_unrevised": false
+  },
+  {
+    "term_definition_id": "td-procedure-versions",
+    "rulebook_table": "ProcedureVersions",
+    "includes": "A versioned specification of a procedure.",
+    "excludes": "Executions of that specification.",
+    "neighboring_terms": "Specialized by nothing; linked to Procedures and ProcedureExecutions.",
+    "drafted_by_agent": "sam-adeyemi",
+    "drafted_at": "2026-05-02 14:00:00",
+    "revised_by_agent": "nadia-petrova",
+    "revised_at": "2026-05-04 14:00:00",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#TermDefinition",
+    "name": "ProcedureVersions definition",
+    "drafter_kind": "Human",
+    "ai_draft_adopted_unrevised": false
+  }
+]

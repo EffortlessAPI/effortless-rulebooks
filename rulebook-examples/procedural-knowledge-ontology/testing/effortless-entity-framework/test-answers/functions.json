@@ -1,5 +1,13 @@
 [
   {
+    "function_id": "classify-change-risk",
+    "label": "Classify change risk",
+    "definition": "Score a production change\u0027s risk class.",
+    "implementation_key": "risk-classifier.score",
+    "semantic_type_iri": "https://w3id.org/pko#Function",
+    "name": "Classify change risk"
+  },
+  {
     "function_id": "classify-variance",
     "label": "Classify variance",
     "definition": "Rank and classify variances using the approved AI model.",
@@ -32,6 +40,14 @@
     "name": "Extract trial balance"
   },
   {
+    "function_id": "fetch-incident-history",
+    "label": "Fetch incident history",
+    "definition": "Pull past incidents for the services a change touches.",
+    "implementation_key": "incidents.lookup",
+    "semantic_type_iri": "https://w3id.org/pko#Function",
+    "name": "Fetch incident history"
+  },
+  {
     "function_id": "post-close-entries",
     "label": "Post close entries",
     "definition": "Post only approved journal entries.",
@@ -54,6 +70,14 @@
     "implementation_key": "render-sms-impl",
     "semantic_type_iri": "https://w3id.org/pko#Function",
     "name": "Render SMS"
+  },
+  {
+    "function_id": "reserve-padlocks",
+    "label": "Reserve padlocks",
+    "definition": "Reserve personal padlocks at the lockout station for a crew.",
+    "implementation_key": "lockstation.reserve",
+    "semantic_type_iri": "https://w3id.org/pko#Function",
+    "name": "Reserve padlocks"
   },
   {
     "function_id": "send-notification",

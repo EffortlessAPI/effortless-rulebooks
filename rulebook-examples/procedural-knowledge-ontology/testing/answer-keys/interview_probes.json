@@ -1,0 +1,50 @@
+[
+  {
+    "interview_probe_id": "ip7-deploy-why-canary",
+    "elicitation_session": "el7-deploy-interview",
+    "step": "deploy-04",
+    "probe_kind": "Why",
+    "prompt": "Why do you hold the canary longer on Fridays?",
+    "answer": "Weekend traffic shifts the error baseline and a short canary hides regressions.",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#InterviewProbe",
+    "name": "Why: Why do you hold the canary longer on Fridays?",
+    "why_answer": "Weekend traffic shifts the error baseline and a short canary hides regressions.",
+    "shortfall_answer": null
+  },
+  {
+    "interview_probe_id": "ip7-loto-short-zero",
+    "elicitation_session": "el7-loto-interview",
+    "step": "loto-06",
+    "probe_kind": "ProcedureFallsShort",
+    "prompt": "What do you do when the zero-energy check is not enough?",
+    "answer": "On a retrofit with a capacitor bank I wait five minutes and test again before anyone reaches in.",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#InterviewProbe",
+    "name": "ProcedureFallsShort: What do you do when the zero-energy check is not enough?",
+    "why_answer": null,
+    "shortfall_answer": "On a retrofit with a capacitor bank I wait five minutes and test again before anyone reaches in."
+  },
+  {
+    "interview_probe_id": "ip7-loto-whatif-gauge",
+    "elicitation_session": "el7-loto-interview",
+    "step": "loto-04b",
+    "probe_kind": "WhatIf",
+    "prompt": "What if the line had a working bleed indicator?",
+    "answer": "I would still listen; indicators stick.",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#InterviewProbe",
+    "name": "WhatIf: What if the line had a working bleed indicator?",
+    "why_answer": null,
+    "shortfall_answer": null
+  },
+  {
+    "interview_probe_id": "ip7-loto-why-wait",
+    "elicitation_session": "el7-loto-interview",
+    "step": "loto-04b",
+    "probe_kind": "Why",
+    "prompt": "Why do you wait before bleeding the line a second time?",
+    "answer": "The press 3 accumulator refills from the dryer for a few seconds after the valve closes.",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#InterviewProbe",
+    "name": "Why: Why do you wait before bleeding the line a second time?",
+    "why_answer": "The press 3 accumulator refills from the dryer for a few seconds after the valve closes.",
+    "shortfall_answer": null
+  }
+]

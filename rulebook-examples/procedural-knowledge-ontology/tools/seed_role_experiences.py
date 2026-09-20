@@ -57,6 +57,14 @@ PROFILES = {
                            "Change Board", "Be the second pair of eyes on anything that changes what the book concludes."),
 }
 
+# Administrators are not in PROFILES (that would make their principal a non-administrator);
+# the ones with a hand-built home are named here. role -> (home route, home title)
+ADMIN_HOMES = {
+    "process-steward": ("/process-steward/plan-versus-reality", "Plan Versus Reality"),
+}
+
+# Input kinds: text, longtext, choice and date must be filled before Save; "note" is a long text
+# that may be left empty (a run may be closed with nothing to add); toggle starts false.
 S, A, I, IDK = "server", "agent", "instant", "id"
 
 
@@ -94,6 +102,13 @@ ACTIONS = [
       F("StepCue", "Warning sign", "context"), F("ObservedAt", "Seen at", S, I),
       F("ObservedByAgent", "Seen by", S, A), F("WasEscalated", "Escalated", "fixed", "false"),
       F("SemanticTypeIri", "Type", S, "iri")]),
+    ("act-tech-check-condition", "maintenance-technician", "/maintenance-technician/my-lockout", "Record this check",
+     "ConditionChecks", "INSERT", "StepExecutions.IsBlockedByFailedPrecondition", 6,
+     "Answer the check on the step I am on: it holds, or it does not. A no stops the step from being marked done (loop 20).",
+     [F("ConditionCheckId", "Check", S, IDK), F("StepExecution", "Step run", "context"),
+      F("StepCondition", "Check", "context"), F("Held", "It holds", "toggle"),
+      F("CheckedAt", "Checked at", S, I), F("CheckedByAgent", "Checked by", S, A),
+      F("SemanticTypeIri", "Type", S, "iri")]),
     ("act-tech-escalate", "maintenance-technician", "/maintenance-technician/my-lockout", "Escalate",
      "CueObservations", "UPDATE", "CueObservations.IsAwaitingAcknowledgement", 4,
      "Send what I saw to the role the warning sign says it must go to.",
@@ -102,7 +117,7 @@ ACTIONS = [
      "ProcedureExecutions", "UPDATE", "ProcedureExecutions.OwnerOrganization", 4,
      "Finish, pause or cancel my own run, with what I noticed.",
      [F("ExecutionStatus", "Status", "choice", choices="Completed|Paused|Cancelled"), F("EndedAt", "Ended", S, I),
-      F("Outcome", "Outcome", "text"), F("Observations", "What I noticed", "longtext")]),
+      F("Outcome", "Outcome", "text"), F("Observations", "What I noticed", "note")]),
     ("act-tech-ask", "maintenance-technician", "/maintenance-technician/my-lockout", "Ask the Copilot",
      "AssistantAnswers", "INSERT", "AssistantAnswers.OwnerOrganization", 4,
      "Ask one of the questions the book can answer about the step I am on. The answer is worked out by "
@@ -129,6 +144,23 @@ ACTIONS = [
      "ChangeRequests", "UPDATE", "ChangeRequests.RequesterIsAuthority", 5,
      "I raised this request, so I must not decide it. Pass the decision to another authority.",
      [F("AuthorityRole", "Decided by", "choice", choices="Roles")]),
+    # The model can say "this blocking control was evaluated on this run" and, until this action
+    # existed, nobody in the app could say it: every RequirementSatisfactions row in the seed
+    # belongs to the finance close or the policy procedure, so req-loto-zero-energy — the control
+    # between a person and a live machine — read IsInoperativeControl (bound to a step, never once
+    # evaluated) while every screen showed PASS. Evaluating it is the safety officer's job.
+    ("act-safety-evaluate-control", "plant-safety-officer", "/plant-safety-officer/desk",
+     "Evaluate this control",
+     "RequirementSatisfactions", "INSERT", "Requirements.IsInoperativeControl", 5,
+     "Record, against one run of one step, whether the blocking control actually held. Until a "
+     "control has been evaluated even once, 'never failed' and 'never asked' are the same green.",
+     [F("RequirementSatisfactionId", "Evaluation", S, IDK),
+      F("Requirement", "Control", "context"), F("StepExecution", "Step run", "context"),
+      F("SatisfactionLevel", "Did it hold?", "choice",
+        choices="Satisfied|PartiallySatisfied|NotSatisfied|NotEvaluated"),
+      F("Evidence", "What I checked", "longtext"),
+      F("EvaluatedByAgent", "Evaluated by", S, A), F("EvaluatedAt", "Evaluated", S, I),
+      F("SemanticTypeIri", "Type", S, "iri")]),
     ("act-safety-decide", "plant-safety-officer", "/plant-safety-officer/desk", "Decide",
      "ChangeRequests", "UPDATE", "ChangeRequests.IsDecided", 5,
      "Approve or reject a request somebody else raised. The database refuses a decision on my own request.",
@@ -138,6 +170,17 @@ ACTIONS = [
      "Approve or reject a request that was handed up to me.",
      [F("Status", "Decision", "choice", choices="Approved|Rejected"), F("DecidedAt", "Decided", S, I)]),
 
+    # A control that a person has evaluated is Asserted: it rests on that person's judgement. Naming
+    # the derived column that computes the control's breach makes it Demonstrated once it has been
+    # seen to fail. The column must be a derived field in the catalog: NamedWitnessFieldExists looks
+    # the name up in RulebookFields, and WitnessClaimIsUnverified turns red if nothing is there.
+    ("act-ke-name-witness", "knowledge-engineer", "/knowledge-engineer/workbench",
+     "Name the column that computes it",
+     "Requirements", "UPDATE", "Requirements.ControlAssuranceState", 6,
+     "Point this control at the derived column in the book that computes its breach, so the control "
+     "no longer rests on a person's word alone.",
+     [F("WitnessFieldName", "The column that computes it", "text"),
+      F("HasComputedWitness", "Computed", "fixed", "true")]),
     ("act-ke-write-down", "knowledge-engineer", "/knowledge-engineer/workbench", "Write this down",
      "KnowledgeRepositoryEntries", "INSERT", "KnowHowCarriers.IsAtRiskOfImminentLoss", 2,
      "Put a skill that lives in a person into the repository, crediting the person it came from.",
@@ -323,6 +366,8 @@ def main():
     for p in rb["AppRoleProfiles"]["data"]:       # the twelve older profiles: a generated home, on a tablet
         if not p.get("HomeRoute"):
             p["Device"], p["HomeRoute"], p["HomeTitle"] = "tablet", f"/{p['Role']}", p["DisplayLabel"]
+        if p["Role"] in ADMIN_HOMES:              # an administrator with a hand-built home
+            p["HomeRoute"], p["HomeTitle"] = ADMIN_HOMES[p["Role"]]
     upsert(rb["AppUsers"]["data"], "AppUserId", users)
     upsert(rb["PrincipalAssignments"]["data"], "PrincipalAssignmentId", assigns)
     rb["AppActions"]["data"] = actions                # owned entirely by this script

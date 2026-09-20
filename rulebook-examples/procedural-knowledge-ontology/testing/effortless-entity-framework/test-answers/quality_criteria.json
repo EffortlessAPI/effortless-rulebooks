@@ -1,0 +1,74 @@
+[
+  {
+    "quality_criterion_id": "qc-accuracy",
+    "label": "Accuracy",
+    "definition": "Definitions and assertions state what is true of the domain.",
+    "is_stated": true,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#QualityCriterion",
+    "name": "Accuracy",
+    "assessment_count": 2
+  },
+  {
+    "quality_criterion_id": "qc-adaptability",
+    "label": "Adaptability",
+    "definition": "The model absorbs new tasks without restructuring.",
+    "is_stated": true,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#QualityCriterion",
+    "name": "Adaptability",
+    "assessment_count": 1
+  },
+  {
+    "quality_criterion_id": "qc-clarity",
+    "label": "Clarity",
+    "definition": "Terms communicate their intended meaning.",
+    "is_stated": true,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#QualityCriterion",
+    "name": "Clarity",
+    "assessment_count": 1
+  },
+  {
+    "quality_criterion_id": "qc-completeness",
+    "label": "Completeness",
+    "definition": "The domain of interest is covered.",
+    "is_stated": true,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#QualityCriterion",
+    "name": "Completeness",
+    "assessment_count": 2
+  },
+  {
+    "quality_criterion_id": "qc-conciseness",
+    "label": "Conciseness",
+    "definition": "No irrelevant or redundant terms.",
+    "is_stated": true,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#QualityCriterion",
+    "name": "Conciseness",
+    "assessment_count": 1
+  },
+  {
+    "quality_criterion_id": "qc-consistency",
+    "label": "Consistency",
+    "definition": "No contradictions.",
+    "is_stated": true,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#QualityCriterion",
+    "name": "Consistency",
+    "assessment_count": 2
+  },
+  {
+    "quality_criterion_id": "qc-efficiency",
+    "label": "Computational efficiency",
+    "definition": "Reasoning and queries run within acceptable time.",
+    "is_stated": true,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#QualityCriterion",
+    "name": "Computational efficiency",
+    "assessment_count": 1
+  },
+  {
+    "quality_criterion_id": "qc-organizational-fitness",
+    "label": "Organizational fitness",
+    "definition": "The model fits the organization\u0027s processes and systems.",
+    "is_stated": true,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#QualityCriterion",
+    "name": "Organizational fitness",
+    "assessment_count": 1
+  }
+]

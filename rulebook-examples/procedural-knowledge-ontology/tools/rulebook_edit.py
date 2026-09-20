@@ -18,7 +18,7 @@ import os
 # The project rulebook. PKO_RULEBOOK points a probe (tools/loops/probe_specs.py) at a scratch copy.
 RB = Path(os.environ.get("PKO_RULEBOOK") or
           Path(__file__).resolve().parent.parent / "effortless-rulebook" / "procedural-knowledge-ontology-rulebook.json")
-EXT = "urn:effortless:pko-extension#"
+EXT = "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#"
 
 
 def load() -> OrderedDict:

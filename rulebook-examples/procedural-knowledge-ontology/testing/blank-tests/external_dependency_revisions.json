@@ -1,0 +1,50 @@
+[
+  {
+    "external_dependency_revision_id": "rev-dcat-3-keyword-guidance",
+    "ontology_profile": "dcat-3",
+    "revision_label": "DCAT 3 keyword guidance revised",
+    "revision_kind": "TermRevision",
+    "published_at": "2026-05-10T09:00:00-05:00",
+    "tracked_at": null,
+    "tracked_by_agent": null,
+    "evaluation_context": "eval-current",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ExternalDependencyRevision",
+    "name": null,
+    "affected_mapping_count": null,
+    "as_of_instant": null,
+    "days_since_published": null,
+    "is_untracked_revision": null
+  },
+  {
+    "external_dependency_revision_id": "rev-pko-core-2-0-1",
+    "ontology_profile": "pko-core-2.0.0",
+    "revision_label": "PKO 2.0.1 patch",
+    "revision_kind": "TermRevision",
+    "published_at": "2026-07-10T09:00:00-05:00",
+    "tracked_at": null,
+    "tracked_by_agent": null,
+    "evaluation_context": "eval-current",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ExternalDependencyRevision",
+    "name": null,
+    "affected_mapping_count": null,
+    "as_of_instant": null,
+    "days_since_published": null,
+    "is_untracked_revision": null
+  },
+  {
+    "external_dependency_revision_id": "rev-prov-o-errata",
+    "ontology_profile": "prov-o",
+    "revision_label": "PROV-O errata 2026",
+    "revision_kind": "Errata",
+    "published_at": "2026-06-20T09:00:00-05:00",
+    "tracked_at": "2026-07-01T09:00:00-05:00",
+    "tracked_by_agent": "sam-adeyemi",
+    "evaluation_context": "eval-current",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ExternalDependencyRevision",
+    "name": null,
+    "affected_mapping_count": null,
+    "as_of_instant": null,
+    "days_since_published": null,
+    "is_untracked_revision": null
+  }
+]

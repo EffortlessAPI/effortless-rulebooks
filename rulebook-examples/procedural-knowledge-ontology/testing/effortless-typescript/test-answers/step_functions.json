@@ -18,6 +18,18 @@
     "function": "post-close-entries"
   },
   {
+    "step_function_id": "sf-deploy02-classify",
+    "name": "deploy-02 / classify-change-risk",
+    "step": "deploy-02",
+    "function": "classify-change-risk"
+  },
+  {
+    "step_function_id": "sf-loto05-reserve-padlocks",
+    "name": "loto-05 / reserve-padlocks",
+    "step": "loto-05",
+    "function": "reserve-padlocks"
+  },
+  {
     "step_function_id": "sf-policy03",
     "name": "policy-03 / draft-policy",
     "step": "policy-03",

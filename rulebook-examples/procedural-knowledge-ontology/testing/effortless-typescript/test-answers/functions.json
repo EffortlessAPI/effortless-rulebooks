@@ -1,5 +1,13 @@
 [
   {
+    "function_id": "classify-change-risk",
+    "name": "Classify change risk",
+    "label": "Classify change risk",
+    "definition": "Score a production change's risk class.",
+    "implementation_key": "risk-classifier.score",
+    "semantic_type_iri": "https://w3id.org/pko#Function"
+  },
+  {
     "function_id": "classify-variance",
     "name": "Classify variance",
     "label": "Classify variance",
@@ -32,6 +40,14 @@
     "semantic_type_iri": "https://w3id.org/pko#Function"
   },
   {
+    "function_id": "fetch-incident-history",
+    "name": "Fetch incident history",
+    "label": "Fetch incident history",
+    "definition": "Pull past incidents for the services a change touches.",
+    "implementation_key": "incidents.lookup",
+    "semantic_type_iri": "https://w3id.org/pko#Function"
+  },
+  {
     "function_id": "post-close-entries",
     "name": "Post close entries",
     "label": "Post close entries",
@@ -53,6 +69,14 @@
     "label": "Render SMS",
     "definition": "Produce a length-constrained SMS projection without changing policy meaning.",
     "implementation_key": "render-sms-impl",
+    "semantic_type_iri": "https://w3id.org/pko#Function"
+  },
+  {
+    "function_id": "reserve-padlocks",
+    "name": "Reserve padlocks",
+    "label": "Reserve padlocks",
+    "definition": "Reserve personal padlocks at the lockout station for a crew.",
+    "implementation_key": "lockstation.reserve",
     "semantic_type_iri": "https://w3id.org/pko#Function"
   },
   {

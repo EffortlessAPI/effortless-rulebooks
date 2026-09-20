@@ -1,0 +1,29 @@
+[
+  {
+    "business_outcome_id": "bo-customer-delivery",
+    "label": "Features delivered to customers",
+    "owner_role": "platform-product-manager",
+    "strategic_objective": "Ship customer value every week",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#BusinessOutcome",
+    "name": null,
+    "linked_measure_count": null
+  },
+  {
+    "business_outcome_id": "bo-injury-free-plant",
+    "label": "Recordable injury rate",
+    "owner_role": "plant-operations-manager",
+    "strategic_objective": "An injury-free plant",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#BusinessOutcome",
+    "name": null,
+    "linked_measure_count": null
+  },
+  {
+    "business_outcome_id": "bo-platform-availability",
+    "label": "Platform availability",
+    "owner_role": "vp-engineering",
+    "strategic_objective": "Meet the 99.95% availability commitment",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#BusinessOutcome",
+    "name": null,
+    "linked_measure_count": null
+  }
+]

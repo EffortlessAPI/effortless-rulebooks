@@ -1,0 +1,41 @@
+[
+  {
+    "term_meaning_change_id": "tmc-release-2026",
+    "vocabulary_term": "vt-release",
+    "prior_meaning_since": "2024-01-15T09:00:00-06:00",
+    "changed_at": "2026-01-02T09:00:00-06:00",
+    "prior_meaning": "A tagged build copied to production by an engineer.",
+    "new_meaning": "A risk-classified change passed through the human release gate and rolled out by the pipeline.",
+    "is_structural_change": true,
+    "recorded_by_agent": "grace-holloway",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#TermMeaningChange",
+    "name": "vt-release meaning changed 2026-01-02T15:00:00\u002B00:00",
+    "span_days": 718
+  },
+  {
+    "term_meaning_change_id": "tmc-rollback-2026",
+    "vocabulary_term": "vt-rollback",
+    "prior_meaning_since": "2025-06-01T09:00:00-05:00",
+    "changed_at": "2026-03-01T09:00:00-06:00",
+    "prior_meaning": "Redeploying the previous build by hand.",
+    "new_meaning": "Returning to the previous release automatically when health checks fail.",
+    "is_structural_change": false,
+    "recorded_by_agent": "grace-holloway",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#TermMeaningChange",
+    "name": "vt-rollback meaning changed 2026-03-01T15:00:00\u002B00:00",
+    "span_days": 273
+  },
+  {
+    "term_meaning_change_id": "tmc-zero-energy-2026",
+    "vocabulary_term": "vt-zero-energy-verification",
+    "prior_meaning_since": "2019-03-01T09:00:00-05:00",
+    "changed_at": "2026-05-20T09:00:00-05:00",
+    "prior_meaning": "The technician tries the start button once.",
+    "new_meaning": "The safety officer verifies zero energy at every isolation point, at most twice.",
+    "is_structural_change": true,
+    "recorded_by_agent": "sam-adeyemi",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#TermMeaningChange",
+    "name": "vt-zero-energy-verification meaning changed 2026-05-20T14:00:00\u002B00:00",
+    "span_days": 2637
+  }
+]

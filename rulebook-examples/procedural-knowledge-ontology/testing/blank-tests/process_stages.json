@@ -1,0 +1,86 @@
+[
+  {
+    "process_stage_id": "stage-deploy-approve",
+    "procedure_version": "deploy-v3.2.0",
+    "label": "Approve",
+    "sequence": 2,
+    "owner_role": "release-manager",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ProcessStage",
+    "name": null,
+    "step_count": null,
+    "owner_has_no_holder": null,
+    "is_unowned_or_empty_stage": null
+  },
+  {
+    "process_stage_id": "stage-deploy-build-classify",
+    "procedure_version": "deploy-v3.2.0",
+    "label": "Build and classify",
+    "sequence": 1,
+    "owner_role": "deployment-automation",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ProcessStage",
+    "name": null,
+    "step_count": null,
+    "owner_has_no_holder": null,
+    "is_unowned_or_empty_stage": null
+  },
+  {
+    "process_stage_id": "stage-deploy-rollout-verify",
+    "procedure_version": "deploy-v3.2.0",
+    "label": "Roll out and verify",
+    "sequence": 3,
+    "owner_role": "site-reliability-engineer",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ProcessStage",
+    "name": null,
+    "step_count": null,
+    "owner_has_no_holder": null,
+    "is_unowned_or_empty_stage": null
+  },
+  {
+    "process_stage_id": "stage-loto-group-lockbox",
+    "procedure_version": "loto-v2.0.0",
+    "label": "Group lockbox audit",
+    "sequence": 4,
+    "owner_role": "plant-safety-officer",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ProcessStage",
+    "name": null,
+    "step_count": null,
+    "owner_has_no_holder": null,
+    "is_unowned_or_empty_stage": null
+  },
+  {
+    "process_stage_id": "stage-loto-isolate-verify",
+    "procedure_version": "loto-v2.0.0",
+    "label": "Isolate and verify",
+    "sequence": 2,
+    "owner_role": "plant-safety-officer",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ProcessStage",
+    "name": null,
+    "step_count": null,
+    "owner_has_no_holder": null,
+    "is_unowned_or_empty_stage": null
+  },
+  {
+    "process_stage_id": "stage-loto-prepare",
+    "procedure_version": "loto-v2.0.0",
+    "label": "Prepare and shut down",
+    "sequence": 1,
+    "owner_role": "maintenance-technician",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ProcessStage",
+    "name": null,
+    "step_count": null,
+    "owner_has_no_holder": null,
+    "is_unowned_or_empty_stage": null
+  },
+  {
+    "process_stage_id": "stage-loto-service-restore",
+    "procedure_version": "loto-v2.0.0",
+    "label": "Service and restore",
+    "sequence": 3,
+    "owner_role": "maintenance-technician",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ProcessStage",
+    "name": null,
+    "step_count": null,
+    "owner_has_no_holder": null,
+    "is_unowned_or_empty_stage": null
+  }
+]

@@ -1,0 +1,47 @@
+[
+  {
+    "ai_tool_invocation_id": "ati-0716-reserve-locks",
+    "invoking_agent": "plant-copilot-1-2",
+    "step_execution": "se-loto0716-05",
+    "function": "reserve-padlocks",
+    "invoked_at": "2026-07-16 15:50:00",
+    "supplied_input_count": 1,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AiToolInvocation",
+    "name": "plant-copilot-1-2 -> reserve-padlocks",
+    "executed_step": "loto-05",
+    "declared_function_count": 1,
+    "is_undeclared_tool_use": false,
+    "declared_input_count": 2,
+    "acted_without_declared_context": true
+  },
+  {
+    "ai_tool_invocation_id": "ati-dep0301-classify",
+    "invoking_agent": "risk-classifier-2-4-1",
+    "step_execution": "se-dep0301-02",
+    "function": "classify-change-risk",
+    "invoked_at": "2026-03-01 13:08:00",
+    "supplied_input_count": 1,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AiToolInvocation",
+    "name": "risk-classifier-2-4-1 -> classify-change-risk",
+    "executed_step": "deploy-02",
+    "declared_function_count": 1,
+    "is_undeclared_tool_use": false,
+    "declared_input_count": 1,
+    "acted_without_declared_context": false
+  },
+  {
+    "ai_tool_invocation_id": "ati-dep0714-incidents",
+    "invoking_agent": "risk-classifier-2-4-1",
+    "step_execution": "se-dep0714-02",
+    "function": "fetch-incident-history",
+    "invoked_at": "2026-07-14 12:08:00",
+    "supplied_input_count": 1,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AiToolInvocation",
+    "name": "risk-classifier-2-4-1 -> fetch-incident-history",
+    "executed_step": "deploy-02",
+    "declared_function_count": 0,
+    "is_undeclared_tool_use": true,
+    "declared_input_count": 1,
+    "acted_without_declared_context": false
+  }
+]

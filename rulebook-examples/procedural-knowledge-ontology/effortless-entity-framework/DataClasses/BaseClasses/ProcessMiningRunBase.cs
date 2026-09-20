@@ -120,6 +120,13 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             get => F.AsBool(F.Memo(this, "HasUndocumentedEnactedPath", () => F.Cmp(F.Of(this.UndocumentedPathCount), ">", F.I(0)))); set { }
         }
 
+        // Formula ConformancePercent (rulebook: =ROUND({{ConformanceRate}} * 100, 0))
+        [NotMapped]
+        public int? ConformancePercent
+        {
+            get => F.AsInt(F.Memo(this, "ConformancePercent", () => F.Integer(F.Round(F.Mul(F.Of(this.ConformanceRate), F.I(100)), F.I(0))))); set { }
+        }
+
 
         public string? ProcedureVersion { get; set; }
         public string? EvaluationContext { get; set; }

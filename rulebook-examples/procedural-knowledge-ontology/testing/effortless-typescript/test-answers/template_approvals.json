@@ -14,7 +14,7 @@
     "required_approval_role": "communications-manager",
     "is_decided_by_required_role": true,
     "valid_approval_template_key": "tmpl-policy-email",
-    "semantic_type_iri": "urn:effortless:pko-extension#TemplateApproval"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#TemplateApproval"
   },
   {
     "template_approval_id": "tap-sms-001",
@@ -31,6 +31,6 @@
     "required_approval_role": "communications-manager",
     "is_decided_by_required_role": true,
     "valid_approval_template_key": "tmpl-policy-sms",
-    "semantic_type_iri": "urn:effortless:pko-extension#TemplateApproval"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#TemplateApproval"
   }
 ]

@@ -32,6 +32,13 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             get => F.AsString(F.Memo(this, "TermScheme", () => F.Lookup<VocabularyTerm>(this, "VocabularyTerms", "VocabularyTermId", __c => __c.VocabularyTerms, __r => F.Of(__r.VocabularyTermId), F.Of(this.VocabularyTerm), __r => F.Of(__r.Vocabulary), () => F.Of(new VocabularyTerm().Vocabulary)))); set { }
         }
 
+        // Formula TermPrefLabel (rulebook: =INDEX(VocabularyTerms!{{PrefLabel}}, MATCH({{VocabularyTerm}}, VocabularyTerms!{{VocabularyTermId}}, 0)))
+        [NotMapped]
+        public string? TermPrefLabel
+        {
+            get => F.AsString(F.Memo(this, "TermPrefLabel", () => F.Lookup<VocabularyTerm>(this, "VocabularyTerms", "VocabularyTermId", __c => __c.VocabularyTerms, __r => F.Of(__r.VocabularyTermId), F.Of(this.VocabularyTerm), __r => F.Of(__r.PrefLabel), () => F.Of(new VocabularyTerm().PrefLabel)))); set { }
+        }
+
         // Formula WordingKey (rulebook: ={{TermScheme}} & "|" & {{Wording}})
         [NotMapped]
         public string? WordingKey

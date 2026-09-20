@@ -1,0 +1,72 @@
+[
+  {
+    "failure_mode_id": "fm-deploy02-unscorable",
+    "step": "deploy-02",
+    "procedure_target": null,
+    "description": "The classifier cannot score the change.",
+    "response": "",
+    "requires_escalation": false,
+    "escalate_to_role": null,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#FailureMode",
+    "name": null,
+    "escalation_role_has_no_holder": null,
+    "escalates_to_vacant_role": null,
+    "has_no_response": null
+  },
+  {
+    "failure_mode_id": "fm-loto03-press7",
+    "step": "loto-03",
+    "procedure_target": "target-loto-press7",
+    "description": "The retrofitted press carries an accumulator the standard map omits.",
+    "response": "Use the press-7 isolation map and bleed the accumulator before isolation.",
+    "requires_escalation": true,
+    "escalate_to_role": "plant-safety-officer",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#FailureMode",
+    "name": null,
+    "escalation_role_has_no_holder": null,
+    "escalates_to_vacant_role": null,
+    "has_no_response": null
+  },
+  {
+    "failure_mode_id": "fm-loto04b-repressurize",
+    "step": "loto-04b",
+    "procedure_target": null,
+    "description": "The pneumatic line re-pressurizes after the bleed.",
+    "response": "Bleed again and fit a second valve lockout.",
+    "requires_escalation": false,
+    "escalate_to_role": null,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#FailureMode",
+    "name": null,
+    "escalation_role_has_no_holder": null,
+    "escalates_to_vacant_role": null,
+    "has_no_response": null
+  },
+  {
+    "failure_mode_id": "fm-loto06-night",
+    "step": "loto-06",
+    "procedure_target": null,
+    "description": "Residual energy found on the night shift.",
+    "response": "Escalate to the night shift safety deputy.",
+    "requires_escalation": true,
+    "escalate_to_role": "night-safety-deputy",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#FailureMode",
+    "name": null,
+    "escalation_role_has_no_holder": null,
+    "escalates_to_vacant_role": null,
+    "has_no_response": null
+  },
+  {
+    "failure_mode_id": "fm-loto06-residual",
+    "step": "loto-06",
+    "procedure_target": null,
+    "description": "Residual stored energy remains after isolation.",
+    "response": "Keep every lock on, stop, escalate and re-isolate.",
+    "requires_escalation": true,
+    "escalate_to_role": "plant-safety-officer",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#FailureMode",
+    "name": null,
+    "escalation_role_has_no_holder": null,
+    "escalates_to_vacant_role": null,
+    "has_no_response": null
+  }
+]

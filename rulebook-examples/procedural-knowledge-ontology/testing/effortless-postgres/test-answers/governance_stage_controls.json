@@ -1,0 +1,202 @@
+[
+  {
+    "governance_stage_control_id": "gsc-lockout-tagout-collection",
+    "name": "gm-lockout-tagout Collection",
+    "governed_model": "gm-lockout-tagout",
+    "stage": "Collection",
+    "control": "Collection control for lockout-tagout",
+    "is_continuous": true,
+    "is_continuous_pipeline_stage": true,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#GovernanceStageControl"
+  },
+  {
+    "governance_stage_control_id": "gsc-lockout-tagout-encoding",
+    "name": "gm-lockout-tagout Encoding",
+    "governed_model": "gm-lockout-tagout",
+    "stage": "Encoding",
+    "control": "Encoding control for lockout-tagout",
+    "is_continuous": true,
+    "is_continuous_pipeline_stage": true,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#GovernanceStageControl"
+  },
+  {
+    "governance_stage_control_id": "gsc-lockout-tagout-organization",
+    "name": "gm-lockout-tagout Organization",
+    "governed_model": "gm-lockout-tagout",
+    "stage": "Organization",
+    "control": "Organization control for lockout-tagout",
+    "is_continuous": true,
+    "is_continuous_pipeline_stage": true,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#GovernanceStageControl"
+  },
+  {
+    "governance_stage_control_id": "gsc-lockout-tagout-retrieval",
+    "name": "gm-lockout-tagout Retrieval",
+    "governed_model": "gm-lockout-tagout",
+    "stage": "Retrieval",
+    "control": "Retrieval control for lockout-tagout",
+    "is_continuous": true,
+    "is_continuous_pipeline_stage": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#GovernanceStageControl"
+  },
+  {
+    "governance_stage_control_id": "gsc-lockout-tagout-stewardship",
+    "name": "gm-lockout-tagout Stewardship",
+    "governed_model": "gm-lockout-tagout",
+    "stage": "Stewardship",
+    "control": "Stewardship control for lockout-tagout",
+    "is_continuous": true,
+    "is_continuous_pipeline_stage": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#GovernanceStageControl"
+  },
+  {
+    "governance_stage_control_id": "gsc-lockout-tagout-use",
+    "name": "gm-lockout-tagout Use",
+    "governed_model": "gm-lockout-tagout",
+    "stage": "Use",
+    "control": "Use control for lockout-tagout",
+    "is_continuous": true,
+    "is_continuous_pipeline_stage": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#GovernanceStageControl"
+  },
+  {
+    "governance_stage_control_id": "gsc-production-deployment-collection",
+    "name": "gm-production-deployment Collection",
+    "governed_model": "gm-production-deployment",
+    "stage": "Collection",
+    "control": "Collection control for production-deployment",
+    "is_continuous": false,
+    "is_continuous_pipeline_stage": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#GovernanceStageControl"
+  },
+  {
+    "governance_stage_control_id": "gsc-production-deployment-use",
+    "name": "gm-production-deployment Use",
+    "governed_model": "gm-production-deployment",
+    "stage": "Use",
+    "control": "Use control for production-deployment",
+    "is_continuous": true,
+    "is_continuous_pipeline_stage": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#GovernanceStageControl"
+  },
+  {
+    "governance_stage_control_id": "gsc-quarter-end-close-collection",
+    "name": "gm-quarter-end-close Collection",
+    "governed_model": "gm-quarter-end-close",
+    "stage": "Collection",
+    "control": "Collection control for quarter-end-close",
+    "is_continuous": true,
+    "is_continuous_pipeline_stage": true,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#GovernanceStageControl"
+  },
+  {
+    "governance_stage_control_id": "gsc-quarter-end-close-encoding",
+    "name": "gm-quarter-end-close Encoding",
+    "governed_model": "gm-quarter-end-close",
+    "stage": "Encoding",
+    "control": "Encoding control for quarter-end-close",
+    "is_continuous": false,
+    "is_continuous_pipeline_stage": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#GovernanceStageControl"
+  },
+  {
+    "governance_stage_control_id": "gsc-quarter-end-close-organization",
+    "name": "gm-quarter-end-close Organization",
+    "governed_model": "gm-quarter-end-close",
+    "stage": "Organization",
+    "control": "Organization control for quarter-end-close",
+    "is_continuous": true,
+    "is_continuous_pipeline_stage": true,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#GovernanceStageControl"
+  },
+  {
+    "governance_stage_control_id": "gsc-quarter-end-close-retrieval",
+    "name": "gm-quarter-end-close Retrieval",
+    "governed_model": "gm-quarter-end-close",
+    "stage": "Retrieval",
+    "control": "Retrieval control for quarter-end-close",
+    "is_continuous": true,
+    "is_continuous_pipeline_stage": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#GovernanceStageControl"
+  },
+  {
+    "governance_stage_control_id": "gsc-quarter-end-close-stewardship",
+    "name": "gm-quarter-end-close Stewardship",
+    "governed_model": "gm-quarter-end-close",
+    "stage": "Stewardship",
+    "control": "Stewardship control for quarter-end-close",
+    "is_continuous": true,
+    "is_continuous_pipeline_stage": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#GovernanceStageControl"
+  },
+  {
+    "governance_stage_control_id": "gsc-quarter-end-close-use",
+    "name": "gm-quarter-end-close Use",
+    "governed_model": "gm-quarter-end-close",
+    "stage": "Use",
+    "control": "Use control for quarter-end-close",
+    "is_continuous": true,
+    "is_continuous_pipeline_stage": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#GovernanceStageControl"
+  },
+  {
+    "governance_stage_control_id": "gsc-workforce-policy-collection",
+    "name": "gm-workforce-policy Collection",
+    "governed_model": "gm-workforce-policy",
+    "stage": "Collection",
+    "control": "Collection control for workforce-policy",
+    "is_continuous": true,
+    "is_continuous_pipeline_stage": true,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#GovernanceStageControl"
+  },
+  {
+    "governance_stage_control_id": "gsc-workforce-policy-encoding",
+    "name": "gm-workforce-policy Encoding",
+    "governed_model": "gm-workforce-policy",
+    "stage": "Encoding",
+    "control": "Encoding control for workforce-policy",
+    "is_continuous": true,
+    "is_continuous_pipeline_stage": true,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#GovernanceStageControl"
+  },
+  {
+    "governance_stage_control_id": "gsc-workforce-policy-organization",
+    "name": "gm-workforce-policy Organization",
+    "governed_model": "gm-workforce-policy",
+    "stage": "Organization",
+    "control": "Organization control for workforce-policy",
+    "is_continuous": true,
+    "is_continuous_pipeline_stage": true,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#GovernanceStageControl"
+  },
+  {
+    "governance_stage_control_id": "gsc-workforce-policy-retrieval",
+    "name": "gm-workforce-policy Retrieval",
+    "governed_model": "gm-workforce-policy",
+    "stage": "Retrieval",
+    "control": "Retrieval control for workforce-policy",
+    "is_continuous": true,
+    "is_continuous_pipeline_stage": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#GovernanceStageControl"
+  },
+  {
+    "governance_stage_control_id": "gsc-workforce-policy-stewardship",
+    "name": "gm-workforce-policy Stewardship",
+    "governed_model": "gm-workforce-policy",
+    "stage": "Stewardship",
+    "control": "Stewardship control for workforce-policy",
+    "is_continuous": true,
+    "is_continuous_pipeline_stage": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#GovernanceStageControl"
+  },
+  {
+    "governance_stage_control_id": "gsc-workforce-policy-use",
+    "name": "gm-workforce-policy Use",
+    "governed_model": "gm-workforce-policy",
+    "stage": "Use",
+    "control": "Use control for workforce-policy",
+    "is_continuous": true,
+    "is_continuous_pipeline_stage": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#GovernanceStageControl"
+  }
+]

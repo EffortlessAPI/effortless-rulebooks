@@ -41,7 +41,7 @@ from shared import to_snake_case  # noqa: E402  (the harness's own entity/field 
 RB = HERE / "effortless-rulebook" / "procedural-knowledge-ontology-rulebook.json"
 GRADES = HERE / "testing" / "_conformance_grades.json"
 EFFORTLESS_JSON = HERE / "effortless.json"
-IRI = "urn:effortless:pko-extension#"
+IRI = "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#"
 ANSWER_KEY_AUTHOR = "compile-rulebook"
 CELL_SAMPLE_PER_FIELD = 20
 

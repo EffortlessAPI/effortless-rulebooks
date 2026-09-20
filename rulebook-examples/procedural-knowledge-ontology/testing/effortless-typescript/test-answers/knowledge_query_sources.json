@@ -1,0 +1,44 @@
+[
+  {
+    "knowledge_query_source_id": "kqs-agentkind-register",
+    "name": "kq-agent-kind-flat reads sys-procedure-register",
+    "query_definition": "kq-agent-kind-flat",
+    "consumer_system": "sys-procedure-register",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#KnowledgeQuerySource"
+  },
+  {
+    "knowledge_query_source_id": "kqs-approver-graph",
+    "name": "kq-approver-sparql reads sys-procedure-graph",
+    "query_definition": "kq-approver-sparql",
+    "consumer_system": "sys-procedure-graph",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#KnowledgeQuerySource"
+  },
+  {
+    "knowledge_query_source_id": "kqs-approver-register",
+    "name": "kq-approver-sparql reads sys-procedure-register",
+    "query_definition": "kq-approver-sparql",
+    "consumer_system": "sys-procedure-register",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#KnowledgeQuerySource"
+  },
+  {
+    "knowledge_query_source_id": "kqs-energy-register",
+    "name": "kq-loto-energy-sql reads sys-procedure-register",
+    "query_definition": "kq-loto-energy-sql",
+    "consumer_system": "sys-procedure-register",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#KnowledgeQuerySource"
+  },
+  {
+    "knowledge_query_source_id": "kqs-plantwide-register",
+    "name": "kq-plantwide-lockouts reads sys-procedure-register",
+    "query_definition": "kq-plantwide-lockouts",
+    "consumer_system": "sys-procedure-register",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#KnowledgeQuerySource"
+  },
+  {
+    "knowledge_query_source_id": "kqs-plantwide-tablet",
+    "name": "kq-plantwide-lockouts reads sys-maintenance-tablet",
+    "query_definition": "kq-plantwide-lockouts",
+    "consumer_system": "sys-maintenance-tablet",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#KnowledgeQuerySource"
+  }
+]

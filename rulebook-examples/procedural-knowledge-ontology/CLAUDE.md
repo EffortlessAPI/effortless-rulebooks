@@ -331,7 +331,7 @@ Every table's semantics are recorded as data in the `SemanticMappings` table. Wh
 |---|---|
 | `exact` | A native PKO 2.0.0 term (`pko:Procedure`, `pko:Transition`, …) |
 | aligned | A reused external standard (P-Plan, PROV-O, DCAT, DCMI, OWL-Time, PRO, Metadata4Ing, ODRL) |
-| `extension` | NOT defined by PKO — carries an explicit `urn:effortless:pko-extension#` IRI |
+| `extension` | NOT defined by PKO — carries an explicit `https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#` IRI |
 
 Do not relabel an extension as `exact` to make the model look more PKO-native. `KnowledgeFragments`, `ElicitationSessions`, `KnowledgeGaps`, `StewardshipAssignments`, `OperationalBindings`, `ProcessMiningRuns`, `Vocabularies`, `VocabularyTerms`, and `KnowledgeBrokerLinks` are deliberately extensions. See `PKO-ALIGNMENT.md`.
 

@@ -510,6 +510,14 @@ def calc_ontology_profiles_skips_adoption_path(adoption_stage, prerequisite_prof
     """
     return _erb.erb_and(_erb.erb_bool3(_erb.erb_cmp(_erb.erb_nullif(adoption_stage), '>', 1)), _erb.erb_bool3(_erb.erb_or(_erb.erb_bool3((prerequisite_profile is None or prerequisite_profile == "")), _erb.erb_bool3((prerequisite_adopted_at is None or prerequisite_adopted_at == "")), _erb.erb_bool3(_erb.erb_cmp(prerequisite_adopted_at, '>', _erb.erb_nullif(adopted_at))))))
 
+def calc_ontology_profiles_namespace_is_http(namespace_iri):
+    """
+    Whether the namespace is an HTTP(S) URI, the first Linked Data requirement, rather than a urn: or other non-resolvable identifier.
+    
+    Formula: =OR(LEFT({{NamespaceIri}}, 7) = "http://", LEFT({{NamespaceIri}}, 8) = "https://")
+    """
+    return _erb.erb_or(_erb.erb_bool3(_erb.erb_eq(((namespace_iri or "")[:(7 or 0)]), 'http://')), _erb.erb_bool3(_erb.erb_eq(((namespace_iri or "")[:(8 or 0)]), 'https://')))
+
 # Level 2
 
 def calc_ontology_profiles_requires_frequent_review(recent_deprecation_count, last_major_revision_at, days_since_major_revision):
@@ -528,6 +536,14 @@ def calc_ontology_profiles_change_rate_profile(recent_deprecation_count, last_ma
     """
     return ('FrequentDeprecation' if _erb.erb_bool3(_erb.erb_cmp(recent_deprecation_count, '>=', 2)) else ('RecentMajorRevision' if _erb.erb_bool3(_erb.erb_and(_erb.erb_bool3((not (last_major_revision_at is None or last_major_revision_at == ""))), _erb.erb_bool3(_erb.erb_cmp(days_since_major_revision, '<', 730)))) else ('Dormant' if _erb.erb_bool3(_erb.erb_and(_erb.erb_bool3((not (last_revised_at is None or last_revised_at == ""))), _erb.erb_bool3(_erb.erb_cmp(days_since_last_revision, '>', 3650)))) else 'Unassessed')))
 
+def calc_ontology_profiles_namespace_dereferences(namespace_is_http, namespace_http_status):
+    """
+    The namespace is an HTTP URI and fetching it actually returned a document.
+    
+    Formula: =AND({{NamespaceIsHttp}}, {{NamespaceHttpStatus}} = 200)
+    """
+    return _erb.erb_and(_erb.erb_bool3(namespace_is_http), _erb.erb_bool3(_erb.erb_eq(_erb.erb_nullif(namespace_http_status), 200)))
+
 # Level 3
 
 def calc_ontology_profiles_is_review_overdue_for_change_rate(requires_frequent_review, dependency_reviewed_at, days_since_dependency_reviewed):
@@ -537,6 +553,14 @@ def calc_ontology_profiles_is_review_overdue_for_change_rate(requires_frequent_r
     Formula: =AND({{RequiresFrequentReview}}, OR({{DependencyReviewedAt}} = "", {{DaysSinceDependencyReviewed}} > 180))
     """
     return _erb.erb_and(_erb.erb_bool3(requires_frequent_review), _erb.erb_bool3(_erb.erb_or(_erb.erb_bool3((dependency_reviewed_at is None or dependency_reviewed_at == "")), _erb.erb_bool3(_erb.erb_cmp(days_since_dependency_reviewed, '>', 180)))))
+
+def calc_ontology_profiles_publishes_following_linked_data_principles(namespace_dereferences, namespace_serves_rdf, mapping_count):
+    """
+    The vocabulary is published the way Linked Data requires: an HTTP URI that resolves, serves RDF when asked for it, and carries links to other terms.
+    
+    Formula: =AND({{NamespaceDereferences}}, {{NamespaceServesRdf}}, {{MappingCount}} > 0)
+    """
+    return _erb.erb_and(_erb.erb_bool3(namespace_dereferences), (namespace_serves_rdf is True), _erb.erb_bool3(_erb.erb_cmp(mapping_count, '>', 0)))
 
 
 def compute_ontology_profiles_fields(record: dict) -> dict:
@@ -573,6 +597,11 @@ def compute_ontology_profiles_fields(record: dict) -> dict:
     except Exception as _field_exc:
         result['skips_adoption_path'] = None
         result.setdefault('_erb_errors', {})['skips_adoption_path'] = str(_field_exc)
+    try:
+        result['namespace_is_http'] = calc_ontology_profiles_namespace_is_http(result.get('namespace_iri'))
+    except Exception as _field_exc:
+        result['namespace_is_http'] = None
+        result.setdefault('_erb_errors', {})['namespace_is_http'] = str(_field_exc)
 
     # Level 2 calculations
     try:
@@ -585,6 +614,11 @@ def compute_ontology_profiles_fields(record: dict) -> dict:
     except Exception as _field_exc:
         result['change_rate_profile'] = None
         result.setdefault('_erb_errors', {})['change_rate_profile'] = str(_field_exc)
+    try:
+        result['namespace_dereferences'] = calc_ontology_profiles_namespace_dereferences(result.get('namespace_is_http'), result.get('namespace_http_status'))
+    except Exception as _field_exc:
+        result['namespace_dereferences'] = None
+        result.setdefault('_erb_errors', {})['namespace_dereferences'] = str(_field_exc)
 
     # Level 3 calculations
     try:
@@ -592,6 +626,11 @@ def compute_ontology_profiles_fields(record: dict) -> dict:
     except Exception as _field_exc:
         result['is_review_overdue_for_change_rate'] = None
         result.setdefault('_erb_errors', {})['is_review_overdue_for_change_rate'] = str(_field_exc)
+    try:
+        result['publishes_following_linked_data_principles'] = calc_ontology_profiles_publishes_following_linked_data_principles(result.get('namespace_dereferences'), result.get('namespace_serves_rdf'), result.get('mapping_count'))
+    except Exception as _field_exc:
+        result['publishes_following_linked_data_principles'] = None
+        result.setdefault('_erb_errors', {})['publishes_following_linked_data_principles'] = str(_field_exc)
 
     # Convert empty strings to None for string fields
     for key in ['name', 'change_rate_profile']:
@@ -615,6 +654,22 @@ def calc_evaluation_contexts_name(label, as_of_instant):
     """
     return (_erb.erb_text(label) + ' @ ' + _erb.erb_datetime_text(as_of_instant))
 
+def calc_evaluation_contexts_assistant_answer_count(model_reasoned_answer_count, otherwise_reasoned_answer_count):
+    """
+    Every assistant answer on record.
+    
+    Formula: ={{ModelReasonedAnswerCount}} + {{OtherwiseReasonedAnswerCount}}
+    """
+    return _erb.erb_integer(_erb.erb_add(model_reasoned_answer_count, otherwise_reasoned_answer_count))
+
+def calc_evaluation_contexts_step_execution_count(out_of_order_step_execution_count, in_order_step_execution_count):
+    """
+    Every step execution on record.
+    
+    Formula: ={{OutOfOrderStepExecutionCount}} + {{InOrderStepExecutionCount}}
+    """
+    return _erb.erb_integer(_erb.erb_add(out_of_order_step_execution_count, in_order_step_execution_count))
+
 
 def compute_evaluation_contexts_fields(record: dict) -> dict:
     """
@@ -630,6 +685,16 @@ def compute_evaluation_contexts_fields(record: dict) -> dict:
     except Exception as _field_exc:
         result['name'] = None
         result.setdefault('_erb_errors', {})['name'] = str(_field_exc)
+    try:
+        result['assistant_answer_count'] = calc_evaluation_contexts_assistant_answer_count(result.get('model_reasoned_answer_count'), result.get('otherwise_reasoned_answer_count'))
+    except Exception as _field_exc:
+        result['assistant_answer_count'] = None
+        result.setdefault('_erb_errors', {})['assistant_answer_count'] = str(_field_exc)
+    try:
+        result['step_execution_count'] = calc_evaluation_contexts_step_execution_count(result.get('out_of_order_step_execution_count'), result.get('in_order_step_execution_count'))
+    except Exception as _field_exc:
+        result['step_execution_count'] = None
+        result.setdefault('_erb_errors', {})['step_execution_count'] = str(_field_exc)
 
     # Convert empty strings to None for string fields
     for key in ['name']:
@@ -7898,6 +7963,14 @@ def calc_step_executions_is_blocked_by_incomplete_prerequisite(step_prerequisite
     """
     return _erb.erb_and(_erb.erb_bool3((not (step_prerequisite is None or step_prerequisite == ""))), _erb.erb_bool3(_erb.erb_eq(completed_prerequisite_run_count, 0)), _erb.erb_bool3(_erb.erb_ne(_erb.erb_nullif(execution_status), 'Completed')))
 
+def calc_step_executions_is_blocked_by_observed_cue(incomplete_cue_observation_count):
+    """
+    A warning sign that means 'not finished' was seen on this step execution, so the normal next step must not be offered; only a fallback is.
+    
+    Formula: ={{IncompleteCueObservationCount}} > 0
+    """
+    return _erb.erb_cmp(incomplete_cue_observation_count, '>', 0)
+
 # Level 2
 
 def calc_step_executions_is_late(actual_duration_minutes, expected_duration_minutes):
@@ -8377,6 +8450,11 @@ def compute_step_executions_fields(record: dict) -> dict:
     except Exception as _field_exc:
         result['is_blocked_by_incomplete_prerequisite'] = None
         result.setdefault('_erb_errors', {})['is_blocked_by_incomplete_prerequisite'] = str(_field_exc)
+    try:
+        result['is_blocked_by_observed_cue'] = calc_step_executions_is_blocked_by_observed_cue(result.get('incomplete_cue_observation_count'))
+    except Exception as _field_exc:
+        result['is_blocked_by_observed_cue'] = None
+        result.setdefault('_erb_errors', {})['is_blocked_by_observed_cue'] = str(_field_exc)
 
     # Level 2 calculations
     try:
@@ -10223,13 +10301,13 @@ def calc_semantic_mappings_reinvents_standard_term(mapping_relation, available_s
     """
     return _erb.erb_and(_erb.erb_bool3(_erb.erb_eq(_erb.erb_nullif(mapping_relation), 'extension')), _erb.erb_bool3((not (available_standard_iri is None or available_standard_iri == ""))))
 
-def calc_semantic_mappings_is_non_resolvable_term_iri(mapping_relation, target_iri):
+def calc_semantic_mappings_is_non_resolvable_term_iri(target_iri, ontology_profile, profile_namespace_dereferences):
     """
-    TRUE when a term was published under an identifier that is not an HTTP IRI, so it cannot be looked up and linked.
+    The term cannot be looked up: either its IRI is not an HTTP URI, or the namespace it lives in did not answer when it was last fetched. Measured, not inferred from the IRI's spelling.
     
-    Formula: =AND({{MappingRelation}} = "extension", LEFT({{TargetIri}}, 4) <> "http")
+    Formula: =OR(LEFT({{TargetIri}}, 4) <> "http", AND({{OntologyProfile}} <> "", {{ProfileNamespaceDereferences}} = FALSE))
     """
-    return _erb.erb_and(_erb.erb_bool3(_erb.erb_eq(_erb.erb_nullif(mapping_relation), 'extension')), _erb.erb_bool3(_erb.erb_ne(((target_iri or "")[:(4 or 0)]), 'http')))
+    return _erb.erb_or(_erb.erb_bool3(_erb.erb_ne(((target_iri or "")[:(4 or 0)]), 'http')), _erb.erb_bool3(_erb.erb_and(_erb.erb_bool3((not (ontology_profile is None or ontology_profile == ""))), _erb.erb_bool3(_erb.erb_eq(profile_namespace_dereferences, False)))))
 
 
 def compute_semantic_mappings_fields(record: dict) -> dict:
@@ -10252,7 +10330,7 @@ def compute_semantic_mappings_fields(record: dict) -> dict:
         result['reinvents_standard_term'] = None
         result.setdefault('_erb_errors', {})['reinvents_standard_term'] = str(_field_exc)
     try:
-        result['is_non_resolvable_term_iri'] = calc_semantic_mappings_is_non_resolvable_term_iri(result.get('mapping_relation'), result.get('target_iri'))
+        result['is_non_resolvable_term_iri'] = calc_semantic_mappings_is_non_resolvable_term_iri(result.get('target_iri'), result.get('ontology_profile'), result.get('profile_namespace_dereferences'))
     except Exception as _field_exc:
         result['is_non_resolvable_term_iri'] = None
         result.setdefault('_erb_errors', {})['is_non_resolvable_term_iri'] = str(_field_exc)
@@ -11046,7 +11124,7 @@ def compute_verification_outcomes_fields(record: dict) -> dict:
 
 # =============================================================================
 # OBSERVEDTRANSITIONS
-# The proxy above cannot tell a walked fallback from a happy-path step that happens to share an endpoint. PKO models Transition as a first-class thing; its execution counterpart is missing. Without a table that records WHICH transition a step execution arrived by, 'has this fallback ever been walked' is permanently unanswerable rather than merely unanswered. This is an extension (urn:effortless:pko-extension#ObservedTransition), not a native PKO term.
+# The proxy above cannot tell a walked fallback from a happy-path step that happens to share an endpoint. PKO models Transition as a first-class thing; its execution counterpart is missing. Without a table that records WHICH transition a step execution arrived by, 'has this fallback ever been walked' is permanently unanswerable rather than merely unanswered. This is an extension (https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ObservedTransition), not a native PKO term.
 # =============================================================================
 
 # Level 1
@@ -11064,7 +11142,7 @@ def compute_observed_transitions_fields(record: dict) -> dict:
     """
     Compute all calculated fields for ObservedTransitions.
     
-    The proxy above cannot tell a walked fallback from a happy-path step that happens to share an endpoint. PKO models Transition as a first-class thing; its execution counterpart is missing. Without a table that records WHICH transition a step execution arrived by, 'has this fallback ever been walked' is permanently unanswerable rather than merely unanswered. This is an extension (urn:effortless:pko-extension#ObservedTransition), not a native PKO term.
+    The proxy above cannot tell a walked fallback from a happy-path step that happens to share an endpoint. PKO models Transition as a first-class thing; its execution counterpart is missing. Without a table that records WHICH transition a step execution arrived by, 'has this fallback ever been walked' is permanently unanswerable rather than merely unanswered. This is an extension (https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ObservedTransition), not a native PKO term.
     """
     result = dict(record)
 
@@ -13154,7 +13232,7 @@ def compute_agent_decision_records_fields(record: dict) -> dict:
 
 # =============================================================================
 # DELIVEREDCOMMUNICATIONS
-# Everything above is a proxy for the real question, which is instance-level: THIS message, to THIS recipient, rendered from THIS template, authorized by THIS approval. The model has MessageTemplates and CommunicationPolicies as specifications and no record of a single thing ever sent. Without an instance table, 'can I show that what was sent matched what I approved' is permanently unanswerable rather than merely unanswered — and it is the question a disputing employee actually asks. Extension term (urn:effortless:pko-extension#DeliveredCommunication); PKO has no native class for a delivered artifact instance.
+# Everything above is a proxy for the real question, which is instance-level: THIS message, to THIS recipient, rendered from THIS template, authorized by THIS approval. The model has MessageTemplates and CommunicationPolicies as specifications and no record of a single thing ever sent. Without an instance table, 'can I show that what was sent matched what I approved' is permanently unanswerable rather than merely unanswered — and it is the question a disputing employee actually asks. Extension term (https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#DeliveredCommunication); PKO has no native class for a delivered artifact instance.
 # =============================================================================
 
 # Level 1
@@ -13206,7 +13284,7 @@ def compute_delivered_communications_fields(record: dict) -> dict:
     """
     Compute all calculated fields for DeliveredCommunications.
     
-    Everything above is a proxy for the real question, which is instance-level: THIS message, to THIS recipient, rendered from THIS template, authorized by THIS approval. The model has MessageTemplates and CommunicationPolicies as specifications and no record of a single thing ever sent. Without an instance table, 'can I show that what was sent matched what I approved' is permanently unanswerable rather than merely unanswered — and it is the question a disputing employee actually asks. Extension term (urn:effortless:pko-extension#DeliveredCommunication); PKO has no native class for a delivered artifact instance.
+    Everything above is a proxy for the real question, which is instance-level: THIS message, to THIS recipient, rendered from THIS template, authorized by THIS approval. The model has MessageTemplates and CommunicationPolicies as specifications and no record of a single thing ever sent. Without an instance table, 'can I show that what was sent matched what I approved' is permanently unanswerable rather than merely unanswered — and it is the question a disputing employee actually asks. Extension term (https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#DeliveredCommunication); PKO has no native class for a delivered artifact instance.
     """
     result = dict(record)
 
@@ -13953,6 +14031,22 @@ def calc_rulebook_tables_is_unsecured_governance_record(subject_area, policy_cou
     """
     return _erb.erb_and(_erb.erb_bool3(_erb.erb_eq(_erb.erb_nullif(subject_area), 'governance')), _erb.erb_bool3(_erb.erb_eq(policy_count, 0)))
 
+def calc_rulebook_tables_is_readable_in_full_by_non_admin(unrestricted_non_admin_policy_count):
+    """
+    Some principal who is not an administrator can read every row of this table: a policy exists, so the table is secured, but it controls nothing. This is the violation an access review looks for, and it is the reason 'has a policy' is not the test.
+    
+    Formula: ={{UnrestrictedNonAdminPolicyCount}} > 0
+    """
+    return _erb.erb_cmp(unrestricted_non_admin_policy_count, '>', 0)
+
+def calc_rulebook_tables_is_controlled_for_every_non_admin(restricted_non_admin_policy_count, unrestricted_non_admin_policy_count):
+    """
+    Every non-administrator who can reach this table reaches it through a policy that cuts rows. The table is not merely policed; access to it is controlled.
+    
+    Formula: =AND({{RestrictedNonAdminPolicyCount}} > 0, {{UnrestrictedNonAdminPolicyCount}} = 0)
+    """
+    return _erb.erb_and(_erb.erb_bool3(_erb.erb_cmp(restricted_non_admin_policy_count, '>', 0)), _erb.erb_bool3(_erb.erb_eq(unrestricted_non_admin_policy_count, 0)))
+
 
 def compute_rulebook_tables_fields(record: dict) -> dict:
     """
@@ -13998,6 +14092,16 @@ def compute_rulebook_tables_fields(record: dict) -> dict:
     except Exception as _field_exc:
         result['is_unsecured_governance_record'] = None
         result.setdefault('_erb_errors', {})['is_unsecured_governance_record'] = str(_field_exc)
+    try:
+        result['is_readable_in_full_by_non_admin'] = calc_rulebook_tables_is_readable_in_full_by_non_admin(result.get('unrestricted_non_admin_policy_count'))
+    except Exception as _field_exc:
+        result['is_readable_in_full_by_non_admin'] = None
+        result.setdefault('_erb_errors', {})['is_readable_in_full_by_non_admin'] = str(_field_exc)
+    try:
+        result['is_controlled_for_every_non_admin'] = calc_rulebook_tables_is_controlled_for_every_non_admin(result.get('restricted_non_admin_policy_count'), result.get('unrestricted_non_admin_policy_count'))
+    except Exception as _field_exc:
+        result['is_controlled_for_every_non_admin'] = None
+        result.setdefault('_erb_errors', {})['is_controlled_for_every_non_admin'] = str(_field_exc)
 
     # Convert empty strings to None for string fields
     for key in ['name']:
@@ -14779,6 +14883,14 @@ def calc_process_mining_runs_is_stale_mining_evidence(days_since_mined):
     """
     return _erb.erb_cmp(days_since_mined, '>', 180)
 
+def calc_process_mining_runs_conformance_percent(conformance_rate):
+    """
+    The share of the paths people really took that match the documented procedure, as a whole percent.
+    
+    Formula: =ROUND({{ConformanceRate}} * 100, 0)
+    """
+    return _erb.erb_integer(_erb.erb_round(_erb.erb_mul(conformance_rate, 100), 0))
+
 # Level 3
 
 def calc_process_mining_runs_is_drift_on_live_version(has_major_drift_from_documentation, procedure_version_is_live):
@@ -14851,6 +14963,11 @@ def compute_process_mining_runs_fields(record: dict) -> dict:
     except Exception as _field_exc:
         result['is_stale_mining_evidence'] = None
         result.setdefault('_erb_errors', {})['is_stale_mining_evidence'] = str(_field_exc)
+    try:
+        result['conformance_percent'] = calc_process_mining_runs_conformance_percent(result.get('conformance_rate'))
+    except Exception as _field_exc:
+        result['conformance_percent'] = None
+        result.setdefault('_erb_errors', {})['conformance_percent'] = str(_field_exc)
 
     # Level 3 calculations
     try:
@@ -17632,6 +17749,14 @@ def calc_step_cues_incomplete_cue_step_key(signals_incomplete_step, step):
     """
     return (step if (signals_incomplete_step is True) else '')
 
+def calc_step_cues_is_unanswerable_sign(signals_incomplete_step, signals_failure_mode):
+    """
+    A sign that means 'not finished' but points at no failure mode, so neither the runner nor the assistant can say what to do about it.
+    
+    Formula: =AND({{SignalsIncompleteStep}} = TRUE, {{SignalsFailureMode}} = "")
+    """
+    return _erb.erb_and(_erb.erb_bool3(_erb.erb_eq(_erb.erb_nullif(signals_incomplete_step), True)), _erb.erb_bool3((signals_failure_mode is None or signals_failure_mode == "")))
+
 
 def compute_step_cues_fields(record: dict) -> dict:
     """
@@ -17657,6 +17782,11 @@ def compute_step_cues_fields(record: dict) -> dict:
     except Exception as _field_exc:
         result['incomplete_cue_step_key'] = None
         result.setdefault('_erb_errors', {})['incomplete_cue_step_key'] = str(_field_exc)
+    try:
+        result['is_unanswerable_sign'] = calc_step_cues_is_unanswerable_sign(result.get('signals_incomplete_step'), result.get('signals_failure_mode'))
+    except Exception as _field_exc:
+        result['is_unanswerable_sign'] = None
+        result.setdefault('_erb_errors', {})['is_unanswerable_sign'] = str(_field_exc)
 
     # Convert empty strings to None for string fields
     for key in ['name', 'danger_cue_step_key', 'incomplete_cue_step_key']:
@@ -17687,6 +17817,14 @@ def calc_cue_observations_is_unescalated_danger_cue(cue_requires_escalation, was
     Formula: =AND({{CueRequiresEscalation}}, {{WasEscalated}} = FALSE)
     """
     return _erb.erb_and(_erb.erb_bool3(cue_requires_escalation), _erb.erb_bool3(_erb.erb_eq(_erb.erb_nullif(was_escalated), False)))
+
+def calc_cue_observations_is_awaiting_acknowledgement(was_escalated, acknowledged_at):
+    """
+    Escalated to someone who has not acknowledged it yet: the safety desk's inbox.
+    
+    Formula: =AND({{WasEscalated}} = TRUE, {{AcknowledgedAt}} = "")
+    """
+    return _erb.erb_and(_erb.erb_bool3(_erb.erb_eq(_erb.erb_nullif(was_escalated), True)), _erb.erb_bool3((acknowledged_at is None or acknowledged_at == "")))
 
 # Level 2
 
@@ -17726,6 +17864,11 @@ def compute_cue_observations_fields(record: dict) -> dict:
     except Exception as _field_exc:
         result['is_unescalated_danger_cue'] = None
         result.setdefault('_erb_errors', {})['is_unescalated_danger_cue'] = str(_field_exc)
+    try:
+        result['is_awaiting_acknowledgement'] = calc_cue_observations_is_awaiting_acknowledgement(result.get('was_escalated'), result.get('acknowledged_at'))
+    except Exception as _field_exc:
+        result['is_awaiting_acknowledgement'] = None
+        result.setdefault('_erb_errors', {})['is_awaiting_acknowledgement'] = str(_field_exc)
 
     # Level 2 calculations
     try:
@@ -19813,6 +19956,14 @@ def calc_knowledge_consumer_systems_platform_capability_count(has_reasoner, has_
     """
     return _erb.erb_integer(_erb.erb_add(_erb.erb_add(_erb.erb_add((1 if (has_reasoner is True) else 0), (1 if (has_semantic_storage is True) else 0)), (1 if (has_graph_algorithms is True) else 0)), (1 if (has_machine_learning is True) else 0)))
 
+def calc_knowledge_consumer_systems_holds_computationally_encoded_procedure_knowledge(holds_procedure_knowledge, is_computationally_queryable, is_computationally_validatable, has_reasoner):
+    """
+    The system holds procedure knowledge in a form that can be queried, validated and reasoned over computationally -- the shift that encoded representations made possible.
+    
+    Formula: =AND({{HoldsProcedureKnowledge}}, {{IsComputationallyQueryable}}, {{IsComputationallyValidatable}}, {{HasReasoner}})
+    """
+    return _erb.erb_and((holds_procedure_knowledge is True), (is_computationally_queryable is True), (is_computationally_validatable is True), (has_reasoner is True))
+
 # Level 2
 
 def calc_knowledge_consumer_systems_is_immature_graph_platform(system_kind, platform_capability_count):
@@ -19822,6 +19973,14 @@ def calc_knowledge_consumer_systems_is_immature_graph_platform(system_kind, plat
     Formula: =AND({{SystemKind}} = "KnowledgeGraphPlatform", {{PlatformCapabilityCount}} < 4)
     """
     return _erb.erb_and(_erb.erb_bool3(_erb.erb_eq(_erb.erb_nullif(system_kind), 'KnowledgeGraphPlatform')), _erb.erb_bool3(_erb.erb_cmp(platform_capability_count, '<', 4)))
+
+def calc_knowledge_consumer_systems_stores_procedure_knowledge_without_computational_access(holds_procedure_knowledge, holds_computationally_encoded_procedure_knowledge):
+    """
+    The system holds procedure knowledge that no machine can query, validate or reason over: storage without encoding.
+    
+    Formula: =AND({{HoldsProcedureKnowledge}}, {{HoldsComputationallyEncodedProcedureKnowledge}} = FALSE)
+    """
+    return _erb.erb_and((holds_procedure_knowledge is True), _erb.erb_bool3(_erb.erb_eq(holds_computationally_encoded_procedure_knowledge, False)))
 
 
 def compute_knowledge_consumer_systems_fields(record: dict) -> dict:
@@ -19858,6 +20017,11 @@ def compute_knowledge_consumer_systems_fields(record: dict) -> dict:
     except Exception as _field_exc:
         result['platform_capability_count'] = None
         result.setdefault('_erb_errors', {})['platform_capability_count'] = str(_field_exc)
+    try:
+        result['holds_computationally_encoded_procedure_knowledge'] = calc_knowledge_consumer_systems_holds_computationally_encoded_procedure_knowledge(result.get('holds_procedure_knowledge'), result.get('is_computationally_queryable'), result.get('is_computationally_validatable'), result.get('has_reasoner'))
+    except Exception as _field_exc:
+        result['holds_computationally_encoded_procedure_knowledge'] = None
+        result.setdefault('_erb_errors', {})['holds_computationally_encoded_procedure_knowledge'] = str(_field_exc)
 
     # Level 2 calculations
     try:
@@ -19865,6 +20029,11 @@ def compute_knowledge_consumer_systems_fields(record: dict) -> dict:
     except Exception as _field_exc:
         result['is_immature_graph_platform'] = None
         result.setdefault('_erb_errors', {})['is_immature_graph_platform'] = str(_field_exc)
+    try:
+        result['stores_procedure_knowledge_without_computational_access'] = calc_knowledge_consumer_systems_stores_procedure_knowledge_without_computational_access(result.get('holds_procedure_knowledge'), result.get('holds_computationally_encoded_procedure_knowledge'))
+    except Exception as _field_exc:
+        result['stores_procedure_knowledge_without_computational_access'] = None
+        result.setdefault('_erb_errors', {})['stores_procedure_knowledge_without_computational_access'] = str(_field_exc)
 
     # Convert empty strings to None for string fields
     for key in ['name']:
@@ -20709,6 +20878,16 @@ def calc_assistant_answers_wrong_because_graph_was_stale(retrieval_mode, was_cor
     """
     return _erb.erb_and(_erb.erb_bool3(_erb.erb_eq(_erb.erb_nullif(retrieval_mode), 'StructuredQuery')), _erb.erb_bool3(_erb.erb_eq(_erb.erb_nullif(was_correct), False)), _erb.erb_bool3(_erb.erb_cmp(stale_grounding_count, '>', 0)))
 
+# Level 2
+
+def calc_assistant_answers_model_reasoned_and_task_failed(model_did_the_reasoning, task_outcome):
+    """
+    The language model did the reasoning for this answer itself, and the task it was asked about ended in failure.
+    
+    Formula: =AND({{ModelDidTheReasoning}}, {{TaskOutcome}} = "Failed")
+    """
+    return _erb.erb_and(_erb.erb_bool3(model_did_the_reasoning), _erb.erb_bool3(_erb.erb_eq(_erb.erb_nullif(task_outcome), 'Failed')))
+
 
 def compute_assistant_answers_fields(record: dict) -> dict:
     """
@@ -20804,6 +20983,13 @@ def compute_assistant_answers_fields(record: dict) -> dict:
     except Exception as _field_exc:
         result['wrong_because_graph_was_stale'] = None
         result.setdefault('_erb_errors', {})['wrong_because_graph_was_stale'] = str(_field_exc)
+
+    # Level 2 calculations
+    try:
+        result['model_reasoned_and_task_failed'] = calc_assistant_answers_model_reasoned_and_task_failed(result.get('model_did_the_reasoning'), result.get('task_outcome'))
+    except Exception as _field_exc:
+        result['model_reasoned_and_task_failed'] = None
+        result.setdefault('_erb_errors', {})['model_reasoned_and_task_failed'] = str(_field_exc)
 
     # Convert empty strings to None for string fields
     for key in ['name']:
@@ -28904,6 +29090,266 @@ def compute_artifact_handoffs_fields(record: dict) -> dict:
 
     return result
 
+# =============================================================================
+# APPACTIONS
+# One row per thing a role may DO in the app: the base table it writes, the operation, the access policy that permits it, and the derived value the page highlights afterwards. The app has no per-action endpoint; it executes these rows.
+# =============================================================================
+
+# Level 1
+
+def calc_app_actions_name(label):
+    """
+    Display name.
+    
+    Formula: ={{Label}}
+    """
+    return label
+
+def calc_app_actions_is_unpermitted(policy):
+    """
+    No access policy permits this action, so the database would refuse it.
+    
+    Formula: ={{Policy}} = "" 
+    """
+    return (policy is None or policy == "")
+
+def calc_app_actions_policy_command_disagrees(policy, operation, policy_command):
+    """
+    The permitting policy is for a different SQL command than the action performs.
+    
+    Formula: =AND({{Policy}} <> "", {{Operation}} <> {{PolicyCommand}})
+    """
+    return _erb.erb_and(_erb.erb_bool3((not (policy is None or policy == ""))), _erb.erb_bool3(_erb.erb_ne(_erb.erb_nullif(operation), policy_command)))
+
+def calc_app_actions_is_unproven_write(policy, policy_denial_test_count):
+    """
+    Permitted, but no denial test proves the policy refuses anyone else.
+    
+    Formula: =AND({{Policy}} <> "", {{PolicyDenialTestCount}} = 0)
+    """
+    return _erb.erb_and(_erb.erb_bool3((not (policy is None or policy == ""))), _erb.erb_bool3(_erb.erb_eq(policy_denial_test_count, 0)))
+
+
+def compute_app_actions_fields(record: dict) -> dict:
+    """
+    Compute all calculated fields for AppActions.
+    
+    One row per thing a role may DO in the app: the base table it writes, the operation, the access policy that permits it, and the derived value the page highlights afterwards. The app has no per-action endpoint; it executes these rows.
+    """
+    result = dict(record)
+
+    # Level 1 calculations
+    try:
+        result['name'] = calc_app_actions_name(result.get('label'))
+    except Exception as _field_exc:
+        result['name'] = None
+        result.setdefault('_erb_errors', {})['name'] = str(_field_exc)
+    try:
+        result['is_unpermitted'] = calc_app_actions_is_unpermitted(result.get('policy'))
+    except Exception as _field_exc:
+        result['is_unpermitted'] = None
+        result.setdefault('_erb_errors', {})['is_unpermitted'] = str(_field_exc)
+    try:
+        result['policy_command_disagrees'] = calc_app_actions_policy_command_disagrees(result.get('policy'), result.get('operation'), result.get('policy_command'))
+    except Exception as _field_exc:
+        result['policy_command_disagrees'] = None
+        result.setdefault('_erb_errors', {})['policy_command_disagrees'] = str(_field_exc)
+    try:
+        result['is_unproven_write'] = calc_app_actions_is_unproven_write(result.get('policy'), result.get('policy_denial_test_count'))
+    except Exception as _field_exc:
+        result['is_unproven_write'] = None
+        result.setdefault('_erb_errors', {})['is_unproven_write'] = str(_field_exc)
+
+    # Convert empty strings to None for string fields
+    for key in ['name']:
+        if result.get(key) == '':
+            result[key] = None
+
+    return result
+
+# =============================================================================
+# APPACTIONFIELDS
+# The fields one action writes, one row each, and where each value comes from: typed by the person, picked from a list, fixed by the action, or stamped by the server.
+# =============================================================================
+
+# Level 1
+
+def calc_app_action_fields_name(app_action, field_label):
+    """
+    Display name.
+    
+    Formula: ={{AppAction}} & " / " & {{FieldLabel}}
+    """
+    return (_erb.erb_text(app_action) + ' / ' + _erb.erb_text(field_label))
+
+def calc_app_action_fields_writes_derived_field(target_field, target_field_type):
+    """
+    The action tries to write a value the model works out for itself. That is never allowed.
+    
+    Formula: =AND({{TargetField}} <> "", {{TargetFieldType}} <> "raw", {{TargetFieldType}} <> "relationship")
+    """
+    return _erb.erb_and(_erb.erb_bool3((not (target_field is None or target_field == ""))), _erb.erb_bool3(_erb.erb_ne(target_field_type, 'raw')), _erb.erb_bool3(_erb.erb_ne(target_field_type, 'relationship')))
+
+
+def compute_app_action_fields_fields(record: dict) -> dict:
+    """
+    Compute all calculated fields for AppActionFields.
+    
+    The fields one action writes, one row each, and where each value comes from: typed by the person, picked from a list, fixed by the action, or stamped by the server.
+    """
+    result = dict(record)
+
+    # Level 1 calculations
+    try:
+        result['name'] = calc_app_action_fields_name(result.get('app_action'), result.get('field_label'))
+    except Exception as _field_exc:
+        result['name'] = None
+        result.setdefault('_erb_errors', {})['name'] = str(_field_exc)
+    try:
+        result['writes_derived_field'] = calc_app_action_fields_writes_derived_field(result.get('target_field'), result.get('target_field_type'))
+    except Exception as _field_exc:
+        result['writes_derived_field'] = None
+        result.setdefault('_erb_errors', {})['writes_derived_field'] = str(_field_exc)
+
+    # Convert empty strings to None for string fields
+    for key in ['name']:
+        if result.get(key) == '':
+            result[key] = None
+
+    return result
+
+# =============================================================================
+# ABUNDANTKNOWLEDGEGAPS
+# The kinds of knowledge that an abundance of information does not supply, each pointing at the table in this model that represents it. One row per kind named in the source material's 'paradox of abundant knowledge'.
+# =============================================================================
+
+# Level 1
+
+def calc_abundant_knowledge_gaps_name(label):
+    """
+    Display name.
+    
+    Formula: ={{Label}}
+    """
+    return label
+
+
+def compute_abundant_knowledge_gaps_fields(record: dict) -> dict:
+    """
+    Compute all calculated fields for AbundantKnowledgeGaps.
+    
+    The kinds of knowledge that an abundance of information does not supply, each pointing at the table in this model that represents it. One row per kind named in the source material's 'paradox of abundant knowledge'.
+    """
+    result = dict(record)
+
+    # Level 1 calculations
+    try:
+        result['name'] = calc_abundant_knowledge_gaps_name(result.get('label'))
+    except Exception as _field_exc:
+        result['name'] = None
+        result.setdefault('_erb_errors', {})['name'] = str(_field_exc)
+
+    # Convert empty strings to None for string fields
+    for key in ['name']:
+        if result.get(key) == '':
+            result[key] = None
+
+    return result
+
+# =============================================================================
+# ONTOLOGYSUPPORTPROGRAMMES
+# Funded research programmes that produced or supported the ontologies this model reuses. Recorded so the ontology authority can see what happens to a reused vocabulary when the programme behind it ends.
+# =============================================================================
+
+# Level 1
+
+def calc_ontology_support_programmes_name(label):
+    """
+    Display name.
+    
+    Formula: ={{Label}}
+    """
+    return label
+
+def calc_ontology_support_programmes_has_ended(ends_on, as_of_instant):
+    """
+    Whether the programme has ended as of the modelled instant.
+    
+    Formula: =AND({{EndsOn}} <> "", {{EndsOn}} < {{AsOfInstant}})
+    """
+    return _erb.erb_and(_erb.erb_bool3((not (ends_on is None or ends_on == ""))), _erb.erb_bool3(_erb.erb_cmp(_erb.erb_nullif(ends_on), '<', as_of_instant)))
+
+def calc_ontology_support_programmes_days_until_programme_ends(ends_on, as_of_instant):
+    """
+    Days from the modelled instant to the programme's end date.
+    
+    Formula: =IF({{EndsOn}} = "", 0, DATETIME_DIFF({{EndsOn}}, {{AsOfInstant}}, "days"))
+    """
+    return _erb.erb_integer((0 if _erb.erb_bool3((ends_on is None or ends_on == "")) else _erb.erb_datetime_diff(ends_on, as_of_instant, 'days')))
+
+# Level 2
+
+def calc_ontology_support_programmes_is_ended_with_no_steward_named(has_ended, our_successor_steward):
+    """
+    The programme has ended and this organization has named nobody to maintain what it took from it.
+    
+    Formula: =AND({{HasEnded}}, {{OurSuccessorSteward}} = "")
+    """
+    return _erb.erb_and(_erb.erb_bool3(has_ended), _erb.erb_bool3((our_successor_steward is None or our_successor_steward == "")))
+
+def calc_ontology_support_programmes_is_ending_soon_with_no_steward_named(has_ended, ends_on, days_until_programme_ends, our_successor_steward):
+    """
+    The programme has not ended yet, ends within six months of the modelled instant, and nobody here has been named to maintain what we took from it. This is the window in which something can still be done about it.
+    
+    Formula: =AND({{HasEnded}} = FALSE, {{EndsOn}} <> "", {{DaysUntilProgrammeEnds}} <= 180, {{OurSuccessorSteward}} = "")
+    """
+    return _erb.erb_and(_erb.erb_bool3(_erb.erb_eq(has_ended, False)), _erb.erb_bool3((not (ends_on is None or ends_on == ""))), _erb.erb_bool3(_erb.erb_cmp(days_until_programme_ends, '<=', 180)), _erb.erb_bool3((our_successor_steward is None or our_successor_steward == "")))
+
+
+def compute_ontology_support_programmes_fields(record: dict) -> dict:
+    """
+    Compute all calculated fields for OntologySupportProgrammes.
+    
+    Funded research programmes that produced or supported the ontologies this model reuses. Recorded so the ontology authority can see what happens to a reused vocabulary when the programme behind it ends.
+    """
+    result = dict(record)
+
+    # Level 1 calculations
+    try:
+        result['name'] = calc_ontology_support_programmes_name(result.get('label'))
+    except Exception as _field_exc:
+        result['name'] = None
+        result.setdefault('_erb_errors', {})['name'] = str(_field_exc)
+    try:
+        result['has_ended'] = calc_ontology_support_programmes_has_ended(result.get('ends_on'), result.get('as_of_instant'))
+    except Exception as _field_exc:
+        result['has_ended'] = None
+        result.setdefault('_erb_errors', {})['has_ended'] = str(_field_exc)
+    try:
+        result['days_until_programme_ends'] = calc_ontology_support_programmes_days_until_programme_ends(result.get('ends_on'), result.get('as_of_instant'))
+    except Exception as _field_exc:
+        result['days_until_programme_ends'] = None
+        result.setdefault('_erb_errors', {})['days_until_programme_ends'] = str(_field_exc)
+
+    # Level 2 calculations
+    try:
+        result['is_ended_with_no_steward_named'] = calc_ontology_support_programmes_is_ended_with_no_steward_named(result.get('has_ended'), result.get('our_successor_steward'))
+    except Exception as _field_exc:
+        result['is_ended_with_no_steward_named'] = None
+        result.setdefault('_erb_errors', {})['is_ended_with_no_steward_named'] = str(_field_exc)
+    try:
+        result['is_ending_soon_with_no_steward_named'] = calc_ontology_support_programmes_is_ending_soon_with_no_steward_named(result.get('has_ended'), result.get('ends_on'), result.get('days_until_programme_ends'), result.get('our_successor_steward'))
+    except Exception as _field_exc:
+        result['is_ending_soon_with_no_steward_named'] = None
+        result.setdefault('_erb_errors', {})['is_ending_soon_with_no_steward_named'] = str(_field_exc)
+
+    # Convert empty strings to None for string fields
+    for key in ['name']:
+        if result.get(key) == '':
+            result[key] = None
+
+    return result
+
 
 # =============================================================================
 # DISPATCHER
@@ -29441,6 +29887,14 @@ _ERB_COMPUTE_BY_NAME = {
     'model_data_mapping_runs': compute_model_data_mapping_runs_fields,
     'ArtifactHandoffs': compute_artifact_handoffs_fields,
     'artifact_handoffs': compute_artifact_handoffs_fields,
+    'AppActions': compute_app_actions_fields,
+    'app_actions': compute_app_actions_fields,
+    'AppActionFields': compute_app_action_fields_fields,
+    'app_action_fields': compute_app_action_fields_fields,
+    'AbundantKnowledgeGaps': compute_abundant_knowledge_gaps_fields,
+    'abundant_knowledge_gaps': compute_abundant_knowledge_gaps_fields,
+    'OntologySupportProgrammes': compute_ontology_support_programmes_fields,
+    'ontology_support_programmes': compute_ontology_support_programmes_fields,
 }
 
 
@@ -29456,7 +29910,7 @@ def _erb_composite_procedure_versions_days_since_last_review(r):
 
 
 # calculated_field_count bounds the runner's passes over the dataset.
-CALCULATED_FIELD_COUNT = 1676
+CALCULATED_FIELD_COUNT = 1702
 
 # ERB_TABLES is every table, in rulebook order.
 ERB_TABLES = [
@@ -29464,7 +29918,7 @@ ERB_TABLES = [
      'compute': compute_rulebook_releases_fields,
      'fields': ['rulebook_release_id', 'name', 'rulebook_version', 'profile_version', 'profile_schema_path', 'pko_core_version_iri', 'pko_industry_version_iri', 'issued_at', 'status', 'changelog', 'is_current', 'governed_model', 'previous_release', 'declared_scale', 'version_major', 'version_minor', 'version_patch', 'migration_plan', 'version_decision_rationale', 'version_decided_by_agent', 'approved_by_agent', 'rulebook_commit', 'license', 'permanent_iri', 'namespace_prefix', 'funding_note', 'prev_major', 'prev_minor', 'prev_patch', 'prev_issued_at', 'model_current_release', 'expected_major', 'expected_minor', 'expected_patch', 'is_increment_inconsistent_with_scale', 'days_since_previous_release', 'is_long_release_cycle', 'is_declared_current_release', 'log_entry_count', 'logical_change_count', 'non_additive_change_count', 'class_removal_or_rename_count', 'invalidating_domain_range_count', 'inconsistent_disjointness_count', 'schema_addition_count', 'suite_update_count', 'consumer_count', 'notified_consumer_count', 'revalidated_consumer_count', 'validation_run_count', 'validation_failure_total', 'consistent_run_count', 'cq_run_count', 'answerable_cq_run_count', 'regressed_baseline_count', 'cq_coverage_percent', 'prev_cq_coverage_percent', 'prev_cq_run_count', 'scored_criterion_count', 'stated_criterion_count', 'patch_alters_logical_model', 'minor_is_not_backward_compatible', 'class_removal_without_major', 'invalidating_domain_range_without_major', 'inconsistent_disjointness_without_major', 'is_breaking_release', 'breaking_release_with_unrevalidated_consumers', 'breaking_release_without_migration_plan', 'is_undocumented_version_decision', 'is_unannounced_to_dependents', 'is_release_without_recorded_changes', 'suite_lags_release', 'is_untagged_release', 'published_without_approval', 'released_despite_failed_validation', 'released_without_consistency_check', 'passed_validation_at_release', 'cq_coverage_declined', 'has_baseline_regression', 'released_without_cq_task_test', 'well_formed_but_requirements_unshown', 'is_not_scored_against_criteria', 'is_released_without_licence_or_permanent_id'],
      'datatypes': {'name': 'string', 'prev_major': 'integer', 'prev_minor': 'integer', 'prev_patch': 'integer', 'prev_issued_at': 'datetime', 'model_current_release': 'string', 'expected_major': 'integer', 'expected_minor': 'integer', 'expected_patch': 'integer', 'is_increment_inconsistent_with_scale': 'boolean', 'days_since_previous_release': 'integer', 'is_long_release_cycle': 'boolean', 'is_declared_current_release': 'boolean', 'log_entry_count': 'integer', 'logical_change_count': 'integer', 'non_additive_change_count': 'integer', 'class_removal_or_rename_count': 'integer', 'invalidating_domain_range_count': 'integer', 'inconsistent_disjointness_count': 'integer', 'schema_addition_count': 'integer', 'suite_update_count': 'integer', 'consumer_count': 'integer', 'notified_consumer_count': 'integer', 'revalidated_consumer_count': 'integer', 'validation_run_count': 'integer', 'validation_failure_total': 'integer', 'consistent_run_count': 'integer', 'cq_run_count': 'integer', 'answerable_cq_run_count': 'integer', 'regressed_baseline_count': 'integer', 'cq_coverage_percent': 'number', 'prev_cq_coverage_percent': 'number', 'prev_cq_run_count': 'integer', 'scored_criterion_count': 'integer', 'stated_criterion_count': 'integer', 'patch_alters_logical_model': 'boolean', 'minor_is_not_backward_compatible': 'boolean', 'class_removal_without_major': 'boolean', 'invalidating_domain_range_without_major': 'boolean', 'inconsistent_disjointness_without_major': 'boolean', 'is_breaking_release': 'boolean', 'breaking_release_with_unrevalidated_consumers': 'boolean', 'breaking_release_without_migration_plan': 'boolean', 'is_undocumented_version_decision': 'boolean', 'is_unannounced_to_dependents': 'boolean', 'is_release_without_recorded_changes': 'boolean', 'suite_lags_release': 'boolean', 'is_untagged_release': 'boolean', 'published_without_approval': 'boolean', 'released_despite_failed_validation': 'boolean', 'released_without_consistency_check': 'boolean', 'passed_validation_at_release': 'boolean', 'cq_coverage_declined': 'boolean', 'has_baseline_regression': 'boolean', 'released_without_cq_task_test': 'boolean', 'well_formed_but_requirements_unshown': 'boolean', 'is_not_scored_against_criteria': 'boolean', 'is_released_without_licence_or_permanent_id': 'boolean'},
-     'calculated': {'cq_coverage_percent', 'minor_is_not_backward_compatible', 'patch_alters_logical_model', 'suite_lags_release', 'is_not_scored_against_criteria', 'expected_patch', 'name', 'is_untagged_release', 'class_removal_without_major', 'expected_major', 'is_long_release_cycle', 'expected_minor', 'days_since_previous_release', 'is_declared_current_release', 'released_without_cq_task_test', 'well_formed_but_requirements_unshown', 'breaking_release_without_migration_plan', 'is_breaking_release', 'inconsistent_disjointness_without_major', 'is_released_without_licence_or_permanent_id', 'passed_validation_at_release', 'breaking_release_with_unrevalidated_consumers', 'is_increment_inconsistent_with_scale', 'is_release_without_recorded_changes', 'is_unannounced_to_dependents', 'released_despite_failed_validation', 'invalidating_domain_range_without_major', 'released_without_consistency_check', 'published_without_approval', 'cq_coverage_declined', 'is_undocumented_version_decision', 'has_baseline_regression'},
+     'calculated': {'well_formed_but_requirements_unshown', 'is_release_without_recorded_changes', 'published_without_approval', 'released_without_consistency_check', 'class_removal_without_major', 'patch_alters_logical_model', 'released_despite_failed_validation', 'inconsistent_disjointness_without_major', 'expected_minor', 'is_declared_current_release', 'cq_coverage_declined', 'days_since_previous_release', 'breaking_release_with_unrevalidated_consumers', 'is_long_release_cycle', 'is_untagged_release', 'expected_patch', 'name', 'expected_major', 'suite_lags_release', 'is_undocumented_version_decision', 'released_without_cq_task_test', 'is_released_without_licence_or_permanent_id', 'breaking_release_without_migration_plan', 'cq_coverage_percent', 'is_breaking_release', 'passed_validation_at_release', 'is_unannounced_to_dependents', 'minor_is_not_backward_compatible', 'is_increment_inconsistent_with_scale', 'has_baseline_regression', 'invalidating_domain_range_without_major', 'is_not_scored_against_criteria'},
      'lookups': [
         {'field': 'prev_major', 'target': 'rulebook_releases', 'return': 'version_major', 'key': 'previous_release', 'match': 'rulebook_release_id'},
         {'field': 'prev_minor', 'target': 'rulebook_releases', 'return': 'version_minor', 'key': 'previous_release', 'match': 'rulebook_release_id'},
@@ -29495,9 +29949,9 @@ ERB_TABLES = [
         {'field': 'stated_criterion_count', 'op': 'COUNTIFS', 'table': 'quality_criteria', 'criteria': [('is_stated', 'literal', True)]},]},
     {'name': 'OntologyProfiles', 'file': 'ontology_profiles', 'rulebook_rows': 27,
      'compute': compute_ontology_profiles_fields,
-     'fields': ['ontology_profile_id', 'name', 'label', 'version', 'version_iri', 'namespace_iri', 'license', 'scope', 'mapping_count', 'evaluation_context', 'as_of_instant', 'last_revised_at', 'last_major_revision_at', 'dependency_reviewed_at', 'days_since_last_revision', 'days_since_major_revision', 'days_since_dependency_reviewed', 'recent_deprecation_count', 'requires_frequent_review', 'change_rate_profile', 'is_review_overdue_for_change_rate', 'adoption_stage', 'adopted_at', 'prerequisite_profile', 'prerequisite_adopted_at', 'skips_adoption_path'],
-     'datatypes': {'name': 'string', 'mapping_count': 'integer', 'as_of_instant': 'datetime', 'days_since_last_revision': 'integer', 'days_since_major_revision': 'integer', 'days_since_dependency_reviewed': 'integer', 'recent_deprecation_count': 'integer', 'requires_frequent_review': 'boolean', 'change_rate_profile': 'string', 'is_review_overdue_for_change_rate': 'boolean', 'prerequisite_adopted_at': 'datetime', 'skips_adoption_path': 'boolean'},
-     'calculated': {'days_since_major_revision', 'is_review_overdue_for_change_rate', 'days_since_last_revision', 'name', 'skips_adoption_path', 'change_rate_profile', 'days_since_dependency_reviewed', 'requires_frequent_review'},
+     'fields': ['ontology_profile_id', 'name', 'label', 'version', 'version_iri', 'namespace_iri', 'license', 'scope', 'mapping_count', 'evaluation_context', 'as_of_instant', 'last_revised_at', 'last_major_revision_at', 'dependency_reviewed_at', 'days_since_last_revision', 'days_since_major_revision', 'days_since_dependency_reviewed', 'recent_deprecation_count', 'requires_frequent_review', 'change_rate_profile', 'is_review_overdue_for_change_rate', 'adoption_stage', 'adopted_at', 'prerequisite_profile', 'prerequisite_adopted_at', 'skips_adoption_path', 'supporting_programme', 'namespace_checked_at', 'namespace_http_status', 'namespace_serves_rdf', 'namespace_is_http', 'namespace_dereferences', 'publishes_following_linked_data_principles'],
+     'datatypes': {'name': 'string', 'mapping_count': 'integer', 'as_of_instant': 'datetime', 'days_since_last_revision': 'integer', 'days_since_major_revision': 'integer', 'days_since_dependency_reviewed': 'integer', 'recent_deprecation_count': 'integer', 'requires_frequent_review': 'boolean', 'change_rate_profile': 'string', 'is_review_overdue_for_change_rate': 'boolean', 'prerequisite_adopted_at': 'datetime', 'skips_adoption_path': 'boolean', 'namespace_is_http': 'boolean', 'namespace_dereferences': 'boolean', 'publishes_following_linked_data_principles': 'boolean'},
+     'calculated': {'requires_frequent_review', 'change_rate_profile', 'publishes_following_linked_data_principles', 'namespace_is_http', 'skips_adoption_path', 'days_since_last_revision', 'name', 'is_review_overdue_for_change_rate', 'days_since_major_revision', 'namespace_dereferences', 'days_since_dependency_reviewed'},
      'lookups': [
         {'field': 'as_of_instant', 'target': 'evaluation_contexts', 'return': 'as_of_instant', 'key': 'evaluation_context', 'match': 'evaluation_context_id'},
         {'field': 'prerequisite_adopted_at', 'target': 'ontology_profiles', 'return': 'adopted_at', 'key': 'prerequisite_profile', 'match': 'ontology_profile_id'},],
@@ -29506,16 +29960,29 @@ ERB_TABLES = [
         {'field': 'recent_deprecation_count', 'op': 'COUNTIFS', 'table': 'external_standard_terms', 'criteria': [('ontology_profile', 'field', 'ontology_profile_id'), ('is_recent_deprecation', 'literal', True)]},]},
     {'name': 'EvaluationContexts', 'file': 'evaluation_contexts', 'rulebook_rows': 1,
      'compute': compute_evaluation_contexts_fields,
-     'fields': ['evaluation_context_id', 'name', 'label', 'as_of_instant', 'is_current', 'rationale', 'semantic_type_iri'],
-     'datatypes': {'name': 'string'},
-     'calculated': {'name'},
+     'fields': ['evaluation_context_id', 'name', 'label', 'as_of_instant', 'is_current', 'rationale', 'semantic_type_iri', 'explicit_fragment_count', 'tacit_fragment_count', 'implicit_fragment_count', 'situated_judgment_fragment_count', 'model_reasoned_answer_count', 'otherwise_reasoned_answer_count', 'assistant_answer_count', 'model_reasoned_failed_answer_count', 'out_of_order_step_execution_count', 'in_order_step_execution_count', 'step_execution_count', 'early_start_step_execution_count', 'exact_mapping_count', 'aligned_mapping_count', 'extension_mapping_count'],
+     'datatypes': {'name': 'string', 'explicit_fragment_count': 'integer', 'tacit_fragment_count': 'integer', 'implicit_fragment_count': 'integer', 'situated_judgment_fragment_count': 'integer', 'model_reasoned_answer_count': 'integer', 'otherwise_reasoned_answer_count': 'integer', 'assistant_answer_count': 'integer', 'model_reasoned_failed_answer_count': 'integer', 'out_of_order_step_execution_count': 'integer', 'in_order_step_execution_count': 'integer', 'step_execution_count': 'integer', 'early_start_step_execution_count': 'integer', 'exact_mapping_count': 'integer', 'aligned_mapping_count': 'integer', 'extension_mapping_count': 'integer'},
+     'calculated': {'name', 'assistant_answer_count', 'step_execution_count'},
      'lookups': [],
-     'aggregations': []},
+     'aggregations': [
+        {'field': 'explicit_fragment_count', 'op': 'COUNTIFS', 'table': 'knowledge_fragments', 'criteria': [('knowledge_form', 'literal', 'Explicit')]},
+        {'field': 'tacit_fragment_count', 'op': 'COUNTIFS', 'table': 'knowledge_fragments', 'criteria': [('knowledge_form', 'literal', 'Tacit')]},
+        {'field': 'implicit_fragment_count', 'op': 'COUNTIFS', 'table': 'knowledge_fragments', 'criteria': [('knowledge_form', 'literal', 'Implicit')]},
+        {'field': 'situated_judgment_fragment_count', 'op': 'COUNTIFS', 'table': 'knowledge_fragments', 'criteria': [('knowledge_form', 'literal', 'SituatedJudgment')]},
+        {'field': 'model_reasoned_answer_count', 'op': 'COUNTIFS', 'table': 'assistant_answers', 'criteria': [('model_did_the_reasoning', 'literal', True)]},
+        {'field': 'otherwise_reasoned_answer_count', 'op': 'COUNTIFS', 'table': 'assistant_answers', 'criteria': [('model_did_the_reasoning', 'literal', False)]},
+        {'field': 'model_reasoned_failed_answer_count', 'op': 'COUNTIFS', 'table': 'assistant_answers', 'criteria': [('model_reasoned_and_task_failed', 'literal', True)]},
+        {'field': 'out_of_order_step_execution_count', 'op': 'COUNTIFS', 'table': 'step_executions', 'criteria': [('is_out_of_specified_order', 'literal', True)]},
+        {'field': 'in_order_step_execution_count', 'op': 'COUNTIFS', 'table': 'step_executions', 'criteria': [('is_out_of_specified_order', 'literal', False)]},
+        {'field': 'early_start_step_execution_count', 'op': 'COUNTIFS', 'table': 'step_executions', 'criteria': [('ran_before_prerequisite_completed', 'literal', True)]},
+        {'field': 'exact_mapping_count', 'op': 'COUNTIFS', 'table': 'semantic_mappings', 'criteria': [('mapping_relation', 'literal', 'exact')]},
+        {'field': 'aligned_mapping_count', 'op': 'COUNTIFS', 'table': 'semantic_mappings', 'criteria': [('mapping_relation', 'literal', 'aligned')]},
+        {'field': 'extension_mapping_count', 'op': 'COUNTIFS', 'table': 'semantic_mappings', 'criteria': [('mapping_relation', 'literal', 'extension')]},]},
     {'name': 'Organizations', 'file': 'organizations', 'rulebook_rows': 18,
      'compute': compute_organizations_fields,
      'fields': ['organization_id', 'name', 'display_name', 'organization_type', 'external_identifier', 'semantic_type_iri', 'failed_ai_initiative_count', 'owned_procedure_count', 'ai_fails_for_lack_of_captured_knowledge', 'product_delivery_function_count', 'provider_held_delivery_method_count', 'is_hollowed_out_firm', 'audit_finding_count', 'filled_knowledge_position_count', 'has_knowledge_findings_without_knowledge_staff', 'departed_holder_know_how_count', 'lost_departed_know_how_count', 'retained_departed_know_how_percent', 'memory_leaves_with_staff', 'captured_own_know_how_count', 'documentation_entry_count', 'unallocated_documentation_count', 'transfer_given_count', 'unallocated_transfer_count', 'treats_knowledge_work_as_unvalued', 'person_carried_know_how_count', 'facility_carried_know_how_count', 'system_carried_know_how_count', 'holds_know_how_in_people_plants_and_systems', 'staged_decline_count', 'eroded_in_stages'],
      'datatypes': {'name': 'string', 'failed_ai_initiative_count': 'integer', 'owned_procedure_count': 'integer', 'ai_fails_for_lack_of_captured_knowledge': 'boolean', 'product_delivery_function_count': 'integer', 'provider_held_delivery_method_count': 'integer', 'is_hollowed_out_firm': 'boolean', 'audit_finding_count': 'integer', 'filled_knowledge_position_count': 'integer', 'has_knowledge_findings_without_knowledge_staff': 'boolean', 'departed_holder_know_how_count': 'integer', 'lost_departed_know_how_count': 'integer', 'retained_departed_know_how_percent': 'number', 'memory_leaves_with_staff': 'boolean', 'captured_own_know_how_count': 'integer', 'documentation_entry_count': 'integer', 'unallocated_documentation_count': 'integer', 'transfer_given_count': 'integer', 'unallocated_transfer_count': 'integer', 'treats_knowledge_work_as_unvalued': 'boolean', 'person_carried_know_how_count': 'integer', 'facility_carried_know_how_count': 'integer', 'system_carried_know_how_count': 'integer', 'holds_know_how_in_people_plants_and_systems': 'boolean', 'staged_decline_count': 'integer', 'eroded_in_stages': 'boolean'},
-     'calculated': {'is_hollowed_out_firm', 'holds_know_how_in_people_plants_and_systems', 'eroded_in_stages', 'treats_knowledge_work_as_unvalued', 'name', 'retained_departed_know_how_percent', 'has_knowledge_findings_without_knowledge_staff', 'ai_fails_for_lack_of_captured_knowledge', 'memory_leaves_with_staff'},
+     'calculated': {'has_knowledge_findings_without_knowledge_staff', 'ai_fails_for_lack_of_captured_knowledge', 'retained_departed_know_how_percent', 'memory_leaves_with_staff', 'name', 'holds_know_how_in_people_plants_and_systems', 'is_hollowed_out_firm', 'treats_knowledge_work_as_unvalued', 'eroded_in_stages'},
      'lookups': [],
      'aggregations': [
         {'field': 'failed_ai_initiative_count', 'op': 'COUNTIFS', 'table': 'ai_adoption_initiatives', 'criteria': [('organization', 'field', 'organization_id'), ('outcome', 'literal', 'Failed')]},
@@ -29539,7 +30006,7 @@ ERB_TABLES = [
      'compute': compute_agents_fields,
      'fields': ['agent_id', 'name', 'display_name', 'agent_kind', 'organization', 'contact_address', 'version_or_employment_key', 'count_of_current_role_assignments', 'is_still_engaged', 'decision_count', 'overridden_decision_count', 'override_rate_percent', 'is_non_human', 'boundary_violation_count', 'is_operating_outside_boundary', 'draft_decision_count', 'overridden_draft_count', 'draft_rewrite_rate_percent', 'times_named_as_broker', 'is_recognized_broker', 'at_risk_reliance_count', 'has_at_risk_knowledge_reliance', 'semantic_type_iri', 'represents_organization', 'is_organization_agent', 'answer_count', 'ai_task_completed_count', 'ai_task_completion_percent', 'is_below_task_completion_target', 'runtime_integration_count', 'lacks_runtime_knowledge_integration', 'search_event_count', 'is_untracked_ai_consumer', 'accountability_assertion_count', 'inferred_category_count', 'category_not_available_as_inference', 'is_unclassified_agent', 'is_ai_agent_without_model_version', 'attributed_artifact_count', 'has_produced_artifacts', 'has_artifact_blast_radius', 'registry_version_match_count', 'is_ai_agent_not_filled_from_registry', 'current_accountable_human_count', 'is_ai_agent_without_accountable_human', 'service_started_at', 'departure_at', 'protected_mentoring_hours_per_week', 'community_count', 'is_boundary_spanner', 'sna_identification_count', 'is_unidentified_boundary_spanner', 'located_know_how_count', 'required_mentoring_hours_per_week', 'lacks_time_to_mentor', 'transfers_given_count', 'recognition_count', 'is_unrewarded_sharer', 'downstream_of_held_steps_count', 'artifact_blast_radius_step_count'],
      'datatypes': {'name': 'string', 'count_of_current_role_assignments': 'integer', 'is_still_engaged': 'boolean', 'decision_count': 'number', 'overridden_decision_count': 'number', 'override_rate_percent': 'number', 'is_non_human': 'boolean', 'boundary_violation_count': 'number', 'is_operating_outside_boundary': 'boolean', 'draft_decision_count': 'number', 'overridden_draft_count': 'number', 'draft_rewrite_rate_percent': 'number', 'times_named_as_broker': 'number', 'is_recognized_broker': 'boolean', 'at_risk_reliance_count': 'number', 'has_at_risk_knowledge_reliance': 'boolean', 'is_organization_agent': 'boolean', 'answer_count': 'integer', 'ai_task_completed_count': 'integer', 'ai_task_completion_percent': 'number', 'is_below_task_completion_target': 'boolean', 'runtime_integration_count': 'integer', 'lacks_runtime_knowledge_integration': 'boolean', 'search_event_count': 'integer', 'is_untracked_ai_consumer': 'boolean', 'accountability_assertion_count': 'integer', 'inferred_category_count': 'integer', 'category_not_available_as_inference': 'boolean', 'is_unclassified_agent': 'boolean', 'is_ai_agent_without_model_version': 'boolean', 'attributed_artifact_count': 'integer', 'has_produced_artifacts': 'boolean', 'has_artifact_blast_radius': 'boolean', 'registry_version_match_count': 'integer', 'is_ai_agent_not_filled_from_registry': 'boolean', 'current_accountable_human_count': 'integer', 'is_ai_agent_without_accountable_human': 'boolean', 'community_count': 'integer', 'is_boundary_spanner': 'boolean', 'sna_identification_count': 'integer', 'is_unidentified_boundary_spanner': 'boolean', 'located_know_how_count': 'integer', 'required_mentoring_hours_per_week': 'number', 'lacks_time_to_mentor': 'boolean', 'transfers_given_count': 'integer', 'recognition_count': 'integer', 'is_unrewarded_sharer': 'boolean', 'downstream_of_held_steps_count': 'integer', 'artifact_blast_radius_step_count': 'integer'},
-     'calculated': {'category_not_available_as_inference', 'has_produced_artifacts', 'is_still_engaged', 'lacks_runtime_knowledge_integration', 'is_recognized_broker', 'is_below_task_completion_target', 'is_organization_agent', 'artifact_blast_radius_step_count', 'is_untracked_ai_consumer', 'name', 'is_non_human', 'ai_task_completion_percent', 'is_unclassified_agent', 'has_artifact_blast_radius', 'lacks_time_to_mentor', 'is_operating_outside_boundary', 'is_ai_agent_without_model_version', 'is_unidentified_boundary_spanner', 'override_rate_percent', 'is_ai_agent_not_filled_from_registry', 'has_at_risk_knowledge_reliance', 'is_boundary_spanner', 'is_unrewarded_sharer', 'draft_rewrite_rate_percent', 'is_ai_agent_without_accountable_human'},
+     'calculated': {'draft_rewrite_rate_percent', 'is_unidentified_boundary_spanner', 'is_ai_agent_without_model_version', 'is_ai_agent_without_accountable_human', 'has_artifact_blast_radius', 'is_unrewarded_sharer', 'is_organization_agent', 'name', 'lacks_runtime_knowledge_integration', 'is_recognized_broker', 'is_non_human', 'ai_task_completion_percent', 'is_below_task_completion_target', 'artifact_blast_radius_step_count', 'has_at_risk_knowledge_reliance', 'is_still_engaged', 'category_not_available_as_inference', 'is_unclassified_agent', 'is_operating_outside_boundary', 'override_rate_percent', 'is_untracked_ai_consumer', 'is_boundary_spanner', 'has_produced_artifacts', 'lacks_time_to_mentor', 'is_ai_agent_not_filled_from_registry'},
      'lookups': [],
      'aggregations': [
         {'field': 'count_of_current_role_assignments', 'op': 'COUNTIFS', 'table': 'role_assignments', 'criteria': [('current_agent_key', 'field', 'agent_id')]},
@@ -29570,7 +30037,7 @@ ERB_TABLES = [
      'compute': compute_roles_fields,
      'fields': ['role_id', 'name', 'label', 'organization', 'current_agent', 'current_agent_kind', 'responsibility', 'active_assignment_count', 'currently_covered_assignment_count', 'has_no_current_holder', 'count_of_awaited_decisions', 'current_assignment', 'current_assignment_valid_from', 'is_non_human_held', 'is_ungoverned_non_human_role', 'departed_assignment_count', 'has_lost_a_holder', 'is_vacated_role', 'ungrounded_boundary_count', 'is_governed_by_lapsed_authority', 'unescalated_refusal_count', 'unauthorized_enforcement_assignment_count', 'is_ungoverned_enforcement_role', 'semantic_type_iri', 'specializes_role', 'seniority_level', 'role_family', 'specialized_role_family', 'specialization_count', 'has_specializations', 'is_senior_variant_not_specialization', 'organization_type', 'is_not_housed_in_department', 'capability_tag_count', 'compliance_review_tag_count', 'has_compliance_review_capability', 'role_mention_count', 'unresolved_role_mention_count', 'is_missed_by_phrase_query', 'preferred_knowledge_form', 'escalation_backup_role', 'current_holder_name', 'backup_role_holder', 'has_escalation_backup', 'has_unfilled_escalation_backup', 'release_approval_step_count', 'is_production_release_approver', 'approval_step_count'],
      'datatypes': {'name': 'string', 'current_agent_kind': 'string', 'active_assignment_count': 'number', 'currently_covered_assignment_count': 'number', 'has_no_current_holder': 'boolean', 'count_of_awaited_decisions': 'integer', 'current_assignment_valid_from': 'datetime', 'is_non_human_held': 'boolean', 'is_ungoverned_non_human_role': 'boolean', 'departed_assignment_count': 'number', 'has_lost_a_holder': 'boolean', 'is_vacated_role': 'boolean', 'ungrounded_boundary_count': 'number', 'is_governed_by_lapsed_authority': 'boolean', 'unescalated_refusal_count': 'number', 'unauthorized_enforcement_assignment_count': 'number', 'is_ungoverned_enforcement_role': 'boolean', 'specialized_role_family': 'string', 'specialization_count': 'integer', 'has_specializations': 'boolean', 'is_senior_variant_not_specialization': 'boolean', 'organization_type': 'string', 'is_not_housed_in_department': 'boolean', 'capability_tag_count': 'integer', 'compliance_review_tag_count': 'integer', 'has_compliance_review_capability': 'boolean', 'role_mention_count': 'integer', 'unresolved_role_mention_count': 'integer', 'is_missed_by_phrase_query': 'boolean', 'current_holder_name': 'string', 'backup_role_holder': 'string', 'has_escalation_backup': 'boolean', 'has_unfilled_escalation_backup': 'boolean', 'release_approval_step_count': 'integer', 'is_production_release_approver': 'boolean', 'approval_step_count': 'integer'},
-     'calculated': {'is_production_release_approver', 'has_no_current_holder', 'has_specializations', 'has_unfilled_escalation_backup', 'is_not_housed_in_department', 'is_ungoverned_enforcement_role', 'is_non_human_held', 'has_escalation_backup', 'is_missed_by_phrase_query', 'is_senior_variant_not_specialization', 'has_compliance_review_capability', 'name', 'has_lost_a_holder', 'is_ungoverned_non_human_role', 'is_governed_by_lapsed_authority', 'is_vacated_role'},
+     'calculated': {'has_unfilled_escalation_backup', 'is_ungoverned_non_human_role', 'is_senior_variant_not_specialization', 'is_ungoverned_enforcement_role', 'name', 'has_escalation_backup', 'is_non_human_held', 'has_compliance_review_capability', 'has_specializations', 'is_missed_by_phrase_query', 'has_lost_a_holder', 'is_production_release_approver', 'is_vacated_role', 'is_not_housed_in_department', 'is_governed_by_lapsed_authority', 'has_no_current_holder'},
      'lookups': [
         {'field': 'current_agent_kind', 'target': 'agents', 'return': 'agent_kind', 'key': 'current_agent', 'match': 'agent_id'},
         {'field': 'current_assignment_valid_from', 'target': 'role_assignments', 'return': 'valid_from', 'key': 'current_assignment', 'match': 'role_assignment_id'},
@@ -29597,7 +30064,7 @@ ERB_TABLES = [
      'compute': compute_role_assignments_fields,
      'fields': ['role_assignment_id', 'name', 'role', 'agent', 'valid_from', 'valid_to', 'reason', 'status', 'evaluation_context', 'as_of_instant', 'is_current', 'current_agent_key', 'is_currently_valid', 'agent_role_key', 'has_departed', 'covers_now', 'role_when_covering', 'agent_kind', 'is_non_human_assignment', 'supersedes_assignment', 'predecessor_agent_kind', 'is_human_to_non_human_handover', 'approving_authority_role', 'authorizing_change_request', 'is_unauthorized_non_human_assignment', 'was_authorized_by_change_request', 'decision_count', 'overridden_decision_count', 'override_rate_percent', 'predecessor_override_rate_percent', 'quality_regressed_vs_predecessor', 'departed_role_key', 'minimum_decisions_for_comparison', 'predecessor_decision_count', 'has_sufficient_sample', 'predecessor_has_sufficient_sample', 'comparison_is_evidentially_sound', 'single_override_swing_percent', 'quality_verdict_is_unsupported', 'is_unmeasured_automation_handover', 'error_correction_count', 'error_rate_percent', 'authorization_decided_at', 'authorization_reviewed_at', 'authorization_review_cadence_days', 'has_dated_authorization', 'days_since_authorization_review', 'authorization_is_overdue_for_review', 'is_standing_unreviewed_automation', 'is_unconditioned_automation_handover', 'max_tolerable_error_rate_percent', 'exceeds_tolerable_error_rate', 'boundary_violation_count_for_assignment', 'has_any_boundary_violation', 'has_ungrounded_governing_boundary', 'suspension_condition_met', 'is_operating_under_met_suspension_condition', 'has_declared_suspension_condition', 'has_approving_authority', 'has_authorizing_change_request', 'is_enforcement_role', 'is_unauthorized_enforcement_agent', 'governance_evidence_count', 'unauthorized_enforcement_role_key', 'semantic_type_iri', 'for_procedure_version', 'scoped_version_status', 'is_scoped_to_retired_version', 'predecessor_valid_to', 'predecessor_lacks_validity_end', 'agent_version_key', 'agent_role_pair_key', 'is_open_ended', 'role_approval_step_count', 'receives_approval_notices_now'],
      'datatypes': {'name': 'string', 'as_of_instant': 'datetime', 'is_current': 'boolean', 'current_agent_key': 'string', 'is_currently_valid': 'boolean', 'agent_role_key': 'string', 'has_departed': 'boolean', 'covers_now': 'boolean', 'role_when_covering': 'string', 'agent_kind': 'string', 'is_non_human_assignment': 'boolean', 'predecessor_agent_kind': 'string', 'is_human_to_non_human_handover': 'boolean', 'is_unauthorized_non_human_assignment': 'boolean', 'was_authorized_by_change_request': 'boolean', 'decision_count': 'number', 'overridden_decision_count': 'number', 'override_rate_percent': 'number', 'predecessor_override_rate_percent': 'number', 'quality_regressed_vs_predecessor': 'boolean', 'departed_role_key': 'string', 'predecessor_decision_count': 'number', 'has_sufficient_sample': 'boolean', 'predecessor_has_sufficient_sample': 'boolean', 'comparison_is_evidentially_sound': 'boolean', 'single_override_swing_percent': 'number', 'quality_verdict_is_unsupported': 'boolean', 'is_unmeasured_automation_handover': 'boolean', 'error_correction_count': 'number', 'error_rate_percent': 'number', 'has_dated_authorization': 'boolean', 'days_since_authorization_review': 'integer', 'authorization_is_overdue_for_review': 'boolean', 'is_standing_unreviewed_automation': 'boolean', 'is_unconditioned_automation_handover': 'boolean', 'exceeds_tolerable_error_rate': 'boolean', 'boundary_violation_count_for_assignment': 'number', 'has_any_boundary_violation': 'boolean', 'has_ungrounded_governing_boundary': 'boolean', 'suspension_condition_met': 'boolean', 'is_operating_under_met_suspension_condition': 'boolean', 'has_declared_suspension_condition': 'boolean', 'has_approving_authority': 'boolean', 'has_authorizing_change_request': 'boolean', 'is_unauthorized_enforcement_agent': 'boolean', 'governance_evidence_count': 'integer', 'unauthorized_enforcement_role_key': 'string', 'scoped_version_status': 'string', 'is_scoped_to_retired_version': 'boolean', 'predecessor_valid_to': 'datetime', 'predecessor_lacks_validity_end': 'boolean', 'agent_version_key': 'string', 'agent_role_pair_key': 'string', 'is_open_ended': 'boolean', 'role_approval_step_count': 'integer', 'receives_approval_notices_now': 'boolean'},
-     'calculated': {'unauthorized_enforcement_role_key', 'exceeds_tolerable_error_rate', 'has_dated_authorization', 'is_standing_unreviewed_automation', 'quality_verdict_is_unsupported', 'agent_role_key', 'is_operating_under_met_suspension_condition', 'comparison_is_evidentially_sound', 'single_override_swing_percent', 'suspension_condition_met', 'is_current', 'has_any_boundary_violation', 'quality_regressed_vs_predecessor', 'departed_role_key', 'role_when_covering', 'authorization_is_overdue_for_review', 'agent_role_pair_key', 'is_currently_valid', 'covers_now', 'is_unconditioned_automation_handover', 'predecessor_lacks_validity_end', 'has_declared_suspension_condition', 'is_unauthorized_enforcement_agent', 'name', 'has_authorizing_change_request', 'days_since_authorization_review', 'is_human_to_non_human_handover', 'predecessor_has_sufficient_sample', 'has_sufficient_sample', 'has_approving_authority', 'error_rate_percent', 'is_unmeasured_automation_handover', 'override_rate_percent', 'receives_approval_notices_now', 'is_non_human_assignment', 'is_scoped_to_retired_version', 'was_authorized_by_change_request', 'is_unauthorized_non_human_assignment', 'has_departed', 'is_open_ended', 'current_agent_key', 'governance_evidence_count'},
+     'calculated': {'days_since_authorization_review', 'has_declared_suspension_condition', 'is_open_ended', 'is_unauthorized_non_human_assignment', 'is_current', 'is_unconditioned_automation_handover', 'predecessor_has_sufficient_sample', 'agent_role_pair_key', 'is_human_to_non_human_handover', 'is_unauthorized_enforcement_agent', 'name', 'quality_verdict_is_unsupported', 'governance_evidence_count', 'suspension_condition_met', 'has_sufficient_sample', 'is_scoped_to_retired_version', 'comparison_is_evidentially_sound', 'error_rate_percent', 'exceeds_tolerable_error_rate', 'has_authorizing_change_request', 'departed_role_key', 'authorization_is_overdue_for_review', 'is_non_human_assignment', 'role_when_covering', 'has_approving_authority', 'has_any_boundary_violation', 'current_agent_key', 'covers_now', 'is_unmeasured_automation_handover', 'quality_regressed_vs_predecessor', 'has_departed', 'override_rate_percent', 'has_dated_authorization', 'is_currently_valid', 'is_standing_unreviewed_automation', 'predecessor_lacks_validity_end', 'unauthorized_enforcement_role_key', 'agent_role_key', 'was_authorized_by_change_request', 'is_operating_under_met_suspension_condition', 'receives_approval_notices_now', 'single_override_swing_percent'},
      'lookups': [
         {'field': 'as_of_instant', 'target': 'evaluation_contexts', 'return': 'as_of_instant', 'key': 'evaluation_context', 'match': 'evaluation_context_id'},
         {'field': 'agent_kind', 'target': 'agents', 'return': 'agent_kind', 'key': 'agent', 'match': 'agent_id'},
@@ -29618,7 +30085,7 @@ ERB_TABLES = [
      'compute': compute_communities_of_practice_fields,
      'fields': ['community_of_practice_id', 'name', 'label', 'organization', 'steward_role', 'purpose', 'cadence', 'semantic_type_iri', 'own_vocabulary', 'norms', 'origin', 'open_apprenticeship_places', 'is_colocated_trade', 'has_own_vocabulary_and_norms', 'sharing_event_count', 'is_mandated_without_sharing_norm', 'interconnected_know_how_count', 'physical_know_how_count', 'digital_know_how_count', 'person_carried_know_how_count', 'spans_physical_and_digital_with_humans', 'external_member_count', 'specialist_member_count', 'employer_move_count', 'is_cross_firm_practice_cluster', 'recent_apprenticeship_count', 'is_circulation_ending_for_lack_of_apprentices', 'ambient_absorption_count', 'has_ambient_trade_know_how'],
      'datatypes': {'name': 'string', 'has_own_vocabulary_and_norms': 'boolean', 'sharing_event_count': 'integer', 'is_mandated_without_sharing_norm': 'boolean', 'interconnected_know_how_count': 'integer', 'physical_know_how_count': 'integer', 'digital_know_how_count': 'integer', 'person_carried_know_how_count': 'integer', 'spans_physical_and_digital_with_humans': 'boolean', 'external_member_count': 'integer', 'specialist_member_count': 'integer', 'employer_move_count': 'integer', 'is_cross_firm_practice_cluster': 'boolean', 'recent_apprenticeship_count': 'integer', 'is_circulation_ending_for_lack_of_apprentices': 'boolean', 'ambient_absorption_count': 'integer', 'has_ambient_trade_know_how': 'boolean'},
-     'calculated': {'has_ambient_trade_know_how', 'spans_physical_and_digital_with_humans', 'is_cross_firm_practice_cluster', 'name', 'is_circulation_ending_for_lack_of_apprentices', 'is_mandated_without_sharing_norm', 'has_own_vocabulary_and_norms'},
+     'calculated': {'is_circulation_ending_for_lack_of_apprentices', 'name', 'has_own_vocabulary_and_norms', 'is_mandated_without_sharing_norm', 'has_ambient_trade_know_how', 'is_cross_firm_practice_cluster', 'spans_physical_and_digital_with_humans'},
      'lookups': [],
      'aggregations': [
         {'field': 'sharing_event_count', 'op': 'COUNTIFS', 'table': 'knowledge_transfers', 'criteria': [('community_of_practice', 'field', 'community_of_practice_id')]},
@@ -29633,17 +30100,18 @@ ERB_TABLES = [
         {'field': 'ambient_absorption_count', 'op': 'COUNTIFS', 'table': 'knowledge_transfers', 'criteria': [('community_of_practice', 'field', 'community_of_practice_id'), ('is_ambient_absorption_by_non_practitioner', 'literal', True)]},]},
     {'name': 'Mentorships', 'file': 'mentorships', 'rulebook_rows': 5,
      'compute': compute_mentorships_fields,
-     'fields': ['mentorship_id', 'name', 'community_of_practice', 'mentor_agent', 'learner_agent', 'valid_from', 'valid_to', 'learning_objective', 'evidence_of_completion', 'semantic_type_iri', 'evaluation_context', 'as_of_instant', 'mentorship_form', 'employer_worker_obligation', 'expected_weekly_hours', 'is_active', 'days_since_started', 'is_recent_apprenticeship'],
-     'datatypes': {'name': 'string', 'as_of_instant': 'datetime', 'is_active': 'boolean', 'days_since_started': 'integer', 'is_recent_apprenticeship': 'boolean'},
-     'calculated': {'name', 'is_active', 'days_since_started', 'is_recent_apprenticeship'},
+     'fields': ['mentorship_id', 'name', 'community_of_practice', 'mentor_agent', 'learner_agent', 'valid_from', 'valid_to', 'learning_objective', 'evidence_of_completion', 'semantic_type_iri', 'evaluation_context', 'as_of_instant', 'mentorship_form', 'employer_worker_obligation', 'expected_weekly_hours', 'is_active', 'days_since_started', 'is_recent_apprenticeship', 'community_label'],
+     'datatypes': {'name': 'string', 'as_of_instant': 'datetime', 'is_active': 'boolean', 'days_since_started': 'integer', 'is_recent_apprenticeship': 'boolean', 'community_label': 'string'},
+     'calculated': {'days_since_started', 'is_active', 'name', 'is_recent_apprenticeship'},
      'lookups': [
-        {'field': 'as_of_instant', 'target': 'evaluation_contexts', 'return': 'as_of_instant', 'key': 'evaluation_context', 'match': 'evaluation_context_id'},],
+        {'field': 'as_of_instant', 'target': 'evaluation_contexts', 'return': 'as_of_instant', 'key': 'evaluation_context', 'match': 'evaluation_context_id'},
+        {'field': 'community_label', 'target': 'communities_of_practice', 'return': 'label', 'key': 'community_of_practice', 'match': 'community_of_practice_id'},],
      'aggregations': []},
     {'name': 'ProcedureTypes', 'file': 'procedure_types', 'rulebook_rows': 17,
      'compute': compute_procedure_types_fields,
      'fields': ['procedure_type_id', 'name', 'label', 'definition', 'semantic_type_iri', 'broader_procedure_type', 'taxonomy_rank', 'distinguishing_facet', 'distinguishing_value', 'narrower_type_count', 'has_narrower_types', 'is_detached_from_taxonomy', 'broader_is_detached', 'is_unreachable_by_navigation', 'member_count', 'members_lacking_distinction_count', 'is_arbitrary_grouping'],
      'datatypes': {'name': 'string', 'narrower_type_count': 'integer', 'has_narrower_types': 'boolean', 'is_detached_from_taxonomy': 'boolean', 'broader_is_detached': 'boolean', 'is_unreachable_by_navigation': 'boolean', 'member_count': 'integer', 'members_lacking_distinction_count': 'integer', 'is_arbitrary_grouping': 'boolean'},
-     'calculated': {'has_narrower_types', 'is_detached_from_taxonomy', 'is_unreachable_by_navigation', 'is_arbitrary_grouping', 'name'},
+     'calculated': {'is_arbitrary_grouping', 'is_detached_from_taxonomy', 'name', 'has_narrower_types', 'is_unreachable_by_navigation'},
      'lookups': [
         {'field': 'broader_is_detached', 'target': 'procedure_types', 'return': 'is_detached_from_taxonomy', 'key': 'broader_procedure_type', 'match': 'procedure_type_id'},],
      'aggregations': [
@@ -29654,7 +30122,7 @@ ERB_TABLES = [
      'compute': compute_procedures_fields,
      'fields': ['procedure_id', 'name', 'title', 'procedure_type', 'owner_organization', 'adopted_by_organization', 'purpose', 'target', 'is_template', 'current_version_key', 'semantic_type_iri', 'execution_count', 'template_procedure', 'required_by_regulation', 'is_template_instance', 'target_count', 'adoption_count', 'specified_step_total', 'has_no_explicit_steps', 'called_by_step_count', 'is_nested_procedure', 'failure_criterion_count', 'has_no_failure_criterion', 'lens_view_count', 'privileges_single_stakeholder_view', 'step_level_view_count', 'category_level_view_count', 'procedure_type_rank', 'procedure_type_definition', 'has_step_and_category_resolutions', 'is_missing_demanded_resolution', 'is_inconsistently_categorized', 'strategic_alignment_count', 'has_no_stated_reason_for_existing', 'outcome_measure_count', 'unlinked_measure_count', 'measures_performance_without_business_link', 'hindered_by_count', 'is_hindered_by_another_operation', 'type_distinguishing_facet', 'type_distinguishing_value', 'matching_distinction_count', 'lacks_type_distinction', 'lacks_distinction_type_key', 'managed_vocabulary_count', 'lacks_managed_controlled_vocabulary', 'compliance_review_step_count', 'involves_compliance_review_role', 'is_regulated_but_unformalized', 'agent_intended_count', 'is_tacit_only_agent_target', 'repository_entry_count', 'stale_entry_count', 'departed_only_know_how_count', 'has_decayed_transfer_channel', 'execution_feedback_entry_count', 'is_executed_without_feedback_loop', 'machine_authored_entry_count', 'practitioner_relationship_count', 'is_captured_by_automation_alone', 'unengaged_stakeholder_count', 'has_unengaged_stakeholder', 'recent_starter_count', 'untransferred_veteran_know_how_count', 'departing_veteran_know_how_count', 'has_transfer_shortfall_exposure', 'proficient_with_capture_count', 'proficient_without_capture_count', 'days_with_capture_total', 'days_without_capture_total', 'avg_days_to_proficiency_with_capture', 'avg_days_to_proficiency_without_capture', 'formalization_does_not_ease_onboarding', 'collected_material_count', 'in_work_capture_count', 'is_capture_separate_from_work', 'expert_acquisition_hours', 'compliance_document_count'],
      'datatypes': {'name': 'string', 'execution_count': 'integer', 'is_template_instance': 'boolean', 'target_count': 'integer', 'adoption_count': 'integer', 'specified_step_total': 'integer', 'has_no_explicit_steps': 'boolean', 'called_by_step_count': 'integer', 'is_nested_procedure': 'boolean', 'failure_criterion_count': 'integer', 'has_no_failure_criterion': 'boolean', 'lens_view_count': 'integer', 'privileges_single_stakeholder_view': 'boolean', 'step_level_view_count': 'integer', 'category_level_view_count': 'integer', 'procedure_type_rank': 'string', 'procedure_type_definition': 'string', 'has_step_and_category_resolutions': 'boolean', 'is_missing_demanded_resolution': 'boolean', 'is_inconsistently_categorized': 'boolean', 'strategic_alignment_count': 'integer', 'has_no_stated_reason_for_existing': 'boolean', 'outcome_measure_count': 'integer', 'unlinked_measure_count': 'integer', 'measures_performance_without_business_link': 'boolean', 'hindered_by_count': 'integer', 'is_hindered_by_another_operation': 'boolean', 'type_distinguishing_facet': 'string', 'type_distinguishing_value': 'string', 'matching_distinction_count': 'integer', 'lacks_type_distinction': 'boolean', 'lacks_distinction_type_key': 'string', 'managed_vocabulary_count': 'integer', 'lacks_managed_controlled_vocabulary': 'boolean', 'compliance_review_step_count': 'integer', 'involves_compliance_review_role': 'boolean', 'is_regulated_but_unformalized': 'boolean', 'agent_intended_count': 'integer', 'is_tacit_only_agent_target': 'boolean', 'repository_entry_count': 'integer', 'stale_entry_count': 'integer', 'departed_only_know_how_count': 'integer', 'has_decayed_transfer_channel': 'boolean', 'execution_feedback_entry_count': 'integer', 'is_executed_without_feedback_loop': 'boolean', 'machine_authored_entry_count': 'integer', 'practitioner_relationship_count': 'integer', 'is_captured_by_automation_alone': 'boolean', 'unengaged_stakeholder_count': 'integer', 'has_unengaged_stakeholder': 'boolean', 'recent_starter_count': 'integer', 'untransferred_veteran_know_how_count': 'integer', 'departing_veteran_know_how_count': 'integer', 'has_transfer_shortfall_exposure': 'boolean', 'proficient_with_capture_count': 'integer', 'proficient_without_capture_count': 'integer', 'days_with_capture_total': 'integer', 'days_without_capture_total': 'integer', 'avg_days_to_proficiency_with_capture': 'number', 'avg_days_to_proficiency_without_capture': 'number', 'formalization_does_not_ease_onboarding': 'boolean', 'collected_material_count': 'integer', 'in_work_capture_count': 'integer', 'is_capture_separate_from_work': 'boolean', 'expert_acquisition_hours': 'number', 'compliance_document_count': 'integer'},
-     'calculated': {'formalization_does_not_ease_onboarding', 'is_captured_by_automation_alone', 'measures_performance_without_business_link', 'has_no_stated_reason_for_existing', 'is_executed_without_feedback_loop', 'is_inconsistently_categorized', 'has_unengaged_stakeholder', 'has_decayed_transfer_channel', 'avg_days_to_proficiency_with_capture', 'lacks_managed_controlled_vocabulary', 'lacks_distinction_type_key', 'name', 'is_tacit_only_agent_target', 'avg_days_to_proficiency_without_capture', 'is_hindered_by_another_operation', 'involves_compliance_review_role', 'privileges_single_stakeholder_view', 'has_no_failure_criterion', 'has_step_and_category_resolutions', 'is_nested_procedure', 'is_missing_demanded_resolution', 'has_no_explicit_steps', 'lacks_type_distinction', 'is_capture_separate_from_work', 'has_transfer_shortfall_exposure', 'is_regulated_but_unformalized', 'is_template_instance'},
+     'calculated': {'is_captured_by_automation_alone', 'is_missing_demanded_resolution', 'is_inconsistently_categorized', 'involves_compliance_review_role', 'formalization_does_not_ease_onboarding', 'has_transfer_shortfall_exposure', 'has_no_explicit_steps', 'is_tacit_only_agent_target', 'lacks_distinction_type_key', 'has_unengaged_stakeholder', 'has_no_failure_criterion', 'name', 'is_capture_separate_from_work', 'has_decayed_transfer_channel', 'is_template_instance', 'is_executed_without_feedback_loop', 'avg_days_to_proficiency_without_capture', 'measures_performance_without_business_link', 'is_hindered_by_another_operation', 'has_no_stated_reason_for_existing', 'lacks_managed_controlled_vocabulary', 'privileges_single_stakeholder_view', 'has_step_and_category_resolutions', 'lacks_type_distinction', 'is_regulated_but_unformalized', 'avg_days_to_proficiency_with_capture', 'is_nested_procedure'},
      'lookups': [
         {'field': 'procedure_type_rank', 'target': 'procedure_types', 'return': 'taxonomy_rank', 'key': 'procedure_type', 'match': 'procedure_type_id'},
         {'field': 'procedure_type_definition', 'target': 'procedure_types', 'return': 'definition', 'key': 'procedure_type', 'match': 'procedure_type_id'},
@@ -29698,15 +30166,16 @@ ERB_TABLES = [
         {'field': 'compliance_document_count', 'op': 'COUNTIFS', 'table': 'resources', 'criteria': [('compliance_record_for', 'field', 'procedure_id')]},]},
     {'name': 'ProcedureVersions', 'file': 'procedure_versions', 'rulebook_rows': 9,
      'compute': compute_procedure_versions_fields,
-     'fields': ['procedure_version_id', 'name', 'procedure', 'version_number', 'title', 'status', 'issued_at', 'modified_at', 'created_by_agent', 'modified_by_agent', 'new_version_motivation', 'changelog_description', 'is_current', 'count_of_steps', 'count_of_open_knowledge_gaps', 'is_ready_for_execution', 'specified_step_count', 'overdue_review_count', 'open_change_request_count', 'open_high_severity_gap_count', 'is_fit_to_execute', 'steward_review_cadence_days', 'count_of_stewardship_assignments', 'has_any_steward', 'is_live', 'is_unstewarded', 'is_live_and_unstewarded', 'count_of_open_blocking_gaps', 'has_open_blocking_gap', 'is_live_with_blocking_gap', 'should_not_be_executable', 'count_of_unapproved_reliance_fragments', 'runs_on_unapproved_knowledge', 'count_of_overdue_gaps', 'count_of_change_requests', 'count_of_review_events', 'has_governance_record', 'evaluation_context', 'as_of_instant', 'days_since_modified', 'days_since_last_review', 'was_modified_since_last_review', 'modifier_is_authority', 'has_unwitnessed_change', 'count_of_stale_fragments', 'knowledge_is_staler_than_cadence', 'compound_fragile_fragment_count', 'rests_on_compound_fragile_knowledge', 'concentrated_witness_session_count', 'knowledge_base_is_concentrated', 'machine_consumed_unapproved_count', 'feeds_unapproved_knowledge_to_machines', 'genuinely_overdue_fragment_count', 'awaited_decision_count', 'scoped_open_blocking_gap_count', 'is_blocked_on_pending_decision', 'unexercised_human_gate_count', 'ai_boundary_is_unevidenced', 'load_bearing_unapproved_count', 'unlanded_decision_count', 'unrehearsed_control_entry_count', 'has_unrehearsed_control_entry', 'is_live_with_unrehearsed_control', 'cadence_breach_count', 'is_in_cadence_breach', 'has_decision_in_flight', 'is_unremediated_cadence_breach', 'is_managed_cadence_breach', 'governance_is_silent', 'valid_fragment_count', 'still_owns_valid_knowledge', 'incoming_supersession_count', 'is_still_referenced', 'is_load_bearing_orphan', 'is_cleanly_retired', 'stalled_implementation_count', 'is_held_unfit_by_landed_decisions', 'undeclared_control_kind_count', 'control_taxonomy_is_incomplete', 'has_approved_change_request', 'approved_change_request_count', 'unwatched_unowned_control_count', 'mining_run_count', 'drifted_mining_run_count', 'has_unresolved_mining_drift', 'entry_step_id', 'semantic_type_iri', 'execution_count', 'expected_duration_value', 'expected_duration_unit', 'status_is_pko', 'uses_non_pko_status', 'exception_count', 'fallback_transition_count', 'alternative_transition_count', 'has_no_exception_handling', 'latest_source_document_modified_at', 'days_document_trails_version', 'document_lags_practice', 'human_step_count', 'non_human_step_count', 'mixes_human_and_software_steps', 'day_run_count', 'night_run_count', 'day_deviating_run_count', 'night_deviating_run_count', 'is_inconsistent_across_shifts', 'overlaps_relation_count', 'enables_relation_count', 'prevents_relation_count', 'steps_without_ontology_type_count', 'rests_on_notation_only', 'is_current_without_motivation', 'conditionless_step_count', 'is_under_specified_for_execution', 'coarse_top_level_step_count', 'fine_top_level_step_count', 'mixes_granularity_at_one_level', 'procedure_type_of_version', 'created_by_agent_kind', 'elicitation_session_count', 'expert_capture_count', 'elicitation_evidence_count', 'indexed_segment_count', 'search_count', 'successful_search_count', 'search_success_percent', 'open_question_annotation_count', 'is_inadequate_for_use', 'served_assertion_count', 'lacks_machine_interpretable_encoding', 'structured_query_count', 'profile_validated_submission_count', 'reasoned_assertion_count', 'is_not_query_validate_reason_ready', 'published_projection_count', 'consumer_sync_count', 'is_unreachable_knowledge', 'human_sync_count', 'machine_sync_count', 'human_channel_count', 'machine_channel_count', 'serves_only_humans_or_only_machines', 'fresh_mining_run_count', 'lacks_continuous_drift_detection', 'outcome_measurement_count', 'is_disconnected_from_outcomes', 'ai_contribution_count', 'ai_consumption_count', 'uses_ai_in_one_direction_only', 'is_unmodified_for_twelve_months', 'design_decision_count', 'is_live_without_recorded_decisions', 'ai_artifact_consuming_input_count', 'contains_steps_affected_by_ai_agent_change', 'interview_session_count', 'observation_session_count', 'workshop_session_count', 'protocol_session_count', 'incident_session_count', 'reconciled_divergence_count', 'complementary_method_count', 'relies_on_single_method', 'misses_a_required_elicitation_mode', 'critical_incident_count', 'judgment_unprobed_by_incidents', 'sme_approval_count', 'sme_ai_evaluation_count', 'is_approved_without_sme_signoff', 'experts_evaluate_ai_not_representation', 'ke_session_count', 'ke_field_session_count', 'is_studied_only_from_the_desk', 'judgment_held_outside_sop_count', 'tacit_holding_count', 'explicit_holding_count', 'tacit_share_exceeds_explicit', 'hands_held_count', 'negotiated_practice_count', 'lives_in_hands_silence_and_negotiation', 'process_model_trace_count', 'is_live_model_untraced', 'trailing_practice_trace_count', 'is_documented_behind_practice', 'standardization_driver', 'tacit_fragment_count', 'is_standardized_without_tacit_capture', 'tacit_form_fragment_count', 'situated_judgment_fragment_count', 'tacit_judgment_fragment_count', 'first_step', 'fallback_step', 'first_step_disagrees_with_graph', 'declared_first_step_count', 'graph_entry_step_count'],
-     'datatypes': {'name': 'string', 'count_of_steps': 'integer', 'count_of_open_knowledge_gaps': 'integer', 'is_ready_for_execution': 'boolean', 'specified_step_count': 'number', 'overdue_review_count': 'number', 'open_change_request_count': 'number', 'open_high_severity_gap_count': 'number', 'is_fit_to_execute': 'boolean', 'steward_review_cadence_days': 'number', 'count_of_stewardship_assignments': 'integer', 'has_any_steward': 'boolean', 'is_live': 'boolean', 'is_unstewarded': 'boolean', 'is_live_and_unstewarded': 'boolean', 'count_of_open_blocking_gaps': 'integer', 'has_open_blocking_gap': 'boolean', 'is_live_with_blocking_gap': 'boolean', 'should_not_be_executable': 'boolean', 'count_of_unapproved_reliance_fragments': 'integer', 'runs_on_unapproved_knowledge': 'boolean', 'count_of_overdue_gaps': 'integer', 'count_of_change_requests': 'integer', 'count_of_review_events': 'integer', 'has_governance_record': 'boolean', 'as_of_instant': 'datetime', 'days_since_modified': 'integer', 'days_since_last_review': 'integer', 'was_modified_since_last_review': 'boolean', 'modifier_is_authority': 'string', 'has_unwitnessed_change': 'boolean', 'count_of_stale_fragments': 'integer', 'knowledge_is_staler_than_cadence': 'boolean', 'compound_fragile_fragment_count': 'number', 'rests_on_compound_fragile_knowledge': 'boolean', 'concentrated_witness_session_count': 'number', 'knowledge_base_is_concentrated': 'boolean', 'machine_consumed_unapproved_count': 'number', 'feeds_unapproved_knowledge_to_machines': 'boolean', 'genuinely_overdue_fragment_count': 'number', 'awaited_decision_count': 'number', 'scoped_open_blocking_gap_count': 'number', 'is_blocked_on_pending_decision': 'boolean', 'unexercised_human_gate_count': 'number', 'ai_boundary_is_unevidenced': 'boolean', 'load_bearing_unapproved_count': 'number', 'unlanded_decision_count': 'number', 'unrehearsed_control_entry_count': 'number', 'has_unrehearsed_control_entry': 'boolean', 'is_live_with_unrehearsed_control': 'boolean', 'cadence_breach_count': 'number', 'is_in_cadence_breach': 'boolean', 'has_decision_in_flight': 'boolean', 'is_unremediated_cadence_breach': 'boolean', 'is_managed_cadence_breach': 'boolean', 'governance_is_silent': 'boolean', 'valid_fragment_count': 'number', 'still_owns_valid_knowledge': 'boolean', 'incoming_supersession_count': 'number', 'is_still_referenced': 'boolean', 'is_load_bearing_orphan': 'boolean', 'is_cleanly_retired': 'boolean', 'stalled_implementation_count': 'number', 'is_held_unfit_by_landed_decisions': 'boolean', 'undeclared_control_kind_count': 'number', 'control_taxonomy_is_incomplete': 'boolean', 'has_approved_change_request': 'boolean', 'approved_change_request_count': 'number', 'unwatched_unowned_control_count': 'number', 'mining_run_count': 'number', 'drifted_mining_run_count': 'number', 'has_unresolved_mining_drift': 'boolean', 'entry_step_id': 'string', 'execution_count': 'integer', 'status_is_pko': 'boolean', 'uses_non_pko_status': 'boolean', 'exception_count': 'integer', 'fallback_transition_count': 'integer', 'alternative_transition_count': 'integer', 'has_no_exception_handling': 'boolean', 'latest_source_document_modified_at': 'datetime', 'days_document_trails_version': 'integer', 'document_lags_practice': 'boolean', 'human_step_count': 'integer', 'non_human_step_count': 'integer', 'mixes_human_and_software_steps': 'boolean', 'day_run_count': 'integer', 'night_run_count': 'integer', 'day_deviating_run_count': 'integer', 'night_deviating_run_count': 'integer', 'is_inconsistent_across_shifts': 'boolean', 'overlaps_relation_count': 'integer', 'enables_relation_count': 'integer', 'prevents_relation_count': 'integer', 'steps_without_ontology_type_count': 'integer', 'rests_on_notation_only': 'boolean', 'is_current_without_motivation': 'boolean', 'conditionless_step_count': 'integer', 'is_under_specified_for_execution': 'boolean', 'coarse_top_level_step_count': 'integer', 'fine_top_level_step_count': 'integer', 'mixes_granularity_at_one_level': 'boolean', 'procedure_type_of_version': 'string', 'created_by_agent_kind': 'string', 'elicitation_session_count': 'integer', 'expert_capture_count': 'integer', 'elicitation_evidence_count': 'integer', 'indexed_segment_count': 'integer', 'search_count': 'integer', 'successful_search_count': 'integer', 'search_success_percent': 'number', 'open_question_annotation_count': 'integer', 'is_inadequate_for_use': 'boolean', 'served_assertion_count': 'integer', 'lacks_machine_interpretable_encoding': 'boolean', 'structured_query_count': 'integer', 'profile_validated_submission_count': 'integer', 'reasoned_assertion_count': 'integer', 'is_not_query_validate_reason_ready': 'boolean', 'published_projection_count': 'integer', 'consumer_sync_count': 'integer', 'is_unreachable_knowledge': 'boolean', 'human_sync_count': 'integer', 'machine_sync_count': 'integer', 'human_channel_count': 'integer', 'machine_channel_count': 'integer', 'serves_only_humans_or_only_machines': 'boolean', 'fresh_mining_run_count': 'integer', 'lacks_continuous_drift_detection': 'boolean', 'outcome_measurement_count': 'integer', 'is_disconnected_from_outcomes': 'boolean', 'ai_contribution_count': 'integer', 'ai_consumption_count': 'integer', 'uses_ai_in_one_direction_only': 'boolean', 'is_unmodified_for_twelve_months': 'boolean', 'design_decision_count': 'integer', 'is_live_without_recorded_decisions': 'boolean', 'ai_artifact_consuming_input_count': 'integer', 'contains_steps_affected_by_ai_agent_change': 'boolean', 'interview_session_count': 'integer', 'observation_session_count': 'integer', 'workshop_session_count': 'integer', 'protocol_session_count': 'integer', 'incident_session_count': 'integer', 'reconciled_divergence_count': 'integer', 'complementary_method_count': 'integer', 'relies_on_single_method': 'boolean', 'misses_a_required_elicitation_mode': 'boolean', 'critical_incident_count': 'integer', 'judgment_unprobed_by_incidents': 'boolean', 'sme_approval_count': 'integer', 'sme_ai_evaluation_count': 'integer', 'is_approved_without_sme_signoff': 'boolean', 'experts_evaluate_ai_not_representation': 'boolean', 'ke_session_count': 'integer', 'ke_field_session_count': 'integer', 'is_studied_only_from_the_desk': 'boolean', 'judgment_held_outside_sop_count': 'integer', 'tacit_holding_count': 'integer', 'explicit_holding_count': 'integer', 'tacit_share_exceeds_explicit': 'boolean', 'hands_held_count': 'integer', 'negotiated_practice_count': 'integer', 'lives_in_hands_silence_and_negotiation': 'boolean', 'process_model_trace_count': 'integer', 'is_live_model_untraced': 'boolean', 'trailing_practice_trace_count': 'integer', 'is_documented_behind_practice': 'boolean', 'tacit_fragment_count': 'integer', 'is_standardized_without_tacit_capture': 'boolean', 'tacit_form_fragment_count': 'integer', 'situated_judgment_fragment_count': 'integer', 'tacit_judgment_fragment_count': 'integer', 'first_step': 'string', 'fallback_step': 'string', 'first_step_disagrees_with_graph': 'boolean', 'declared_first_step_count': 'integer', 'graph_entry_step_count': 'integer'},
-     'calculated': {'feeds_unapproved_knowledge_to_machines', 'is_studied_only_from_the_desk', 'has_unresolved_mining_drift', 'lives_in_hands_silence_and_negotiation', 'rests_on_notation_only', 'runs_on_unapproved_knowledge', 'is_cleanly_retired', 'is_blocked_on_pending_decision', 'elicitation_evidence_count', 'ai_boundary_is_unevidenced', 'is_load_bearing_orphan', 'machine_channel_count', 'is_inconsistent_across_shifts', 'is_ready_for_execution', 'is_held_unfit_by_landed_decisions', 'is_unremediated_cadence_breach', 'is_managed_cadence_breach', 'was_modified_since_last_review', 'complementary_method_count', 'has_no_exception_handling', 'days_document_trails_version', 'judgment_unprobed_by_incidents', 'should_not_be_executable', 'ai_consumption_count', 'is_live_with_unrehearsed_control', 'mixes_granularity_at_one_level', 'uses_non_pko_status', 'is_unreachable_knowledge', 'first_step_disagrees_with_graph', 'is_under_specified_for_execution', 'is_still_referenced', 'knowledge_is_staler_than_cadence', 'experts_evaluate_ai_not_representation', 'is_disconnected_from_outcomes', 'misses_a_required_elicitation_mode', 'rests_on_compound_fragile_knowledge', 'lacks_machine_interpretable_encoding', 'document_lags_practice', 'relies_on_single_method', 'still_owns_valid_knowledge', 'is_in_cadence_breach', 'is_live_and_unstewarded', 'non_human_step_count', 'is_standardized_without_tacit_capture', 'control_taxonomy_is_incomplete', 'name', 'contains_steps_affected_by_ai_agent_change', 'is_live_with_blocking_gap', 'has_governance_record', 'human_channel_count', 'is_unstewarded', 'is_live_model_untraced', 'days_since_modified', 'is_not_query_validate_reason_ready', 'is_live_without_recorded_decisions', 'lacks_continuous_drift_detection', 'is_approved_without_sme_signoff', 'governance_is_silent', 'is_current_without_motivation', 'is_fit_to_execute', 'tacit_share_exceeds_explicit', 'has_unrehearsed_control_entry', 'has_decision_in_flight', 'has_any_steward', 'is_documented_behind_practice', 'knowledge_base_is_concentrated', 'is_inadequate_for_use', 'tacit_judgment_fragment_count', 'has_open_blocking_gap', 'uses_ai_in_one_direction_only', 'has_approved_change_request', 'is_unmodified_for_twelve_months', 'mixes_human_and_software_steps', 'has_unwitnessed_change', 'is_live', 'serves_only_humans_or_only_machines', 'search_success_percent'},
+     'fields': ['procedure_version_id', 'name', 'procedure', 'version_number', 'title', 'status', 'issued_at', 'modified_at', 'created_by_agent', 'modified_by_agent', 'new_version_motivation', 'changelog_description', 'is_current', 'count_of_steps', 'count_of_open_knowledge_gaps', 'is_ready_for_execution', 'specified_step_count', 'overdue_review_count', 'open_change_request_count', 'open_high_severity_gap_count', 'is_fit_to_execute', 'steward_review_cadence_days', 'count_of_stewardship_assignments', 'has_any_steward', 'is_live', 'is_unstewarded', 'is_live_and_unstewarded', 'count_of_open_blocking_gaps', 'has_open_blocking_gap', 'is_live_with_blocking_gap', 'should_not_be_executable', 'count_of_unapproved_reliance_fragments', 'runs_on_unapproved_knowledge', 'count_of_overdue_gaps', 'count_of_change_requests', 'count_of_review_events', 'has_governance_record', 'evaluation_context', 'as_of_instant', 'days_since_modified', 'days_since_last_review', 'was_modified_since_last_review', 'modifier_is_authority', 'has_unwitnessed_change', 'count_of_stale_fragments', 'knowledge_is_staler_than_cadence', 'compound_fragile_fragment_count', 'rests_on_compound_fragile_knowledge', 'concentrated_witness_session_count', 'knowledge_base_is_concentrated', 'machine_consumed_unapproved_count', 'feeds_unapproved_knowledge_to_machines', 'genuinely_overdue_fragment_count', 'awaited_decision_count', 'scoped_open_blocking_gap_count', 'is_blocked_on_pending_decision', 'unexercised_human_gate_count', 'ai_boundary_is_unevidenced', 'load_bearing_unapproved_count', 'unlanded_decision_count', 'unrehearsed_control_entry_count', 'has_unrehearsed_control_entry', 'is_live_with_unrehearsed_control', 'cadence_breach_count', 'is_in_cadence_breach', 'has_decision_in_flight', 'is_unremediated_cadence_breach', 'is_managed_cadence_breach', 'governance_is_silent', 'valid_fragment_count', 'still_owns_valid_knowledge', 'incoming_supersession_count', 'is_still_referenced', 'is_load_bearing_orphan', 'is_cleanly_retired', 'stalled_implementation_count', 'is_held_unfit_by_landed_decisions', 'undeclared_control_kind_count', 'control_taxonomy_is_incomplete', 'has_approved_change_request', 'approved_change_request_count', 'unwatched_unowned_control_count', 'mining_run_count', 'drifted_mining_run_count', 'has_unresolved_mining_drift', 'entry_step_id', 'semantic_type_iri', 'execution_count', 'expected_duration_value', 'expected_duration_unit', 'status_is_pko', 'uses_non_pko_status', 'exception_count', 'fallback_transition_count', 'alternative_transition_count', 'has_no_exception_handling', 'latest_source_document_modified_at', 'days_document_trails_version', 'document_lags_practice', 'human_step_count', 'non_human_step_count', 'mixes_human_and_software_steps', 'day_run_count', 'night_run_count', 'day_deviating_run_count', 'night_deviating_run_count', 'is_inconsistent_across_shifts', 'overlaps_relation_count', 'enables_relation_count', 'prevents_relation_count', 'steps_without_ontology_type_count', 'rests_on_notation_only', 'is_current_without_motivation', 'conditionless_step_count', 'is_under_specified_for_execution', 'coarse_top_level_step_count', 'fine_top_level_step_count', 'mixes_granularity_at_one_level', 'procedure_type_of_version', 'created_by_agent_kind', 'elicitation_session_count', 'expert_capture_count', 'elicitation_evidence_count', 'indexed_segment_count', 'search_count', 'successful_search_count', 'search_success_percent', 'open_question_annotation_count', 'is_inadequate_for_use', 'served_assertion_count', 'lacks_machine_interpretable_encoding', 'structured_query_count', 'profile_validated_submission_count', 'reasoned_assertion_count', 'is_not_query_validate_reason_ready', 'published_projection_count', 'consumer_sync_count', 'is_unreachable_knowledge', 'human_sync_count', 'machine_sync_count', 'human_channel_count', 'machine_channel_count', 'serves_only_humans_or_only_machines', 'fresh_mining_run_count', 'lacks_continuous_drift_detection', 'outcome_measurement_count', 'is_disconnected_from_outcomes', 'ai_contribution_count', 'ai_consumption_count', 'uses_ai_in_one_direction_only', 'is_unmodified_for_twelve_months', 'design_decision_count', 'is_live_without_recorded_decisions', 'ai_artifact_consuming_input_count', 'contains_steps_affected_by_ai_agent_change', 'interview_session_count', 'observation_session_count', 'workshop_session_count', 'protocol_session_count', 'incident_session_count', 'reconciled_divergence_count', 'complementary_method_count', 'relies_on_single_method', 'misses_a_required_elicitation_mode', 'critical_incident_count', 'judgment_unprobed_by_incidents', 'sme_approval_count', 'sme_ai_evaluation_count', 'is_approved_without_sme_signoff', 'experts_evaluate_ai_not_representation', 'ke_session_count', 'ke_field_session_count', 'is_studied_only_from_the_desk', 'judgment_held_outside_sop_count', 'tacit_holding_count', 'explicit_holding_count', 'tacit_share_exceeds_explicit', 'hands_held_count', 'negotiated_practice_count', 'lives_in_hands_silence_and_negotiation', 'process_model_trace_count', 'is_live_model_untraced', 'trailing_practice_trace_count', 'is_documented_behind_practice', 'standardization_driver', 'tacit_fragment_count', 'is_standardized_without_tacit_capture', 'tacit_form_fragment_count', 'situated_judgment_fragment_count', 'tacit_judgment_fragment_count', 'first_step', 'fallback_step', 'first_step_disagrees_with_graph', 'declared_first_step_count', 'graph_entry_step_count', 'owner_organization'],
+     'datatypes': {'name': 'string', 'count_of_steps': 'integer', 'count_of_open_knowledge_gaps': 'integer', 'is_ready_for_execution': 'boolean', 'specified_step_count': 'number', 'overdue_review_count': 'number', 'open_change_request_count': 'number', 'open_high_severity_gap_count': 'number', 'is_fit_to_execute': 'boolean', 'steward_review_cadence_days': 'number', 'count_of_stewardship_assignments': 'integer', 'has_any_steward': 'boolean', 'is_live': 'boolean', 'is_unstewarded': 'boolean', 'is_live_and_unstewarded': 'boolean', 'count_of_open_blocking_gaps': 'integer', 'has_open_blocking_gap': 'boolean', 'is_live_with_blocking_gap': 'boolean', 'should_not_be_executable': 'boolean', 'count_of_unapproved_reliance_fragments': 'integer', 'runs_on_unapproved_knowledge': 'boolean', 'count_of_overdue_gaps': 'integer', 'count_of_change_requests': 'integer', 'count_of_review_events': 'integer', 'has_governance_record': 'boolean', 'as_of_instant': 'datetime', 'days_since_modified': 'integer', 'days_since_last_review': 'integer', 'was_modified_since_last_review': 'boolean', 'modifier_is_authority': 'string', 'has_unwitnessed_change': 'boolean', 'count_of_stale_fragments': 'integer', 'knowledge_is_staler_than_cadence': 'boolean', 'compound_fragile_fragment_count': 'number', 'rests_on_compound_fragile_knowledge': 'boolean', 'concentrated_witness_session_count': 'number', 'knowledge_base_is_concentrated': 'boolean', 'machine_consumed_unapproved_count': 'number', 'feeds_unapproved_knowledge_to_machines': 'boolean', 'genuinely_overdue_fragment_count': 'number', 'awaited_decision_count': 'number', 'scoped_open_blocking_gap_count': 'number', 'is_blocked_on_pending_decision': 'boolean', 'unexercised_human_gate_count': 'number', 'ai_boundary_is_unevidenced': 'boolean', 'load_bearing_unapproved_count': 'number', 'unlanded_decision_count': 'number', 'unrehearsed_control_entry_count': 'number', 'has_unrehearsed_control_entry': 'boolean', 'is_live_with_unrehearsed_control': 'boolean', 'cadence_breach_count': 'number', 'is_in_cadence_breach': 'boolean', 'has_decision_in_flight': 'boolean', 'is_unremediated_cadence_breach': 'boolean', 'is_managed_cadence_breach': 'boolean', 'governance_is_silent': 'boolean', 'valid_fragment_count': 'number', 'still_owns_valid_knowledge': 'boolean', 'incoming_supersession_count': 'number', 'is_still_referenced': 'boolean', 'is_load_bearing_orphan': 'boolean', 'is_cleanly_retired': 'boolean', 'stalled_implementation_count': 'number', 'is_held_unfit_by_landed_decisions': 'boolean', 'undeclared_control_kind_count': 'number', 'control_taxonomy_is_incomplete': 'boolean', 'has_approved_change_request': 'boolean', 'approved_change_request_count': 'number', 'unwatched_unowned_control_count': 'number', 'mining_run_count': 'number', 'drifted_mining_run_count': 'number', 'has_unresolved_mining_drift': 'boolean', 'entry_step_id': 'string', 'execution_count': 'integer', 'status_is_pko': 'boolean', 'uses_non_pko_status': 'boolean', 'exception_count': 'integer', 'fallback_transition_count': 'integer', 'alternative_transition_count': 'integer', 'has_no_exception_handling': 'boolean', 'latest_source_document_modified_at': 'datetime', 'days_document_trails_version': 'integer', 'document_lags_practice': 'boolean', 'human_step_count': 'integer', 'non_human_step_count': 'integer', 'mixes_human_and_software_steps': 'boolean', 'day_run_count': 'integer', 'night_run_count': 'integer', 'day_deviating_run_count': 'integer', 'night_deviating_run_count': 'integer', 'is_inconsistent_across_shifts': 'boolean', 'overlaps_relation_count': 'integer', 'enables_relation_count': 'integer', 'prevents_relation_count': 'integer', 'steps_without_ontology_type_count': 'integer', 'rests_on_notation_only': 'boolean', 'is_current_without_motivation': 'boolean', 'conditionless_step_count': 'integer', 'is_under_specified_for_execution': 'boolean', 'coarse_top_level_step_count': 'integer', 'fine_top_level_step_count': 'integer', 'mixes_granularity_at_one_level': 'boolean', 'procedure_type_of_version': 'string', 'created_by_agent_kind': 'string', 'elicitation_session_count': 'integer', 'expert_capture_count': 'integer', 'elicitation_evidence_count': 'integer', 'indexed_segment_count': 'integer', 'search_count': 'integer', 'successful_search_count': 'integer', 'search_success_percent': 'number', 'open_question_annotation_count': 'integer', 'is_inadequate_for_use': 'boolean', 'served_assertion_count': 'integer', 'lacks_machine_interpretable_encoding': 'boolean', 'structured_query_count': 'integer', 'profile_validated_submission_count': 'integer', 'reasoned_assertion_count': 'integer', 'is_not_query_validate_reason_ready': 'boolean', 'published_projection_count': 'integer', 'consumer_sync_count': 'integer', 'is_unreachable_knowledge': 'boolean', 'human_sync_count': 'integer', 'machine_sync_count': 'integer', 'human_channel_count': 'integer', 'machine_channel_count': 'integer', 'serves_only_humans_or_only_machines': 'boolean', 'fresh_mining_run_count': 'integer', 'lacks_continuous_drift_detection': 'boolean', 'outcome_measurement_count': 'integer', 'is_disconnected_from_outcomes': 'boolean', 'ai_contribution_count': 'integer', 'ai_consumption_count': 'integer', 'uses_ai_in_one_direction_only': 'boolean', 'is_unmodified_for_twelve_months': 'boolean', 'design_decision_count': 'integer', 'is_live_without_recorded_decisions': 'boolean', 'ai_artifact_consuming_input_count': 'integer', 'contains_steps_affected_by_ai_agent_change': 'boolean', 'interview_session_count': 'integer', 'observation_session_count': 'integer', 'workshop_session_count': 'integer', 'protocol_session_count': 'integer', 'incident_session_count': 'integer', 'reconciled_divergence_count': 'integer', 'complementary_method_count': 'integer', 'relies_on_single_method': 'boolean', 'misses_a_required_elicitation_mode': 'boolean', 'critical_incident_count': 'integer', 'judgment_unprobed_by_incidents': 'boolean', 'sme_approval_count': 'integer', 'sme_ai_evaluation_count': 'integer', 'is_approved_without_sme_signoff': 'boolean', 'experts_evaluate_ai_not_representation': 'boolean', 'ke_session_count': 'integer', 'ke_field_session_count': 'integer', 'is_studied_only_from_the_desk': 'boolean', 'judgment_held_outside_sop_count': 'integer', 'tacit_holding_count': 'integer', 'explicit_holding_count': 'integer', 'tacit_share_exceeds_explicit': 'boolean', 'hands_held_count': 'integer', 'negotiated_practice_count': 'integer', 'lives_in_hands_silence_and_negotiation': 'boolean', 'process_model_trace_count': 'integer', 'is_live_model_untraced': 'boolean', 'trailing_practice_trace_count': 'integer', 'is_documented_behind_practice': 'boolean', 'tacit_fragment_count': 'integer', 'is_standardized_without_tacit_capture': 'boolean', 'tacit_form_fragment_count': 'integer', 'situated_judgment_fragment_count': 'integer', 'tacit_judgment_fragment_count': 'integer', 'first_step': 'string', 'fallback_step': 'string', 'first_step_disagrees_with_graph': 'boolean', 'declared_first_step_count': 'integer', 'graph_entry_step_count': 'integer', 'owner_organization': 'string'},
+     'calculated': {'is_under_specified_for_execution', 'days_document_trails_version', 'has_unrehearsed_control_entry', 'tacit_share_exceeds_explicit', 'rests_on_compound_fragile_knowledge', 'is_managed_cadence_breach', 'days_since_modified', 'is_blocked_on_pending_decision', 'is_documented_behind_practice', 'lacks_continuous_drift_detection', 'is_live_model_untraced', 'has_unwitnessed_change', 'is_held_unfit_by_landed_decisions', 'search_success_percent', 'ai_consumption_count', 'ai_boundary_is_unevidenced', 'is_live_with_unrehearsed_control', 'document_lags_practice', 'is_unmodified_for_twelve_months', 'human_channel_count', 'has_any_steward', 'judgment_unprobed_by_incidents', 'is_fit_to_execute', 'complementary_method_count', 'is_live', 'is_not_query_validate_reason_ready', 'has_decision_in_flight', 'uses_non_pko_status', 'relies_on_single_method', 'uses_ai_in_one_direction_only', 'is_load_bearing_orphan', 'knowledge_base_is_concentrated', 'tacit_judgment_fragment_count', 'non_human_step_count', 'is_still_referenced', 'is_live_and_unstewarded', 'is_current_without_motivation', 'knowledge_is_staler_than_cadence', 'is_cleanly_retired', 'control_taxonomy_is_incomplete', 'is_approved_without_sme_signoff', 'is_unremediated_cadence_breach', 'rests_on_notation_only', 'lives_in_hands_silence_and_negotiation', 'contains_steps_affected_by_ai_agent_change', 'still_owns_valid_knowledge', 'feeds_unapproved_knowledge_to_machines', 'is_unstewarded', 'governance_is_silent', 'serves_only_humans_or_only_machines', 'is_live_with_blocking_gap', 'is_disconnected_from_outcomes', 'is_unreachable_knowledge', 'is_ready_for_execution', 'runs_on_unapproved_knowledge', 'first_step_disagrees_with_graph', 'is_in_cadence_breach', 'has_open_blocking_gap', 'should_not_be_executable', 'was_modified_since_last_review', 'is_standardized_without_tacit_capture', 'is_inadequate_for_use', 'lacks_machine_interpretable_encoding', 'experts_evaluate_ai_not_representation', 'name', 'elicitation_evidence_count', 'machine_channel_count', 'is_studied_only_from_the_desk', 'mixes_granularity_at_one_level', 'is_live_without_recorded_decisions', 'misses_a_required_elicitation_mode', 'mixes_human_and_software_steps', 'has_governance_record', 'has_unresolved_mining_drift', 'is_inconsistent_across_shifts', 'has_no_exception_handling', 'has_approved_change_request'},
      'lookups': [
         {'field': 'as_of_instant', 'target': 'evaluation_contexts', 'return': 'as_of_instant', 'key': 'evaluation_context', 'match': 'evaluation_context_id'},
         {'field': 'modifier_is_authority', 'target': 'agents', 'return': 'agent_kind', 'key': 'modified_by_agent', 'match': 'agent_id'},
         {'field': 'status_is_pko', 'target': 'lifecycle_statuses', 'return': 'is_pko_status', 'key': 'status', 'match': 'lifecycle_status_id'},
         {'field': 'procedure_type_of_version', 'target': 'procedures', 'return': 'procedure_type', 'key': 'procedure', 'match': 'procedure_id'},
-        {'field': 'created_by_agent_kind', 'target': 'agents', 'return': 'agent_kind', 'key': 'created_by_agent', 'match': 'agent_id'},],
+        {'field': 'created_by_agent_kind', 'target': 'agents', 'return': 'agent_kind', 'key': 'created_by_agent', 'match': 'agent_id'},
+        {'field': 'owner_organization', 'target': 'procedures', 'return': 'owner_organization', 'key': 'procedure', 'match': 'procedure_id'},],
      'aggregations': [
         {'field': 'count_of_steps', 'op': 'COUNTIFS', 'table': 'steps', 'criteria': [('procedure_version', 'field', 'procedure_version_id')]},
         {'field': 'count_of_open_knowledge_gaps', 'op': 'COUNTIFS', 'table': 'knowledge_gaps', 'criteria': [('procedure_version', 'field', 'procedure_version_id'), ('status', 'literal', 'Open')]},
@@ -29815,14 +30284,14 @@ ERB_TABLES = [
      'compute': compute_procedure_status_changes_fields,
      'fields': ['procedure_status_change_id', 'name', 'procedure_version', 'from_status', 'to_status', 'changed_at', 'changed_by_agent', 'motivation', 'semantic_type_iri', 'change_kind', 'procedure_execution', 'is_unattributed_change', 'change_kind_contradicts_target'],
      'datatypes': {'name': 'string', 'is_unattributed_change': 'boolean', 'change_kind_contradicts_target': 'boolean'},
-     'calculated': {'name', 'change_kind_contradicts_target', 'is_unattributed_change'},
+     'calculated': {'is_unattributed_change', 'name', 'change_kind_contradicts_target'},
      'lookups': [],
      'aggregations': []},
     {'name': 'Steps', 'file': 'steps', 'rulebook_rows': 41,
      'compute': compute_steps_fields,
-     'fields': ['step_id', 'name', 'procedure_version', 'step_number', 'title', 'step_kind', 'assigned_role', 'assigned_role_label', 'assigned_agent_kind', 'instruction', 'expected_duration_minutes', 'expertise_level', 'requires_human_confirmation', 'blocking_requirement_count', 'stale_binding_count', 'authoritative_stale_count', 'available_exception_count', 'declared_verification_count', 'is_preparation_step', 'is_approval_step', 'stale_authoritative_binding_count', 'inputs_are_fresh', 'is_software_assigned', 'is_human_approval_gate', 'gate_held_by_human', 'binding_boundary_count', 'assigned_role_is_ungoverned', 'unusable_binding_count', 'all_sources_usable', 'control_kind', 'unwarranted_boundary_count', 'is_governed_by_unwarranted_boundary', 'software_execution_count', 'has_been_approached_by_software', 'is_unexercised_human_gate', 'is_demonstrated_human_gate', 'unexercised_gate_version_key', 'has_declared_control_kind', 'undeclared_control_version_key', 'approval_step_is_software_assigned', 'unwitnessed_blocking_count', 'reachable_step_count', 'reached_from_step_count', 'self_reach_count', 'is_on_rework_loop', 'is_blocking_control_on_rework_loop', 'incoming_transition_count', 'is_entry_step', 'entry_step_key', 'version_entry_step_id', 'gate_free_reach_from_entry_count', 'is_reachable_from_entry_without_human_gate', 'is_gate_bypassed_publication', 'semantic_type_iri', 'parent_step', 'first_child_step', 'verifies_step', 'remedy_for_error', 'calls_procedure', 'isolates_energy_source', 'prerequisite_step', 'min_repetitions', 'max_repetitions', 'description', 'child_step_count', 'parent_step_kind', 'is_composite_without_children', 'precondition_count', 'postcondition_count', 'invariant_count', 'safety_critical_condition_count', 'failure_mode_count', 'cue_count', 'danger_cue_count', 'decision_point_count', 'knowledge_fragment_count', 'has_instruction_only', 'input_variable_count', 'output_variable_count', 'required_lock_count', 'required_protective_equipment_count', 'is_isolation_without_lock', 'referenced_resource_count', 'untyped_version_key', 'is_accountable_to_software', 'has_downstream_steps', 'incompleteness_cue_count', 'has_incompleteness_cue', 'has_postcondition', 'accountable_agent', 'has_no_accountable_agent', 'conditionless_version_key', 'prerequisite_downstream_count', 'prerequisite_is_downstream', 'states_operational_knowledge', 'bottleneck_allocation_count', 'is_bottleneck_step', 'stage', 'detail_level', 'coarse_top_level_version_key', 'fine_top_level_version_key', 'context_sensitivity_count', 'unscoped_sensitivity_count', 'is_context_sensitive_but_unscoped', 'version_procedure', 'assigned_role_does_compliance_review', 'compliance_review_procedure_key', 'step_procedure_type', 'is_release_approval_gate', 'regulatory_requirement_count', 'tool_function_count', 'parseable_condition_count', 'dmn_decision_count', 'tool_use_rules_only_in_prose', 'open_outdated_flag_count', 'has_reported_reality_mismatch', 'deviated_run_count', 'is_drifted_from_practice', 'ai_failure_count', 'is_ai_failure_point', 'ai_artifact_input_count', 'consumes_ai_agent_artifact', 'collection_evidence_count', 'has_collection_evidence', 'activity_origin_trace_count', 'version_model_trace_count', 'is_untraced_activity_in_traced_model', 'elicited_validation_count', 'elicited_extension_count', 'downstream_artifact_step_count', 'is_declared_first_step', 'is_declared_fallback_step', 'declared_first_step_key', 'declared_fallback_step_key'],
-     'datatypes': {'name': 'string', 'assigned_role_label': 'string', 'assigned_agent_kind': 'string', 'blocking_requirement_count': 'number', 'stale_binding_count': 'number', 'authoritative_stale_count': 'number', 'available_exception_count': 'number', 'declared_verification_count': 'number', 'is_preparation_step': 'boolean', 'is_approval_step': 'boolean', 'stale_authoritative_binding_count': 'number', 'inputs_are_fresh': 'boolean', 'is_software_assigned': 'boolean', 'is_human_approval_gate': 'boolean', 'gate_held_by_human': 'boolean', 'binding_boundary_count': 'number', 'assigned_role_is_ungoverned': 'boolean', 'unusable_binding_count': 'number', 'all_sources_usable': 'boolean', 'unwarranted_boundary_count': 'number', 'is_governed_by_unwarranted_boundary': 'boolean', 'software_execution_count': 'number', 'has_been_approached_by_software': 'boolean', 'is_unexercised_human_gate': 'boolean', 'is_demonstrated_human_gate': 'boolean', 'unexercised_gate_version_key': 'string', 'has_declared_control_kind': 'boolean', 'undeclared_control_version_key': 'string', 'approval_step_is_software_assigned': 'boolean', 'unwitnessed_blocking_count': 'number', 'reachable_step_count': 'integer', 'reached_from_step_count': 'integer', 'self_reach_count': 'integer', 'is_on_rework_loop': 'boolean', 'is_blocking_control_on_rework_loop': 'boolean', 'incoming_transition_count': 'integer', 'is_entry_step': 'boolean', 'entry_step_key': 'string', 'version_entry_step_id': 'string', 'gate_free_reach_from_entry_count': 'integer', 'is_reachable_from_entry_without_human_gate': 'boolean', 'is_gate_bypassed_publication': 'boolean', 'child_step_count': 'integer', 'parent_step_kind': 'string', 'is_composite_without_children': 'boolean', 'precondition_count': 'integer', 'postcondition_count': 'integer', 'invariant_count': 'integer', 'safety_critical_condition_count': 'integer', 'failure_mode_count': 'integer', 'cue_count': 'integer', 'danger_cue_count': 'integer', 'decision_point_count': 'integer', 'knowledge_fragment_count': 'integer', 'has_instruction_only': 'boolean', 'input_variable_count': 'integer', 'output_variable_count': 'integer', 'required_lock_count': 'integer', 'required_protective_equipment_count': 'integer', 'is_isolation_without_lock': 'boolean', 'referenced_resource_count': 'integer', 'untyped_version_key': 'string', 'is_accountable_to_software': 'boolean', 'has_downstream_steps': 'boolean', 'incompleteness_cue_count': 'integer', 'has_incompleteness_cue': 'boolean', 'has_postcondition': 'boolean', 'accountable_agent': 'string', 'has_no_accountable_agent': 'boolean', 'conditionless_version_key': 'string', 'prerequisite_downstream_count': 'integer', 'prerequisite_is_downstream': 'boolean', 'states_operational_knowledge': 'boolean', 'bottleneck_allocation_count': 'integer', 'is_bottleneck_step': 'boolean', 'coarse_top_level_version_key': 'string', 'fine_top_level_version_key': 'string', 'context_sensitivity_count': 'integer', 'unscoped_sensitivity_count': 'integer', 'is_context_sensitive_but_unscoped': 'boolean', 'version_procedure': 'string', 'assigned_role_does_compliance_review': 'boolean', 'compliance_review_procedure_key': 'string', 'step_procedure_type': 'string', 'is_release_approval_gate': 'boolean', 'regulatory_requirement_count': 'integer', 'tool_function_count': 'integer', 'parseable_condition_count': 'integer', 'dmn_decision_count': 'integer', 'tool_use_rules_only_in_prose': 'boolean', 'open_outdated_flag_count': 'integer', 'has_reported_reality_mismatch': 'boolean', 'deviated_run_count': 'integer', 'is_drifted_from_practice': 'boolean', 'ai_failure_count': 'integer', 'is_ai_failure_point': 'boolean', 'ai_artifact_input_count': 'integer', 'consumes_ai_agent_artifact': 'boolean', 'collection_evidence_count': 'integer', 'has_collection_evidence': 'boolean', 'activity_origin_trace_count': 'integer', 'version_model_trace_count': 'integer', 'is_untraced_activity_in_traced_model': 'boolean', 'elicited_validation_count': 'integer', 'elicited_extension_count': 'integer', 'downstream_artifact_step_count': 'integer', 'declared_first_step_key': 'string', 'declared_fallback_step_key': 'string'},
-     'calculated': {'is_context_sensitive_but_unscoped', 'prerequisite_is_downstream', 'approval_step_is_software_assigned', 'declared_fallback_step_key', 'has_no_accountable_agent', 'inputs_are_fresh', 'is_governed_by_unwarranted_boundary', 'is_composite_without_children', 'is_unexercised_human_gate', 'is_untraced_activity_in_traced_model', 'has_instruction_only', 'has_declared_control_kind', 'has_postcondition', 'has_collection_evidence', 'states_operational_knowledge', 'is_on_rework_loop', 'is_demonstrated_human_gate', 'unexercised_gate_version_key', 'is_gate_bypassed_publication', 'is_accountable_to_software', 'consumes_ai_agent_artifact', 'declared_first_step_key', 'gate_held_by_human', 'has_reported_reality_mismatch', 'entry_step_key', 'all_sources_usable', 'is_approval_step', 'has_incompleteness_cue', 'coarse_top_level_version_key', 'has_downstream_steps', 'is_bottleneck_step', 'name', 'is_entry_step', 'is_software_assigned', 'is_isolation_without_lock', 'is_preparation_step', 'tool_use_rules_only_in_prose', 'undeclared_control_version_key', 'has_been_approached_by_software', 'is_human_approval_gate', 'fine_top_level_version_key', 'untyped_version_key', 'is_blocking_control_on_rework_loop', 'is_ai_failure_point', 'is_reachable_from_entry_without_human_gate', 'conditionless_version_key', 'is_release_approval_gate', 'compliance_review_procedure_key', 'is_drifted_from_practice'},
+     'fields': ['step_id', 'name', 'procedure_version', 'step_number', 'title', 'step_kind', 'assigned_role', 'assigned_role_label', 'assigned_agent_kind', 'instruction', 'expected_duration_minutes', 'expertise_level', 'requires_human_confirmation', 'blocking_requirement_count', 'stale_binding_count', 'authoritative_stale_count', 'available_exception_count', 'declared_verification_count', 'is_preparation_step', 'is_approval_step', 'stale_authoritative_binding_count', 'inputs_are_fresh', 'is_software_assigned', 'is_human_approval_gate', 'gate_held_by_human', 'binding_boundary_count', 'assigned_role_is_ungoverned', 'unusable_binding_count', 'all_sources_usable', 'control_kind', 'unwarranted_boundary_count', 'is_governed_by_unwarranted_boundary', 'software_execution_count', 'has_been_approached_by_software', 'is_unexercised_human_gate', 'is_demonstrated_human_gate', 'unexercised_gate_version_key', 'has_declared_control_kind', 'undeclared_control_version_key', 'approval_step_is_software_assigned', 'unwitnessed_blocking_count', 'reachable_step_count', 'reached_from_step_count', 'self_reach_count', 'is_on_rework_loop', 'is_blocking_control_on_rework_loop', 'incoming_transition_count', 'is_entry_step', 'entry_step_key', 'version_entry_step_id', 'gate_free_reach_from_entry_count', 'is_reachable_from_entry_without_human_gate', 'is_gate_bypassed_publication', 'semantic_type_iri', 'parent_step', 'first_child_step', 'verifies_step', 'remedy_for_error', 'calls_procedure', 'isolates_energy_source', 'prerequisite_step', 'min_repetitions', 'max_repetitions', 'description', 'child_step_count', 'parent_step_kind', 'is_composite_without_children', 'precondition_count', 'postcondition_count', 'invariant_count', 'safety_critical_condition_count', 'failure_mode_count', 'cue_count', 'danger_cue_count', 'decision_point_count', 'knowledge_fragment_count', 'has_instruction_only', 'input_variable_count', 'output_variable_count', 'required_lock_count', 'required_protective_equipment_count', 'is_isolation_without_lock', 'referenced_resource_count', 'untyped_version_key', 'is_accountable_to_software', 'has_downstream_steps', 'incompleteness_cue_count', 'has_incompleteness_cue', 'has_postcondition', 'accountable_agent', 'has_no_accountable_agent', 'conditionless_version_key', 'prerequisite_downstream_count', 'prerequisite_is_downstream', 'states_operational_knowledge', 'bottleneck_allocation_count', 'is_bottleneck_step', 'stage', 'detail_level', 'coarse_top_level_version_key', 'fine_top_level_version_key', 'context_sensitivity_count', 'unscoped_sensitivity_count', 'is_context_sensitive_but_unscoped', 'version_procedure', 'assigned_role_does_compliance_review', 'compliance_review_procedure_key', 'step_procedure_type', 'is_release_approval_gate', 'regulatory_requirement_count', 'tool_function_count', 'parseable_condition_count', 'dmn_decision_count', 'tool_use_rules_only_in_prose', 'open_outdated_flag_count', 'has_reported_reality_mismatch', 'deviated_run_count', 'is_drifted_from_practice', 'ai_failure_count', 'is_ai_failure_point', 'ai_artifact_input_count', 'consumes_ai_agent_artifact', 'collection_evidence_count', 'has_collection_evidence', 'activity_origin_trace_count', 'version_model_trace_count', 'is_untraced_activity_in_traced_model', 'elicited_validation_count', 'elicited_extension_count', 'downstream_artifact_step_count', 'is_declared_first_step', 'is_declared_fallback_step', 'declared_first_step_key', 'declared_fallback_step_key', 'owner_organization'],
+     'datatypes': {'name': 'string', 'assigned_role_label': 'string', 'assigned_agent_kind': 'string', 'blocking_requirement_count': 'number', 'stale_binding_count': 'number', 'authoritative_stale_count': 'number', 'available_exception_count': 'number', 'declared_verification_count': 'number', 'is_preparation_step': 'boolean', 'is_approval_step': 'boolean', 'stale_authoritative_binding_count': 'number', 'inputs_are_fresh': 'boolean', 'is_software_assigned': 'boolean', 'is_human_approval_gate': 'boolean', 'gate_held_by_human': 'boolean', 'binding_boundary_count': 'number', 'assigned_role_is_ungoverned': 'boolean', 'unusable_binding_count': 'number', 'all_sources_usable': 'boolean', 'unwarranted_boundary_count': 'number', 'is_governed_by_unwarranted_boundary': 'boolean', 'software_execution_count': 'number', 'has_been_approached_by_software': 'boolean', 'is_unexercised_human_gate': 'boolean', 'is_demonstrated_human_gate': 'boolean', 'unexercised_gate_version_key': 'string', 'has_declared_control_kind': 'boolean', 'undeclared_control_version_key': 'string', 'approval_step_is_software_assigned': 'boolean', 'unwitnessed_blocking_count': 'number', 'reachable_step_count': 'integer', 'reached_from_step_count': 'integer', 'self_reach_count': 'integer', 'is_on_rework_loop': 'boolean', 'is_blocking_control_on_rework_loop': 'boolean', 'incoming_transition_count': 'integer', 'is_entry_step': 'boolean', 'entry_step_key': 'string', 'version_entry_step_id': 'string', 'gate_free_reach_from_entry_count': 'integer', 'is_reachable_from_entry_without_human_gate': 'boolean', 'is_gate_bypassed_publication': 'boolean', 'child_step_count': 'integer', 'parent_step_kind': 'string', 'is_composite_without_children': 'boolean', 'precondition_count': 'integer', 'postcondition_count': 'integer', 'invariant_count': 'integer', 'safety_critical_condition_count': 'integer', 'failure_mode_count': 'integer', 'cue_count': 'integer', 'danger_cue_count': 'integer', 'decision_point_count': 'integer', 'knowledge_fragment_count': 'integer', 'has_instruction_only': 'boolean', 'input_variable_count': 'integer', 'output_variable_count': 'integer', 'required_lock_count': 'integer', 'required_protective_equipment_count': 'integer', 'is_isolation_without_lock': 'boolean', 'referenced_resource_count': 'integer', 'untyped_version_key': 'string', 'is_accountable_to_software': 'boolean', 'has_downstream_steps': 'boolean', 'incompleteness_cue_count': 'integer', 'has_incompleteness_cue': 'boolean', 'has_postcondition': 'boolean', 'accountable_agent': 'string', 'has_no_accountable_agent': 'boolean', 'conditionless_version_key': 'string', 'prerequisite_downstream_count': 'integer', 'prerequisite_is_downstream': 'boolean', 'states_operational_knowledge': 'boolean', 'bottleneck_allocation_count': 'integer', 'is_bottleneck_step': 'boolean', 'coarse_top_level_version_key': 'string', 'fine_top_level_version_key': 'string', 'context_sensitivity_count': 'integer', 'unscoped_sensitivity_count': 'integer', 'is_context_sensitive_but_unscoped': 'boolean', 'version_procedure': 'string', 'assigned_role_does_compliance_review': 'boolean', 'compliance_review_procedure_key': 'string', 'step_procedure_type': 'string', 'is_release_approval_gate': 'boolean', 'regulatory_requirement_count': 'integer', 'tool_function_count': 'integer', 'parseable_condition_count': 'integer', 'dmn_decision_count': 'integer', 'tool_use_rules_only_in_prose': 'boolean', 'open_outdated_flag_count': 'integer', 'has_reported_reality_mismatch': 'boolean', 'deviated_run_count': 'integer', 'is_drifted_from_practice': 'boolean', 'ai_failure_count': 'integer', 'is_ai_failure_point': 'boolean', 'ai_artifact_input_count': 'integer', 'consumes_ai_agent_artifact': 'boolean', 'collection_evidence_count': 'integer', 'has_collection_evidence': 'boolean', 'activity_origin_trace_count': 'integer', 'version_model_trace_count': 'integer', 'is_untraced_activity_in_traced_model': 'boolean', 'elicited_validation_count': 'integer', 'elicited_extension_count': 'integer', 'downstream_artifact_step_count': 'integer', 'declared_first_step_key': 'string', 'declared_fallback_step_key': 'string', 'owner_organization': 'string'},
+     'calculated': {'undeclared_control_version_key', 'declared_first_step_key', 'entry_step_key', 'is_composite_without_children', 'is_governed_by_unwarranted_boundary', 'is_software_assigned', 'has_incompleteness_cue', 'is_unexercised_human_gate', 'has_instruction_only', 'is_accountable_to_software', 'gate_held_by_human', 'is_approval_step', 'is_human_approval_gate', 'untyped_version_key', 'is_entry_step', 'name', 'is_preparation_step', 'has_reported_reality_mismatch', 'is_ai_failure_point', 'is_isolation_without_lock', 'states_operational_knowledge', 'is_context_sensitive_but_unscoped', 'is_drifted_from_practice', 'conditionless_version_key', 'prerequisite_is_downstream', 'all_sources_usable', 'is_on_rework_loop', 'is_reachable_from_entry_without_human_gate', 'is_untraced_activity_in_traced_model', 'tool_use_rules_only_in_prose', 'has_no_accountable_agent', 'has_collection_evidence', 'is_blocking_control_on_rework_loop', 'declared_fallback_step_key', 'unexercised_gate_version_key', 'consumes_ai_agent_artifact', 'is_gate_bypassed_publication', 'compliance_review_procedure_key', 'is_demonstrated_human_gate', 'is_release_approval_gate', 'has_postcondition', 'has_declared_control_kind', 'has_downstream_steps', 'approval_step_is_software_assigned', 'has_been_approached_by_software', 'coarse_top_level_version_key', 'is_bottleneck_step', 'inputs_are_fresh', 'fine_top_level_version_key'},
      'lookups': [
         {'field': 'assigned_role_label', 'target': 'roles', 'return': 'label', 'key': 'assigned_role', 'match': 'role_id'},
         {'field': 'assigned_agent_kind', 'target': 'roles', 'return': 'current_agent_kind', 'key': 'assigned_role', 'match': 'role_id'},
@@ -29833,7 +30302,8 @@ ERB_TABLES = [
         {'field': 'version_procedure', 'target': 'procedure_versions', 'return': 'procedure', 'key': 'procedure_version', 'match': 'procedure_version_id'},
         {'field': 'assigned_role_does_compliance_review', 'target': 'roles', 'return': 'has_compliance_review_capability', 'key': 'assigned_role', 'match': 'role_id'},
         {'field': 'step_procedure_type', 'target': 'procedure_versions', 'return': 'procedure_type_of_version', 'key': 'procedure_version', 'match': 'procedure_version_id'},
-        {'field': 'version_model_trace_count', 'target': 'procedure_versions', 'return': 'process_model_trace_count', 'key': 'procedure_version', 'match': 'procedure_version_id'},],
+        {'field': 'version_model_trace_count', 'target': 'procedure_versions', 'return': 'process_model_trace_count', 'key': 'procedure_version', 'match': 'procedure_version_id'},
+        {'field': 'owner_organization', 'target': 'procedure_versions', 'return': 'owner_organization', 'key': 'procedure_version', 'match': 'procedure_version_id'},],
      'aggregations': [
         {'field': 'blocking_requirement_count', 'op': 'COUNTIFS', 'table': 'step_requirements', 'criteria': [('blocking_step_key', 'field', 'step_id')]},
         {'field': 'stale_binding_count', 'op': 'COUNTIFS', 'table': 'operational_bindings', 'criteria': [('stale_binding_step_key', 'field', 'step_id')]},
@@ -29888,7 +30358,7 @@ ERB_TABLES = [
      'compute': compute_step_transitions_fields,
      'fields': ['step_transition_id', 'name', 'procedure_version', 'from_step', 'to_step', 'transition_kind', 'condition', 'priority', 'is_recovery_path', 'count_of_from_step_executions', 'count_of_to_step_executions', 'has_reachable_origin', 'has_reachable_target', 'is_never_exercised', 'is_untested_recovery_path', 'count_of_observed_traversals', 'has_been_traversed', 'is_unwalked_recovery_path', 'target_blocking_requirement_count', 'target_carries_blocking_control', 'is_unrehearsed_control_entry', 'unrehearsed_control_version_key', 'leads_to_closure', 'from_step_is_human_approval_gate', 'to_step_is_human_approval_gate', 'avoids_human_approval_gate', 'leads_without_human_gate_closure', 'semantic_type_iri', 'decision_point_count', 'is_undocumented_branch'],
      'datatypes': {'name': 'string', 'is_recovery_path': 'boolean', 'count_of_from_step_executions': 'integer', 'count_of_to_step_executions': 'integer', 'has_reachable_origin': 'boolean', 'has_reachable_target': 'boolean', 'is_never_exercised': 'boolean', 'is_untested_recovery_path': 'boolean', 'count_of_observed_traversals': 'integer', 'has_been_traversed': 'boolean', 'is_unwalked_recovery_path': 'boolean', 'target_blocking_requirement_count': 'number', 'target_carries_blocking_control': 'boolean', 'is_unrehearsed_control_entry': 'boolean', 'unrehearsed_control_version_key': 'string', 'from_step_is_human_approval_gate': 'boolean', 'to_step_is_human_approval_gate': 'boolean', 'avoids_human_approval_gate': 'boolean', 'decision_point_count': 'integer', 'is_undocumented_branch': 'boolean'},
-     'calculated': {'has_been_traversed', 'target_carries_blocking_control', 'is_undocumented_branch', 'is_untested_recovery_path', 'avoids_human_approval_gate', 'is_recovery_path', 'has_reachable_origin', 'name', 'has_reachable_target', 'is_unwalked_recovery_path', 'is_never_exercised', 'is_unrehearsed_control_entry', 'unrehearsed_control_version_key'},
+     'calculated': {'has_been_traversed', 'is_unwalked_recovery_path', 'is_recovery_path', 'is_never_exercised', 'target_carries_blocking_control', 'is_unrehearsed_control_entry', 'name', 'has_reachable_origin', 'unrehearsed_control_version_key', 'has_reachable_target', 'is_undocumented_branch', 'avoids_human_approval_gate', 'is_untested_recovery_path'},
      'lookups': [
         {'field': 'target_blocking_requirement_count', 'target': 'steps', 'return': 'blocking_requirement_count', 'key': 'to_step', 'match': 'step_id'},
         {'field': 'from_step_is_human_approval_gate', 'target': 'steps', 'return': 'is_human_approval_gate', 'key': 'from_step', 'match': 'step_id'},
@@ -29944,7 +30414,7 @@ ERB_TABLES = [
      'compute': compute_requirements_fields,
      'fields': ['requirement_id', 'name', 'label', 'requirement_type', 'statement', 'rationale', 'is_blocking', 'satisfaction_record_count', 'step_binding_count', 'is_bound_to_any_step', 'has_ever_been_evaluated', 'negative_outcome_count', 'is_inoperative_control', 'is_decorative_control', 'has_computed_witness', 'witness_field_name', 'has_ever_produced_negative', 'is_unfalsified_control', 'claims_a_witness_field', 'named_witness_field_exists', 'derived_has_computed_witness', 'witness_claim_is_unverified', 'is_unwitnessed_blocking_control', 'witness_fire_count', 'witness_has_never_fired', 'evaluation_sample_size', 'has_meaningful_sample', 'minimum_sample_for_assurance', 'is_untested_witness', 'is_evidenced_holding_control', 'control_assurance_state', 'unexercised_binding_count', 'witness_is_partially_scoped', 'accountable_role', 'accountable_agent', 'has_named_owner', 'is_orphaned_blocking_control', 'is_unwatched_and_unowned', 'attestation_exposure_note', 'unwatched_unowned_flag', 'controlled_term', 'uses_controlled_vocabulary', 'semantic_type_iri', 'regulatory_framework', 'is_regulatory_requirement', 'constraint_trace_count', 'is_untraced_bound_constraint'],
      'datatypes': {'name': 'string', 'satisfaction_record_count': 'number', 'step_binding_count': 'number', 'is_bound_to_any_step': 'boolean', 'has_ever_been_evaluated': 'boolean', 'negative_outcome_count': 'number', 'is_inoperative_control': 'boolean', 'is_decorative_control': 'boolean', 'has_ever_produced_negative': 'boolean', 'is_unfalsified_control': 'boolean', 'claims_a_witness_field': 'boolean', 'named_witness_field_exists': 'boolean', 'derived_has_computed_witness': 'boolean', 'witness_claim_is_unverified': 'boolean', 'is_unwitnessed_blocking_control': 'boolean', 'witness_fire_count': 'number', 'witness_has_never_fired': 'boolean', 'evaluation_sample_size': 'number', 'has_meaningful_sample': 'boolean', 'is_untested_witness': 'boolean', 'is_evidenced_holding_control': 'boolean', 'control_assurance_state': 'string', 'unexercised_binding_count': 'number', 'witness_is_partially_scoped': 'boolean', 'accountable_agent': 'string', 'has_named_owner': 'boolean', 'is_orphaned_blocking_control': 'boolean', 'is_unwatched_and_unowned': 'boolean', 'attestation_exposure_note': 'string', 'unwatched_unowned_flag': 'string', 'uses_controlled_vocabulary': 'boolean', 'is_regulatory_requirement': 'boolean', 'constraint_trace_count': 'integer', 'is_untraced_bound_constraint': 'boolean'},
-     'calculated': {'witness_fire_count', 'is_unfalsified_control', 'unwatched_unowned_flag', 'claims_a_witness_field', 'is_bound_to_any_step', 'attestation_exposure_note', 'witness_claim_is_unverified', 'is_untraced_bound_constraint', 'is_orphaned_blocking_control', 'is_regulatory_requirement', 'name', 'is_evidenced_holding_control', 'is_untested_witness', 'control_assurance_state', 'derived_has_computed_witness', 'is_unwitnessed_blocking_control', 'uses_controlled_vocabulary', 'is_decorative_control', 'has_ever_produced_negative', 'has_named_owner', 'witness_is_partially_scoped', 'witness_has_never_fired', 'is_unwatched_and_unowned', 'is_inoperative_control', 'has_ever_been_evaluated', 'has_meaningful_sample', 'evaluation_sample_size'},
+     'calculated': {'claims_a_witness_field', 'uses_controlled_vocabulary', 'is_unwatched_and_unowned', 'has_named_owner', 'is_orphaned_blocking_control', 'witness_claim_is_unverified', 'has_ever_been_evaluated', 'is_untraced_bound_constraint', 'derived_has_computed_witness', 'is_bound_to_any_step', 'has_meaningful_sample', 'is_regulatory_requirement', 'name', 'is_untested_witness', 'unwatched_unowned_flag', 'has_ever_produced_negative', 'attestation_exposure_note', 'witness_fire_count', 'is_unwitnessed_blocking_control', 'witness_has_never_fired', 'is_unfalsified_control', 'control_assurance_state', 'is_decorative_control', 'is_inoperative_control', 'evaluation_sample_size', 'is_evidenced_holding_control', 'witness_is_partially_scoped'},
      'lookups': [
         {'field': 'named_witness_field_exists', 'target': 'rulebook_fields', 'return': 'is_derived', 'key': 'witness_field_name', 'match': 'rulebook_field_id'},
         {'field': 'accountable_agent', 'target': 'roles', 'return': 'current_agent', 'key': 'accountable_role', 'match': 'role_id'},],
@@ -29958,7 +30428,7 @@ ERB_TABLES = [
      'compute': compute_step_requirements_fields,
      'fields': ['step_requirement_id', 'name', 'step', 'requirement', 'requirement_is_blocking', 'blocking_step_key', 'step_when_blocking', 'requirement_lacks_witness', 'unwitnessed_step_key', 'satisfaction_count_for_binding', 'binding_was_ever_exercised', 'is_unexercised_blocking_binding', 'unexercised_binding_requirement_key', 'requirement_is_regulatory'],
      'datatypes': {'name': 'string', 'requirement_is_blocking': 'boolean', 'blocking_step_key': 'string', 'step_when_blocking': 'string', 'requirement_lacks_witness': 'boolean', 'unwitnessed_step_key': 'string', 'satisfaction_count_for_binding': 'number', 'binding_was_ever_exercised': 'boolean', 'is_unexercised_blocking_binding': 'boolean', 'unexercised_binding_requirement_key': 'string', 'requirement_is_regulatory': 'boolean'},
-     'calculated': {'step_when_blocking', 'blocking_step_key', 'name', 'unexercised_binding_requirement_key', 'unwitnessed_step_key', 'binding_was_ever_exercised', 'is_unexercised_blocking_binding'},
+     'calculated': {'binding_was_ever_exercised', 'unwitnessed_step_key', 'name', 'step_when_blocking', 'blocking_step_key', 'unexercised_binding_requirement_key', 'is_unexercised_blocking_binding'},
      'lookups': [
         {'field': 'requirement_is_blocking', 'target': 'requirements', 'return': 'is_blocking', 'key': 'requirement', 'match': 'requirement_id'},
         {'field': 'requirement_lacks_witness', 'target': 'requirements', 'return': 'is_unwitnessed_blocking_control', 'key': 'requirement', 'match': 'requirement_id'},
@@ -29983,14 +30453,14 @@ ERB_TABLES = [
      'compute': compute_exceptions_fields,
      'fields': ['exception_id', 'name', 'procedure_version', 'trigger_step', 'condition', 'handling', 'approval_role', 'fallback_role', 'status', 'active_exception_step_key', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'active_exception_step_key': 'string'},
-     'calculated': {'name', 'active_exception_step_key'},
+     'calculated': {'active_exception_step_key', 'name'},
      'lookups': [],
      'aggregations': []},
     {'name': 'Resources', 'file': 'resources', 'rulebook_rows': 19,
      'compute': compute_resources_fields,
      'fields': ['resource_id', 'name', 'title', 'resource_kind', 'external_uri', 'created_at', 'modified_at', 'description', 'approval_status', 'is_approved_source', 'semantic_type_iri', 'language', 'keywords', 'format', 'created_by_agent', 'modified_by_agent', 'extracted_from_resource', 'source_modified_at', 'is_stale_extraction', 'referencing_step_count', 'referencing_version_count', 'is_unused_resource', 'artifact_type_concept', 'is_content_without_organization', 'trailing_practice_count', 'is_behind_current_practice', 'catalog_entry_for', 'compliance_record_for'],
      'datatypes': {'name': 'string', 'is_approved_source': 'boolean', 'source_modified_at': 'datetime', 'is_stale_extraction': 'boolean', 'referencing_step_count': 'integer', 'referencing_version_count': 'integer', 'is_unused_resource': 'boolean', 'is_content_without_organization': 'boolean', 'trailing_practice_count': 'integer', 'is_behind_current_practice': 'boolean'},
-     'calculated': {'is_unused_resource', 'is_approved_source', 'name', 'is_stale_extraction', 'is_content_without_organization', 'is_behind_current_practice'},
+     'calculated': {'is_content_without_organization', 'is_unused_resource', 'is_stale_extraction', 'name', 'is_behind_current_practice', 'is_approved_source'},
      'lookups': [
         {'field': 'source_modified_at', 'target': 'resources', 'return': 'modified_at', 'key': 'extracted_from_resource', 'match': 'resource_id'},],
      'aggregations': [
@@ -30001,7 +30471,7 @@ ERB_TABLES = [
      'compute': compute_procedure_resources_fields,
      'fields': ['procedure_resource_id', 'name', 'procedure_version', 'resource', 'relation', 'relation_iri', 'resource_modified_at'],
      'datatypes': {'name': 'string', 'relation_iri': 'string', 'resource_modified_at': 'datetime'},
-     'calculated': {'name', 'relation_iri'},
+     'calculated': {'relation_iri', 'name'},
      'lookups': [
         {'field': 'resource_modified_at', 'target': 'resources', 'return': 'modified_at', 'key': 'resource', 'match': 'resource_id'},],
      'aggregations': []},
@@ -30009,7 +30479,7 @@ ERB_TABLES = [
      'compute': compute_elicitation_sessions_fields,
      'fields': ['elicitation_session_id', 'name', 'procedure_version', 'method', 'started_at', 'ended_at', 'practitioner_agent', 'facilitator_agent', 'summary', 'status', 'evaluation_context', 'as_of_instant', 'days_since_elicited', 'is_single_witness_method', 'practitioner_is_still_engaged', 'valid_fragments_produced', 'is_high_yield_session', 'is_concentrated_single_witness', 'is_stale_concentrated_witness', 'concentrated_session_version_key', 'semantic_type_iri', 'observer_stance', 'setting', 'recording_reference', 'practitioner_reviewed_at', 'elicitation_mode', 'is_interview', 'is_workshop', 'why_probe_count', 'shortfall_probe_count', 'is_interview_without_why_probe', 'is_interview_without_shortfall_probe', 'initiator_count', 'executor_count', 'dependent_count', 'uninvited_participant_count', 'gathers_whole_process_chain', 'is_workshop_without_usual_outsiders', 'method_family', 'facilitator_knowledge_engineer_role_count', 'facilitator_is_knowledge_engineer', 'is_generic_or_unskilled_capture', 'is_ke_field_session', 'is_reviewed_recording'],
      'datatypes': {'name': 'string', 'as_of_instant': 'datetime', 'days_since_elicited': 'integer', 'is_single_witness_method': 'boolean', 'practitioner_is_still_engaged': 'boolean', 'valid_fragments_produced': 'number', 'is_high_yield_session': 'boolean', 'is_concentrated_single_witness': 'boolean', 'is_stale_concentrated_witness': 'boolean', 'concentrated_session_version_key': 'string', 'elicitation_mode': 'string', 'is_interview': 'boolean', 'is_workshop': 'boolean', 'why_probe_count': 'integer', 'shortfall_probe_count': 'integer', 'is_interview_without_why_probe': 'boolean', 'is_interview_without_shortfall_probe': 'boolean', 'initiator_count': 'integer', 'executor_count': 'integer', 'dependent_count': 'integer', 'uninvited_participant_count': 'integer', 'gathers_whole_process_chain': 'boolean', 'is_workshop_without_usual_outsiders': 'boolean', 'method_family': 'string', 'facilitator_knowledge_engineer_role_count': 'integer', 'facilitator_is_knowledge_engineer': 'boolean', 'is_generic_or_unskilled_capture': 'boolean', 'is_ke_field_session': 'boolean', 'is_reviewed_recording': 'boolean'},
-     'calculated': {'is_high_yield_session', 'is_workshop_without_usual_outsiders', 'facilitator_is_knowledge_engineer', 'is_concentrated_single_witness', 'is_generic_or_unskilled_capture', 'is_interview_without_why_probe', 'elicitation_mode', 'days_since_elicited', 'name', 'is_ke_field_session', 'is_reviewed_recording', 'is_interview', 'is_single_witness_method', 'is_stale_concentrated_witness', 'is_interview_without_shortfall_probe', 'concentrated_session_version_key', 'gathers_whole_process_chain', 'is_workshop'},
+     'calculated': {'elicitation_mode', 'is_interview_without_shortfall_probe', 'days_since_elicited', 'is_high_yield_session', 'gathers_whole_process_chain', 'is_workshop', 'is_concentrated_single_witness', 'name', 'is_interview', 'is_reviewed_recording', 'is_ke_field_session', 'is_interview_without_why_probe', 'concentrated_session_version_key', 'is_workshop_without_usual_outsiders', 'is_generic_or_unskilled_capture', 'is_single_witness_method', 'is_stale_concentrated_witness', 'facilitator_is_knowledge_engineer'},
      'lookups': [
         {'field': 'as_of_instant', 'target': 'evaluation_contexts', 'return': 'as_of_instant', 'key': 'evaluation_context', 'match': 'evaluation_context_id'},
         {'field': 'practitioner_is_still_engaged', 'target': 'agents', 'return': 'is_still_engaged', 'key': 'practitioner_agent', 'match': 'agent_id'},
@@ -30025,9 +30495,9 @@ ERB_TABLES = [
         {'field': 'facilitator_knowledge_engineer_role_count', 'op': 'COUNTIFS', 'table': 'roles', 'criteria': [('current_agent', 'field', 'facilitator_agent'), ('role_id', 'literal', 'knowledge-engineer')]},]},
     {'name': 'KnowledgeFragments', 'file': 'knowledge_fragments', 'rulebook_rows': 12,
      'compute': compute_knowledge_fragments_fields,
-     'fields': ['knowledge_fragment_id', 'name', 'procedure_version', 'step', 'knowledge_form', 'statement', 'elicitation_session', 'source_agent', 'confidence', 'valid_from', 'valid_to', 'status', 'owner_role', 'evaluation_context', 'as_of_instant', 'is_currently_valid', 'source_agent_is_still_engaged', 'source_agent_kind', 'has_human_source', 'has_orphaned_provenance', 'is_undefendable_tacit_claim', 'is_approved', 'is_within_validity_window', 'is_relied_upon', 'step_procedure_version_status', 'is_attached_to_live_version', 'is_unapproved_but_relied_on', 'evidence_age_days', 'has_recorded_elicitation', 'is_from_single_witness', 'evidence_expiry_days', 'evidence_has_expired', 'owner_agent', 'is_awaiting_approval', 'owner_is_me', 'is_my_unfinished_approval', 'is_invoked_by_an_exception', 'has_operational_reliance', 'is_unapproved_and_operationally_live', 'age_days', 'is_low_confidence', 'owning_version_cadence_days', 'exceeds_owning_cadence', 'is_aging_low_confidence_claim', 'owner_role_agent_kind', 'is_human_owned', 'is_ai_validated_by_ai', 'review_cadence_days', 'is_overdue_for_review', 'predates_current_role_holder', 'owner_role_assignment_valid_from', 'last_reviewed_at', 'fragility_signal_count', 'is_compound_fragile', 'is_single_point_of_failure', 'is_expiring_single_point_of_failure', 'compound_fragile_version_key', 'valid_fragment_session_key', 'consuming_step_is_software_assigned', 'consuming_step_agent_kind', 'is_unapproved_and_machine_consumed', 'is_unapproved_and_human_consumed', 'machine_consumed_unapproved_version_key', 'has_review_record', 'days_since_actual_review', 'is_unreviewed_since_authoring', 'is_genuinely_overdue', 'review_recency_is_inferred', 'inference_disagrees_with_record', 'genuinely_overdue_version_key', 'ratified_boundary_count', 'reliance_surface_count', 'days_awaiting_my_approval', 'is_high_blast_radius_unapproved', 'is_long_unapproved', 'unapproved_load_bearing_version_key', 'owner_role_is_vacated', 'is_orphaned_by_role', 'valid_fragment_version_key', 'semantic_type_iri', 'cognitive_basis', 'tacitness_degree', 'lost_in_translation', 'encoded_as', 'stated_conditions', 'is_flattened_to_brittle_rule', 'corroboration_count', 'rests_on_single_data_point'],
-     'datatypes': {'name': 'string', 'as_of_instant': 'datetime', 'is_currently_valid': 'boolean', 'source_agent_is_still_engaged': 'boolean', 'source_agent_kind': 'string', 'has_human_source': 'boolean', 'has_orphaned_provenance': 'boolean', 'is_undefendable_tacit_claim': 'boolean', 'is_approved': 'boolean', 'is_within_validity_window': 'boolean', 'is_relied_upon': 'boolean', 'step_procedure_version_status': 'string', 'is_attached_to_live_version': 'boolean', 'is_unapproved_but_relied_on': 'boolean', 'evidence_age_days': 'integer', 'has_recorded_elicitation': 'boolean', 'is_from_single_witness': 'boolean', 'evidence_expiry_days': 'integer', 'evidence_has_expired': 'boolean', 'owner_agent': 'string', 'is_awaiting_approval': 'boolean', 'owner_is_me': 'boolean', 'is_my_unfinished_approval': 'boolean', 'is_invoked_by_an_exception': 'integer', 'has_operational_reliance': 'boolean', 'is_unapproved_and_operationally_live': 'boolean', 'age_days': 'integer', 'is_low_confidence': 'boolean', 'owning_version_cadence_days': 'integer', 'exceeds_owning_cadence': 'boolean', 'is_aging_low_confidence_claim': 'boolean', 'owner_role_agent_kind': 'string', 'is_human_owned': 'boolean', 'is_ai_validated_by_ai': 'boolean', 'review_cadence_days': 'integer', 'is_overdue_for_review': 'boolean', 'predates_current_role_holder': 'boolean', 'owner_role_assignment_valid_from': 'datetime', 'fragility_signal_count': 'integer', 'is_compound_fragile': 'boolean', 'is_single_point_of_failure': 'boolean', 'is_expiring_single_point_of_failure': 'boolean', 'compound_fragile_version_key': 'string', 'valid_fragment_session_key': 'string', 'consuming_step_is_software_assigned': 'boolean', 'consuming_step_agent_kind': 'string', 'is_unapproved_and_machine_consumed': 'boolean', 'is_unapproved_and_human_consumed': 'boolean', 'machine_consumed_unapproved_version_key': 'string', 'has_review_record': 'boolean', 'days_since_actual_review': 'integer', 'is_unreviewed_since_authoring': 'boolean', 'is_genuinely_overdue': 'boolean', 'review_recency_is_inferred': 'boolean', 'inference_disagrees_with_record': 'boolean', 'genuinely_overdue_version_key': 'string', 'ratified_boundary_count': 'number', 'reliance_surface_count': 'integer', 'days_awaiting_my_approval': 'integer', 'is_high_blast_radius_unapproved': 'boolean', 'is_long_unapproved': 'boolean', 'unapproved_load_bearing_version_key': 'string', 'owner_role_is_vacated': 'boolean', 'is_orphaned_by_role': 'boolean', 'valid_fragment_version_key': 'string', 'is_flattened_to_brittle_rule': 'boolean', 'corroboration_count': 'integer', 'rests_on_single_data_point': 'boolean'},
-     'calculated': {'is_awaiting_approval', 'machine_consumed_unapproved_version_key', 'unapproved_load_bearing_version_key', 'is_unapproved_and_human_consumed', 'is_long_unapproved', 'reliance_surface_count', 'is_flattened_to_brittle_rule', 'is_orphaned_by_role', 'genuinely_overdue_version_key', 'is_my_unfinished_approval', 'is_relied_upon', 'is_unapproved_and_machine_consumed', 'is_currently_valid', 'is_expiring_single_point_of_failure', 'is_unreviewed_since_authoring', 'name', 'is_human_owned', 'valid_fragment_version_key', 'is_within_validity_window', 'valid_fragment_session_key', 'is_overdue_for_review', 'is_unapproved_and_operationally_live', 'is_low_confidence', 'days_since_actual_review', 'is_compound_fragile', 'age_days', 'has_human_source', 'has_orphaned_provenance', 'days_awaiting_my_approval', 'is_approved', 'is_high_blast_radius_unapproved', 'is_undefendable_tacit_claim', 'is_single_point_of_failure', 'exceeds_owning_cadence', 'inference_disagrees_with_record', 'fragility_signal_count', 'evidence_expiry_days', 'has_review_record', 'has_operational_reliance', 'is_genuinely_overdue', 'has_recorded_elicitation', 'review_recency_is_inferred', 'evidence_has_expired', 'rests_on_single_data_point', 'compound_fragile_version_key', 'predates_current_role_holder', 'is_aging_low_confidence_claim', 'is_ai_validated_by_ai', 'owner_is_me', 'is_unapproved_but_relied_on'},
+     'fields': ['knowledge_fragment_id', 'name', 'procedure_version', 'step', 'knowledge_form', 'statement', 'elicitation_session', 'source_agent', 'confidence', 'valid_from', 'valid_to', 'status', 'owner_role', 'evaluation_context', 'as_of_instant', 'is_currently_valid', 'source_agent_is_still_engaged', 'source_agent_kind', 'has_human_source', 'has_orphaned_provenance', 'is_undefendable_tacit_claim', 'is_approved', 'is_within_validity_window', 'is_relied_upon', 'step_procedure_version_status', 'is_attached_to_live_version', 'is_unapproved_but_relied_on', 'evidence_age_days', 'has_recorded_elicitation', 'is_from_single_witness', 'evidence_expiry_days', 'evidence_has_expired', 'owner_agent', 'is_awaiting_approval', 'owner_is_me', 'is_my_unfinished_approval', 'is_invoked_by_an_exception', 'has_operational_reliance', 'is_unapproved_and_operationally_live', 'age_days', 'is_low_confidence', 'owning_version_cadence_days', 'exceeds_owning_cadence', 'is_aging_low_confidence_claim', 'owner_role_agent_kind', 'is_human_owned', 'is_ai_validated_by_ai', 'review_cadence_days', 'is_overdue_for_review', 'predates_current_role_holder', 'owner_role_assignment_valid_from', 'last_reviewed_at', 'fragility_signal_count', 'is_compound_fragile', 'is_single_point_of_failure', 'is_expiring_single_point_of_failure', 'compound_fragile_version_key', 'valid_fragment_session_key', 'consuming_step_is_software_assigned', 'consuming_step_agent_kind', 'is_unapproved_and_machine_consumed', 'is_unapproved_and_human_consumed', 'machine_consumed_unapproved_version_key', 'has_review_record', 'days_since_actual_review', 'is_unreviewed_since_authoring', 'is_genuinely_overdue', 'review_recency_is_inferred', 'inference_disagrees_with_record', 'genuinely_overdue_version_key', 'ratified_boundary_count', 'reliance_surface_count', 'days_awaiting_my_approval', 'is_high_blast_radius_unapproved', 'is_long_unapproved', 'unapproved_load_bearing_version_key', 'owner_role_is_vacated', 'is_orphaned_by_role', 'valid_fragment_version_key', 'semantic_type_iri', 'cognitive_basis', 'tacitness_degree', 'lost_in_translation', 'encoded_as', 'stated_conditions', 'is_flattened_to_brittle_rule', 'corroboration_count', 'rests_on_single_data_point', 'owner_organization'],
+     'datatypes': {'name': 'string', 'as_of_instant': 'datetime', 'is_currently_valid': 'boolean', 'source_agent_is_still_engaged': 'boolean', 'source_agent_kind': 'string', 'has_human_source': 'boolean', 'has_orphaned_provenance': 'boolean', 'is_undefendable_tacit_claim': 'boolean', 'is_approved': 'boolean', 'is_within_validity_window': 'boolean', 'is_relied_upon': 'boolean', 'step_procedure_version_status': 'string', 'is_attached_to_live_version': 'boolean', 'is_unapproved_but_relied_on': 'boolean', 'evidence_age_days': 'integer', 'has_recorded_elicitation': 'boolean', 'is_from_single_witness': 'boolean', 'evidence_expiry_days': 'integer', 'evidence_has_expired': 'boolean', 'owner_agent': 'string', 'is_awaiting_approval': 'boolean', 'owner_is_me': 'boolean', 'is_my_unfinished_approval': 'boolean', 'is_invoked_by_an_exception': 'integer', 'has_operational_reliance': 'boolean', 'is_unapproved_and_operationally_live': 'boolean', 'age_days': 'integer', 'is_low_confidence': 'boolean', 'owning_version_cadence_days': 'integer', 'exceeds_owning_cadence': 'boolean', 'is_aging_low_confidence_claim': 'boolean', 'owner_role_agent_kind': 'string', 'is_human_owned': 'boolean', 'is_ai_validated_by_ai': 'boolean', 'review_cadence_days': 'integer', 'is_overdue_for_review': 'boolean', 'predates_current_role_holder': 'boolean', 'owner_role_assignment_valid_from': 'datetime', 'fragility_signal_count': 'integer', 'is_compound_fragile': 'boolean', 'is_single_point_of_failure': 'boolean', 'is_expiring_single_point_of_failure': 'boolean', 'compound_fragile_version_key': 'string', 'valid_fragment_session_key': 'string', 'consuming_step_is_software_assigned': 'boolean', 'consuming_step_agent_kind': 'string', 'is_unapproved_and_machine_consumed': 'boolean', 'is_unapproved_and_human_consumed': 'boolean', 'machine_consumed_unapproved_version_key': 'string', 'has_review_record': 'boolean', 'days_since_actual_review': 'integer', 'is_unreviewed_since_authoring': 'boolean', 'is_genuinely_overdue': 'boolean', 'review_recency_is_inferred': 'boolean', 'inference_disagrees_with_record': 'boolean', 'genuinely_overdue_version_key': 'string', 'ratified_boundary_count': 'number', 'reliance_surface_count': 'integer', 'days_awaiting_my_approval': 'integer', 'is_high_blast_radius_unapproved': 'boolean', 'is_long_unapproved': 'boolean', 'unapproved_load_bearing_version_key': 'string', 'owner_role_is_vacated': 'boolean', 'is_orphaned_by_role': 'boolean', 'valid_fragment_version_key': 'string', 'is_flattened_to_brittle_rule': 'boolean', 'corroboration_count': 'integer', 'rests_on_single_data_point': 'boolean', 'owner_organization': 'string'},
+     'calculated': {'is_compound_fragile', 'is_overdue_for_review', 'inference_disagrees_with_record', 'is_awaiting_approval', 'compound_fragile_version_key', 'is_my_unfinished_approval', 'is_within_validity_window', 'is_unreviewed_since_authoring', 'is_flattened_to_brittle_rule', 'is_approved', 'has_orphaned_provenance', 'has_human_source', 'is_orphaned_by_role', 'is_genuinely_overdue', 'is_unapproved_and_operationally_live', 'name', 'valid_fragment_version_key', 'days_since_actual_review', 'is_low_confidence', 'evidence_has_expired', 'exceeds_owning_cadence', 'has_recorded_elicitation', 'reliance_surface_count', 'is_expiring_single_point_of_failure', 'is_ai_validated_by_ai', 'is_high_blast_radius_unapproved', 'has_operational_reliance', 'review_recency_is_inferred', 'unapproved_load_bearing_version_key', 'predates_current_role_holder', 'days_awaiting_my_approval', 'is_long_unapproved', 'is_unapproved_and_machine_consumed', 'machine_consumed_unapproved_version_key', 'is_aging_low_confidence_claim', 'is_human_owned', 'evidence_expiry_days', 'has_review_record', 'owner_is_me', 'is_single_point_of_failure', 'is_relied_upon', 'genuinely_overdue_version_key', 'is_currently_valid', 'is_unapproved_and_human_consumed', 'rests_on_single_data_point', 'is_unapproved_but_relied_on', 'is_undefendable_tacit_claim', 'age_days', 'fragility_signal_count', 'valid_fragment_session_key'},
      'lookups': [
         {'field': 'as_of_instant', 'target': 'evaluation_contexts', 'return': 'as_of_instant', 'key': 'evaluation_context', 'match': 'evaluation_context_id'},
         {'field': 'source_agent_is_still_engaged', 'target': 'agents', 'return': 'is_still_engaged', 'key': 'source_agent', 'match': 'agent_id'},
@@ -30043,21 +30513,25 @@ ERB_TABLES = [
         {'field': 'owner_role_assignment_valid_from', 'target': 'roles', 'return': 'current_assignment_valid_from', 'key': 'owner_role', 'match': 'role_id'},
         {'field': 'consuming_step_is_software_assigned', 'target': 'steps', 'return': 'is_software_assigned', 'key': 'step', 'match': 'step_id'},
         {'field': 'consuming_step_agent_kind', 'target': 'steps', 'return': 'assigned_agent_kind', 'key': 'step', 'match': 'step_id'},
-        {'field': 'owner_role_is_vacated', 'target': 'roles', 'return': 'is_vacated_role', 'key': 'owner_role', 'match': 'role_id'},],
+        {'field': 'owner_role_is_vacated', 'target': 'roles', 'return': 'is_vacated_role', 'key': 'owner_role', 'match': 'role_id'},
+        {'field': 'owner_organization', 'target': 'procedure_versions', 'return': 'owner_organization', 'key': 'procedure_version', 'match': 'procedure_version_id'},],
      'aggregations': [
         {'field': 'is_invoked_by_an_exception', 'op': 'COUNTIFS', 'table': 'exceptions', 'criteria': [('trigger_step', 'field', 'step')]},
         {'field': 'ratified_boundary_count', 'op': 'COUNTIFS', 'table': 'authority_boundaries', 'criteria': [('ratifying_fragment_key', 'field', 'knowledge_fragment_id')]},
         {'field': 'corroboration_count', 'op': 'COUNTIFS', 'table': 'fragment_corroborations', 'criteria': [('knowledge_fragment', 'field', 'knowledge_fragment_id'), ('agrees', 'literal', True)]},]},
     {'name': 'KnowledgeGaps', 'file': 'knowledge_gaps', 'rulebook_rows': 15,
      'compute': compute_knowledge_gaps_fields,
-     'fields': ['knowledge_gap_id', 'name', 'procedure_version', 'step', 'statement', 'severity', 'blocking_kind', 'status', 'owner_role', 'identified_at', 'resolution_plan', 'is_open', 'open_gap_version_key', 'is_blocking', 'is_open_and_blocking', 'evaluation_context', 'as_of_instant', 'days_open', 'tolerance_days', 'is_overdue_gap', 'owner_agent', 'owner_is_still_engaged', 'has_resolution_plan', 'is_abandoned_unknown', 'open_blocking_gap_version_key', 'owner_role_is_vacated', 'is_ownerless_open_gap', 'semantic_type_iri', 'gap_cause', 'holder_declined_to_share', 'siloed_within', 'drawn_out_by_session', 'codified_as_fragment', 'is_known_and_unresolved', 'is_gatekeeping_or_sabotage', 'is_unattributed_gatekeeping', 'is_required_gatekept_uncodified'],
-     'datatypes': {'name': 'string', 'is_open': 'boolean', 'open_gap_version_key': 'string', 'is_blocking': 'boolean', 'is_open_and_blocking': 'boolean', 'as_of_instant': 'datetime', 'days_open': 'integer', 'tolerance_days': 'integer', 'is_overdue_gap': 'boolean', 'owner_agent': 'string', 'owner_is_still_engaged': 'boolean', 'has_resolution_plan': 'boolean', 'is_abandoned_unknown': 'boolean', 'open_blocking_gap_version_key': 'string', 'owner_role_is_vacated': 'boolean', 'is_ownerless_open_gap': 'boolean', 'is_known_and_unresolved': 'boolean', 'is_gatekeeping_or_sabotage': 'boolean', 'is_unattributed_gatekeeping': 'boolean', 'is_required_gatekept_uncodified': 'boolean'},
-     'calculated': {'is_abandoned_unknown', 'is_overdue_gap', 'days_open', 'has_resolution_plan', 'is_ownerless_open_gap', 'is_open', 'is_required_gatekept_uncodified', 'is_unattributed_gatekeeping', 'open_blocking_gap_version_key', 'name', 'tolerance_days', 'open_gap_version_key', 'is_open_and_blocking', 'is_gatekeeping_or_sabotage', 'is_blocking', 'is_known_and_unresolved'},
+     'fields': ['knowledge_gap_id', 'name', 'procedure_version', 'step', 'statement', 'severity', 'blocking_kind', 'status', 'owner_role', 'identified_at', 'resolution_plan', 'is_open', 'open_gap_version_key', 'is_blocking', 'is_open_and_blocking', 'evaluation_context', 'as_of_instant', 'days_open', 'tolerance_days', 'is_overdue_gap', 'owner_agent', 'owner_is_still_engaged', 'has_resolution_plan', 'is_abandoned_unknown', 'open_blocking_gap_version_key', 'owner_role_is_vacated', 'is_ownerless_open_gap', 'semantic_type_iri', 'gap_cause', 'holder_declined_to_share', 'siloed_within', 'drawn_out_by_session', 'codified_as_fragment', 'is_known_and_unresolved', 'is_gatekeeping_or_sabotage', 'is_unattributed_gatekeeping', 'is_required_gatekept_uncodified', 'owner_organization', 'answered_by_model_change_request', 'answering_change_title', 'answering_change_status'],
+     'datatypes': {'name': 'string', 'is_open': 'boolean', 'open_gap_version_key': 'string', 'is_blocking': 'boolean', 'is_open_and_blocking': 'boolean', 'as_of_instant': 'datetime', 'days_open': 'integer', 'tolerance_days': 'integer', 'is_overdue_gap': 'boolean', 'owner_agent': 'string', 'owner_is_still_engaged': 'boolean', 'has_resolution_plan': 'boolean', 'is_abandoned_unknown': 'boolean', 'open_blocking_gap_version_key': 'string', 'owner_role_is_vacated': 'boolean', 'is_ownerless_open_gap': 'boolean', 'is_known_and_unresolved': 'boolean', 'is_gatekeeping_or_sabotage': 'boolean', 'is_unattributed_gatekeeping': 'boolean', 'is_required_gatekept_uncodified': 'boolean', 'owner_organization': 'string', 'answering_change_title': 'string', 'answering_change_status': 'string'},
+     'calculated': {'is_abandoned_unknown', 'is_required_gatekept_uncodified', 'is_open', 'is_gatekeeping_or_sabotage', 'has_resolution_plan', 'days_open', 'is_known_and_unresolved', 'is_ownerless_open_gap', 'name', 'tolerance_days', 'is_open_and_blocking', 'open_gap_version_key', 'is_blocking', 'is_overdue_gap', 'is_unattributed_gatekeeping', 'open_blocking_gap_version_key'},
      'lookups': [
         {'field': 'as_of_instant', 'target': 'evaluation_contexts', 'return': 'as_of_instant', 'key': 'evaluation_context', 'match': 'evaluation_context_id'},
         {'field': 'owner_agent', 'target': 'roles', 'return': 'current_agent', 'key': 'owner_role', 'match': 'role_id'},
         {'field': 'owner_is_still_engaged', 'target': 'agents', 'return': 'is_still_engaged', 'key': 'owner_agent', 'match': 'agent_id'},
-        {'field': 'owner_role_is_vacated', 'target': 'roles', 'return': 'is_vacated_role', 'key': 'owner_role', 'match': 'role_id'},],
+        {'field': 'owner_role_is_vacated', 'target': 'roles', 'return': 'is_vacated_role', 'key': 'owner_role', 'match': 'role_id'},
+        {'field': 'owner_organization', 'target': 'procedure_versions', 'return': 'owner_organization', 'key': 'procedure_version', 'match': 'procedure_version_id'},
+        {'field': 'answering_change_title', 'target': 'model_change_requests', 'return': 'title', 'key': 'answered_by_model_change_request', 'match': 'model_change_request_id'},
+        {'field': 'answering_change_status', 'target': 'model_change_requests', 'return': 'status', 'key': 'answered_by_model_change_request', 'match': 'model_change_request_id'},],
      'aggregations': []},
     {'name': 'FAQs', 'file': 'fa_qs', 'rulebook_rows': 4,
      'compute': compute_fa_qs_fields,
@@ -30076,12 +30550,17 @@ ERB_TABLES = [
      'aggregations': []},
     {'name': 'ProcedureExecutions', 'file': 'procedure_executions', 'rulebook_rows': 10,
      'compute': compute_procedure_executions_fields,
-     'fields': ['procedure_execution_id', 'name', 'procedure_version', 'execution_status', 'started_at', 'ended_at', 'executed_by_agent', 'context', 'operational_record_uri', 'expected_step_count', 'completed_step_count', 'control_breach_count', 'late_step_count', 'is_structurally_complete', 'diverged_from_specification', 'all_blocking_controls_evaluated', 'unevaluated_blocking_total', 'separation_of_duties_held', 'separation_violation_count', 'is_attestation_ready', 'attestation_blocker_summary', 'executed_version_is_fit', 'signed_against_unfit_version', 'asserted_only_control_count', 'assurance_is_mostly_asserted', 'unreachable_handling_failure_count', 'retention_breach_count', 'cleared_legal_review_count', 'has_cleared_legal_review', 'abandoned_failure_count', 'delivered_count', 'total_delivery_attempt_count', 'has_abandoned_failures', 'mishandled_refusal_count', 'unclean_step_count', 'ran_clean', 'count_of_approval_executions', 'has_human_approval', 'count_of_delivery_executions', 'has_delivered', 'delivered_without_approval', 'invalid_approval_count', 'approval_chain_is_complete', 'vacuously_clean_step_count', 'preparation_step_count', 'approval_step_count', 'separation_was_testable', 'separation_held_under_test', 'separation_is_vacuously_green', 'separation_assurance_note', 'ungoverned_divergence_count', 'divergence_was_fully_governed', 'computedly_witnessed_control_count', 'evaluated_control_count', 'computed_assurance_ratio', 'interested_party_assertion_count', 'assurance_grade', 'attestation_would_be_weakly_based', 'independent_human_observation_count', 'has_any_independent_observation', 'self_attested_approval_count', 'assurance_chain_is_circular', 'latest_attestation_instant', 'has_been_attested', 'attestation_count', 'post_attestation_score_count', 'basis_changed_after_signature', 'requires_re_attestation', 'intended_recipient_count', 'reached_recipient_count', 'silently_dropped_count', 'delivery_yield_percent', 'campaign_silently_lost_audience', 'unrecorded_refusal_count', 'has_unrecorded_refusals', 'independently_confirmed_intent_count', 'send_decisions_are_entirely_self_witnessed', 'semantic_type_iri', 'title', 'description', 'confirmed_by_agent', 'facility', 'shift', 'executed_on_machine', 'observations', 'outcome', 'participant_count', 'deviating_step_count', 'has_step_deviation', 'deviating_facility_key', 'clean_facility_key', 'deviating_day_version_key', 'deviating_night_version_key', 'status_change_count', 'claims_completion_without_all_steps', 'is_unconfirmed_completion', 'has_no_recorded_outcome', 'feedback_count', 'is_unreported_mistake'],
-     'datatypes': {'name': 'string', 'expected_step_count': 'number', 'completed_step_count': 'number', 'control_breach_count': 'number', 'late_step_count': 'number', 'is_structurally_complete': 'boolean', 'diverged_from_specification': 'boolean', 'all_blocking_controls_evaluated': 'boolean', 'unevaluated_blocking_total': 'number', 'separation_of_duties_held': 'boolean', 'separation_violation_count': 'number', 'is_attestation_ready': 'boolean', 'attestation_blocker_summary': 'string', 'executed_version_is_fit': 'boolean', 'signed_against_unfit_version': 'boolean', 'asserted_only_control_count': 'number', 'assurance_is_mostly_asserted': 'boolean', 'unreachable_handling_failure_count': 'number', 'retention_breach_count': 'number', 'cleared_legal_review_count': 'number', 'has_cleared_legal_review': 'boolean', 'abandoned_failure_count': 'number', 'delivered_count': 'number', 'total_delivery_attempt_count': 'number', 'has_abandoned_failures': 'boolean', 'mishandled_refusal_count': 'number', 'unclean_step_count': 'number', 'ran_clean': 'boolean', 'count_of_approval_executions': 'integer', 'has_human_approval': 'boolean', 'count_of_delivery_executions': 'integer', 'has_delivered': 'boolean', 'delivered_without_approval': 'boolean', 'invalid_approval_count': 'number', 'approval_chain_is_complete': 'boolean', 'vacuously_clean_step_count': 'number', 'preparation_step_count': 'number', 'approval_step_count': 'number', 'separation_was_testable': 'boolean', 'separation_held_under_test': 'boolean', 'separation_is_vacuously_green': 'boolean', 'separation_assurance_note': 'string', 'ungoverned_divergence_count': 'number', 'divergence_was_fully_governed': 'boolean', 'computedly_witnessed_control_count': 'number', 'evaluated_control_count': 'number', 'computed_assurance_ratio': 'number', 'interested_party_assertion_count': 'number', 'assurance_grade': 'string', 'attestation_would_be_weakly_based': 'boolean', 'independent_human_observation_count': 'number', 'has_any_independent_observation': 'boolean', 'self_attested_approval_count': 'number', 'assurance_chain_is_circular': 'boolean', 'latest_attestation_instant': 'datetime', 'has_been_attested': 'boolean', 'attestation_count': 'number', 'post_attestation_score_count': 'number', 'basis_changed_after_signature': 'boolean', 'requires_re_attestation': 'boolean', 'intended_recipient_count': 'number', 'reached_recipient_count': 'number', 'silently_dropped_count': 'number', 'delivery_yield_percent': 'number', 'campaign_silently_lost_audience': 'boolean', 'unrecorded_refusal_count': 'number', 'has_unrecorded_refusals': 'boolean', 'independently_confirmed_intent_count': 'number', 'send_decisions_are_entirely_self_witnessed': 'boolean', 'participant_count': 'integer', 'deviating_step_count': 'integer', 'has_step_deviation': 'boolean', 'deviating_facility_key': 'string', 'clean_facility_key': 'string', 'deviating_day_version_key': 'string', 'deviating_night_version_key': 'string', 'status_change_count': 'integer', 'claims_completion_without_all_steps': 'boolean', 'is_unconfirmed_completion': 'boolean', 'has_no_recorded_outcome': 'boolean', 'feedback_count': 'integer', 'is_unreported_mistake': 'boolean'},
-     'calculated': {'delivery_yield_percent', 'basis_changed_after_signature', 'has_human_approval', 'claims_completion_without_all_steps', 'campaign_silently_lost_audience', 'assurance_chain_is_circular', 'has_step_deviation', 'has_unrecorded_refusals', 'ran_clean', 'deviating_facility_key', 'has_abandoned_failures', 'send_decisions_are_entirely_self_witnessed', 'is_unreported_mistake', 'is_unconfirmed_completion', 'requires_re_attestation', 'has_been_attested', 'deviating_day_version_key', 'name', 'is_attestation_ready', 'separation_of_duties_held', 'has_delivered', 'separation_is_vacuously_green', 'has_any_independent_observation', 'divergence_was_fully_governed', 'has_cleared_legal_review', 'assurance_is_mostly_asserted', 'assurance_grade', 'attestation_blocker_summary', 'all_blocking_controls_evaluated', 'computed_assurance_ratio', 'separation_was_testable', 'separation_held_under_test', 'separation_assurance_note', 'signed_against_unfit_version', 'deviating_night_version_key', 'approval_chain_is_complete', 'delivered_without_approval', 'is_structurally_complete', 'evaluated_control_count', 'attestation_would_be_weakly_based', 'diverged_from_specification', 'has_no_recorded_outcome', 'clean_facility_key'},
+     'fields': ['procedure_execution_id', 'name', 'procedure_version', 'execution_status', 'started_at', 'ended_at', 'executed_by_agent', 'context', 'operational_record_uri', 'expected_step_count', 'completed_step_count', 'control_breach_count', 'late_step_count', 'is_structurally_complete', 'diverged_from_specification', 'all_blocking_controls_evaluated', 'unevaluated_blocking_total', 'separation_of_duties_held', 'separation_violation_count', 'is_attestation_ready', 'attestation_blocker_summary', 'executed_version_is_fit', 'signed_against_unfit_version', 'asserted_only_control_count', 'assurance_is_mostly_asserted', 'unreachable_handling_failure_count', 'retention_breach_count', 'cleared_legal_review_count', 'has_cleared_legal_review', 'abandoned_failure_count', 'delivered_count', 'total_delivery_attempt_count', 'has_abandoned_failures', 'mishandled_refusal_count', 'unclean_step_count', 'ran_clean', 'count_of_approval_executions', 'has_human_approval', 'count_of_delivery_executions', 'has_delivered', 'delivered_without_approval', 'invalid_approval_count', 'approval_chain_is_complete', 'vacuously_clean_step_count', 'preparation_step_count', 'approval_step_count', 'separation_was_testable', 'separation_held_under_test', 'separation_is_vacuously_green', 'separation_assurance_note', 'ungoverned_divergence_count', 'divergence_was_fully_governed', 'computedly_witnessed_control_count', 'evaluated_control_count', 'computed_assurance_ratio', 'interested_party_assertion_count', 'assurance_grade', 'attestation_would_be_weakly_based', 'independent_human_observation_count', 'has_any_independent_observation', 'self_attested_approval_count', 'assurance_chain_is_circular', 'latest_attestation_instant', 'has_been_attested', 'attestation_count', 'post_attestation_score_count', 'basis_changed_after_signature', 'requires_re_attestation', 'intended_recipient_count', 'reached_recipient_count', 'silently_dropped_count', 'delivery_yield_percent', 'campaign_silently_lost_audience', 'unrecorded_refusal_count', 'has_unrecorded_refusals', 'independently_confirmed_intent_count', 'send_decisions_are_entirely_self_witnessed', 'semantic_type_iri', 'title', 'description', 'confirmed_by_agent', 'facility', 'shift', 'executed_on_machine', 'observations', 'outcome', 'participant_count', 'deviating_step_count', 'has_step_deviation', 'deviating_facility_key', 'clean_facility_key', 'deviating_day_version_key', 'deviating_night_version_key', 'status_change_count', 'claims_completion_without_all_steps', 'is_unconfirmed_completion', 'has_no_recorded_outcome', 'feedback_count', 'is_unreported_mistake', 'owner_organization', 'stopped_at_knowledge_gap', 'stopped_at_gap_statement', 'stopped_at_gap_status', 'stopped_at_gap_change_title', 'stopped_at_gap_change_status'],
+     'datatypes': {'name': 'string', 'expected_step_count': 'number', 'completed_step_count': 'number', 'control_breach_count': 'number', 'late_step_count': 'number', 'is_structurally_complete': 'boolean', 'diverged_from_specification': 'boolean', 'all_blocking_controls_evaluated': 'boolean', 'unevaluated_blocking_total': 'number', 'separation_of_duties_held': 'boolean', 'separation_violation_count': 'number', 'is_attestation_ready': 'boolean', 'attestation_blocker_summary': 'string', 'executed_version_is_fit': 'boolean', 'signed_against_unfit_version': 'boolean', 'asserted_only_control_count': 'number', 'assurance_is_mostly_asserted': 'boolean', 'unreachable_handling_failure_count': 'number', 'retention_breach_count': 'number', 'cleared_legal_review_count': 'number', 'has_cleared_legal_review': 'boolean', 'abandoned_failure_count': 'number', 'delivered_count': 'number', 'total_delivery_attempt_count': 'number', 'has_abandoned_failures': 'boolean', 'mishandled_refusal_count': 'number', 'unclean_step_count': 'number', 'ran_clean': 'boolean', 'count_of_approval_executions': 'integer', 'has_human_approval': 'boolean', 'count_of_delivery_executions': 'integer', 'has_delivered': 'boolean', 'delivered_without_approval': 'boolean', 'invalid_approval_count': 'number', 'approval_chain_is_complete': 'boolean', 'vacuously_clean_step_count': 'number', 'preparation_step_count': 'number', 'approval_step_count': 'number', 'separation_was_testable': 'boolean', 'separation_held_under_test': 'boolean', 'separation_is_vacuously_green': 'boolean', 'separation_assurance_note': 'string', 'ungoverned_divergence_count': 'number', 'divergence_was_fully_governed': 'boolean', 'computedly_witnessed_control_count': 'number', 'evaluated_control_count': 'number', 'computed_assurance_ratio': 'number', 'interested_party_assertion_count': 'number', 'assurance_grade': 'string', 'attestation_would_be_weakly_based': 'boolean', 'independent_human_observation_count': 'number', 'has_any_independent_observation': 'boolean', 'self_attested_approval_count': 'number', 'assurance_chain_is_circular': 'boolean', 'latest_attestation_instant': 'datetime', 'has_been_attested': 'boolean', 'attestation_count': 'number', 'post_attestation_score_count': 'number', 'basis_changed_after_signature': 'boolean', 'requires_re_attestation': 'boolean', 'intended_recipient_count': 'number', 'reached_recipient_count': 'number', 'silently_dropped_count': 'number', 'delivery_yield_percent': 'number', 'campaign_silently_lost_audience': 'boolean', 'unrecorded_refusal_count': 'number', 'has_unrecorded_refusals': 'boolean', 'independently_confirmed_intent_count': 'number', 'send_decisions_are_entirely_self_witnessed': 'boolean', 'participant_count': 'integer', 'deviating_step_count': 'integer', 'has_step_deviation': 'boolean', 'deviating_facility_key': 'string', 'clean_facility_key': 'string', 'deviating_day_version_key': 'string', 'deviating_night_version_key': 'string', 'status_change_count': 'integer', 'claims_completion_without_all_steps': 'boolean', 'is_unconfirmed_completion': 'boolean', 'has_no_recorded_outcome': 'boolean', 'feedback_count': 'integer', 'is_unreported_mistake': 'boolean', 'owner_organization': 'string', 'stopped_at_gap_statement': 'string', 'stopped_at_gap_status': 'string', 'stopped_at_gap_change_title': 'string', 'stopped_at_gap_change_status': 'string'},
+     'calculated': {'clean_facility_key', 'has_cleared_legal_review', 'deviating_night_version_key', 'is_unreported_mistake', 'assurance_is_mostly_asserted', 'deviating_facility_key', 'has_been_attested', 'send_decisions_are_entirely_self_witnessed', 'has_abandoned_failures', 'divergence_was_fully_governed', 'is_structurally_complete', 'all_blocking_controls_evaluated', 'has_step_deviation', 'separation_assurance_note', 'attestation_would_be_weakly_based', 'separation_is_vacuously_green', 'name', 'signed_against_unfit_version', 'separation_held_under_test', 'diverged_from_specification', 'attestation_blocker_summary', 'claims_completion_without_all_steps', 'has_human_approval', 'campaign_silently_lost_audience', 'has_any_independent_observation', 'separation_of_duties_held', 'deviating_day_version_key', 'has_unrecorded_refusals', 'requires_re_attestation', 'approval_chain_is_complete', 'basis_changed_after_signature', 'ran_clean', 'is_attestation_ready', 'has_no_recorded_outcome', 'delivery_yield_percent', 'has_delivered', 'computed_assurance_ratio', 'evaluated_control_count', 'is_unconfirmed_completion', 'assurance_chain_is_circular', 'separation_was_testable', 'assurance_grade', 'delivered_without_approval'},
      'lookups': [
         {'field': 'expected_step_count', 'target': 'procedure_versions', 'return': 'specified_step_count', 'key': 'procedure_version', 'match': 'procedure_version_id'},
-        {'field': 'executed_version_is_fit', 'target': 'procedure_versions', 'return': 'is_fit_to_execute', 'key': 'procedure_version', 'match': 'procedure_version_id'},],
+        {'field': 'executed_version_is_fit', 'target': 'procedure_versions', 'return': 'is_fit_to_execute', 'key': 'procedure_version', 'match': 'procedure_version_id'},
+        {'field': 'owner_organization', 'target': 'procedure_versions', 'return': 'owner_organization', 'key': 'procedure_version', 'match': 'procedure_version_id'},
+        {'field': 'stopped_at_gap_statement', 'target': 'knowledge_gaps', 'return': 'statement', 'key': 'stopped_at_knowledge_gap', 'match': 'knowledge_gap_id'},
+        {'field': 'stopped_at_gap_status', 'target': 'knowledge_gaps', 'return': 'status', 'key': 'stopped_at_knowledge_gap', 'match': 'knowledge_gap_id'},
+        {'field': 'stopped_at_gap_change_title', 'target': 'knowledge_gaps', 'return': 'answering_change_title', 'key': 'stopped_at_knowledge_gap', 'match': 'knowledge_gap_id'},
+        {'field': 'stopped_at_gap_change_status', 'target': 'knowledge_gaps', 'return': 'answering_change_status', 'key': 'stopped_at_knowledge_gap', 'match': 'knowledge_gap_id'},],
      'aggregations': [
         {'field': 'completed_step_count', 'op': 'COUNTIFS', 'table': 'step_executions', 'criteria': [('completed_execution_key', 'field', 'procedure_execution_id')]},
         {'field': 'control_breach_count', 'op': 'COUNTIFS', 'table': 'step_executions', 'criteria': [('control_breach_execution_key', 'field', 'procedure_execution_id')]},
@@ -30122,9 +30601,9 @@ ERB_TABLES = [
         {'field': 'feedback_count', 'op': 'COUNTIFS', 'table': 'user_feedback', 'criteria': [('procedure_execution', 'field', 'procedure_execution_id')]},]},
     {'name': 'StepExecutions', 'file': 'step_executions', 'rulebook_rows': 70,
      'compute': compute_step_executions_fields,
-     'fields': ['step_execution_id', 'name', 'procedure_execution', 'step', 'executed_by_agent', 'execution_status', 'started_at', 'ended_at', 'verification_result', 'deviation', 'actual_duration_minutes', 'expected_duration_minutes', 'is_late', 'blocking_unmet_count', 'blocking_unmet_count_safe', 'proceeded_past_blocking_control', 'expected_blocking_count', 'evaluated_blocking_count', 'unevaluated_blocking_count', 'has_unevaluated_blocking_control', 'stale_authoritative_source_count', 'ran_on_stale_authoritative_source', 'has_deviation_note', 'is_late_and_unexplained', 'available_exception_count_for_step', 'had_uninvoked_exception_available', 'expected_verification_count', 'performed_verification_count', 'skipped_verification_count', 'has_skipped_verification', 'claims_pass_without_evidence', 'step_is_preparation', 'step_is_approval', 'preparer_agent_key', 'approver_agent_key', 'prepared_by_this_agent_count', 'violates_separation_of_duties', 'required_role_for_step', 'executor_role_key', 'executor_authority_count', 'executor_held_required_role', 'is_unauthorized_approval', 'completed_execution_key', 'control_breach_execution_key', 'late_execution_key', 'executor_agent_kind', 'executor_is_human', 'step_requires_human_confirmation', 'non_human_ran_human_step', 'non_human_approval', 'unevaluated_blocking_execution_key', 'separation_violation_execution_key', 'self_witnessed_verification_count', 'unbacked_verification_count', 'approval_rests_on_self_attestation', 'exception_invocation_count', 'ran_under_exception', 'is_completed', 'is_verification_passed', 'is_legal_review_step', 'cleared_legal_review_key', 'assigned_role', 'role_current_agent', 'executor_is_designated_agent', 'inputs_were_fresh_at_run', 'ran_on_stale_inputs', 'unresolved_issue_count', 'has_deviation', 'is_clean', 'procedure_execution_when_unclean', 'evaluated_requirement_count', 'required_blocking_count', 'has_unevaluated_blocking_requirement', 'executing_agent_kind', 'was_executed_by_software', 'step_is_software_assigned', 'software_did_human_work', 'is_approval_execution', 'is_verified', 'unconfirmed_non_human_decision_count', 'requires_human_confirmation', 'human_confirmation_missing', 'drafted_from_unusable_source', 'inputs_were_usable', 'software_execution_step_key', 'step_control_kind', 'unfalsified_clearance_count', 'all_clearances_are_unfalsified', 'stale_at_run_count', 'was_stale_when_i_ran_it', 'staleness_answer_is_tense_dependent', 'has_any_declared_check', 'performed_check_count', 'declared_check_count', 'is_unchecked_by_design', 'is_vacuously_clean', 'is_substantively_clean', 'vacuously_clean_execution_key', 'uncorroborated_pass_count', 'evidence_position_is_weak', 'preparation_execution_key', 'approval_execution_key', 'has_governing_instrument', 'has_approved_change_coverage', 'version_of_step', 'is_ungoverned_divergence', 'ungoverned_divergence_execution_key', 'self_attested_approval_execution_key', 'semantic_type_iri', 'previous_step_execution', 'confirmed_by_agent', 'description', 'previous_executed_step', 'specified_transition_from_previous_count', 'is_out_of_specified_order', 'execution_version', 'executes_step_of_other_version', 'repetition_count', 'step_max_repetitions', 'exceeds_max_repetitions', 'lacks_required_confirmation', 'failed_precondition_count', 'violated_invariant_count', 'proceeded_despite_failed_precondition', 'unescalated_danger_cue_count', 'ignored_danger_cue', 'used_entity_count', 'generated_entity_count', 'step_input_variable_count', 'ran_without_declared_inputs', 'step_prerequisite', 'completed_prerequisite_run_count', 'ran_before_prerequisite_completed', 'deviation_execution_key', 'broke_invariant', 'is_blocked_by_incomplete_prerequisite'],
-     'datatypes': {'name': 'string', 'actual_duration_minutes': 'integer', 'expected_duration_minutes': 'integer', 'is_late': 'boolean', 'blocking_unmet_count': 'number', 'blocking_unmet_count_safe': 'number', 'proceeded_past_blocking_control': 'boolean', 'expected_blocking_count': 'number', 'evaluated_blocking_count': 'number', 'unevaluated_blocking_count': 'number', 'has_unevaluated_blocking_control': 'boolean', 'stale_authoritative_source_count': 'number', 'ran_on_stale_authoritative_source': 'boolean', 'has_deviation_note': 'boolean', 'is_late_and_unexplained': 'boolean', 'available_exception_count_for_step': 'number', 'had_uninvoked_exception_available': 'boolean', 'expected_verification_count': 'number', 'performed_verification_count': 'number', 'skipped_verification_count': 'number', 'has_skipped_verification': 'boolean', 'claims_pass_without_evidence': 'boolean', 'step_is_preparation': 'boolean', 'step_is_approval': 'boolean', 'preparer_agent_key': 'string', 'approver_agent_key': 'string', 'prepared_by_this_agent_count': 'number', 'violates_separation_of_duties': 'boolean', 'required_role_for_step': 'string', 'executor_role_key': 'string', 'executor_authority_count': 'number', 'executor_held_required_role': 'boolean', 'is_unauthorized_approval': 'boolean', 'completed_execution_key': 'string', 'control_breach_execution_key': 'string', 'late_execution_key': 'string', 'executor_agent_kind': 'string', 'executor_is_human': 'boolean', 'step_requires_human_confirmation': 'boolean', 'non_human_ran_human_step': 'boolean', 'non_human_approval': 'boolean', 'unevaluated_blocking_execution_key': 'string', 'separation_violation_execution_key': 'string', 'self_witnessed_verification_count': 'number', 'unbacked_verification_count': 'number', 'approval_rests_on_self_attestation': 'boolean', 'exception_invocation_count': 'number', 'ran_under_exception': 'boolean', 'is_completed': 'boolean', 'is_verification_passed': 'boolean', 'is_legal_review_step': 'boolean', 'cleared_legal_review_key': 'string', 'assigned_role': 'string', 'role_current_agent': 'string', 'executor_is_designated_agent': 'boolean', 'inputs_were_fresh_at_run': 'boolean', 'ran_on_stale_inputs': 'boolean', 'unresolved_issue_count': 'number', 'has_deviation': 'boolean', 'is_clean': 'boolean', 'procedure_execution_when_unclean': 'string', 'evaluated_requirement_count': 'number', 'required_blocking_count': 'integer', 'has_unevaluated_blocking_requirement': 'boolean', 'executing_agent_kind': 'string', 'was_executed_by_software': 'boolean', 'step_is_software_assigned': 'boolean', 'software_did_human_work': 'boolean', 'is_approval_execution': 'boolean', 'is_verified': 'boolean', 'unconfirmed_non_human_decision_count': 'number', 'requires_human_confirmation': 'boolean', 'human_confirmation_missing': 'boolean', 'drafted_from_unusable_source': 'boolean', 'inputs_were_usable': 'boolean', 'software_execution_step_key': 'string', 'step_control_kind': 'string', 'unfalsified_clearance_count': 'number', 'all_clearances_are_unfalsified': 'boolean', 'stale_at_run_count': 'number', 'was_stale_when_i_ran_it': 'boolean', 'staleness_answer_is_tense_dependent': 'boolean', 'has_any_declared_check': 'boolean', 'performed_check_count': 'number', 'declared_check_count': 'number', 'is_unchecked_by_design': 'boolean', 'is_vacuously_clean': 'boolean', 'is_substantively_clean': 'boolean', 'vacuously_clean_execution_key': 'string', 'uncorroborated_pass_count': 'number', 'evidence_position_is_weak': 'boolean', 'preparation_execution_key': 'string', 'approval_execution_key': 'string', 'has_governing_instrument': 'boolean', 'has_approved_change_coverage': 'boolean', 'version_of_step': 'string', 'is_ungoverned_divergence': 'boolean', 'ungoverned_divergence_execution_key': 'string', 'self_attested_approval_execution_key': 'string', 'previous_executed_step': 'string', 'specified_transition_from_previous_count': 'integer', 'is_out_of_specified_order': 'boolean', 'execution_version': 'string', 'executes_step_of_other_version': 'boolean', 'repetition_count': 'integer', 'step_max_repetitions': 'integer', 'exceeds_max_repetitions': 'boolean', 'lacks_required_confirmation': 'boolean', 'failed_precondition_count': 'integer', 'violated_invariant_count': 'integer', 'proceeded_despite_failed_precondition': 'boolean', 'unescalated_danger_cue_count': 'integer', 'ignored_danger_cue': 'boolean', 'used_entity_count': 'integer', 'generated_entity_count': 'integer', 'step_input_variable_count': 'integer', 'ran_without_declared_inputs': 'boolean', 'step_prerequisite': 'string', 'completed_prerequisite_run_count': 'integer', 'ran_before_prerequisite_completed': 'boolean', 'deviation_execution_key': 'string', 'broke_invariant': 'boolean', 'is_blocked_by_incomplete_prerequisite': 'boolean'},
-     'calculated': {'ran_without_declared_inputs', 'broke_invariant', 'is_unchecked_by_design', 'executor_held_required_role', 'approval_execution_key', 'has_skipped_verification', 'proceeded_past_blocking_control', 'ran_before_prerequisite_completed', 'ran_under_exception', 'approver_agent_key', 'has_unevaluated_blocking_requirement', 'violates_separation_of_duties', 'executes_step_of_other_version', 'is_late_and_unexplained', 'late_execution_key', 'drafted_from_unusable_source', 'is_completed', 'proceeded_despite_failed_precondition', 'ran_on_stale_inputs', 'executor_is_human', 'ran_on_stale_authoritative_source', 'declared_check_count', 'executor_is_designated_agent', 'preparer_agent_key', 'skipped_verification_count', 'had_uninvoked_exception_available', 'name', 'has_deviation', 'vacuously_clean_execution_key', 'cleared_legal_review_key', 'is_verification_passed', 'has_deviation_note', 'is_ungoverned_divergence', 'evidence_position_is_weak', 'is_substantively_clean', 'control_breach_execution_key', 'performed_check_count', 'preparation_execution_key', 'staleness_answer_is_tense_dependent', 'is_legal_review_step', 'is_vacuously_clean', 'human_confirmation_missing', 'executor_role_key', 'procedure_execution_when_unclean', 'self_attested_approval_execution_key', 'exceeds_max_repetitions', 'is_clean', 'lacks_required_confirmation', 'non_human_approval', 'actual_duration_minutes', 'has_governing_instrument', 'was_executed_by_software', 'has_any_declared_check', 'is_blocked_by_incomplete_prerequisite', 'is_out_of_specified_order', 'software_did_human_work', 'ungoverned_divergence_execution_key', 'has_unevaluated_blocking_control', 'completed_execution_key', 'claims_pass_without_evidence', 'was_stale_when_i_ran_it', 'software_execution_step_key', 'all_clearances_are_unfalsified', 'is_unauthorized_approval', 'non_human_ran_human_step', 'separation_violation_execution_key', 'unevaluated_blocking_count', 'unevaluated_blocking_execution_key', 'is_late', 'approval_rests_on_self_attestation', 'ignored_danger_cue', 'deviation_execution_key', 'is_verified'},
+     'fields': ['step_execution_id', 'name', 'procedure_execution', 'step', 'executed_by_agent', 'execution_status', 'started_at', 'ended_at', 'verification_result', 'deviation', 'actual_duration_minutes', 'expected_duration_minutes', 'is_late', 'blocking_unmet_count', 'blocking_unmet_count_safe', 'proceeded_past_blocking_control', 'expected_blocking_count', 'evaluated_blocking_count', 'unevaluated_blocking_count', 'has_unevaluated_blocking_control', 'stale_authoritative_source_count', 'ran_on_stale_authoritative_source', 'has_deviation_note', 'is_late_and_unexplained', 'available_exception_count_for_step', 'had_uninvoked_exception_available', 'expected_verification_count', 'performed_verification_count', 'skipped_verification_count', 'has_skipped_verification', 'claims_pass_without_evidence', 'step_is_preparation', 'step_is_approval', 'preparer_agent_key', 'approver_agent_key', 'prepared_by_this_agent_count', 'violates_separation_of_duties', 'required_role_for_step', 'executor_role_key', 'executor_authority_count', 'executor_held_required_role', 'is_unauthorized_approval', 'completed_execution_key', 'control_breach_execution_key', 'late_execution_key', 'executor_agent_kind', 'executor_is_human', 'step_requires_human_confirmation', 'non_human_ran_human_step', 'non_human_approval', 'unevaluated_blocking_execution_key', 'separation_violation_execution_key', 'self_witnessed_verification_count', 'unbacked_verification_count', 'approval_rests_on_self_attestation', 'exception_invocation_count', 'ran_under_exception', 'is_completed', 'is_verification_passed', 'is_legal_review_step', 'cleared_legal_review_key', 'assigned_role', 'role_current_agent', 'executor_is_designated_agent', 'inputs_were_fresh_at_run', 'ran_on_stale_inputs', 'unresolved_issue_count', 'has_deviation', 'is_clean', 'procedure_execution_when_unclean', 'evaluated_requirement_count', 'required_blocking_count', 'has_unevaluated_blocking_requirement', 'executing_agent_kind', 'was_executed_by_software', 'step_is_software_assigned', 'software_did_human_work', 'is_approval_execution', 'is_verified', 'unconfirmed_non_human_decision_count', 'requires_human_confirmation', 'human_confirmation_missing', 'drafted_from_unusable_source', 'inputs_were_usable', 'software_execution_step_key', 'step_control_kind', 'unfalsified_clearance_count', 'all_clearances_are_unfalsified', 'stale_at_run_count', 'was_stale_when_i_ran_it', 'staleness_answer_is_tense_dependent', 'has_any_declared_check', 'performed_check_count', 'declared_check_count', 'is_unchecked_by_design', 'is_vacuously_clean', 'is_substantively_clean', 'vacuously_clean_execution_key', 'uncorroborated_pass_count', 'evidence_position_is_weak', 'preparation_execution_key', 'approval_execution_key', 'has_governing_instrument', 'has_approved_change_coverage', 'version_of_step', 'is_ungoverned_divergence', 'ungoverned_divergence_execution_key', 'self_attested_approval_execution_key', 'semantic_type_iri', 'previous_step_execution', 'confirmed_by_agent', 'description', 'previous_executed_step', 'specified_transition_from_previous_count', 'is_out_of_specified_order', 'execution_version', 'executes_step_of_other_version', 'repetition_count', 'step_max_repetitions', 'exceeds_max_repetitions', 'lacks_required_confirmation', 'failed_precondition_count', 'violated_invariant_count', 'proceeded_despite_failed_precondition', 'unescalated_danger_cue_count', 'ignored_danger_cue', 'used_entity_count', 'generated_entity_count', 'step_input_variable_count', 'ran_without_declared_inputs', 'step_prerequisite', 'completed_prerequisite_run_count', 'ran_before_prerequisite_completed', 'deviation_execution_key', 'broke_invariant', 'is_blocked_by_incomplete_prerequisite', 'owner_organization', 'incomplete_cue_observation_count', 'is_blocked_by_observed_cue'],
+     'datatypes': {'name': 'string', 'actual_duration_minutes': 'integer', 'expected_duration_minutes': 'integer', 'is_late': 'boolean', 'blocking_unmet_count': 'number', 'blocking_unmet_count_safe': 'number', 'proceeded_past_blocking_control': 'boolean', 'expected_blocking_count': 'number', 'evaluated_blocking_count': 'number', 'unevaluated_blocking_count': 'number', 'has_unevaluated_blocking_control': 'boolean', 'stale_authoritative_source_count': 'number', 'ran_on_stale_authoritative_source': 'boolean', 'has_deviation_note': 'boolean', 'is_late_and_unexplained': 'boolean', 'available_exception_count_for_step': 'number', 'had_uninvoked_exception_available': 'boolean', 'expected_verification_count': 'number', 'performed_verification_count': 'number', 'skipped_verification_count': 'number', 'has_skipped_verification': 'boolean', 'claims_pass_without_evidence': 'boolean', 'step_is_preparation': 'boolean', 'step_is_approval': 'boolean', 'preparer_agent_key': 'string', 'approver_agent_key': 'string', 'prepared_by_this_agent_count': 'number', 'violates_separation_of_duties': 'boolean', 'required_role_for_step': 'string', 'executor_role_key': 'string', 'executor_authority_count': 'number', 'executor_held_required_role': 'boolean', 'is_unauthorized_approval': 'boolean', 'completed_execution_key': 'string', 'control_breach_execution_key': 'string', 'late_execution_key': 'string', 'executor_agent_kind': 'string', 'executor_is_human': 'boolean', 'step_requires_human_confirmation': 'boolean', 'non_human_ran_human_step': 'boolean', 'non_human_approval': 'boolean', 'unevaluated_blocking_execution_key': 'string', 'separation_violation_execution_key': 'string', 'self_witnessed_verification_count': 'number', 'unbacked_verification_count': 'number', 'approval_rests_on_self_attestation': 'boolean', 'exception_invocation_count': 'number', 'ran_under_exception': 'boolean', 'is_completed': 'boolean', 'is_verification_passed': 'boolean', 'is_legal_review_step': 'boolean', 'cleared_legal_review_key': 'string', 'assigned_role': 'string', 'role_current_agent': 'string', 'executor_is_designated_agent': 'boolean', 'inputs_were_fresh_at_run': 'boolean', 'ran_on_stale_inputs': 'boolean', 'unresolved_issue_count': 'number', 'has_deviation': 'boolean', 'is_clean': 'boolean', 'procedure_execution_when_unclean': 'string', 'evaluated_requirement_count': 'number', 'required_blocking_count': 'integer', 'has_unevaluated_blocking_requirement': 'boolean', 'executing_agent_kind': 'string', 'was_executed_by_software': 'boolean', 'step_is_software_assigned': 'boolean', 'software_did_human_work': 'boolean', 'is_approval_execution': 'boolean', 'is_verified': 'boolean', 'unconfirmed_non_human_decision_count': 'number', 'requires_human_confirmation': 'boolean', 'human_confirmation_missing': 'boolean', 'drafted_from_unusable_source': 'boolean', 'inputs_were_usable': 'boolean', 'software_execution_step_key': 'string', 'step_control_kind': 'string', 'unfalsified_clearance_count': 'number', 'all_clearances_are_unfalsified': 'boolean', 'stale_at_run_count': 'number', 'was_stale_when_i_ran_it': 'boolean', 'staleness_answer_is_tense_dependent': 'boolean', 'has_any_declared_check': 'boolean', 'performed_check_count': 'number', 'declared_check_count': 'number', 'is_unchecked_by_design': 'boolean', 'is_vacuously_clean': 'boolean', 'is_substantively_clean': 'boolean', 'vacuously_clean_execution_key': 'string', 'uncorroborated_pass_count': 'number', 'evidence_position_is_weak': 'boolean', 'preparation_execution_key': 'string', 'approval_execution_key': 'string', 'has_governing_instrument': 'boolean', 'has_approved_change_coverage': 'boolean', 'version_of_step': 'string', 'is_ungoverned_divergence': 'boolean', 'ungoverned_divergence_execution_key': 'string', 'self_attested_approval_execution_key': 'string', 'previous_executed_step': 'string', 'specified_transition_from_previous_count': 'integer', 'is_out_of_specified_order': 'boolean', 'execution_version': 'string', 'executes_step_of_other_version': 'boolean', 'repetition_count': 'integer', 'step_max_repetitions': 'integer', 'exceeds_max_repetitions': 'boolean', 'lacks_required_confirmation': 'boolean', 'failed_precondition_count': 'integer', 'violated_invariant_count': 'integer', 'proceeded_despite_failed_precondition': 'boolean', 'unescalated_danger_cue_count': 'integer', 'ignored_danger_cue': 'boolean', 'used_entity_count': 'integer', 'generated_entity_count': 'integer', 'step_input_variable_count': 'integer', 'ran_without_declared_inputs': 'boolean', 'step_prerequisite': 'string', 'completed_prerequisite_run_count': 'integer', 'ran_before_prerequisite_completed': 'boolean', 'deviation_execution_key': 'string', 'broke_invariant': 'boolean', 'is_blocked_by_incomplete_prerequisite': 'boolean', 'owner_organization': 'string', 'incomplete_cue_observation_count': 'integer', 'is_blocked_by_observed_cue': 'boolean'},
+     'calculated': {'evidence_position_is_weak', 'ran_on_stale_authoritative_source', 'is_verified', 'software_did_human_work', 'human_confirmation_missing', 'preparation_execution_key', 'skipped_verification_count', 'lacks_required_confirmation', 'vacuously_clean_execution_key', 'is_legal_review_step', 'has_governing_instrument', 'is_blocked_by_incomplete_prerequisite', 'is_unauthorized_approval', 'is_unchecked_by_design', 'proceeded_despite_failed_precondition', 'was_stale_when_i_ran_it', 'ignored_danger_cue', 'is_ungoverned_divergence', 'staleness_answer_is_tense_dependent', 'is_clean', 'is_substantively_clean', 'has_unevaluated_blocking_requirement', 'is_verification_passed', 'ungoverned_divergence_execution_key', 'name', 'executor_is_designated_agent', 'is_late', 'has_deviation_note', 'is_late_and_unexplained', 'is_out_of_specified_order', 'non_human_approval', 'approver_agent_key', 'executor_role_key', 'has_unevaluated_blocking_control', 'approval_rests_on_self_attestation', 'self_attested_approval_execution_key', 'was_executed_by_software', 'is_completed', 'exceeds_max_repetitions', 'broke_invariant', 'completed_execution_key', 'drafted_from_unusable_source', 'procedure_execution_when_unclean', 'actual_duration_minutes', 'violates_separation_of_duties', 'preparer_agent_key', 'has_any_declared_check', 'has_skipped_verification', 'proceeded_past_blocking_control', 'separation_violation_execution_key', 'executes_step_of_other_version', 'non_human_ran_human_step', 'late_execution_key', 'unevaluated_blocking_count', 'ran_without_declared_inputs', 'control_breach_execution_key', 'has_deviation', 'is_blocked_by_observed_cue', 'ran_on_stale_inputs', 'performed_check_count', 'ran_under_exception', 'unevaluated_blocking_execution_key', 'declared_check_count', 'is_vacuously_clean', 'all_clearances_are_unfalsified', 'cleared_legal_review_key', 'executor_held_required_role', 'had_uninvoked_exception_available', 'ran_before_prerequisite_completed', 'executor_is_human', 'approval_execution_key', 'deviation_execution_key', 'claims_pass_without_evidence', 'software_execution_step_key'},
      'lookups': [
         {'field': 'expected_duration_minutes', 'target': 'steps', 'return': 'expected_duration_minutes', 'key': 'step', 'match': 'step_id'},
         {'field': 'expected_blocking_count', 'target': 'steps', 'return': 'blocking_requirement_count', 'key': 'step', 'match': 'step_id'},
@@ -30152,7 +30631,8 @@ ERB_TABLES = [
         {'field': 'execution_version', 'target': 'procedure_executions', 'return': 'procedure_version', 'key': 'procedure_execution', 'match': 'procedure_execution_id'},
         {'field': 'step_max_repetitions', 'target': 'steps', 'return': 'max_repetitions', 'key': 'step', 'match': 'step_id'},
         {'field': 'step_input_variable_count', 'target': 'steps', 'return': 'input_variable_count', 'key': 'step', 'match': 'step_id'},
-        {'field': 'step_prerequisite', 'target': 'steps', 'return': 'prerequisite_step', 'key': 'step', 'match': 'step_id'},],
+        {'field': 'step_prerequisite', 'target': 'steps', 'return': 'prerequisite_step', 'key': 'step', 'match': 'step_id'},
+        {'field': 'owner_organization', 'target': 'procedure_executions', 'return': 'owner_organization', 'key': 'procedure_execution', 'match': 'procedure_execution_id'},],
      'aggregations': [
         {'field': 'blocking_unmet_count', 'op': 'COUNTIFS', 'table': 'requirement_satisfactions', 'criteria': [('step_execution', 'field', 'step_execution_id'), ('is_blocking_and_unmet', 'literal', True)]},
         {'field': 'blocking_unmet_count_safe', 'op': 'COUNTIFS', 'table': 'requirement_satisfactions', 'criteria': [('blocking_unmet_step_key', 'field', 'step_execution_id')]},
@@ -30176,12 +30656,13 @@ ERB_TABLES = [
         {'field': 'unescalated_danger_cue_count', 'op': 'COUNTIFS', 'table': 'cue_observations', 'criteria': [('unescalated_execution_key', 'field', 'step_execution_id')]},
         {'field': 'used_entity_count', 'op': 'COUNTIFS', 'table': 'execution_entities', 'criteria': [('used_execution_key', 'field', 'step_execution_id')]},
         {'field': 'generated_entity_count', 'op': 'COUNTIFS', 'table': 'execution_entities', 'criteria': [('generated_execution_key', 'field', 'step_execution_id')]},
-        {'field': 'completed_prerequisite_run_count', 'op': 'COUNTIFS', 'table': 'step_executions', 'criteria': [('step', 'field', 'step_prerequisite'), ('procedure_execution', 'field', 'procedure_execution'), ('execution_status', 'literal', 'Completed')]},]},
+        {'field': 'completed_prerequisite_run_count', 'op': 'COUNTIFS', 'table': 'step_executions', 'criteria': [('step', 'field', 'step_prerequisite'), ('procedure_execution', 'field', 'procedure_execution'), ('execution_status', 'literal', 'Completed')]},
+        {'field': 'incomplete_cue_observation_count', 'op': 'COUNTIFS', 'table': 'cue_observations', 'criteria': [('step_execution', 'field', 'step_execution_id'), ('cue_signals_incomplete_step', 'literal', True)]},]},
     {'name': 'RequirementSatisfactions', 'file': 'requirement_satisfactions', 'rulebook_rows': 8,
      'compute': compute_requirement_satisfactions_fields,
      'fields': ['requirement_satisfaction_id', 'name', 'step_execution', 'requirement', 'satisfaction_level', 'evidence', 'evaluated_by_agent', 'evaluated_at', 'requirement_is_blocking', 'is_fully_satisfied', 'is_blocking_and_unmet', 'blocking_unmet_step_key', 'blocking_satisfaction_step_key', 'negative_outcome_requirement_key', 'evaluator_agent_kind', 'non_human_evaluated_human_control', 'requirement_has_computed_witness', 'is_asserted_only', 'asserted_only_execution_key', 'parent_procedure_execution', 'step_execution_when_scored', 'is_human_evaluated', 'requirement_is_approval_type', 'is_invalid_approval', 'procedure_execution_of_satisfaction', 'run_when_invalid_approval', 'requirement_is_unfalsified', 'is_clearance_by_unfalsified_control', 'unfalsified_clearance_step_key', 'spec_step_of_execution', 'binding_key', 'scored_step_executor_agent', 'evaluator_is_step_executor', 'run_owner_agent', 'evaluator_owns_the_run', 'is_interested_party_assertion', 'has_written_evidence', 'is_bare_assertion', 'interested_assertion_execution_key', 'is_computedly_witnessed', 'computed_witness_execution_key', 'step_executor_agent', 'was_scored_after_attestation', 'attestation_instant_for_run', 'post_attestation_score_execution_key', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'requirement_is_blocking': 'boolean', 'is_fully_satisfied': 'boolean', 'is_blocking_and_unmet': 'boolean', 'blocking_unmet_step_key': 'string', 'blocking_satisfaction_step_key': 'string', 'negative_outcome_requirement_key': 'string', 'evaluator_agent_kind': 'string', 'non_human_evaluated_human_control': 'boolean', 'requirement_has_computed_witness': 'boolean', 'is_asserted_only': 'boolean', 'asserted_only_execution_key': 'string', 'parent_procedure_execution': 'string', 'step_execution_when_scored': 'string', 'is_human_evaluated': 'boolean', 'requirement_is_approval_type': 'string', 'is_invalid_approval': 'boolean', 'procedure_execution_of_satisfaction': 'string', 'run_when_invalid_approval': 'string', 'requirement_is_unfalsified': 'boolean', 'is_clearance_by_unfalsified_control': 'boolean', 'unfalsified_clearance_step_key': 'string', 'spec_step_of_execution': 'string', 'binding_key': 'string', 'scored_step_executor_agent': 'string', 'evaluator_is_step_executor': 'boolean', 'run_owner_agent': 'string', 'evaluator_owns_the_run': 'boolean', 'is_interested_party_assertion': 'boolean', 'has_written_evidence': 'boolean', 'is_bare_assertion': 'boolean', 'interested_assertion_execution_key': 'string', 'is_computedly_witnessed': 'boolean', 'computed_witness_execution_key': 'string', 'step_executor_agent': 'string', 'was_scored_after_attestation': 'boolean', 'attestation_instant_for_run': 'datetime', 'post_attestation_score_execution_key': 'string'},
-     'calculated': {'is_human_evaluated', 'non_human_evaluated_human_control', 'unfalsified_clearance_step_key', 'has_written_evidence', 'is_blocking_and_unmet', 'step_execution_when_scored', 'was_scored_after_attestation', 'is_fully_satisfied', 'name', 'evaluator_is_step_executor', 'negative_outcome_requirement_key', 'blocking_unmet_step_key', 'is_bare_assertion', 'is_clearance_by_unfalsified_control', 'blocking_satisfaction_step_key', 'interested_assertion_execution_key', 'is_asserted_only', 'post_attestation_score_execution_key', 'is_invalid_approval', 'is_computedly_witnessed', 'computed_witness_execution_key', 'asserted_only_execution_key', 'evaluator_owns_the_run', 'is_interested_party_assertion', 'run_when_invalid_approval'},
+     'calculated': {'post_attestation_score_execution_key', 'non_human_evaluated_human_control', 'asserted_only_execution_key', 'step_execution_when_scored', 'unfalsified_clearance_step_key', 'is_bare_assertion', 'blocking_satisfaction_step_key', 'name', 'blocking_unmet_step_key', 'negative_outcome_requirement_key', 'is_invalid_approval', 'is_asserted_only', 'is_interested_party_assertion', 'has_written_evidence', 'computed_witness_execution_key', 'is_human_evaluated', 'interested_assertion_execution_key', 'evaluator_owns_the_run', 'run_when_invalid_approval', 'evaluator_is_step_executor', 'is_clearance_by_unfalsified_control', 'is_computedly_witnessed', 'is_blocking_and_unmet', 'is_fully_satisfied', 'was_scored_after_attestation'},
      'lookups': [
         {'field': 'requirement_is_blocking', 'target': 'requirements', 'return': 'is_blocking', 'key': 'requirement', 'match': 'requirement_id'},
         {'field': 'evaluator_agent_kind', 'target': 'agents', 'return': 'agent_kind', 'key': 'evaluated_by_agent', 'match': 'agent_id'},
@@ -30201,7 +30682,7 @@ ERB_TABLES = [
      'compute': compute_errors_fields,
      'fields': ['error_id', 'name', 'label', 'error_code', 'error_cause', 'semantic_type_iri', 'description', 'remedy_step_count', 'occurrence_count', 'has_no_remedy_step'],
      'datatypes': {'name': 'string', 'remedy_step_count': 'integer', 'occurrence_count': 'integer', 'has_no_remedy_step': 'boolean'},
-     'calculated': {'name', 'has_no_remedy_step'},
+     'calculated': {'has_no_remedy_step', 'name'},
      'lookups': [],
      'aggregations': [
         {'field': 'remedy_step_count', 'op': 'COUNTIFS', 'table': 'steps', 'criteria': [('remedy_for_error', 'field', 'error_id')]},
@@ -30210,7 +30691,7 @@ ERB_TABLES = [
      'compute': compute_issue_occurrences_fields,
      'fields': ['issue_occurrence_id', 'name', 'step_execution', 'error', 'encountered_by_agent', 'occurred_at', 'issue_cause', 'issue_solution', 'status', 'is_unresolved', 'step_execution_when_unresolved', 'semantic_type_iri', 'executed_step', 'failed_condition_count_on_run', 'coincided_with_failed_condition', 'has_no_recorded_solution', 'redesign_change_request', 'redesign_implemented_at', 'is_failure_without_landed_redesign', 'improvement_cycle_path'],
      'datatypes': {'name': 'string', 'is_unresolved': 'boolean', 'step_execution_when_unresolved': 'string', 'executed_step': 'string', 'failed_condition_count_on_run': 'integer', 'coincided_with_failed_condition': 'boolean', 'has_no_recorded_solution': 'boolean', 'redesign_implemented_at': 'datetime', 'is_failure_without_landed_redesign': 'boolean', 'improvement_cycle_path': 'string'},
-     'calculated': {'has_no_recorded_solution', 'improvement_cycle_path', 'coincided_with_failed_condition', 'name', 'is_failure_without_landed_redesign', 'is_unresolved', 'step_execution_when_unresolved'},
+     'calculated': {'name', 'is_failure_without_landed_redesign', 'improvement_cycle_path', 'is_unresolved', 'has_no_recorded_solution', 'coincided_with_failed_condition', 'step_execution_when_unresolved'},
      'lookups': [
         {'field': 'executed_step', 'target': 'step_executions', 'return': 'step', 'key': 'step_execution', 'match': 'step_execution_id'},
         {'field': 'redesign_implemented_at', 'target': 'change_requests', 'return': 'implemented_at', 'key': 'redesign_change_request', 'match': 'change_request_id'},],
@@ -30227,7 +30708,7 @@ ERB_TABLES = [
      'compute': compute_user_feedback_fields,
      'fields': ['user_feedback_id', 'name', 'procedure_execution', 'provided_by_agent', 'provided_at', 'feedback_text', 'disposition', 'change_request_key', 'semantic_type_iri', 'feedback_on_procedure', 'feedback_on_execution', 'is_unactioned_procedure_critique', 'reveals_tacit_knowledge', 'collection_follow_up_count', 'is_tacit_signal_not_fed_into_collection'],
      'datatypes': {'name': 'string', 'is_unactioned_procedure_critique': 'boolean', 'collection_follow_up_count': 'integer', 'is_tacit_signal_not_fed_into_collection': 'boolean'},
-     'calculated': {'name', 'is_unactioned_procedure_critique', 'is_tacit_signal_not_fed_into_collection'},
+     'calculated': {'is_unactioned_procedure_critique', 'name', 'is_tacit_signal_not_fed_into_collection'},
      'lookups': [],
      'aggregations': [
         {'field': 'collection_follow_up_count', 'op': 'COUNTIFS', 'table': 'collected_source_materials', 'criteria': [('prompted_by_feedback', 'field', 'user_feedback_id')]},]},
@@ -30235,27 +30716,28 @@ ERB_TABLES = [
      'compute': compute_stewardship_assignments_fields,
      'fields': ['stewardship_assignment_id', 'name', 'procedure_version', 'steward_role', 'authority_role', 'valid_from', 'valid_to', 'review_cadence_days', 'count_of_review_events', 'has_ever_been_reviewed', 'evaluation_context', 'as_of_instant', 'is_current_assignment', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'count_of_review_events': 'integer', 'has_ever_been_reviewed': 'boolean', 'as_of_instant': 'datetime', 'is_current_assignment': 'boolean'},
-     'calculated': {'name', 'is_current_assignment', 'has_ever_been_reviewed'},
+     'calculated': {'is_current_assignment', 'has_ever_been_reviewed', 'name'},
      'lookups': [
         {'field': 'as_of_instant', 'target': 'evaluation_contexts', 'return': 'as_of_instant', 'key': 'evaluation_context', 'match': 'evaluation_context_id'},],
      'aggregations': [
         {'field': 'count_of_review_events', 'op': 'COUNTIFS', 'table': 'review_events', 'criteria': [('procedure_version', 'field', 'procedure_version')]},]},
     {'name': 'ChangeRequests', 'file': 'change_requests', 'rulebook_rows': 4,
      'compute': compute_change_requests_fields,
-     'fields': ['change_request_id', 'name', 'procedure_version', 'title', 'change_kind', 'status', 'requested_by_agent', 'authority_role', 'requested_at', 'decided_at', 'impact_assessment', 'is_open', 'open_change_version_key', 'is_decided', 'evaluation_context', 'as_of_instant', 'days_pending', 'is_still_pending', 'is_stalled', 'authority_agent', 'requester_is_authority', 'awaits_authority_decision', 'authority_role_label', 'touches_live_version', 'is_live_decision_backlog', 'blocks_an_open_gap', 'implemented_at', 'backlog_version_key', 'is_my_pending_decision', 'is_my_blocking_backlog', 'is_my_overdue_backlog', 'is_implemented', 'is_my_decided_request', 'is_my_decided_but_unlanded', 'decision_latency_days', 'implementation_latency_days', 'delay_is_downstream_of_me', 'unlanded_version_key', 'is_approved_not_implemented', 'days_since_approval', 'is_stalled_implementation', 'stalled_implementation_version_key', 'approved_version_key', 'is_approved_decision', 'semantic_type_iri'],
-     'datatypes': {'name': 'string', 'is_open': 'boolean', 'open_change_version_key': 'string', 'is_decided': 'boolean', 'as_of_instant': 'datetime', 'days_pending': 'integer', 'is_still_pending': 'boolean', 'is_stalled': 'boolean', 'authority_agent': 'string', 'requester_is_authority': 'boolean', 'awaits_authority_decision': 'boolean', 'authority_role_label': 'string', 'touches_live_version': 'boolean', 'is_live_decision_backlog': 'boolean', 'blocks_an_open_gap': 'boolean', 'backlog_version_key': 'string', 'is_my_pending_decision': 'boolean', 'is_my_blocking_backlog': 'boolean', 'is_my_overdue_backlog': 'boolean', 'is_implemented': 'boolean', 'is_my_decided_request': 'boolean', 'is_my_decided_but_unlanded': 'boolean', 'decision_latency_days': 'integer', 'implementation_latency_days': 'integer', 'delay_is_downstream_of_me': 'boolean', 'unlanded_version_key': 'string', 'is_approved_not_implemented': 'boolean', 'days_since_approval': 'integer', 'is_stalled_implementation': 'boolean', 'stalled_implementation_version_key': 'string', 'approved_version_key': 'string', 'is_approved_decision': 'boolean'},
-     'calculated': {'is_my_blocking_backlog', 'is_approved_decision', 'is_stalled', 'delay_is_downstream_of_me', 'is_decided', 'awaits_authority_decision', 'stalled_implementation_version_key', 'approved_version_key', 'decision_latency_days', 'is_my_pending_decision', 'name', 'backlog_version_key', 'is_my_decided_but_unlanded', 'implementation_latency_days', 'days_pending', 'requester_is_authority', 'unlanded_version_key', 'is_my_decided_request', 'is_still_pending', 'is_implemented', 'is_live_decision_backlog', 'blocks_an_open_gap', 'is_stalled_implementation', 'is_my_overdue_backlog', 'is_approved_not_implemented', 'is_open', 'days_since_approval', 'open_change_version_key'},
+     'fields': ['change_request_id', 'name', 'procedure_version', 'title', 'change_kind', 'status', 'requested_by_agent', 'authority_role', 'requested_at', 'decided_at', 'impact_assessment', 'is_open', 'open_change_version_key', 'is_decided', 'evaluation_context', 'as_of_instant', 'days_pending', 'is_still_pending', 'is_stalled', 'authority_agent', 'requester_is_authority', 'awaits_authority_decision', 'authority_role_label', 'touches_live_version', 'is_live_decision_backlog', 'blocks_an_open_gap', 'implemented_at', 'backlog_version_key', 'is_my_pending_decision', 'is_my_blocking_backlog', 'is_my_overdue_backlog', 'is_implemented', 'is_my_decided_request', 'is_my_decided_but_unlanded', 'decision_latency_days', 'implementation_latency_days', 'delay_is_downstream_of_me', 'unlanded_version_key', 'is_approved_not_implemented', 'days_since_approval', 'is_stalled_implementation', 'stalled_implementation_version_key', 'approved_version_key', 'is_approved_decision', 'semantic_type_iri', 'owner_organization'],
+     'datatypes': {'name': 'string', 'is_open': 'boolean', 'open_change_version_key': 'string', 'is_decided': 'boolean', 'as_of_instant': 'datetime', 'days_pending': 'integer', 'is_still_pending': 'boolean', 'is_stalled': 'boolean', 'authority_agent': 'string', 'requester_is_authority': 'boolean', 'awaits_authority_decision': 'boolean', 'authority_role_label': 'string', 'touches_live_version': 'boolean', 'is_live_decision_backlog': 'boolean', 'blocks_an_open_gap': 'boolean', 'backlog_version_key': 'string', 'is_my_pending_decision': 'boolean', 'is_my_blocking_backlog': 'boolean', 'is_my_overdue_backlog': 'boolean', 'is_implemented': 'boolean', 'is_my_decided_request': 'boolean', 'is_my_decided_but_unlanded': 'boolean', 'decision_latency_days': 'integer', 'implementation_latency_days': 'integer', 'delay_is_downstream_of_me': 'boolean', 'unlanded_version_key': 'string', 'is_approved_not_implemented': 'boolean', 'days_since_approval': 'integer', 'is_stalled_implementation': 'boolean', 'stalled_implementation_version_key': 'string', 'approved_version_key': 'string', 'is_approved_decision': 'boolean', 'owner_organization': 'string'},
+     'calculated': {'implementation_latency_days', 'is_approved_decision', 'is_stalled_implementation', 'is_decided', 'is_my_blocking_backlog', 'is_stalled', 'delay_is_downstream_of_me', 'name', 'awaits_authority_decision', 'days_since_approval', 'is_implemented', 'decision_latency_days', 'backlog_version_key', 'is_my_pending_decision', 'is_open', 'blocks_an_open_gap', 'is_still_pending', 'approved_version_key', 'is_my_decided_request', 'days_pending', 'open_change_version_key', 'requester_is_authority', 'is_my_decided_but_unlanded', 'is_live_decision_backlog', 'is_approved_not_implemented', 'stalled_implementation_version_key', 'is_my_overdue_backlog', 'unlanded_version_key'},
      'lookups': [
         {'field': 'as_of_instant', 'target': 'evaluation_contexts', 'return': 'as_of_instant', 'key': 'evaluation_context', 'match': 'evaluation_context_id'},
         {'field': 'authority_agent', 'target': 'roles', 'return': 'current_agent', 'key': 'authority_role', 'match': 'role_id'},
         {'field': 'authority_role_label', 'target': 'roles', 'return': 'label', 'key': 'authority_role', 'match': 'role_id'},
-        {'field': 'touches_live_version', 'target': 'procedure_versions', 'return': 'is_live', 'key': 'procedure_version', 'match': 'procedure_version_id'},],
+        {'field': 'touches_live_version', 'target': 'procedure_versions', 'return': 'is_live', 'key': 'procedure_version', 'match': 'procedure_version_id'},
+        {'field': 'owner_organization', 'target': 'procedure_versions', 'return': 'owner_organization', 'key': 'procedure_version', 'match': 'procedure_version_id'},],
      'aggregations': []},
     {'name': 'ReviewEvents', 'file': 'review_events', 'rulebook_rows': 3,
      'compute': compute_review_events_fields,
      'fields': ['review_event_id', 'name', 'procedure_version', 'review_kind', 'reviewed_at', 'reviewed_by_agent', 'outcome', 'related_change_request', 'next_review_due', 'evaluation_context', 'as_of_instant', 'is_overdue', 'overdue_version_key', 'promised_cadence_days', 'days_since_reviewed', 'exceeds_promised_cadence', 'cadence_drift_days', 'promise_and_behavior_disagree', 'cadence_breach_version_key', 'semantic_type_iri', 'version_modified_at', 'review_did_not_refresh_modified'],
      'datatypes': {'name': 'string', 'as_of_instant': 'datetime', 'is_overdue': 'boolean', 'overdue_version_key': 'string', 'promised_cadence_days': 'integer', 'days_since_reviewed': 'integer', 'exceeds_promised_cadence': 'boolean', 'cadence_drift_days': 'integer', 'promise_and_behavior_disagree': 'boolean', 'cadence_breach_version_key': 'string', 'version_modified_at': 'datetime', 'review_did_not_refresh_modified': 'boolean'},
-     'calculated': {'cadence_drift_days', 'cadence_breach_version_key', 'is_overdue', 'review_did_not_refresh_modified', 'name', 'days_since_reviewed', 'exceeds_promised_cadence', 'promise_and_behavior_disagree', 'overdue_version_key'},
+     'calculated': {'days_since_reviewed', 'cadence_breach_version_key', 'cadence_drift_days', 'is_overdue', 'name', 'overdue_version_key', 'exceeds_promised_cadence', 'review_did_not_refresh_modified', 'promise_and_behavior_disagree'},
      'lookups': [
         {'field': 'as_of_instant', 'target': 'evaluation_contexts', 'return': 'as_of_instant', 'key': 'evaluation_context', 'match': 'evaluation_context_id'},
         {'field': 'promised_cadence_days', 'target': 'procedure_versions', 'return': 'steward_review_cadence_days', 'key': 'procedure_version', 'match': 'procedure_version_id'},
@@ -30272,7 +30754,7 @@ ERB_TABLES = [
      'compute': compute_operational_bindings_fields,
      'fields': ['operational_binding_id', 'name', 'procedure_version', 'step', 'resource', 'access_mode', 'record_or_schema_key', 'last_observed_at', 'freshness_sla_minutes', 'is_authoritative', 'evaluation_context', 'as_of_instant', 'age_minutes', 'is_fresh', 'stale_binding_step_key', 'authoritative_stale_step_key', 'is_stale_and_authoritative', 'step_when_stale', 'resource_is_approved', 'is_usable_for_drafting', 'step_when_unusable', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'as_of_instant': 'datetime', 'age_minutes': 'integer', 'is_fresh': 'boolean', 'stale_binding_step_key': 'string', 'authoritative_stale_step_key': 'string', 'is_stale_and_authoritative': 'boolean', 'step_when_stale': 'string', 'resource_is_approved': 'boolean', 'is_usable_for_drafting': 'boolean', 'step_when_unusable': 'string'},
-     'calculated': {'step_when_unusable', 'is_fresh', 'is_usable_for_drafting', 'stale_binding_step_key', 'authoritative_stale_step_key', 'is_stale_and_authoritative', 'name', 'step_when_stale', 'age_minutes'},
+     'calculated': {'authoritative_stale_step_key', 'name', 'step_when_stale', 'step_when_unusable', 'is_stale_and_authoritative', 'is_usable_for_drafting', 'is_fresh', 'stale_binding_step_key', 'age_minutes'},
      'lookups': [
         {'field': 'as_of_instant', 'target': 'evaluation_contexts', 'return': 'as_of_instant', 'key': 'evaluation_context', 'match': 'evaluation_context_id'},
         {'field': 'resource_is_approved', 'target': 'resources', 'return': 'is_approved_source', 'key': 'resource', 'match': 'resource_id'},],
@@ -30290,7 +30772,7 @@ ERB_TABLES = [
      'compute': compute_message_templates_fields,
      'fields': ['message_template_id', 'name', 'communication_policy', 'resource', 'subject_template', 'body_template', 'locale', 'status', 'policy_max_message_length', 'policy_max_segments', 'body_template_length', 'is_template_over_length', 'valid_approval_count', 'has_valid_approval', 'is_claiming_unbacked_approval', 'current_body_hash', 'last_approved_body_hash', 'last_valid_approval', 'has_body_drifted', 'is_sendable_under_approval', 'drifted_send_count', 'unanswered_delivery_count', 'transmitted_delivery_count', 'template_draws_no_response', 'last_approval_at', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'policy_max_message_length': 'integer', 'policy_max_segments': 'integer', 'body_template_length': 'integer', 'is_template_over_length': 'boolean', 'valid_approval_count': 'number', 'has_valid_approval': 'boolean', 'is_claiming_unbacked_approval': 'boolean', 'last_approved_body_hash': 'string', 'has_body_drifted': 'boolean', 'is_sendable_under_approval': 'boolean', 'drifted_send_count': 'number', 'unanswered_delivery_count': 'number', 'transmitted_delivery_count': 'number', 'template_draws_no_response': 'boolean', 'last_approval_at': 'datetime'},
-     'calculated': {'is_claiming_unbacked_approval', 'has_valid_approval', 'is_sendable_under_approval', 'body_template_length', 'template_draws_no_response', 'is_template_over_length', 'name', 'has_body_drifted'},
+     'calculated': {'body_template_length', 'template_draws_no_response', 'name', 'is_template_over_length', 'has_body_drifted', 'is_claiming_unbacked_approval', 'is_sendable_under_approval', 'has_valid_approval'},
      'lookups': [
         {'field': 'policy_max_message_length', 'target': 'communication_policies', 'return': 'max_message_length', 'key': 'communication_policy', 'match': 'communication_policy_id'},
         {'field': 'policy_max_segments', 'target': 'communication_policies', 'return': 'max_segments', 'key': 'communication_policy', 'match': 'communication_policy_id'},
@@ -30301,14 +30783,15 @@ ERB_TABLES = [
         {'field': 'drifted_send_count', 'op': 'COUNTIFS', 'table': 'message_deliveries', 'criteria': [('drifted_send_template_key', 'field', 'message_template_id')]},
         {'field': 'unanswered_delivery_count', 'op': 'COUNTIFS', 'table': 'message_deliveries', 'criteria': [('unanswered_template_key', 'field', 'message_template_id')]},
         {'field': 'transmitted_delivery_count', 'op': 'COUNTIFS', 'table': 'message_deliveries', 'criteria': [('transmitted_template_key', 'field', 'message_template_id')]},]},
-    {'name': 'SemanticMappings', 'file': 'semantic_mappings', 'rulebook_rows': 299,
+    {'name': 'SemanticMappings', 'file': 'semantic_mappings', 'rulebook_rows': 357,
      'compute': compute_semantic_mappings_fields,
-     'fields': ['semantic_mapping_id', 'name', 'source_path', 'mapping_kind', 'target_iri', 'mapping_relation', 'ontology_profile', 'notes', 'available_standard_iri', 'reinvents_standard_term', 'is_non_resolvable_term_iri'],
-     'datatypes': {'name': 'string', 'reinvents_standard_term': 'boolean', 'is_non_resolvable_term_iri': 'boolean'},
+     'fields': ['semantic_mapping_id', 'name', 'source_path', 'mapping_kind', 'target_iri', 'mapping_relation', 'ontology_profile', 'profile_namespace_dereferences', 'notes', 'available_standard_iri', 'reinvents_standard_term', 'is_non_resolvable_term_iri'],
+     'datatypes': {'name': 'string', 'profile_namespace_dereferences': 'boolean', 'reinvents_standard_term': 'boolean', 'is_non_resolvable_term_iri': 'boolean'},
      'calculated': {'name', 'reinvents_standard_term', 'is_non_resolvable_term_iri'},
-     'lookups': [],
+     'lookups': [
+        {'field': 'profile_namespace_dereferences', 'target': 'ontology_profiles', 'return': 'namespace_dereferences', 'key': 'ontology_profile', 'match': 'ontology_profile_id'},],
      'aggregations': []},
-    {'name': 'WitnessLoops', 'file': 'witness_loops', 'rulebook_rows': 13,
+    {'name': 'WitnessLoops', 'file': 'witness_loops', 'rulebook_rows': 16,
      'compute': compute_witness_loops_fields,
      'fields': ['witness_loop_id', 'name', 'loop_number', 'title', 'premise', 'started_at', 'completed_at', 'question_count', 'is_complete', 'fields_after', 'derived_after', 'witnessed_after', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'question_count': 'number', 'is_complete': 'boolean'},
@@ -30316,7 +30799,7 @@ ERB_TABLES = [
      'lookups': [],
      'aggregations': [
         {'field': 'question_count', 'op': 'COUNTIFS', 'table': 'role_questions', 'criteria': [('witness_loop', 'field', 'witness_loop_id')]},]},
-    {'name': 'RoleQuestions', 'file': 'role_questions', 'rulebook_rows': 425,
+    {'name': 'RoleQuestions', 'file': 'role_questions', 'rulebook_rows': 442,
      'compute': compute_role_questions_fields,
      'fields': ['role_question_id', 'name', 'asking_role', 'witness_loop', 'question_text', 'why_it_matters', 'answerable_before', 'predicate_count', 'is_answered', 'witnessed_answer', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'predicate_count': 'number', 'is_answered': 'boolean'},
@@ -30324,11 +30807,11 @@ ERB_TABLES = [
      'lookups': [],
      'aggregations': [
         {'field': 'predicate_count', 'op': 'COUNTIFS', 'table': 'rulebook_fields', 'criteria': [('invented_for_question', 'field', 'role_question_id')]},]},
-    {'name': 'RulebookFields', 'file': 'rulebook_fields', 'rulebook_rows': 5058,
+    {'name': 'RulebookFields', 'file': 'rulebook_fields', 'rulebook_rows': 5185,
      'compute': compute_rulebook_fields_fields,
-     'fields': ['rulebook_field_id', 'name', 'target_table', 'field_name', 'field_type', 'datatype', 'formula', 'invented_for_question', 'is_derived', 'is_witness', 'disagreeing_substrate_count', 'is_substrate_contested', 'measured_substantive_count', 'measured_distinct_value_count', 'has_measured_data', 'is_discriminating', 'semantic_type_iri'],
+     'fields': ['rulebook_field_id', 'name', 'target_table', 'field_name', 'field_type', 'datatype', 'formula', 'related_to', 'invented_for_question', 'is_derived', 'is_witness', 'disagreeing_substrate_count', 'is_substrate_contested', 'measured_substantive_count', 'measured_distinct_value_count', 'has_measured_data', 'is_discriminating', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'is_derived': 'boolean', 'is_witness': 'boolean', 'disagreeing_substrate_count': 'number', 'is_substrate_contested': 'boolean', 'has_measured_data': 'boolean', 'is_discriminating': 'boolean'},
-     'calculated': {'is_witness', 'is_discriminating', 'name', 'is_derived', 'has_measured_data', 'is_substrate_contested'},
+     'calculated': {'is_discriminating', 'is_witness', 'name', 'is_derived', 'is_substrate_contested', 'has_measured_data'},
      'lookups': [],
      'aggregations': [
         {'field': 'disagreeing_substrate_count', 'op': 'COUNTIFS', 'table': 'field_disagreements', 'criteria': [('rulebook_field', 'field', 'rulebook_field_id')]},]},
@@ -30336,7 +30819,7 @@ ERB_TABLES = [
      'compute': compute_test_suites_fields,
      'fields': ['test_suite_id', 'name', 'label', 'test_count', 'pass_count', 'blocking_fail_count', 'is_green', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'test_count': 'number', 'pass_count': 'number', 'blocking_fail_count': 'number', 'is_green': 'boolean'},
-     'calculated': {'name', 'is_green'},
+     'calculated': {'is_green', 'name'},
      'lookups': [],
      'aggregations': [
         {'field': 'test_count', 'op': 'COUNTIFS', 'table': 'test_cases', 'criteria': [('suite', 'field', 'test_suite_id')]},
@@ -30346,7 +30829,7 @@ ERB_TABLES = [
      'compute': compute_test_cases_fields,
      'fields': ['test_case_id', 'name', 'test_kind', 'subject', 'target_table', 'target_field', 'assertion', 'defends_question', 'suite', 'severity', 'is_blocking', 'last_outcome', 'last_detail', 'last_run_at', 'is_passing', 'is_failing', 'needs_attention', 'passing_suite_key', 'needs_attention_suite_key', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'is_blocking': 'boolean', 'is_passing': 'boolean', 'is_failing': 'boolean', 'needs_attention': 'boolean', 'passing_suite_key': 'string', 'needs_attention_suite_key': 'string'},
-     'calculated': {'is_passing', 'needs_attention', 'is_failing', 'name', 'needs_attention_suite_key', 'is_blocking', 'passing_suite_key'},
+     'calculated': {'is_passing', 'name', 'is_failing', 'needs_attention_suite_key', 'needs_attention', 'is_blocking', 'passing_suite_key'},
      'lookups': [],
      'aggregations': []},
     {'name': 'ERBVersions', 'file': 'erb_versions', 'rulebook_rows': 1,
@@ -30374,7 +30857,7 @@ ERB_TABLES = [
      'compute': compute_exception_invocations_fields,
      'fields': ['exception_invocation_id', 'name', 'step_execution', 'exception', 'invoked_by_agent', 'approved_by_agent', 'invoked_at', 'handling_applied', 'expected_handling', 'required_approval_role', 'required_approval_role_holder', 'approval_role_matches', 'is_approved', 'is_improperly_approved', 'invoker_agent_kind', 'invoker_also_prepared_key', 'parent_procedure_execution', 'approver_prepared_count', 'delegated_to_preparer', 'is_ungoverned_invocation', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'expected_handling': 'string', 'required_approval_role': 'string', 'required_approval_role_holder': 'string', 'approval_role_matches': 'boolean', 'is_approved': 'boolean', 'is_improperly_approved': 'boolean', 'invoker_agent_kind': 'string', 'invoker_also_prepared_key': 'string', 'parent_procedure_execution': 'string', 'approver_prepared_count': 'number', 'delegated_to_preparer': 'boolean', 'is_ungoverned_invocation': 'boolean'},
-     'calculated': {'is_ungoverned_invocation', 'delegated_to_preparer', 'is_approved', 'name', 'invoker_also_prepared_key', 'is_improperly_approved', 'approval_role_matches'},
+     'calculated': {'delegated_to_preparer', 'name', 'approval_role_matches', 'invoker_also_prepared_key', 'is_improperly_approved', 'is_approved', 'is_ungoverned_invocation'},
      'lookups': [
         {'field': 'expected_handling', 'target': 'exceptions', 'return': 'handling', 'key': 'exception', 'match': 'exception_id'},
         {'field': 'required_approval_role', 'target': 'exceptions', 'return': 'approval_role', 'key': 'exception', 'match': 'exception_id'},
@@ -30387,7 +30870,7 @@ ERB_TABLES = [
      'compute': compute_verification_outcomes_fields,
      'fields': ['verification_outcome_id', 'name', 'step_execution', 'step_verification', 'observed_signal_value', 'observed_by_agent', 'observed_at', 'evidence_uri', 'expected_signal_value', 'signal_identifier', 'signal_matches_expected', 'has_evidence', 'is_unbacked_observation', 'is_self_witnessed', 'step_executor_agent', 'self_witnessed_step_key', 'unbacked_step_key', 'is_self_witnessed_and_unbacked', 'is_uncorroborated_pass', 'uncorroborated_pass_step_key', 'observer_is_non_human', 'observer_is_independent_of_executor', 'is_independent_human_observation', 'independent_observation_execution_key', 'parent_procedure_execution_of_outcome', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'expected_signal_value': 'string', 'signal_identifier': 'string', 'signal_matches_expected': 'boolean', 'has_evidence': 'boolean', 'is_unbacked_observation': 'boolean', 'is_self_witnessed': 'boolean', 'step_executor_agent': 'string', 'self_witnessed_step_key': 'string', 'unbacked_step_key': 'string', 'is_self_witnessed_and_unbacked': 'boolean', 'is_uncorroborated_pass': 'boolean', 'uncorroborated_pass_step_key': 'string', 'observer_is_non_human': 'boolean', 'observer_is_independent_of_executor': 'boolean', 'is_independent_human_observation': 'boolean', 'independent_observation_execution_key': 'string', 'parent_procedure_execution_of_outcome': 'string'},
-     'calculated': {'unbacked_step_key', 'is_independent_human_observation', 'is_self_witnessed', 'self_witnessed_step_key', 'is_uncorroborated_pass', 'has_evidence', 'independent_observation_execution_key', 'name', 'observer_is_independent_of_executor', 'is_self_witnessed_and_unbacked', 'uncorroborated_pass_step_key', 'is_unbacked_observation', 'signal_matches_expected'},
+     'calculated': {'has_evidence', 'is_uncorroborated_pass', 'is_unbacked_observation', 'independent_observation_execution_key', 'signal_matches_expected', 'name', 'is_self_witnessed_and_unbacked', 'self_witnessed_step_key', 'is_independent_human_observation', 'observer_is_independent_of_executor', 'unbacked_step_key', 'is_self_witnessed', 'uncorroborated_pass_step_key'},
      'lookups': [
         {'field': 'expected_signal_value', 'target': 'step_verifications', 'return': 'expected_signal_value', 'key': 'step_verification', 'match': 'step_verification_id'},
         {'field': 'signal_identifier', 'target': 'step_verifications', 'return': 'signal_identifier', 'key': 'step_verification', 'match': 'step_verification_id'},
@@ -30406,14 +30889,14 @@ ERB_TABLES = [
      'compute': compute_recipients_fields,
      'fields': ['recipient_id', 'name', 'display_name', 'organization', 'email_address', 'mobile_number', 'sms_consent_status', 'sms_consent_at', 'consent_binding', 'has_sms_consent', 'is_email_reachable', 'is_sms_reachable', 'is_unreachable', 'is_communicationally_stranded', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'has_sms_consent': 'boolean', 'is_email_reachable': 'boolean', 'is_sms_reachable': 'boolean', 'is_unreachable': 'boolean', 'is_communicationally_stranded': 'boolean'},
-     'calculated': {'is_unreachable', 'has_sms_consent', 'name', 'is_communicationally_stranded', 'is_sms_reachable', 'is_email_reachable'},
+     'calculated': {'is_sms_reachable', 'is_unreachable', 'name', 'is_communicationally_stranded', 'is_email_reachable', 'has_sms_consent'},
      'lookups': [],
      'aggregations': []},
     {'name': 'MessageDeliveries', 'file': 'message_deliveries', 'rulebook_rows': 6,
      'compute': compute_message_deliveries_fields,
      'fields': ['message_delivery_id', 'name', 'procedure_execution', 'step_execution', 'recipient', 'message_template', 'sent_by_agent', 'rendered_body', 'sent_at', 'sent_at_local_hour', 'delivery_status', 'suppression_reason', 'invoked_exception', 'acknowledged_at', 'policy_channel', 'channel_name', 'policy_requires_consent', 'recipient_has_sms_consent', 'was_actually_transmitted', 'is_consent_violation', 'consent_violation_policy_key', 'policy_quiet_hours_start_hour', 'policy_quiet_hours_end_hour', 'policy_has_quiet_hours', 'quiet_window_wraps_midnight', 'is_inside_quiet_window', 'is_quiet_hours_violation', 'quiet_hours_violation_policy_key', 'recipient_is_unreachable', 'is_acknowledged', 'invoked_exception_condition', 'has_unreachable_exception_invoked', 'is_fabricated_acknowledgement', 'is_unhandled_unreachable', 'unreachable_failure_key', 'policy_retention_days', 'evaluation_context', 'as_of_instant', 'age_days', 'is_within_retention_window', 'has_rendered_body', 'is_evidence_required', 'is_retention_breach', 'retention_breach_execution_key', 'sending_step_execution_step', 'execution_has_cleared_legal_review', 'is_unreviewed_send', 'rendered_body_length', 'policy_max_message_length_at_send', 'segment_count', 'policy_max_segments_at_send', 'is_over_segment_limit', 'template_has_valid_approval', 'is_unapproved_send', 'policy_required_opt_out_phrase', 'policy_requires_opt_out', 'opt_out_phrase_position', 'has_opt_out_phrase', 'is_opt_out_in_first_segment', 'is_missing_required_opt_out', 'is_opt_out_at_risk_of_truncation', 'is_failed_delivery', 'is_suppressed', 'is_triaged', 'is_abandoned_failure', 'abandoned_failure_execution_key', 'reached_execution_key', 'template_was_sendable', 'is_drifted_send', 'drifted_send_template_key', 'was_sent_outside_business_hours', 'was_delivered_and_unanswered', 'is_poorly_timed_unanswered', 'is_well_timed_unanswered', 'unanswered_template_key', 'transmitted_template_key', 'approving_agent_at_send', 'approving_role_at_send', 'approval_decided_at_send', 'approval_preceded_send', 'has_frozen_approval_evidence', 'provenance_is_live_derived', 'current_last_approval_at', 'template_reapproved_since_send', 'is_unprovable_approval_claim', 'reminder_sent_at', 'reminder_count', 'has_sent_reminder', 'acknowledgement_is_outstanding', 'outstanding_age_days', 'is_unchased_acknowledgement', 'is_exhausted_follow_up', 'needs_human_escalation', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'policy_channel': 'string', 'channel_name': 'string', 'policy_requires_consent': 'boolean', 'recipient_has_sms_consent': 'boolean', 'was_actually_transmitted': 'boolean', 'is_consent_violation': 'boolean', 'consent_violation_policy_key': 'string', 'policy_quiet_hours_start_hour': 'integer', 'policy_quiet_hours_end_hour': 'integer', 'policy_has_quiet_hours': 'boolean', 'quiet_window_wraps_midnight': 'boolean', 'is_inside_quiet_window': 'boolean', 'is_quiet_hours_violation': 'boolean', 'quiet_hours_violation_policy_key': 'string', 'recipient_is_unreachable': 'boolean', 'is_acknowledged': 'boolean', 'invoked_exception_condition': 'string', 'has_unreachable_exception_invoked': 'boolean', 'is_fabricated_acknowledgement': 'boolean', 'is_unhandled_unreachable': 'boolean', 'unreachable_failure_key': 'string', 'policy_retention_days': 'integer', 'as_of_instant': 'datetime', 'age_days': 'integer', 'is_within_retention_window': 'boolean', 'has_rendered_body': 'boolean', 'is_evidence_required': 'boolean', 'is_retention_breach': 'boolean', 'retention_breach_execution_key': 'string', 'sending_step_execution_step': 'string', 'execution_has_cleared_legal_review': 'boolean', 'is_unreviewed_send': 'boolean', 'rendered_body_length': 'integer', 'policy_max_message_length_at_send': 'integer', 'segment_count': 'integer', 'policy_max_segments_at_send': 'integer', 'is_over_segment_limit': 'boolean', 'template_has_valid_approval': 'boolean', 'is_unapproved_send': 'boolean', 'policy_required_opt_out_phrase': 'string', 'policy_requires_opt_out': 'boolean', 'opt_out_phrase_position': 'integer', 'has_opt_out_phrase': 'boolean', 'is_opt_out_in_first_segment': 'boolean', 'is_missing_required_opt_out': 'boolean', 'is_opt_out_at_risk_of_truncation': 'boolean', 'is_failed_delivery': 'boolean', 'is_suppressed': 'boolean', 'is_triaged': 'boolean', 'is_abandoned_failure': 'boolean', 'abandoned_failure_execution_key': 'string', 'reached_execution_key': 'string', 'template_was_sendable': 'boolean', 'is_drifted_send': 'boolean', 'drifted_send_template_key': 'string', 'was_sent_outside_business_hours': 'boolean', 'was_delivered_and_unanswered': 'boolean', 'is_poorly_timed_unanswered': 'boolean', 'is_well_timed_unanswered': 'boolean', 'unanswered_template_key': 'string', 'transmitted_template_key': 'string', 'approval_preceded_send': 'boolean', 'has_frozen_approval_evidence': 'boolean', 'provenance_is_live_derived': 'boolean', 'current_last_approval_at': 'datetime', 'template_reapproved_since_send': 'boolean', 'is_unprovable_approval_claim': 'boolean', 'has_sent_reminder': 'boolean', 'acknowledgement_is_outstanding': 'boolean', 'outstanding_age_days': 'integer', 'is_unchased_acknowledgement': 'boolean', 'is_exhausted_follow_up': 'boolean', 'needs_human_escalation': 'boolean'},
-     'calculated': {'acknowledgement_is_outstanding', 'has_sent_reminder', 'is_evidence_required', 'was_actually_transmitted', 'is_exhausted_follow_up', 'is_within_retention_window', 'is_unprovable_approval_claim', 'drifted_send_template_key', 'is_acknowledged', 'is_opt_out_in_first_segment', 'is_unapproved_send', 'policy_requires_opt_out', 'reached_execution_key', 'is_unchased_acknowledgement', 'consent_violation_policy_key', 'is_abandoned_failure', 'is_consent_violation', 'is_over_segment_limit', 'quiet_window_wraps_midnight', 'opt_out_phrase_position', 'was_sent_outside_business_hours', 'is_unreviewed_send', 'outstanding_age_days', 'is_quiet_hours_violation', 'is_well_timed_unanswered', 'needs_human_escalation', 'name', 'has_rendered_body', 'abandoned_failure_execution_key', 'is_unhandled_unreachable', 'segment_count', 'is_triaged', 'has_frozen_approval_evidence', 'template_reapproved_since_send', 'quiet_hours_violation_policy_key', 'retention_breach_execution_key', 'is_retention_breach', 'age_days', 'is_drifted_send', 'is_opt_out_at_risk_of_truncation', 'is_poorly_timed_unanswered', 'is_suppressed', 'transmitted_template_key', 'was_delivered_and_unanswered', 'provenance_is_live_derived', 'rendered_body_length', 'approval_preceded_send', 'policy_has_quiet_hours', 'unreachable_failure_key', 'has_unreachable_exception_invoked', 'is_inside_quiet_window', 'is_fabricated_acknowledgement', 'unanswered_template_key', 'has_opt_out_phrase', 'is_missing_required_opt_out', 'is_failed_delivery'},
+     'calculated': {'needs_human_escalation', 'is_quiet_hours_violation', 'is_acknowledged', 'is_opt_out_in_first_segment', 'policy_has_quiet_hours', 'is_well_timed_unanswered', 'is_unhandled_unreachable', 'is_unreviewed_send', 'rendered_body_length', 'is_consent_violation', 'quiet_hours_violation_policy_key', 'is_opt_out_at_risk_of_truncation', 'template_reapproved_since_send', 'is_unprovable_approval_claim', 'is_unapproved_send', 'name', 'policy_requires_opt_out', 'has_unreachable_exception_invoked', 'has_frozen_approval_evidence', 'is_within_retention_window', 'is_evidence_required', 'is_unchased_acknowledgement', 'consent_violation_policy_key', 'is_fabricated_acknowledgement', 'is_triaged', 'segment_count', 'retention_breach_execution_key', 'has_rendered_body', 'unreachable_failure_key', 'quiet_window_wraps_midnight', 'is_over_segment_limit', 'transmitted_template_key', 'was_actually_transmitted', 'abandoned_failure_execution_key', 'is_exhausted_follow_up', 'is_suppressed', 'provenance_is_live_derived', 'is_poorly_timed_unanswered', 'is_missing_required_opt_out', 'reached_execution_key', 'has_sent_reminder', 'has_opt_out_phrase', 'acknowledgement_is_outstanding', 'is_failed_delivery', 'outstanding_age_days', 'drifted_send_template_key', 'is_drifted_send', 'is_retention_breach', 'approval_preceded_send', 'unanswered_template_key', 'was_sent_outside_business_hours', 'is_abandoned_failure', 'was_delivered_and_unanswered', 'age_days', 'is_inside_quiet_window', 'opt_out_phrase_position'},
      'lookups': [
         {'field': 'policy_channel', 'target': 'message_templates', 'return': 'communication_policy', 'key': 'message_template', 'match': 'message_template_id'},
         {'field': 'channel_name', 'target': 'communication_policies', 'return': 'channel', 'key': 'policy_channel', 'match': 'communication_policy_id'},
@@ -30438,7 +30921,7 @@ ERB_TABLES = [
      'compute': compute_template_approvals_fields,
      'fields': ['template_approval_id', 'name', 'message_template', 'decided_by_agent', 'decided_in_role', 'decision', 'decided_at', 'approved_body_hash', 'notes', 'is_approval_decision', 'template_policy', 'required_approval_role', 'is_decided_by_required_role', 'valid_approval_template_key', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'is_approval_decision': 'boolean', 'template_policy': 'string', 'required_approval_role': 'string', 'is_decided_by_required_role': 'boolean', 'valid_approval_template_key': 'string'},
-     'calculated': {'name', 'is_decided_by_required_role', 'valid_approval_template_key', 'is_approval_decision'},
+     'calculated': {'valid_approval_template_key', 'is_approval_decision', 'name', 'is_decided_by_required_role'},
      'lookups': [
         {'field': 'template_policy', 'target': 'message_templates', 'return': 'communication_policy', 'key': 'message_template', 'match': 'message_template_id'},
         {'field': 'required_approval_role', 'target': 'communication_policies', 'return': 'approval_role', 'key': 'template_policy', 'match': 'communication_policy_id'},],
@@ -30447,7 +30930,7 @@ ERB_TABLES = [
      'compute': compute_send_intents_fields,
      'fields': ['send_intent_id', 'name', 'procedure_execution', 'step_execution', 'recipient', 'message_template', 'proposed_body', 'proposed_send_at_local_hour', 'evaluated_at', 'resulting_delivery', 'intent_policy', 'intent_channel', 'policy_is_active', 'intent_requires_consent', 'recipient_has_channel_consent', 'consent_gate_passed', 'recipient_is_sms_reachable', 'recipient_is_email_reachable', 'reachability_gate_passed', 'permission_gate_passed', 'intent_quiet_start_hour', 'intent_quiet_end_hour', 'intent_policy_has_quiet_hours', 'intent_quiet_window_wraps', 'intent_is_inside_quiet_window', 'timing_gate_passed', 'hours_until_window_opens', 'intent_max_message_length', 'intent_max_segments', 'proposed_body_length', 'proposed_segment_count', 'length_gate_passed', 'intent_required_opt_out_phrase', 'proposed_opt_out_position', 'opt_out_gate_passed', 'content_gate_passed', 'template_is_sendable', 'execution_has_legal_clearance', 'intent_approval_role', 'approval_role_agent_kind', 'approval_is_human', 'authorization_gate_passed', 'is_cleared_to_send', 'blocking_gate_name', 'has_resulting_delivery', 'resulting_delivery_was_transmitted', 'is_overridden_refusal', 'is_silently_dropped', 'resulting_delivery_exception', 'refusal_cited_an_exception', 'is_properly_handled_refusal', 'refusal_failure_execution_key', 'intent_execution_key', 'delivered_intent_execution_key', 'dropped_intent_execution_key', 'my_approval_was_in_force', 'refused_on_approved_content', 'refused_on_opt_out_only', 'refusal_was_on_my_rules', 'refusal_was_outside_my_control', 'approver_was_notified', 'is_unreported_refusal_on_my_rules', 'is_approval_overridden_silently', 'alternate_channel_intent', 'has_alternate_channel_attempt', 'alternate_attempt_was_cleared', 'is_refused_with_no_alternative', 'exception_prescribed_an_alternative', 'prescribed_handling_was_performed', 'is_suppression_without_remedy', 'refusal_recorded_at', 'refusal_notified_role', 'has_durable_refusal_record', 'refusal_was_escalated', 'is_unrecorded_refusal', 'is_unescalated_refusal', 'unescalated_refusal_role_key', 'unrecorded_refusal_execution_key', 'retry_intent', 'was_deferred_on_timing', 'evaluation_context', 'as_of_instant', 'window_has_since_reopened', 'has_retry_attempt', 'retry_was_cleared', 'is_abandoned_deferral', 'deferral_age_hours', 'is_stale_deferral', 'evaluating_role_assignment', 'enforced_by_unauthorized_agent', 'consent_input_was_resolvable', 'recipient_consent_status_raw', 'policy_input_was_resolvable', 'all_gate_inputs_resolved', 'is_unevaluable_refusal', 'gate_result_was_independently_confirmed', 'is_self_witnessed_decision', 'is_independently_confirmed', 'independently_confirmed_execution_key', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'intent_policy': 'string', 'intent_channel': 'string', 'policy_is_active': 'boolean', 'intent_requires_consent': 'boolean', 'recipient_has_channel_consent': 'boolean', 'consent_gate_passed': 'boolean', 'recipient_is_sms_reachable': 'boolean', 'recipient_is_email_reachable': 'boolean', 'reachability_gate_passed': 'boolean', 'permission_gate_passed': 'boolean', 'intent_quiet_start_hour': 'integer', 'intent_quiet_end_hour': 'integer', 'intent_policy_has_quiet_hours': 'boolean', 'intent_quiet_window_wraps': 'boolean', 'intent_is_inside_quiet_window': 'boolean', 'timing_gate_passed': 'boolean', 'hours_until_window_opens': 'integer', 'intent_max_message_length': 'integer', 'intent_max_segments': 'integer', 'length_gate_passed': 'boolean', 'intent_required_opt_out_phrase': 'string', 'opt_out_gate_passed': 'boolean', 'content_gate_passed': 'boolean', 'template_is_sendable': 'boolean', 'execution_has_legal_clearance': 'boolean', 'intent_approval_role': 'string', 'approval_role_agent_kind': 'string', 'approval_is_human': 'boolean', 'authorization_gate_passed': 'boolean', 'is_cleared_to_send': 'boolean', 'blocking_gate_name': 'string', 'has_resulting_delivery': 'boolean', 'resulting_delivery_was_transmitted': 'boolean', 'is_overridden_refusal': 'boolean', 'is_silently_dropped': 'boolean', 'resulting_delivery_exception': 'string', 'refusal_cited_an_exception': 'boolean', 'is_properly_handled_refusal': 'boolean', 'refusal_failure_execution_key': 'string', 'intent_execution_key': 'string', 'delivered_intent_execution_key': 'string', 'dropped_intent_execution_key': 'string', 'my_approval_was_in_force': 'boolean', 'refused_on_approved_content': 'boolean', 'refused_on_opt_out_only': 'boolean', 'refusal_was_on_my_rules': 'boolean', 'refusal_was_outside_my_control': 'boolean', 'is_unreported_refusal_on_my_rules': 'boolean', 'is_approval_overridden_silently': 'boolean', 'has_alternate_channel_attempt': 'boolean', 'alternate_attempt_was_cleared': 'boolean', 'is_refused_with_no_alternative': 'boolean', 'exception_prescribed_an_alternative': 'boolean', 'prescribed_handling_was_performed': 'boolean', 'is_suppression_without_remedy': 'boolean', 'has_durable_refusal_record': 'boolean', 'refusal_was_escalated': 'boolean', 'is_unrecorded_refusal': 'boolean', 'is_unescalated_refusal': 'boolean', 'unescalated_refusal_role_key': 'string', 'unrecorded_refusal_execution_key': 'string', 'was_deferred_on_timing': 'boolean', 'as_of_instant': 'datetime', 'window_has_since_reopened': 'boolean', 'has_retry_attempt': 'boolean', 'retry_was_cleared': 'boolean', 'is_abandoned_deferral': 'boolean', 'deferral_age_hours': 'integer', 'is_stale_deferral': 'boolean', 'enforced_by_unauthorized_agent': 'boolean', 'consent_input_was_resolvable': 'boolean', 'recipient_consent_status_raw': 'string', 'policy_input_was_resolvable': 'boolean', 'all_gate_inputs_resolved': 'boolean', 'is_unevaluable_refusal': 'boolean', 'is_self_witnessed_decision': 'boolean', 'is_independently_confirmed': 'boolean', 'independently_confirmed_execution_key': 'string'},
-     'calculated': {'hours_until_window_opens', 'unescalated_refusal_role_key', 'has_alternate_channel_attempt', 'is_overridden_refusal', 'refusal_was_on_my_rules', 'deferral_age_hours', 'all_gate_inputs_resolved', 'my_approval_was_in_force', 'window_has_since_reopened', 'reachability_gate_passed', 'authorization_gate_passed', 'is_unrecorded_refusal', 'opt_out_gate_passed', 'is_unescalated_refusal', 'unrecorded_refusal_execution_key', 'is_abandoned_deferral', 'timing_gate_passed', 'is_independently_confirmed', 'refusal_was_outside_my_control', 'intent_is_inside_quiet_window', 'refusal_was_escalated', 'name', 'content_gate_passed', 'is_refused_with_no_alternative', 'refused_on_opt_out_only', 'prescribed_handling_was_performed', 'policy_input_was_resolvable', 'is_cleared_to_send', 'independently_confirmed_execution_key', 'length_gate_passed', 'was_deferred_on_timing', 'is_self_witnessed_decision', 'is_silently_dropped', 'has_retry_attempt', 'intent_execution_key', 'refused_on_approved_content', 'refusal_cited_an_exception', 'intent_quiet_window_wraps', 'is_unevaluable_refusal', 'approval_is_human', 'permission_gate_passed', 'blocking_gate_name', 'delivered_intent_execution_key', 'is_properly_handled_refusal', 'is_unreported_refusal_on_my_rules', 'is_suppression_without_remedy', 'has_resulting_delivery', 'has_durable_refusal_record', 'consent_input_was_resolvable', 'intent_policy_has_quiet_hours', 'exception_prescribed_an_alternative', 'dropped_intent_execution_key', 'refusal_failure_execution_key', 'is_approval_overridden_silently', 'is_stale_deferral', 'consent_gate_passed'},
+     'calculated': {'consent_input_was_resolvable', 'refusal_was_escalated', 'hours_until_window_opens', 'approval_is_human', 'blocking_gate_name', 'is_independently_confirmed', 'all_gate_inputs_resolved', 'is_unrecorded_refusal', 'refused_on_opt_out_only', 'is_properly_handled_refusal', 'policy_input_was_resolvable', 'consent_gate_passed', 'exception_prescribed_an_alternative', 'dropped_intent_execution_key', 'is_unreported_refusal_on_my_rules', 'is_cleared_to_send', 'permission_gate_passed', 'intent_is_inside_quiet_window', 'refusal_cited_an_exception', 'has_durable_refusal_record', 'window_has_since_reopened', 'is_unevaluable_refusal', 'is_overridden_refusal', 'name', 'intent_policy_has_quiet_hours', 'unescalated_refusal_role_key', 'delivered_intent_execution_key', 'is_unescalated_refusal', 'refused_on_approved_content', 'is_suppression_without_remedy', 'has_retry_attempt', 'refusal_was_on_my_rules', 'prescribed_handling_was_performed', 'timing_gate_passed', 'unrecorded_refusal_execution_key', 'is_approval_overridden_silently', 'authorization_gate_passed', 'refusal_failure_execution_key', 'independently_confirmed_execution_key', 'is_abandoned_deferral', 'is_refused_with_no_alternative', 'is_stale_deferral', 'is_self_witnessed_decision', 'deferral_age_hours', 'intent_execution_key', 'length_gate_passed', 'refusal_was_outside_my_control', 'is_silently_dropped', 'intent_quiet_window_wraps', 'opt_out_gate_passed', 'reachability_gate_passed', 'has_resulting_delivery', 'my_approval_was_in_force', 'was_deferred_on_timing', 'content_gate_passed', 'has_alternate_channel_attempt'},
      'lookups': [
         {'field': 'intent_policy', 'target': 'message_templates', 'return': 'communication_policy', 'key': 'message_template', 'match': 'message_template_id'},
         {'field': 'intent_channel', 'target': 'communication_policies', 'return': 'channel', 'key': 'intent_policy', 'match': 'communication_policy_id'},
@@ -30477,7 +30960,7 @@ ERB_TABLES = [
      'compute': compute_agent_decision_records_fields,
      'fields': ['agent_decision_record_id', 'name', 'step_execution', 'deciding_agent', 'decision_kind', 'decision_summary', 'decided_at', 'materiality_band', 'human_disposition', 'reviewed_by_agent', 'reviewed_at', 'was_overridden', 'was_reviewed', 'deciding_agent_kind', 'deciding_agent_when_overridden', 'under_role_assignment', 'role_assignment_when_scored', 'role_assignment_when_overridden', 'step_of_decision', 'boundary_match_key', 'matching_boundary_count', 'violated_authority_boundary', 'reviewer_agent_kind', 'has_human_confirmation', 'needs_human_confirmation', 'is_unconfirmed_non_human_decision', 'step_execution_when_unconfirmed', 'agent_when_boundary_violated', 'review_latency_minutes', 'is_draft_kind', 'agent_when_draft_overridden', 'agent_when_draft', 'override_reason_kind', 'is_error_correction', 'is_reserved_judgment_override', 'override_reason_is_recorded', 'is_unexplained_override', 'error_correction_role_assignment_key', 'boundary_violation_role_assignment_key', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'was_overridden': 'boolean', 'was_reviewed': 'boolean', 'deciding_agent_kind': 'string', 'deciding_agent_when_overridden': 'string', 'role_assignment_when_scored': 'string', 'role_assignment_when_overridden': 'string', 'step_of_decision': 'string', 'boundary_match_key': 'string', 'matching_boundary_count': 'number', 'violated_authority_boundary': 'boolean', 'reviewer_agent_kind': 'string', 'has_human_confirmation': 'boolean', 'needs_human_confirmation': 'boolean', 'is_unconfirmed_non_human_decision': 'boolean', 'step_execution_when_unconfirmed': 'string', 'agent_when_boundary_violated': 'string', 'review_latency_minutes': 'number', 'is_draft_kind': 'boolean', 'agent_when_draft_overridden': 'string', 'agent_when_draft': 'string', 'is_error_correction': 'boolean', 'is_reserved_judgment_override': 'boolean', 'override_reason_is_recorded': 'boolean', 'is_unexplained_override': 'boolean', 'error_correction_role_assignment_key': 'string', 'boundary_violation_role_assignment_key': 'string'},
-     'calculated': {'is_reserved_judgment_override', 'has_human_confirmation', 'override_reason_is_recorded', 'name', 'is_error_correction', 'deciding_agent_when_overridden', 'review_latency_minutes', 'is_draft_kind', 'error_correction_role_assignment_key', 'agent_when_draft_overridden', 'boundary_violation_role_assignment_key', 'agent_when_draft', 'is_unconfirmed_non_human_decision', 'boundary_match_key', 'step_execution_when_unconfirmed', 'was_overridden', 'was_reviewed', 'agent_when_boundary_violated', 'needs_human_confirmation', 'role_assignment_when_overridden', 'is_unexplained_override', 'role_assignment_when_scored', 'violated_authority_boundary'},
+     'calculated': {'step_execution_when_unconfirmed', 'override_reason_is_recorded', 'deciding_agent_when_overridden', 'has_human_confirmation', 'boundary_violation_role_assignment_key', 'is_unexplained_override', 'agent_when_draft', 'error_correction_role_assignment_key', 'role_assignment_when_scored', 'agent_when_draft_overridden', 'agent_when_boundary_violated', 'name', 'is_draft_kind', 'is_unconfirmed_non_human_decision', 'was_reviewed', 'is_error_correction', 'boundary_match_key', 'was_overridden', 'needs_human_confirmation', 'is_reserved_judgment_override', 'role_assignment_when_overridden', 'violated_authority_boundary', 'review_latency_minutes'},
      'lookups': [
         {'field': 'deciding_agent_kind', 'target': 'agents', 'return': 'agent_kind', 'key': 'deciding_agent', 'match': 'agent_id'},
         {'field': 'step_of_decision', 'target': 'step_executions', 'return': 'step', 'key': 'step_execution', 'match': 'step_execution_id'},
@@ -30488,7 +30971,7 @@ ERB_TABLES = [
      'compute': compute_delivered_communications_fields,
      'fields': ['delivered_communication_id', 'name', 'procedure_execution', 'sending_step_execution', 'authorizing_step_execution', 'message_template', 'channel', 'recipient_key', 'sent_at', 'rendered_content_hash', 'approved_content_hash', 'delivery_status', 'semantic_type_iri', 'has_authorization', 'content_matches_approval', 'authorized_at', 'was_approved_before_sending', 'is_defensible'],
      'datatypes': {'name': 'string', 'has_authorization': 'boolean', 'content_matches_approval': 'boolean', 'authorized_at': 'datetime', 'was_approved_before_sending': 'boolean', 'is_defensible': 'boolean'},
-     'calculated': {'was_approved_before_sending', 'content_matches_approval', 'is_defensible', 'name', 'has_authorization'},
+     'calculated': {'is_defensible', 'has_authorization', 'content_matches_approval', 'name', 'was_approved_before_sending'},
      'lookups': [
         {'field': 'authorized_at', 'target': 'step_executions', 'return': 'ended_at', 'key': 'authorizing_step_execution', 'match': 'step_execution_id'},],
      'aggregations': []},
@@ -30496,7 +30979,7 @@ ERB_TABLES = [
      'compute': compute_authority_boundaries_fields,
      'fields': ['authority_boundary_id', 'name', 'step', 'forbidden_agent_kind', 'forbidden_decision_kind', 'ratified_by_knowledge_fragment', 'enforcing_requirement', 'authority_role', 'valid_from', 'valid_to', 'status', 'evaluation_context', 'as_of_instant', 'is_currently_binding', 'ratifying_fragment_is_valid', 'step_when_binding', 'boundary_match_key', 'violation_count', 'is_untested', 'has_ratifying_fragment', 'is_unwarranted', 'ratifying_fragment_is_overdue', 'ratifying_fragment_is_single_witness', 'warrant_is_thin', 'is_unwarranted_and_untested', 'unwarranted_boundary_step_key', 'ratifying_fragment_key', 'ratifying_fragment_status', 'ratification_lapsed', 'binds_despite_lapsed_ratification', 'is_ungrounded_and_untested', 'constrained_role_assignment_key', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'as_of_instant': 'datetime', 'is_currently_binding': 'boolean', 'ratifying_fragment_is_valid': 'boolean', 'step_when_binding': 'string', 'boundary_match_key': 'string', 'violation_count': 'number', 'is_untested': 'boolean', 'has_ratifying_fragment': 'boolean', 'is_unwarranted': 'boolean', 'ratifying_fragment_is_overdue': 'boolean', 'ratifying_fragment_is_single_witness': 'boolean', 'warrant_is_thin': 'boolean', 'is_unwarranted_and_untested': 'boolean', 'unwarranted_boundary_step_key': 'string', 'ratifying_fragment_key': 'string', 'ratifying_fragment_status': 'string', 'ratification_lapsed': 'boolean', 'binds_despite_lapsed_ratification': 'boolean', 'is_ungrounded_and_untested': 'boolean', 'constrained_role_assignment_key': 'string'},
-     'calculated': {'is_currently_binding', 'ratifying_fragment_key', 'is_unwarranted', 'is_untested', 'has_ratifying_fragment', 'ratification_lapsed', 'warrant_is_thin', 'constrained_role_assignment_key', 'name', 'binds_despite_lapsed_ratification', 'is_unwarranted_and_untested', 'unwarranted_boundary_step_key', 'step_when_binding', 'is_ungrounded_and_untested', 'boundary_match_key'},
+     'calculated': {'is_unwarranted', 'constrained_role_assignment_key', 'binds_despite_lapsed_ratification', 'is_currently_binding', 'is_unwarranted_and_untested', 'name', 'boundary_match_key', 'step_when_binding', 'ratifying_fragment_key', 'has_ratifying_fragment', 'is_untested', 'is_ungrounded_and_untested', 'unwarranted_boundary_step_key', 'warrant_is_thin', 'ratification_lapsed'},
      'lookups': [
         {'field': 'as_of_instant', 'target': 'evaluation_contexts', 'return': 'as_of_instant', 'key': 'evaluation_context', 'match': 'evaluation_context_id'},
         {'field': 'ratifying_fragment_is_valid', 'target': 'knowledge_fragments', 'return': 'is_currently_valid', 'key': 'ratified_by_knowledge_fragment', 'match': 'knowledge_fragment_id'},
@@ -30518,14 +31001,14 @@ ERB_TABLES = [
      'compute': compute_attestations_fields,
      'fields': ['attestation_id', 'name', 'procedure_execution', 'signed_by_agent', 'signed_at', 'assurance_grade_at_signing', 'version_was_fit_at_signing', 'version_is_fit_now', 'fitness_verdict_has_drifted', 'assurance_grade_now', 'assurance_grade_has_drifted', 'would_not_survive_restatement'],
      'datatypes': {'name': 'string', 'version_is_fit_now': 'boolean', 'fitness_verdict_has_drifted': 'boolean', 'assurance_grade_now': 'string', 'assurance_grade_has_drifted': 'boolean', 'would_not_survive_restatement': 'boolean'},
-     'calculated': {'name', 'fitness_verdict_has_drifted', 'assurance_grade_has_drifted', 'would_not_survive_restatement'},
+     'calculated': {'assurance_grade_has_drifted', 'would_not_survive_restatement', 'fitness_verdict_has_drifted', 'name'},
      'lookups': [
         {'field': 'version_is_fit_now', 'target': 'procedure_executions', 'return': 'executed_version_is_fit', 'key': 'procedure_execution', 'match': 'procedure_execution_id'},
         {'field': 'assurance_grade_now', 'target': 'procedure_executions', 'return': 'assurance_grade', 'key': 'procedure_execution', 'match': 'procedure_execution_id'},],
      'aggregations': []},
-    {'name': 'AppRoleProfiles', 'file': 'app_role_profiles', 'rulebook_rows': 12,
+    {'name': 'AppRoleProfiles', 'file': 'app_role_profiles', 'rulebook_rows': 20,
      'compute': compute_app_role_profiles_fields,
-     'fields': ['app_role_profile_id', 'name', 'role', 'display_label', 'role_kind', 'accent_color', 'icon_mark', 'icon_png_base64', 'pitch', 'sort_order', 'route_count', 'semantic_type_iri'],
+     'fields': ['app_role_profile_id', 'name', 'role', 'display_label', 'role_kind', 'accent_color', 'icon_mark', 'icon_png_base64', 'pitch', 'sort_order', 'route_count', 'semantic_type_iri', 'device', 'home_route', 'home_title'],
      'datatypes': {'name': 'string', 'route_count': 'number'},
      'calculated': {'name'},
      'lookups': [],
@@ -30543,7 +31026,7 @@ ERB_TABLES = [
      'compute': compute_app_routes_fields,
      'fields': ['app_route_id', 'name', 'route_path', 'route_name', 'surface', 'owning_role', 'nav_group', 'nav_order', 'route_kind', 'purpose', 'layout_hints', 'is_in_nav', 'is_shared', 'is_maintainer', 'question_count', 'reference_count', 'answers_no_question', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'is_in_nav': 'boolean', 'is_shared': 'boolean', 'is_maintainer': 'boolean', 'question_count': 'number', 'reference_count': 'number', 'answers_no_question': 'boolean'},
-     'calculated': {'answers_no_question', 'is_maintainer', 'name', 'is_shared', 'is_in_nav'},
+     'calculated': {'name', 'answers_no_question', 'is_maintainer', 'is_in_nav', 'is_shared'},
      'lookups': [],
      'aggregations': [
         {'field': 'question_count', 'op': 'COUNTIFS', 'table': 'app_route_questions', 'criteria': [('route', 'field', 'app_route_id')]},
@@ -30562,11 +31045,11 @@ ERB_TABLES = [
      'calculated': {'name'},
      'lookups': [],
      'aggregations': []},
-    {'name': 'RulebookTables', 'file': 'rulebook_tables', 'rulebook_rows': 260,
+    {'name': 'RulebookTables', 'file': 'rulebook_tables', 'rulebook_rows': 264,
      'compute': compute_rulebook_tables_fields,
-     'fields': ['rulebook_table_id', 'table_name', 'name', 'physical_table', 'physical_view', 'subject_area', 'is_extension', 'field_count', 'policy_count', 'is_unsecured', 'disagreeing_substrate_count', 'measured_row_count', 'has_measured_rows', 'semantic_type_iri', 'organization_level', 'semantic_mapping_count', 'meaning_is_only_tabular', 'exact_mapping_count', 'aligned_mapping_count', 'is_unaligned_to_standard', 'semantic_type_iri_field_count', 'lacks_semantic_type_convention', 'is_unsecured_governance_record'],
-     'datatypes': {'name': 'string', 'field_count': 'number', 'policy_count': 'number', 'is_unsecured': 'boolean', 'disagreeing_substrate_count': 'number', 'has_measured_rows': 'boolean', 'semantic_mapping_count': 'integer', 'meaning_is_only_tabular': 'boolean', 'exact_mapping_count': 'integer', 'aligned_mapping_count': 'integer', 'is_unaligned_to_standard': 'boolean', 'semantic_type_iri_field_count': 'integer', 'lacks_semantic_type_convention': 'boolean', 'is_unsecured_governance_record': 'boolean'},
-     'calculated': {'has_measured_rows', 'is_unsecured', 'is_unsecured_governance_record', 'name', 'is_unaligned_to_standard', 'meaning_is_only_tabular', 'lacks_semantic_type_convention'},
+     'fields': ['rulebook_table_id', 'table_name', 'name', 'physical_table', 'physical_view', 'subject_area', 'is_extension', 'field_count', 'policy_count', 'is_unsecured', 'disagreeing_substrate_count', 'measured_row_count', 'has_measured_rows', 'semantic_type_iri', 'organization_level', 'semantic_mapping_count', 'meaning_is_only_tabular', 'exact_mapping_count', 'aligned_mapping_count', 'is_unaligned_to_standard', 'semantic_type_iri_field_count', 'lacks_semantic_type_convention', 'is_unsecured_governance_record', 'unrestricted_non_admin_policy_count', 'restricted_non_admin_policy_count', 'is_readable_in_full_by_non_admin', 'is_controlled_for_every_non_admin'],
+     'datatypes': {'name': 'string', 'field_count': 'number', 'policy_count': 'number', 'is_unsecured': 'boolean', 'disagreeing_substrate_count': 'number', 'has_measured_rows': 'boolean', 'semantic_mapping_count': 'integer', 'meaning_is_only_tabular': 'boolean', 'exact_mapping_count': 'integer', 'aligned_mapping_count': 'integer', 'is_unaligned_to_standard': 'boolean', 'semantic_type_iri_field_count': 'integer', 'lacks_semantic_type_convention': 'boolean', 'is_unsecured_governance_record': 'boolean', 'unrestricted_non_admin_policy_count': 'integer', 'restricted_non_admin_policy_count': 'integer', 'is_readable_in_full_by_non_admin': 'boolean', 'is_controlled_for_every_non_admin': 'boolean'},
+     'calculated': {'is_unsecured', 'has_measured_rows', 'is_unaligned_to_standard', 'is_unsecured_governance_record', 'is_controlled_for_every_non_admin', 'meaning_is_only_tabular', 'name', 'is_readable_in_full_by_non_admin', 'lacks_semantic_type_convention'},
      'lookups': [],
      'aggregations': [
         {'field': 'field_count', 'op': 'COUNTIFS', 'table': 'rulebook_fields', 'criteria': [('target_table', 'field', 'rulebook_table_id')]},
@@ -30575,12 +31058,14 @@ ERB_TABLES = [
         {'field': 'semantic_mapping_count', 'op': 'COUNTIFS', 'table': 'semantic_mappings', 'criteria': [('source_path', 'field', 'rulebook_table_id')]},
         {'field': 'exact_mapping_count', 'op': 'COUNTIFS', 'table': 'semantic_mappings', 'criteria': [('source_path', 'field', 'rulebook_table_id'), ('mapping_relation', 'literal', 'exact')]},
         {'field': 'aligned_mapping_count', 'op': 'COUNTIFS', 'table': 'semantic_mappings', 'criteria': [('source_path', 'field', 'rulebook_table_id'), ('mapping_relation', 'literal', 'aligned')]},
-        {'field': 'semantic_type_iri_field_count', 'op': 'COUNTIFS', 'table': 'rulebook_fields', 'criteria': [('target_table', 'field', 'rulebook_table_id'), ('field_name', 'literal', 'SemanticTypeIri')]},]},
-    {'name': 'AccessPrincipals', 'file': 'access_principals', 'rulebook_rows': 12,
+        {'field': 'semantic_type_iri_field_count', 'op': 'COUNTIFS', 'table': 'rulebook_fields', 'criteria': [('target_table', 'field', 'rulebook_table_id'), ('field_name', 'literal', 'SemanticTypeIri')]},
+        {'field': 'unrestricted_non_admin_policy_count', 'op': 'COUNTIFS', 'table': 'access_policies', 'criteria': [('target_table', 'field', 'rulebook_table_id'), ('is_unrestricted_non_admin_grant', 'literal', True)]},
+        {'field': 'restricted_non_admin_policy_count', 'op': 'COUNTIFS', 'table': 'access_policies', 'criteria': [('target_table', 'field', 'rulebook_table_id'), ('is_unrestricted_non_admin_grant', 'literal', False), ('principal_is_admin', 'literal', False)]},]},
+    {'name': 'AccessPrincipals', 'file': 'access_principals', 'rulebook_rows': 20,
      'compute': compute_access_principals_fields,
      'fields': ['access_principal_id', 'name', 'label', 'domain_role', 'pg_role_name', 'schema_name', 'is_administrator', 'organization_scope', 'role_label', 'policy_count', 'grant_count', 'visible_table_count', 'has_no_access', 'is_over_privileged', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'organization_scope': 'string', 'role_label': 'string', 'policy_count': 'number', 'grant_count': 'number', 'visible_table_count': 'number', 'has_no_access': 'boolean', 'is_over_privileged': 'boolean'},
-     'calculated': {'is_over_privileged', 'has_no_access', 'name'},
+     'calculated': {'has_no_access', 'is_over_privileged', 'name'},
      'lookups': [
         {'field': 'organization_scope', 'target': 'roles', 'return': 'organization', 'key': 'domain_role', 'match': 'role_id'},
         {'field': 'role_label', 'target': 'roles', 'return': 'label', 'key': 'domain_role', 'match': 'role_id'},],
@@ -30588,44 +31073,44 @@ ERB_TABLES = [
         {'field': 'policy_count', 'op': 'COUNTIFS', 'table': 'access_policies', 'criteria': [('principal', 'field', 'access_principal_id')]},
         {'field': 'grant_count', 'op': 'COUNTIFS', 'table': 'field_grants', 'criteria': [('principal', 'field', 'access_principal_id')]},
         {'field': 'visible_table_count', 'op': 'COUNTIFS', 'table': 'role_schema_views', 'criteria': [('principal', 'field', 'access_principal_id')]},]},
-    {'name': 'AccessPolicies', 'file': 'access_policies', 'rulebook_rows': 202,
+    {'name': 'AccessPolicies', 'file': 'access_policies', 'rulebook_rows': 781,
      'compute': compute_access_policies_fields,
      'fields': ['access_policy_id', 'name', 'principal', 'target_table', 'command', 'row_predicate', 'check_predicate', 'rationale', 'references_inference', 'is_write_command', 'is_unrestricted', 'principal_is_admin', 'is_unrestricted_non_admin_grant', 'is_unwitnessed_write', 'denial_test_count', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'is_write_command': 'boolean', 'is_unrestricted': 'boolean', 'principal_is_admin': 'boolean', 'is_unrestricted_non_admin_grant': 'boolean', 'is_unwitnessed_write': 'boolean', 'denial_test_count': 'number'},
-     'calculated': {'is_unwitnessed_write', 'is_unrestricted', 'is_unrestricted_non_admin_grant', 'name', 'is_write_command'},
+     'calculated': {'is_unwitnessed_write', 'name', 'is_unrestricted_non_admin_grant', 'is_write_command', 'is_unrestricted'},
      'lookups': [
         {'field': 'principal_is_admin', 'target': 'access_principals', 'return': 'is_administrator', 'key': 'principal', 'match': 'access_principal_id'},],
      'aggregations': [
         {'field': 'denial_test_count', 'op': 'COUNTIFS', 'table': 'access_denial_tests', 'criteria': [('target_policy', 'field', 'access_policy_id')]},]},
-    {'name': 'FieldGrants', 'file': 'field_grants', 'rulebook_rows': 3639,
+    {'name': 'FieldGrants', 'file': 'field_grants', 'rulebook_rows': 18467,
      'compute': compute_field_grants_fields,
      'fields': ['field_grant_id', 'name', 'principal', 'target_field', 'can_read', 'can_write', 'mask_strategy', 'field_table', 'field_name', 'field_is_derived', 'is_writable_derived_field', 'is_masked', 'grant_key_when_readable', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'field_table': 'string', 'field_name': 'string', 'field_is_derived': 'boolean', 'is_writable_derived_field': 'boolean', 'is_masked': 'boolean', 'grant_key_when_readable': 'string'},
-     'calculated': {'name', 'is_writable_derived_field', 'grant_key_when_readable', 'is_masked'},
+     'calculated': {'is_masked', 'name', 'grant_key_when_readable', 'is_writable_derived_field'},
      'lookups': [
         {'field': 'field_table', 'target': 'rulebook_fields', 'return': 'target_table', 'key': 'target_field', 'match': 'rulebook_field_id'},
         {'field': 'field_name', 'target': 'rulebook_fields', 'return': 'field_name', 'key': 'target_field', 'match': 'rulebook_field_id'},
         {'field': 'field_is_derived', 'target': 'rulebook_fields', 'return': 'is_derived', 'key': 'target_field', 'match': 'rulebook_field_id'},],
      'aggregations': []},
-    {'name': 'RoleSchemas', 'file': 'role_schemas', 'rulebook_rows': 12,
+    {'name': 'RoleSchemas', 'file': 'role_schemas', 'rulebook_rows': 20,
      'compute': compute_role_schemas_fields,
      'fields': ['role_schema_id', 'name', 'principal', 'schema_name', 'search_path', 'is_sealed', 'view_count', 'is_empty_schema', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'search_path': 'string', 'view_count': 'number', 'is_empty_schema': 'boolean'},
-     'calculated': {'name', 'is_empty_schema', 'search_path'},
+     'calculated': {'name', 'search_path', 'is_empty_schema'},
      'lookups': [],
      'aggregations': [
         {'field': 'view_count', 'op': 'COUNTIFS', 'table': 'role_schema_views', 'criteria': [('role_schema', 'field', 'role_schema_id')]},]},
-    {'name': 'RoleSchemaViews', 'file': 'role_schema_views', 'rulebook_rows': 202,
+    {'name': 'RoleSchemaViews', 'file': 'role_schema_views', 'rulebook_rows': 762,
      'compute': compute_role_schema_views_fields,
      'fields': ['role_schema_view_id', 'name', 'role_schema', 'principal', 'target_table', 'view_name', 'schema_name', 'source_view', 'grant_key', 'column_count', 'table_field_count', 'is_full_width', 'is_degenerate_view', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'schema_name': 'string', 'source_view': 'string', 'grant_key': 'string', 'column_count': 'number', 'table_field_count': 'number', 'is_full_width': 'boolean', 'is_degenerate_view': 'boolean'},
-     'calculated': {'name', 'grant_key', 'is_full_width', 'is_degenerate_view'},
+     'calculated': {'grant_key', 'name', 'is_degenerate_view', 'is_full_width'},
      'lookups': [
         {'field': 'schema_name', 'target': 'role_schemas', 'return': 'schema_name', 'key': 'role_schema', 'match': 'role_schema_id'},
         {'field': 'source_view', 'target': 'rulebook_tables', 'return': 'physical_view', 'key': 'target_table', 'match': 'rulebook_table_id'},
         {'field': 'table_field_count', 'target': 'rulebook_tables', 'return': 'field_count', 'key': 'target_table', 'match': 'rulebook_table_id'},],
      'aggregations': [
-        {'field': 'column_count', 'op': 'COUNTIFS', 'table': 'field_grants', 'criteria': [('grant_key_when_readable', 'field', 'grant_key')]},]},
+        {'field': 'column_count', 'op': 'COUNTIFS', 'table': 'field_grants', 'criteria': [('principal', 'field', 'principal'), ('can_read', 'literal', True), ('field_table', 'field', 'target_table')]},]},
     {'name': 'JwtClaimMappings', 'file': 'jwt_claim_mappings', 'rulebook_rows': 4,
      'compute': compute_jwt_claim_mappings_fields,
      'fields': ['jwt_claim_mapping_id', 'name', 'claim_name', 'sql_accessor', 'is_reserved_claim', 'maps_to_principal', 'description2', 'usage_count', 'semantic_type_iri'],
@@ -30638,20 +31123,20 @@ ERB_TABLES = [
      'compute': compute_access_denial_tests_fields,
      'fields': ['access_denial_test_id', 'name', 'target_policy', 'principal', 'target_table', 'forbidden_row_id', 'expected_visible', 'observed_visible', 'last_run_at', 'has_run', 'is_passing', 'is_leak', 'is_unproven', 'rationale', 'is_positive_control', 'forbidden_table', 'forbidden_column', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'has_run': 'boolean', 'is_passing': 'boolean', 'is_leak': 'boolean', 'is_unproven': 'boolean', 'is_positive_control': 'boolean'},
-     'calculated': {'is_passing', 'is_unproven', 'is_leak', 'name', 'has_run', 'is_positive_control'},
+     'calculated': {'is_positive_control', 'is_passing', 'has_run', 'name', 'is_unproven', 'is_leak'},
      'lookups': [],
      'aggregations': []},
-    {'name': 'AppUsers', 'file': 'app_users', 'rulebook_rows': 10,
+    {'name': 'AppUsers', 'file': 'app_users', 'rulebook_rows': 20,
      'compute': compute_app_users_fields,
      'fields': ['app_user_id', 'name', 'email_address', 'display_name', 'linked_agent', 'is_enabled', 'agent_kind', 'organization', 'assignment_count', 'has_no_principal', 'holds_multiple_principals', 'is_non_human_sign_in', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'agent_kind': 'string', 'organization': 'string', 'assignment_count': 'number', 'has_no_principal': 'boolean', 'holds_multiple_principals': 'boolean', 'is_non_human_sign_in': 'boolean'},
-     'calculated': {'is_non_human_sign_in', 'name', 'has_no_principal', 'holds_multiple_principals'},
+     'calculated': {'has_no_principal', 'name', 'is_non_human_sign_in', 'holds_multiple_principals'},
      'lookups': [
         {'field': 'agent_kind', 'target': 'agents', 'return': 'agent_kind', 'key': 'linked_agent', 'match': 'agent_id'},
         {'field': 'organization', 'target': 'agents', 'return': 'organization', 'key': 'linked_agent', 'match': 'agent_id'},],
      'aggregations': [
         {'field': 'assignment_count', 'op': 'COUNTIFS', 'table': 'principal_assignments', 'criteria': [('app_user', 'field', 'app_user_id')]},]},
-    {'name': 'PrincipalAssignments', 'file': 'principal_assignments', 'rulebook_rows': 12,
+    {'name': 'PrincipalAssignments', 'file': 'principal_assignments', 'rulebook_rows': 22,
      'compute': compute_principal_assignments_fields,
      'fields': ['principal_assignment_id', 'name', 'app_user', 'principal', 'is_default', 'granted_rationale', 'principal_is_admin', 'user_organization', 'principal_organization', 'is_cross_organization_grant', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'principal_is_admin': 'boolean', 'user_organization': 'string', 'principal_organization': 'string', 'is_cross_organization_grant': 'boolean'},
@@ -30665,14 +31150,14 @@ ERB_TABLES = [
      'compute': compute_issued_tokens_fields,
      'fields': ['issued_token_id', 'name', 'app_user', 'principal', 'issued_at', 'expires_at', 'issuer', 'subject_claim', 'claims_snapshot', 'is_dev_minted', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'is_dev_minted': 'boolean'},
-     'calculated': {'name', 'is_dev_minted'},
+     'calculated': {'is_dev_minted', 'name'},
      'lookups': [],
      'aggregations': []},
     {'name': 'ProcessMiningRuns', 'file': 'process_mining_runs', 'rulebook_rows': 5,
      'compute': compute_process_mining_runs_fields,
-     'fields': ['process_mining_run_id', 'name', 'procedure_version', 'event_log_source', 'mined_at', 'discovered_variant_count', 'conforming_variant_count', 'deviation_description', 'evaluation_context', 'as_of_instant', 'conformance_rate', 'is_conformant', 'has_major_drift_from_documentation', 'days_since_mined', 'is_stale_mining_evidence', 'procedure_version_is_live', 'is_drift_on_live_version', 'drifted_mining_run_key', 'semantic_type_iri', 'people_capture_complement_count', 'is_deviation_unexplained_by_people', 'undocumented_path_count', 'has_undocumented_enacted_path'],
-     'datatypes': {'name': 'string', 'as_of_instant': 'datetime', 'conformance_rate': 'number', 'is_conformant': 'boolean', 'has_major_drift_from_documentation': 'boolean', 'days_since_mined': 'integer', 'is_stale_mining_evidence': 'boolean', 'procedure_version_is_live': 'boolean', 'is_drift_on_live_version': 'boolean', 'drifted_mining_run_key': 'string', 'people_capture_complement_count': 'integer', 'is_deviation_unexplained_by_people': 'boolean', 'undocumented_path_count': 'integer', 'has_undocumented_enacted_path': 'boolean'},
-     'calculated': {'conformance_rate', 'is_deviation_unexplained_by_people', 'is_conformant', 'name', 'days_since_mined', 'is_drift_on_live_version', 'has_undocumented_enacted_path', 'is_stale_mining_evidence', 'drifted_mining_run_key', 'has_major_drift_from_documentation'},
+     'fields': ['process_mining_run_id', 'name', 'procedure_version', 'event_log_source', 'mined_at', 'discovered_variant_count', 'conforming_variant_count', 'deviation_description', 'evaluation_context', 'as_of_instant', 'conformance_rate', 'is_conformant', 'has_major_drift_from_documentation', 'days_since_mined', 'is_stale_mining_evidence', 'procedure_version_is_live', 'is_drift_on_live_version', 'drifted_mining_run_key', 'semantic_type_iri', 'people_capture_complement_count', 'is_deviation_unexplained_by_people', 'undocumented_path_count', 'has_undocumented_enacted_path', 'conformance_percent'],
+     'datatypes': {'name': 'string', 'as_of_instant': 'datetime', 'conformance_rate': 'number', 'is_conformant': 'boolean', 'has_major_drift_from_documentation': 'boolean', 'days_since_mined': 'integer', 'is_stale_mining_evidence': 'boolean', 'procedure_version_is_live': 'boolean', 'is_drift_on_live_version': 'boolean', 'drifted_mining_run_key': 'string', 'people_capture_complement_count': 'integer', 'is_deviation_unexplained_by_people': 'boolean', 'undocumented_path_count': 'integer', 'has_undocumented_enacted_path': 'boolean', 'conformance_percent': 'integer'},
+     'calculated': {'has_undocumented_enacted_path', 'conformance_rate', 'name', 'days_since_mined', 'conformance_percent', 'is_deviation_unexplained_by_people', 'is_conformant', 'drifted_mining_run_key', 'is_stale_mining_evidence', 'is_drift_on_live_version', 'has_major_drift_from_documentation'},
      'lookups': [
         {'field': 'as_of_instant', 'target': 'evaluation_contexts', 'return': 'as_of_instant', 'key': 'evaluation_context', 'match': 'evaluation_context_id'},
         {'field': 'procedure_version_is_live', 'target': 'procedure_versions', 'return': 'is_live', 'key': 'procedure_version', 'match': 'procedure_version_id'},],
@@ -30683,7 +31168,7 @@ ERB_TABLES = [
      'compute': compute_vocabularies_fields,
      'fields': ['vocabulary_id', 'name', 'title', 'scheme_uri', 'governing_role', 'term_count', 'orphan_term_count', 'has_orphan_terms', 'semantic_type_iri', 'scheme_kind', 'model_layer', 'governed_dimension', 'publication_format', 'prefix', 'established_at', 'ontology_modeling_started_at', 'governs_procedure', 'is_machine_accessible', 'managed_scheme_procedure_key', 'organized_transcript_count', 'organized_field_notes_count', 'organized_process_map_count', 'organized_mined_event_trace_count', 'organized_document_excerpt_count', 'organized_material_count', 'organized_kind_count', 'is_single_kind_frame', 'latest_organized_material_at', 'refinement_count', 'is_frozen_despite_new_collection', 'ontology_preceded_vocabulary_control'],
      'datatypes': {'name': 'string', 'term_count': 'number', 'orphan_term_count': 'number', 'has_orphan_terms': 'boolean', 'is_machine_accessible': 'boolean', 'managed_scheme_procedure_key': 'string', 'organized_transcript_count': 'integer', 'organized_field_notes_count': 'integer', 'organized_process_map_count': 'integer', 'organized_mined_event_trace_count': 'integer', 'organized_document_excerpt_count': 'integer', 'organized_material_count': 'integer', 'organized_kind_count': 'integer', 'is_single_kind_frame': 'boolean', 'latest_organized_material_at': 'datetime', 'refinement_count': 'integer', 'is_frozen_despite_new_collection': 'boolean', 'ontology_preceded_vocabulary_control': 'boolean'},
-     'calculated': {'managed_scheme_procedure_key', 'is_machine_accessible', 'ontology_preceded_vocabulary_control', 'has_orphan_terms', 'name', 'organized_kind_count', 'is_single_kind_frame', 'is_frozen_despite_new_collection'},
+     'calculated': {'has_orphan_terms', 'is_machine_accessible', 'name', 'is_single_kind_frame', 'ontology_preceded_vocabulary_control', 'organized_kind_count', 'is_frozen_despite_new_collection', 'managed_scheme_procedure_key'},
      'lookups': [],
      'aggregations': [
         {'field': 'term_count', 'op': 'COUNTIFS', 'table': 'vocabulary_terms', 'criteria': [('vocabulary', 'field', 'vocabulary_id')]},
@@ -30700,7 +31185,7 @@ ERB_TABLES = [
      'compute': compute_vocabulary_terms_fields,
      'fields': ['vocabulary_term_id', 'name', 'vocabulary', 'pref_label', 'alt_labels', 'definition', 'usage_count', 'is_orphan_term', 'is_widely_adopted_term', 'orphan_term_vocabulary_key', 'semantic_type_iri', 'scope_note', 'broader_term', 'broader_term_parent', 'scheme_governed_dimension', 'concept_iri', 'namespace_iri', 'same_as_iri', 'introduced_in_release', 'introduced_release_issued_at', 'represents_role', 'definition_revised_at', 'latest_meaning_change_at', 'has_stale_definition', 'structural_shift_count', 'has_structural_sense_shift_across_years', 'pref_label_practitioner_mention_count', 'alt_label_practitioner_mention_count', 'is_organized_around_official_term', 'source_phrasing_count', 'unreconciled_phrasing_count', 'has_unreconciled_variant_phrasings'],
      'datatypes': {'name': 'string', 'usage_count': 'number', 'is_orphan_term': 'boolean', 'is_widely_adopted_term': 'boolean', 'orphan_term_vocabulary_key': 'string', 'broader_term_parent': 'string', 'scheme_governed_dimension': 'string', 'introduced_release_issued_at': 'datetime', 'latest_meaning_change_at': 'datetime', 'has_stale_definition': 'boolean', 'structural_shift_count': 'integer', 'has_structural_sense_shift_across_years': 'boolean', 'pref_label_practitioner_mention_count': 'integer', 'alt_label_practitioner_mention_count': 'integer', 'is_organized_around_official_term': 'boolean', 'source_phrasing_count': 'integer', 'unreconciled_phrasing_count': 'integer', 'has_unreconciled_variant_phrasings': 'boolean'},
-     'calculated': {'has_stale_definition', 'has_unreconciled_variant_phrasings', 'is_organized_around_official_term', 'name', 'has_structural_sense_shift_across_years', 'is_orphan_term', 'orphan_term_vocabulary_key', 'is_widely_adopted_term'},
+     'calculated': {'is_orphan_term', 'is_widely_adopted_term', 'has_unreconciled_variant_phrasings', 'name', 'has_stale_definition', 'orphan_term_vocabulary_key', 'has_structural_sense_shift_across_years', 'is_organized_around_official_term'},
      'lookups': [
         {'field': 'broader_term_parent', 'target': 'vocabulary_terms', 'return': 'broader_term', 'key': 'broader_term', 'match': 'vocabulary_term_id'},
         {'field': 'scheme_governed_dimension', 'target': 'vocabularies', 'return': 'governed_dimension', 'key': 'vocabulary', 'match': 'vocabulary_id'},
@@ -30717,7 +31202,7 @@ ERB_TABLES = [
      'compute': compute_knowledge_broker_links_fields,
      'fields': ['knowledge_broker_link_id', 'name', 'seeker', 'broker', 'topic', 'frequency', 'last_consulted_at', 'evaluation_context', 'as_of_instant', 'days_since_consulted', 'is_active_reliance', 'broker_is_still_engaged', 'is_at_risk_reliance', 'active_reliance_broker_key', 'at_risk_broker_key', 'semantic_type_iri', 'points_to_know_how', 'pointed_holder', 'locates_other_holder', 'seeker_vocabulary', 'seeker_wording', 'holder_vocabulary', 'holder_wording', 'translation_between_vocabularies'],
      'datatypes': {'name': 'string', 'as_of_instant': 'datetime', 'days_since_consulted': 'integer', 'is_active_reliance': 'boolean', 'broker_is_still_engaged': 'boolean', 'is_at_risk_reliance': 'boolean', 'active_reliance_broker_key': 'string', 'at_risk_broker_key': 'string', 'pointed_holder': 'string', 'locates_other_holder': 'boolean', 'translation_between_vocabularies': 'string'},
-     'calculated': {'active_reliance_broker_key', 'is_at_risk_reliance', 'days_since_consulted', 'is_active_reliance', 'locates_other_holder', 'name', 'at_risk_broker_key', 'translation_between_vocabularies'},
+     'calculated': {'days_since_consulted', 'active_reliance_broker_key', 'name', 'is_active_reliance', 'locates_other_holder', 'at_risk_broker_key', 'translation_between_vocabularies', 'is_at_risk_reliance'},
      'lookups': [
         {'field': 'as_of_instant', 'target': 'evaluation_contexts', 'return': 'as_of_instant', 'key': 'evaluation_context', 'match': 'evaluation_context_id'},
         {'field': 'broker_is_still_engaged', 'target': 'agents', 'return': 'is_still_engaged', 'key': 'broker', 'match': 'agent_id'},
@@ -30727,7 +31212,7 @@ ERB_TABLES = [
      'compute': compute_conformance_substrates_fields,
      'fields': ['conformance_substrate_id', 'name', 'label', 'transpiler', 'output_folder', 'engine', 'how_it_computes', 'role', 'sort_order', 'is_graded', 'run_count', 'latest_cells_tested', 'latest_cells_passed', 'latest_harness_errors', 'latest_cells_failed', 'latest_score', 'disagreeing_field_count', 'disagreeing_table_count', 'is_fully_conformant', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'is_graded': 'boolean', 'run_count': 'number', 'latest_cells_tested': 'number', 'latest_cells_passed': 'number', 'latest_harness_errors': 'number', 'latest_cells_failed': 'number', 'latest_score': 'number', 'disagreeing_field_count': 'number', 'disagreeing_table_count': 'number', 'is_fully_conformant': 'boolean'},
-     'calculated': {'is_fully_conformant', 'latest_cells_failed', 'name', 'is_graded', 'latest_score'},
+     'calculated': {'latest_cells_failed', 'is_fully_conformant', 'name', 'is_graded', 'latest_score'},
      'lookups': [],
      'aggregations': [
         {'field': 'run_count', 'op': 'COUNTIFS', 'table': 'substrate_run_scores', 'criteria': [('substrate', 'field', 'conformance_substrate_id')]},
@@ -30740,7 +31225,7 @@ ERB_TABLES = [
      'compute': compute_conformance_runs_fields,
      'fields': ['conformance_run_id', 'name', 'ran_on', 'rulebook_commit', 'answer_key_author', 'is_latest', 'notes', 'substrate_count', 'perfect_substrate_count', 'cells_tested', 'cells_passed', 'cells_failed', 'overall_score', 'imperfect_substrate_count', 'is_fully_conformant', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'substrate_count': 'number', 'perfect_substrate_count': 'number', 'cells_tested': 'number', 'cells_passed': 'number', 'cells_failed': 'number', 'overall_score': 'number', 'imperfect_substrate_count': 'number', 'is_fully_conformant': 'boolean'},
-     'calculated': {'is_fully_conformant', 'imperfect_substrate_count', 'cells_failed', 'name', 'overall_score'},
+     'calculated': {'cells_failed', 'name', 'is_fully_conformant', 'imperfect_substrate_count', 'overall_score'},
      'lookups': [],
      'aggregations': [
         {'field': 'substrate_count', 'op': 'COUNTIFS', 'table': 'substrate_run_scores', 'criteria': [('run', 'field', 'conformance_run_id')]},
@@ -30751,7 +31236,7 @@ ERB_TABLES = [
      'compute': compute_substrate_run_scores_fields,
      'fields': ['substrate_run_score_id', 'name', 'run', 'substrate', 'harness_error', 'duration_seconds', 'cells_tested', 'cells_passed', 'calculated_tested', 'calculated_passed', 'lookup_tested', 'lookup_passed', 'aggregation_tested', 'aggregation_passed', 'cells_failed', 'score', 'calculated_score', 'lookup_score', 'aggregation_score', 'is_perfect', 'perfect_run_key', 'is_in_latest_run', 'latest_cells_tested', 'latest_cells_passed', 'latest_error_flag', 'substrate_label', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'cells_failed': 'number', 'score': 'number', 'calculated_score': 'number', 'lookup_score': 'number', 'aggregation_score': 'number', 'is_perfect': 'boolean', 'perfect_run_key': 'string', 'is_in_latest_run': 'boolean', 'latest_cells_tested': 'number', 'latest_cells_passed': 'number', 'latest_error_flag': 'number', 'substrate_label': 'string'},
-     'calculated': {'latest_cells_passed', 'perfect_run_key', 'calculated_score', 'score', 'cells_failed', 'is_perfect', 'name', 'latest_error_flag', 'lookup_score', 'latest_cells_tested', 'aggregation_score'},
+     'calculated': {'cells_failed', 'score', 'is_perfect', 'latest_cells_passed', 'latest_cells_tested', 'latest_error_flag', 'name', 'calculated_score', 'aggregation_score', 'perfect_run_key', 'lookup_score'},
      'lookups': [
         {'field': 'is_in_latest_run', 'target': 'conformance_runs', 'return': 'is_latest', 'key': 'run', 'match': 'conformance_run_id'},
         {'field': 'substrate_label', 'target': 'conformance_substrates', 'return': 'label', 'key': 'substrate', 'match': 'conformance_substrate_id'},],
@@ -30760,7 +31245,7 @@ ERB_TABLES = [
      'compute': compute_table_conformance_fields,
      'fields': ['table_conformance_id', 'name', 'run', 'substrate', 'rulebook_table', 'record_count', 'derived_field_count', 'cells_tested', 'cells_passed', 'is_missing_answer_file', 'cells_failed', 'score', 'is_perfect', 'imperfect_substrate_key', 'imperfect_table_key', 'disagreeing_field_count', 'substrate_label', 'subject_area', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'cells_failed': 'number', 'score': 'number', 'is_perfect': 'boolean', 'imperfect_substrate_key': 'string', 'imperfect_table_key': 'string', 'disagreeing_field_count': 'number', 'substrate_label': 'string', 'subject_area': 'string'},
-     'calculated': {'score', 'cells_failed', 'is_perfect', 'imperfect_table_key', 'name', 'imperfect_substrate_key'},
+     'calculated': {'imperfect_table_key', 'cells_failed', 'imperfect_substrate_key', 'is_perfect', 'name', 'score'},
      'lookups': [
         {'field': 'substrate_label', 'target': 'conformance_substrates', 'return': 'label', 'key': 'substrate', 'match': 'conformance_substrate_id'},
         {'field': 'subject_area', 'target': 'rulebook_tables', 'return': 'subject_area', 'key': 'rulebook_table', 'match': 'rulebook_table_id'},],
@@ -30770,7 +31255,7 @@ ERB_TABLES = [
      'compute': compute_field_disagreements_fields,
      'fields': ['field_disagreement_id', 'name', 'substrate', 'rulebook_field', 'table_conformance', 'field_class', 'cells_failed', 'dominant_reason', 'sampled_cell_count', 'is_fully_sampled', 'formula', 'substrate_label', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'sampled_cell_count': 'number', 'is_fully_sampled': 'boolean', 'formula': 'string', 'substrate_label': 'string'},
-     'calculated': {'name', 'is_fully_sampled'},
+     'calculated': {'is_fully_sampled', 'name'},
      'lookups': [
         {'field': 'formula', 'target': 'rulebook_fields', 'return': 'formula', 'key': 'rulebook_field', 'match': 'rulebook_field_id'},
         {'field': 'substrate_label', 'target': 'conformance_substrates', 'return': 'label', 'key': 'substrate', 'match': 'conformance_substrate_id'},],
@@ -30785,11 +31270,11 @@ ERB_TABLES = [
         {'field': 'substrate', 'target': 'field_disagreements', 'return': 'substrate', 'key': 'field_disagreement', 'match': 'field_disagreement_id'},
         {'field': 'rulebook_field', 'target': 'field_disagreements', 'return': 'rulebook_field', 'key': 'field_disagreement', 'match': 'field_disagreement_id'},],
      'aggregations': []},
-    {'name': 'KnowledgeMethods', 'file': 'knowledge_methods', 'rulebook_rows': 25,
+    {'name': 'KnowledgeMethods', 'file': 'knowledge_methods', 'rulebook_rows': 26,
      'compute': compute_knowledge_methods_fields,
      'fields': ['knowledge_method_id', 'name', 'label', 'method_family', 'summary', 'origin_reference', 'elicitation_use_count', 'application_count', 'usage_count', 'is_applied', 'elicitation_tradeoff', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'elicitation_use_count': 'integer', 'application_count': 'integer', 'usage_count': 'integer', 'is_applied': 'boolean'},
-     'calculated': {'name', 'is_applied', 'usage_count'},
+     'calculated': {'is_applied', 'name', 'usage_count'},
      'lookups': [],
      'aggregations': [
         {'field': 'elicitation_use_count', 'op': 'COUNTIFS', 'table': 'elicitation_sessions', 'criteria': [('method', 'field', 'knowledge_method_id')]},
@@ -30798,7 +31283,7 @@ ERB_TABLES = [
      'compute': compute_source_articles_fields,
      'fields': ['source_article_id', 'name', 'title', 'author', 'series', 'published_on', 'local_file_name', 'thesis', 'claim_count', 'covered_claim_count', 'agreed_claim_count', 'uncovered_claim_count', 'coverage_percent', 'agreed_coverage_percent', 'is_fully_covered', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'claim_count': 'integer', 'covered_claim_count': 'integer', 'agreed_claim_count': 'integer', 'uncovered_claim_count': 'integer', 'coverage_percent': 'number', 'agreed_coverage_percent': 'number', 'is_fully_covered': 'boolean'},
-     'calculated': {'agreed_coverage_percent', 'is_fully_covered', 'uncovered_claim_count', 'name', 'coverage_percent'},
+     'calculated': {'is_fully_covered', 'uncovered_claim_count', 'name', 'coverage_percent', 'agreed_coverage_percent'},
      'lookups': [],
      'aggregations': [
         {'field': 'claim_count', 'op': 'COUNTIFS', 'table': 'article_claims', 'criteria': [('source_article', 'field', 'source_article_id')]},
@@ -30808,17 +31293,17 @@ ERB_TABLES = [
      'compute': compute_article_claims_fields,
      'fields': ['article_claim_id', 'name', 'source_article', 'claim_kind', 'section_ref', 'claim_text', 'required_evidence', 'evidence_count', 'valid_evidence_count', 'agreed_evidence_count', 'is_covered', 'is_agreed', 'has_rejected_evidence', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'required_evidence': 'string', 'evidence_count': 'integer', 'valid_evidence_count': 'integer', 'agreed_evidence_count': 'integer', 'is_covered': 'boolean', 'is_agreed': 'boolean', 'has_rejected_evidence': 'boolean'},
-     'calculated': {'has_rejected_evidence', 'is_agreed', 'name', 'is_covered', 'required_evidence'},
+     'calculated': {'is_agreed', 'name', 'required_evidence', 'is_covered', 'has_rejected_evidence'},
      'lookups': [],
      'aggregations': [
         {'field': 'evidence_count', 'op': 'COUNTIFS', 'table': 'claim_evidence', 'criteria': [('article_claim', 'field', 'article_claim_id')]},
         {'field': 'valid_evidence_count', 'op': 'COUNTIFS', 'table': 'claim_evidence', 'criteria': [('article_claim', 'field', 'article_claim_id'), ('is_valid', 'literal', True)]},
         {'field': 'agreed_evidence_count', 'op': 'COUNTIFS', 'table': 'claim_evidence', 'criteria': [('article_claim', 'field', 'article_claim_id'), ('is_agreed_evidence', 'literal', True)]},]},
-    {'name': 'ClaimEvidence', 'file': 'claim_evidence', 'rulebook_rows': 895,
+    {'name': 'ClaimEvidence', 'file': 'claim_evidence', 'rulebook_rows': 900,
      'compute': compute_claim_evidence_fields,
      'fields': ['claim_evidence_id', 'name', 'article_claim', 'evidence_kind', 'rulebook_field', 'rulebook_table', 'role_question', 'ontology_profile', 'knowledge_method', 'procedure', 'justification', 'claim_kind', 'field_catalog_name', 'field_is_witness', 'field_has_data', 'field_is_discriminating', 'field_is_contested', 'table_has_rows', 'question_is_answered', 'question_witnessed_answer', 'profile_mapping_count', 'method_is_applied', 'procedure_execution_count', 'has_justification', 'is_witness_proof', 'is_structural_proof', 'is_question_proof', 'is_standard_proof', 'is_scenario_proof', 'is_valid', 'is_contested', 'is_agreed_evidence', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'claim_kind': 'string', 'field_catalog_name': 'string', 'field_is_witness': 'boolean', 'field_has_data': 'boolean', 'field_is_discriminating': 'boolean', 'field_is_contested': 'boolean', 'table_has_rows': 'boolean', 'question_is_answered': 'boolean', 'question_witnessed_answer': 'string', 'profile_mapping_count': 'integer', 'method_is_applied': 'boolean', 'procedure_execution_count': 'integer', 'has_justification': 'boolean', 'is_witness_proof': 'boolean', 'is_structural_proof': 'boolean', 'is_question_proof': 'boolean', 'is_standard_proof': 'boolean', 'is_scenario_proof': 'boolean', 'is_valid': 'boolean', 'is_contested': 'boolean', 'is_agreed_evidence': 'boolean'},
-     'calculated': {'is_witness_proof', 'is_valid', 'has_justification', 'is_contested', 'is_agreed_evidence', 'is_standard_proof', 'is_scenario_proof', 'is_structural_proof', 'name', 'is_question_proof'},
+     'calculated': {'is_scenario_proof', 'is_structural_proof', 'is_standard_proof', 'is_witness_proof', 'is_agreed_evidence', 'name', 'is_contested', 'has_justification', 'is_valid', 'is_question_proof'},
      'lookups': [
         {'field': 'claim_kind', 'target': 'article_claims', 'return': 'claim_kind', 'key': 'article_claim', 'match': 'article_claim_id'},
         {'field': 'field_catalog_name', 'target': 'rulebook_fields', 'return': 'field_name', 'key': 'rulebook_field', 'match': 'rulebook_field_id'},
@@ -30833,7 +31318,7 @@ ERB_TABLES = [
         {'field': 'method_is_applied', 'target': 'knowledge_methods', 'return': 'is_applied', 'key': 'knowledge_method', 'match': 'knowledge_method_id'},
         {'field': 'procedure_execution_count', 'target': 'procedures', 'return': 'execution_count', 'key': 'procedure', 'match': 'procedure_id'},],
      'aggregations': []},
-    {'name': 'MethodApplications', 'file': 'method_applications', 'rulebook_rows': 19,
+    {'name': 'MethodApplications', 'file': 'method_applications', 'rulebook_rows': 20,
      'compute': compute_method_applications_fields,
      'fields': ['method_application_id', 'name', 'knowledge_method', 'applied_to', 'applied_at', 'applied_by_agent', 'applied_to_grounding_snapshot', 'identified_broker', 'semantic_type_iri'],
      'datatypes': {'name': 'string'},
@@ -30844,7 +31329,7 @@ ERB_TABLES = [
      'compute': compute_lifecycle_statuses_fields,
      'fields': ['lifecycle_status_id', 'name', 'label', 'status_scheme', 'broader_status', 'is_pko_status', 'pko_iri', 'version_use_count', 'execution_use_count', 'is_non_pko_status_in_use', 'semantic_type_iri', 'workflow_status_concept'],
      'datatypes': {'name': 'string', 'version_use_count': 'integer', 'execution_use_count': 'integer', 'is_non_pko_status_in_use': 'boolean'},
-     'calculated': {'name', 'is_non_pko_status_in_use'},
+     'calculated': {'is_non_pko_status_in_use', 'name'},
      'lookups': [],
      'aggregations': [
         {'field': 'version_use_count', 'op': 'COUNTIFS', 'table': 'procedure_versions', 'criteria': [('status', 'field', 'lifecycle_status_id')]},
@@ -30853,7 +31338,7 @@ ERB_TABLES = [
      'compute': compute_facilities_fields,
      'fields': ['facility_id', 'name', 'label', 'organization', 'facility_kind', 'parent_facility', 'deviating_run_count', 'clean_run_count', 'is_deviation_only_facility', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'deviating_run_count': 'integer', 'clean_run_count': 'integer', 'is_deviation_only_facility': 'boolean'},
-     'calculated': {'name', 'is_deviation_only_facility'},
+     'calculated': {'is_deviation_only_facility', 'name'},
      'lookups': [],
      'aggregations': [
         {'field': 'deviating_run_count', 'op': 'COUNTIFS', 'table': 'procedure_executions', 'criteria': [('deviating_facility_key', 'field', 'facility_id')]},
@@ -30876,7 +31361,7 @@ ERB_TABLES = [
      'compute': compute_machines_fields,
      'fields': ['machine_id', 'name', 'label', 'machine_type', 'facility', 'manufactured_by', 'configuration_kind', 'governing_procedure_version', 'energy_source_count', 'unisolated_energy_source_count', 'is_non_standard_configuration', 'has_unisolated_energy_source', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'energy_source_count': 'integer', 'unisolated_energy_source_count': 'integer', 'is_non_standard_configuration': 'boolean', 'has_unisolated_energy_source': 'boolean'},
-     'calculated': {'name', 'is_non_standard_configuration', 'has_unisolated_energy_source'},
+     'calculated': {'is_non_standard_configuration', 'name', 'has_unisolated_energy_source'},
      'lookups': [],
      'aggregations': [
         {'field': 'energy_source_count', 'op': 'COUNTIFS', 'table': 'machine_energy_sources', 'criteria': [('machine', 'field', 'machine_id')]},
@@ -30885,7 +31370,7 @@ ERB_TABLES = [
      'compute': compute_machine_energy_sources_fields,
      'fields': ['machine_energy_source_id', 'name', 'machine', 'energy_source', 'machine_procedure_version', 'isolation_step_count', 'is_unisolated_energy_source', 'unisolated_machine_key', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'machine_procedure_version': 'string', 'isolation_step_count': 'integer', 'is_unisolated_energy_source': 'boolean', 'unisolated_machine_key': 'string'},
-     'calculated': {'name', 'is_unisolated_energy_source', 'unisolated_machine_key'},
+     'calculated': {'is_unisolated_energy_source', 'name', 'unisolated_machine_key'},
      'lookups': [
         {'field': 'machine_procedure_version', 'target': 'machines', 'return': 'governing_procedure_version', 'key': 'machine', 'match': 'machine_id'},],
      'aggregations': [
@@ -30947,7 +31432,7 @@ ERB_TABLES = [
      'compute': compute_procedure_outcome_criteria_fields,
      'fields': ['procedure_outcome_criterion_id', 'name', 'procedure', 'polarity', 'statement', 'failure_procedure_key', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'failure_procedure_key': 'string'},
-     'calculated': {'name', 'failure_procedure_key'},
+     'calculated': {'failure_procedure_key', 'name'},
      'lookups': [],
      'aggregations': []},
     {'name': 'RelationTypes', 'file': 'relation_types', 'rulebook_rows': 11,
@@ -30962,7 +31447,7 @@ ERB_TABLES = [
      'compute': compute_activity_relations_fields,
      'fields': ['activity_relation_id', 'name', 'from_step', 'relation_type', 'to_step', 'rationale', 'relation_type_is_defined', 'uses_undefined_relation_type', 'from_step_version', 'overlaps_version_key', 'enables_version_key', 'prevents_version_key', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'relation_type_is_defined': 'boolean', 'uses_undefined_relation_type': 'boolean', 'from_step_version': 'string', 'overlaps_version_key': 'string', 'enables_version_key': 'string', 'prevents_version_key': 'string'},
-     'calculated': {'prevents_version_key', 'overlaps_version_key', 'name', 'uses_undefined_relation_type', 'enables_version_key'},
+     'calculated': {'enables_version_key', 'name', 'overlaps_version_key', 'uses_undefined_relation_type', 'prevents_version_key'},
      'lookups': [
         {'field': 'relation_type_is_defined', 'target': 'relation_types', 'return': 'is_defined', 'key': 'relation_type', 'match': 'relation_type_id'},
         {'field': 'from_step_version', 'target': 'steps', 'return': 'procedure_version', 'key': 'from_step', 'match': 'step_id'},],
@@ -30971,7 +31456,7 @@ ERB_TABLES = [
      'compute': compute_step_variables_fields,
      'fields': ['step_variable_id', 'name', 'step', 'direction', 'label', 'datatype', 'source_variable', 'is_external_input', 'source_direction', 'source_step', 'is_dangling_input', 'is_miswired_source', 'consumer_count', 'input_step_key', 'output_step_key', 'semantic_type_iri', 'expected_format', 'step_accountable_agent', 'step_agent_kind', 'consumer_role', 'consumer_workflow', 'source_step_agent', 'source_step_agent_kind', 'is_input_from_ai_artifact', 'ai_artifact_consumer_has_no_accountable_agent', 'ai_blast_radius_path'],
      'datatypes': {'name': 'string', 'source_direction': 'string', 'source_step': 'string', 'is_dangling_input': 'boolean', 'is_miswired_source': 'boolean', 'consumer_count': 'integer', 'input_step_key': 'string', 'output_step_key': 'string', 'step_accountable_agent': 'string', 'step_agent_kind': 'string', 'consumer_role': 'string', 'consumer_workflow': 'string', 'source_step_agent': 'string', 'source_step_agent_kind': 'string', 'is_input_from_ai_artifact': 'boolean', 'ai_artifact_consumer_has_no_accountable_agent': 'boolean', 'ai_blast_radius_path': 'string'},
-     'calculated': {'input_step_key', 'ai_blast_radius_path', 'name', 'is_miswired_source', 'output_step_key', 'ai_artifact_consumer_has_no_accountable_agent', 'is_input_from_ai_artifact', 'is_dangling_input'},
+     'calculated': {'is_input_from_ai_artifact', 'output_step_key', 'ai_blast_radius_path', 'name', 'ai_artifact_consumer_has_no_accountable_agent', 'is_dangling_input', 'input_step_key', 'is_miswired_source'},
      'lookups': [
         {'field': 'source_direction', 'target': 'step_variables', 'return': 'direction', 'key': 'source_variable', 'match': 'step_variable_id'},
         {'field': 'source_step', 'target': 'step_variables', 'return': 'step', 'key': 'source_variable', 'match': 'step_variable_id'},
@@ -30987,7 +31472,7 @@ ERB_TABLES = [
      'compute': compute_execution_entities_fields,
      'fields': ['execution_entity_id', 'name', 'step_execution', 'step_variable', 'usage', 'entity_label', 'entity_uri', 'variable_direction', 'variable_step', 'executed_step', 'is_usage_direction_mismatch', 'is_foreign_variable', 'used_execution_key', 'generated_execution_key', 'semantic_type_iri', 'recorded_datatype', 'recorded_format', 'variable_datatype', 'variable_expected_format', 'violates_declared_datatype_or_format', 'generating_agent', 'attributed_to_agent'],
      'datatypes': {'name': 'string', 'variable_direction': 'string', 'variable_step': 'string', 'executed_step': 'string', 'is_usage_direction_mismatch': 'boolean', 'is_foreign_variable': 'boolean', 'used_execution_key': 'string', 'generated_execution_key': 'string', 'variable_datatype': 'string', 'variable_expected_format': 'string', 'violates_declared_datatype_or_format': 'boolean', 'generating_agent': 'string', 'attributed_to_agent': 'string'},
-     'calculated': {'attributed_to_agent', 'generated_execution_key', 'is_usage_direction_mismatch', 'is_foreign_variable', 'name', 'violates_declared_datatype_or_format', 'used_execution_key'},
+     'calculated': {'is_foreign_variable', 'generated_execution_key', 'name', 'is_usage_direction_mismatch', 'attributed_to_agent', 'used_execution_key', 'violates_declared_datatype_or_format'},
      'lookups': [
         {'field': 'variable_direction', 'target': 'step_variables', 'return': 'direction', 'key': 'step_variable', 'match': 'step_variable_id'},
         {'field': 'variable_step', 'target': 'step_variables', 'return': 'step', 'key': 'step_variable', 'match': 'step_variable_id'},
@@ -31000,7 +31485,7 @@ ERB_TABLES = [
      'compute': compute_step_conditions_fields,
      'fields': ['step_condition_id', 'name', 'step', 'condition_kind', 'statement', 'is_safety_critical', 'check_count', 'is_never_checked', 'precondition_step_key', 'postcondition_step_key', 'invariant_step_key', 'safety_critical_step_key', 'semantic_type_iri', 'machine_expression', 'is_machine_parseable'],
      'datatypes': {'name': 'string', 'check_count': 'integer', 'is_never_checked': 'boolean', 'precondition_step_key': 'string', 'postcondition_step_key': 'string', 'invariant_step_key': 'string', 'safety_critical_step_key': 'string', 'is_machine_parseable': 'boolean'},
-     'calculated': {'invariant_step_key', 'precondition_step_key', 'postcondition_step_key', 'name', 'safety_critical_step_key', 'is_machine_parseable', 'is_never_checked'},
+     'calculated': {'safety_critical_step_key', 'is_never_checked', 'name', 'postcondition_step_key', 'invariant_step_key', 'is_machine_parseable', 'precondition_step_key'},
      'lookups': [],
      'aggregations': [
         {'field': 'check_count', 'op': 'COUNTIFS', 'table': 'condition_checks', 'criteria': [('step_condition', 'field', 'step_condition_id')]},]},
@@ -31008,7 +31493,7 @@ ERB_TABLES = [
      'compute': compute_condition_checks_fields,
      'fields': ['condition_check_id', 'name', 'step_execution', 'step_condition', 'held', 'checked_at', 'checked_by_agent', 'condition_kind', 'is_failed_precondition', 'is_violated_invariant', 'failed_precondition_execution_key', 'violated_invariant_execution_key', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'condition_kind': 'string', 'is_failed_precondition': 'boolean', 'is_violated_invariant': 'boolean', 'failed_precondition_execution_key': 'string', 'violated_invariant_execution_key': 'string'},
-     'calculated': {'is_failed_precondition', 'name', 'violated_invariant_execution_key', 'is_violated_invariant', 'failed_precondition_execution_key'},
+     'calculated': {'name', 'is_failed_precondition', 'is_violated_invariant', 'failed_precondition_execution_key', 'violated_invariant_execution_key'},
      'lookups': [
         {'field': 'condition_kind', 'target': 'step_conditions', 'return': 'condition_kind', 'key': 'step_condition', 'match': 'step_condition_id'},],
      'aggregations': []},
@@ -31016,32 +31501,35 @@ ERB_TABLES = [
      'compute': compute_failure_modes_fields,
      'fields': ['failure_mode_id', 'name', 'step', 'procedure_target', 'description', 'response', 'requires_escalation', 'escalate_to_role', 'escalation_role_has_no_holder', 'escalates_to_vacant_role', 'has_no_response', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'escalation_role_has_no_holder': 'boolean', 'escalates_to_vacant_role': 'boolean', 'has_no_response': 'boolean'},
-     'calculated': {'escalates_to_vacant_role', 'name', 'has_no_response'},
+     'calculated': {'name', 'has_no_response', 'escalates_to_vacant_role'},
      'lookups': [
         {'field': 'escalation_role_has_no_holder', 'target': 'roles', 'return': 'has_no_current_holder', 'key': 'escalate_to_role', 'match': 'role_id'},],
      'aggregations': []},
     {'name': 'StepCues', 'file': 'step_cues', 'rulebook_rows': 4,
      'compute': compute_step_cues_fields,
-     'fields': ['step_cue_id', 'name', 'step', 'cue_kind', 'description', 'signals_incomplete_step', 'requires_escalation', 'escalate_to_role', 'observation_count', 'unescalated_observation_count', 'danger_cue_step_key', 'incomplete_cue_step_key', 'semantic_type_iri'],
-     'datatypes': {'name': 'string', 'observation_count': 'integer', 'unescalated_observation_count': 'integer', 'danger_cue_step_key': 'string', 'incomplete_cue_step_key': 'string'},
-     'calculated': {'danger_cue_step_key', 'incomplete_cue_step_key', 'name'},
-     'lookups': [],
+     'fields': ['step_cue_id', 'name', 'step', 'cue_kind', 'description', 'signals_incomplete_step', 'requires_escalation', 'escalate_to_role', 'observation_count', 'unescalated_observation_count', 'danger_cue_step_key', 'incomplete_cue_step_key', 'semantic_type_iri', 'operator_question', 'signals_failure_mode', 'failure_mode_response', 'is_unanswerable_sign'],
+     'datatypes': {'name': 'string', 'observation_count': 'integer', 'unescalated_observation_count': 'integer', 'danger_cue_step_key': 'string', 'incomplete_cue_step_key': 'string', 'failure_mode_response': 'string', 'is_unanswerable_sign': 'boolean'},
+     'calculated': {'danger_cue_step_key', 'is_unanswerable_sign', 'name', 'incomplete_cue_step_key'},
+     'lookups': [
+        {'field': 'failure_mode_response', 'target': 'failure_modes', 'return': 'response', 'key': 'signals_failure_mode', 'match': 'failure_mode_id'},],
      'aggregations': [
         {'field': 'observation_count', 'op': 'COUNTIFS', 'table': 'cue_observations', 'criteria': [('step_cue', 'field', 'step_cue_id')]},
         {'field': 'unescalated_observation_count', 'op': 'COUNTIFS', 'table': 'cue_observations', 'criteria': [('unescalated_cue_key', 'field', 'step_cue_id')]},]},
     {'name': 'CueObservations', 'file': 'cue_observations', 'rulebook_rows': 3,
      'compute': compute_cue_observations_fields,
-     'fields': ['cue_observation_id', 'name', 'step_execution', 'step_cue', 'observed_at', 'observed_by_agent', 'was_escalated', 'escalated_to_agent', 'cue_requires_escalation', 'is_unescalated_danger_cue', 'unescalated_cue_key', 'unescalated_execution_key', 'semantic_type_iri'],
-     'datatypes': {'name': 'string', 'cue_requires_escalation': 'boolean', 'is_unescalated_danger_cue': 'boolean', 'unescalated_cue_key': 'string', 'unescalated_execution_key': 'string'},
-     'calculated': {'name', 'is_unescalated_danger_cue', 'unescalated_cue_key', 'unescalated_execution_key'},
+     'fields': ['cue_observation_id', 'name', 'step_execution', 'step_cue', 'observed_at', 'observed_by_agent', 'was_escalated', 'escalated_to_agent', 'cue_requires_escalation', 'is_unescalated_danger_cue', 'unescalated_cue_key', 'unescalated_execution_key', 'semantic_type_iri', 'owner_organization', 'cue_signals_incomplete_step', 'acknowledged_at', 'is_awaiting_acknowledgement'],
+     'datatypes': {'name': 'string', 'cue_requires_escalation': 'boolean', 'is_unescalated_danger_cue': 'boolean', 'unescalated_cue_key': 'string', 'unescalated_execution_key': 'string', 'owner_organization': 'string', 'cue_signals_incomplete_step': 'boolean', 'is_awaiting_acknowledgement': 'boolean'},
+     'calculated': {'name', 'unescalated_execution_key', 'unescalated_cue_key', 'is_unescalated_danger_cue', 'is_awaiting_acknowledgement'},
      'lookups': [
-        {'field': 'cue_requires_escalation', 'target': 'step_cues', 'return': 'requires_escalation', 'key': 'step_cue', 'match': 'step_cue_id'},],
+        {'field': 'cue_requires_escalation', 'target': 'step_cues', 'return': 'requires_escalation', 'key': 'step_cue', 'match': 'step_cue_id'},
+        {'field': 'owner_organization', 'target': 'step_executions', 'return': 'owner_organization', 'key': 'step_execution', 'match': 'step_execution_id'},
+        {'field': 'cue_signals_incomplete_step', 'target': 'step_cues', 'return': 'signals_incomplete_step', 'key': 'step_cue', 'match': 'step_cue_id'},],
      'aggregations': []},
     {'name': 'DecisionPoints', 'file': 'decision_points', 'rulebook_rows': 5,
      'compute': compute_decision_points_fields,
      'fields': ['decision_point_id', 'name', 'step', 'governing_transition', 'question', 'deciding_factors', 'default_outcome', 'dmn_decision_key', 'has_no_deciding_factors', 'semantic_type_iri', 'is_dmn_encoded'],
      'datatypes': {'name': 'string', 'has_no_deciding_factors': 'boolean', 'is_dmn_encoded': 'boolean'},
-     'calculated': {'name', 'has_no_deciding_factors', 'is_dmn_encoded'},
+     'calculated': {'has_no_deciding_factors', 'name', 'is_dmn_encoded'},
      'lookups': [],
      'aggregations': []},
     {'name': 'ExecutionParticipants', 'file': 'execution_participants', 'rulebook_rows': 4,
@@ -31078,7 +31566,7 @@ ERB_TABLES = [
      'compute': compute_authoring_submissions_fields,
      'fields': ['authoring_submission_id', 'name', 'procedure_version', 'submitted_by_agent', 'submitted_at', 'authoring_tool', 'submitter_expertise', 'step_count', 'profile_validation_passed', 'validation_error_count', 'was_accepted', 'is_expert_authored_conforming', 'is_non_conforming_accepted', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'is_expert_authored_conforming': 'boolean', 'is_non_conforming_accepted': 'boolean'},
-     'calculated': {'name', 'is_non_conforming_accepted', 'is_expert_authored_conforming'},
+     'calculated': {'is_non_conforming_accepted', 'name', 'is_expert_authored_conforming'},
      'lookups': [],
      'aggregations': []},
     {'name': 'ProcessKnowledgeLevels', 'file': 'process_knowledge_levels', 'rulebook_rows': 3,
@@ -31094,7 +31582,7 @@ ERB_TABLES = [
      'compute': compute_level_capture_strategies_fields,
      'fields': ['level_capture_strategy_id', 'name', 'level', 'knowledge_form', 'knowledge_method', 'transfer_mode', 'description', 'contradicts_knowledge_form', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'contradicts_knowledge_form': 'boolean'},
-     'calculated': {'name', 'contradicts_knowledge_form'},
+     'calculated': {'contradicts_knowledge_form', 'name'},
      'lookups': [],
      'aggregations': []},
     {'name': 'LevelPyramidQuestions', 'file': 'level_pyramid_questions', 'rulebook_rows': 5,
@@ -31108,7 +31596,7 @@ ERB_TABLES = [
      'compute': compute_process_level_statements_fields,
      'fields': ['process_level_statement_id', 'name', 'procedure', 'level', 'question_kind', 'statement', 'level_question_key', 'pyramid_match_count', 'is_filed_at_wrong_level', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'level_question_key': 'string', 'pyramid_match_count': 'integer', 'is_filed_at_wrong_level': 'boolean'},
-     'calculated': {'name', 'is_filed_at_wrong_level', 'level_question_key'},
+     'calculated': {'is_filed_at_wrong_level', 'level_question_key', 'name'},
      'lookups': [],
      'aggregations': [
         {'field': 'pyramid_match_count', 'op': 'COUNTIFS', 'table': 'level_pyramid_questions', 'criteria': [('level_pyramid_question_id', 'field', 'level_question_key')]},]},
@@ -31116,7 +31604,7 @@ ERB_TABLES = [
      'compute': compute_tactical_resource_allocations_fields,
      'fields': ['tactical_resource_allocation_id', 'name', 'step', 'facility', 'resource_label', 'resource_kind', 'available_units_per_week', 'demanded_units_per_week', 'adjustment_decision', 'utilization_percent', 'is_bottleneck', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'utilization_percent': 'number', 'is_bottleneck': 'boolean'},
-     'calculated': {'name', 'utilization_percent', 'is_bottleneck'},
+     'calculated': {'utilization_percent', 'is_bottleneck', 'name'},
      'lookups': [],
      'aggregations': []},
     {'name': 'ProcessStrategicAlignments', 'file': 'process_strategic_alignments', 'rulebook_rows': 4,
@@ -31138,14 +31626,14 @@ ERB_TABLES = [
      'compute': compute_process_outcome_measures_fields,
      'fields': ['process_outcome_measure_id', 'name', 'procedure', 'label', 'unit', 'target_value', 'observed_value', 'measured_over_period', 'business_outcome', 'link_rationale', 'is_unlinked_to_business_outcome', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'is_unlinked_to_business_outcome': 'boolean'},
-     'calculated': {'name', 'is_unlinked_to_business_outcome'},
+     'calculated': {'is_unlinked_to_business_outcome', 'name'},
      'lookups': [],
      'aggregations': []},
     {'name': 'ProcessStages', 'file': 'process_stages', 'rulebook_rows': 7,
      'compute': compute_process_stages_fields,
      'fields': ['process_stage_id', 'name', 'procedure_version', 'label', 'sequence', 'owner_role', 'step_count', 'owner_has_no_holder', 'is_unowned_or_empty_stage', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'step_count': 'integer', 'owner_has_no_holder': 'boolean', 'is_unowned_or_empty_stage': 'boolean'},
-     'calculated': {'name', 'is_unowned_or_empty_stage'},
+     'calculated': {'is_unowned_or_empty_stage', 'name'},
      'lookups': [
         {'field': 'owner_has_no_holder', 'target': 'roles', 'return': 'has_no_current_holder', 'key': 'owner_role', 'match': 'role_id'},],
      'aggregations': [
@@ -31161,14 +31649,14 @@ ERB_TABLES = [
      'compute': compute_stakeholder_lenses_fields,
      'fields': ['stakeholder_lens_id', 'name', 'label', 'exemplar_role', 'needs_step_guidance', 'needs_metrics', 'needs_exception_handling', 'needs_compliance_evidence', 'needs_structured_constraints', 'required_granularity', 'preferred_form', 'granularity_rank', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'granularity_rank': 'integer'},
-     'calculated': {'name', 'granularity_rank'},
+     'calculated': {'granularity_rank', 'name'},
      'lookups': [],
      'aggregations': []},
     {'name': 'ProcedureLensViews', 'file': 'procedure_lens_views', 'rulebook_rows': 15,
      'compute': compute_procedure_lens_views_fields,
      'fields': ['procedure_lens_view_id', 'name', 'procedure', 'stakeholder_lens', 'projects_version', 'granularity', 'form', 'procedure_current_version', 'lens_granularity_rank', 'view_granularity_rank', 'is_granularity_misfit', 'is_disconnected_silo', 'step_level_procedure_key', 'category_level_procedure_key', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'procedure_current_version': 'string', 'lens_granularity_rank': 'integer', 'view_granularity_rank': 'integer', 'is_granularity_misfit': 'boolean', 'is_disconnected_silo': 'boolean', 'step_level_procedure_key': 'string', 'category_level_procedure_key': 'string'},
-     'calculated': {'is_granularity_misfit', 'name', 'is_disconnected_silo', 'category_level_procedure_key', 'step_level_procedure_key', 'view_granularity_rank'},
+     'calculated': {'is_disconnected_silo', 'view_granularity_rank', 'is_granularity_misfit', 'name', 'step_level_procedure_key', 'category_level_procedure_key'},
      'lookups': [
         {'field': 'procedure_current_version', 'target': 'procedures', 'return': 'current_version_key', 'key': 'procedure', 'match': 'procedure_id'},
         {'field': 'lens_granularity_rank', 'target': 'stakeholder_lenses', 'return': 'granularity_rank', 'key': 'stakeholder_lens', 'match': 'stakeholder_lens_id'},],
@@ -31177,7 +31665,7 @@ ERB_TABLES = [
      'compute': compute_applicability_scopes_fields,
      'fields': ['applicability_scope_id', 'name', 'label', 'business_unit', 'geography', 'customer_segment', 'regulatory_regime', 'applies_when', 'exclusion_condition', 'named_graph_iri', 'dimension_count', 'states_conditions', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'dimension_count': 'integer', 'states_conditions': 'boolean'},
-     'calculated': {'name', 'dimension_count', 'states_conditions'},
+     'calculated': {'states_conditions', 'name', 'dimension_count'},
      'lookups': [],
      'aggregations': []},
     {'name': 'StepContextSensitivities', 'file': 'step_context_sensitivities', 'rulebook_rows': 4,
@@ -31200,7 +31688,7 @@ ERB_TABLES = [
      'compute': compute_collected_source_materials_fields,
      'fields': ['collected_source_material_id', 'name', 'label', 'material_kind', 'procedure', 'collected_at', 'organized_into_scheme', 'organized_at', 'encoded_into_version', 'encoded_at', 'is_modeled_before_organized', 'semantic_type_iri', 'source_document', 'source_document_revised_at', 'is_document_source', 'is_people_capture', 'is_practice_evidence', 'holds_reasoning_or_tacit_knowledge', 'complements_mining_run', 'captured_during_execution', 'is_captured_in_flow_of_work', 'collected_at_occasion', 'prompted_by_feedback', 'produced_by_method_application', 'contributing_expert', 'expert_effort_hours', 'dependent_trace_count', 'is_dependency_invisible_to_change', 'changed_dependent_count', 'has_knowledge_affected_by_source_change'],
      'datatypes': {'name': 'string', 'is_modeled_before_organized': 'boolean', 'source_document_revised_at': 'datetime', 'is_document_source': 'boolean', 'is_people_capture': 'boolean', 'is_practice_evidence': 'boolean', 'is_captured_in_flow_of_work': 'boolean', 'dependent_trace_count': 'integer', 'is_dependency_invisible_to_change': 'boolean', 'changed_dependent_count': 'integer', 'has_knowledge_affected_by_source_change': 'boolean'},
-     'calculated': {'is_captured_in_flow_of_work', 'is_modeled_before_organized', 'is_people_capture', 'name', 'is_practice_evidence', 'is_document_source', 'is_dependency_invisible_to_change', 'has_knowledge_affected_by_source_change'},
+     'calculated': {'has_knowledge_affected_by_source_change', 'is_people_capture', 'is_dependency_invisible_to_change', 'name', 'is_document_source', 'is_captured_in_flow_of_work', 'is_practice_evidence', 'is_modeled_before_organized'},
      'lookups': [
         {'field': 'source_document_revised_at', 'target': 'resources', 'return': 'modified_at', 'key': 'source_document', 'match': 'resource_id'},],
      'aggregations': [
@@ -31215,11 +31703,12 @@ ERB_TABLES = [
      'aggregations': []},
     {'name': 'TermLabelVariants', 'file': 'term_label_variants', 'rulebook_rows': 53,
      'compute': compute_term_label_variants_fields,
-     'fields': ['term_label_variant_id', 'name', 'vocabulary_term', 'label_kind', 'wording', 'term_scheme', 'wording_key', 'pref_wording_key', 'concepts_sharing_wording', 'is_ambiguous_label', 'practitioner_mention_count', 'pref_wording', 'same_pref_wording_count', 'is_cross_scheme_duplicate_pref', 'semantic_type_iri'],
-     'datatypes': {'name': 'string', 'term_scheme': 'string', 'wording_key': 'string', 'pref_wording_key': 'string', 'concepts_sharing_wording': 'integer', 'is_ambiguous_label': 'boolean', 'practitioner_mention_count': 'integer', 'pref_wording': 'string', 'same_pref_wording_count': 'integer', 'is_cross_scheme_duplicate_pref': 'boolean'},
-     'calculated': {'is_cross_scheme_duplicate_pref', 'pref_wording_key', 'name', 'pref_wording', 'wording_key', 'is_ambiguous_label'},
+     'fields': ['term_label_variant_id', 'name', 'vocabulary_term', 'label_kind', 'wording', 'term_scheme', 'term_pref_label', 'wording_key', 'pref_wording_key', 'concepts_sharing_wording', 'is_ambiguous_label', 'practitioner_mention_count', 'pref_wording', 'same_pref_wording_count', 'is_cross_scheme_duplicate_pref', 'semantic_type_iri'],
+     'datatypes': {'name': 'string', 'term_scheme': 'string', 'term_pref_label': 'string', 'wording_key': 'string', 'pref_wording_key': 'string', 'concepts_sharing_wording': 'integer', 'is_ambiguous_label': 'boolean', 'practitioner_mention_count': 'integer', 'pref_wording': 'string', 'same_pref_wording_count': 'integer', 'is_cross_scheme_duplicate_pref': 'boolean'},
+     'calculated': {'is_ambiguous_label', 'pref_wording', 'name', 'is_cross_scheme_duplicate_pref', 'wording_key', 'pref_wording_key'},
      'lookups': [
-        {'field': 'term_scheme', 'target': 'vocabulary_terms', 'return': 'vocabulary', 'key': 'vocabulary_term', 'match': 'vocabulary_term_id'},],
+        {'field': 'term_scheme', 'target': 'vocabulary_terms', 'return': 'vocabulary', 'key': 'vocabulary_term', 'match': 'vocabulary_term_id'},
+        {'field': 'term_pref_label', 'target': 'vocabulary_terms', 'return': 'pref_label', 'key': 'vocabulary_term', 'match': 'vocabulary_term_id'},],
      'aggregations': [
         {'field': 'concepts_sharing_wording', 'op': 'COUNTIFS', 'table': 'term_label_variants', 'criteria': [('wording_key', 'field', 'wording_key')]},
         {'field': 'practitioner_mention_count', 'op': 'COUNTIFS', 'table': 'source_term_mentions', 'criteria': [('wording_key', 'field', 'wording_key'), ('mention_origin', 'literal', 'Practitioner')]},
@@ -31228,7 +31717,7 @@ ERB_TABLES = [
      'compute': compute_ai_labeling_runs_fields,
      'fields': ['ai_labeling_run_id', 'name', 'agent', 'grounding_scheme', 'run_at', 'task_description', 'output_count', 'non_canonical_output_count', 'grounding_scheme_is_machine_accessible', 'is_ungrounded_synonym_sprawl', 'grounded_in_non_machine_readable_scheme', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'output_count': 'integer', 'non_canonical_output_count': 'integer', 'grounding_scheme_is_machine_accessible': 'boolean', 'is_ungrounded_synonym_sprawl': 'boolean', 'grounded_in_non_machine_readable_scheme': 'boolean'},
-     'calculated': {'name', 'grounded_in_non_machine_readable_scheme', 'is_ungrounded_synonym_sprawl'},
+     'calculated': {'is_ungrounded_synonym_sprawl', 'grounded_in_non_machine_readable_scheme', 'name'},
      'lookups': [
         {'field': 'grounding_scheme_is_machine_accessible', 'target': 'vocabularies', 'return': 'is_machine_accessible', 'key': 'grounding_scheme', 'match': 'vocabulary_id'},],
      'aggregations': [
@@ -31238,7 +31727,7 @@ ERB_TABLES = [
      'compute': compute_source_term_mentions_fields,
      'fields': ['source_term_mention_id', 'name', 'source_material', 'ai_labeling_run', 'concept_scheme', 'wording', 'mention_origin', 'intended_term', 'wording_key', 'matching_label_count', 'matching_pref_label_count', 'is_uncontrolled_wording', 'is_non_canonical_generated_value', 'intended_term_role', 'unresolved_intended_term_key', 'unresolved_role_key', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'wording_key': 'string', 'matching_label_count': 'integer', 'matching_pref_label_count': 'integer', 'is_uncontrolled_wording': 'boolean', 'is_non_canonical_generated_value': 'boolean', 'intended_term_role': 'string', 'unresolved_intended_term_key': 'string', 'unresolved_role_key': 'string'},
-     'calculated': {'is_uncontrolled_wording', 'is_non_canonical_generated_value', 'name', 'wording_key', 'unresolved_intended_term_key', 'unresolved_role_key'},
+     'calculated': {'unresolved_intended_term_key', 'name', 'is_uncontrolled_wording', 'is_non_canonical_generated_value', 'unresolved_role_key', 'wording_key'},
      'lookups': [
         {'field': 'intended_term_role', 'target': 'vocabulary_terms', 'return': 'represents_role', 'key': 'intended_term', 'match': 'vocabulary_term_id'},],
      'aggregations': [
@@ -31248,7 +31737,7 @@ ERB_TABLES = [
      'compute': compute_term_relations_fields,
      'fields': ['term_relation_id', 'name', 'from_term', 'relation_kind', 'to_term', 'note', 'from_term_grandparent', 'asserts_indirect_link_as_direct', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'from_term_grandparent': 'string', 'asserts_indirect_link_as_direct': 'boolean'},
-     'calculated': {'name', 'asserts_indirect_link_as_direct'},
+     'calculated': {'asserts_indirect_link_as_direct', 'name'},
      'lookups': [
         {'field': 'from_term_grandparent', 'target': 'vocabulary_terms', 'return': 'broader_term_parent', 'key': 'from_term', 'match': 'vocabulary_term_id'},],
      'aggregations': []},
@@ -31256,14 +31745,14 @@ ERB_TABLES = [
      'compute': compute_term_meaning_changes_fields,
      'fields': ['term_meaning_change_id', 'name', 'vocabulary_term', 'prior_meaning_since', 'changed_at', 'prior_meaning', 'new_meaning', 'is_structural_change', 'recorded_by_agent', 'span_days', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'span_days': 'integer'},
-     'calculated': {'name', 'span_days'},
+     'calculated': {'span_days', 'name'},
      'lookups': [],
      'aggregations': []},
     {'name': 'ExternalStandardTerms', 'file': 'external_standard_terms', 'rulebook_rows': 9,
      'compute': compute_external_standard_terms_fields,
      'fields': ['external_standard_term_id', 'name', 'ontology_profile', 'term_iri', 'previous_term_iri', 'evaluation_context', 'as_of_instant', 'deprecated_by_source', 'deprecated_at', 'still_resolves', 'alignment_updated_at', 'model_still_needs_term', 'rehomed_as_term', 'rehomed_term_same_as', 'rehomed_term_namespace', 'rehomed_term_release_issued_at', 'profile_namespace_iri', 'days_since_deprecated', 'is_recent_deprecation', 'using_mapping_count', 'stale_identifier_mapping_count', 'is_adopted_but_deprecated', 'is_alignment_stale_after_deprecation', 'is_needed_deprecated_term_not_rehomed', 'is_rehomed_without_identity_link', 'is_rehomed_without_new_release', 'has_unpropagated_identifier_change', 'rehoming_kept_external_namespace', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'as_of_instant': 'datetime', 'rehomed_term_same_as': 'string', 'rehomed_term_namespace': 'string', 'rehomed_term_release_issued_at': 'datetime', 'profile_namespace_iri': 'string', 'days_since_deprecated': 'integer', 'is_recent_deprecation': 'boolean', 'using_mapping_count': 'integer', 'stale_identifier_mapping_count': 'integer', 'is_adopted_but_deprecated': 'boolean', 'is_alignment_stale_after_deprecation': 'boolean', 'is_needed_deprecated_term_not_rehomed': 'boolean', 'is_rehomed_without_identity_link': 'boolean', 'is_rehomed_without_new_release': 'boolean', 'has_unpropagated_identifier_change': 'boolean', 'rehoming_kept_external_namespace': 'boolean'},
-     'calculated': {'has_unpropagated_identifier_change', 'is_adopted_but_deprecated', 'is_recent_deprecation', 'is_alignment_stale_after_deprecation', 'is_rehomed_without_identity_link', 'name', 'days_since_deprecated', 'is_needed_deprecated_term_not_rehomed', 'rehoming_kept_external_namespace', 'is_rehomed_without_new_release'},
+     'calculated': {'is_needed_deprecated_term_not_rehomed', 'is_rehomed_without_new_release', 'rehoming_kept_external_namespace', 'name', 'days_since_deprecated', 'is_rehomed_without_identity_link', 'is_adopted_but_deprecated', 'has_unpropagated_identifier_change', 'is_alignment_stale_after_deprecation', 'is_recent_deprecation'},
      'lookups': [
         {'field': 'as_of_instant', 'target': 'evaluation_contexts', 'return': 'as_of_instant', 'key': 'evaluation_context', 'match': 'evaluation_context_id'},
         {'field': 'rehomed_term_same_as', 'target': 'vocabulary_terms', 'return': 'same_as_iri', 'key': 'rehomed_as_term', 'match': 'vocabulary_term_id'},
@@ -31306,9 +31795,9 @@ ERB_TABLES = [
         {'field': 'annotation_count', 'op': 'COUNTIFS', 'table': 'model_annotations', 'criteria': [('lifecycle_stage', 'field', 'encoding_lifecycle_stage_id')]},]},
     {'name': 'KnowledgeConsumerSystems', 'file': 'knowledge_consumer_systems', 'rulebook_rows': 8,
      'compute': compute_knowledge_consumer_systems_fields,
-     'fields': ['knowledge_consumer_system_id', 'name', 'label', 'system_kind', 'organization', 'audience', 'holds_procedure_knowledge', 'exports_standard_format', 'export_format', 'has_reasoner', 'has_semantic_storage', 'has_graph_algorithms', 'has_machine_learning', 'has_taxonomy', 'has_thesaurus', 'has_ontology', 'has_metadata_schema', 'model_sync_count', 'integration_count', 'is_knowledge_silo', 'is_unlinked_toolchain_component', 'semantic_layer_component_count', 'platform_capability_count', 'is_immature_graph_platform', 'semantic_type_iri'],
-     'datatypes': {'name': 'string', 'model_sync_count': 'integer', 'integration_count': 'integer', 'is_knowledge_silo': 'boolean', 'is_unlinked_toolchain_component': 'boolean', 'semantic_layer_component_count': 'integer', 'platform_capability_count': 'integer', 'is_immature_graph_platform': 'boolean'},
-     'calculated': {'platform_capability_count', 'is_immature_graph_platform', 'semantic_layer_component_count', 'name', 'is_unlinked_toolchain_component', 'is_knowledge_silo'},
+     'fields': ['knowledge_consumer_system_id', 'name', 'label', 'system_kind', 'organization', 'audience', 'holds_procedure_knowledge', 'exports_standard_format', 'export_format', 'has_reasoner', 'has_semantic_storage', 'has_graph_algorithms', 'has_machine_learning', 'has_taxonomy', 'has_thesaurus', 'has_ontology', 'has_metadata_schema', 'model_sync_count', 'integration_count', 'is_knowledge_silo', 'is_unlinked_toolchain_component', 'semantic_layer_component_count', 'platform_capability_count', 'is_immature_graph_platform', 'semantic_type_iri', 'is_computationally_queryable', 'is_computationally_validatable', 'holds_computationally_encoded_procedure_knowledge', 'stores_procedure_knowledge_without_computational_access'],
+     'datatypes': {'name': 'string', 'model_sync_count': 'integer', 'integration_count': 'integer', 'is_knowledge_silo': 'boolean', 'is_unlinked_toolchain_component': 'boolean', 'semantic_layer_component_count': 'integer', 'platform_capability_count': 'integer', 'is_immature_graph_platform': 'boolean', 'holds_computationally_encoded_procedure_knowledge': 'boolean', 'stores_procedure_knowledge_without_computational_access': 'boolean'},
+     'calculated': {'stores_procedure_knowledge_without_computational_access', 'name', 'semantic_layer_component_count', 'holds_computationally_encoded_procedure_knowledge', 'is_unlinked_toolchain_component', 'is_knowledge_silo', 'platform_capability_count', 'is_immature_graph_platform'},
      'lookups': [],
      'aggregations': [
         {'field': 'model_sync_count', 'op': 'COUNTIFS', 'table': 'consumer_system_syncs', 'criteria': [('consumer_system', 'field', 'knowledge_consumer_system_id')]},
@@ -31317,7 +31806,7 @@ ERB_TABLES = [
      'compute': compute_consumer_system_syncs_fields,
      'fields': ['consumer_system_sync_id', 'name', 'consumer_system', 'loaded_version', 'synced_at', 'source_resource', 'carries_provenance', 'system_audience', 'loaded_procedure', 'canonical_version', 'canonical_version_modified_at', 'loaded_version_creator', 'is_behind_canonical_version', 'predates_version_change', 'is_ai_fed_from_forked_copy', 'drops_provenance_in_transit', 'reaches_humans', 'reaches_machines', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'system_audience': 'string', 'loaded_procedure': 'string', 'canonical_version': 'string', 'canonical_version_modified_at': 'datetime', 'loaded_version_creator': 'string', 'is_behind_canonical_version': 'boolean', 'predates_version_change': 'boolean', 'is_ai_fed_from_forked_copy': 'boolean', 'drops_provenance_in_transit': 'boolean', 'reaches_humans': 'boolean', 'reaches_machines': 'boolean'},
-     'calculated': {'reaches_machines', 'is_ai_fed_from_forked_copy', 'name', 'predates_version_change', 'is_behind_canonical_version', 'reaches_humans', 'drops_provenance_in_transit'},
+     'calculated': {'is_ai_fed_from_forked_copy', 'reaches_machines', 'drops_provenance_in_transit', 'name', 'predates_version_change', 'reaches_humans', 'is_behind_canonical_version'},
      'lookups': [
         {'field': 'system_audience', 'target': 'knowledge_consumer_systems', 'return': 'audience', 'key': 'consumer_system', 'match': 'knowledge_consumer_system_id'},
         {'field': 'loaded_procedure', 'target': 'procedure_versions', 'return': 'procedure', 'key': 'loaded_version', 'match': 'procedure_version_id'},
@@ -31337,7 +31826,7 @@ ERB_TABLES = [
      'compute': compute_agent_integrations_fields,
      'fields': ['agent_integration_id', 'name', 'agent', 'knowledge_system', 'pathway', 'serves_snapshot', 'delivery_mode', 'registry_entry_key', 'connected_at', 'pathway_integration_count', 'observed_answer_count', 'is_shadow_integration', 'is_one_off_connection', 'snapshot_is_governed', 'is_deployed_on_ungoverned_graph', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'pathway_integration_count': 'integer', 'observed_answer_count': 'integer', 'is_shadow_integration': 'boolean', 'is_one_off_connection': 'boolean', 'snapshot_is_governed': 'boolean', 'is_deployed_on_ungoverned_graph': 'boolean'},
-     'calculated': {'is_one_off_connection', 'is_deployed_on_ungoverned_graph', 'is_shadow_integration', 'name'},
+     'calculated': {'is_deployed_on_ungoverned_graph', 'is_shadow_integration', 'name', 'is_one_off_connection'},
      'lookups': [
         {'field': 'pathway_integration_count', 'target': 'integration_pathways', 'return': 'integration_count_on_pathway', 'key': 'pathway', 'match': 'integration_pathway_id'},
         {'field': 'snapshot_is_governed', 'target': 'grounding_snapshots', 'return': 'is_governed', 'key': 'serves_snapshot', 'match': 'grounding_snapshot_id'},],
@@ -31347,7 +31836,7 @@ ERB_TABLES = [
      'compute': compute_grounding_snapshots_fields,
      'fields': ['grounding_snapshot_id', 'name', 'label', 'built_at', 'served_from', 'served_to', 'steward_role', 'governance_reviewed_at', 'is_governed', 'reasoner_run_count', 'consistent_reasoner_run_count', 'latest_materialized_at', 'served_without_consistency_check', 'served_before_materialization', 'assertion_count', 'stale_assignment_assertion_count', 'serves_stale_role_assignments', 'deprecated_as_current_count', 'serves_deprecated_as_current', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'is_governed': 'boolean', 'reasoner_run_count': 'integer', 'consistent_reasoner_run_count': 'integer', 'latest_materialized_at': 'datetime', 'served_without_consistency_check': 'boolean', 'served_before_materialization': 'boolean', 'assertion_count': 'integer', 'stale_assignment_assertion_count': 'integer', 'serves_stale_role_assignments': 'boolean', 'deprecated_as_current_count': 'integer', 'serves_deprecated_as_current': 'boolean'},
-     'calculated': {'is_governed', 'served_before_materialization', 'served_without_consistency_check', 'name', 'serves_deprecated_as_current', 'serves_stale_role_assignments'},
+     'calculated': {'serves_deprecated_as_current', 'is_governed', 'served_without_consistency_check', 'name', 'serves_stale_role_assignments', 'served_before_materialization'},
      'lookups': [],
      'aggregations': [
         {'field': 'reasoner_run_count', 'op': 'COUNTIFS', 'table': 'reasoner_runs', 'criteria': [('snapshot', 'field', 'grounding_snapshot_id')]},
@@ -31360,14 +31849,14 @@ ERB_TABLES = [
      'compute': compute_reasoner_runs_fields,
      'fields': ['reasoner_run_id', 'name', 'snapshot', 'reasoner_profile', 'ran_at', 'materialized_at', 'is_consistent', 'inferred_triple_count', 'duration_seconds', 'time_budget_seconds', 'dropped_axiom_count', 'schema_validation_passed', 'is_richness_tractability_failure', 'passes_schema_but_fails_reasoner', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'is_richness_tractability_failure': 'boolean', 'passes_schema_but_fails_reasoner': 'boolean'},
-     'calculated': {'name', 'is_richness_tractability_failure', 'passes_schema_but_fails_reasoner'},
+     'calculated': {'is_richness_tractability_failure', 'name', 'passes_schema_but_fails_reasoner'},
      'lookups': [],
      'aggregations': []},
     {'name': 'SnapshotAssertions', 'file': 'snapshot_assertions', 'rulebook_rows': 15,
      'compute': compute_snapshot_assertions_fields,
      'fields': ['snapshot_assertion_id', 'name', 'snapshot', 'subject_identifier', 'predicate', 'object_value', 'is_inferred', 'source_procedure_version', 'source_step', 'source_role_assignment', 'about_agent', 'provenance_uri', 'dc_title', 'dc_description', 'presented_status', 'source_version_status', 'source_assignment_is_current', 'snapshot_consistent_run_count', 'snapshot_is_reasoned', 'is_stale_role_assertion', 'presents_deprecated_as_current', 'lacks_provenance', 'has_opaque_identifier', 'lacks_dublin_core', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'source_version_status': 'string', 'source_assignment_is_current': 'boolean', 'snapshot_consistent_run_count': 'integer', 'snapshot_is_reasoned': 'boolean', 'is_stale_role_assertion': 'boolean', 'presents_deprecated_as_current': 'boolean', 'lacks_provenance': 'boolean', 'has_opaque_identifier': 'boolean', 'lacks_dublin_core': 'boolean'},
-     'calculated': {'has_opaque_identifier', 'snapshot_is_reasoned', 'presents_deprecated_as_current', 'name', 'lacks_dublin_core', 'lacks_provenance', 'is_stale_role_assertion'},
+     'calculated': {'presents_deprecated_as_current', 'lacks_provenance', 'has_opaque_identifier', 'lacks_dublin_core', 'snapshot_is_reasoned', 'is_stale_role_assertion', 'name'},
      'lookups': [
         {'field': 'source_version_status', 'target': 'procedure_versions', 'return': 'status', 'key': 'source_procedure_version', 'match': 'procedure_version_id'},
         {'field': 'source_assignment_is_current', 'target': 'role_assignments', 'return': 'is_current', 'key': 'source_role_assignment', 'match': 'role_assignment_id'},
@@ -31377,7 +31866,7 @@ ERB_TABLES = [
      'compute': compute_retrieval_segments_fields,
      'fields': ['retrieval_segment_id', 'name', 'procedure_version', 'step', 'decision_point', 'boundary_kind', 'character_count', 'position_in_process', 'applicability_condition', 'related_segment', 'source_resource', 'segment_text', 'is_indexed', 'authored_by_agent', 'accountable_role', 'contradicts_segment', 'author_agent_kind', 'related_from_count', 'is_isolated_chunk', 'contradicted_is_indexed', 'is_inconsistent_grounding', 'is_machine_held_knowledge', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'author_agent_kind': 'string', 'related_from_count': 'integer', 'is_isolated_chunk': 'boolean', 'contradicted_is_indexed': 'boolean', 'is_inconsistent_grounding': 'boolean', 'is_machine_held_knowledge': 'boolean'},
-     'calculated': {'name', 'is_inconsistent_grounding', 'is_isolated_chunk', 'is_machine_held_knowledge'},
+     'calculated': {'is_isolated_chunk', 'name', 'is_inconsistent_grounding', 'is_machine_held_knowledge'},
      'lookups': [
         {'field': 'author_agent_kind', 'target': 'agents', 'return': 'agent_kind', 'key': 'authored_by_agent', 'match': 'agent_id'},
         {'field': 'contradicted_is_indexed', 'target': 'retrieval_segments', 'return': 'is_indexed', 'key': 'contradicts_segment', 'match': 'retrieval_segment_id'},],
@@ -31387,7 +31876,7 @@ ERB_TABLES = [
      'compute': compute_knowledge_query_definitions_fields,
      'fields': ['knowledge_query_definition_id', 'name', 'label', 'query_language', 'query_text', 'target_procedure_version', 'needs_ontology_and_instances', 'traverses_ontology_layer', 'traverses_instance_layer', 'ran_over_consolidated_copy', 'last_run_at', 'source_system_count', 'misses_a_layer', 'consolidated_distributed_sources', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'source_system_count': 'integer', 'misses_a_layer': 'boolean', 'consolidated_distributed_sources': 'boolean'},
-     'calculated': {'name', 'consolidated_distributed_sources', 'misses_a_layer'},
+     'calculated': {'consolidated_distributed_sources', 'misses_a_layer', 'name'},
      'lookups': [],
      'aggregations': [
         {'field': 'source_system_count', 'op': 'COUNTIFS', 'table': 'knowledge_query_sources', 'criteria': [('query_definition', 'field', 'knowledge_query_definition_id')]},]},
@@ -31400,16 +31889,17 @@ ERB_TABLES = [
      'aggregations': []},
     {'name': 'AssistantAnswers', 'file': 'assistant_answers', 'rulebook_rows': 13,
      'compute': compute_assistant_answers_fields,
-     'fields': ['assistant_answer_id', 'name', 'answering_agent', 'asked_by_agent', 'via_integration', 'step_execution', 'asked_at', 'answered_at', 'answer_kind', 'question_topic', 'question_text', 'answer_text', 'retrieval_mode', 'derivation_performed_by', 'needs_inference', 'assumed_current_step', 'asserted_next_step', 'recommended_step', 'raised_safety_concern', 'delivery_disposition', 'was_acted_on', 'human_reviewed_by', 'reviewed_for_initiative', 'was_correct', 'documented_inaccuracy', 'task_outcome', 'grounding_count', 'own_knowledge_grounding_count', 'cited_grounding_count', 'stale_grounding_count', 'is_not_from_own_knowledge', 'is_untraceable_to_source', 'context_unescalated_danger_cue_count', 'stayed_silent_on_safety_problem', 'context_step_ended_at', 'arrived_after_step_ended', 'execution_of_context', 'context_step', 'assumed_step_completed_count', 'lost_track_of_state', 'specified_transition_count', 'contradicts_shared_model', 'is_explicitly_grounded_recommendation', 'recommendation_rests_on_nothing_explicit', 'recommended_step_regulatory_count', 'requirement_check_count', 'conflict_count', 'conflicts_with_regulation', 'is_unchecked_regulated_recommendation', 'delivered_despite_conflict', 'recommended_step_needs_human', 'acted_on_without_human_judgment', 'answered_compliance_question_from_documents', 'document_interpretation_erred', 'model_did_the_reasoning', 'wrong_because_graph_was_stale', 'semantic_type_iri'],
-     'datatypes': {'name': 'string', 'grounding_count': 'integer', 'own_knowledge_grounding_count': 'integer', 'cited_grounding_count': 'integer', 'stale_grounding_count': 'integer', 'is_not_from_own_knowledge': 'boolean', 'is_untraceable_to_source': 'boolean', 'context_unescalated_danger_cue_count': 'integer', 'stayed_silent_on_safety_problem': 'boolean', 'context_step_ended_at': 'datetime', 'arrived_after_step_ended': 'boolean', 'execution_of_context': 'string', 'context_step': 'string', 'assumed_step_completed_count': 'integer', 'lost_track_of_state': 'boolean', 'specified_transition_count': 'integer', 'contradicts_shared_model': 'boolean', 'is_explicitly_grounded_recommendation': 'boolean', 'recommendation_rests_on_nothing_explicit': 'boolean', 'recommended_step_regulatory_count': 'integer', 'requirement_check_count': 'integer', 'conflict_count': 'integer', 'conflicts_with_regulation': 'boolean', 'is_unchecked_regulated_recommendation': 'boolean', 'delivered_despite_conflict': 'boolean', 'recommended_step_needs_human': 'boolean', 'acted_on_without_human_judgment': 'boolean', 'answered_compliance_question_from_documents': 'boolean', 'document_interpretation_erred': 'boolean', 'model_did_the_reasoning': 'boolean', 'wrong_because_graph_was_stale': 'boolean'},
-     'calculated': {'model_did_the_reasoning', 'acted_on_without_human_judgment', 'is_explicitly_grounded_recommendation', 'is_not_from_own_knowledge', 'is_unchecked_regulated_recommendation', 'contradicts_shared_model', 'document_interpretation_erred', 'is_untraceable_to_source', 'name', 'recommendation_rests_on_nothing_explicit', 'stayed_silent_on_safety_problem', 'conflicts_with_regulation', 'lost_track_of_state', 'arrived_after_step_ended', 'answered_compliance_question_from_documents', 'wrong_because_graph_was_stale', 'delivered_despite_conflict'},
+     'fields': ['assistant_answer_id', 'name', 'answering_agent', 'asked_by_agent', 'via_integration', 'step_execution', 'asked_at', 'answered_at', 'answer_kind', 'question_topic', 'question_text', 'answer_text', 'retrieval_mode', 'derivation_performed_by', 'needs_inference', 'assumed_current_step', 'asserted_next_step', 'recommended_step', 'raised_safety_concern', 'delivery_disposition', 'was_acted_on', 'human_reviewed_by', 'reviewed_for_initiative', 'was_correct', 'documented_inaccuracy', 'task_outcome', 'grounding_count', 'own_knowledge_grounding_count', 'cited_grounding_count', 'stale_grounding_count', 'is_not_from_own_knowledge', 'is_untraceable_to_source', 'context_unescalated_danger_cue_count', 'stayed_silent_on_safety_problem', 'context_step_ended_at', 'arrived_after_step_ended', 'execution_of_context', 'context_step', 'assumed_step_completed_count', 'lost_track_of_state', 'specified_transition_count', 'contradicts_shared_model', 'is_explicitly_grounded_recommendation', 'recommendation_rests_on_nothing_explicit', 'recommended_step_regulatory_count', 'requirement_check_count', 'conflict_count', 'conflicts_with_regulation', 'is_unchecked_regulated_recommendation', 'delivered_despite_conflict', 'recommended_step_needs_human', 'acted_on_without_human_judgment', 'answered_compliance_question_from_documents', 'document_interpretation_erred', 'model_did_the_reasoning', 'wrong_because_graph_was_stale', 'semantic_type_iri', 'owner_organization', 'model_reasoned_and_task_failed'],
+     'datatypes': {'name': 'string', 'grounding_count': 'integer', 'own_knowledge_grounding_count': 'integer', 'cited_grounding_count': 'integer', 'stale_grounding_count': 'integer', 'is_not_from_own_knowledge': 'boolean', 'is_untraceable_to_source': 'boolean', 'context_unescalated_danger_cue_count': 'integer', 'stayed_silent_on_safety_problem': 'boolean', 'context_step_ended_at': 'datetime', 'arrived_after_step_ended': 'boolean', 'execution_of_context': 'string', 'context_step': 'string', 'assumed_step_completed_count': 'integer', 'lost_track_of_state': 'boolean', 'specified_transition_count': 'integer', 'contradicts_shared_model': 'boolean', 'is_explicitly_grounded_recommendation': 'boolean', 'recommendation_rests_on_nothing_explicit': 'boolean', 'recommended_step_regulatory_count': 'integer', 'requirement_check_count': 'integer', 'conflict_count': 'integer', 'conflicts_with_regulation': 'boolean', 'is_unchecked_regulated_recommendation': 'boolean', 'delivered_despite_conflict': 'boolean', 'recommended_step_needs_human': 'boolean', 'acted_on_without_human_judgment': 'boolean', 'answered_compliance_question_from_documents': 'boolean', 'document_interpretation_erred': 'boolean', 'model_did_the_reasoning': 'boolean', 'wrong_because_graph_was_stale': 'boolean', 'owner_organization': 'string', 'model_reasoned_and_task_failed': 'boolean'},
+     'calculated': {'answered_compliance_question_from_documents', 'delivered_despite_conflict', 'lost_track_of_state', 'document_interpretation_erred', 'wrong_because_graph_was_stale', 'model_did_the_reasoning', 'name', 'is_not_from_own_knowledge', 'recommendation_rests_on_nothing_explicit', 'conflicts_with_regulation', 'contradicts_shared_model', 'is_explicitly_grounded_recommendation', 'arrived_after_step_ended', 'is_unchecked_regulated_recommendation', 'acted_on_without_human_judgment', 'stayed_silent_on_safety_problem', 'is_untraceable_to_source', 'model_reasoned_and_task_failed'},
      'lookups': [
         {'field': 'context_unescalated_danger_cue_count', 'target': 'step_executions', 'return': 'unescalated_danger_cue_count', 'key': 'step_execution', 'match': 'step_execution_id'},
         {'field': 'context_step_ended_at', 'target': 'step_executions', 'return': 'ended_at', 'key': 'step_execution', 'match': 'step_execution_id'},
         {'field': 'execution_of_context', 'target': 'step_executions', 'return': 'procedure_execution', 'key': 'step_execution', 'match': 'step_execution_id'},
         {'field': 'context_step', 'target': 'step_executions', 'return': 'step', 'key': 'step_execution', 'match': 'step_execution_id'},
         {'field': 'recommended_step_regulatory_count', 'target': 'steps', 'return': 'regulatory_requirement_count', 'key': 'recommended_step', 'match': 'step_id'},
-        {'field': 'recommended_step_needs_human', 'target': 'steps', 'return': 'requires_human_confirmation', 'key': 'recommended_step', 'match': 'step_id'},],
+        {'field': 'recommended_step_needs_human', 'target': 'steps', 'return': 'requires_human_confirmation', 'key': 'recommended_step', 'match': 'step_id'},
+        {'field': 'owner_organization', 'target': 'step_executions', 'return': 'owner_organization', 'key': 'step_execution', 'match': 'step_execution_id'},],
      'aggregations': [
         {'field': 'grounding_count', 'op': 'COUNTIFS', 'table': 'answer_groundings', 'criteria': [('assistant_answer', 'field', 'assistant_answer_id')]},
         {'field': 'own_knowledge_grounding_count', 'op': 'COUNTIFS', 'table': 'answer_groundings', 'criteria': [('assistant_answer', 'field', 'assistant_answer_id'), ('is_from_own_knowledge', 'literal', True)]},
@@ -31423,7 +31913,7 @@ ERB_TABLES = [
      'compute': compute_answer_groundings_fields,
      'fields': ['answer_grounding_id', 'name', 'assistant_answer', 'snapshot_assertion', 'retrieval_segment', 'external_source_uri', 'cited_to_user', 'is_from_own_knowledge', 'assertion_is_stale', 'assertion_presents_deprecated', 'grounds_on_stale_assertion', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'is_from_own_knowledge': 'boolean', 'assertion_is_stale': 'boolean', 'assertion_presents_deprecated': 'boolean', 'grounds_on_stale_assertion': 'boolean'},
-     'calculated': {'name', 'is_from_own_knowledge', 'grounds_on_stale_assertion'},
+     'calculated': {'grounds_on_stale_assertion', 'name', 'is_from_own_knowledge'},
      'lookups': [
         {'field': 'assertion_is_stale', 'target': 'snapshot_assertions', 'return': 'is_stale_role_assertion', 'key': 'snapshot_assertion', 'match': 'snapshot_assertion_id'},
         {'field': 'assertion_presents_deprecated', 'target': 'snapshot_assertions', 'return': 'presents_deprecated_as_current', 'key': 'snapshot_assertion', 'match': 'snapshot_assertion_id'},],
@@ -31439,7 +31929,7 @@ ERB_TABLES = [
      'compute': compute_ai_tool_invocations_fields,
      'fields': ['ai_tool_invocation_id', 'name', 'invoking_agent', 'step_execution', 'function', 'invoked_at', 'supplied_input_count', 'executed_step', 'declared_function_count', 'is_undeclared_tool_use', 'declared_input_count', 'acted_without_declared_context', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'executed_step': 'string', 'declared_function_count': 'integer', 'is_undeclared_tool_use': 'boolean', 'declared_input_count': 'integer', 'acted_without_declared_context': 'boolean'},
-     'calculated': {'acted_without_declared_context', 'name', 'is_undeclared_tool_use'},
+     'calculated': {'is_undeclared_tool_use', 'name', 'acted_without_declared_context'},
      'lookups': [
         {'field': 'executed_step', 'target': 'step_executions', 'return': 'step', 'key': 'step_execution', 'match': 'step_execution_id'},
         {'field': 'declared_input_count', 'target': 'step_executions', 'return': 'step_input_variable_count', 'key': 'step_execution', 'match': 'step_execution_id'},],
@@ -31449,14 +31939,14 @@ ERB_TABLES = [
      'compute': compute_embedding_probes_fields,
      'fields': ['embedding_probe_id', 'name', 'term_a', 'term_b', 'expected_relation', 'embedding_model', 'cosine_similarity', 'probed_at', 'synonyms_not_similar', 'opposites_not_opposed', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'synonyms_not_similar': 'boolean', 'opposites_not_opposed': 'boolean'},
-     'calculated': {'name', 'opposites_not_opposed', 'synonyms_not_similar'},
+     'calculated': {'opposites_not_opposed', 'synonyms_not_similar', 'name'},
      'lookups': [],
      'aggregations': []},
     {'name': 'PromptTemplates', 'file': 'prompt_templates', 'rulebook_rows': 5,
      'compute': compute_prompt_templates_fields,
      'fields': ['prompt_template_id', 'name', 'label', 'layer', 'parent_template', 'source_procedure_version', 'library_status', 'maintained_by_role', 'used_by_agent', 'carries_procedure_instructions', 'includes_rare_detail', 'token_budget', 'estimated_tokens', 'source_token_count', 'child_template_count', 'is_disconnected_prompt_knowledge', 'is_unmanaged_prompt_in_use', 'spends_budget_on_rare_detail', 'condensation_percent', 'is_verbatim_dump', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'child_template_count': 'integer', 'is_disconnected_prompt_knowledge': 'boolean', 'is_unmanaged_prompt_in_use': 'boolean', 'spends_budget_on_rare_detail': 'boolean', 'condensation_percent': 'number', 'is_verbatim_dump': 'boolean'},
-     'calculated': {'spends_budget_on_rare_detail', 'is_verbatim_dump', 'condensation_percent', 'name', 'is_disconnected_prompt_knowledge', 'is_unmanaged_prompt_in_use'},
+     'calculated': {'is_unmanaged_prompt_in_use', 'name', 'is_verbatim_dump', 'spends_budget_on_rare_detail', 'is_disconnected_prompt_knowledge', 'condensation_percent'},
      'lookups': [],
      'aggregations': [
         {'field': 'child_template_count', 'op': 'COUNTIFS', 'table': 'prompt_templates', 'criteria': [('parent_template', 'field', 'prompt_template_id')]},]},
@@ -31464,7 +31954,7 @@ ERB_TABLES = [
      'compute': compute_knowledge_projections_fields,
      'fields': ['knowledge_projection_id', 'name', 'label', 'projection_kind', 'notation', 'procedure_version', 'output_path', 'generated_by_tool', 'generated_at', 'published_uri', 'audience_role', 'version_modified_at', 'open_count', 'diagram_can_diverge_from_model', 'narrative_not_generated_from_model', 'narrative_unreachable', 'is_published', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'version_modified_at': 'datetime', 'open_count': 'integer', 'diagram_can_diverge_from_model': 'boolean', 'narrative_not_generated_from_model': 'boolean', 'narrative_unreachable': 'boolean', 'is_published': 'boolean'},
-     'calculated': {'narrative_not_generated_from_model', 'diagram_can_diverge_from_model', 'name', 'narrative_unreachable', 'is_published'},
+     'calculated': {'diagram_can_diverge_from_model', 'narrative_not_generated_from_model', 'name', 'narrative_unreachable', 'is_published'},
      'lookups': [
         {'field': 'version_modified_at', 'target': 'procedure_versions', 'return': 'modified_at', 'key': 'procedure_version', 'match': 'procedure_version_id'},],
      'aggregations': [
@@ -31473,21 +31963,21 @@ ERB_TABLES = [
      'compute': compute_model_annotations_fields,
      'fields': ['model_annotation_id', 'name', 'procedure_version', 'step', 'annotated_by_agent', 'annotated_at', 'annotation_kind', 'body', 'status', 'entered_through', 'stored_in', 'lifecycle_stage', 'promoted_to_fragment', 'raised_knowledge_gap', 'is_discussion_in_authoritative_model', 'flag_bypassed_annotation_interface', 'is_lost_new_knowledge', 'is_friction_without_gap', 'is_open_outdated_flag', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'is_discussion_in_authoritative_model': 'boolean', 'flag_bypassed_annotation_interface': 'boolean', 'is_lost_new_knowledge': 'boolean', 'is_friction_without_gap': 'boolean', 'is_open_outdated_flag': 'boolean'},
-     'calculated': {'is_discussion_in_authoritative_model', 'is_friction_without_gap', 'name', 'is_open_outdated_flag', 'flag_bypassed_annotation_interface', 'is_lost_new_knowledge'},
+     'calculated': {'flag_bypassed_annotation_interface', 'is_discussion_in_authoritative_model', 'name', 'is_open_outdated_flag', 'is_lost_new_knowledge', 'is_friction_without_gap'},
      'lookups': [],
      'aggregations': []},
     {'name': 'KnowledgeSearchEvents', 'file': 'knowledge_search_events', 'rulebook_rows': 6,
      'compute': compute_knowledge_search_events_fields,
      'fields': ['knowledge_search_event_id', 'name', 'searched_by_agent', 'searched_at', 'channel', 'query_text', 'sought_procedure_version', 'result_count', 'opened_segment', 'opened_projection', 'was_abandoned', 'seconds_before_abandoning', 'dwell_seconds', 'linked_knowledge_gap', 'linked_usability_barrier', 'found_nothing_useful', 'gave_up_after_seeing_results', 'is_unlinked_failed_search', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'found_nothing_useful': 'boolean', 'gave_up_after_seeing_results': 'boolean', 'is_unlinked_failed_search': 'boolean'},
-     'calculated': {'name', 'found_nothing_useful', 'is_unlinked_failed_search', 'gave_up_after_seeing_results'},
+     'calculated': {'name', 'gave_up_after_seeing_results', 'found_nothing_useful', 'is_unlinked_failed_search'},
      'lookups': [],
      'aggregations': []},
     {'name': 'AiAdoptionInitiatives', 'file': 'ai_adoption_initiatives', 'rulebook_rows': 9,
      'compute': compute_ai_adoption_initiatives_fields,
      'fields': ['ai_adoption_initiative_id', 'name', 'label', 'organization', 'agent', 'target_procedure', 'target_version', 'approach', 'automation_level', 'is_agentic', 'task_is_multi_step', 'depends_on_organizational_knowledge', 'preceding_initiative', 'status', 'outcome', 'redesign_started_at', 'connected_to_ai_at', 'model_layer_budget', 'knowledge_layer_budget', 'measured_bottom_line_impact', 'evaluation_context', 'as_of_instant', 'target_has_no_explicit_steps', 'target_version_issued_at', 'target_version_under_specified', 'target_version_notation_only', 'target_elicitation_evidence_count', 'reviewed_output_count', 'preceding_reviewed_output_count', 'last_outcome_measured_at', 'days_since_outcome_measured', 'ai_insight_count', 'hands_tacit_procedure_to_agent', 'agent_on_under_specified_procedure', 'agent_on_notation_only_procedure', 'calls_for_process_knowledge_framework', 'redesigned_before_documented', 'breaks_elicit_encode_connect_order', 'went_full_without_reviewed_partial_stage', 'underinvests_knowledge_layer', 'not_anchored_in_process_knowledge', 'agentic_without_knowledge_capture', 'is_ai_outcome_unmeasured', 'adopted_without_bottom_line_result', 'failed_without_formalized_knowledge', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'as_of_instant': 'datetime', 'target_has_no_explicit_steps': 'boolean', 'target_version_issued_at': 'datetime', 'target_version_under_specified': 'boolean', 'target_version_notation_only': 'boolean', 'target_elicitation_evidence_count': 'integer', 'reviewed_output_count': 'integer', 'preceding_reviewed_output_count': 'integer', 'last_outcome_measured_at': 'datetime', 'days_since_outcome_measured': 'integer', 'ai_insight_count': 'integer', 'hands_tacit_procedure_to_agent': 'boolean', 'agent_on_under_specified_procedure': 'boolean', 'agent_on_notation_only_procedure': 'boolean', 'calls_for_process_knowledge_framework': 'boolean', 'redesigned_before_documented': 'boolean', 'breaks_elicit_encode_connect_order': 'boolean', 'went_full_without_reviewed_partial_stage': 'boolean', 'underinvests_knowledge_layer': 'boolean', 'not_anchored_in_process_knowledge': 'boolean', 'agentic_without_knowledge_capture': 'boolean', 'is_ai_outcome_unmeasured': 'boolean', 'adopted_without_bottom_line_result': 'boolean', 'failed_without_formalized_knowledge': 'boolean'},
-     'calculated': {'hands_tacit_procedure_to_agent', 'failed_without_formalized_knowledge', 'redesigned_before_documented', 'agentic_without_knowledge_capture', 'agent_on_notation_only_procedure', 'adopted_without_bottom_line_result', 'agent_on_under_specified_procedure', 'breaks_elicit_encode_connect_order', 'is_ai_outcome_unmeasured', 'name', 'not_anchored_in_process_knowledge', 'calls_for_process_knowledge_framework', 'underinvests_knowledge_layer', 'days_since_outcome_measured', 'went_full_without_reviewed_partial_stage'},
+     'calculated': {'failed_without_formalized_knowledge', 'hands_tacit_procedure_to_agent', 'calls_for_process_knowledge_framework', 'redesigned_before_documented', 'went_full_without_reviewed_partial_stage', 'agent_on_notation_only_procedure', 'name', 'agent_on_under_specified_procedure', 'is_ai_outcome_unmeasured', 'breaks_elicit_encode_connect_order', 'agentic_without_knowledge_capture', 'adopted_without_bottom_line_result', 'underinvests_knowledge_layer', 'not_anchored_in_process_knowledge', 'days_since_outcome_measured'},
      'lookups': [
         {'field': 'as_of_instant', 'target': 'evaluation_contexts', 'return': 'as_of_instant', 'key': 'evaluation_context', 'match': 'evaluation_context_id'},
         {'field': 'target_has_no_explicit_steps', 'target': 'procedures', 'return': 'has_no_explicit_steps', 'key': 'target_procedure', 'match': 'procedure_id'},
@@ -31504,7 +31994,7 @@ ERB_TABLES = [
      'compute': compute_knowledge_outcome_measurements_fields,
      'fields': ['knowledge_outcome_measurement_id', 'name', 'label', 'measured_group', 'facility', 'procedure_version', 'ai_initiative', 'knowledge_scope', 'measured_at', 'knowledge_access_score', 'error_rate_percent', 'minutes_per_run', 'satisfaction_score', 'efficiency_gain_percent', 'target_error_rate_percent', 'informed_change_request', 'informed_investment_decision', 'comparison_baseline', 'baseline_access_score', 'baseline_error_rate', 'baseline_minutes_per_run', 'baseline_satisfaction', 'higher_access_fewer_errors', 'higher_access_more_efficient', 'higher_access_more_satisfied', 'is_unacted_adverse_outcome', 'is_gain_outside_procedural_scope', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'baseline_access_score': 'number', 'baseline_error_rate': 'number', 'baseline_minutes_per_run': 'number', 'baseline_satisfaction': 'number', 'higher_access_fewer_errors': 'boolean', 'higher_access_more_efficient': 'boolean', 'higher_access_more_satisfied': 'boolean', 'is_unacted_adverse_outcome': 'boolean', 'is_gain_outside_procedural_scope': 'boolean'},
-     'calculated': {'higher_access_more_efficient', 'is_unacted_adverse_outcome', 'name', 'higher_access_more_satisfied', 'is_gain_outside_procedural_scope', 'higher_access_fewer_errors'},
+     'calculated': {'is_unacted_adverse_outcome', 'is_gain_outside_procedural_scope', 'higher_access_more_satisfied', 'higher_access_more_efficient', 'name', 'higher_access_fewer_errors'},
      'lookups': [
         {'field': 'baseline_access_score', 'target': 'knowledge_outcome_measurements', 'return': 'knowledge_access_score', 'key': 'comparison_baseline', 'match': 'knowledge_outcome_measurement_id'},
         {'field': 'baseline_error_rate', 'target': 'knowledge_outcome_measurements', 'return': 'error_rate_percent', 'key': 'comparison_baseline', 'match': 'knowledge_outcome_measurement_id'},
@@ -31515,7 +32005,7 @@ ERB_TABLES = [
      'compute': compute_ai_insight_proposals_fields,
      'fields': ['ai_insight_proposal_id', 'name', 'proposing_agent', 'source_initiative', 'target_procedure_version', 'insight_kind', 'statement', 'proposed_at', 'validated_by_agent', 'validation_verdict', 'folded_into_change_request', 'target_creator_kind', 'is_unvalidated_or_stranded_insight', 'grew_model_without_human_seed', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'target_creator_kind': 'string', 'is_unvalidated_or_stranded_insight': 'boolean', 'grew_model_without_human_seed': 'boolean'},
-     'calculated': {'name', 'grew_model_without_human_seed', 'is_unvalidated_or_stranded_insight'},
+     'calculated': {'is_unvalidated_or_stranded_insight', 'name', 'grew_model_without_human_seed'},
      'lookups': [
         {'field': 'target_creator_kind', 'target': 'procedure_versions', 'return': 'created_by_agent_kind', 'key': 'target_procedure_version', 'match': 'procedure_version_id'},],
      'aggregations': []},
@@ -31523,14 +32013,14 @@ ERB_TABLES = [
      'compute': compute_assistant_benchmarks_fields,
      'fields': ['assistant_benchmark_id', 'name', 'label', 'task_family', 'agent', 'grounding_snapshot', 'generates_database_queries', 'ungrounded_accuracy_percent', 'graph_grounded_accuracy_percent', 'ran_at', 'accuracy_lift_points', 'shows_spatial_lift_from_graph_queries', 'shows_geospatial_retrieval_lift', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'accuracy_lift_points': 'number', 'shows_spatial_lift_from_graph_queries': 'boolean', 'shows_geospatial_retrieval_lift': 'boolean'},
-     'calculated': {'name', 'accuracy_lift_points', 'shows_geospatial_retrieval_lift', 'shows_spatial_lift_from_graph_queries'},
+     'calculated': {'shows_spatial_lift_from_graph_queries', 'shows_geospatial_retrieval_lift', 'name', 'accuracy_lift_points'},
      'lookups': [],
      'aggregations': []},
     {'name': 'GovernedModels', 'file': 'governed_models', 'rulebook_rows': 7,
      'compute': compute_governed_models_fields,
      'fields': ['governed_model_id', 'name', 'label', 'model_kind', 'procedure', 'domain_owning_organization', 'tooling_owner_role', 'organization_headcount', 'requirements_purpose', 'intended_users', 'registered_at', 'first_control_adopted_at', 'current_charter', 'current_release', 'evaluation_context', 'as_of_instant', 'days_since_registered', 'charter_count', 'current_charter_count', 'current_steward_role', 'current_steward_agent', 'current_authority_role', 'current_authority_agent', 'is_ownerless', 'is_ownerless_past_a_year', 'governance_lapsed', 'has_no_current_steward', 'has_no_current_authority', 'is_procedure_without_change_authority', 'last_steward_activity_at', 'days_since_steward_activity', 'is_unmaintained', 'documents_behind_count', 'is_not_kept_current', 'open_practice_drift_count', 'has_open_practice_drift', 'is_neglected_and_drifting', 'expert_found_drift_count', 'cq_review_count', 'last_cq_review_at', 'days_since_cq_review', 'cq_review_overdue', 'degradation_hidden_until_wrong_answer', 'baseline_question_count', 'requirements_spec_incomplete', 'collection_control_count', 'stewardship_control_count', 'retrieval_control_count', 'use_control_count', 'continuous_pipeline_stage_count', 'lacks_lifecycle_stage_control', 'pipeline_not_continuous', 'procedure_has_no_explicit_steps', 'is_unmanageable_undocumented_work', 'semantic_type_iri', 'originating_use_case', 'is_without_originating_use_case', 'pilot_count', 'is_adopted_without_pilot', 'requirements_expert_count', 'implementation_expert_count', 'publication_expert_count', 'maintenance_expert_count', 'experts_not_involved_throughout', 'real_data_mapping_run_count', 'is_implemented_without_real_data'],
      'datatypes': {'name': 'string', 'as_of_instant': 'datetime', 'days_since_registered': 'integer', 'charter_count': 'integer', 'current_charter_count': 'integer', 'current_steward_role': 'string', 'current_steward_agent': 'string', 'current_authority_role': 'string', 'current_authority_agent': 'string', 'is_ownerless': 'boolean', 'is_ownerless_past_a_year': 'boolean', 'governance_lapsed': 'boolean', 'has_no_current_steward': 'boolean', 'has_no_current_authority': 'boolean', 'is_procedure_without_change_authority': 'boolean', 'last_steward_activity_at': 'datetime', 'days_since_steward_activity': 'integer', 'is_unmaintained': 'boolean', 'documents_behind_count': 'integer', 'is_not_kept_current': 'boolean', 'open_practice_drift_count': 'integer', 'has_open_practice_drift': 'boolean', 'is_neglected_and_drifting': 'boolean', 'expert_found_drift_count': 'integer', 'cq_review_count': 'integer', 'last_cq_review_at': 'datetime', 'days_since_cq_review': 'integer', 'cq_review_overdue': 'boolean', 'degradation_hidden_until_wrong_answer': 'boolean', 'baseline_question_count': 'integer', 'requirements_spec_incomplete': 'boolean', 'collection_control_count': 'integer', 'stewardship_control_count': 'integer', 'retrieval_control_count': 'integer', 'use_control_count': 'integer', 'continuous_pipeline_stage_count': 'integer', 'lacks_lifecycle_stage_control': 'boolean', 'pipeline_not_continuous': 'boolean', 'procedure_has_no_explicit_steps': 'boolean', 'is_unmanageable_undocumented_work': 'boolean', 'is_without_originating_use_case': 'boolean', 'pilot_count': 'integer', 'is_adopted_without_pilot': 'boolean', 'requirements_expert_count': 'integer', 'implementation_expert_count': 'integer', 'publication_expert_count': 'integer', 'maintenance_expert_count': 'integer', 'experts_not_involved_throughout': 'boolean', 'real_data_mapping_run_count': 'integer', 'is_implemented_without_real_data': 'boolean'},
-     'calculated': {'days_since_cq_review', 'lacks_lifecycle_stage_control', 'is_neglected_and_drifting', 'pipeline_not_continuous', 'is_ownerless_past_a_year', 'has_no_current_authority', 'days_since_steward_activity', 'experts_not_involved_throughout', 'is_without_originating_use_case', 'name', 'is_procedure_without_change_authority', 'is_unmaintained', 'cq_review_overdue', 'is_implemented_without_real_data', 'is_not_kept_current', 'days_since_registered', 'has_open_practice_drift', 'is_ownerless', 'governance_lapsed', 'degradation_hidden_until_wrong_answer', 'is_unmanageable_undocumented_work', 'has_no_current_steward', 'is_adopted_without_pilot', 'requirements_spec_incomplete'},
+     'calculated': {'experts_not_involved_throughout', 'is_procedure_without_change_authority', 'cq_review_overdue', 'days_since_registered', 'degradation_hidden_until_wrong_answer', 'is_unmaintained', 'has_open_practice_drift', 'is_implemented_without_real_data', 'name', 'has_no_current_authority', 'days_since_steward_activity', 'is_ownerless', 'is_without_originating_use_case', 'is_unmanageable_undocumented_work', 'requirements_spec_incomplete', 'days_since_cq_review', 'has_no_current_steward', 'is_adopted_without_pilot', 'lacks_lifecycle_stage_control', 'is_ownerless_past_a_year', 'is_not_kept_current', 'pipeline_not_continuous', 'governance_lapsed', 'is_neglected_and_drifting'},
      'lookups': [
         {'field': 'as_of_instant', 'target': 'evaluation_contexts', 'return': 'as_of_instant', 'key': 'evaluation_context', 'match': 'evaluation_context_id'},
         {'field': 'current_steward_role', 'target': 'model_charters', 'return': 'steward_role', 'key': 'current_charter', 'match': 'model_charter_id'},
@@ -31563,7 +32053,7 @@ ERB_TABLES = [
      'compute': compute_model_charters_fields,
      'fields': ['model_charter_id', 'name', 'governed_model', 'steward_role', 'authority_role', 'steward_responsibilities', 'authority_approval_scope', 'charter_template', 'local_adaptation', 'valid_from', 'valid_to', 'supersedes_charter', 'evaluation_context', 'as_of_instant', 'is_current', 'steward_agent', 'authority_agent', 'authority_organization', 'model_kind', 'model_domain_owner', 'model_headcount', 'model_tooling_owner_role', 'model_first_control_adopted_at', 'is_steward_unwritten', 'is_authority_scope_unstated', 'conflates_steward_and_authority', 'is_sanctioned_dual_holding', 'is_authority_outside_domain_owner', 'controls_precede_ownership', 'steward_activity_count', 'last_drift_watch_at', 'days_since_drift_watch', 'is_drift_watch_lapsed', 'procedure_decision_count', 'model_review_count', 'is_named_but_unexercised', 'steward_is_outside_tooling', 'adopted_template_without_adaptation', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'as_of_instant': 'datetime', 'is_current': 'boolean', 'steward_agent': 'string', 'authority_agent': 'string', 'authority_organization': 'string', 'model_kind': 'string', 'model_domain_owner': 'string', 'model_headcount': 'integer', 'model_tooling_owner_role': 'string', 'model_first_control_adopted_at': 'datetime', 'is_steward_unwritten': 'boolean', 'is_authority_scope_unstated': 'boolean', 'conflates_steward_and_authority': 'boolean', 'is_sanctioned_dual_holding': 'boolean', 'is_authority_outside_domain_owner': 'boolean', 'controls_precede_ownership': 'boolean', 'steward_activity_count': 'integer', 'last_drift_watch_at': 'datetime', 'days_since_drift_watch': 'integer', 'is_drift_watch_lapsed': 'boolean', 'procedure_decision_count': 'integer', 'model_review_count': 'integer', 'is_named_but_unexercised': 'boolean', 'steward_is_outside_tooling': 'boolean', 'adopted_template_without_adaptation': 'boolean'},
-     'calculated': {'is_authority_scope_unstated', 'conflates_steward_and_authority', 'is_steward_unwritten', 'controls_precede_ownership', 'is_sanctioned_dual_holding', 'name', 'adopted_template_without_adaptation', 'is_authority_outside_domain_owner', 'steward_is_outside_tooling', 'days_since_drift_watch', 'is_current', 'is_named_but_unexercised', 'is_drift_watch_lapsed'},
+     'calculated': {'steward_is_outside_tooling', 'is_drift_watch_lapsed', 'is_authority_outside_domain_owner', 'name', 'is_sanctioned_dual_holding', 'is_current', 'conflates_steward_and_authority', 'controls_precede_ownership', 'is_named_but_unexercised', 'days_since_drift_watch', 'is_steward_unwritten', 'is_authority_scope_unstated', 'adopted_template_without_adaptation'},
      'lookups': [
         {'field': 'as_of_instant', 'target': 'evaluation_contexts', 'return': 'as_of_instant', 'key': 'evaluation_context', 'match': 'evaluation_context_id'},
         {'field': 'steward_agent', 'target': 'roles', 'return': 'current_agent', 'key': 'steward_role', 'match': 'role_id'},
@@ -31591,7 +32081,7 @@ ERB_TABLES = [
      'compute': compute_model_change_requests_fields,
      'fields': ['model_change_request_id', 'name', 'governed_model', 'title', 'stated_need', 'requested_by_agent', 'requested_at', 'motivating_question', 'motivation_kind', 'change_layer', 'change_operation', 'classification', 'route', 'declared_scale', 'status', 'impact_assessment', 'coverage_checked_at', 'authority_reviewed_at', 'approved_by_agent', 'decided_at', 'implementation_placement', 'placement_decided_by_agent', 'target_release', 'compliance_impact', 'effective_at', 'steward_agent', 'authority_agent', 'rule_key', 'required_route', 'is_accepted', 'is_modeling_change', 'is_schema_change', 'has_authority_review', 'requires_authority_review', 'is_minor_scope', 'steward_own_change_unreviewed', 'steward_approval_out_of_bounds', 'authority_review_skipped', 'placement_not_decided_by_authority', 'is_misrouted', 'lacks_motivating_question', 'unmotivated_and_not_returned', 'motivated_by_failing_question', 'is_accepted_without_named_approver', 'deployed_without_target_release', 'is_misclassified_agent_swap', 'ai_to_human_move_without_compliance_review', 'ai_to_human_move_unaudited', 'is_ai_to_human_move', 'lifecycle_change_by_unauthorized_agent', 'assessed_inconsistent_count', 'post_deploy_inconsistent_count', 'assessed_inference_count', 'post_deploy_inference_count', 'assessed_query_result_count', 'post_deploy_query_result_count', 'assessed_coverage_gap_count', 'would_make_instances_inconsistent', 'would_alter_inferences', 'would_alter_query_results', 'would_leave_coverage_incomplete', 'missed_inconsistent_instances', 'missed_altered_inferences', 'missed_altered_query_results', 'leaves_coverage_unchecked', 'domain_change_spread_wrong_inferences', 'intuitive_disjointness_broke_individuals', 'validation_run_count', 'acceptance_failure_total', 'structural_pass_count', 'vocabulary_pass_count', 'accepted_without_test_run', 'accepted_with_failing_suite', 'accepted_without_structural_check', 'accepted_without_vocabulary_check', 'integrity_check_count', 'human_integrity_check_count', 'disjointness_check_count', 'domain_inference_check_count', 'range_consistency_check_count', 'integrity_decided_without_human', 'skipped_disjointness_review', 'skipped_domain_inference_review', 'skipped_range_review', 'unresolved_objection_count', 'approved_over_unresolved_objection', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'steward_agent': 'string', 'authority_agent': 'string', 'rule_key': 'string', 'required_route': 'string', 'is_accepted': 'boolean', 'is_modeling_change': 'boolean', 'is_schema_change': 'boolean', 'has_authority_review': 'boolean', 'requires_authority_review': 'boolean', 'is_minor_scope': 'boolean', 'steward_own_change_unreviewed': 'boolean', 'steward_approval_out_of_bounds': 'boolean', 'authority_review_skipped': 'boolean', 'placement_not_decided_by_authority': 'boolean', 'is_misrouted': 'boolean', 'lacks_motivating_question': 'boolean', 'unmotivated_and_not_returned': 'boolean', 'motivated_by_failing_question': 'boolean', 'is_accepted_without_named_approver': 'boolean', 'deployed_without_target_release': 'boolean', 'is_misclassified_agent_swap': 'boolean', 'ai_to_human_move_without_compliance_review': 'boolean', 'ai_to_human_move_unaudited': 'boolean', 'is_ai_to_human_move': 'boolean', 'lifecycle_change_by_unauthorized_agent': 'boolean', 'assessed_inconsistent_count': 'integer', 'post_deploy_inconsistent_count': 'integer', 'assessed_inference_count': 'integer', 'post_deploy_inference_count': 'integer', 'assessed_query_result_count': 'integer', 'post_deploy_query_result_count': 'integer', 'assessed_coverage_gap_count': 'integer', 'would_make_instances_inconsistent': 'boolean', 'would_alter_inferences': 'boolean', 'would_alter_query_results': 'boolean', 'would_leave_coverage_incomplete': 'boolean', 'missed_inconsistent_instances': 'boolean', 'missed_altered_inferences': 'boolean', 'missed_altered_query_results': 'boolean', 'leaves_coverage_unchecked': 'boolean', 'domain_change_spread_wrong_inferences': 'boolean', 'intuitive_disjointness_broke_individuals': 'boolean', 'validation_run_count': 'integer', 'acceptance_failure_total': 'integer', 'structural_pass_count': 'integer', 'vocabulary_pass_count': 'integer', 'accepted_without_test_run': 'boolean', 'accepted_with_failing_suite': 'boolean', 'accepted_without_structural_check': 'boolean', 'accepted_without_vocabulary_check': 'boolean', 'integrity_check_count': 'integer', 'human_integrity_check_count': 'integer', 'disjointness_check_count': 'integer', 'domain_inference_check_count': 'integer', 'range_consistency_check_count': 'integer', 'integrity_decided_without_human': 'boolean', 'skipped_disjointness_review': 'boolean', 'skipped_domain_inference_review': 'boolean', 'skipped_range_review': 'boolean', 'unresolved_objection_count': 'integer', 'approved_over_unresolved_objection': 'boolean'},
-     'calculated': {'requires_authority_review', 'leaves_coverage_unchecked', 'steward_own_change_unreviewed', 'has_authority_review', 'ai_to_human_move_without_compliance_review', 'is_misclassified_agent_swap', 'is_accepted', 'approved_over_unresolved_objection', 'skipped_domain_inference_review', 'intuitive_disjointness_broke_individuals', 'is_minor_scope', 'would_leave_coverage_incomplete', 'is_misrouted', 'rule_key', 'is_schema_change', 'is_ai_to_human_move', 'lacks_motivating_question', 'would_alter_query_results', 'name', 'integrity_decided_without_human', 'lifecycle_change_by_unauthorized_agent', 'missed_altered_inferences', 'skipped_disjointness_review', 'ai_to_human_move_unaudited', 'accepted_without_structural_check', 'accepted_without_test_run', 'deployed_without_target_release', 'missed_altered_query_results', 'is_accepted_without_named_approver', 'accepted_with_failing_suite', 'skipped_range_review', 'domain_change_spread_wrong_inferences', 'motivated_by_failing_question', 'would_make_instances_inconsistent', 'unmotivated_and_not_returned', 'authority_review_skipped', 'steward_approval_out_of_bounds', 'missed_inconsistent_instances', 'placement_not_decided_by_authority', 'would_alter_inferences', 'is_modeling_change', 'accepted_without_vocabulary_check'},
+     'calculated': {'lacks_motivating_question', 'lifecycle_change_by_unauthorized_agent', 'accepted_without_structural_check', 'motivated_by_failing_question', 'accepted_without_test_run', 'rule_key', 'is_minor_scope', 'skipped_range_review', 'is_accepted_without_named_approver', 'steward_approval_out_of_bounds', 'would_leave_coverage_incomplete', 'is_misrouted', 'requires_authority_review', 'accepted_without_vocabulary_check', 'would_alter_query_results', 'integrity_decided_without_human', 'ai_to_human_move_without_compliance_review', 'name', 'missed_altered_query_results', 'missed_inconsistent_instances', 'deployed_without_target_release', 'placement_not_decided_by_authority', 'would_alter_inferences', 'approved_over_unresolved_objection', 'is_accepted', 'missed_altered_inferences', 'is_schema_change', 'unmotivated_and_not_returned', 'intuitive_disjointness_broke_individuals', 'would_make_instances_inconsistent', 'is_ai_to_human_move', 'skipped_domain_inference_review', 'ai_to_human_move_unaudited', 'leaves_coverage_unchecked', 'accepted_with_failing_suite', 'is_modeling_change', 'authority_review_skipped', 'domain_change_spread_wrong_inferences', 'has_authority_review', 'is_misclassified_agent_swap', 'steward_own_change_unreviewed', 'skipped_disjointness_review'},
      'lookups': [
         {'field': 'steward_agent', 'target': 'governed_models', 'return': 'current_steward_agent', 'key': 'governed_model', 'match': 'governed_model_id'},
         {'field': 'authority_agent', 'target': 'governed_models', 'return': 'current_authority_agent', 'key': 'governed_model', 'match': 'governed_model_id'},
@@ -31618,7 +32108,7 @@ ERB_TABLES = [
      'compute': compute_change_authority_rules_fields,
      'fields': ['change_authority_rule_id', 'name', 'governed_model', 'change_layer', 'permitted_role', 'approval_role', 'required_route', 'when_permitted', 'breakage_response', 'misrouted_request_count', 'is_rule_bypassed', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'misrouted_request_count': 'integer', 'is_rule_bypassed': 'boolean'},
-     'calculated': {'name', 'is_rule_bypassed'},
+     'calculated': {'is_rule_bypassed', 'name'},
      'lookups': [],
      'aggregations': [
         {'field': 'misrouted_request_count', 'op': 'COUNTIFS', 'table': 'model_change_requests', 'criteria': [('rule_key', 'field', 'change_authority_rule_id'), ('is_misrouted', 'literal', True)]},]},
@@ -31641,14 +32131,14 @@ ERB_TABLES = [
      'compute': compute_change_objections_fields,
      'fields': ['change_objection_id', 'name', 'model_change_request', 'raised_by_agent', 'raised_at', 'objection', 'resolved_at', 'resolved_by_agent', 'resolution', 'is_unresolved', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'is_unresolved': 'boolean'},
-     'calculated': {'name', 'is_unresolved'},
+     'calculated': {'is_unresolved', 'name'},
      'lookups': [],
      'aggregations': []},
     {'name': 'ChangeValidationRuns', 'file': 'change_validation_runs', 'rulebook_rows': 8,
      'compute': compute_change_validation_runs_fields,
      'fields': ['change_validation_run_id', 'name', 'model_change_request', 'test_suite', 'run_purpose', 'ran_at', 'test_count', 'failure_count', 'failures_inspected_at', 'consistency_check_outcome', 'structural_check_outcome', 'vocabulary_check_outcome', 'release', 'expected_chain_count', 'unproduced_chain_count', 'has_uninspected_failures', 'is_unconfirmed_consistency', 'misses_expected_inference', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'release': 'string', 'expected_chain_count': 'integer', 'unproduced_chain_count': 'integer', 'has_uninspected_failures': 'boolean', 'is_unconfirmed_consistency': 'boolean', 'misses_expected_inference': 'boolean'},
-     'calculated': {'misses_expected_inference', 'name', 'is_unconfirmed_consistency', 'has_uninspected_failures'},
+     'calculated': {'misses_expected_inference', 'name', 'has_uninspected_failures', 'is_unconfirmed_consistency'},
      'lookups': [
         {'field': 'release', 'target': 'model_change_requests', 'return': 'target_release', 'key': 'model_change_request', 'match': 'model_change_request_id'},],
      'aggregations': [
@@ -31658,7 +32148,7 @@ ERB_TABLES = [
      'compute': compute_expected_inference_checks_fields,
      'fields': ['expected_inference_check_id', 'name', 'change_validation_run', 'chain_description', 'expected_field', 'expected_value', 'produced_value', 'is_unproduced', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'is_unproduced': 'boolean'},
-     'calculated': {'name', 'is_unproduced'},
+     'calculated': {'is_unproduced', 'name'},
      'lookups': [],
      'aggregations': []},
     {'name': 'ModelConsumers', 'file': 'model_consumers', 'rulebook_rows': 4,
@@ -31687,7 +32177,7 @@ ERB_TABLES = [
      'compute': compute_staleness_query_runs_fields,
      'fields': ['staleness_query_run_id', 'name', 'governed_model', 'ran_at', 'ran_by_agent', 'runner_kind', 'threshold_days', 'query_text', 'stale_workflow_count', 'surfaced_to_steward_at', 'not_surfaced_to_steward', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'runner_kind': 'string', 'not_surfaced_to_steward': 'boolean'},
-     'calculated': {'name', 'not_surfaced_to_steward'},
+     'calculated': {'not_surfaced_to_steward', 'name'},
      'lookups': [
         {'field': 'runner_kind', 'target': 'agents', 'return': 'agent_kind', 'key': 'ran_by_agent', 'match': 'agent_id'},],
      'aggregations': []},
@@ -31695,7 +32185,7 @@ ERB_TABLES = [
      'compute': compute_external_dependency_revisions_fields,
      'fields': ['external_dependency_revision_id', 'name', 'ontology_profile', 'revision_label', 'revision_kind', 'published_at', 'affected_mapping_count', 'tracked_at', 'tracked_by_agent', 'evaluation_context', 'as_of_instant', 'days_since_published', 'is_untracked_revision', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'affected_mapping_count': 'integer', 'as_of_instant': 'datetime', 'days_since_published': 'integer', 'is_untracked_revision': 'boolean'},
-     'calculated': {'name', 'days_since_published', 'is_untracked_revision'},
+     'calculated': {'is_untracked_revision', 'name', 'days_since_published'},
      'lookups': [
         {'field': 'affected_mapping_count', 'target': 'ontology_profiles', 'return': 'mapping_count', 'key': 'ontology_profile', 'match': 'ontology_profile_id'},
         {'field': 'as_of_instant', 'target': 'evaluation_contexts', 'return': 'as_of_instant', 'key': 'evaluation_context', 'match': 'evaluation_context_id'},],
@@ -31704,7 +32194,7 @@ ERB_TABLES = [
      'compute': compute_stakeholder_questions_fields,
      'fields': ['stakeholder_question_id', 'name', 'governed_model', 'channel', 'use_case', 'question_text', 'asked_by_agent', 'asked_at', 'answering_role_question', 'answered_by_agent', 'answered_at', 'triage_outcome', 'triaged_by_agent', 'triager_kind', 'resulting_change_request', 'result_route', 'evaluation_context', 'as_of_instant', 'days_open', 'is_unanswered_past_due', 'is_unanswerable_today', 'is_untriaged_unanswerable', 'needs_structural_change', 'unanswerable_without_scope_request', 'is_misrouted_after_triage', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'triager_kind': 'string', 'result_route': 'string', 'as_of_instant': 'datetime', 'days_open': 'integer', 'is_unanswered_past_due': 'boolean', 'is_unanswerable_today': 'boolean', 'is_untriaged_unanswerable': 'boolean', 'needs_structural_change': 'boolean', 'unanswerable_without_scope_request': 'boolean', 'is_misrouted_after_triage': 'boolean'},
-     'calculated': {'is_misrouted_after_triage', 'needs_structural_change', 'days_open', 'is_untriaged_unanswerable', 'is_unanswerable_today', 'unanswerable_without_scope_request', 'name', 'is_unanswered_past_due'},
+     'calculated': {'is_unanswerable_today', 'is_misrouted_after_triage', 'name', 'is_untriaged_unanswerable', 'unanswerable_without_scope_request', 'is_unanswered_past_due', 'days_open', 'needs_structural_change'},
      'lookups': [
         {'field': 'triager_kind', 'target': 'agents', 'return': 'agent_kind', 'key': 'triaged_by_agent', 'match': 'agent_id'},
         {'field': 'result_route', 'target': 'model_change_requests', 'return': 'route', 'key': 'resulting_change_request', 'match': 'model_change_request_id'},
@@ -31714,7 +32204,7 @@ ERB_TABLES = [
      'compute': compute_model_expansion_requests_fields,
      'fields': ['model_expansion_request_id', 'name', 'governed_model', 'requesting_organization', 'requested_by_agent', 'workflow_description', 'requested_at', 'fit_decision', 'decided_by_agent', 'decided_at', 'model_domain_owner', 'concept_count', 'uncovered_concept_count', 'is_cross_function_expansion', 'requires_schema_extension', 'fit_decision_contradicts_concept_fit', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'model_domain_owner': 'string', 'concept_count': 'integer', 'uncovered_concept_count': 'integer', 'is_cross_function_expansion': 'boolean', 'requires_schema_extension': 'boolean', 'fit_decision_contradicts_concept_fit': 'boolean'},
-     'calculated': {'name', 'is_cross_function_expansion', 'fit_decision_contradicts_concept_fit', 'requires_schema_extension'},
+     'calculated': {'fit_decision_contradicts_concept_fit', 'name', 'is_cross_function_expansion', 'requires_schema_extension'},
      'lookups': [
         {'field': 'model_domain_owner', 'target': 'governed_models', 'return': 'domain_owning_organization', 'key': 'governed_model', 'match': 'governed_model_id'},],
      'aggregations': [
@@ -31724,14 +32214,14 @@ ERB_TABLES = [
      'compute': compute_expansion_concept_fits_fields,
      'fields': ['expansion_concept_fit_id', 'name', 'model_expansion_request', 'concept_label', 'covering_table', 'is_uncovered', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'is_uncovered': 'boolean'},
-     'calculated': {'name', 'is_uncovered'},
+     'calculated': {'is_uncovered', 'name'},
      'lookups': [],
      'aggregations': []},
     {'name': 'CompetencyQuestionSetEntries', 'file': 'competency_question_set_entries', 'rulebook_rows': 8,
      'compute': compute_competency_question_set_entries_fields,
      'fields': ['competency_question_set_entry_id', 'name', 'governed_model', 'role_question', 'is_original_baseline', 'added_at', 'status', 'relevance_verdict', 'used_for_scoping', 'used_as_acceptance_criterion', 'used_as_test_driver', 'used_for_governance', 'evaluation_context', 'as_of_instant', 'days_since_added', 'is_outgrown_baseline_question', 'irrelevant_but_still_active', 'governance_use_count', 'serves_every_governance_use', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'as_of_instant': 'datetime', 'days_since_added': 'integer', 'is_outgrown_baseline_question': 'boolean', 'irrelevant_but_still_active': 'boolean', 'governance_use_count': 'integer', 'serves_every_governance_use': 'boolean'},
-     'calculated': {'irrelevant_but_still_active', 'governance_use_count', 'name', 'is_outgrown_baseline_question', 'serves_every_governance_use', 'days_since_added'},
+     'calculated': {'days_since_added', 'governance_use_count', 'name', 'serves_every_governance_use', 'is_outgrown_baseline_question', 'irrelevant_but_still_active'},
      'lookups': [
         {'field': 'as_of_instant', 'target': 'evaluation_contexts', 'return': 'as_of_instant', 'key': 'evaluation_context', 'match': 'evaluation_context_id'},],
      'aggregations': []},
@@ -31739,7 +32229,7 @@ ERB_TABLES = [
      'compute': compute_competency_question_runs_fields,
      'fields': ['competency_question_run_id', 'name', 'cq_set_entry', 'rulebook_release', 'prior_run', 'ran_at', 'was_answerable', 'answer_outcome', 'defect_change_request', 'entry_is_original', 'prior_was_answerable', 'is_baseline_regression', 'is_unfixed_wrong_answer', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'entry_is_original': 'boolean', 'prior_was_answerable': 'boolean', 'is_baseline_regression': 'boolean', 'is_unfixed_wrong_answer': 'boolean'},
-     'calculated': {'name', 'is_unfixed_wrong_answer', 'is_baseline_regression'},
+     'calculated': {'is_baseline_regression', 'name', 'is_unfixed_wrong_answer'},
      'lookups': [
         {'field': 'entry_is_original', 'target': 'competency_question_set_entries', 'return': 'is_original_baseline', 'key': 'cq_set_entry', 'match': 'competency_question_set_entry_id'},
         {'field': 'prior_was_answerable', 'target': 'competency_question_runs', 'return': 'was_answerable', 'key': 'prior_run', 'match': 'competency_question_run_id'},],
@@ -31778,7 +32268,7 @@ ERB_TABLES = [
      'compute': compute_model_proposals_fields,
      'fields': ['model_proposal_id', 'name', 'governed_model', 'proposal_kind', 'proposed_by_agent', 'proposed_at', 'source_document', 'content', 'quality_check_outcome', 'reviewed_by_agent', 'reviewed_at', 'review_outcome', 'committed_at', 'committed_by_agent', 'adopted_in_release', 'adopted_in_data_version', 'proposer_kind', 'reviewer_kind', 'committer_kind', 'model_steward_agent', 'is_ai_candidate', 'is_only_proposed', 'committed_without_expert_review', 'entered_without_quality_check', 'approver_unknown', 'committed_outside_any_version', 'ai_question_adopted_unvetted', 'ai_alignment_decided_by_ai', 'ai_axiom_without_human_review', 'adoption_not_answered_by_person', 'has_no_human_touchpoint', 'ai_instance_data_loaded_without_steward', 'awaits_engineer_vetting', 'is_pending_alignment_decision', 'awaits_steward_approval', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'proposer_kind': 'string', 'reviewer_kind': 'string', 'committer_kind': 'string', 'model_steward_agent': 'string', 'is_ai_candidate': 'boolean', 'is_only_proposed': 'boolean', 'committed_without_expert_review': 'boolean', 'entered_without_quality_check': 'boolean', 'approver_unknown': 'boolean', 'committed_outside_any_version': 'boolean', 'ai_question_adopted_unvetted': 'boolean', 'ai_alignment_decided_by_ai': 'boolean', 'ai_axiom_without_human_review': 'boolean', 'adoption_not_answered_by_person': 'boolean', 'has_no_human_touchpoint': 'boolean', 'ai_instance_data_loaded_without_steward': 'boolean', 'awaits_engineer_vetting': 'boolean', 'is_pending_alignment_decision': 'boolean', 'awaits_steward_approval': 'boolean'},
-     'calculated': {'awaits_engineer_vetting', 'entered_without_quality_check', 'ai_question_adopted_unvetted', 'ai_instance_data_loaded_without_steward', 'awaits_steward_approval', 'has_no_human_touchpoint', 'is_ai_candidate', 'is_pending_alignment_decision', 'name', 'ai_alignment_decided_by_ai', 'committed_without_expert_review', 'committed_outside_any_version', 'approver_unknown', 'adoption_not_answered_by_person', 'is_only_proposed', 'ai_axiom_without_human_review'},
+     'calculated': {'ai_axiom_without_human_review', 'entered_without_quality_check', 'is_only_proposed', 'committed_without_expert_review', 'ai_alignment_decided_by_ai', 'is_pending_alignment_decision', 'name', 'ai_instance_data_loaded_without_steward', 'is_ai_candidate', 'adoption_not_answered_by_person', 'awaits_steward_approval', 'committed_outside_any_version', 'approver_unknown', 'ai_question_adopted_unvetted', 'has_no_human_touchpoint', 'awaits_engineer_vetting'},
      'lookups': [
         {'field': 'proposer_kind', 'target': 'agents', 'return': 'agent_kind', 'key': 'proposed_by_agent', 'match': 'agent_id'},
         {'field': 'reviewer_kind', 'target': 'agents', 'return': 'agent_kind', 'key': 'reviewed_by_agent', 'match': 'agent_id'},
@@ -31810,7 +32300,7 @@ ERB_TABLES = [
      'compute': compute_domain_coverage_areas_fields,
      'fields': ['domain_coverage_area_id', 'name', 'governed_model', 'area_label', 'required_concept', 'covering_table', 'is_uncovered_area', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'is_uncovered_area': 'boolean'},
-     'calculated': {'name', 'is_uncovered_area'},
+     'calculated': {'is_uncovered_area', 'name'},
      'lookups': [],
      'aggregations': []},
     {'name': 'GovernanceStageControls', 'file': 'governance_stage_controls', 'rulebook_rows': 20,
@@ -31824,14 +32314,14 @@ ERB_TABLES = [
      'compute': compute_process_design_decisions_fields,
      'fields': ['process_design_decision_id', 'name', 'procedure_version', 'step', 'decision', 'rationale', 'decided_by_agent', 'decided_at', 'recorded_at', 'is_commitment_without_rationale', 'days_before_recorded', 'is_recorded_after_the_fact', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'is_commitment_without_rationale': 'boolean', 'days_before_recorded': 'integer', 'is_recorded_after_the_fact': 'boolean'},
-     'calculated': {'name', 'is_commitment_without_rationale', 'is_recorded_after_the_fact', 'days_before_recorded'},
+     'calculated': {'name', 'is_recorded_after_the_fact', 'is_commitment_without_rationale', 'days_before_recorded'},
      'lookups': [],
      'aggregations': []},
     {'name': 'ModelChangeLogEntries', 'file': 'model_change_log_entries', 'rulebook_rows': 17,
      'compute': compute_model_change_log_entries_fields,
      'fields': ['model_change_log_entry_id', 'name', 'governed_model', 'model_change_request', 'release', 'instance_data_version', 'change_layer', 'change_operation', 'change_summary', 'rationale', 'terms_affected', 'affected_table', 'invalidates_instances', 'logged_at', 'changed_by_agent', 'prior_state_commit', 'reverts_entry', 'motivating_question', 'release_version', 'release_decision_undocumented', 'alters_logical_model', 'is_class_removal_or_rename', 'is_invalidating_domain_range_change', 'is_inconsistent_disjointness', 'is_backward_incompatible', 'is_additive_schema_change', 'is_unexplained_modification', 'rationale_without_question', 'is_schema_change_without_increment', 'is_instance_change_in_schema_release', 'schema_change_without_request', 'cannot_be_audited', 'cannot_be_rolled_back', 'is_untraceable_breaking_change', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'motivating_question': 'string', 'release_version': 'string', 'release_decision_undocumented': 'boolean', 'alters_logical_model': 'boolean', 'is_class_removal_or_rename': 'boolean', 'is_invalidating_domain_range_change': 'boolean', 'is_inconsistent_disjointness': 'boolean', 'is_backward_incompatible': 'boolean', 'is_additive_schema_change': 'boolean', 'is_unexplained_modification': 'boolean', 'rationale_without_question': 'boolean', 'is_schema_change_without_increment': 'boolean', 'is_instance_change_in_schema_release': 'boolean', 'schema_change_without_request': 'boolean', 'cannot_be_audited': 'boolean', 'cannot_be_rolled_back': 'boolean', 'is_untraceable_breaking_change': 'boolean'},
-     'calculated': {'alters_logical_model', 'is_invalidating_domain_range_change', 'is_schema_change_without_increment', 'schema_change_without_request', 'is_untraceable_breaking_change', 'is_class_removal_or_rename', 'is_unexplained_modification', 'cannot_be_audited', 'cannot_be_rolled_back', 'rationale_without_question', 'name', 'is_backward_incompatible', 'is_additive_schema_change', 'is_instance_change_in_schema_release', 'is_inconsistent_disjointness'},
+     'calculated': {'is_inconsistent_disjointness', 'is_invalidating_domain_range_change', 'is_untraceable_breaking_change', 'is_instance_change_in_schema_release', 'is_backward_incompatible', 'name', 'schema_change_without_request', 'alters_logical_model', 'is_schema_change_without_increment', 'is_class_removal_or_rename', 'rationale_without_question', 'cannot_be_audited', 'cannot_be_rolled_back', 'is_additive_schema_change', 'is_unexplained_modification'},
      'lookups': [
         {'field': 'motivating_question', 'target': 'model_change_requests', 'return': 'motivating_question', 'key': 'model_change_request', 'match': 'model_change_request_id'},
         {'field': 'release_version', 'target': 'rulebook_releases', 'return': 'rulebook_version', 'key': 'release', 'match': 'rulebook_release_id'},
@@ -31841,7 +32331,7 @@ ERB_TABLES = [
      'compute': compute_drift_observations_fields,
      'fields': ['drift_observation_id', 'name', 'governed_model', 'procedure_version', 'observed_at', 'observed_by_agent', 'detected_by', 'drift_kind', 'drift_cause', 'description', 'since_release', 'resolved_at', 'release_passed_validation', 'release_issued_at', 'is_open_practice_mismatch', 'went_undetected_by_passing_suite', 'drift_follows_clean_release', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'release_passed_validation': 'boolean', 'release_issued_at': 'datetime', 'is_open_practice_mismatch': 'boolean', 'went_undetected_by_passing_suite': 'boolean', 'drift_follows_clean_release': 'boolean'},
-     'calculated': {'name', 'went_undetected_by_passing_suite', 'is_open_practice_mismatch', 'drift_follows_clean_release'},
+     'calculated': {'is_open_practice_mismatch', 'went_undetected_by_passing_suite', 'name', 'drift_follows_clean_release'},
      'lookups': [
         {'field': 'release_passed_validation', 'target': 'rulebook_releases', 'return': 'passed_validation_at_release', 'key': 'since_release', 'match': 'rulebook_release_id'},
         {'field': 'release_issued_at', 'target': 'rulebook_releases', 'return': 'issued_at', 'key': 'since_release', 'match': 'rulebook_release_id'},],
@@ -31850,7 +32340,7 @@ ERB_TABLES = [
      'compute': compute_sourcing_functions_fields,
      'fields': ['sourcing_function_id', 'name', 'label', 'client_organization', 'procedure', 'sourcing_class', 'work_nature', 'is_strategically_vital', 'delivers_own_product', 'executing_organization', 'specification_holder', 'method_holder', 'sourced_since', 'sourcing_rationale', 'is_outsourced', 'is_business_process_outsourcing', 'is_knowledge_process_outsourcing', 'is_vital_expertise_classed_non_core', 'is_what_how_split', 'is_method_knowledge_held_outside', 'claims_how_without_doing', 'is_vital_expertise_process', 'is_outsourced_vital_expertise_process', 'audit_item_count', 'dependency_count', 'coverage_gap_count', 'specification_audit_count', 'specification_shortfall_count', 'method_shortfall_count', 'provider_ip_documentation_count', 'designs_what_it_cannot_build', 'is_unaudited_function', 'capture_initiative_count', 'is_uncaptured_priority_process', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'is_outsourced': 'boolean', 'is_business_process_outsourcing': 'boolean', 'is_knowledge_process_outsourcing': 'boolean', 'is_vital_expertise_classed_non_core': 'boolean', 'is_what_how_split': 'boolean', 'is_method_knowledge_held_outside': 'boolean', 'claims_how_without_doing': 'boolean', 'is_vital_expertise_process': 'boolean', 'is_outsourced_vital_expertise_process': 'boolean', 'audit_item_count': 'integer', 'dependency_count': 'integer', 'coverage_gap_count': 'integer', 'specification_audit_count': 'integer', 'specification_shortfall_count': 'integer', 'method_shortfall_count': 'integer', 'provider_ip_documentation_count': 'integer', 'designs_what_it_cannot_build': 'boolean', 'is_unaudited_function': 'boolean', 'capture_initiative_count': 'integer', 'is_uncaptured_priority_process': 'boolean'},
-     'calculated': {'is_vital_expertise_classed_non_core', 'is_business_process_outsourcing', 'is_knowledge_process_outsourcing', 'is_vital_expertise_process', 'is_what_how_split', 'is_outsourced_vital_expertise_process', 'name', 'claims_how_without_doing', 'is_outsourced', 'is_uncaptured_priority_process', 'is_unaudited_function', 'designs_what_it_cannot_build', 'is_method_knowledge_held_outside'},
+     'calculated': {'is_outsourced_vital_expertise_process', 'claims_how_without_doing', 'is_unaudited_function', 'is_vital_expertise_process', 'name', 'is_outsourced', 'is_uncaptured_priority_process', 'is_knowledge_process_outsourcing', 'is_what_how_split', 'is_method_knowledge_held_outside', 'is_business_process_outsourcing', 'designs_what_it_cannot_build', 'is_vital_expertise_classed_non_core'},
      'lookups': [],
      'aggregations': [
         {'field': 'audit_item_count', 'op': 'COUNTIFS', 'table': 'knowledge_audit_items', 'criteria': [('sourcing_function', 'field', 'sourcing_function_id')]},
@@ -31873,7 +32363,7 @@ ERB_TABLES = [
      'compute': compute_knowledge_audit_items_fields,
      'fields': ['knowledge_audit_item_id', 'name', 'knowledge_audit', 'sourcing_function', 'knowledge_area', 'knowledge_kind', 'needed_level', 'held_internal_level', 'provider_holding_knowledge', 'provider_held_level', 'internal_holding_team_count', 'named_knowledge_gap', 'client_organization', 'has_internal_shortfall', 'is_knowledge_dependency', 'is_coverage_gap', 'is_unnamed_finding', 'is_single_team_silo', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'client_organization': 'string', 'has_internal_shortfall': 'boolean', 'is_knowledge_dependency': 'boolean', 'is_coverage_gap': 'boolean', 'is_unnamed_finding': 'boolean', 'is_single_team_silo': 'boolean'},
-     'calculated': {'is_coverage_gap', 'has_internal_shortfall', 'is_knowledge_dependency', 'is_single_team_silo', 'name', 'is_unnamed_finding'},
+     'calculated': {'is_coverage_gap', 'name', 'is_single_team_silo', 'is_knowledge_dependency', 'has_internal_shortfall', 'is_unnamed_finding'},
      'lookups': [
         {'field': 'client_organization', 'target': 'knowledge_audits', 'return': 'organization', 'key': 'knowledge_audit', 'match': 'knowledge_audit_id'},],
      'aggregations': []},
@@ -31895,7 +32385,7 @@ ERB_TABLES = [
      'compute': compute_provider_engagements_fields,
      'fields': ['provider_engagement_id', 'name', 'client_organization', 'provider', 'sourcing_function', 'started_at', 'term_months', 'status', 'documentation_ownership', 'knowledge_duty_terms', 'provider_treats_know_how_as_differentiator', 'has_knowledge_access_clause', 'knowledge_return_plan', 'is_active', 'relied_dependency_count', 'is_unplanned_knowledge_return', 'is_knowledge_access_unsecured', 'required_deliverable_count', 'to_client_required_count', 'to_client_delivered_count', 'to_provider_delivered_count', 'joint_deliverable_count', 'lacks_knowledge_deliverables', 'is_one_way_learning', 'is_short_term_without_joint_knowledge', 'obliges_knowledge_flow_back', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'is_active': 'boolean', 'relied_dependency_count': 'integer', 'is_unplanned_knowledge_return': 'boolean', 'is_knowledge_access_unsecured': 'boolean', 'required_deliverable_count': 'integer', 'to_client_required_count': 'integer', 'to_client_delivered_count': 'integer', 'to_provider_delivered_count': 'integer', 'joint_deliverable_count': 'integer', 'lacks_knowledge_deliverables': 'boolean', 'is_one_way_learning': 'boolean', 'is_short_term_without_joint_knowledge': 'boolean', 'obliges_knowledge_flow_back': 'boolean'},
-     'calculated': {'lacks_knowledge_deliverables', 'obliges_knowledge_flow_back', 'is_short_term_without_joint_knowledge', 'name', 'is_knowledge_access_unsecured', 'is_unplanned_knowledge_return', 'is_active', 'is_one_way_learning'},
+     'calculated': {'is_knowledge_access_unsecured', 'is_one_way_learning', 'name', 'obliges_knowledge_flow_back', 'lacks_knowledge_deliverables', 'is_active', 'is_short_term_without_joint_knowledge', 'is_unplanned_knowledge_return'},
      'lookups': [],
      'aggregations': [
         {'field': 'relied_dependency_count', 'op': 'COUNTIFS', 'table': 'knowledge_audit_items', 'criteria': [('provider_holding_knowledge', 'field', 'provider'), ('client_organization', 'field', 'client_organization'), ('is_knowledge_dependency', 'literal', True)]},
@@ -31908,14 +32398,14 @@ ERB_TABLES = [
      'compute': compute_knowledge_deliverables_fields,
      'fields': ['knowledge_deliverable_id', 'name', 'provider_engagement', 'direction', 'title', 'due_at', 'delivered_at', 'is_delivered', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'is_delivered': 'boolean'},
-     'calculated': {'name', 'is_delivered'},
+     'calculated': {'is_delivered', 'name'},
      'lookups': [],
      'aggregations': []},
     {'name': 'CorporateGovernancePrograms', 'file': 'corporate_governance_programs', 'rulebook_rows': 3,
      'compute': compute_corporate_governance_programs_fields,
      'fields': ['corporate_governance_program_id', 'name', 'organization', 'label', 'sponsor_discipline', 'launched_at', 'covers_compliance', 'covers_data_quality', 'covers_information_management', 'covers_knowledge_management', 'is_compliance_only', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'is_compliance_only': 'boolean'},
-     'calculated': {'name', 'is_compliance_only'},
+     'calculated': {'is_compliance_only', 'name'},
      'lookups': [],
      'aggregations': []},
     {'name': 'RecordsRetentionPolicies', 'file': 'records_retention_policies', 'rulebook_rows': 4,
@@ -31939,7 +32429,7 @@ ERB_TABLES = [
      'compute': compute_ai_model_deployments_fields,
      'fields': ['ai_model_deployment_id', 'name', 'model_version', 'environment', 'deployed_at', 'retired_at', 'evaluation_context', 'as_of_instant', 'is_live_in_production', 'agent_identifier', 'assignment_link_count', 'artifact_link_count', 'is_isolated_registry_fact', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'as_of_instant': 'datetime', 'is_live_in_production': 'boolean', 'agent_identifier': 'string', 'assignment_link_count': 'integer', 'artifact_link_count': 'integer', 'is_isolated_registry_fact': 'boolean'},
-     'calculated': {'name', 'is_isolated_registry_fact', 'is_live_in_production'},
+     'calculated': {'is_live_in_production', 'is_isolated_registry_fact', 'name'},
      'lookups': [
         {'field': 'as_of_instant', 'target': 'evaluation_contexts', 'return': 'as_of_instant', 'key': 'evaluation_context', 'match': 'evaluation_context_id'},
         {'field': 'agent_identifier', 'target': 'ai_registry_model_versions', 'return': 'dc_identifier', 'key': 'model_version', 'match': 'ai_registry_model_version_id'},],
@@ -31957,7 +32447,7 @@ ERB_TABLES = [
      'compute': compute_ai_agent_accountabilities_fields,
      'fields': ['ai_agent_accountability_id', 'name', 'ai_agent', 'accountable_agent', 'valid_from', 'valid_to', 'evaluation_context', 'as_of_instant', 'is_current', 'accountable_agent_kind', 'is_accountable_to_non_person', 'is_current_human_accountability', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'as_of_instant': 'datetime', 'is_current': 'boolean', 'accountable_agent_kind': 'string', 'is_accountable_to_non_person': 'boolean', 'is_current_human_accountability': 'boolean'},
-     'calculated': {'name', 'is_current_human_accountability', 'is_accountable_to_non_person', 'is_current'},
+     'calculated': {'is_current', 'name', 'is_accountable_to_non_person', 'is_current_human_accountability'},
      'lookups': [
         {'field': 'as_of_instant', 'target': 'evaluation_contexts', 'return': 'as_of_instant', 'key': 'evaluation_context', 'match': 'evaluation_context_id'},
         {'field': 'accountable_agent_kind', 'target': 'agents', 'return': 'agent_kind', 'key': 'accountable_agent', 'match': 'agent_id'},],
@@ -31982,7 +32472,7 @@ ERB_TABLES = [
      'compute': compute_role_assignment_update_tasks_fields,
      'fields': ['role_assignment_update_task_id', 'name', 'role', 'governing_policy', 'trigger_event', 'reason', 'trigger_occurred_at', 'triggered_at', 'triggered_by_agent', 'completed_at', 'ending_assignment', 'replacement_assignment', 'dependent_execution', 'evaluation_context', 'as_of_instant', 'policy_trigger_owner_role', 'trigger_owner_cover_count', 'lacks_named_trigger_owner', 'policy_sla_hours', 'elapsed_minutes', 'exceeded_update_sla', 'ending_role', 'replacement_role', 'changed_role_instead_of_assignment', 'dependent_run_version', 'dependent_run_started_at', 'dependent_run_role_step_count', 'missed_next_dependent_run', 'failed_notice_count', 'stale_assignment_broke_routing', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'as_of_instant': 'datetime', 'policy_trigger_owner_role': 'string', 'trigger_owner_cover_count': 'integer', 'lacks_named_trigger_owner': 'boolean', 'policy_sla_hours': 'integer', 'elapsed_minutes': 'number', 'exceeded_update_sla': 'boolean', 'ending_role': 'string', 'replacement_role': 'string', 'changed_role_instead_of_assignment': 'boolean', 'dependent_run_version': 'string', 'dependent_run_started_at': 'datetime', 'dependent_run_role_step_count': 'integer', 'missed_next_dependent_run': 'boolean', 'failed_notice_count': 'integer', 'stale_assignment_broke_routing': 'boolean'},
-     'calculated': {'elapsed_minutes', 'stale_assignment_broke_routing', 'missed_next_dependent_run', 'changed_role_instead_of_assignment', 'name', 'lacks_named_trigger_owner', 'exceeded_update_sla'},
+     'calculated': {'elapsed_minutes', 'missed_next_dependent_run', 'name', 'stale_assignment_broke_routing', 'lacks_named_trigger_owner', 'exceeded_update_sla', 'changed_role_instead_of_assignment'},
      'lookups': [
         {'field': 'as_of_instant', 'target': 'evaluation_contexts', 'return': 'as_of_instant', 'key': 'evaluation_context', 'match': 'evaluation_context_id'},
         {'field': 'policy_trigger_owner_role', 'target': 'assignment_update_policies', 'return': 'trigger_owner_role', 'key': 'governing_policy', 'match': 'assignment_update_policy_id'},
@@ -31999,7 +32489,7 @@ ERB_TABLES = [
      'compute': compute_assignment_routed_notices_fields,
      'fields': ['assignment_routed_notice_id', 'name', 'procedure_execution', 'notice_step', 'notice_kind', 'sent_at', 'routing_source', 'routed_to_agent', 'notice_role', 'recipient_role_key', 'recipient_pair_assignment_count', 'recipient_valid_from', 'recipient_latest_valid_to', 'recipient_open_ended_count', 'recipient_held_role_when_sent', 'reached_wrong_person_or_nobody', 'routed_around_model', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'notice_role': 'string', 'recipient_role_key': 'string', 'recipient_pair_assignment_count': 'integer', 'recipient_valid_from': 'datetime', 'recipient_latest_valid_to': 'datetime', 'recipient_open_ended_count': 'integer', 'recipient_held_role_when_sent': 'boolean', 'reached_wrong_person_or_nobody': 'boolean', 'routed_around_model': 'boolean'},
-     'calculated': {'reached_wrong_person_or_nobody', 'recipient_role_key', 'routed_around_model', 'name', 'recipient_held_role_when_sent'},
+     'calculated': {'reached_wrong_person_or_nobody', 'recipient_held_role_when_sent', 'routed_around_model', 'name', 'recipient_role_key'},
      'lookups': [
         {'field': 'notice_role', 'target': 'steps', 'return': 'assigned_role', 'key': 'notice_step', 'match': 'step_id'},],
      'aggregations': [
@@ -32011,35 +32501,35 @@ ERB_TABLES = [
      'compute': compute_practitioner_expertise_fields,
      'fields': ['practitioner_expertise_id', 'name', 'agent', 'procedure', 'step', 'elicitation_session', 'expert_kind', 'cue', 'unstated_basis', 'reliable_call_count', 'foresight_confirmed', 'knows_more_than_can_say', 'is_unexplained_foresight', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'knows_more_than_can_say': 'boolean', 'is_unexplained_foresight': 'boolean'},
-     'calculated': {'name', 'knows_more_than_can_say', 'is_unexplained_foresight'},
+     'calculated': {'name', 'is_unexplained_foresight', 'knows_more_than_can_say'},
      'lookups': [],
      'aggregations': []},
     {'name': 'CriticalIncidents', 'file': 'critical_incidents', 'rulebook_rows': 3,
      'compute': compute_critical_incidents_fields,
      'fields': ['critical_incident_id', 'name', 'procedure_version', 'step', 'elicitation_session', 'narrator', 'occurred_at', 'outcome', 'account', 'revealed_judgment', 'judgment_fragment', 'is_adverse_or_improvised', 'has_surfaced_judgment', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'is_adverse_or_improvised': 'boolean', 'has_surfaced_judgment': 'boolean'},
-     'calculated': {'name', 'is_adverse_or_improvised', 'has_surfaced_judgment'},
+     'calculated': {'is_adverse_or_improvised', 'has_surfaced_judgment', 'name'},
      'lookups': [],
      'aggregations': []},
     {'name': 'InterviewProbes', 'file': 'interview_probes', 'rulebook_rows': 4,
      'compute': compute_interview_probes_fields,
      'fields': ['interview_probe_id', 'name', 'elicitation_session', 'step', 'probe_kind', 'prompt', 'answer', 'why_answer', 'shortfall_answer', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'why_answer': 'string', 'shortfall_answer': 'string'},
-     'calculated': {'name', 'shortfall_answer', 'why_answer'},
+     'calculated': {'name', 'why_answer', 'shortfall_answer'},
      'lookups': [],
      'aggregations': []},
     {'name': 'ObservedActions', 'file': 'observed_actions', 'rulebook_rows': 5,
      'compute': compute_observed_actions_fields,
      'fields': ['observed_action_id', 'name', 'elicitation_session', 'step', 'practitioner', 'action_description', 'action_kind', 'mentioned_in_own_account', 'stated_reason', 'counterfactual_condition', 'counterfactual_answer', 'captured_as_fragment', 'is_small_choice', 'is_unofficial_workaround', 'is_omitted_from_own_account', 'is_missed_step_left_uncaptured', 'is_watched_not_questioned', 'has_recorded_reason', 'has_counterfactual_answer', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'is_small_choice': 'boolean', 'is_unofficial_workaround': 'boolean', 'is_omitted_from_own_account': 'boolean', 'is_missed_step_left_uncaptured': 'boolean', 'is_watched_not_questioned': 'boolean', 'has_recorded_reason': 'boolean', 'has_counterfactual_answer': 'boolean'},
-     'calculated': {'has_counterfactual_answer', 'is_small_choice', 'is_unofficial_workaround', 'is_watched_not_questioned', 'name', 'is_missed_step_left_uncaptured', 'has_recorded_reason', 'is_omitted_from_own_account'},
+     'calculated': {'has_counterfactual_answer', 'name', 'is_omitted_from_own_account', 'is_small_choice', 'is_missed_step_left_uncaptured', 'is_unofficial_workaround', 'is_watched_not_questioned', 'has_recorded_reason'},
      'lookups': [],
      'aggregations': []},
     {'name': 'ElicitationParticipants', 'file': 'elicitation_participants', 'rulebook_rows': 7,
      'compute': compute_elicitation_participants_fields,
      'fields': ['elicitation_participant_id', 'name', 'elicitation_session', 'agent', 'participation_role', 'knowledge_flow', 'process_stake', 'is_usually_invited', 'is_practitioner', 'is_subject_matter_expert', 'is_knowledge_engineer', 'is_knowledge_producer', 'is_knowledge_consumer', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'is_practitioner': 'boolean', 'is_subject_matter_expert': 'boolean', 'is_knowledge_engineer': 'boolean', 'is_knowledge_producer': 'boolean', 'is_knowledge_consumer': 'boolean'},
-     'calculated': {'name', 'is_knowledge_consumer', 'is_practitioner', 'is_knowledge_producer', 'is_subject_matter_expert', 'is_knowledge_engineer'},
+     'calculated': {'is_knowledge_producer', 'is_subject_matter_expert', 'is_knowledge_engineer', 'is_practitioner', 'name', 'is_knowledge_consumer'},
      'lookups': [],
      'aggregations': []},
     {'name': 'RepresentationReviews', 'file': 'representation_reviews', 'rulebook_rows': 4,
@@ -32053,21 +32543,21 @@ ERB_TABLES = [
      'compute': compute_workflow_view_divergences_fields,
      'fields': ['workflow_view_divergence_id', 'name', 'elicitation_session', 'procedure_version', 'step', 'view_a', 'holder_a', 'view_b', 'holder_b', 'reconciled_statement', 'reconciled_at', 'reconciled_into_fragment', 'is_reconciled', 'is_surfaced_but_unreconciled', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'is_reconciled': 'boolean', 'is_surfaced_but_unreconciled': 'boolean'},
-     'calculated': {'is_reconciled', 'is_surfaced_but_unreconciled', 'name'},
+     'calculated': {'name', 'is_surfaced_but_unreconciled', 'is_reconciled'},
      'lookups': [],
      'aggregations': []},
     {'name': 'ExpertCognitions', 'file': 'expert_cognitions', 'rulebook_rows': 3,
      'compute': compute_expert_cognitions_fields,
      'fields': ['expert_cognition_id', 'name', 'agent', 'step', 'elicitation_session', 'cognition_kind', 'statement', 'applied_automatically', 'expert_stated_exceptions', 'captured_exceptions', 'is_mental_model', 'is_automatic_heuristic', 'is_heuristic_oversimplified', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'is_mental_model': 'boolean', 'is_automatic_heuristic': 'boolean', 'is_heuristic_oversimplified': 'boolean'},
-     'calculated': {'is_mental_model', 'name', 'is_heuristic_oversimplified', 'is_automatic_heuristic'},
+     'calculated': {'is_mental_model', 'is_heuristic_oversimplified', 'is_automatic_heuristic', 'name'},
      'lookups': [],
      'aggregations': []},
     {'name': 'ConceptLadderRungs', 'file': 'concept_ladder_rungs', 'rulebook_rows': 5,
      'compute': compute_concept_ladder_rungs_fields,
      'fields': ['concept_ladder_rung_id', 'name', 'elicitation_session', 'step', 'ladder_level', 'rung_kind', 'statement', 'step_top_level', 'is_ultimate_goal', 'is_decomposition_rung', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'step_top_level': 'integer', 'is_ultimate_goal': 'boolean', 'is_decomposition_rung': 'boolean'},
-     'calculated': {'name', 'is_decomposition_rung', 'is_ultimate_goal'},
+     'calculated': {'is_ultimate_goal', 'name', 'is_decomposition_rung'},
      'lookups': [],
      'aggregations': [
         {'field': 'step_top_level', 'op': 'MAX', 'table': 'concept_ladder_rungs', 'target': 'ladder_level', 'criteria': [('step', 'field', 'step')], 'suffix': None},]},
@@ -32075,21 +32565,21 @@ ERB_TABLES = [
      'compute': compute_repertory_grid_constructs_fields,
      'fields': ['repertory_grid_construct_id', 'name', 'elicitation_session', 'agent', 'situations_compared', 'pole_a', 'pole_b', 'was_stated_unprompted', 'separates_situations', 'dimension', 'is_never_stated_dimension', 'is_recorded_discriminating_dimension', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'dimension': 'string', 'is_never_stated_dimension': 'boolean', 'is_recorded_discriminating_dimension': 'boolean'},
-     'calculated': {'dimension', 'is_recorded_discriminating_dimension', 'is_never_stated_dimension', 'name'},
+     'calculated': {'dimension', 'name', 'is_never_stated_dimension', 'is_recorded_discriminating_dimension'},
      'lookups': [],
      'aggregations': []},
     {'name': 'KnowledgeConversions', 'file': 'knowledge_conversions', 'rulebook_rows': 5,
      'compute': compute_knowledge_conversions_fields,
      'fields': ['knowledge_conversion_id', 'name', 'elicitation_session', 'result_fragment', 'conversion_mode', 'from_form', 'to_form', 'description', 'occurred_at', 'is_mode_inconsistent_with_forms', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'is_mode_inconsistent_with_forms': 'boolean'},
-     'calculated': {'name', 'is_mode_inconsistent_with_forms'},
+     'calculated': {'is_mode_inconsistent_with_forms', 'name'},
      'lookups': [],
      'aggregations': []},
     {'name': 'KnowledgeHoldings', 'file': 'knowledge_holdings', 'rulebook_rows': 10,
      'compute': compute_knowledge_holdings_fields,
      'fields': ['knowledge_holding_id', 'name', 'procedure_version', 'step', 'snapshot', 'knowledge_form', 'carrier', 'holder_agent', 'statement', 'is_unsaid_in_sop', 'holder_is_veteran', 'handles_exception_or_discretion', 'formalized_as', 'formalized_fragment_session', 'is_unformalized_process_knowledge', 'is_procedural_knowledge', 'is_judgment_outside_document', 'is_veteran_discretion', 'is_formalized_without_elicitation_work', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'formalized_fragment_session': 'string', 'is_unformalized_process_knowledge': 'boolean', 'is_procedural_knowledge': 'boolean', 'is_judgment_outside_document': 'boolean', 'is_veteran_discretion': 'boolean', 'is_formalized_without_elicitation_work': 'boolean'},
-     'calculated': {'is_unformalized_process_knowledge', 'is_judgment_outside_document', 'name', 'is_veteran_discretion', 'is_procedural_knowledge', 'is_formalized_without_elicitation_work'},
+     'calculated': {'is_veteran_discretion', 'is_procedural_knowledge', 'is_unformalized_process_knowledge', 'name', 'is_formalized_without_elicitation_work', 'is_judgment_outside_document'},
      'lookups': [
         {'field': 'formalized_fragment_session', 'target': 'knowledge_fragments', 'return': 'elicitation_session', 'key': 'formalized_as', 'match': 'knowledge_fragment_id'},],
      'aggregations': []},
@@ -32111,7 +32601,7 @@ ERB_TABLES = [
      'compute': compute_know_how_carriers_fields,
      'fields': ['know_how_carrier_id', 'name', 'topic', 'organization', 'procedure', 'community_of_practice', 'carrier_kind', 'holder_agent', 'holder_facility', 'know_how_kind', 'is_in_written_procedure', 'is_trained_skill', 'work_medium', 'held_since', 'builds_on_know_how', 'is_in_public_references', 'replacement_plan', 'evaluation_context', 'as_of_instant', 'holder_is_still_engaged', 'holder_service_started_at', 'holder_departure_at', 'days_until_holder_departure', 'days_served_to_as_of', 'days_served_to_departure', 'holder_tenure_years', 'is_veteran_held', 'is_holder_leaving_soon', 'transfer_count', 'repository_entry_count', 'source_relationship_count', 'is_held_in_both_forms', 'is_held_by_current_practitioner', 'is_untransferred_veteran_know_how', 'is_at_risk_of_imminent_loss', 'is_held_only_by_departed', 'is_held_by_departed_holder', 'is_captured', 'must_be_relearned_if_holder_leaves', 'is_overlooked_living_holder', 'transfer_stops_without_veteran', 'dependency_community', 'builds_on_same_community_know_how', 'lost_accumulation_years', 'is_delegated_to_unfit_source', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'as_of_instant': 'datetime', 'holder_is_still_engaged': 'boolean', 'holder_service_started_at': 'datetime', 'holder_departure_at': 'datetime', 'days_until_holder_departure': 'integer', 'days_served_to_as_of': 'integer', 'days_served_to_departure': 'integer', 'holder_tenure_years': 'number', 'is_veteran_held': 'boolean', 'is_holder_leaving_soon': 'boolean', 'transfer_count': 'integer', 'repository_entry_count': 'integer', 'source_relationship_count': 'integer', 'is_held_in_both_forms': 'boolean', 'is_held_by_current_practitioner': 'boolean', 'is_untransferred_veteran_know_how': 'boolean', 'is_at_risk_of_imminent_loss': 'boolean', 'is_held_only_by_departed': 'boolean', 'is_held_by_departed_holder': 'boolean', 'is_captured': 'boolean', 'must_be_relearned_if_holder_leaves': 'boolean', 'is_overlooked_living_holder': 'boolean', 'transfer_stops_without_veteran': 'boolean', 'dependency_community': 'string', 'builds_on_same_community_know_how': 'boolean', 'lost_accumulation_years': 'number', 'is_delegated_to_unfit_source': 'boolean'},
-     'calculated': {'builds_on_same_community_know_how', 'transfer_stops_without_veteran', 'is_delegated_to_unfit_source', 'is_held_by_departed_holder', 'lost_accumulation_years', 'days_served_to_as_of', 'is_held_in_both_forms', 'name', 'must_be_relearned_if_holder_leaves', 'is_veteran_held', 'is_holder_leaving_soon', 'holder_tenure_years', 'days_served_to_departure', 'days_until_holder_departure', 'is_held_only_by_departed', 'is_overlooked_living_holder', 'is_at_risk_of_imminent_loss', 'is_captured', 'is_held_by_current_practitioner', 'is_untransferred_veteran_know_how'},
+     'calculated': {'is_held_by_departed_holder', 'days_served_to_as_of', 'is_holder_leaving_soon', 'days_served_to_departure', 'is_delegated_to_unfit_source', 'holder_tenure_years', 'is_veteran_held', 'name', 'is_held_in_both_forms', 'builds_on_same_community_know_how', 'is_at_risk_of_imminent_loss', 'is_held_only_by_departed', 'is_captured', 'days_until_holder_departure', 'must_be_relearned_if_holder_leaves', 'transfer_stops_without_veteran', 'is_overlooked_living_holder', 'is_held_by_current_practitioner', 'lost_accumulation_years', 'is_untransferred_veteran_know_how'},
      'lookups': [
         {'field': 'as_of_instant', 'target': 'evaluation_contexts', 'return': 'as_of_instant', 'key': 'evaluation_context', 'match': 'evaluation_context_id'},
         {'field': 'holder_is_still_engaged', 'target': 'agents', 'return': 'is_still_engaged', 'key': 'holder_agent', 'match': 'agent_id'},
@@ -32124,18 +32614,19 @@ ERB_TABLES = [
         {'field': 'source_relationship_count', 'op': 'COUNTIFS', 'table': 'source_relationships', 'criteria': [('source_agent', 'field', 'holder_agent'), ('procedure', 'field', 'procedure')]},]},
     {'name': 'KnowledgeTransfers', 'file': 'knowledge_transfers', 'rulebook_rows': 9,
      'compute': compute_knowledge_transfers_fields,
-     'fields': ['knowledge_transfer_id', 'name', 'know_how', 'from_agent', 'recipient_agent', 'channel', 'community_of_practice', 'occurred_at', 'on_allocated_time', 'from_organization', 'recipient_role_count', 'is_traditional_channel', 'is_social_network_channel', 'is_ambient_absorption_by_non_practitioner', 'semantic_type_iri'],
-     'datatypes': {'name': 'string', 'from_organization': 'string', 'recipient_role_count': 'integer', 'is_traditional_channel': 'boolean', 'is_social_network_channel': 'boolean', 'is_ambient_absorption_by_non_practitioner': 'boolean'},
-     'calculated': {'name', 'is_social_network_channel', 'is_ambient_absorption_by_non_practitioner', 'is_traditional_channel'},
+     'fields': ['knowledge_transfer_id', 'name', 'know_how', 'from_agent', 'recipient_agent', 'channel', 'community_of_practice', 'occurred_at', 'on_allocated_time', 'from_organization', 'recipient_role_count', 'is_traditional_channel', 'is_social_network_channel', 'is_ambient_absorption_by_non_practitioner', 'semantic_type_iri', 'know_how_topic'],
+     'datatypes': {'name': 'string', 'from_organization': 'string', 'recipient_role_count': 'integer', 'is_traditional_channel': 'boolean', 'is_social_network_channel': 'boolean', 'is_ambient_absorption_by_non_practitioner': 'boolean', 'know_how_topic': 'string'},
+     'calculated': {'is_social_network_channel', 'is_ambient_absorption_by_non_practitioner', 'is_traditional_channel', 'name'},
      'lookups': [
         {'field': 'from_organization', 'target': 'agents', 'return': 'organization', 'key': 'from_agent', 'match': 'agent_id'},
-        {'field': 'recipient_role_count', 'target': 'agents', 'return': 'count_of_current_role_assignments', 'key': 'recipient_agent', 'match': 'agent_id'},],
+        {'field': 'recipient_role_count', 'target': 'agents', 'return': 'count_of_current_role_assignments', 'key': 'recipient_agent', 'match': 'agent_id'},
+        {'field': 'know_how_topic', 'target': 'know_how_carriers', 'return': 'topic', 'key': 'know_how', 'match': 'know_how_carrier_id'},],
      'aggregations': []},
     {'name': 'KnowledgeRepositoryEntries', 'file': 'knowledge_repository_entries', 'rulebook_rows': 8,
      'compute': compute_knowledge_repository_entries_fields,
      'fields': ['knowledge_repository_entry_id', 'name', 'title', 'procedure', 'know_how', 'author_agent', 'source_expert', 'credits_source_expert', 'written_for_audience', 'authored_on_allocated_time', 'fed_from_execution', 'created_at', 'last_updated_at', 'review_interval_days', 'evaluation_context', 'as_of_instant', 'author_is_still_engaged', 'author_agent_kind', 'owner_organization', 'days_since_updated', 'is_stale', 'is_execution_feedback', 'is_machine_authored', 'outlives_author_tenure', 'is_uncredited_expert_know_how', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'as_of_instant': 'datetime', 'author_is_still_engaged': 'boolean', 'author_agent_kind': 'string', 'owner_organization': 'string', 'days_since_updated': 'integer', 'is_stale': 'boolean', 'is_execution_feedback': 'boolean', 'is_machine_authored': 'boolean', 'outlives_author_tenure': 'boolean', 'is_uncredited_expert_know_how': 'boolean'},
-     'calculated': {'is_machine_authored', 'is_stale', 'is_uncredited_expert_know_how', 'name', 'days_since_updated', 'is_execution_feedback', 'outlives_author_tenure'},
+     'calculated': {'is_stale', 'outlives_author_tenure', 'is_uncredited_expert_know_how', 'name', 'is_execution_feedback', 'is_machine_authored', 'days_since_updated'},
      'lookups': [
         {'field': 'as_of_instant', 'target': 'evaluation_contexts', 'return': 'as_of_instant', 'key': 'evaluation_context', 'match': 'evaluation_context_id'},
         {'field': 'author_is_still_engaged', 'target': 'agents', 'return': 'is_still_engaged', 'key': 'author_agent', 'match': 'agent_id'},
@@ -32155,14 +32646,14 @@ ERB_TABLES = [
      'compute': compute_source_relationships_fields,
      'fields': ['source_relationship_id', 'name', 'knowledge_engineer', 'source_agent', 'procedure', 'source_standing', 'power_dynamic', 'negotiated_agreement', 'trust_level', 'trust_building_practice', 'withholding_observed', 'withholding_motive', 'started_at', 'is_unnegotiated_power_gap', 'is_extractive_relationship', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'is_unnegotiated_power_gap': 'boolean', 'is_extractive_relationship': 'boolean'},
-     'calculated': {'name', 'is_unnegotiated_power_gap', 'is_extractive_relationship'},
+     'calculated': {'is_extractive_relationship', 'name', 'is_unnegotiated_power_gap'},
      'lookups': [],
      'aggregations': []},
     {'name': 'DepartmentProcessAccounts', 'file': 'department_process_accounts', 'rulebook_rows': 5,
      'compute': compute_department_process_accounts_fields,
      'fields': ['department_process_account_id', 'name', 'procedure', 'department', 'stakeholder_agent', 'engaged_at', 'account_summary', 'shaping_interest', 'conflicts_with_account', 'resolution_practice', 'resolved_at', 'conflicting_department', 'is_awaiting_engagement', 'is_conflicting_account', 'is_unresolved_disagreement', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'conflicting_department': 'string', 'is_awaiting_engagement': 'boolean', 'is_conflicting_account': 'boolean', 'is_unresolved_disagreement': 'boolean'},
-     'calculated': {'is_awaiting_engagement', 'name', 'is_conflicting_account', 'is_unresolved_disagreement'},
+     'calculated': {'is_awaiting_engagement', 'is_unresolved_disagreement', 'is_conflicting_account', 'name'},
      'lookups': [
         {'field': 'conflicting_department', 'target': 'department_process_accounts', 'return': 'department', 'key': 'conflicts_with_account', 'match': 'department_process_account_id'},],
      'aggregations': []},
@@ -32170,7 +32661,7 @@ ERB_TABLES = [
      'compute': compute_problem_occurrences_fields,
      'fields': ['problem_occurrence_id', 'name', 'problem_signature', 'procedure', 'occurred_at', 'solved_by_agent', 'solved_at', 'solution_entry', 'prior_occurrence', 'solver_is_still_engaged', 'is_solved', 'prior_was_solved', 'prior_solution_entry', 'prior_solver', 'prior_solver_is_still_engaged', 'is_solved_without_recorded_solution', 'has_been_solved_before', 'has_consultable_specialist', 'is_relearned_solved_problem', 'is_turnover_regression', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'solver_is_still_engaged': 'boolean', 'is_solved': 'boolean', 'prior_was_solved': 'boolean', 'prior_solution_entry': 'string', 'prior_solver': 'string', 'prior_solver_is_still_engaged': 'boolean', 'is_solved_without_recorded_solution': 'boolean', 'has_been_solved_before': 'boolean', 'has_consultable_specialist': 'boolean', 'is_relearned_solved_problem': 'boolean', 'is_turnover_regression': 'boolean'},
-     'calculated': {'has_been_solved_before', 'is_solved', 'is_solved_without_recorded_solution', 'name', 'is_turnover_regression', 'has_consultable_specialist', 'is_relearned_solved_problem'},
+     'calculated': {'is_turnover_regression', 'is_solved', 'name', 'has_consultable_specialist', 'is_relearned_solved_problem', 'is_solved_without_recorded_solution', 'has_been_solved_before'},
      'lookups': [
         {'field': 'solver_is_still_engaged', 'target': 'agents', 'return': 'is_still_engaged', 'key': 'solved_by_agent', 'match': 'agent_id'},
         {'field': 'prior_was_solved', 'target': 'problem_occurrences', 'return': 'is_solved', 'key': 'prior_occurrence', 'match': 'problem_occurrence_id'},
@@ -32182,7 +32673,7 @@ ERB_TABLES = [
      'compute': compute_onboarding_records_fields,
      'fields': ['onboarding_record_id', 'name', 'new_starter', 'procedure', 'started_at', 'proficient_at', 'used_captured_knowledge', 'evaluation_context', 'as_of_instant', 'is_proficient', 'days_to_proficiency', 'days_since_start', 'is_recent_start', 'procedure_repository_entry_count', 'procedure_departed_only_count', 'is_starting_from_nothing', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'as_of_instant': 'datetime', 'is_proficient': 'boolean', 'days_to_proficiency': 'integer', 'days_since_start': 'integer', 'is_recent_start': 'boolean', 'procedure_repository_entry_count': 'integer', 'procedure_departed_only_count': 'integer', 'is_starting_from_nothing': 'boolean'},
-     'calculated': {'days_to_proficiency', 'days_since_start', 'name', 'is_recent_start', 'is_proficient', 'is_starting_from_nothing'},
+     'calculated': {'days_since_start', 'is_starting_from_nothing', 'name', 'is_proficient', 'is_recent_start', 'days_to_proficiency'},
      'lookups': [
         {'field': 'as_of_instant', 'target': 'evaluation_contexts', 'return': 'as_of_instant', 'key': 'evaluation_context', 'match': 'evaluation_context_id'},
         {'field': 'procedure_repository_entry_count', 'target': 'procedures', 'return': 'repository_entry_count', 'key': 'procedure', 'match': 'procedure_id'},
@@ -32199,7 +32690,7 @@ ERB_TABLES = [
      'compute': compute_capability_declines_fields,
      'fields': ['capability_decline_id', 'name', 'organization', 'stage', 'decline_started_at', 'preceding_stage_decline', 'evidence', 'preceding_stage', 'preceding_decline_started_at', 'follows_preceding_stage_decline', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'preceding_stage': 'string', 'preceding_decline_started_at': 'datetime', 'follows_preceding_stage_decline': 'boolean'},
-     'calculated': {'name', 'follows_preceding_stage_decline'},
+     'calculated': {'follows_preceding_stage_decline', 'name'},
      'lookups': [
         {'field': 'preceding_stage', 'target': 'capability_declines', 'return': 'stage', 'key': 'preceding_stage_decline', 'match': 'capability_decline_id'},
         {'field': 'preceding_decline_started_at', 'target': 'capability_declines', 'return': 'decline_started_at', 'key': 'preceding_stage_decline', 'match': 'capability_decline_id'},],
@@ -32208,7 +32699,7 @@ ERB_TABLES = [
      'compute': compute_knowledge_traces_fields,
      'fields': ['knowledge_trace_id', 'name', 'target_kind', 'procedure_version', 'step', 'requirement', 'source_material', 'trace_role', 'traced_aspect', 'source_statement', 'derivation_route', 'derived_by_agent', 'validated_by_agent', 'validated_at', 'source_stated_duration_minutes', 'contradicted_document', 'source_material_kind', 'source_collected_at', 'source_revised_at', 'source_is_document', 'source_is_people_capture', 'source_is_practice_evidence', 'is_source_changed_since_taken', 'modeled_duration_minutes', 'is_unfaithful_to_source', 'derived_by_agent_kind', 'is_machine_derived', 'is_self_validated', 'has_incomplete_provenance', 'provenance_statement', 'is_aspect_unsupported_by_source_kind', 'is_document_origin', 'step_elicited_validation_count', 'step_elicited_extension_count', 'is_document_start_never_validated', 'is_document_start_never_extended', 'contradicted_document_revised_at', 'is_document_trailing_practice', 'prescribed_versus_enacted', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'source_material_kind': 'string', 'source_collected_at': 'datetime', 'source_revised_at': 'datetime', 'source_is_document': 'boolean', 'source_is_people_capture': 'boolean', 'source_is_practice_evidence': 'boolean', 'is_source_changed_since_taken': 'boolean', 'modeled_duration_minutes': 'integer', 'is_unfaithful_to_source': 'boolean', 'derived_by_agent_kind': 'string', 'is_machine_derived': 'boolean', 'is_self_validated': 'boolean', 'has_incomplete_provenance': 'boolean', 'provenance_statement': 'string', 'is_aspect_unsupported_by_source_kind': 'boolean', 'is_document_origin': 'boolean', 'step_elicited_validation_count': 'integer', 'step_elicited_extension_count': 'integer', 'is_document_start_never_validated': 'boolean', 'is_document_start_never_extended': 'boolean', 'contradicted_document_revised_at': 'datetime', 'is_document_trailing_practice': 'boolean', 'prescribed_versus_enacted': 'string'},
-     'calculated': {'prescribed_versus_enacted', 'is_document_trailing_practice', 'is_document_start_never_validated', 'is_document_start_never_extended', 'is_self_validated', 'is_document_origin', 'provenance_statement', 'name', 'is_source_changed_since_taken', 'is_machine_derived', 'is_aspect_unsupported_by_source_kind', 'has_incomplete_provenance', 'is_unfaithful_to_source'},
+     'calculated': {'is_document_start_never_extended', 'is_document_start_never_validated', 'is_aspect_unsupported_by_source_kind', 'is_document_trailing_practice', 'is_self_validated', 'name', 'is_machine_derived', 'prescribed_versus_enacted', 'has_incomplete_provenance', 'is_document_origin', 'provenance_statement', 'is_source_changed_since_taken', 'is_unfaithful_to_source'},
      'lookups': [
         {'field': 'source_material_kind', 'target': 'collected_source_materials', 'return': 'material_kind', 'key': 'source_material', 'match': 'collected_source_material_id'},
         {'field': 'source_collected_at', 'target': 'collected_source_materials', 'return': 'collected_at', 'key': 'source_material', 'match': 'collected_source_material_id'},
@@ -32226,7 +32717,7 @@ ERB_TABLES = [
      'compute': compute_mined_flow_edges_fields,
      'fields': ['mined_flow_edge_id', 'name', 'process_mining_run', 'from_step', 'to_step', 'observed_case_count', 'median_wait_minutes', 'recorded_stance', 'intent_decision_by', 'documented_transition_count', 'is_undocumented_path', 'to_step_expected_minutes', 'is_bottleneck', 'is_mined_path_recorded_as_intent_without_decision', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'documented_transition_count': 'integer', 'is_undocumented_path': 'boolean', 'to_step_expected_minutes': 'integer', 'is_bottleneck': 'boolean', 'is_mined_path_recorded_as_intent_without_decision': 'boolean'},
-     'calculated': {'is_undocumented_path', 'name', 'is_mined_path_recorded_as_intent_without_decision', 'is_bottleneck'},
+     'calculated': {'is_mined_path_recorded_as_intent_without_decision', 'is_bottleneck', 'name', 'is_undocumented_path'},
      'lookups': [
         {'field': 'to_step_expected_minutes', 'target': 'steps', 'return': 'expected_duration_minutes', 'key': 'to_step', 'match': 'step_id'},],
      'aggregations': [
@@ -32235,7 +32726,7 @@ ERB_TABLES = [
      'compute': compute_collection_occasions_fields,
      'fields': ['collection_occasion_id', 'name', 'label', 'occasion_kind', 'procedure', 'cadence_days', 'last_held_at', 'evaluation_context', 'as_of_instant', 'days_since_held', 'is_lapsed', 'captured_material_count', 'is_held_without_capture', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'as_of_instant': 'datetime', 'days_since_held': 'integer', 'is_lapsed': 'boolean', 'captured_material_count': 'integer', 'is_held_without_capture': 'boolean'},
-     'calculated': {'name', 'is_lapsed', 'is_held_without_capture', 'days_since_held'},
+     'calculated': {'is_lapsed', 'name', 'is_held_without_capture', 'days_since_held'},
      'lookups': [
         {'field': 'as_of_instant', 'target': 'evaluation_contexts', 'return': 'as_of_instant', 'key': 'evaluation_context', 'match': 'evaluation_context_id'},],
      'aggregations': [
@@ -32244,7 +32735,7 @@ ERB_TABLES = [
      'compute': compute_stakeholder_perspectives_fields,
      'fields': ['stakeholder_perspective_id', 'name', 'procedure_version', 'step', 'holder_role', 'position', 'source_material', 'conflicts_with_perspective', 'disposition', 'source_material_kind', 'conflict_partner_count', 'is_in_conflict', 'is_dissenting_view_not_kept_with_source', 'semantic_type_iri'],
      'datatypes': {'name': 'string', 'source_material_kind': 'string', 'conflict_partner_count': 'integer', 'is_in_conflict': 'boolean', 'is_dissenting_view_not_kept_with_source': 'boolean'},
-     'calculated': {'name', 'is_dissenting_view_not_kept_with_source', 'is_in_conflict'},
+     'calculated': {'is_in_conflict', 'name', 'is_dissenting_view_not_kept_with_source'},
      'lookups': [
         {'field': 'source_material_kind', 'target': 'collected_source_materials', 'return': 'material_kind', 'key': 'source_material', 'match': 'collected_source_material_id'},],
      'aggregations': [
@@ -32279,6 +32770,42 @@ ERB_TABLES = [
         {'field': 'declared_source_step', 'target': 'step_variables', 'return': 'source_step', 'key': 'step_variable', 'match': 'step_variable_id'},
         {'field': 'declared_consumer_step', 'target': 'step_variables', 'return': 'step', 'key': 'step_variable', 'match': 'step_variable_id'},],
      'aggregations': []},
+    {'name': 'AppActions', 'file': 'app_actions', 'rulebook_rows': 20,
+     'compute': compute_app_actions_fields,
+     'fields': ['app_action_id', 'name', 'label', 'owning_role', 'route_path', 'target_table', 'operation', 'policy', 'watched_field', 'story_episode', 'description', 'policy_command', 'policy_denial_test_count', 'watched_field_is_witness', 'input_field_count', 'is_unpermitted', 'policy_command_disagrees', 'is_unproven_write', 'semantic_type_iri'],
+     'datatypes': {'name': 'string', 'policy_command': 'string', 'policy_denial_test_count': 'integer', 'watched_field_is_witness': 'boolean', 'input_field_count': 'integer', 'is_unpermitted': 'boolean', 'policy_command_disagrees': 'boolean', 'is_unproven_write': 'boolean'},
+     'calculated': {'policy_command_disagrees', 'is_unpermitted', 'name', 'is_unproven_write'},
+     'lookups': [
+        {'field': 'policy_command', 'target': 'access_policies', 'return': 'command', 'key': 'policy', 'match': 'access_policy_id'},
+        {'field': 'policy_denial_test_count', 'target': 'access_policies', 'return': 'denial_test_count', 'key': 'policy', 'match': 'access_policy_id'},
+        {'field': 'watched_field_is_witness', 'target': 'rulebook_fields', 'return': 'is_witness', 'key': 'watched_field', 'match': 'rulebook_field_id'},],
+     'aggregations': [
+        {'field': 'input_field_count', 'op': 'COUNTIFS', 'table': 'app_action_fields', 'criteria': [('app_action', 'field', 'app_action_id')]},]},
+    {'name': 'AppActionFields', 'file': 'app_action_fields', 'rulebook_rows': 100,
+     'compute': compute_app_action_fields_fields,
+     'fields': ['app_action_field_id', 'name', 'app_action', 'target_field', 'field_label', 'input_kind', 'fixed_value', 'choices_from', 'sort_order', 'target_field_type', 'writes_derived_field', 'semantic_type_iri'],
+     'datatypes': {'name': 'string', 'target_field_type': 'string', 'writes_derived_field': 'boolean'},
+     'calculated': {'writes_derived_field', 'name'},
+     'lookups': [
+        {'field': 'target_field_type', 'target': 'rulebook_fields', 'return': 'field_type', 'key': 'target_field', 'match': 'rulebook_field_id'},],
+     'aggregations': []},
+    {'name': 'AbundantKnowledgeGaps', 'file': 'abundant_knowledge_gaps', 'rulebook_rows': 3,
+     'compute': compute_abundant_knowledge_gaps_fields,
+     'fields': ['abundant_knowledge_gap_id', 'name', 'label', 'gap_kind', 'description', 'why_abundance_does_not_supply_it', 'represented_by_table', 'representing_table_row_count', 'semantic_type_iri'],
+     'datatypes': {'name': 'string', 'representing_table_row_count': 'integer'},
+     'calculated': {'name'},
+     'lookups': [
+        {'field': 'representing_table_row_count', 'target': 'rulebook_tables', 'return': 'measured_row_count', 'key': 'represented_by_table', 'match': 'rulebook_table_id'},],
+     'aggregations': []},
+    {'name': 'OntologySupportProgrammes', 'file': 'ontology_support_programmes', 'rulebook_rows': 2,
+     'compute': compute_ontology_support_programmes_fields,
+     'fields': ['ontology_support_programme_id', 'name', 'label', 'acronym', 'funder', 'grant_reference', 'programme_iri', 'coordinator', 'started_on', 'ends_on', 'is_industry_focused', 'our_successor_steward', 'why_recorded', 'evaluation_context', 'as_of_instant', 'supported_profile_count', 'has_ended', 'days_until_programme_ends', 'is_ended_with_no_steward_named', 'is_ending_soon_with_no_steward_named', 'semantic_type_iri'],
+     'datatypes': {'name': 'string', 'as_of_instant': 'datetime', 'supported_profile_count': 'integer', 'has_ended': 'boolean', 'days_until_programme_ends': 'integer', 'is_ended_with_no_steward_named': 'boolean', 'is_ending_soon_with_no_steward_named': 'boolean'},
+     'calculated': {'has_ended', 'is_ended_with_no_steward_named', 'name', 'is_ending_soon_with_no_steward_named', 'days_until_programme_ends'},
+     'lookups': [
+        {'field': 'as_of_instant', 'target': 'evaluation_contexts', 'return': 'as_of_instant', 'key': 'evaluation_context', 'match': 'evaluation_context_id'},],
+     'aggregations': [
+        {'field': 'supported_profile_count', 'op': 'COUNTIFS', 'table': 'ontology_profiles', 'criteria': [('supporting_programme', 'field', 'ontology_support_programme_id')]},]},
 ]
 
 # ERB_CLOSURES materializes each vw_<entity>_closure view aggregations read.

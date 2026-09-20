@@ -12,7 +12,8 @@
     "satisfaction_count_for_binding": null,
     "binding_was_ever_exercised": null,
     "is_unexercised_blocking_binding": null,
-    "unexercised_binding_requirement_key": null
+    "unexercised_binding_requirement_key": null,
+    "requirement_is_regulatory": null
   },
   {
     "step_requirement_id": "sr-c03a",
@@ -27,7 +28,8 @@
     "satisfaction_count_for_binding": null,
     "binding_was_ever_exercised": null,
     "is_unexercised_blocking_binding": null,
-    "unexercised_binding_requirement_key": null
+    "unexercised_binding_requirement_key": null,
+    "requirement_is_regulatory": null
   },
   {
     "step_requirement_id": "sr-c03b",
@@ -42,7 +44,8 @@
     "satisfaction_count_for_binding": null,
     "binding_was_ever_exercised": null,
     "is_unexercised_blocking_binding": null,
-    "unexercised_binding_requirement_key": null
+    "unexercised_binding_requirement_key": null,
+    "requirement_is_regulatory": null
   },
   {
     "step_requirement_id": "sr-c05",
@@ -57,7 +60,8 @@
     "satisfaction_count_for_binding": null,
     "binding_was_ever_exercised": null,
     "is_unexercised_blocking_binding": null,
-    "unexercised_binding_requirement_key": null
+    "unexercised_binding_requirement_key": null,
+    "requirement_is_regulatory": null
   },
   {
     "step_requirement_id": "sr-c06",
@@ -72,7 +76,8 @@
     "satisfaction_count_for_binding": null,
     "binding_was_ever_exercised": null,
     "is_unexercised_blocking_binding": null,
-    "unexercised_binding_requirement_key": null
+    "unexercised_binding_requirement_key": null,
+    "requirement_is_regulatory": null
   },
   {
     "step_requirement_id": "sr-c08",
@@ -87,7 +92,8 @@
     "satisfaction_count_for_binding": null,
     "binding_was_ever_exercised": null,
     "is_unexercised_blocking_binding": null,
-    "unexercised_binding_requirement_key": null
+    "unexercised_binding_requirement_key": null,
+    "requirement_is_regulatory": null
   },
   {
     "step_requirement_id": "sr-p03",
@@ -102,7 +108,8 @@
     "satisfaction_count_for_binding": null,
     "binding_was_ever_exercised": null,
     "is_unexercised_blocking_binding": null,
-    "unexercised_binding_requirement_key": null
+    "unexercised_binding_requirement_key": null,
+    "requirement_is_regulatory": null
   },
   {
     "step_requirement_id": "sr-p04",
@@ -117,7 +124,8 @@
     "satisfaction_count_for_binding": null,
     "binding_was_ever_exercised": null,
     "is_unexercised_blocking_binding": null,
-    "unexercised_binding_requirement_key": null
+    "unexercised_binding_requirement_key": null,
+    "requirement_is_regulatory": null
   },
   {
     "step_requirement_id": "sr-p05",
@@ -132,7 +140,8 @@
     "satisfaction_count_for_binding": null,
     "binding_was_ever_exercised": null,
     "is_unexercised_blocking_binding": null,
-    "unexercised_binding_requirement_key": null
+    "unexercised_binding_requirement_key": null,
+    "requirement_is_regulatory": null
   },
   {
     "step_requirement_id": "sr-p06",
@@ -147,7 +156,8 @@
     "satisfaction_count_for_binding": null,
     "binding_was_ever_exercised": null,
     "is_unexercised_blocking_binding": null,
-    "unexercised_binding_requirement_key": null
+    "unexercised_binding_requirement_key": null,
+    "requirement_is_regulatory": null
   },
   {
     "step_requirement_id": "sr-p07a",
@@ -162,7 +172,8 @@
     "satisfaction_count_for_binding": null,
     "binding_was_ever_exercised": null,
     "is_unexercised_blocking_binding": null,
-    "unexercised_binding_requirement_key": null
+    "unexercised_binding_requirement_key": null,
+    "requirement_is_regulatory": null
   },
   {
     "step_requirement_id": "sr-p07b",
@@ -177,7 +188,8 @@
     "satisfaction_count_for_binding": null,
     "binding_was_ever_exercised": null,
     "is_unexercised_blocking_binding": null,
-    "unexercised_binding_requirement_key": null
+    "unexercised_binding_requirement_key": null,
+    "requirement_is_regulatory": null
   },
   {
     "step_requirement_id": "sr-p07c",
@@ -192,7 +204,8 @@
     "satisfaction_count_for_binding": null,
     "binding_was_ever_exercised": null,
     "is_unexercised_blocking_binding": null,
-    "unexercised_binding_requirement_key": null
+    "unexercised_binding_requirement_key": null,
+    "requirement_is_regulatory": null
   },
   {
     "step_requirement_id": "sr-p07d",
@@ -207,7 +220,8 @@
     "satisfaction_count_for_binding": null,
     "binding_was_ever_exercised": null,
     "is_unexercised_blocking_binding": null,
-    "unexercised_binding_requirement_key": null
+    "unexercised_binding_requirement_key": null,
+    "requirement_is_regulatory": null
   },
   {
     "step_requirement_id": "sr-p08",
@@ -222,6 +236,55 @@
     "satisfaction_count_for_binding": null,
     "binding_was_ever_exercised": null,
     "is_unexercised_blocking_binding": null,
-    "unexercised_binding_requirement_key": null
+    "unexercised_binding_requirement_key": null,
+    "requirement_is_regulatory": null
+  },
+  {
+    "step_requirement_id": "srq-deploy03-approval",
+    "step": "deploy-03",
+    "requirement": "req-deploy-approval",
+    "name": null,
+    "requirement_is_blocking": null,
+    "blocking_step_key": null,
+    "step_when_blocking": null,
+    "requirement_lacks_witness": null,
+    "unwitnessed_step_key": null,
+    "satisfaction_count_for_binding": null,
+    "binding_was_ever_exercised": null,
+    "is_unexercised_blocking_binding": null,
+    "unexercised_binding_requirement_key": null,
+    "requirement_is_regulatory": null
+  },
+  {
+    "step_requirement_id": "srq-loto05-lock",
+    "step": "loto-05",
+    "requirement": "req-loto-personal-lock",
+    "name": null,
+    "requirement_is_blocking": null,
+    "blocking_step_key": null,
+    "step_when_blocking": null,
+    "requirement_lacks_witness": null,
+    "unwitnessed_step_key": null,
+    "satisfaction_count_for_binding": null,
+    "binding_was_ever_exercised": null,
+    "is_unexercised_blocking_binding": null,
+    "unexercised_binding_requirement_key": null,
+    "requirement_is_regulatory": null
+  },
+  {
+    "step_requirement_id": "srq-loto06-zero",
+    "step": "loto-06",
+    "requirement": "req-loto-zero-energy",
+    "name": null,
+    "requirement_is_blocking": null,
+    "blocking_step_key": null,
+    "step_when_blocking": null,
+    "requirement_lacks_witness": null,
+    "unwitnessed_step_key": null,
+    "satisfaction_count_for_binding": null,
+    "binding_was_ever_exercised": null,
+    "is_unexercised_blocking_binding": null,
+    "unexercised_binding_requirement_key": null,
+    "requirement_is_regulatory": null
   }
 ]

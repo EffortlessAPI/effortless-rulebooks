@@ -17,7 +17,7 @@
     "question_count": 0,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "admin-catalog-drift",
@@ -37,7 +37,7 @@
     "question_count": 0,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "admin-checks",
@@ -57,7 +57,7 @@
     "question_count": 0,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "admin-loops",
@@ -77,7 +77,7 @@
     "question_count": 0,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "admin-provenance",
@@ -97,7 +97,7 @@
     "question_count": 0,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "admin-question-defence",
@@ -117,7 +117,7 @@
     "question_count": 0,
     "reference_count": 3,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "admin-route-map",
@@ -137,7 +137,7 @@
     "question_count": 0,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "admin-vacuous",
@@ -157,7 +157,7 @@
     "question_count": 0,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "admin-witnesses",
@@ -177,7 +177,7 @@
     "question_count": 0,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "analyst-blocking-unmet",
@@ -197,7 +197,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "analyst-clean-but-uncovered",
@@ -217,7 +217,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "analyst-evidence-quality",
@@ -237,7 +237,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "analyst-home",
@@ -257,7 +257,7 @@
     "question_count": 2,
     "reference_count": 3,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "analyst-late-steps",
@@ -277,7 +277,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "analyst-mute-clearance",
@@ -297,7 +297,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "analyst-never-evaluated",
@@ -317,7 +317,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "analyst-source-freshness",
@@ -337,7 +337,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "analyst-stale-then-vs-now",
@@ -357,7 +357,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "analyst-verification-performed",
@@ -377,7 +377,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "analyst-witness-coverage",
@@ -397,7 +397,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "authority-elicitation-monoculture",
@@ -417,7 +417,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "authority-expired-ratifier",
@@ -437,7 +437,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "authority-fragment-decay",
@@ -457,7 +457,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "authority-home",
@@ -477,7 +477,7 @@
     "question_count": 2,
     "reference_count": 3,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "authority-known-unknowns",
@@ -497,7 +497,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "authority-machine-consumers",
@@ -517,7 +517,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "authority-orphaned-provenance",
@@ -537,7 +537,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "authority-review-date-inferred",
@@ -557,7 +557,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "authority-stale-elicitation",
@@ -577,7 +577,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "authority-unapproved-live",
@@ -597,7 +597,7 @@
     "question_count": 2,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "authority-unwitnessed-change",
@@ -617,7 +617,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "cfo-assurance-grade",
@@ -637,7 +637,7 @@
     "question_count": 2,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "cfo-attestation-detail",
@@ -657,7 +657,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "cfo-authority-map",
@@ -677,7 +677,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "cfo-blockers",
@@ -697,7 +697,7 @@
     "question_count": 2,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "cfo-changed-since-signing",
@@ -717,7 +717,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "cfo-home",
@@ -737,7 +737,7 @@
     "question_count": 2,
     "reference_count": 3,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "cfo-my-approvals",
@@ -757,7 +757,7 @@
     "question_count": 2,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "cfo-restatement",
@@ -777,7 +777,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "cfo-signature-dependencies",
@@ -797,7 +797,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "cfo-typed-conclusions",
@@ -817,7 +817,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "cfo-unwitnessed-controls",
@@ -837,7 +837,7 @@
     "question_count": 2,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "cfo-witness-chain",
@@ -857,7 +857,7 @@
     "question_count": 2,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "close-auto-authority",
@@ -877,7 +877,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "close-auto-controls",
@@ -897,7 +897,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "close-auto-drift",
@@ -917,7 +917,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "close-auto-home",
@@ -937,7 +937,7 @@
     "question_count": 4,
     "reference_count": 3,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "close-auto-inputs",
@@ -957,7 +957,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "close-auto-last-run",
@@ -977,7 +977,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "comms-approval-authority",
@@ -997,7 +997,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "comms-authorization-override",
@@ -1017,7 +1017,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "comms-engagement",
@@ -1037,7 +1037,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "comms-failed-deliveries",
@@ -1057,7 +1057,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "comms-frozen-approval",
@@ -1077,7 +1077,7 @@
     "question_count": 1,
     "reference_count": 3,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "comms-home",
@@ -1097,7 +1097,7 @@
     "question_count": 2,
     "reference_count": 3,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "comms-optout",
@@ -1117,7 +1117,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "comms-sms-limits",
@@ -1137,7 +1137,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "comms-suppression",
@@ -1157,7 +1157,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "comms-template-drift",
@@ -1177,7 +1177,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "comms-yield",
@@ -1197,7 +1197,7 @@
     "question_count": 2,
     "reference_count": 3,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "controller-ai-boundary",
@@ -1217,7 +1217,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "controller-asserted-controls",
@@ -1237,7 +1237,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "controller-authority-validity",
@@ -1257,7 +1257,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "controller-conformance",
@@ -1277,7 +1277,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "controller-control-detail",
@@ -1297,7 +1297,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "controller-home",
@@ -1317,7 +1317,7 @@
     "question_count": 2,
     "reference_count": 3,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "controller-mute-controls",
@@ -1337,7 +1337,7 @@
     "question_count": 2,
     "reference_count": 3,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "controller-separation",
@@ -1357,7 +1357,7 @@
     "question_count": 2,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "controller-ungoverned-divergence",
@@ -1377,7 +1377,7 @@
     "question_count": 1,
     "reference_count": 3,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "controller-witness-scope",
@@ -1397,7 +1397,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "counsel-consent",
@@ -1417,7 +1417,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "counsel-home",
@@ -1437,7 +1437,7 @@
     "question_count": 4,
     "reference_count": 4,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "counsel-legal-review",
@@ -1457,7 +1457,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "counsel-quiet-hours",
@@ -1477,7 +1477,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "counsel-retention",
@@ -1497,7 +1497,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "counsel-unreachable",
@@ -1517,7 +1517,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "explorer-inferences",
@@ -1537,7 +1537,7 @@
     "question_count": 0,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "explorer-record",
@@ -1557,7 +1557,7 @@
     "question_count": 0,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "explorer-table-detail",
@@ -1577,7 +1577,7 @@
     "question_count": 0,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "explorer-tables",
@@ -1597,7 +1597,7 @@
     "question_count": 0,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "hr-ai-boundary",
@@ -1617,7 +1617,7 @@
     "question_count": 2,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "hr-backlog",
@@ -1637,7 +1637,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "hr-backlog-downstream",
@@ -1657,7 +1657,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "hr-departed-holders",
@@ -1677,7 +1677,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "hr-home",
@@ -1697,7 +1697,7 @@
     "question_count": 2,
     "reference_count": 3,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "hr-knowledge-half-life",
@@ -1717,7 +1717,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "hr-load-bearing-claim",
@@ -1737,7 +1737,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "hr-my-decisions",
@@ -1757,7 +1757,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "hr-unapproved-claims",
@@ -1777,7 +1777,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "hr-what-was-sent",
@@ -1797,7 +1797,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "policy-agent-approval-chain",
@@ -1817,7 +1817,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "policy-agent-assignment",
@@ -1837,7 +1837,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "policy-agent-commitment-boundary",
@@ -1857,7 +1857,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "policy-agent-home",
@@ -1877,7 +1877,7 @@
     "question_count": 2,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "policy-agent-rewrite",
@@ -1897,7 +1897,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "policy-agent-sources",
@@ -1917,7 +1917,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "publisher-authorization-gate",
@@ -1937,7 +1937,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "publisher-content-gate",
@@ -1957,7 +1957,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "publisher-deferred",
@@ -1977,7 +1977,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "publisher-home",
@@ -1997,7 +1997,7 @@
     "question_count": 4,
     "reference_count": 4,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "publisher-my-authorization",
@@ -2017,7 +2017,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "publisher-obligations",
@@ -2037,7 +2037,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "publisher-permission-gate",
@@ -2057,7 +2057,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "publisher-refusal-artifacts",
@@ -2077,7 +2077,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "publisher-refusals",
@@ -2097,7 +2097,7 @@
     "question_count": 1,
     "reference_count": 3,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "publisher-sole-witness",
@@ -2117,7 +2117,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "publisher-timing-gate",
@@ -2137,7 +2137,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "shared-authority-boundary-detail",
@@ -2157,7 +2157,7 @@
     "question_count": 0,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "shared-change-request-detail",
@@ -2177,7 +2177,7 @@
     "question_count": 0,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "shared-delivery-detail",
@@ -2197,7 +2197,7 @@
     "question_count": 0,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "shared-elicitation-detail",
@@ -2217,7 +2217,7 @@
     "question_count": 0,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "shared-evaluation-context",
@@ -2237,7 +2237,7 @@
     "question_count": 2,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "shared-exception-detail",
@@ -2257,7 +2257,7 @@
     "question_count": 0,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "shared-field-provenance",
@@ -2277,7 +2277,7 @@
     "question_count": 0,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "shared-knowledge-fragment-detail",
@@ -2297,7 +2297,7 @@
     "question_count": 0,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "shared-knowledge-gap-detail",
@@ -2317,7 +2317,7 @@
     "question_count": 0,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "shared-login",
@@ -2337,7 +2337,7 @@
     "question_count": 0,
     "reference_count": 0,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "shared-operational-binding-detail",
@@ -2357,7 +2357,7 @@
     "question_count": 0,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "shared-procedure-version-detail",
@@ -2377,7 +2377,7 @@
     "question_count": 0,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "shared-recipient-detail",
@@ -2397,7 +2397,7 @@
     "question_count": 0,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "shared-requirement-detail",
@@ -2417,7 +2417,7 @@
     "question_count": 0,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "shared-review-event-detail",
@@ -2437,7 +2437,7 @@
     "question_count": 0,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "shared-role-assignment-detail",
@@ -2457,7 +2457,7 @@
     "question_count": 0,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "shared-step-execution-detail",
@@ -2477,7 +2477,7 @@
     "question_count": 0,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "shared-template-detail",
@@ -2497,7 +2497,7 @@
     "question_count": 0,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "shared-transition-detail",
@@ -2517,7 +2517,7 @@
     "question_count": 0,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "shared-verification-outcomes",
@@ -2537,7 +2537,7 @@
     "question_count": 0,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "steward-approved-never-lands",
@@ -2557,7 +2557,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "steward-archived-still-referenced",
@@ -2577,7 +2577,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "steward-cadence",
@@ -2597,7 +2597,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "steward-cadence-remediation",
@@ -2617,7 +2617,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "steward-fallback-criticality",
@@ -2637,7 +2637,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "steward-fallbacks",
@@ -2657,7 +2657,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "steward-hardcoded-predicates",
@@ -2677,7 +2677,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "steward-home",
@@ -2697,7 +2697,7 @@
     "question_count": 4,
     "reference_count": 4,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "steward-open-gaps",
@@ -2717,7 +2717,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "steward-orphans",
@@ -2737,7 +2737,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "steward-stalled-changes",
@@ -2757,7 +2757,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "variance-authority",
@@ -2777,7 +2777,7 @@
     "question_count": 2,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "variance-boundary",
@@ -2797,7 +2797,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "variance-boundary-ratification",
@@ -2817,7 +2817,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "variance-handover",
@@ -2837,7 +2837,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "variance-home",
@@ -2857,7 +2857,7 @@
     "question_count": 3,
     "reference_count": 3,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "variance-human-confirmation",
@@ -2877,7 +2877,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "variance-knowledge-currency",
@@ -2897,7 +2897,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "variance-override-signal",
@@ -2917,7 +2917,7 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "variance-quality-baseline",
@@ -2937,7 +2937,7 @@
     "question_count": 2,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "variance-sample-size",
@@ -2957,7 +2957,7 @@
     "question_count": 1,
     "reference_count": 1,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   },
   {
     "app_route_id": "variance-stop-condition",
@@ -2977,6 +2977,6 @@
     "question_count": 1,
     "reference_count": 2,
     "answers_no_question": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppRoute"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppRoute"
   }
 ]

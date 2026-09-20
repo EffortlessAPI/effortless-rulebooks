@@ -1,0 +1,23 @@
+[
+  {
+    "step_protective_equipment_id": "spe-loto04b-glasses",
+    "step": "loto-04b",
+    "protective_equipment": "SafetyGlasses",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#StepProtectiveEquipment",
+    "name": "loto-04b / SafetyGlasses"
+  },
+  {
+    "step_protective_equipment_id": "spe-loto07-gloves",
+    "step": "loto-07",
+    "protective_equipment": "Gloves",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#StepProtectiveEquipment",
+    "name": "loto-07 / Gloves"
+  },
+  {
+    "step_protective_equipment_id": "spe-loto07-hardhat",
+    "step": "loto-07",
+    "protective_equipment": "HardHat",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#StepProtectiveEquipment",
+    "name": "loto-07 / HardHat"
+  }
+]

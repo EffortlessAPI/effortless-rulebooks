@@ -8,7 +8,7 @@
     "is_sealed": true,
     "view_count": "5",
     "is_empty_schema": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#RoleSchema"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RoleSchema"
   },
   {
     "role_schema_id": "schema-close-automation",
@@ -19,7 +19,7 @@
     "is_sealed": true,
     "view_count": "3",
     "is_empty_schema": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#RoleSchema"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RoleSchema"
   },
   {
     "role_schema_id": "schema-communications-manager",
@@ -30,7 +30,7 @@
     "is_sealed": true,
     "view_count": "6",
     "is_empty_schema": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#RoleSchema"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RoleSchema"
   },
   {
     "role_schema_id": "schema-controller",
@@ -41,7 +41,7 @@
     "is_sealed": true,
     "view_count": "8",
     "is_empty_schema": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#RoleSchema"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RoleSchema"
   },
   {
     "role_schema_id": "schema-employment-counsel",
@@ -52,7 +52,7 @@
     "is_sealed": true,
     "view_count": "5",
     "is_empty_schema": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#RoleSchema"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RoleSchema"
   },
   {
     "role_schema_id": "schema-finance-analyst",
@@ -63,7 +63,7 @@
     "is_sealed": true,
     "view_count": "7",
     "is_empty_schema": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#RoleSchema"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RoleSchema"
   },
   {
     "role_schema_id": "schema-hr-policy-owner",
@@ -74,7 +74,7 @@
     "is_sealed": true,
     "view_count": "6",
     "is_empty_schema": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#RoleSchema"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RoleSchema"
   },
   {
     "role_schema_id": "schema-knowledge-authority",
@@ -83,9 +83,31 @@
     "schema_name": "pko_knowledge_authority",
     "search_path": "pko_knowledge_authority",
     "is_sealed": true,
-    "view_count": "74",
+    "view_count": "261",
     "is_empty_schema": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#RoleSchema"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RoleSchema"
+  },
+  {
+    "role_schema_id": "schema-knowledge-engineer",
+    "name": "pko_knowledge_engineer",
+    "principal": "principal-knowledge-engineer",
+    "schema_name": "pko_knowledge_engineer",
+    "search_path": "pko_knowledge_engineer",
+    "is_sealed": true,
+    "view_count": "51",
+    "is_empty_schema": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RoleSchema"
+  },
+  {
+    "role_schema_id": "schema-maintenance-technician",
+    "name": "pko_maintenance_technician",
+    "principal": "principal-maintenance-technician",
+    "schema_name": "pko_maintenance_technician",
+    "search_path": "pko_maintenance_technician",
+    "is_sealed": true,
+    "view_count": "28",
+    "is_empty_schema": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RoleSchema"
   },
   {
     "role_schema_id": "schema-notification-publisher",
@@ -96,7 +118,51 @@
     "is_sealed": true,
     "view_count": "5",
     "is_empty_schema": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#RoleSchema"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RoleSchema"
+  },
+  {
+    "role_schema_id": "schema-ontology-authority",
+    "name": "pko_ontology_authority",
+    "principal": "principal-ontology-authority",
+    "schema_name": "pko_ontology_authority",
+    "search_path": "pko_ontology_authority",
+    "is_sealed": true,
+    "view_count": "18",
+    "is_empty_schema": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RoleSchema"
+  },
+  {
+    "role_schema_id": "schema-plant-assistant",
+    "name": "pko_plant_assistant",
+    "principal": "principal-plant-assistant",
+    "schema_name": "pko_plant_assistant",
+    "search_path": "pko_plant_assistant",
+    "is_sealed": true,
+    "view_count": "16",
+    "is_empty_schema": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RoleSchema"
+  },
+  {
+    "role_schema_id": "schema-plant-operations-manager",
+    "name": "pko_plant_operations_manager",
+    "principal": "principal-plant-operations-manager",
+    "schema_name": "pko_plant_operations_manager",
+    "search_path": "pko_plant_operations_manager",
+    "is_sealed": true,
+    "view_count": "17",
+    "is_empty_schema": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RoleSchema"
+  },
+  {
+    "role_schema_id": "schema-plant-safety-officer",
+    "name": "pko_plant_safety_officer",
+    "principal": "principal-plant-safety-officer",
+    "schema_name": "pko_plant_safety_officer",
+    "search_path": "pko_plant_safety_officer",
+    "is_sealed": true,
+    "view_count": "33",
+    "is_empty_schema": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RoleSchema"
   },
   {
     "role_schema_id": "schema-policy-drafting-agent",
@@ -107,7 +173,7 @@
     "is_sealed": true,
     "view_count": "4",
     "is_empty_schema": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#RoleSchema"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RoleSchema"
   },
   {
     "role_schema_id": "schema-process-steward",
@@ -116,9 +182,31 @@
     "schema_name": "pko_process_steward",
     "search_path": "pko_process_steward",
     "is_sealed": true,
-    "view_count": "74",
+    "view_count": "261",
     "is_empty_schema": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#RoleSchema"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RoleSchema"
+  },
+  {
+    "role_schema_id": "schema-release-manager",
+    "name": "pko_release_manager",
+    "principal": "principal-release-manager",
+    "schema_name": "pko_release_manager",
+    "search_path": "pko_release_manager",
+    "is_sealed": true,
+    "view_count": "15",
+    "is_empty_schema": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RoleSchema"
+  },
+  {
+    "role_schema_id": "schema-sourcing-manager",
+    "name": "pko_sourcing_manager",
+    "principal": "principal-sourcing-manager",
+    "schema_name": "pko_sourcing_manager",
+    "search_path": "pko_sourcing_manager",
+    "is_sealed": true,
+    "view_count": "8",
+    "is_empty_schema": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RoleSchema"
   },
   {
     "role_schema_id": "schema-variance-review-agent",
@@ -129,6 +217,6 @@
     "is_sealed": true,
     "view_count": "5",
     "is_empty_schema": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#RoleSchema"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RoleSchema"
   }
 ]

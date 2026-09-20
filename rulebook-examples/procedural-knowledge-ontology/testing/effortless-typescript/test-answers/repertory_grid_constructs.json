@@ -1,0 +1,47 @@
+[
+  {
+    "repertory_grid_construct_id": "rg7-audible-silent",
+    "name": "You can hear it bleed vs It bleeds silently",
+    "elicitation_session": "el7-loto-grid",
+    "agent": "tomas-reyes",
+    "situations_compared": "Mixer 2, press 3, conveyor 5 lockouts",
+    "pole_a": "You can hear it bleed",
+    "pole_b": "It bleeds silently",
+    "was_stated_unprompted": false,
+    "separates_situations": true,
+    "dimension": "You can hear it bleed vs It bleeds silently",
+    "is_never_stated_dimension": true,
+    "is_recorded_discriminating_dimension": true,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RepertoryGridConstruct"
+  },
+  {
+    "repertory_grid_construct_id": "rg7-large-small",
+    "name": "Large machine vs Small machine",
+    "elicitation_session": "el7-loto-grid",
+    "agent": "tomas-reyes",
+    "situations_compared": "Mixer 2, press 3, conveyor 5 lockouts",
+    "pole_a": "Large machine",
+    "pole_b": "Small machine",
+    "was_stated_unprompted": true,
+    "separates_situations": false,
+    "dimension": "Large machine vs Small machine",
+    "is_never_stated_dimension": false,
+    "is_recorded_discriminating_dimension": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RepertoryGridConstruct"
+  },
+  {
+    "repertory_grid_construct_id": "rg7-retrofit-original",
+    "name": "Retrofitted drive vs Original drive",
+    "elicitation_session": "el7-loto-grid",
+    "agent": "tomas-reyes",
+    "situations_compared": "Mixer 2, press 3, conveyor 5 lockouts",
+    "pole_a": "Retrofitted drive",
+    "pole_b": "Original drive",
+    "was_stated_unprompted": false,
+    "separates_situations": true,
+    "dimension": "Retrofitted drive vs Original drive",
+    "is_never_stated_dimension": true,
+    "is_recorded_discriminating_dimension": true,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RepertoryGridConstruct"
+  }
+]

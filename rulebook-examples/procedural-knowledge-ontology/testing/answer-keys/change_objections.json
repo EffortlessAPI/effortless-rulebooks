@@ -1,0 +1,28 @@
+[
+  {
+    "change_objection_id": "obj-03-lin",
+    "model_change_request": "mcr-03",
+    "raised_by_agent": "lin-zhao",
+    "raised_at": "2026-06-04T09:00:00-05:00",
+    "objection": "The plant organization agent signs lockout audits.",
+    "resolved_at": "2026-06-07T09:00:00-05:00",
+    "resolved_by_agent": "nadia-petrova",
+    "resolution": "Organization agents stay in Agents; only role assignments narrow.",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ChangeObjection",
+    "name": "mcr-03 objection by lin-zhao",
+    "is_unresolved": false
+  },
+  {
+    "change_objection_id": "obj-04-lin",
+    "model_change_request": "mcr-04",
+    "raised_by_agent": "lin-zhao",
+    "raised_at": "2026-06-19T09:00:00-05:00",
+    "objection": "Declaring people and software disjoint breaks the plant organization agent.",
+    "resolved_at": null,
+    "resolved_by_agent": null,
+    "resolution": "",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ChangeObjection",
+    "name": "mcr-04 objection by lin-zhao",
+    "is_unresolved": true
+  }
+]

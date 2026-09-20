@@ -1,0 +1,62 @@
+[
+  {
+    "knowledge_test_outcome_id": "kt7-loto-competency-gaps",
+    "procedure": "lockout-tagout",
+    "outcome_area": "CompetencyGaps",
+    "measure": "Technicians failing at least one lockout question",
+    "baseline_value": 7,
+    "after_test_value": 2,
+    "higher_is_better": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#KnowledgeTestOutcome",
+    "name": null,
+    "is_improved": null
+  },
+  {
+    "knowledge_test_outcome_id": "kt7-loto-consistency",
+    "procedure": "lockout-tagout",
+    "outcome_area": "Consistency",
+    "measure": "Distinct step orders observed across technicians",
+    "baseline_value": 5,
+    "after_test_value": 2,
+    "higher_is_better": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#KnowledgeTestOutcome",
+    "name": null,
+    "is_improved": null
+  },
+  {
+    "knowledge_test_outcome_id": "kt7-loto-efficiency",
+    "procedure": "lockout-tagout",
+    "outcome_area": "Efficiency",
+    "measure": "Median minutes per lockout",
+    "baseline_value": 41,
+    "after_test_value": 33,
+    "higher_is_better": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#KnowledgeTestOutcome",
+    "name": null,
+    "is_improved": null
+  },
+  {
+    "knowledge_test_outcome_id": "kt7-loto-quality",
+    "procedure": "lockout-tagout",
+    "outcome_area": "ProcessQuality",
+    "measure": "Lockout audit pass rate (%)",
+    "baseline_value": 82,
+    "after_test_value": 95,
+    "higher_is_better": true,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#KnowledgeTestOutcome",
+    "name": null,
+    "is_improved": null
+  },
+  {
+    "knowledge_test_outcome_id": "kt7-loto-satisfaction",
+    "procedure": "lockout-tagout",
+    "outcome_area": "JobSatisfaction",
+    "measure": "Technician survey score (1-5)",
+    "baseline_value": 3.6,
+    "after_test_value": 3.6,
+    "higher_is_better": true,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#KnowledgeTestOutcome",
+    "name": null,
+    "is_improved": null
+  }
+]

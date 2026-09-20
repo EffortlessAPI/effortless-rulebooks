@@ -740,6 +740,61 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             }
         }
 
+        private ObservableCollection<KnowledgeGap> _knowledgeGaps;
+
+        [InverseProperty("ModelChangeRequest")]
+        public virtual ObservableCollection<KnowledgeGap> KnowledgeGaps
+        {
+            get
+            {
+                if (_knowledgeGaps == null)
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access KnowledgeGaps - no database context is set. ModelChangeRequestId: " + this.ModelChangeRequestId + ".");
+                        }
+                        _knowledgeGaps = new ObservableCollection<KnowledgeGap>();
+                    }
+                    else
+                    {
+                        var items = base.SoAContext.KnowledgeGaps.Where(x => x.AnsweredByModelChangeRequest == this.ModelChangeRequestId).ToList<KnowledgeGap>();
+                        _knowledgeGaps = new ObservableCollection<KnowledgeGap>(items);
+                        if (items.Any())
+                        {
+                            base.SoAContext.AttachRange(items);
+                        }
+                    }
+                    _knowledgeGaps.CollectionChanged += KnowledgeGaps_CollectionChanged;
+                }
+                return _knowledgeGaps;
+            }
+            private set
+            {
+                if (_knowledgeGaps != null)
+                {
+                    _knowledgeGaps.CollectionChanged -= KnowledgeGaps_CollectionChanged;
+                }
+                _knowledgeGaps = value;
+                if (_knowledgeGaps != null)
+                {
+                    _knowledgeGaps.CollectionChanged += KnowledgeGaps_CollectionChanged;
+                }
+            }
+        }
+
+        private void KnowledgeGaps_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems != null)
+            {
+                foreach (var item in e.NewItems.Cast<KnowledgeGap>())
+                {
+                    item.AnsweredByModelChangeRequest = this.ModelChangeRequestId;
+                }
+            }
+        }
+
         private ObservableCollection<ChangeImpactFinding> _changeImpactFindings;
 
         [InverseProperty("ModelChangeRequestRef")]
@@ -1134,6 +1189,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             _ = this.AgentRef;
             _ = this.AgentRefRef;
             _ = this.RulebookRelease;
+            _ = this.KnowledgeGaps;
             _ = this.ChangeImpactFindings;
             _ = this.ChangeIntegrityChecks;
             _ = this.ChangeObjections;

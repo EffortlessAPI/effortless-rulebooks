@@ -321,7 +321,7 @@ export function ActionSheet({ actionId, title, context, recordKey, watch, initia
     } catch (e: any) { setError(e.message); } finally { setBusy(false); }
   };
   const set = (k: string, v: any) => setValues((x) => ({ ...x, [k]: v }));
-  const missing = inputs.some((f) => f.input_kind !== "toggle" && f.input_kind !== "longtext" && (values[f.field_name] == null || values[f.field_name] === ""));
+  const missing = inputs.some((f) => f.input_kind !== "toggle" && f.input_kind !== "note" && (values[f.field_name] == null || values[f.field_name] === ""));
 
   return (
     <Sheet title={title || a.label} desc={a.description} onClose={onClose}>
@@ -335,7 +335,7 @@ export function ActionSheet({ actionId, title, context, recordKey, watch, initia
           if (opts.length && opts.length <= 4) return (<div key={f.field_name}><div className="field" style={{ marginBottom: 6 }}><span>{f.field_label}</span></div><div className="seg">{opts.map((o) => <button key={o.value} aria-pressed={v === o.value} onClick={() => set(f.field_name, o.value)}>{o.label}</button>)}</div></div>);
           return (<label key={f.field_name} className="field"><span>{f.field_label}</span><select value={v || ""} onChange={(e) => set(f.field_name, e.target.value)}><option value="" disabled>Choose…</option>{opts.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}</select></label>);
         }
-        if (f.input_kind === "longtext") return (<label key={f.field_name} className="field"><span>{f.field_label}</span><textarea value={v || ""} onChange={(e) => set(f.field_name, e.target.value)} /></label>);
+        if (f.input_kind === "longtext" || f.input_kind === "note") return (<label key={f.field_name} className="field"><span>{f.field_label}</span><textarea value={v || ""} onChange={(e) => set(f.field_name, e.target.value)} /></label>);
         if (f.input_kind === "date") return (<label key={f.field_name} className="field"><span>{f.field_label}</span><input type="datetime-local" value={v || ""} onChange={(e) => set(f.field_name, e.target.value)} /></label>);
         return (<label key={f.field_name} className="field"><span>{f.field_label}</span><input type="text" value={v || ""} onChange={(e) => set(f.field_name, e.target.value)} /></label>);
       })}

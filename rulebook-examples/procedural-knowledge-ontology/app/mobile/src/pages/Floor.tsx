@@ -9,6 +9,7 @@ export default function Floor() {
   const changes = useRows("change_requests", { authority_role: shell!.claims.role }, "-requested_at");
   const onboarding = useRows("onboarding_records", {}, "-days_to_proficiency");
   const mentor = useRows("mentorships", {}, "valid_from");
+  const handovers = useRows("knowledge_transfers", {}, "occurred_at");
   const gone = useRows("know_how_carriers", {}, "days_until_holder_departure");
   const levels = useRows("process_knowledge_levels", {});
   const diverge = useRows("workflow_view_divergences", {});
@@ -56,7 +57,13 @@ export default function Floor() {
               <div className="sub">{human(o.procedure)} · {o.is_starting_from_nothing ? <>started from nothing<Why f="is_starting_from_nothing" /></> : o.used_captured_knowledge ? <>used captured knowledge<Why f="used_captured_knowledge" /></> : <>no captured knowledge used<Why f="used_captured_knowledge" /></>}</div>
             </div></Explains>))}</div>
           <div className="section">Who is mentoring whom</div>
-          {mentor.rows?.map((m) => <Explains key={m.mentorship_id} t="mentorships"><div className="card tight"><div className="row"><b>{human(m.mentor_agent)}</b><span className="sub">→</span><b className="grow">{human(m.learner_agent)}</b>{m.is_active ? <Tag tone="green" f="is_active">active</Tag> : <Tag tone="grey" f="is_active">ended</Tag>}</div><div className="sub">{m.learning_objective}<Why f="learning_objective" /></div></div></Explains>)}
+          {mentor.rows?.map((m) => <Explains key={m.mentorship_id} t="mentorships"><div className="card tight"><div className="row"><b>{human(m.mentor_agent)}</b><span className="sub">→</span><b className="grow">{human(m.learner_agent)}</b>{m.is_active ? <Tag tone="green" f="is_active">active</Tag> : <Tag tone="grey" f="is_active">ended</Tag>}</div><div className="sub">{m.learning_objective}<Why f="learning_objective" /></div>
+            {m.community_label && <div className="sub community" style={{ marginTop: 4, color: "var(--purple)", fontWeight: 650 }}>in the {m.community_label}<Why f="community_label" /></div>}</div></Explains>)}
+          <div className="section">Hand-overs on record <span className="count">{handovers.rows?.length ?? "·"}</span></div>
+          <p className="sub" style={{ margin: "0 4px 10px" }}>Each time know-how passed from one person to another, and how it happened.</p>
+          {handovers.rows?.map((h) => <Explains key={h.knowledge_transfer_id} t="knowledge_transfers"><div className="card tight handover"><div className="row"><b>{human(h.from_agent)}</b><span className="sub">→</span><b className="grow">{human(h.recipient_agent)}</b></div>
+            <div className="sub" style={{ margin: "2px 0 6px" }}>{h.know_how_topic}<Why f="know_how_topic" /></div>
+            <div className="row wrap"><Tag tone="blue" f="channel">{String(h.channel).replace(/([a-z])([A-Z])/g, "$1 $2").toLowerCase()}</Tag>{h.community_of_practice && <span className="sub">{human(h.community_of_practice)}<Why f="community_of_practice" /></span>}</div></div></Explains>)}
         </>)}
         {tab === "knowhow" && <><ExplainerNote />{gone.rows?.map((k) => (
           <Explains key={k.know_how_carrier_id} t="know_how_carriers">

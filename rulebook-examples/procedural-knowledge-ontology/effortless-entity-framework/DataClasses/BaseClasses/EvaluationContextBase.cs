@@ -28,6 +28,111 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public bool? IsCurrent { get; set; }
         public string? Rationale { get; set; }
         public string? SemanticTypeIri { get; set; }
+        // Formula ExplicitFragmentCount (rulebook: =COUNTIFS(KnowledgeFragments!{{KnowledgeForm}}, "Explicit"))
+        [NotMapped]
+        public int? ExplicitFragmentCount
+        {
+            get => F.AsInt(F.Memo(this, "ExplicitFragmentCount", () => F.Integer((base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<KnowledgeFragment>(base.SoAContext, "KnowledgeFragments", __c => __c.KnowledgeFragments), __r => F.CritLiteral(F.Of(__r.KnowledgeForm), F.S("Explicit"))))))); set { }
+        }
+
+        // Formula TacitFragmentCount (rulebook: =COUNTIFS(KnowledgeFragments!{{KnowledgeForm}}, "Tacit"))
+        [NotMapped]
+        public int? TacitFragmentCount
+        {
+            get => F.AsInt(F.Memo(this, "TacitFragmentCount", () => F.Integer((base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<KnowledgeFragment>(base.SoAContext, "KnowledgeFragments", __c => __c.KnowledgeFragments), __r => F.CritLiteral(F.Of(__r.KnowledgeForm), F.S("Tacit"))))))); set { }
+        }
+
+        // Formula ImplicitFragmentCount (rulebook: =COUNTIFS(KnowledgeFragments!{{KnowledgeForm}}, "Implicit"))
+        [NotMapped]
+        public int? ImplicitFragmentCount
+        {
+            get => F.AsInt(F.Memo(this, "ImplicitFragmentCount", () => F.Integer((base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<KnowledgeFragment>(base.SoAContext, "KnowledgeFragments", __c => __c.KnowledgeFragments), __r => F.CritLiteral(F.Of(__r.KnowledgeForm), F.S("Implicit"))))))); set { }
+        }
+
+        // Formula SituatedJudgmentFragmentCount (rulebook: =COUNTIFS(KnowledgeFragments!{{KnowledgeForm}}, "SituatedJudgment"))
+        [NotMapped]
+        public int? SituatedJudgmentFragmentCount
+        {
+            get => F.AsInt(F.Memo(this, "SituatedJudgmentFragmentCount", () => F.Integer((base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<KnowledgeFragment>(base.SoAContext, "KnowledgeFragments", __c => __c.KnowledgeFragments), __r => F.CritLiteral(F.Of(__r.KnowledgeForm), F.S("SituatedJudgment"))))))); set { }
+        }
+
+        // Formula ModelReasonedAnswerCount (rulebook: =COUNTIFS(AssistantAnswers!{{ModelDidTheReasoning}}, TRUE))
+        [NotMapped]
+        public int? ModelReasonedAnswerCount
+        {
+            get => F.AsInt(F.Memo(this, "ModelReasonedAnswerCount", () => F.Integer((base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<AssistantAnswer>(base.SoAContext, "AssistantAnswers", __c => __c.AssistantAnswers), __r => F.CritLiteral(F.Of(__r.ModelDidTheReasoning), F.B(true))))))); set { }
+        }
+
+        // Formula OtherwiseReasonedAnswerCount (rulebook: =COUNTIFS(AssistantAnswers!{{ModelDidTheReasoning}}, FALSE))
+        [NotMapped]
+        public int? OtherwiseReasonedAnswerCount
+        {
+            get => F.AsInt(F.Memo(this, "OtherwiseReasonedAnswerCount", () => F.Integer((base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<AssistantAnswer>(base.SoAContext, "AssistantAnswers", __c => __c.AssistantAnswers), __r => F.CritLiteral(F.Of(__r.ModelDidTheReasoning), F.B(false))))))); set { }
+        }
+
+        // Formula AssistantAnswerCount (rulebook: ={{ModelReasonedAnswerCount}} + {{OtherwiseReasonedAnswerCount}})
+        [NotMapped]
+        public int? AssistantAnswerCount
+        {
+            get => F.AsInt(F.Memo(this, "AssistantAnswerCount", () => F.Integer(F.Add(F.Of(this.ModelReasonedAnswerCount), F.Of(this.OtherwiseReasonedAnswerCount))))); set { }
+        }
+
+        // Formula ModelReasonedFailedAnswerCount (rulebook: =COUNTIFS(AssistantAnswers!{{ModelReasonedAndTaskFailed}}, TRUE))
+        [NotMapped]
+        public int? ModelReasonedFailedAnswerCount
+        {
+            get => F.AsInt(F.Memo(this, "ModelReasonedFailedAnswerCount", () => F.Integer((base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<AssistantAnswer>(base.SoAContext, "AssistantAnswers", __c => __c.AssistantAnswers), __r => F.CritLiteral(F.Of(__r.ModelReasonedAndTaskFailed), F.B(true))))))); set { }
+        }
+
+        // Formula OutOfOrderStepExecutionCount (rulebook: =COUNTIFS(StepExecutions!{{IsOutOfSpecifiedOrder}}, TRUE))
+        [NotMapped]
+        public int? OutOfOrderStepExecutionCount
+        {
+            get => F.AsInt(F.Memo(this, "OutOfOrderStepExecutionCount", () => F.Integer((base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<StepExecution>(base.SoAContext, "StepExecutions", __c => __c.StepExecutions), __r => F.CritLiteral(F.Of(__r.IsOutOfSpecifiedOrder), F.B(true))))))); set { }
+        }
+
+        // Formula InOrderStepExecutionCount (rulebook: =COUNTIFS(StepExecutions!{{IsOutOfSpecifiedOrder}}, FALSE))
+        [NotMapped]
+        public int? InOrderStepExecutionCount
+        {
+            get => F.AsInt(F.Memo(this, "InOrderStepExecutionCount", () => F.Integer((base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<StepExecution>(base.SoAContext, "StepExecutions", __c => __c.StepExecutions), __r => F.CritLiteral(F.Of(__r.IsOutOfSpecifiedOrder), F.B(false))))))); set { }
+        }
+
+        // Formula StepExecutionCount (rulebook: ={{OutOfOrderStepExecutionCount}} + {{InOrderStepExecutionCount}})
+        [NotMapped]
+        public int? StepExecutionCount
+        {
+            get => F.AsInt(F.Memo(this, "StepExecutionCount", () => F.Integer(F.Add(F.Of(this.OutOfOrderStepExecutionCount), F.Of(this.InOrderStepExecutionCount))))); set { }
+        }
+
+        // Formula EarlyStartStepExecutionCount (rulebook: =COUNTIFS(StepExecutions!{{RanBeforePrerequisiteCompleted}}, TRUE))
+        [NotMapped]
+        public int? EarlyStartStepExecutionCount
+        {
+            get => F.AsInt(F.Memo(this, "EarlyStartStepExecutionCount", () => F.Integer((base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<StepExecution>(base.SoAContext, "StepExecutions", __c => __c.StepExecutions), __r => F.CritLiteral(F.Of(__r.RanBeforePrerequisiteCompleted), F.B(true))))))); set { }
+        }
+
+        // Formula ExactMappingCount (rulebook: =COUNTIFS(SemanticMappings!{{MappingRelation}}, "exact"))
+        [NotMapped]
+        public int? ExactMappingCount
+        {
+            get => F.AsInt(F.Memo(this, "ExactMappingCount", () => F.Integer((base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<SemanticMapping>(base.SoAContext, "SemanticMappings", __c => __c.SemanticMappings), __r => F.CritLiteral(F.Of(__r.MappingRelation), F.S("exact"))))))); set { }
+        }
+
+        // Formula AlignedMappingCount (rulebook: =COUNTIFS(SemanticMappings!{{MappingRelation}}, "aligned"))
+        [NotMapped]
+        public int? AlignedMappingCount
+        {
+            get => F.AsInt(F.Memo(this, "AlignedMappingCount", () => F.Integer((base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<SemanticMapping>(base.SoAContext, "SemanticMappings", __c => __c.SemanticMappings), __r => F.CritLiteral(F.Of(__r.MappingRelation), F.S("aligned"))))))); set { }
+        }
+
+        // Formula ExtensionMappingCount (rulebook: =COUNTIFS(SemanticMappings!{{MappingRelation}}, "extension"))
+        [NotMapped]
+        public int? ExtensionMappingCount
+        {
+            get => F.AsInt(F.Memo(this, "ExtensionMappingCount", () => F.Integer((base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<SemanticMapping>(base.SoAContext, "SemanticMappings", __c => __c.SemanticMappings), __r => F.CritLiteral(F.Of(__r.MappingRelation), F.S("extension"))))))); set { }
+        }
+
 
 
         private ObservableCollection<OntologyProfile> _ontologyProfiles;
@@ -1680,6 +1785,61 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             }
         }
 
+        private ObservableCollection<OntologySupportProgramme> _ontologySupportProgrammes;
+
+        [InverseProperty("EvaluationContextRef")]
+        public virtual ObservableCollection<OntologySupportProgramme> OntologySupportProgrammes
+        {
+            get
+            {
+                if (_ontologySupportProgrammes == null)
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access OntologySupportProgrammes - no database context is set. EvaluationContextId: " + this.EvaluationContextId + ".");
+                        }
+                        _ontologySupportProgrammes = new ObservableCollection<OntologySupportProgramme>();
+                    }
+                    else
+                    {
+                        var items = base.SoAContext.OntologySupportProgrammes.Where(x => x.EvaluationContext == this.EvaluationContextId).ToList<OntologySupportProgramme>();
+                        _ontologySupportProgrammes = new ObservableCollection<OntologySupportProgramme>(items);
+                        if (items.Any())
+                        {
+                            base.SoAContext.AttachRange(items);
+                        }
+                    }
+                    _ontologySupportProgrammes.CollectionChanged += OntologySupportProgrammes_CollectionChanged;
+                }
+                return _ontologySupportProgrammes;
+            }
+            private set
+            {
+                if (_ontologySupportProgrammes != null)
+                {
+                    _ontologySupportProgrammes.CollectionChanged -= OntologySupportProgrammes_CollectionChanged;
+                }
+                _ontologySupportProgrammes = value;
+                if (_ontologySupportProgrammes != null)
+                {
+                    _ontologySupportProgrammes.CollectionChanged += OntologySupportProgrammes_CollectionChanged;
+                }
+            }
+        }
+
+        private void OntologySupportProgrammes_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems != null)
+            {
+                foreach (var item in e.NewItems.Cast<OntologySupportProgramme>())
+                {
+                    item.EvaluationContext = this.EvaluationContextId;
+                }
+            }
+        }
+
 
         protected override void LazyLoadProperties()
         {
@@ -1713,6 +1873,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             _ = this.KnowledgeRepositoryEntries;
             _ = this.OnboardingRecords;
             _ = this.CollectionOccasions;
+            _ = this.OntologySupportProgrammes;
         }
 
         public override string ToString()

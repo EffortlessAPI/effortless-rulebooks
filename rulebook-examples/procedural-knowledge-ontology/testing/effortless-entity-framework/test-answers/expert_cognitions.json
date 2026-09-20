@@ -1,0 +1,50 @@
+[
+  {
+    "expert_cognition_id": "ec7-energy-reservoirs",
+    "agent": "tomas-reyes",
+    "step": "loto-04",
+    "elicitation_session": "el7-loto-ladder",
+    "cognition_kind": "MentalModel",
+    "statement": "A machine is a set of energy reservoirs to drain, not a switch to turn off.",
+    "applied_automatically": false,
+    "expert_stated_exceptions": false,
+    "captured_exceptions": null,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ExpertCognition",
+    "name": "MentalModel: A machine is a set of energy reservoirs to drain, not a swit",
+    "is_mental_model": true,
+    "is_automatic_heuristic": false,
+    "is_heuristic_oversimplified": false
+  },
+  {
+    "expert_cognition_id": "ec7-needle-stops",
+    "agent": "ken-watanabe",
+    "step": "loto-06",
+    "elicitation_session": "el7-loto-thinkaloud",
+    "cognition_kind": "DecisionHeuristic",
+    "statement": "Trust zero only once the gauge needle has stopped moving.",
+    "applied_automatically": true,
+    "expert_stated_exceptions": true,
+    "captured_exceptions": "Unless it is the old press 3 downstream gauge; then listen for the bleed instead.",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ExpertCognition",
+    "name": "DecisionHeuristic: Trust zero only once the gauge needle has stopped moving.",
+    "is_mental_model": false,
+    "is_automatic_heuristic": true,
+    "is_heuristic_oversimplified": false
+  },
+  {
+    "expert_cognition_id": "ec7-retrofit-two-machines",
+    "agent": "victor-hale",
+    "step": "loto-04",
+    "elicitation_session": "el7-loto-cit",
+    "cognition_kind": "DecisionHeuristic",
+    "statement": "If a machine was retrofitted, lock it out as two machines.",
+    "applied_automatically": true,
+    "expert_stated_exceptions": true,
+    "captured_exceptions": null,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ExpertCognition",
+    "name": "DecisionHeuristic: If a machine was retrofitted, lock it out as two machines.",
+    "is_mental_model": false,
+    "is_automatic_heuristic": true,
+    "is_heuristic_oversimplified": true
+  }
+]

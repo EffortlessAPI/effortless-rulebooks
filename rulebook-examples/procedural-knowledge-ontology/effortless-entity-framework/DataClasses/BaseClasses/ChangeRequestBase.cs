@@ -248,6 +248,13 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         }
 
         public string? SemanticTypeIri { get; set; }
+        // Formula OwnerOrganization (rulebook: =INDEX(ProcedureVersions!{{OwnerOrganization}}, MATCH({{ProcedureVersion}}, ProcedureVersions!{{ProcedureVersionId}}, 0)))
+        [NotMapped]
+        public string? OwnerOrganization
+        {
+            get => F.AsString(F.Memo(this, "OwnerOrganization", () => F.Lookup<ProcedureVersion>(this, "ProcedureVersions", "ProcedureVersionId", __c => __c.ProcedureVersions, __r => F.Of(__r.ProcedureVersionId), F.Of(this.ProcedureVersion), __r => F.Of(__r.OwnerOrganization), () => F.Of(new ProcedureVersion().OwnerOrganization)))); set { }
+        }
+
 
         public string? ProcedureVersion { get; set; }
         public string? RequestedByAgent { get; set; }

@@ -372,3 +372,33 @@ Still open: rendering the office roles' `AppRoutes`; denial tests for the write 
 `AccessDenialTests` (every action shows `IsUnprovenWrite` until then; `story_states.py` proves
 the refusals over HTTP meanwhile); the narrow per-field audit of the new roles' grants (they
 read every column of their tables today); phase 6.
+
+## What is read aloud must be on a page (loop 17, 2026-09-20)
+
+Rehearsing the series found seven sentences of narration that were true of the rows and shown
+nowhere, so the shot plan drew them beside the app. They are now fields, and pages read them
+(`tools/loops/loop17_read_aloud.py`):
+
+- **Register-wide totals are columns of the one current `EvaluationContexts` row**, read through
+  `app/mobile/src/ui/register.tsx` (`<Totals>`): knowledge by kind (The procedure tab), who did an
+  assistant's reasoning and how it ended (Copilot tab), execution order across every run (under the
+  ledger), mappings against PKO (the steward's Against the standard tab). To put another total on
+  a page, add an aggregation to that table and name its column in a `<Totals>`; never count rows in
+  the client. A sign-in that reads five fragments still reads the total for all twelve, because a
+  `calc_*` function runs over the whole dataset and the total is a value on a row it may read.
+  The floor roles were granted `EvaluationContexts` for this.
+- A total over every row of a table is the TRUE count plus the FALSE count of a boolean that is
+  never blank there (`AssistantAnswerCount`, `StepExecutionCount`).
+- A cancelled run reads the gap it stopped at and the change that answers it from its own row
+  (`ProcedureExecutions.StoppedAtKnowledgeGap` and one-hop lookups), so the technician needs no
+  grant on `KnowledgeGaps` or `ModelChangeRequests`.
+- The process steward's home is hand-built (`/process-steward/plan-versus-reality`). An
+  administrator's home is named in `ADMIN_HOMES` in `tools/seed_role_experiences.py`, not in
+  `PROFILES`, which would make the principal a non-administrator.
+- `InputKind` `longtext` must be filled before Save; `note` is the long text that may be left
+  empty. "Add a warning sign" could be saved blank before this.
+
+The series asserts every number it reads aloud against the page, so its rehearsal
+(`effortless-videos/series/17-effortless-acme-corp-pko/shotplan/rehearse.mjs`) fails when a total
+moves. The mapping totals move whenever `SemanticMappings` is edited; that failure means "re-read
+the page and update the narration", not "the app is broken".

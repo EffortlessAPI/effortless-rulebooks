@@ -1,0 +1,34 @@
+[
+  {
+    "integration_pathway_id": "pathway-a2a-gateway",
+    "name": "Agent-to-agent gateway to the procedural graph",
+    "label": "Agent-to-agent gateway to the procedural graph",
+    "protocol": "A2A",
+    "integration_count_on_pathway": 3,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#IntegrationPathway"
+  },
+  {
+    "integration_pathway_id": "pathway-mcp-register",
+    "name": "Model Context Protocol server over the procedure register",
+    "label": "Model Context Protocol server over the procedure register",
+    "protocol": "MCP",
+    "integration_count_on_pathway": 2,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#IntegrationPathway"
+  },
+  {
+    "integration_pathway_id": "pathway-oneoff-export",
+    "name": "One-off nightly export script",
+    "label": "One-off nightly export script",
+    "protocol": "custom",
+    "integration_count_on_pathway": 1,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#IntegrationPathway"
+  },
+  {
+    "integration_pathway_id": "pathway-prompt-paste",
+    "name": "Pasted into the system prompt",
+    "label": "Pasted into the system prompt",
+    "protocol": "none",
+    "integration_count_on_pathway": 1,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#IntegrationPathway"
+  }
+]

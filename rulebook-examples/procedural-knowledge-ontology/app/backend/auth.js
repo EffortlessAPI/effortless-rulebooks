@@ -167,7 +167,7 @@ export async function mintToken(pool, appUserId, principalId) {
      VALUES ($1,$2,$3,to_timestamp($4),to_timestamp($5),$6,$7,$8,$9)`,
     [`tok-${a.app_user}-${now}`, a.app_user, a.principal, now,
      now + TOKEN_TTL_SECONDS, ISSUER, a.app_user,
-     JSON.stringify(claims), "urn:effortless:pko-extension#IssuedToken"],
+     JSON.stringify(claims), "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#IssuedToken"],
   ).catch(() => { /* audit must never block sign-in */ });
 
   return { token, claims, expires_in: TOKEN_TTL_SECONDS };

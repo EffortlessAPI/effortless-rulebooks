@@ -1,0 +1,98 @@
+[
+  {
+    "process_level_statement_id": "pls-deploy-how",
+    "name": "production-deployment operational how",
+    "procedure": "production-deployment",
+    "level": "operational",
+    "question_kind": "how",
+    "statement": "Build, classify risk, approve at the gate, roll out, verify health.",
+    "level_question_key": "operational|how",
+    "pyramid_match_count": 1,
+    "is_filed_at_wrong_level": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ProcessLevelStatement"
+  },
+  {
+    "process_level_statement_id": "pls-deploy-what",
+    "name": "production-deployment tactical what",
+    "procedure": "production-deployment",
+    "level": "tactical",
+    "question_kind": "what",
+    "statement": "Which releases enter this week's change window.",
+    "level_question_key": "tactical|what",
+    "pyramid_match_count": 1,
+    "is_filed_at_wrong_level": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ProcessLevelStatement"
+  },
+  {
+    "process_level_statement_id": "pls-deploy-why-in-steps",
+    "name": "production-deployment operational why",
+    "procedure": "production-deployment",
+    "level": "operational",
+    "question_kind": "why",
+    "statement": "Releases are gated because a 2025 outage cost a quarter's availability target.",
+    "level_question_key": "operational|why",
+    "pyramid_match_count": 0,
+    "is_filed_at_wrong_level": true,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ProcessLevelStatement"
+  },
+  {
+    "process_level_statement_id": "pls-loto-how",
+    "name": "lockout-tagout operational how",
+    "procedure": "lockout-tagout",
+    "level": "operational",
+    "question_kind": "how",
+    "statement": "Isolate each energy source in turn, then verify zero energy at every point.",
+    "level_question_key": "operational|how",
+    "pyramid_match_count": 1,
+    "is_filed_at_wrong_level": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ProcessLevelStatement"
+  },
+  {
+    "process_level_statement_id": "pls-loto-what",
+    "name": "lockout-tagout tactical what",
+    "procedure": "lockout-tagout",
+    "level": "tactical",
+    "question_kind": "what",
+    "statement": "Which machines are scheduled for lockout this week and who is on each crew.",
+    "level_question_key": "tactical|what",
+    "pyramid_match_count": 1,
+    "is_filed_at_wrong_level": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ProcessLevelStatement"
+  },
+  {
+    "process_level_statement_id": "pls-loto-where",
+    "name": "lockout-tagout operational where",
+    "procedure": "lockout-tagout",
+    "level": "operational",
+    "question_kind": "where",
+    "statement": "At the isolation points on each machine's isolation map.",
+    "level_question_key": "operational|where",
+    "pyramid_match_count": 1,
+    "is_filed_at_wrong_level": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ProcessLevelStatement"
+  },
+  {
+    "process_level_statement_id": "pls-loto-who",
+    "name": "lockout-tagout strategic who",
+    "procedure": "lockout-tagout",
+    "level": "strategic",
+    "question_kind": "who",
+    "statement": "The plant safety officer is accountable for energy control in both halls.",
+    "level_question_key": "strategic|who",
+    "pyramid_match_count": 1,
+    "is_filed_at_wrong_level": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ProcessLevelStatement"
+  },
+  {
+    "process_level_statement_id": "pls-loto-why",
+    "name": "lockout-tagout strategic why",
+    "procedure": "lockout-tagout",
+    "level": "strategic",
+    "question_kind": "why",
+    "statement": "Released stored energy is the plant's most severe injury hazard.",
+    "level_question_key": "strategic|why",
+    "pyramid_match_count": 1,
+    "is_filed_at_wrong_level": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ProcessLevelStatement"
+  }
+]

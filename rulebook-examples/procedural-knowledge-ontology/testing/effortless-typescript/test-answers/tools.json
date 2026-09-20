@@ -42,6 +42,13 @@
     "semantic_type_iri": "http://w3id.org/nfdi4ing/metadata4ing#Tool"
   },
   {
+    "tool_id": "pressure-gauge",
+    "name": "Pressure gauge",
+    "label": "Pressure gauge",
+    "purpose": "Read residual line and accumulator pressure.",
+    "semantic_type_iri": "http://w3id.org/nfdi4ing/metadata4ing#Tool"
+  },
+  {
     "tool_id": "sms-gateway",
     "name": "SMS Gateway",
     "label": "SMS Gateway",

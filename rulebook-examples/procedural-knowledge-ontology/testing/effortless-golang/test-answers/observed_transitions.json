@@ -7,7 +7,7 @@
     "arriving_step_execution": "se-close02",
     "observed_at": "2026-06-30T17:04:00-05:00",
     "trigger_reason": "Default sequence",
-    "semantic_type_iri": "urn:effortless:pko-extension#ObservedTransition"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ObservedTransition"
   },
   {
     "observed_transition_id": "obs-close-02-03-q2",
@@ -17,7 +17,7 @@
     "arriving_step_execution": "se-close03",
     "observed_at": "2026-06-30T17:18:00-05:00",
     "trigger_reason": "Default sequence",
-    "semantic_type_iri": "urn:effortless:pko-extension#ObservedTransition"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ObservedTransition"
   },
   {
     "observed_transition_id": "obs-close-03-04-q2",
@@ -27,7 +27,7 @@
     "arriving_step_execution": "se-close04",
     "observed_at": "2026-07-01T12:15:00-05:00",
     "trigger_reason": "Default sequence",
-    "semantic_type_iri": "urn:effortless:pko-extension#ObservedTransition"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ObservedTransition"
   },
   {
     "observed_transition_id": "obs-close-04-05-q2",
@@ -37,7 +37,7 @@
     "arriving_step_execution": "se-close05",
     "observed_at": "2026-07-01T15:05:00-05:00",
     "trigger_reason": "Default sequence",
-    "semantic_type_iri": "urn:effortless:pko-extension#ObservedTransition"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ObservedTransition"
   },
   {
     "observed_transition_id": "obs-close-05-06-q2",
@@ -47,7 +47,7 @@
     "arriving_step_execution": "se-close06",
     "observed_at": "2026-07-02T09:00:00-05:00",
     "trigger_reason": "Default sequence",
-    "semantic_type_iri": "urn:effortless:pko-extension#ObservedTransition"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ObservedTransition"
   },
   {
     "observed_transition_id": "obs-close-06-07-q2",
@@ -57,7 +57,7 @@
     "arriving_step_execution": "se-close07",
     "observed_at": "2026-07-02T09:22:00-05:00",
     "trigger_reason": "Default sequence",
-    "semantic_type_iri": "urn:effortless:pko-extension#ObservedTransition"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ObservedTransition"
   },
   {
     "observed_transition_id": "obs-close-07-08-q2",
@@ -67,7 +67,7 @@
     "arriving_step_execution": "se-close08",
     "observed_at": "2026-07-02T14:00:00-05:00",
     "trigger_reason": "Default sequence",
-    "semantic_type_iri": "urn:effortless:pko-extension#ObservedTransition"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ObservedTransition"
   },
   {
     "observed_transition_id": "obs-policy-01-02-hr4821",
@@ -77,7 +77,7 @@
     "arriving_step_execution": "se-policy02",
     "observed_at": "2026-07-18T09:30:00-05:00",
     "trigger_reason": "Default sequence",
-    "semantic_type_iri": "urn:effortless:pko-extension#ObservedTransition"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ObservedTransition"
   },
   {
     "observed_transition_id": "obs-policy-02-03-hr4821",
@@ -87,7 +87,7 @@
     "arriving_step_execution": "se-policy03",
     "observed_at": "2026-07-18T13:00:00-05:00",
     "trigger_reason": "Default sequence",
-    "semantic_type_iri": "urn:effortless:pko-extension#ObservedTransition"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ObservedTransition"
   },
   {
     "observed_transition_id": "obs-policy-03-04-hr4821",
@@ -97,6 +97,6 @@
     "arriving_step_execution": "se-policy04",
     "observed_at": "2026-07-19T09:00:00-05:00",
     "trigger_reason": "Default sequence",
-    "semantic_type_iri": "urn:effortless:pko-extension#ObservedTransition"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ObservedTransition"
   }
 ]

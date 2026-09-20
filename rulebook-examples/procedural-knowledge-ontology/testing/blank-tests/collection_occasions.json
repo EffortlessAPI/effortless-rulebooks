@@ -1,0 +1,50 @@
+[
+  {
+    "collection_occasion_id": "co13-close-improvement",
+    "label": "Close cycle-time improvement initiative",
+    "occasion_kind": "ImprovementInitiative",
+    "procedure": "quarter-end-close",
+    "cadence_days": 90,
+    "last_held_at": "2026-03-15T10:00:00-05:00",
+    "evaluation_context": "eval-current",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CollectionOccasion",
+    "name": null,
+    "as_of_instant": null,
+    "days_since_held": null,
+    "is_lapsed": null,
+    "captured_material_count": null,
+    "is_held_without_capture": null
+  },
+  {
+    "collection_occasion_id": "co13-deploy-release-retro",
+    "label": "Monthly release retrospective",
+    "occasion_kind": "Retrospective",
+    "procedure": "production-deployment",
+    "cadence_days": 30,
+    "last_held_at": "2026-07-18T14:00:00-05:00",
+    "evaluation_context": "eval-current",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CollectionOccasion",
+    "name": null,
+    "as_of_instant": null,
+    "days_since_held": null,
+    "is_lapsed": null,
+    "captured_material_count": null,
+    "is_held_without_capture": null
+  },
+  {
+    "collection_occasion_id": "co13-loto-quarterly-review",
+    "label": "Quarterly lockout process review",
+    "occasion_kind": "ProcessReview",
+    "procedure": "lockout-tagout",
+    "cadence_days": 90,
+    "last_held_at": "2026-06-30T10:00:00-05:00",
+    "evaluation_context": "eval-current",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CollectionOccasion",
+    "name": null,
+    "as_of_instant": null,
+    "days_since_held": null,
+    "is_lapsed": null,
+    "captured_material_count": null,
+    "is_held_without_capture": null
+  }
+]

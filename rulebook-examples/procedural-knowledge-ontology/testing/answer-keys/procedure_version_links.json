@@ -7,5 +7,14 @@
     "change_summary": "Added timestamp control, AI variance triage, and explicit knowledge capture.",
     "name": "close-v1.0.0 -> close-v1.1.0",
     "superseded_version_key": "close-v1.0.0"
+  },
+  {
+    "procedure_version_link_id": "loto-v1.0.0-to-v2.0.0",
+    "previous_procedure_version": "loto-v1.0.0",
+    "next_procedure_version": "loto-v2.0.0",
+    "relation_iri": "https://w3id.org/pko#nextVersion",
+    "change_summary": "Rebuilt from workshops with energy-specific isolation, verification and escalation.",
+    "name": "loto-v1.0.0 -> loto-v2.0.0",
+    "superseded_version_key": "loto-v1.0.0"
   }
 ]

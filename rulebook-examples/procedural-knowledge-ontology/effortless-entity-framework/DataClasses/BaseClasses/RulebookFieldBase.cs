@@ -28,6 +28,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string? FieldType { get; set; }
         public string? Datatype { get; set; }
         public string? Formula { get; set; }
+        public string? RelatedTo { get; set; }
         // Formula IsDerived (rulebook: =OR({{FieldType}} = "calculated", {{FieldType}} = "lookup", {{FieldType}} = "aggregation"))
         [NotMapped]
         public bool? IsDerived
@@ -340,6 +341,116 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             }
         }
 
+        private ObservableCollection<AppAction> _appActions;
+
+        [InverseProperty("RulebookField")]
+        public virtual ObservableCollection<AppAction> AppActions
+        {
+            get
+            {
+                if (_appActions == null)
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access AppActions - no database context is set. RulebookFieldId: " + this.RulebookFieldId + ".");
+                        }
+                        _appActions = new ObservableCollection<AppAction>();
+                    }
+                    else
+                    {
+                        var items = base.SoAContext.AppActions.Where(x => x.WatchedField == this.RulebookFieldId).ToList<AppAction>();
+                        _appActions = new ObservableCollection<AppAction>(items);
+                        if (items.Any())
+                        {
+                            base.SoAContext.AttachRange(items);
+                        }
+                    }
+                    _appActions.CollectionChanged += AppActions_CollectionChanged;
+                }
+                return _appActions;
+            }
+            private set
+            {
+                if (_appActions != null)
+                {
+                    _appActions.CollectionChanged -= AppActions_CollectionChanged;
+                }
+                _appActions = value;
+                if (_appActions != null)
+                {
+                    _appActions.CollectionChanged += AppActions_CollectionChanged;
+                }
+            }
+        }
+
+        private void AppActions_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems != null)
+            {
+                foreach (var item in e.NewItems.Cast<AppAction>())
+                {
+                    item.WatchedField = this.RulebookFieldId;
+                }
+            }
+        }
+
+        private ObservableCollection<AppActionField> _appActionFields;
+
+        [InverseProperty("RulebookField")]
+        public virtual ObservableCollection<AppActionField> AppActionFields
+        {
+            get
+            {
+                if (_appActionFields == null)
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access AppActionFields - no database context is set. RulebookFieldId: " + this.RulebookFieldId + ".");
+                        }
+                        _appActionFields = new ObservableCollection<AppActionField>();
+                    }
+                    else
+                    {
+                        var items = base.SoAContext.AppActionFields.Where(x => x.TargetField == this.RulebookFieldId).ToList<AppActionField>();
+                        _appActionFields = new ObservableCollection<AppActionField>(items);
+                        if (items.Any())
+                        {
+                            base.SoAContext.AttachRange(items);
+                        }
+                    }
+                    _appActionFields.CollectionChanged += AppActionFields_CollectionChanged;
+                }
+                return _appActionFields;
+            }
+            private set
+            {
+                if (_appActionFields != null)
+                {
+                    _appActionFields.CollectionChanged -= AppActionFields_CollectionChanged;
+                }
+                _appActionFields = value;
+                if (_appActionFields != null)
+                {
+                    _appActionFields.CollectionChanged += AppActionFields_CollectionChanged;
+                }
+            }
+        }
+
+        private void AppActionFields_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems != null)
+            {
+                foreach (var item in e.NewItems.Cast<AppActionField>())
+                {
+                    item.TargetField = this.RulebookFieldId;
+                }
+            }
+        }
+
 
         protected override void LazyLoadProperties()
         {
@@ -348,6 +459,8 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             _ = this.FieldDisagreements;
             _ = this.ClaimEvidence;
             _ = this.ExpectedInferenceChecks;
+            _ = this.AppActions;
+            _ = this.AppActionFields;
         }
 
         public override string ToString()

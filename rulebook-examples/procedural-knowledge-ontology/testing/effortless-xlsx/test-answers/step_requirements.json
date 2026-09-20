@@ -12,7 +12,8 @@
     "satisfaction_count_for_binding": 0,
     "binding_was_ever_exercised": false,
     "is_unexercised_blocking_binding": true,
-    "unexercised_binding_requirement_key": "req-close-cutoff"
+    "unexercised_binding_requirement_key": "req-close-cutoff",
+    "requirement_is_regulatory": false
   },
   {
     "step_requirement_id": "sr-c03a",
@@ -27,7 +28,8 @@
     "satisfaction_count_for_binding": 0,
     "binding_was_ever_exercised": false,
     "is_unexercised_blocking_binding": true,
-    "unexercised_binding_requirement_key": "req-close-balance"
+    "unexercised_binding_requirement_key": "req-close-balance",
+    "requirement_is_regulatory": false
   },
   {
     "step_requirement_id": "sr-c03b",
@@ -42,7 +44,8 @@
     "satisfaction_count_for_binding": 0,
     "binding_was_ever_exercised": false,
     "is_unexercised_blocking_binding": true,
-    "unexercised_binding_requirement_key": "req-close-evidence"
+    "unexercised_binding_requirement_key": "req-close-evidence",
+    "requirement_is_regulatory": false
   },
   {
     "step_requirement_id": "sr-c05",
@@ -57,7 +60,8 @@
     "satisfaction_count_for_binding": 0,
     "binding_was_ever_exercised": false,
     "is_unexercised_blocking_binding": true,
-    "unexercised_binding_requirement_key": "req-close-separation"
+    "unexercised_binding_requirement_key": "req-close-separation",
+    "requirement_is_regulatory": false
   },
   {
     "step_requirement_id": "sr-c06",
@@ -72,7 +76,8 @@
     "satisfaction_count_for_binding": 0,
     "binding_was_ever_exercised": false,
     "is_unexercised_blocking_binding": true,
-    "unexercised_binding_requirement_key": "req-close-human-approval"
+    "unexercised_binding_requirement_key": "req-close-human-approval",
+    "requirement_is_regulatory": false
   },
   {
     "step_requirement_id": "sr-c08",
@@ -87,7 +92,8 @@
     "satisfaction_count_for_binding": 0,
     "binding_was_ever_exercised": false,
     "is_unexercised_blocking_binding": true,
-    "unexercised_binding_requirement_key": "req-close-evidence"
+    "unexercised_binding_requirement_key": "req-close-evidence",
+    "requirement_is_regulatory": false
   },
   {
     "step_requirement_id": "sr-p03",
@@ -102,7 +108,8 @@
     "satisfaction_count_for_binding": 0,
     "binding_was_ever_exercised": false,
     "is_unexercised_blocking_binding": true,
-    "unexercised_binding_requirement_key": "req-policy-source"
+    "unexercised_binding_requirement_key": "req-policy-source",
+    "requirement_is_regulatory": false
   },
   {
     "step_requirement_id": "sr-p04",
@@ -117,7 +124,8 @@
     "satisfaction_count_for_binding": 0,
     "binding_was_ever_exercised": false,
     "is_unexercised_blocking_binding": true,
-    "unexercised_binding_requirement_key": "req-policy-legal"
+    "unexercised_binding_requirement_key": "req-policy-legal",
+    "requirement_is_regulatory": false
   },
   {
     "step_requirement_id": "sr-p05",
@@ -132,7 +140,8 @@
     "satisfaction_count_for_binding": 0,
     "binding_was_ever_exercised": false,
     "is_unexercised_blocking_binding": true,
-    "unexercised_binding_requirement_key": "req-policy-human-approval"
+    "unexercised_binding_requirement_key": "req-policy-human-approval",
+    "requirement_is_regulatory": false
   },
   {
     "step_requirement_id": "sr-p06",
@@ -147,7 +156,8 @@
     "satisfaction_count_for_binding": 0,
     "binding_was_ever_exercised": false,
     "is_unexercised_blocking_binding": true,
-    "unexercised_binding_requirement_key": "req-policy-accessibility"
+    "unexercised_binding_requirement_key": "req-policy-accessibility",
+    "requirement_is_regulatory": false
   },
   {
     "step_requirement_id": "sr-p07a",
@@ -162,7 +172,8 @@
     "satisfaction_count_for_binding": 0,
     "binding_was_ever_exercised": false,
     "is_unexercised_blocking_binding": true,
-    "unexercised_binding_requirement_key": "req-policy-consent"
+    "unexercised_binding_requirement_key": "req-policy-consent",
+    "requirement_is_regulatory": false
   },
   {
     "step_requirement_id": "sr-p07b",
@@ -177,7 +188,8 @@
     "satisfaction_count_for_binding": 0,
     "binding_was_ever_exercised": false,
     "is_unexercised_blocking_binding": true,
-    "unexercised_binding_requirement_key": "req-policy-quiet-hours"
+    "unexercised_binding_requirement_key": "req-policy-quiet-hours",
+    "requirement_is_regulatory": false
   },
   {
     "step_requirement_id": "sr-p07c",
@@ -192,7 +204,8 @@
     "satisfaction_count_for_binding": 0,
     "binding_was_ever_exercised": false,
     "is_unexercised_blocking_binding": true,
-    "unexercised_binding_requirement_key": "req-policy-optout"
+    "unexercised_binding_requirement_key": "req-policy-optout",
+    "requirement_is_regulatory": false
   },
   {
     "step_requirement_id": "sr-p07d",
@@ -207,7 +220,8 @@
     "satisfaction_count_for_binding": 0,
     "binding_was_ever_exercised": false,
     "is_unexercised_blocking_binding": true,
-    "unexercised_binding_requirement_key": "req-policy-retention"
+    "unexercised_binding_requirement_key": "req-policy-retention",
+    "requirement_is_regulatory": false
   },
   {
     "step_requirement_id": "sr-p08",
@@ -222,6 +236,55 @@
     "satisfaction_count_for_binding": 0,
     "binding_was_ever_exercised": false,
     "is_unexercised_blocking_binding": true,
-    "unexercised_binding_requirement_key": "req-policy-retention"
+    "unexercised_binding_requirement_key": "req-policy-retention",
+    "requirement_is_regulatory": false
+  },
+  {
+    "step_requirement_id": "srq-deploy03-approval",
+    "step": "deploy-03",
+    "requirement": "req-deploy-approval",
+    "name": "deploy-03 / req-deploy-approval",
+    "requirement_is_blocking": true,
+    "blocking_step_key": "deploy-03",
+    "step_when_blocking": "deploy-03",
+    "requirement_lacks_witness": true,
+    "unwitnessed_step_key": "deploy-03",
+    "satisfaction_count_for_binding": 0,
+    "binding_was_ever_exercised": false,
+    "is_unexercised_blocking_binding": true,
+    "unexercised_binding_requirement_key": "req-deploy-approval",
+    "requirement_is_regulatory": true
+  },
+  {
+    "step_requirement_id": "srq-loto05-lock",
+    "step": "loto-05",
+    "requirement": "req-loto-personal-lock",
+    "name": "loto-05 / req-loto-personal-lock",
+    "requirement_is_blocking": true,
+    "blocking_step_key": "loto-05",
+    "step_when_blocking": "loto-05",
+    "requirement_lacks_witness": true,
+    "unwitnessed_step_key": "loto-05",
+    "satisfaction_count_for_binding": 0,
+    "binding_was_ever_exercised": false,
+    "is_unexercised_blocking_binding": true,
+    "unexercised_binding_requirement_key": "req-loto-personal-lock",
+    "requirement_is_regulatory": true
+  },
+  {
+    "step_requirement_id": "srq-loto06-zero",
+    "step": "loto-06",
+    "requirement": "req-loto-zero-energy",
+    "name": "loto-06 / req-loto-zero-energy",
+    "requirement_is_blocking": true,
+    "blocking_step_key": "loto-06",
+    "step_when_blocking": "loto-06",
+    "requirement_lacks_witness": true,
+    "unwitnessed_step_key": "loto-06",
+    "satisfaction_count_for_binding": 0,
+    "binding_was_ever_exercised": false,
+    "is_unexercised_blocking_binding": true,
+    "unexercised_binding_requirement_key": "req-loto-zero-energy",
+    "requirement_is_regulatory": true
   }
 ]

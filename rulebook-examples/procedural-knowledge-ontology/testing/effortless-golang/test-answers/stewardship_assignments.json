@@ -13,7 +13,7 @@
     "evaluation_context": "eval-current",
     "as_of_instant": "2026-07-19T13:00:00-05:00",
     "is_current_assignment": true,
-    "semantic_type_iri": "urn:effortless:pko-extension#StewardshipAssignment"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#StewardshipAssignment"
   },
   {
     "stewardship_assignment_id": "stew-policy",
@@ -29,6 +29,6 @@
     "evaluation_context": "eval-current",
     "as_of_instant": "2026-07-19T13:00:00-05:00",
     "is_current_assignment": true,
-    "semantic_type_iri": "urn:effortless:pko-extension#StewardshipAssignment"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#StewardshipAssignment"
   }
 ]

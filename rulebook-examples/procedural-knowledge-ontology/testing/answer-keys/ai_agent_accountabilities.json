@@ -1,0 +1,62 @@
+[
+  {
+    "ai_agent_accountability_id": "aaa-health-120-omar",
+    "ai_agent": "health-check-ai-1-2-0",
+    "accountable_agent": "omar-haddad",
+    "valid_from": "2025-03-01T00:00:00-06:00",
+    "valid_to": "2025-12-31T23:59:59-06:00",
+    "evaluation_context": "eval-current",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AiAgentAccountability",
+    "name": "health-check-ai-1-2-0 accountable to omar-haddad",
+    "as_of_instant": "2026-07-19T13:00:00-05:00",
+    "is_current": false,
+    "accountable_agent_kind": "Human",
+    "is_accountable_to_non_person": false,
+    "is_current_human_accountability": false
+  },
+  {
+    "ai_agent_accountability_id": "aaa-risk-240-omar",
+    "ai_agent": "risk-classifier-2-4-0",
+    "accountable_agent": "omar-haddad",
+    "valid_from": "2025-11-01T00:00:00-05:00",
+    "valid_to": "2026-01-10T00:00:00-06:00",
+    "evaluation_context": "eval-current",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AiAgentAccountability",
+    "name": "risk-classifier-2-4-0 accountable to omar-haddad",
+    "as_of_instant": "2026-07-19T13:00:00-05:00",
+    "is_current": false,
+    "accountable_agent_kind": "Human",
+    "is_accountable_to_non_person": false,
+    "is_current_human_accountability": false
+  },
+  {
+    "ai_agent_accountability_id": "aaa-risk-241-omar",
+    "ai_agent": "risk-classifier-2-4-1",
+    "accountable_agent": "omar-haddad",
+    "valid_from": "2026-01-10T00:00:00-06:00",
+    "valid_to": null,
+    "evaluation_context": "eval-current",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AiAgentAccountability",
+    "name": "risk-classifier-2-4-1 accountable to omar-haddad",
+    "as_of_instant": "2026-07-19T13:00:00-05:00",
+    "is_current": true,
+    "accountable_agent_kind": "Human",
+    "is_accountable_to_non_person": false,
+    "is_current_human_accountability": true
+  },
+  {
+    "ai_agent_accountability_id": "aaa-risk-250-pipeline",
+    "ai_agent": "risk-classifier-2-5-0",
+    "accountable_agent": "deploy-pipeline",
+    "valid_from": "2026-07-02T00:00:00-05:00",
+    "valid_to": null,
+    "evaluation_context": "eval-current",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AiAgentAccountability",
+    "name": "risk-classifier-2-5-0 accountable to deploy-pipeline",
+    "as_of_instant": "2026-07-19T13:00:00-05:00",
+    "is_current": true,
+    "accountable_agent_kind": "AutomatedPipeline",
+    "is_accountable_to_non_person": true,
+    "is_current_human_accountability": false
+  }
+]

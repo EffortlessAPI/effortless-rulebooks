@@ -1,0 +1,46 @@
+[
+  {
+    "representation_review_id": "rr7-deploy-omar",
+    "procedure_version": "deploy-v3.2.0",
+    "reviewer_agent": "omar-haddad",
+    "review_purpose": "RepresentationApproval",
+    "reviewer_is_affected_sme": false,
+    "decision": "Approved",
+    "reviewed_at": "2026-07-01T09:00:00-05:00",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RepresentationReview",
+    "name": "RepresentationApproval: deploy-v3.2.0 by omar-haddad"
+  },
+  {
+    "representation_review_id": "rr7-deploy-ravi-ai",
+    "procedure_version": "deploy-v3.2.0",
+    "reviewer_agent": "ravi-menon",
+    "review_purpose": "AiEvaluation",
+    "reviewer_is_affected_sme": true,
+    "decision": "Approved",
+    "reviewed_at": "2026-06-30T11:00:00-05:00",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RepresentationReview",
+    "name": "AiEvaluation: deploy-v3.2.0 by ravi-menon"
+  },
+  {
+    "representation_review_id": "rr7-loto-lin",
+    "procedure_version": "loto-v2.0.0",
+    "reviewer_agent": "lin-zhao",
+    "review_purpose": "RepresentationApproval",
+    "reviewer_is_affected_sme": true,
+    "decision": "Approved",
+    "reviewed_at": "2026-05-19T14:00:00-05:00",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RepresentationReview",
+    "name": "RepresentationApproval: loto-v2.0.0 by lin-zhao"
+  },
+  {
+    "representation_review_id": "rr7-loto-tomas",
+    "procedure_version": "loto-v2.0.0",
+    "reviewer_agent": "tomas-reyes",
+    "review_purpose": "RepresentationApproval",
+    "reviewer_is_affected_sme": true,
+    "decision": "Approved",
+    "reviewed_at": "2026-05-19T10:00:00-05:00",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RepresentationReview",
+    "name": "RepresentationApproval: loto-v2.0.0 by tomas-reyes"
+  }
+]

@@ -8,7 +8,7 @@
     "conforming_variant_count": 1,
     "deviation_description": "Heavily drifted, but this version was archived before anyone mined it \u2014 nobody executes this path anymore.",
     "evaluation_context": "eval-current",
-    "semantic_type_iri": "urn:effortless:pko-extension#ProcessMiningRun",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ProcessMiningRun",
     "name": "ERP General Ledger Audit Log / 2026-01-01T14:00:00+00:00",
     "as_of_instant": "2026-07-19T13:00:00-05:00",
     "conformance_rate": 0.2,
@@ -18,7 +18,12 @@
     "is_stale_mining_evidence": true,
     "procedure_version_is_live": false,
     "is_drift_on_live_version": false,
-    "drifted_mining_run_key": null
+    "drifted_mining_run_key": null,
+    "people_capture_complement_count": 0,
+    "is_deviation_unexplained_by_people": true,
+    "undocumented_path_count": 0,
+    "has_undocumented_enacted_path": false,
+    "conformance_percent": 20
   },
   {
     "process_mining_run_id": "pmr-close-v11-cutoff-bypass",
@@ -29,7 +34,7 @@
     "conforming_variant_count": 3,
     "deviation_description": "Ledger entries posted after the documented cutoff step with no recorded reopening approval \u2014 a path StepTransitions never modeled.",
     "evaluation_context": "eval-current",
-    "semantic_type_iri": "urn:effortless:pko-extension#ProcessMiningRun",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ProcessMiningRun",
     "name": "ERP General Ledger Audit Log / 2026-07-17T14:00:00+00:00",
     "as_of_instant": "2026-07-19T13:00:00-05:00",
     "conformance_rate": 0.375,
@@ -39,7 +44,12 @@
     "is_stale_mining_evidence": false,
     "procedure_version_is_live": true,
     "is_drift_on_live_version": true,
-    "drifted_mining_run_key": "close-v1.1.0"
+    "drifted_mining_run_key": "close-v1.1.0",
+    "people_capture_complement_count": 0,
+    "is_deviation_unexplained_by_people": true,
+    "undocumented_path_count": 0,
+    "has_undocumented_enacted_path": false,
+    "conformance_percent": 38
   },
   {
     "process_mining_run_id": "pmr-close-v11-q3",
@@ -50,7 +60,7 @@
     "conforming_variant_count": 5,
     "deviation_description": "One variant closes a day early with no recorded controller approval; otherwise matches the documented path.",
     "evaluation_context": "eval-current",
-    "semantic_type_iri": "urn:effortless:pko-extension#ProcessMiningRun",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ProcessMiningRun",
     "name": "ERP General Ledger Audit Log / 2026-07-15T14:00:00+00:00",
     "as_of_instant": "2026-07-19T13:00:00-05:00",
     "conformance_rate": 0.8333333333333334,
@@ -60,7 +70,38 @@
     "is_stale_mining_evidence": false,
     "procedure_version_is_live": true,
     "is_drift_on_live_version": false,
-    "drifted_mining_run_key": null
+    "drifted_mining_run_key": null,
+    "people_capture_complement_count": 0,
+    "is_deviation_unexplained_by_people": true,
+    "undocumented_path_count": 0,
+    "has_undocumented_enacted_path": false,
+    "conformance_percent": 83
+  },
+  {
+    "process_mining_run_id": "pmr-deploy-v320-ci",
+    "procedure_version": "deploy-v3.2.0",
+    "event_log_source": "CI/CD pipeline event log",
+    "mined_at": "2026-07-18T09:00:00-05:00",
+    "discovered_variant_count": 3,
+    "conforming_variant_count": 2,
+    "deviation_description": "One hotfix variant rolls out with no approval event.",
+    "evaluation_context": "eval-current",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ProcessMiningRun",
+    "name": "CI/CD pipeline event log / 2026-07-18T14:00:00+00:00",
+    "as_of_instant": "2026-07-19T13:00:00-05:00",
+    "conformance_rate": 0.6666666666666666,
+    "is_conformant": false,
+    "has_major_drift_from_documentation": false,
+    "days_since_mined": 1,
+    "is_stale_mining_evidence": false,
+    "procedure_version_is_live": true,
+    "is_drift_on_live_version": false,
+    "drifted_mining_run_key": null,
+    "people_capture_complement_count": 1,
+    "is_deviation_unexplained_by_people": false,
+    "undocumented_path_count": 2,
+    "has_undocumented_enacted_path": true,
+    "conformance_percent": 67
   },
   {
     "process_mining_run_id": "pmr-policy-v1-notify",
@@ -71,7 +112,7 @@
     "conforming_variant_count": 4,
     "deviation_description": "",
     "evaluation_context": "eval-current",
-    "semantic_type_iri": "urn:effortless:pko-extension#ProcessMiningRun",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ProcessMiningRun",
     "name": "Notification Pipeline Delivery Log / 2026-01-10T14:00:00+00:00",
     "as_of_instant": "2026-07-19T13:00:00-05:00",
     "conformance_rate": 1.0,
@@ -81,6 +122,11 @@
     "is_stale_mining_evidence": true,
     "procedure_version_is_live": true,
     "is_drift_on_live_version": false,
-    "drifted_mining_run_key": null
+    "drifted_mining_run_key": null,
+    "people_capture_complement_count": 0,
+    "is_deviation_unexplained_by_people": false,
+    "undocumented_path_count": 0,
+    "has_undocumented_enacted_path": false,
+    "conformance_percent": 100
   }
 ]

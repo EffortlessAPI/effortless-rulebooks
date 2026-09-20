@@ -8,7 +8,7 @@
     "forbidden_row_id": "close-v1.1.0",
     "expected_visible": true,
     "observed_visible": true,
-    "last_run_at": "2026-09-13T18:36:06+00:00",
+    "last_run_at": "2026-09-20T22:19:20+00:00",
     "has_run": true,
     "is_passing": true,
     "is_leak": false,
@@ -17,7 +17,7 @@
     "is_positive_control": true,
     "forbidden_table": null,
     "forbidden_column": null,
-    "semantic_type_iri": "urn:effortless:pko-extension#AccessDenialTest"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AccessDenialTest"
   },
   {
     "access_denial_test_id": "allow-controller-open-change-request",
@@ -28,7 +28,7 @@
     "forbidden_row_id": "cr-policy-delivery",
     "expected_visible": true,
     "observed_visible": true,
-    "last_run_at": "2026-09-13T18:36:06+00:00",
+    "last_run_at": "2026-09-20T22:19:20+00:00",
     "has_run": true,
     "is_passing": true,
     "is_leak": false,
@@ -37,7 +37,7 @@
     "is_positive_control": true,
     "forbidden_table": null,
     "forbidden_column": null,
-    "semantic_type_iri": "urn:effortless:pko-extension#AccessDenialTest"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AccessDenialTest"
   },
   {
     "access_denial_test_id": "allow-counsel-own-fragment",
@@ -48,7 +48,7 @@
     "forbidden_row_id": "kf-policy-ai-boundary",
     "expected_visible": true,
     "observed_visible": true,
-    "last_run_at": "2026-09-13T18:36:06+00:00",
+    "last_run_at": "2026-09-20T22:19:20+00:00",
     "has_run": true,
     "is_passing": true,
     "is_leak": false,
@@ -57,7 +57,7 @@
     "is_positive_control": true,
     "forbidden_table": null,
     "forbidden_column": null,
-    "semantic_type_iri": "urn:effortless:pko-extension#AccessDenialTest"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AccessDenialTest"
   },
   {
     "access_denial_test_id": "allow-hr-open-gap",
@@ -68,7 +68,7 @@
     "forbidden_row_id": "gap-policy-delivery-receipts",
     "expected_visible": true,
     "observed_visible": true,
-    "last_run_at": "2026-09-13T18:36:06+00:00",
+    "last_run_at": "2026-09-20T22:19:20+00:00",
     "has_run": true,
     "is_passing": true,
     "is_leak": false,
@@ -77,7 +77,7 @@
     "is_positive_control": true,
     "forbidden_table": null,
     "forbidden_column": null,
-    "semantic_type_iri": "urn:effortless:pko-extension#AccessDenialTest"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AccessDenialTest"
   },
   {
     "access_denial_test_id": "deny-analyst-superseded-version",
@@ -88,7 +88,7 @@
     "forbidden_row_id": "close-v1.0.0",
     "expected_visible": false,
     "observed_visible": false,
-    "last_run_at": "2026-09-13T18:36:06+00:00",
+    "last_run_at": "2026-09-20T22:19:20+00:00",
     "has_run": true,
     "is_passing": true,
     "is_leak": false,
@@ -97,7 +97,7 @@
     "is_positive_control": false,
     "forbidden_table": null,
     "forbidden_column": null,
-    "semantic_type_iri": "urn:effortless:pko-extension#AccessDenialTest"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AccessDenialTest"
   },
   {
     "access_denial_test_id": "deny-cfo-send-intents",
@@ -108,7 +108,7 @@
     "forbidden_row_id": null,
     "expected_visible": false,
     "observed_visible": false,
-    "last_run_at": "2026-09-13T18:36:06+00:00",
+    "last_run_at": "2026-09-20T22:19:20+00:00",
     "has_run": true,
     "is_passing": true,
     "is_leak": false,
@@ -117,7 +117,7 @@
     "is_positive_control": false,
     "forbidden_table": "SendIntents",
     "forbidden_column": null,
-    "semantic_type_iri": "urn:effortless:pko-extension#AccessDenialTest"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AccessDenialTest"
   },
   {
     "access_denial_test_id": "deny-cfo-step-executions",
@@ -128,7 +128,7 @@
     "forbidden_row_id": null,
     "expected_visible": false,
     "observed_visible": false,
-    "last_run_at": "2026-09-13T18:36:06+00:00",
+    "last_run_at": "2026-09-20T22:19:20+00:00",
     "has_run": true,
     "is_passing": true,
     "is_leak": false,
@@ -137,7 +137,7 @@
     "is_positive_control": false,
     "forbidden_table": "StepExecutions",
     "forbidden_column": null,
-    "semantic_type_iri": "urn:effortless:pko-extension#AccessDenialTest"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AccessDenialTest"
   },
   {
     "access_denial_test_id": "deny-close-automation-change-requests",
@@ -148,7 +148,7 @@
     "forbidden_row_id": null,
     "expected_visible": false,
     "observed_visible": false,
-    "last_run_at": "2026-09-13T18:36:06+00:00",
+    "last_run_at": "2026-09-20T22:19:20+00:00",
     "has_run": true,
     "is_passing": true,
     "is_leak": false,
@@ -157,7 +157,7 @@
     "is_positive_control": false,
     "forbidden_table": "ChangeRequests",
     "forbidden_column": null,
-    "semantic_type_iri": "urn:effortless:pko-extension#AccessDenialTest"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AccessDenialTest"
   },
   {
     "access_denial_test_id": "deny-close-automation-recipients",
@@ -168,7 +168,7 @@
     "forbidden_row_id": null,
     "expected_visible": false,
     "observed_visible": false,
-    "last_run_at": "2026-09-13T18:36:06+00:00",
+    "last_run_at": "2026-09-20T22:19:20+00:00",
     "has_run": true,
     "is_passing": true,
     "is_leak": false,
@@ -177,7 +177,7 @@
     "is_positive_control": false,
     "forbidden_table": "Recipients",
     "forbidden_column": null,
-    "semantic_type_iri": "urn:effortless:pko-extension#AccessDenialTest"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AccessDenialTest"
   },
   {
     "access_denial_test_id": "deny-controller-decided-change-request",
@@ -188,7 +188,7 @@
     "forbidden_row_id": "cr-close-timestamp",
     "expected_visible": false,
     "observed_visible": false,
-    "last_run_at": "2026-09-13T18:36:06+00:00",
+    "last_run_at": "2026-09-20T22:19:20+00:00",
     "has_run": true,
     "is_passing": true,
     "is_leak": false,
@@ -197,7 +197,7 @@
     "is_positive_control": false,
     "forbidden_table": null,
     "forbidden_column": null,
-    "semantic_type_iri": "urn:effortless:pko-extension#AccessDenialTest"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AccessDenialTest"
   },
   {
     "access_denial_test_id": "deny-controller-fragment-diagnostics",
@@ -208,7 +208,7 @@
     "forbidden_row_id": "kf-close-fx-time",
     "expected_visible": false,
     "observed_visible": false,
-    "last_run_at": "2026-09-13T18:36:06+00:00",
+    "last_run_at": "2026-09-20T22:19:20+00:00",
     "has_run": true,
     "is_passing": true,
     "is_leak": false,
@@ -217,7 +217,7 @@
     "is_positive_control": false,
     "forbidden_table": null,
     "forbidden_column": "evidence_has_expired",
-    "semantic_type_iri": "urn:effortless:pko-extension#AccessDenialTest"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AccessDenialTest"
   },
   {
     "access_denial_test_id": "deny-counsel-controller-fragment",
@@ -228,7 +228,7 @@
     "forbidden_row_id": "kf-close-fx-time",
     "expected_visible": false,
     "observed_visible": false,
-    "last_run_at": "2026-09-13T18:36:06+00:00",
+    "last_run_at": "2026-09-20T22:19:20+00:00",
     "has_run": true,
     "is_passing": true,
     "is_leak": false,
@@ -237,7 +237,7 @@
     "is_positive_control": false,
     "forbidden_table": null,
     "forbidden_column": null,
-    "semantic_type_iri": "urn:effortless:pko-extension#AccessDenialTest"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AccessDenialTest"
   },
   {
     "access_denial_test_id": "deny-employment-counsel-step-executions",
@@ -248,7 +248,7 @@
     "forbidden_row_id": null,
     "expected_visible": false,
     "observed_visible": false,
-    "last_run_at": "2026-09-13T18:36:06+00:00",
+    "last_run_at": "2026-09-20T22:19:20+00:00",
     "has_run": true,
     "is_passing": true,
     "is_leak": false,
@@ -257,7 +257,7 @@
     "is_positive_control": false,
     "forbidden_table": "StepExecutions",
     "forbidden_column": null,
-    "semantic_type_iri": "urn:effortless:pko-extension#AccessDenialTest"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AccessDenialTest"
   },
   {
     "access_denial_test_id": "deny-hr-resolved-gap",
@@ -268,7 +268,7 @@
     "forbidden_row_id": "gap-close-cadence-unmeasured",
     "expected_visible": false,
     "observed_visible": false,
-    "last_run_at": "2026-09-13T18:36:06+00:00",
+    "last_run_at": "2026-09-20T22:19:20+00:00",
     "has_run": true,
     "is_passing": true,
     "is_leak": false,
@@ -277,7 +277,7 @@
     "is_positive_control": false,
     "forbidden_table": null,
     "forbidden_column": null,
-    "semantic_type_iri": "urn:effortless:pko-extension#AccessDenialTest"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AccessDenialTest"
   },
   {
     "access_denial_test_id": "deny-notification-publisher-knowledge-fragments",
@@ -288,7 +288,7 @@
     "forbidden_row_id": null,
     "expected_visible": false,
     "observed_visible": false,
-    "last_run_at": "2026-09-13T18:36:06+00:00",
+    "last_run_at": "2026-09-20T22:19:20+00:00",
     "has_run": true,
     "is_passing": true,
     "is_leak": false,
@@ -297,7 +297,7 @@
     "is_positive_control": false,
     "forbidden_table": "KnowledgeFragments",
     "forbidden_column": null,
-    "semantic_type_iri": "urn:effortless:pko-extension#AccessDenialTest"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AccessDenialTest"
   },
   {
     "access_denial_test_id": "deny-policy-drafting-agent-recipients",
@@ -308,7 +308,7 @@
     "forbidden_row_id": null,
     "expected_visible": false,
     "observed_visible": false,
-    "last_run_at": "2026-09-13T18:36:06+00:00",
+    "last_run_at": "2026-09-20T22:19:20+00:00",
     "has_run": true,
     "is_passing": true,
     "is_leak": false,
@@ -317,7 +317,7 @@
     "is_positive_control": false,
     "forbidden_table": "Recipients",
     "forbidden_column": null,
-    "semantic_type_iri": "urn:effortless:pko-extension#AccessDenialTest"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AccessDenialTest"
   },
   {
     "access_denial_test_id": "deny-variance-review-agent-recipients",
@@ -328,7 +328,7 @@
     "forbidden_row_id": null,
     "expected_visible": false,
     "observed_visible": false,
-    "last_run_at": "2026-09-13T18:36:06+00:00",
+    "last_run_at": "2026-09-20T22:19:20+00:00",
     "has_run": true,
     "is_passing": true,
     "is_leak": false,
@@ -337,6 +337,6 @@
     "is_positive_control": false,
     "forbidden_table": "Recipients",
     "forbidden_column": null,
-    "semantic_type_iri": "urn:effortless:pko-extension#AccessDenialTest"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AccessDenialTest"
   }
 ]

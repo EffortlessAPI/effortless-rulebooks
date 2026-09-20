@@ -1,0 +1,50 @@
+[
+  {
+    "process_interdependency_id": "pi-convmaint-requires-loto",
+    "from_procedure": "conveyor-maintenance",
+    "to_procedure": "lockout-tagout",
+    "effect": "Requires",
+    "mechanism": "Roller replacement calls the lockout procedure as its second step.",
+    "evidence_note": "Step convmaint-02 invokes lockout-tagout.",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ProcessInterdependency",
+    "name": null,
+    "is_hindering_dependency": null,
+    "hindered_procedure_key": null
+  },
+  {
+    "process_interdependency_id": "pi-deploy-hinders-close",
+    "from_procedure": "production-deployment",
+    "to_procedure": "quarter-end-close",
+    "effect": "Hinders",
+    "mechanism": "Deployments during the close window restart the ledger integration mid-extract.",
+    "evidence_note": "Infrastructure incident review, 2026-04-02.",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ProcessInterdependency",
+    "name": null,
+    "is_hindering_dependency": null,
+    "hindered_procedure_key": null
+  },
+  {
+    "process_interdependency_id": "pi-loto-helps-convmaint",
+    "from_procedure": "lockout-tagout",
+    "to_procedure": "conveyor-maintenance",
+    "effect": "Helps",
+    "mechanism": "A recorded zero-energy verification lets the roller crew start without re-verifying.",
+    "evidence_note": "Execution 2026-07-08.",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ProcessInterdependency",
+    "name": null,
+    "is_hindering_dependency": null,
+    "hindered_procedure_key": null
+  },
+  {
+    "process_interdependency_id": "pi-loto-hinders-press-changeover",
+    "from_procedure": "lockout-tagout",
+    "to_procedure": "press-changeover",
+    "effect": "Hinders",
+    "mechanism": "Press 7 lockouts hold the only accumulator bleed kit the die changeover also needs.",
+    "evidence_note": "Night shift feedback, 2026-07-10.",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ProcessInterdependency",
+    "name": null,
+    "is_hindering_dependency": null,
+    "hindered_procedure_key": null
+  }
+]

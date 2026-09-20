@@ -4,6 +4,47 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix effortless-ntwf: <https://w3id.org/effortless-ntwf#> .
 
+# === Shape with rules for AbundantKnowledgeGaps ===
+effortless-ntwf:AbundantKnowledgeGapsShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:AbundantKnowledgeGaps ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_AbundantKnowledgeGaps_Name" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:name ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:AbundantKnowledgeGaps .
+    OPTIONAL { $this effortless-ntwf:label ?label . }
+                BIND(?label AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_AbundantKnowledgeGaps_RepresentingTableRowCount" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:representingTableRowCount ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:AbundantKnowledgeGaps .
+                OPTIONAL { $this effortless-ntwf:representedByTable ?j0 . }
+                OPTIONAL { ?j1 a effortless-ntwf:RulebookTables ; effortless-ntwf:rulebookTableId ?j2 . FILTER( ?j1 = ?j0 || REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "") ) OPTIONAL { ?j1 effortless-ntwf:measuredRowCount ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] .
+
 # === Shape with rules for AccessDenialTests ===
 effortless-ntwf:AccessDenialTestsShape a sh:NodeShape ;
     sh:targetClass effortless-ntwf:AccessDenialTests ;
@@ -3724,6 +3765,225 @@ effortless-ntwf:AnswerRequirementChecksShape a sh:NodeShape ;
         """ ;
     ] .
 
+# === Shape with rules for AppActionFields ===
+effortless-ntwf:AppActionFieldsShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:AppActionFields ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_AppActionFields_Name" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:name ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:AppActionFields .
+    OPTIONAL { $this effortless-ntwf:appAction ?app_action . OPTIONAL { ?app_action effortless-ntwf:__key ?app_action__key . } }
+    OPTIONAL { $this effortless-ntwf:fieldLabel ?field_label . OPTIONAL { ?field_label effortless-ntwf:__key ?field_label__key . } }
+                BIND(CONCAT(COALESCE(COALESCE(?app_action__key, IF(isIRI(?app_action), REPLACE(STR(?app_action), "^.*[#/]", ""), STR(?app_action))), ""), " / ", COALESCE(COALESCE(?field_label__key, IF(isIRI(?field_label), REPLACE(STR(?field_label), "^.*[#/]", ""), STR(?field_label))), "")) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_AppActionFields_TargetFieldType" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:targetFieldType ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:AppActionFields .
+                OPTIONAL { $this effortless-ntwf:targetField ?j0 . }
+                OPTIONAL { ?j1 a effortless-ntwf:RulebookFields ; effortless-ntwf:rulebookFieldId ?j2 . FILTER( ?j1 = ?j0 || REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "") ) OPTIONAL { ?j1 effortless-ntwf:fieldType ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_AppActionFields_WritesDerivedField" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:writesDerivedField ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:AppActionFields .
+    OPTIONAL { $this effortless-ntwf:targetField ?target_field . OPTIONAL { ?target_field effortless-ntwf:__key ?target_field__key . } }
+    OPTIONAL { $this effortless-ntwf:targetFieldType ?target_field_type . OPTIONAL { ?target_field_type effortless-ntwf:__key ?target_field_type__key . } }
+                BIND((COALESCE((COALESCE(?target_field__key, COALESCE(IF(isIRI(?target_field), REPLACE(STR(?target_field), "^.*[#/]", ""), STR(?target_field)), "")) != ""), false) && COALESCE((COALESCE(?target_field_type__key, COALESCE(IF(isIRI(?target_field_type), REPLACE(STR(?target_field_type), "^.*[#/]", ""), STR(?target_field_type)), "")) != "raw"), false) && COALESCE((COALESCE(?target_field_type__key, COALESCE(IF(isIRI(?target_field_type), REPLACE(STR(?target_field_type), "^.*[#/]", ""), STR(?target_field_type)), "")) != "relationship"), false)) AS ?_result)
+            }
+        """ ;
+    ] .
+
+# === Shape with rules for AppActions ===
+effortless-ntwf:AppActionsShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:AppActions ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_AppActions_Name" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:name ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:AppActions .
+    OPTIONAL { $this effortless-ntwf:label ?label . }
+                BIND(?label AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_AppActions_PolicyCommand" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:policyCommand ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:AppActions .
+                OPTIONAL { $this effortless-ntwf:policy ?j0 . }
+                OPTIONAL { ?j1 a effortless-ntwf:AccessPolicies ; effortless-ntwf:accessPolicyId ?j2 . FILTER( ?j1 = ?j0 || REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "") ) OPTIONAL { ?j1 effortless-ntwf:command ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_AppActions_PolicyDenialTestCount" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:policyDenialTestCount ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:AppActions .
+                OPTIONAL { $this effortless-ntwf:policy ?j0 . }
+                OPTIONAL { ?j1 a effortless-ntwf:AccessPolicies ; effortless-ntwf:accessPolicyId ?j2 . FILTER( ?j1 = ?j0 || REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "") ) OPTIONAL { ?j1 effortless-ntwf:denialTestCount ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_AppActions_WatchedFieldIsWitness" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:watchedFieldIsWitness ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:AppActions .
+                OPTIONAL { $this effortless-ntwf:watchedField ?j0 . }
+                OPTIONAL { ?j1 a effortless-ntwf:RulebookFields ; effortless-ntwf:rulebookFieldId ?j2 . FILTER( ?j1 = ?j0 || REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "") ) OPTIONAL { ?j1 effortless-ntwf:isWitness ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_AppActions_InputFieldCount" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:inputFieldCount ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:AppActions .
+                {
+                    SELECT (COUNT(?child) AS ?_result) WHERE {
+                    ?child a effortless-ntwf:AppActionFields .
+                    ?child effortless-ntwf:appAction $this .
+                    }
+                }
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_AppActions_IsUnpermitted" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:isUnpermitted ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:AppActions .
+    OPTIONAL { $this effortless-ntwf:policy ?policy . OPTIONAL { ?policy effortless-ntwf:__key ?policy__key . } }
+                BIND((COALESCE(?policy__key, COALESCE(IF(isIRI(?policy), REPLACE(STR(?policy), "^.*[#/]", ""), STR(?policy)), "")) = "") AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_AppActions_PolicyCommandDisagrees" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:policyCommandDisagrees ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:AppActions .
+    OPTIONAL { $this effortless-ntwf:operation ?operation . }
+    OPTIONAL { $this effortless-ntwf:policy ?policy . OPTIONAL { ?policy effortless-ntwf:__key ?policy__key . } }
+    OPTIONAL { $this effortless-ntwf:policyCommand ?policy_command . }
+                BIND((COALESCE((COALESCE(?policy__key, COALESCE(IF(isIRI(?policy), REPLACE(STR(?policy), "^.*[#/]", ""), STR(?policy)), "")) != ""), false) && COALESCE(COALESCE((?operation != ?policy_command), !((!BOUND(?operation) || STR(?operation) = "") && (!BOUND(?policy_command) || STR(?policy_command) = ""))), false)) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_AppActions_IsUnprovenWrite" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:isUnprovenWrite ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:AppActions .
+    OPTIONAL { $this effortless-ntwf:policy ?policy . OPTIONAL { ?policy effortless-ntwf:__key ?policy__key . } }
+    OPTIONAL { $this effortless-ntwf:policyDenialTestCount ?policy_denial_test_count . }
+                BIND((COALESCE((COALESCE(?policy__key, COALESCE(IF(isIRI(?policy), REPLACE(STR(?policy), "^.*[#/]", ""), STR(?policy)), "")) != ""), false) && COALESCE((COALESCE(?policy_denial_test_count, 0) = 0), false)) AS ?_result)
+            }
+        """ ;
+    ] .
+
 # === Shape with rules for AppNavGroups ===
 effortless-ntwf:AppNavGroupsShape a sh:NodeShape ;
     sh:targetClass effortless-ntwf:AppNavGroups ;
@@ -5500,6 +5760,44 @@ effortless-ntwf:AssistantAnswersShape a sh:NodeShape ;
                 BIND((COALESCE((COALESCE(?retrieval_mode__key, COALESCE(IF(isIRI(?retrieval_mode), REPLACE(STR(?retrieval_mode), "^.*[#/]", ""), STR(?retrieval_mode)), "")) = "StructuredQuery"), false) && COALESCE((COALESCE(?was_correct, false) = false), false) && COALESCE((COALESCE(?stale_grounding_count, 0) > 0), false)) AS ?_result)
             }
         """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_AssistantAnswers_OwnerOrganization" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:ownerOrganization ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:AssistantAnswers .
+                OPTIONAL { $this effortless-ntwf:stepExecution ?j0 . }
+                OPTIONAL { ?j1 a effortless-ntwf:StepExecutions ; effortless-ntwf:stepExecutionId ?j2 . FILTER( ?j1 = ?j0 || REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "") ) OPTIONAL { ?j1 effortless-ntwf:ownerOrganization ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_AssistantAnswers_ModelReasonedAndTaskFailed" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:modelReasonedAndTaskFailed ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:AssistantAnswers .
+    OPTIONAL { $this effortless-ntwf:modelDidTheReasoning ?model_did_the_reasoning . }
+    OPTIONAL { $this effortless-ntwf:taskOutcome ?task_outcome . OPTIONAL { ?task_outcome effortless-ntwf:__key ?task_outcome__key . } }
+                BIND((COALESCE(?model_did_the_reasoning, false) && COALESCE((COALESCE(?task_outcome__key, COALESCE(IF(isIRI(?task_outcome), REPLACE(STR(?task_outcome), "^.*[#/]", ""), STR(?task_outcome)), "")) = "Failed"), false)) AS ?_result)
+            }
+        """ ;
     ] .
 
 # === Shape with rules for AssistantBenchmarks ===
@@ -7263,6 +7561,25 @@ effortless-ntwf:ChangeRequestsShape a sh:NodeShape ;
     $this a effortless-ntwf:ChangeRequests .
     OPTIONAL { $this effortless-ntwf:status ?status . OPTIONAL { ?status effortless-ntwf:__key ?status__key . } }
                 BIND((COALESCE(?status__key, COALESCE(IF(isIRI(?status), REPLACE(STR(?status), "^.*[#/]", ""), STR(?status)), "")) = "Approved") AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_ChangeRequests_OwnerOrganization" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:ownerOrganization ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:ChangeRequests .
+                OPTIONAL { $this effortless-ntwf:procedureVersion ?j0 . }
+                OPTIONAL { ?j1 a effortless-ntwf:ProcedureVersions ; effortless-ntwf:procedureVersionId ?j2 . FILTER( ?j1 = ?j0 || REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "") ) OPTIONAL { ?j1 effortless-ntwf:ownerOrganization ?j3 . } }
+                BIND(?j3 AS ?_result)
             }
         """ ;
     ] .
@@ -10134,6 +10451,63 @@ effortless-ntwf:CueObservationsShape a sh:NodeShape ;
                 BIND(IF(COALESCE(?is_unescalated_danger_cue, false), ?step_execution, "") AS ?_result)
             }
         """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_CueObservations_OwnerOrganization" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:ownerOrganization ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:CueObservations .
+                OPTIONAL { $this effortless-ntwf:stepExecution ?j0 . }
+                OPTIONAL { ?j1 a effortless-ntwf:StepExecutions ; effortless-ntwf:stepExecutionId ?j2 . FILTER( ?j1 = ?j0 || REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "") ) OPTIONAL { ?j1 effortless-ntwf:ownerOrganization ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_CueObservations_CueSignalsIncompleteStep" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:cueSignalsIncompleteStep ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:CueObservations .
+                OPTIONAL { $this effortless-ntwf:stepCue ?j0 . }
+                OPTIONAL { ?j1 a effortless-ntwf:StepCues ; effortless-ntwf:stepCueId ?j2 . FILTER( ?j1 = ?j0 || REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "") ) OPTIONAL { ?j1 effortless-ntwf:signalsIncompleteStep ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_CueObservations_IsAwaitingAcknowledgement" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:isAwaitingAcknowledgement ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:CueObservations .
+    OPTIONAL { $this effortless-ntwf:acknowledgedAt ?acknowledged_at . OPTIONAL { ?acknowledged_at effortless-ntwf:__key ?acknowledged_at__key . } }
+    OPTIONAL { $this effortless-ntwf:wasEscalated ?was_escalated . }
+                BIND((COALESCE((COALESCE(?was_escalated, false) = true), false) && COALESCE((COALESCE(?acknowledged_at__key, COALESCE(IF(isIRI(?acknowledged_at), REPLACE(STR(?acknowledged_at), "^.*[#/]", ""), STR(?acknowledged_at)), "")) = ""), false)) AS ?_result)
+            }
+        """ ;
     ] .
 
 # === Shape with rules for DecisionPoints ===
@@ -11532,6 +11906,343 @@ effortless-ntwf:EvaluationContextsShape a sh:NodeShape ;
     OPTIONAL { $this effortless-ntwf:asOfInstant ?as_of_instant . OPTIONAL { ?as_of_instant effortless-ntwf:__key ?as_of_instant__key . } }
     OPTIONAL { $this effortless-ntwf:label ?label . OPTIONAL { ?label effortless-ntwf:__key ?label__key . } }
                 BIND(CONCAT(COALESCE(COALESCE(?label__key, IF(isIRI(?label), REPLACE(STR(?label), "^.*[#/]", ""), STR(?label))), ""), " @ ", COALESCE(REPLACE(COALESCE(?as_of_instant__key, IF(isIRI(?as_of_instant), REPLACE(STR(?as_of_instant), "^.*[#/]", ""), STR(?as_of_instant))), "Z$", "+00:00"), "")) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_EvaluationContexts_ExplicitFragmentCount" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:explicitFragmentCount ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:EvaluationContexts .
+                {
+                    SELECT (COUNT(?child) AS ?_result) WHERE {
+                    ?child a effortless-ntwf:KnowledgeFragments .
+                    OPTIONAL { ?child effortless-ntwf:knowledgeForm ?c0 . }
+                    FILTER((STR(?c0) = "Explicit"))
+                    }
+                }
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_EvaluationContexts_TacitFragmentCount" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:tacitFragmentCount ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:EvaluationContexts .
+                {
+                    SELECT (COUNT(?child) AS ?_result) WHERE {
+                    ?child a effortless-ntwf:KnowledgeFragments .
+                    OPTIONAL { ?child effortless-ntwf:knowledgeForm ?c0 . }
+                    FILTER((STR(?c0) = "Tacit"))
+                    }
+                }
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_EvaluationContexts_ImplicitFragmentCount" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:implicitFragmentCount ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:EvaluationContexts .
+                {
+                    SELECT (COUNT(?child) AS ?_result) WHERE {
+                    ?child a effortless-ntwf:KnowledgeFragments .
+                    OPTIONAL { ?child effortless-ntwf:knowledgeForm ?c0 . }
+                    FILTER((STR(?c0) = "Implicit"))
+                    }
+                }
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_EvaluationContexts_SituatedJudgmentFragmentCount" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:situatedJudgmentFragmentCount ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:EvaluationContexts .
+                {
+                    SELECT (COUNT(?child) AS ?_result) WHERE {
+                    ?child a effortless-ntwf:KnowledgeFragments .
+                    OPTIONAL { ?child effortless-ntwf:knowledgeForm ?c0 . }
+                    FILTER((STR(?c0) = "SituatedJudgment"))
+                    }
+                }
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_EvaluationContexts_ModelReasonedAnswerCount" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:modelReasonedAnswerCount ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:EvaluationContexts .
+                {
+                    SELECT (COUNT(?child) AS ?_result) WHERE {
+                    ?child a effortless-ntwf:AssistantAnswers .
+                    OPTIONAL { ?child effortless-ntwf:modelDidTheReasoning ?c0 . }
+                    FILTER(BOUND(?c0) && ?c0 = true)
+                    }
+                }
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_EvaluationContexts_OtherwiseReasonedAnswerCount" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:otherwiseReasonedAnswerCount ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:EvaluationContexts .
+                {
+                    SELECT (COUNT(?child) AS ?_result) WHERE {
+                    ?child a effortless-ntwf:AssistantAnswers .
+                    OPTIONAL { ?child effortless-ntwf:modelDidTheReasoning ?c0 . }
+                    FILTER(BOUND(?c0) && ?c0 = false)
+                    }
+                }
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_EvaluationContexts_AssistantAnswerCount" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:assistantAnswerCount ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:EvaluationContexts .
+    OPTIONAL { $this effortless-ntwf:modelReasonedAnswerCount ?model_reasoned_answer_count . }
+    OPTIONAL { $this effortless-ntwf:otherwiseReasonedAnswerCount ?otherwise_reasoned_answer_count . }
+                BIND(ROUND((?model_reasoned_answer_count + ?otherwise_reasoned_answer_count)) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_EvaluationContexts_ModelReasonedFailedAnswerCount" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:modelReasonedFailedAnswerCount ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:EvaluationContexts .
+                {
+                    SELECT (COUNT(?child) AS ?_result) WHERE {
+                    ?child a effortless-ntwf:AssistantAnswers .
+                    OPTIONAL { ?child effortless-ntwf:modelReasonedAndTaskFailed ?c0 . }
+                    FILTER(BOUND(?c0) && ?c0 = true)
+                    }
+                }
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_EvaluationContexts_OutOfOrderStepExecutionCount" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:outOfOrderStepExecutionCount ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:EvaluationContexts .
+                {
+                    SELECT (COUNT(?child) AS ?_result) WHERE {
+                    ?child a effortless-ntwf:StepExecutions .
+                    OPTIONAL { ?child effortless-ntwf:isOutOfSpecifiedOrder ?c0 . }
+                    FILTER(BOUND(?c0) && ?c0 = true)
+                    }
+                }
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_EvaluationContexts_InOrderStepExecutionCount" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:inOrderStepExecutionCount ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:EvaluationContexts .
+                {
+                    SELECT (COUNT(?child) AS ?_result) WHERE {
+                    ?child a effortless-ntwf:StepExecutions .
+                    OPTIONAL { ?child effortless-ntwf:isOutOfSpecifiedOrder ?c0 . }
+                    FILTER(BOUND(?c0) && ?c0 = false)
+                    }
+                }
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_EvaluationContexts_StepExecutionCount" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:stepExecutionCount ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:EvaluationContexts .
+    OPTIONAL { $this effortless-ntwf:inOrderStepExecutionCount ?in_order_step_execution_count . }
+    OPTIONAL { $this effortless-ntwf:outOfOrderStepExecutionCount ?out_of_order_step_execution_count . }
+                BIND(ROUND((?out_of_order_step_execution_count + ?in_order_step_execution_count)) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_EvaluationContexts_EarlyStartStepExecutionCount" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:earlyStartStepExecutionCount ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:EvaluationContexts .
+                {
+                    SELECT (COUNT(?child) AS ?_result) WHERE {
+                    ?child a effortless-ntwf:StepExecutions .
+                    OPTIONAL { ?child effortless-ntwf:ranBeforePrerequisiteCompleted ?c0 . }
+                    FILTER(BOUND(?c0) && ?c0 = true)
+                    }
+                }
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_EvaluationContexts_ExactMappingCount" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:exactMappingCount ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:EvaluationContexts .
+                {
+                    SELECT (COUNT(?child) AS ?_result) WHERE {
+                    ?child a effortless-ntwf:SemanticMappings .
+                    OPTIONAL { ?child effortless-ntwf:mappingRelation ?c0 . }
+                    FILTER((STR(?c0) = "exact"))
+                    }
+                }
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_EvaluationContexts_AlignedMappingCount" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:alignedMappingCount ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:EvaluationContexts .
+                {
+                    SELECT (COUNT(?child) AS ?_result) WHERE {
+                    ?child a effortless-ntwf:SemanticMappings .
+                    OPTIONAL { ?child effortless-ntwf:mappingRelation ?c0 . }
+                    FILTER((STR(?c0) = "aligned"))
+                    }
+                }
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_EvaluationContexts_ExtensionMappingCount" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:extensionMappingCount ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:EvaluationContexts .
+                {
+                    SELECT (COUNT(?child) AS ?_result) WHERE {
+                    ?child a effortless-ntwf:SemanticMappings .
+                    OPTIONAL { ?child effortless-ntwf:mappingRelation ?c0 . }
+                    FILTER((STR(?c0) = "extension"))
+                    }
+                }
             }
         """ ;
     ] .
@@ -16308,6 +17019,46 @@ effortless-ntwf:KnowledgeConsumerSystemsShape a sh:NodeShape ;
                 BIND((COALESCE((COALESCE(?system_kind__key, COALESCE(IF(isIRI(?system_kind), REPLACE(STR(?system_kind), "^.*[#/]", ""), STR(?system_kind)), "")) = "KnowledgeGraphPlatform"), false) && COALESCE((COALESCE(?platform_capability_count, 0) < 4), false)) AS ?_result)
             }
         """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_KnowledgeConsumerSystems_HoldsComputationallyEncodedProcedureKnowledge" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:holdsComputationallyEncodedProcedureKnowledge ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:KnowledgeConsumerSystems .
+    OPTIONAL { $this effortless-ntwf:hasReasoner ?has_reasoner . }
+    OPTIONAL { $this effortless-ntwf:holdsProcedureKnowledge ?holds_procedure_knowledge . }
+    OPTIONAL { $this effortless-ntwf:isComputationallyQueryable ?is_computationally_queryable . }
+    OPTIONAL { $this effortless-ntwf:isComputationallyValidatable ?is_computationally_validatable . }
+                BIND((COALESCE(?holds_procedure_knowledge, false) && COALESCE(?is_computationally_queryable, false) && COALESCE(?is_computationally_validatable, false) && COALESCE(?has_reasoner, false)) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_KnowledgeConsumerSystems_StoresProcedureKnowledgeWithoutComputationalAccess" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:storesProcedureKnowledgeWithoutComputationalAccess ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:KnowledgeConsumerSystems .
+    OPTIONAL { $this effortless-ntwf:holdsComputationallyEncodedProcedureKnowledge ?holds_computationally_encoded_procedure_knowledge . }
+    OPTIONAL { $this effortless-ntwf:holdsProcedureKnowledge ?holds_procedure_knowledge . }
+                BIND((COALESCE(?holds_procedure_knowledge, false) && COALESCE((COALESCE(?holds_computationally_encoded_procedure_knowledge, false) = false), false)) AS ?_result)
+            }
+        """ ;
     ] .
 
 # === Shape with rules for KnowledgeConversions ===
@@ -17708,6 +18459,25 @@ effortless-ntwf:KnowledgeFragmentsShape a sh:NodeShape ;
                 BIND((COALESCE((COALESCE(?status__key, COALESCE(IF(isIRI(?status), REPLACE(STR(?status), "^.*[#/]", ""), STR(?status)), "")) = "Approved"), false) && COALESCE((COALESCE(?corroboration_count, 0) = 0), false)) AS ?_result)
             }
         """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_KnowledgeFragments_OwnerOrganization" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:ownerOrganization ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:KnowledgeFragments .
+                OPTIONAL { $this effortless-ntwf:procedureVersion ?j0 . }
+                OPTIONAL { ?j1 a effortless-ntwf:ProcedureVersions ; effortless-ntwf:procedureVersionId ?j2 . FILTER( ?j1 = ?j0 || REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "") ) OPTIONAL { ?j1 effortless-ntwf:ownerOrganization ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
     ] .
 
 # === Shape with rules for KnowledgeGaps ===
@@ -18089,6 +18859,63 @@ effortless-ntwf:KnowledgeGapsShape a sh:NodeShape ;
     OPTIONAL { $this effortless-ntwf:codifiedAsFragment ?codified_as_fragment . OPTIONAL { ?codified_as_fragment effortless-ntwf:__key ?codified_as_fragment__key . } }
     OPTIONAL { $this effortless-ntwf:isGatekeepingOrSabotage ?is_gatekeeping_or_sabotage . }
                 BIND((COALESCE(?is_gatekeeping_or_sabotage, false) && COALESCE((COALESCE(?blocking_kind__key, COALESCE(IF(isIRI(?blocking_kind), REPLACE(STR(?blocking_kind), "^.*[#/]", ""), STR(?blocking_kind)), "")) = "Blocking"), false) && COALESCE((COALESCE(?codified_as_fragment__key, COALESCE(IF(isIRI(?codified_as_fragment), REPLACE(STR(?codified_as_fragment), "^.*[#/]", ""), STR(?codified_as_fragment)), "")) = ""), false)) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_KnowledgeGaps_OwnerOrganization" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:ownerOrganization ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:KnowledgeGaps .
+                OPTIONAL { $this effortless-ntwf:procedureVersion ?j0 . }
+                OPTIONAL { ?j1 a effortless-ntwf:ProcedureVersions ; effortless-ntwf:procedureVersionId ?j2 . FILTER( ?j1 = ?j0 || REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "") ) OPTIONAL { ?j1 effortless-ntwf:ownerOrganization ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_KnowledgeGaps_AnsweringChangeTitle" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:answeringChangeTitle ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:KnowledgeGaps .
+                OPTIONAL { $this effortless-ntwf:answeredByModelChangeRequest ?j0 . }
+                OPTIONAL { ?j1 a effortless-ntwf:ModelChangeRequests ; effortless-ntwf:modelChangeRequestId ?j2 . FILTER( ?j1 = ?j0 || REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "") ) OPTIONAL { ?j1 effortless-ntwf:title ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_KnowledgeGaps_AnsweringChangeStatus" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:answeringChangeStatus ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:KnowledgeGaps .
+                OPTIONAL { $this effortless-ntwf:answeredByModelChangeRequest ?j0 . }
+                OPTIONAL { ?j1 a effortless-ntwf:ModelChangeRequests ; effortless-ntwf:modelChangeRequestId ?j2 . FILTER( ?j1 = ?j0 || REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "") ) OPTIONAL { ?j1 effortless-ntwf:status ?j3 . } }
+                BIND(?j3 AS ?_result)
             }
         """ ;
     ] .
@@ -19711,6 +20538,25 @@ effortless-ntwf:KnowledgeTransfersShape a sh:NodeShape ;
                 BIND((COALESCE((COALESCE(?recipient_agent__key, COALESCE(IF(isIRI(?recipient_agent), REPLACE(STR(?recipient_agent), "^.*[#/]", ""), STR(?recipient_agent)), "")) != ""), false) && COALESCE((COALESCE(?channel__key, COALESCE(IF(isIRI(?channel), REPLACE(STR(?channel), "^.*[#/]", ""), STR(?channel)), "")) = "AmbientExposure"), false) && COALESCE((COALESCE(?recipient_role_count, 0) = 0), false)) AS ?_result)
             }
         """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_KnowledgeTransfers_KnowHowTopic" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:knowHowTopic ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:KnowledgeTransfers .
+                OPTIONAL { $this effortless-ntwf:knowHow ?j0 . }
+                OPTIONAL { ?j1 a effortless-ntwf:KnowHowCarriers ; effortless-ntwf:knowHowCarrierId ?j2 . FILTER( ?j1 = ?j0 || REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "") ) OPTIONAL { ?j1 effortless-ntwf:topic ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
     ] .
 
 # === Shape with rules for KnowledgeWorkforcePositions ===
@@ -20261,6 +21107,25 @@ effortless-ntwf:MentorshipsShape a sh:NodeShape ;
     OPTIONAL { $this effortless-ntwf:daysSinceStarted ?days_since_started . }
     OPTIONAL { $this effortless-ntwf:mentorshipForm ?mentorship_form . OPTIONAL { ?mentorship_form effortless-ntwf:__key ?mentorship_form__key . } }
                 BIND((COALESCE((COALESCE(?mentorship_form__key, COALESCE(IF(isIRI(?mentorship_form), REPLACE(STR(?mentorship_form), "^.*[#/]", ""), STR(?mentorship_form)), "")) = "Apprenticeship"), false) && COALESCE((COALESCE(?days_since_started, 0) >= 0), false) && COALESCE((COALESCE(?days_since_started, 0) <= 1095), false)) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Mentorships_CommunityLabel" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:communityLabel ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Mentorships .
+                OPTIONAL { $this effortless-ntwf:communityOfPractice ?j0 . }
+                OPTIONAL { ?j1 a effortless-ntwf:CommunitiesOfPractice ; effortless-ntwf:communityOfPracticeId ?j2 . FILTER( ?j1 = ?j0 || REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "") ) OPTIONAL { ?j1 effortless-ntwf:label ?j3 . } }
+                BIND(?j3 AS ?_result)
             }
         """ ;
     ] .
@@ -25732,6 +26597,204 @@ effortless-ntwf:OntologyProfilesShape a sh:NodeShape ;
                 BIND((COALESCE((COALESCE(?adoption_stage, 0) > 1), false) && COALESCE((COALESCE((COALESCE(?prerequisite_profile__key, COALESCE(IF(isIRI(?prerequisite_profile), REPLACE(STR(?prerequisite_profile), "^.*[#/]", ""), STR(?prerequisite_profile)), "")) = ""), false) || COALESCE((COALESCE(?prerequisite_adopted_at__key, COALESCE(IF(isIRI(?prerequisite_adopted_at), REPLACE(STR(?prerequisite_adopted_at), "^.*[#/]", ""), STR(?prerequisite_adopted_at)), "")) = ""), false) || COALESCE(COALESCE((?prerequisite_adopted_at > ?adopted_at), false), false)), false)) AS ?_result)
             }
         """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_OntologyProfiles_NamespaceIsHttp" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:namespaceIsHttp ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:OntologyProfiles .
+    OPTIONAL { $this effortless-ntwf:namespaceIri ?namespace_iri . }
+                BIND((COALESCE((SUBSTR(STR(?namespace_iri), 1, 7) = "http://"), false) || COALESCE((SUBSTR(STR(?namespace_iri), 1, 8) = "https://"), false)) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_OntologyProfiles_NamespaceDereferences" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:namespaceDereferences ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:OntologyProfiles .
+    OPTIONAL { $this effortless-ntwf:namespaceHttpStatus ?namespace_http_status . }
+    OPTIONAL { $this effortless-ntwf:namespaceIsHttp ?namespace_is_http . }
+                BIND((COALESCE(?namespace_is_http, false) && COALESCE((COALESCE(?namespace_http_status, 0) = 200), false)) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_OntologyProfiles_PublishesFollowingLinkedDataPrinciples" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:publishesFollowingLinkedDataPrinciples ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:OntologyProfiles .
+    OPTIONAL { $this effortless-ntwf:mappingCount ?mapping_count . }
+    OPTIONAL { $this effortless-ntwf:namespaceDereferences ?namespace_dereferences . }
+    OPTIONAL { $this effortless-ntwf:namespaceServesRdf ?namespace_serves_rdf . }
+                BIND((COALESCE(?namespace_dereferences, false) && COALESCE(?namespace_serves_rdf, false) && COALESCE((COALESCE(?mapping_count, 0) > 0), false)) AS ?_result)
+            }
+        """ ;
+    ] .
+
+# === Shape with rules for OntologySupportProgrammes ===
+effortless-ntwf:OntologySupportProgrammesShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:OntologySupportProgrammes ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_OntologySupportProgrammes_Name" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:name ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:OntologySupportProgrammes .
+    OPTIONAL { $this effortless-ntwf:label ?label . }
+                BIND(?label AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_OntologySupportProgrammes_AsOfInstant" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:asOfInstant ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:OntologySupportProgrammes .
+                OPTIONAL { $this effortless-ntwf:evaluationContext ?j0 . }
+                OPTIONAL { ?j1 a effortless-ntwf:EvaluationContexts ; effortless-ntwf:evaluationContextId ?j2 . FILTER( ?j1 = ?j0 || REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "") ) OPTIONAL { ?j1 effortless-ntwf:asOfInstant ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_OntologySupportProgrammes_SupportedProfileCount" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:supportedProfileCount ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:OntologySupportProgrammes .
+                {
+                    SELECT (COUNT(?child) AS ?_result) WHERE {
+                    ?child a effortless-ntwf:OntologyProfiles .
+                    ?child effortless-ntwf:supportingProgramme $this .
+                    }
+                }
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_OntologySupportProgrammes_HasEnded" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:hasEnded ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:OntologySupportProgrammes .
+    OPTIONAL { $this effortless-ntwf:asOfInstant ?as_of_instant . }
+    OPTIONAL { $this effortless-ntwf:endsOn ?ends_on . OPTIONAL { ?ends_on effortless-ntwf:__key ?ends_on__key . } }
+                BIND((COALESCE((COALESCE(?ends_on__key, COALESCE(IF(isIRI(?ends_on), REPLACE(STR(?ends_on), "^.*[#/]", ""), STR(?ends_on)), "")) != ""), false) && COALESCE(COALESCE((?ends_on < ?as_of_instant), false), false)) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_OntologySupportProgrammes_DaysUntilProgrammeEnds" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:daysUntilProgrammeEnds ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:OntologySupportProgrammes .
+    OPTIONAL { $this effortless-ntwf:asOfInstant ?as_of_instant . }
+    OPTIONAL { $this effortless-ntwf:endsOn ?ends_on . OPTIONAL { ?ends_on effortless-ntwf:__key ?ends_on__key . } }
+                BIND(ROUND(IF(COALESCE((COALESCE(?ends_on__key, COALESCE(IF(isIRI(?ends_on), REPLACE(STR(?ends_on), "^.*[#/]", ""), STR(?ends_on)), "")) = ""), false), 0, ((DAY(?ends_on) + FLOOR((153 * (MONTH(?ends_on) + 12 * FLOOR((14 - MONTH(?ends_on)) / 12) - 3) + 2) / 5) + 365 * (YEAR(?ends_on) + 4800 - FLOOR((14 - MONTH(?ends_on)) / 12)) + FLOOR((YEAR(?ends_on) + 4800 - FLOOR((14 - MONTH(?ends_on)) / 12)) / 4) - FLOOR((YEAR(?ends_on) + 4800 - FLOOR((14 - MONTH(?ends_on)) / 12)) / 100) + FLOOR((YEAR(?ends_on) + 4800 - FLOOR((14 - MONTH(?ends_on)) / 12)) / 400) - 32045) - (DAY(?as_of_instant) + FLOOR((153 * (MONTH(?as_of_instant) + 12 * FLOOR((14 - MONTH(?as_of_instant)) / 12) - 3) + 2) / 5) + 365 * (YEAR(?as_of_instant) + 4800 - FLOOR((14 - MONTH(?as_of_instant)) / 12)) + FLOOR((YEAR(?as_of_instant) + 4800 - FLOOR((14 - MONTH(?as_of_instant)) / 12)) / 4) - FLOOR((YEAR(?as_of_instant) + 4800 - FLOOR((14 - MONTH(?as_of_instant)) / 12)) / 100) + FLOOR((YEAR(?as_of_instant) + 4800 - FLOOR((14 - MONTH(?as_of_instant)) / 12)) / 400) - 32045)))) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_OntologySupportProgrammes_IsEndedWithNoStewardNamed" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:isEndedWithNoStewardNamed ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:OntologySupportProgrammes .
+    OPTIONAL { $this effortless-ntwf:hasEnded ?has_ended . }
+    OPTIONAL { $this effortless-ntwf:ourSuccessorSteward ?our_successor_steward . OPTIONAL { ?our_successor_steward effortless-ntwf:__key ?our_successor_steward__key . } }
+                BIND((COALESCE(?has_ended, false) && COALESCE((COALESCE(?our_successor_steward__key, COALESCE(IF(isIRI(?our_successor_steward), REPLACE(STR(?our_successor_steward), "^.*[#/]", ""), STR(?our_successor_steward)), "")) = ""), false)) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_OntologySupportProgrammes_IsEndingSoonWithNoStewardNamed" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:isEndingSoonWithNoStewardNamed ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:OntologySupportProgrammes .
+    OPTIONAL { $this effortless-ntwf:daysUntilProgrammeEnds ?days_until_programme_ends . }
+    OPTIONAL { $this effortless-ntwf:endsOn ?ends_on . OPTIONAL { ?ends_on effortless-ntwf:__key ?ends_on__key . } }
+    OPTIONAL { $this effortless-ntwf:hasEnded ?has_ended . }
+    OPTIONAL { $this effortless-ntwf:ourSuccessorSteward ?our_successor_steward . OPTIONAL { ?our_successor_steward effortless-ntwf:__key ?our_successor_steward__key . } }
+                BIND((COALESCE((COALESCE(?has_ended, false) = false), false) && COALESCE((COALESCE(?ends_on__key, COALESCE(IF(isIRI(?ends_on), REPLACE(STR(?ends_on), "^.*[#/]", ""), STR(?ends_on)), "")) != ""), false) && COALESCE((COALESCE(?days_until_programme_ends, 0) <= 180), false) && COALESCE((COALESCE(?our_successor_steward__key, COALESCE(IF(isIRI(?our_successor_steward), REPLACE(STR(?our_successor_steward), "^.*[#/]", ""), STR(?our_successor_steward)), "")) = ""), false)) AS ?_result)
+            }
+        """ ;
     ] .
 
 # === Shape with rules for OperationalBindings ===
@@ -28701,6 +29764,101 @@ effortless-ntwf:ProcedureExecutionsShape a sh:NodeShape ;
     OPTIONAL { $this effortless-ntwf:feedbackCount ?feedback_count . }
     OPTIONAL { $this effortless-ntwf:hasStepDeviation ?has_step_deviation . }
                 BIND((COALESCE(?has_step_deviation, false) && COALESCE((COALESCE(?feedback_count, 0) = 0), false)) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_ProcedureExecutions_OwnerOrganization" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:ownerOrganization ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:ProcedureExecutions .
+                OPTIONAL { $this effortless-ntwf:procedureVersion ?j0 . }
+                OPTIONAL { ?j1 a effortless-ntwf:ProcedureVersions ; effortless-ntwf:procedureVersionId ?j2 . FILTER( ?j1 = ?j0 || REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "") ) OPTIONAL { ?j1 effortless-ntwf:ownerOrganization ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_ProcedureExecutions_StoppedAtGapStatement" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:stoppedAtGapStatement ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:ProcedureExecutions .
+                OPTIONAL { $this effortless-ntwf:stoppedAtKnowledgeGap ?j0 . }
+                OPTIONAL { ?j1 a effortless-ntwf:KnowledgeGaps ; effortless-ntwf:knowledgeGapId ?j2 . FILTER( ?j1 = ?j0 || REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "") ) OPTIONAL { ?j1 effortless-ntwf:statement ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_ProcedureExecutions_StoppedAtGapStatus" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:stoppedAtGapStatus ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:ProcedureExecutions .
+                OPTIONAL { $this effortless-ntwf:stoppedAtKnowledgeGap ?j0 . }
+                OPTIONAL { ?j1 a effortless-ntwf:KnowledgeGaps ; effortless-ntwf:knowledgeGapId ?j2 . FILTER( ?j1 = ?j0 || REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "") ) OPTIONAL { ?j1 effortless-ntwf:status ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_ProcedureExecutions_StoppedAtGapChangeTitle" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:stoppedAtGapChangeTitle ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:ProcedureExecutions .
+                OPTIONAL { $this effortless-ntwf:stoppedAtKnowledgeGap ?j0 . }
+                OPTIONAL { ?j1 a effortless-ntwf:KnowledgeGaps ; effortless-ntwf:knowledgeGapId ?j2 . FILTER( ?j1 = ?j0 || REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "") ) OPTIONAL { ?j1 effortless-ntwf:answeringChangeTitle ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_ProcedureExecutions_StoppedAtGapChangeStatus" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:stoppedAtGapChangeStatus ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:ProcedureExecutions .
+                OPTIONAL { $this effortless-ntwf:stoppedAtKnowledgeGap ?j0 . }
+                OPTIONAL { ?j1 a effortless-ntwf:KnowledgeGaps ; effortless-ntwf:knowledgeGapId ?j2 . FILTER( ?j1 = ?j0 || REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "") ) OPTIONAL { ?j1 effortless-ntwf:answeringChangeStatus ?j3 . } }
+                BIND(?j3 AS ?_result)
             }
         """ ;
     ] .
@@ -33220,6 +34378,25 @@ effortless-ntwf:ProcedureVersionsShape a sh:NodeShape ;
                 }
             }
         """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_ProcedureVersions_OwnerOrganization" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:ownerOrganization ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:ProcedureVersions .
+                OPTIONAL { $this effortless-ntwf:procedure ?j0 . }
+                OPTIONAL { ?j1 a effortless-ntwf:Procedures ; effortless-ntwf:procedureId ?j2 . FILTER( ?j1 = ?j0 || REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "") ) OPTIONAL { ?j1 effortless-ntwf:ownerOrganization ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
     ] .
 
 # === Shape with rules for Procedures ===
@@ -35244,6 +36421,24 @@ effortless-ntwf:ProcessMiningRunsShape a sh:NodeShape ;
     $this a effortless-ntwf:ProcessMiningRuns .
     OPTIONAL { $this effortless-ntwf:undocumentedPathCount ?undocumented_path_count . }
                 BIND((COALESCE(?undocumented_path_count, 0) > 0) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_ProcessMiningRuns_ConformancePercent" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:conformancePercent ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:ProcessMiningRuns .
+    OPTIONAL { $this effortless-ntwf:conformanceRate ?conformance_rate . }
+                BIND(ROUND((ROUND((?conformance_rate * 100) * STRDT(CONCAT("1e", STR(0)), xsd:double)) / STRDT(CONCAT("1e", STR(0)), xsd:double))) AS ?_result)
             }
         """ ;
     ] .
@@ -40064,9 +41259,14 @@ effortless-ntwf:RoleSchemaViewsShape a sh:NodeShape ;
                 {
                     SELECT (COUNT(?child) AS ?_result) WHERE {
                     ?child a effortless-ntwf:FieldGrants .
-                    ?child effortless-ntwf:grantKeyWhenReadable ?backfk .
-                    $this effortless-ntwf:grantKey ?backpv .
+                    ?child effortless-ntwf:principal ?backfk .
+                    $this effortless-ntwf:principal ?backpv .
+                    OPTIONAL { ?child effortless-ntwf:canRead ?c2 . }
+                    OPTIONAL { ?child effortless-ntwf:fieldTable ?c4 . }
+                    OPTIONAL { $this effortless-ntwf:targetTable ?p4 . }
                     FILTER(REPLACE(STR(?backfk), "^.*[#/]", "") = REPLACE(STR(?backpv), "^.*[#/]", ""))
+                    FILTER(BOUND(?c2) && ?c2 = true)
+                    FILTER(REPLACE(STR(?c4), "^.*[#/]", "") = REPLACE(STR(?p4), "^.*[#/]", ""))
                     }
                 }
             }
@@ -42598,6 +43798,93 @@ effortless-ntwf:RulebookTablesShape a sh:NodeShape ;
                 BIND((COALESCE((COALESCE(?subject_area__key, COALESCE(IF(isIRI(?subject_area), REPLACE(STR(?subject_area), "^.*[#/]", ""), STR(?subject_area)), "")) = "governance"), false) && COALESCE((COALESCE(?policy_count, 0) = 0), false)) AS ?_result)
             }
         """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_RulebookTables_UnrestrictedNonAdminPolicyCount" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:unrestrictedNonAdminPolicyCount ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:RulebookTables .
+                {
+                    SELECT (COUNT(?child) AS ?_result) WHERE {
+                    ?child a effortless-ntwf:AccessPolicies .
+                    ?child effortless-ntwf:targetTable $this .
+                    OPTIONAL { ?child effortless-ntwf:isUnrestrictedNonAdminGrant ?c2 . }
+                    FILTER(BOUND(?c2) && ?c2 = true)
+                    }
+                }
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_RulebookTables_RestrictedNonAdminPolicyCount" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:restrictedNonAdminPolicyCount ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:RulebookTables .
+                {
+                    SELECT (COUNT(?child) AS ?_result) WHERE {
+                    ?child a effortless-ntwf:AccessPolicies .
+                    ?child effortless-ntwf:targetTable $this .
+                    OPTIONAL { ?child effortless-ntwf:isUnrestrictedNonAdminGrant ?c2 . }
+                    OPTIONAL { ?child effortless-ntwf:principalIsAdmin ?c4 . }
+                    FILTER(BOUND(?c2) && ?c2 = false)
+                    FILTER(BOUND(?c4) && ?c4 = false)
+                    }
+                }
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_RulebookTables_IsReadableInFullByNonAdmin" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:isReadableInFullByNonAdmin ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:RulebookTables .
+    OPTIONAL { $this effortless-ntwf:unrestrictedNonAdminPolicyCount ?unrestricted_non_admin_policy_count . }
+                BIND((COALESCE(?unrestricted_non_admin_policy_count, 0) > 0) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_RulebookTables_IsControlledForEveryNonAdmin" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:isControlledForEveryNonAdmin ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:RulebookTables .
+    OPTIONAL { $this effortless-ntwf:restrictedNonAdminPolicyCount ?restricted_non_admin_policy_count . }
+    OPTIONAL { $this effortless-ntwf:unrestrictedNonAdminPolicyCount ?unrestricted_non_admin_policy_count . }
+                BIND((COALESCE((COALESCE(?restricted_non_admin_policy_count, 0) > 0), false) && COALESCE((COALESCE(?unrestricted_non_admin_policy_count, 0) = 0), false)) AS ?_result)
+            }
+        """ ;
     ] .
 
 # === Shape with rules for SchemeRefinements ===
@@ -42647,6 +43934,25 @@ effortless-ntwf:SemanticMappingsShape a sh:NodeShape ;
     ] ;
     sh:rule [
         a sh:SPARQLRule ;
+        rdfs:label "rule_SemanticMappings_ProfileNamespaceDereferences" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:profileNamespaceDereferences ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:SemanticMappings .
+                OPTIONAL { $this effortless-ntwf:ontologyProfile ?j0 . }
+                OPTIONAL { ?j1 a effortless-ntwf:OntologyProfiles ; effortless-ntwf:ontologyProfileId ?j2 . FILTER( ?j1 = ?j0 || REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "") ) OPTIONAL { ?j1 effortless-ntwf:namespaceDereferences ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
         rdfs:label "rule_SemanticMappings_ReinventsStandardTerm" ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
@@ -42677,9 +43983,10 @@ effortless-ntwf:SemanticMappingsShape a sh:NodeShape ;
             }
             WHERE {
     $this a effortless-ntwf:SemanticMappings .
-    OPTIONAL { $this effortless-ntwf:mappingRelation ?mapping_relation . OPTIONAL { ?mapping_relation effortless-ntwf:__key ?mapping_relation__key . } }
+    OPTIONAL { $this effortless-ntwf:ontologyProfile ?ontology_profile . OPTIONAL { ?ontology_profile effortless-ntwf:__key ?ontology_profile__key . } }
+    OPTIONAL { $this effortless-ntwf:profileNamespaceDereferences ?profile_namespace_dereferences . }
     OPTIONAL { $this effortless-ntwf:targetIri ?target_iri . }
-                BIND((COALESCE((COALESCE(?mapping_relation__key, COALESCE(IF(isIRI(?mapping_relation), REPLACE(STR(?mapping_relation), "^.*[#/]", ""), STR(?mapping_relation)), "")) = "extension"), false) && COALESCE((SUBSTR(STR(?target_iri), 1, 4) != "http"), false)) AS ?_result)
+                BIND((COALESCE((SUBSTR(STR(?target_iri), 1, 4) != "http"), false) || COALESCE((COALESCE((COALESCE(?ontology_profile__key, COALESCE(IF(isIRI(?ontology_profile), REPLACE(STR(?ontology_profile), "^.*[#/]", ""), STR(?ontology_profile)), "")) != ""), false) && COALESCE((COALESCE(?profile_namespace_dereferences, false) = false), false)), false)) AS ?_result)
             }
         """ ;
     ] .
@@ -46125,6 +47432,44 @@ effortless-ntwf:StepCuesShape a sh:NodeShape ;
                 BIND(IF(COALESCE(?signals_incomplete_step, false), ?step, "") AS ?_result)
             }
         """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_StepCues_FailureModeResponse" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:failureModeResponse ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:StepCues .
+                OPTIONAL { $this effortless-ntwf:signalsFailureMode ?j0 . }
+                OPTIONAL { ?j1 a effortless-ntwf:FailureModes ; effortless-ntwf:failureModeId ?j2 . FILTER( ?j1 = ?j0 || REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "") ) OPTIONAL { ?j1 effortless-ntwf:response ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_StepCues_IsUnanswerableSign" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:isUnanswerableSign ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:StepCues .
+    OPTIONAL { $this effortless-ntwf:signalsFailureMode ?signals_failure_mode . OPTIONAL { ?signals_failure_mode effortless-ntwf:__key ?signals_failure_mode__key . } }
+    OPTIONAL { $this effortless-ntwf:signalsIncompleteStep ?signals_incomplete_step . }
+                BIND((COALESCE((COALESCE(?signals_incomplete_step, false) = true), false) && COALESCE((COALESCE(?signals_failure_mode__key, COALESCE(IF(isIRI(?signals_failure_mode), REPLACE(STR(?signals_failure_mode), "^.*[#/]", ""), STR(?signals_failure_mode)), "")) = ""), false)) AS ?_result)
+            }
+        """ ;
     ] .
 
 # === Shape with rules for StepExecutions ===
@@ -48584,6 +49929,67 @@ effortless-ntwf:StepExecutionsShape a sh:NodeShape ;
     OPTIONAL { $this effortless-ntwf:executionStatus ?execution_status . OPTIONAL { ?execution_status effortless-ntwf:__key ?execution_status__key . } }
     OPTIONAL { $this effortless-ntwf:stepPrerequisite ?step_prerequisite . OPTIONAL { ?step_prerequisite effortless-ntwf:__key ?step_prerequisite__key . } }
                 BIND((COALESCE((COALESCE(?step_prerequisite__key, COALESCE(IF(isIRI(?step_prerequisite), REPLACE(STR(?step_prerequisite), "^.*[#/]", ""), STR(?step_prerequisite)), "")) != ""), false) && COALESCE((COALESCE(?completed_prerequisite_run_count, 0) = 0), false) && COALESCE((COALESCE(?execution_status__key, COALESCE(IF(isIRI(?execution_status), REPLACE(STR(?execution_status), "^.*[#/]", ""), STR(?execution_status)), "")) != "Completed"), false)) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_StepExecutions_OwnerOrganization" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:ownerOrganization ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:StepExecutions .
+                OPTIONAL { $this effortless-ntwf:procedureExecution ?j0 . }
+                OPTIONAL { ?j1 a effortless-ntwf:ProcedureExecutions ; effortless-ntwf:procedureExecutionId ?j2 . FILTER( ?j1 = ?j0 || REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "") ) OPTIONAL { ?j1 effortless-ntwf:ownerOrganization ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_StepExecutions_IncompleteCueObservationCount" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:incompleteCueObservationCount ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:StepExecutions .
+                {
+                    SELECT (COUNT(?child) AS ?_result) WHERE {
+                    ?child a effortless-ntwf:CueObservations .
+                    ?child effortless-ntwf:stepExecution $this .
+                    OPTIONAL { ?child effortless-ntwf:cueSignalsIncompleteStep ?c2 . }
+                    FILTER(BOUND(?c2) && ?c2 = true)
+                    }
+                }
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_StepExecutions_IsBlockedByObservedCue" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:isBlockedByObservedCue ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:StepExecutions .
+    OPTIONAL { $this effortless-ntwf:incompleteCueObservationCount ?incomplete_cue_observation_count . }
+                BIND((COALESCE(?incomplete_cue_observation_count, 0) > 0) AS ?_result)
             }
         """ ;
     ] .
@@ -51929,6 +53335,25 @@ effortless-ntwf:StepsShape a sh:NodeShape ;
                 BIND(IF(COALESCE(?is_declared_fallback_step, false), ?step_id, "") AS ?_result)
             }
         """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Steps_OwnerOrganization" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:ownerOrganization ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Steps .
+                OPTIONAL { $this effortless-ntwf:procedureVersion ?j0 . }
+                OPTIONAL { ?j1 a effortless-ntwf:ProcedureVersions ; effortless-ntwf:procedureVersionId ?j2 . FILTER( ?j1 = ?j0 || REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "") ) OPTIONAL { ?j1 effortless-ntwf:ownerOrganization ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
     ] .
 
 # === Shape with rules for StewardActivities ===
@@ -52784,6 +54209,25 @@ effortless-ntwf:TermLabelVariantsShape a sh:NodeShape ;
     $this a effortless-ntwf:TermLabelVariants .
                 OPTIONAL { $this effortless-ntwf:vocabularyTerm ?j0 . }
                 OPTIONAL { ?j1 a effortless-ntwf:VocabularyTerms ; effortless-ntwf:vocabularyTermId ?j2 . FILTER( ?j1 = ?j0 || REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "") ) OPTIONAL { ?j1 effortless-ntwf:vocabulary ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_TermLabelVariants_TermPrefLabel" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:termPrefLabel ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:TermLabelVariants .
+                OPTIONAL { $this effortless-ntwf:vocabularyTerm ?j0 . }
+                OPTIONAL { ?j1 a effortless-ntwf:VocabularyTerms ; effortless-ntwf:vocabularyTermId ?j2 . FILTER( ?j1 = ?j0 || REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "") ) OPTIONAL { ?j1 effortless-ntwf:prefLabel ?j3 . } }
                 BIND(?j3 AS ?_result)
             }
         """ ;
@@ -54704,6 +56148,10 @@ effortless-ntwf:WorkflowViewDivergencesShape a sh:NodeShape ;
     ] .
 
 # === Cardinality: single-valued forward FK properties ===
+effortless-ntwf:AbundantKnowledgeGapsCardinalityShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:AbundantKnowledgeGaps ;
+    sh:property [ sh:path effortless-ntwf:representedByTable ; sh:maxCount 1 ] .
+
 effortless-ntwf:AccessDenialTestsCardinalityShape a sh:NodeShape ;
     sh:targetClass effortless-ntwf:AccessDenialTests ;
     sh:property [ sh:path effortless-ntwf:principal ; sh:maxCount 1 ] ;
@@ -54804,6 +56252,18 @@ effortless-ntwf:AnswerRequirementChecksCardinalityShape a sh:NodeShape ;
     sh:property [ sh:path effortless-ntwf:assistantAnswer ; sh:maxCount 1 ] ;
     sh:property [ sh:path effortless-ntwf:checkedByAgent ; sh:maxCount 1 ] ;
     sh:property [ sh:path effortless-ntwf:requirement ; sh:maxCount 1 ] .
+
+effortless-ntwf:AppActionFieldsCardinalityShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:AppActionFields ;
+    sh:property [ sh:path effortless-ntwf:appAction ; sh:maxCount 1 ] ;
+    sh:property [ sh:path effortless-ntwf:targetField ; sh:maxCount 1 ] .
+
+effortless-ntwf:AppActionsCardinalityShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:AppActions ;
+    sh:property [ sh:path effortless-ntwf:owningRole ; sh:maxCount 1 ] ;
+    sh:property [ sh:path effortless-ntwf:policy ; sh:maxCount 1 ] ;
+    sh:property [ sh:path effortless-ntwf:targetTable ; sh:maxCount 1 ] ;
+    sh:property [ sh:path effortless-ntwf:watchedField ; sh:maxCount 1 ] .
 
 effortless-ntwf:AppRoleProfilesCardinalityShape a sh:NodeShape ;
     sh:targetClass effortless-ntwf:AppRoleProfiles ;
@@ -55290,6 +56750,7 @@ effortless-ntwf:KnowledgeFragmentsCardinalityShape a sh:NodeShape ;
 
 effortless-ntwf:KnowledgeGapsCardinalityShape a sh:NodeShape ;
     sh:targetClass effortless-ntwf:KnowledgeGaps ;
+    sh:property [ sh:path effortless-ntwf:answeredByModelChangeRequest ; sh:maxCount 1 ] ;
     sh:property [ sh:path effortless-ntwf:codifiedAsFragment ; sh:maxCount 1 ] ;
     sh:property [ sh:path effortless-ntwf:drawnOutBySession ; sh:maxCount 1 ] ;
     sh:property [ sh:path effortless-ntwf:evaluationContext ; sh:maxCount 1 ] ;
@@ -55537,7 +56998,12 @@ effortless-ntwf:OnboardingRecordsCardinalityShape a sh:NodeShape ;
 effortless-ntwf:OntologyProfilesCardinalityShape a sh:NodeShape ;
     sh:targetClass effortless-ntwf:OntologyProfiles ;
     sh:property [ sh:path effortless-ntwf:evaluationContext ; sh:maxCount 1 ] ;
-    sh:property [ sh:path effortless-ntwf:prerequisiteProfile ; sh:maxCount 1 ] .
+    sh:property [ sh:path effortless-ntwf:prerequisiteProfile ; sh:maxCount 1 ] ;
+    sh:property [ sh:path effortless-ntwf:supportingProgramme ; sh:maxCount 1 ] .
+
+effortless-ntwf:OntologySupportProgrammesCardinalityShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:OntologySupportProgrammes ;
+    sh:property [ sh:path effortless-ntwf:evaluationContext ; sh:maxCount 1 ] .
 
 effortless-ntwf:OperationalBindingsCardinalityShape a sh:NodeShape ;
     sh:targetClass effortless-ntwf:OperationalBindings ;
@@ -55577,7 +57043,8 @@ effortless-ntwf:ProcedureExecutionsCardinalityShape a sh:NodeShape ;
     sh:property [ sh:path effortless-ntwf:executedOnMachine ; sh:maxCount 1 ] ;
     sh:property [ sh:path effortless-ntwf:executionStatus ; sh:maxCount 1 ] ;
     sh:property [ sh:path effortless-ntwf:facility ; sh:maxCount 1 ] ;
-    sh:property [ sh:path effortless-ntwf:procedureVersion ; sh:maxCount 1 ] .
+    sh:property [ sh:path effortless-ntwf:procedureVersion ; sh:maxCount 1 ] ;
+    sh:property [ sh:path effortless-ntwf:stoppedAtKnowledgeGap ; sh:maxCount 1 ] .
 
 effortless-ntwf:ProcedureFacetAssignmentsCardinalityShape a sh:NodeShape ;
     sh:targetClass effortless-ntwf:ProcedureFacetAssignments ;
@@ -55920,6 +57387,7 @@ effortless-ntwf:StepContextSensitivitiesCardinalityShape a sh:NodeShape ;
 effortless-ntwf:StepCuesCardinalityShape a sh:NodeShape ;
     sh:targetClass effortless-ntwf:StepCues ;
     sh:property [ sh:path effortless-ntwf:escalateToRole ; sh:maxCount 1 ] ;
+    sh:property [ sh:path effortless-ntwf:signalsFailureMode ; sh:maxCount 1 ] ;
     sh:property [ sh:path effortless-ntwf:step ; sh:maxCount 1 ] .
 
 effortless-ntwf:StepExecutionsCardinalityShape a sh:NodeShape ;
@@ -56104,4 +57572,4 @@ effortless-ntwf:leadsWithoutHumanGateEdgeShape a sh:NodeShape ;
         """ ;
     ] .
 
-# Generated 2674 SHACL rules
+# Generated 2745 SHACL rules

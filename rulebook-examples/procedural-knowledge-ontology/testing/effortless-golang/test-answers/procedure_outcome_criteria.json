@@ -1,0 +1,47 @@
+[
+  {
+    "procedure_outcome_criterion_id": "crit-close-success",
+    "name": "quarter-end-close Success",
+    "procedure": "quarter-end-close",
+    "polarity": "Success",
+    "statement": "Package published with every blocking control evidenced.",
+    "failure_procedure_key": "",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#OutcomeCriterion"
+  },
+  {
+    "procedure_outcome_criterion_id": "crit-deploy-failure",
+    "name": "production-deployment Failure",
+    "procedure": "production-deployment",
+    "polarity": "Failure",
+    "statement": "Rollback required, or a change reached production without a recorded approval.",
+    "failure_procedure_key": "production-deployment",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#OutcomeCriterion"
+  },
+  {
+    "procedure_outcome_criterion_id": "crit-deploy-success",
+    "name": "production-deployment Success",
+    "procedure": "production-deployment",
+    "polarity": "Success",
+    "statement": "Change live with health signals green for thirty minutes.",
+    "failure_procedure_key": "",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#OutcomeCriterion"
+  },
+  {
+    "procedure_outcome_criterion_id": "crit-loto-failure",
+    "name": "lockout-tagout Failure",
+    "procedure": "lockout-tagout",
+    "polarity": "Failure",
+    "statement": "Any stored energy released while someone is working on the machine.",
+    "failure_procedure_key": "lockout-tagout",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#OutcomeCriterion"
+  },
+  {
+    "procedure_outcome_criterion_id": "crit-loto-success",
+    "name": "lockout-tagout Success",
+    "procedure": "lockout-tagout",
+    "polarity": "Success",
+    "statement": "Work finished with zero energy verified and every lock removed by the person who applied it.",
+    "failure_procedure_key": "",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#OutcomeCriterion"
+  }
+]

@@ -8,7 +8,7 @@
     "statement": "The model accelerates triage; materiality, anomaly context, and acceptance remain human judgments.",
     "status": "Approved",
     "authority_role": "controller",
-    "semantic_type_iri": "urn:effortless:pko-extension#Rationale"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#Rationale"
   },
   {
     "rationale_id": "rat-close-separation",
@@ -19,7 +19,7 @@
     "statement": "Independent review prevents self-certification and makes accountability legible.",
     "status": "Approved",
     "authority_role": "controller",
-    "semantic_type_iri": "urn:effortless:pko-extension#Rationale"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#Rationale"
   },
   {
     "rationale_id": "rat-policy-ai",
@@ -30,7 +30,7 @@
     "statement": "Drafting is reversible assistance; legal and organizational commitments require human authority.",
     "status": "Approved",
     "authority_role": "hr-policy-owner",
-    "semantic_type_iri": "urn:effortless:pko-extension#Rationale"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#Rationale"
   },
   {
     "rationale_id": "rat-policy-multichannel",
@@ -41,6 +41,6 @@
     "statement": "Email carries complete policy context; consented SMS provides timely notice and a link without becoming the legal record.",
     "status": "Approved",
     "authority_role": "communications-manager",
-    "semantic_type_iri": "urn:effortless:pko-extension#Rationale"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#Rationale"
   }
 ]

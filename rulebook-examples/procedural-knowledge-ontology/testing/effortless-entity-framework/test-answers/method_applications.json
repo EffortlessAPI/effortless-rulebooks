@@ -1,0 +1,190 @@
+[
+  {
+    "method_application_id": "ma-graph-retrieval-copilot",
+    "knowledge_method": "GraphRetrieval",
+    "applied_to": "Plant copilot answers grounded by structured retrieval over the 2026-07-15 graph",
+    "applied_at": "2026-07-15T06:00:00-05:00",
+    "applied_by_agent": "farah-nasser",
+    "applied_to_grounding_snapshot": "snap-2026-07-15",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#MethodApplication",
+    "name": "GraphRetrieval applied: Plant copilot answers grounded by structured retri"
+  },
+  {
+    "method_application_id": "ma-owl-reasoning-0715",
+    "knowledge_method": "OwlReasoning",
+    "applied_to": "Retrieval graph 2026-07-15 checked and materialized with the OWL 2 RL rule set before serving",
+    "applied_at": "2026-07-15T05:00:00-05:00",
+    "applied_by_agent": "sam-adeyemi",
+    "applied_to_grounding_snapshot": "snap-2026-07-15",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#MethodApplication",
+    "name": "OwlReasoning applied: Retrieval graph 2026-07-15 checked and materialize"
+  },
+  {
+    "method_application_id": "ma-owl-reasoning-0718",
+    "knowledge_method": "OwlReasoning",
+    "applied_to": "Hotfix retrieval graph 2026-07-18 reasoned after it had begun serving",
+    "applied_at": "2026-07-18T09:00:00-05:00",
+    "applied_by_agent": "sam-adeyemi",
+    "applied_to_grounding_snapshot": "snap-2026-07-18-hotfix",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#MethodApplication",
+    "name": "OwlReasoning applied: Hotfix retrieval graph 2026-07-18 reasoned after i"
+  },
+  {
+    "method_application_id": "ma10-lot-maintenance",
+    "knowledge_method": "LinkedOpenTerms",
+    "applied_to": "Maintenance after release: steward activities, change requests and question re-runs per release",
+    "applied_at": "2026-07-18T09:00:00-05:00",
+    "applied_by_agent": "sam-adeyemi",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#MethodApplication",
+    "name": "LinkedOpenTerms applied: Maintenance after release: steward activities, cha"
+  },
+  {
+    "method_application_id": "ma10-lot-requirements",
+    "knowledge_method": "LinkedOpenTerms",
+    "applied_to": "GovernedModels requirements specification: purpose, intended users, competency question baseline",
+    "applied_at": "2026-01-10T09:00:00-05:00",
+    "applied_by_agent": "sam-adeyemi",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#MethodApplication",
+    "name": "LinkedOpenTerms applied: GovernedModels requirements specification: purpose"
+  },
+  {
+    "method_application_id": "ma10-semver-releases",
+    "knowledge_method": "SemanticVersioning",
+    "applied_to": "RulebookReleases: DeclaredScale with VersionMajor/Minor/Patch checked against change log contents",
+    "applied_at": "2026-01-15T09:00:00-05:00",
+    "applied_by_agent": "elena-garcia",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#MethodApplication",
+    "name": "SemanticVersioning applied: RulebookReleases: DeclaredScale with VersionMajor/"
+  },
+  {
+    "method_application_id": "ma12-sna-plant",
+    "knowledge_method": "SocialNetworkAnalysis",
+    "applied_to": "Who-asks-whom survey of Plant North technicians and supervisors, mapped as a network to find connectors between the maintenance guild and the portal community",
+    "applied_at": "2026-05-20T00:00:00-05:00",
+    "applied_by_agent": "sam-adeyemi",
+    "identified_broker": "lin-zhao",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#MethodApplication",
+    "name": "SocialNetworkAnalysis applied: Who-asks-whom survey of Plant North technicians an"
+  },
+  {
+    "method_application_id": "ma13-document-analysis-press7",
+    "knowledge_method": "DocumentAnalysis",
+    "applied_to": "Press-7 retrofit drawing notes and the 2019 lockout SOP analysed for isolation and bleed-down steps.",
+    "applied_at": "2026-05-01T09:00:00-05:00",
+    "applied_by_agent": "sam-adeyemi",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#MethodApplication",
+    "name": "DocumentAnalysis applied: Press-7 retrofit drawing notes and the 2019 lockou"
+  },
+  {
+    "method_application_id": "ma13-process-mining-deploy",
+    "knowledge_method": "ProcessMining",
+    "applied_to": "CI/CD pipeline event log for deploy-v3.2.0 mined into hand-offs, wait times and undocumented paths.",
+    "applied_at": "2026-07-18T09:00:00-05:00",
+    "applied_by_agent": "sam-adeyemi",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#MethodApplication",
+    "name": "ProcessMining applied: CI/CD pipeline event log for deploy-v3.2.0 mined i"
+  },
+  {
+    "method_application_id": "ma14-loto-process-map",
+    "knowledge_method": "ProcessMapping",
+    "applied_to": "Lockout/tagout drawn step by step with technicians and the safety officer in workshop el7-loto-workshop, before value stream analysis.",
+    "applied_at": "2026-04-15T09:00:00-05:00",
+    "applied_by_agent": "sam-adeyemi",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#MethodApplication",
+    "name": "ProcessMapping applied: Lockout/tagout drawn step by step with technicians"
+  },
+  {
+    "method_application_id": "ma15-ea-repository-structure",
+    "knowledge_method": "EnterpriseArchitecturePractice",
+    "applied_to": "The procedure register is structured as an enterprise-architecture repository rather than as a document set: procedures, the roles that execute them, the functions and tools they require and the resources they consume are separate governed entities, and a change request against any one of them is assessed for impact on the others before approval.",
+    "applied_at": "2026-02-16T10:00:00-05:00",
+    "applied_by_agent": "priya-raman",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#MethodApplication",
+    "name": "EnterpriseArchitecturePractice applied: The procedure register is structured as an enterpr"
+  },
+  {
+    "method_application_id": "ma7-loto-polanyi",
+    "knowledge_method": "PolanyiTacitExplicitDistinction",
+    "applied_to": "Lockout fragments and knowledge holdings classified tacit or explicit before encoding loto-v2.0.0.",
+    "applied_at": "2026-05-19T09:00:00-05:00",
+    "applied_by_agent": "sam-adeyemi",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#MethodApplication",
+    "name": "PolanyiTacitExplicitDistinction applied: Lockout fragments and knowledge holdings classifie"
+  },
+  {
+    "method_application_id": "ma7-loto-seci",
+    "knowledge_method": "SeciConversion",
+    "applied_to": "KnowledgeConversions for the lockout bleed cue typed by SECI mode, from shadowing to the v2 rulebook.",
+    "applied_at": "2026-05-18T09:00:00-05:00",
+    "applied_by_agent": "sam-adeyemi",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#MethodApplication",
+    "name": "SeciConversion applied: KnowledgeConversions for the lockout bleed cue typ"
+  },
+  {
+    "method_application_id": "ma7-loto-value-stream",
+    "knowledge_method": "ValueStreamAnalysis",
+    "applied_to": "Lockout mapped end to end in el7-loto-workshop: day-to-night crew hand-off, waiting on operator release, re-isolation loop.",
+    "applied_at": "2026-04-15T16:00:00-05:00",
+    "applied_by_agent": "sam-adeyemi",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#MethodApplication",
+    "name": "ValueStreamAnalysis applied: Lockout mapped end to end in el7-loto-workshop: da"
+  },
+  {
+    "method_application_id": "ma8-faceted-procedure-types",
+    "knowledge_method": "FacetedClassification",
+    "applied_to": "Procedure types classified along functional domain, hazard, audience and change-type facets.",
+    "applied_at": "2026-06-02T09:00:00-05:00",
+    "applied_by_agent": "sam-adeyemi",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#MethodApplication",
+    "name": "FacetedClassification applied: Procedure types classified along functional domain"
+  },
+  {
+    "method_application_id": "ma8-layered-lockout",
+    "knowledge_method": "LayeredVocabularyToOntology",
+    "applied_to": "Lockout activity thesaurus and process taxonomy established, then the lockout procedure aligned to PKO 2.0.0.",
+    "applied_at": "2026-05-12T09:00:00-05:00",
+    "applied_by_agent": "sam-adeyemi",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#MethodApplication",
+    "name": "LayeredVocabularyToOntology applied: Lockout activity thesaurus and process taxonomy es"
+  },
+  {
+    "method_application_id": "ma9-a2a-risk-classifier",
+    "knowledge_method": "AgentIntegrationProtocols",
+    "applied_to": "Risk classifier reads the procedural graph through the agent-to-agent gateway (int-risk241-a2a)",
+    "applied_at": "2026-01-10T09:00:00-06:00",
+    "applied_by_agent": "farah-nasser",
+    "applied_to_grounding_snapshot": null,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#MethodApplication",
+    "name": "AgentIntegrationProtocols applied: Risk classifier reads the procedural graph through"
+  },
+  {
+    "method_application_id": "ma9-assistant-benchmarks",
+    "knowledge_method": "LlmEvaluationBenchmarks",
+    "applied_to": "Plant copilot benchmarked on spatial, geospatial and procedural task families with and without graph grounding",
+    "applied_at": "2026-07-16T09:00:00-05:00",
+    "applied_by_agent": "farah-nasser",
+    "applied_to_grounding_snapshot": null,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#MethodApplication",
+    "name": "LlmEvaluationBenchmarks applied: Plant copilot benchmarked on spatial, geospatial a"
+  },
+  {
+    "method_application_id": "ma9-embedding-tuning",
+    "knowledge_method": "ProcessDomainEmbeddingTuning",
+    "applied_to": "procedure-embed-1 tuned on the lockout and deployment vocabulary and probed on synonym and opposite pairs",
+    "applied_at": "2026-07-05T09:00:00-05:00",
+    "applied_by_agent": "sam-adeyemi",
+    "applied_to_grounding_snapshot": null,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#MethodApplication",
+    "name": "ProcessDomainEmbeddingTuning applied: procedure-embed-1 tuned on the lockout and deploym"
+  },
+  {
+    "method_application_id": "ma9-mcp-copilot",
+    "knowledge_method": "AgentIntegrationProtocols",
+    "applied_to": "Plant copilot reads the procedure register through the shared MCP server (int-copilot-mcp)",
+    "applied_at": "2026-07-01T09:00:00-05:00",
+    "applied_by_agent": "farah-nasser",
+    "applied_to_grounding_snapshot": null,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#MethodApplication",
+    "name": "AgentIntegrationProtocols applied: Plant copilot reads the procedure register through"
+  }
+]

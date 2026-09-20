@@ -3,97 +3,267 @@
 effortless-python: Starting test...
   Program: /Users/eejai42/development/effortless-rulebooks/rulebook-examples/procedural-knowledge-ontology/effortless-python
 effortless-python: Running...
-  -> vw_step_transitions_closure: 80 pairs
+  -> vw_artifact_handoffs_closure: 18 pairs
+  -> vw_step_transitions_closure: 199 pairs
   -> vw_step_transitions_closure_where_avoids_human_approval_gate: 0 pairs
-Python substrate: dataset settled after 4 passes
+Python substrate: dataset settled after 5 passes
+  -> abundant_knowledge_gaps: 3 records
   -> access_denial_tests: 17 records
-  -> access_policies: 202 records
-  -> access_principals: 12 records
-  -> actions: 9 records
+  -> access_policies: 781 records
+  -> access_principals: 20 records
+  -> actions: 10 records
+  -> activity_relations: 5 records
   -> agent_decision_records: 3 records
-  -> agents: 11 records
+  -> agent_integrations: 7 records
+  -> agent_upgrade_assessments: 2 records
+  -> agents: 55 records
+  -> ai_adoption_initiatives: 9 records
+  -> ai_agent_accountabilities: 4 records
+  -> ai_insight_proposals: 6 records
+  -> ai_labeling_runs: 3 records
+  -> ai_model_deployments: 6 records
+  -> ai_model_evaluations: 3 records
+  -> ai_registry_model_versions: 6 records
+  -> ai_tool_invocations: 3 records
+  -> answer_groundings: 14 records
+  -> answer_requirement_checks: 2 records
+  -> app_action_fields: 100 records
+  -> app_actions: 20 records
   -> app_nav_groups: 23 records
-  -> app_role_profiles: 12 records
+  -> app_role_profiles: 20 records
   -> app_route_questions: 151 records
   -> app_route_references: 315 records
   -> app_routes: 149 records
-  -> app_users: 10 records
+  -> app_users: 20 records
+  -> applicability_scopes: 5 records
+  -> article_claims: 900 records
+  -> artifact_handoffs: 12 records
+  -> assignment_instant_checks: 4 records
+  -> assignment_routed_notices: 6 records
+  -> assignment_update_policies: 3 records
+  -> assistant_answers: 13 records
+  -> assistant_benchmarks: 4 records
+  -> authoring_submissions: 3 records
   -> authority_boundaries: 3 records
-  -> cell_disagreements: 339 records
-  -> change_requests: 2 records
+  -> business_outcomes: 3 records
+  -> capability_declines: 4 records
+  -> cell_disagreements: 205 records
+  -> change_authority_rules: 4 records
+  -> change_impact_findings: 10 records
+  -> change_integrity_checks: 15 records
+  -> change_objections: 2 records
+  -> change_requests: 4 records
+  -> change_validation_runs: 8 records
+  -> claim_evidence: 900 records
+  -> classification_facets: 4 records
+  -> collected_source_materials: 15 records
+  -> collection_occasions: 3 records
   -> communication_policies: 2 records
-  -> communities_of_practice: 2 records
-  -> conformance_runs: 4 records
+  -> communities_of_practice: 7 records
+  -> community_memberships: 9 records
+  -> competency_question_reviews: 4 records
+  -> competency_question_runs: 10 records
+  -> competency_question_set_entries: 8 records
+  -> concept_ladder_rungs: 5 records
+  -> condition_checks: 7 records
+  -> conformance_runs: 5 records
   -> conformance_substrates: 8 records
+  -> consumer_revalidations: 26 records
+  -> consumer_system_syncs: 6 records
+  -> corporate_governance_programs: 3 records
+  -> critical_incidents: 3 records
+  -> cue_observations: 3 records
+  -> decision_points: 5 records
   -> delivered_communications: 1 records
-  -> elicitation_sessions: 3 records
-  -> errors: 2 records
+  -> department_process_accounts: 5 records
+  -> domain_coverage_areas: 4 records
+  -> drift_observations: 4 records
+  -> elicitation_participants: 7 records
+  -> elicitation_sessions: 13 records
+  -> embedding_probes: 6 records
+  -> encoding_lifecycle_stages: 6 records
+  -> energy_sources: 4 records
+  -> errors: 4 records
   -> evaluation_contexts: 1 records
   -> exception_invocations: 1 records
   -> exceptions: 4 records
+  -> execution_entities: 15 records
+  -> execution_participants: 4 records
+  -> expansion_concept_fits: 9 records
+  -> expected_inference_checks: 4 records
+  -> expert_cognitions: 3 records
   -> explanations: 2 records
-  -> fa_qs: 3 records
-  -> field_disagreements: 49 records
-  -> field_grants: 3639 records
-  -> functions: 8 records
-  -> issue_occurrences: 2 records
+  -> external_dependency_revisions: 3 records
+  -> external_standard_terms: 9 records
+  -> fa_qs: 4 records
+  -> facilities: 3 records
+  -> failure_modes: 5 records
+  -> faq_categories: 4 records
+  -> faq_targets: 2 records
+  -> field_disagreements: 27 records
+  -> field_grants: 18467 records
+  -> fragment_corroborations: 4 records
+  -> functions: 11 records
+  -> governance_stage_controls: 20 records
+  -> governed_models: 7 records
+  -> grounding_snapshots: 3 records
+  -> instance_data_versions: 2 records
+  -> integration_pathways: 4 records
+  -> interview_probes: 4 records
+  -> issue_occurrences: 4 records
   -> jwt_claim_mappings: 4 records
-  -> knowledge_broker_links: 5 records
-  -> knowledge_fragments: 7 records
-  -> knowledge_gaps: 8 records
+  -> know_how_carriers: 13 records
+  -> knowledge_audit_items: 12 records
+  -> knowledge_audits: 4 records
+  -> knowledge_broker_links: 8 records
+  -> knowledge_capture_initiatives: 3 records
+  -> knowledge_consumer_systems: 8 records
+  -> knowledge_conversions: 5 records
+  -> knowledge_deliverables: 10 records
+  -> knowledge_fragments: 12 records
+  -> knowledge_gaps: 15 records
+  -> knowledge_holdings: 10 records
+  -> knowledge_methods: 26 records
+  -> knowledge_outcome_measurements: 7 records
+  -> knowledge_projections: 7 records
+  -> knowledge_query_definitions: 4 records
+  -> knowledge_query_sources: 6 records
+  -> knowledge_repository_entries: 8 records
+  -> knowledge_search_events: 6 records
+  -> knowledge_test_outcomes: 5 records
+  -> knowledge_traces: 15 records
+  -> knowledge_transfers: 9 records
+  -> knowledge_workforce_positions: 4 records
   -> learning_activities: 2 records
-  -> mentorships: 1 records
+  -> level_capture_strategies: 5 records
+  -> level_pyramid_questions: 5 records
+  -> lifecycle_statuses: 11 records
+  -> lock_devices: 3 records
+  -> machine_energy_sources: 6 records
+  -> machine_types: 3 records
+  -> machines: 3 records
+  -> mentorships: 5 records
   -> message_deliveries: 6 records
   -> message_templates: 2 records
+  -> method_applications: 20 records
+  -> mined_flow_edges: 6 records
+  -> model_activity_experts: 16 records
+  -> model_annotations: 9 records
+  -> model_change_log_entries: 17 records
+  -> model_change_requests: 17 records
+  -> model_charters: 8 records
+  -> model_consumers: 4 records
+  -> model_data_mapping_runs: 4 records
+  -> model_documents: 5 records
+  -> model_expansion_requests: 3 records
+  -> model_pilots: 3 records
+  -> model_proposals: 11 records
+  -> observed_actions: 5 records
   -> observed_transitions: 10 records
-  -> ontology_profiles: 11 records
+  -> onboarding_records: 7 records
+  -> ontology_profiles: 27 records
+  -> ontology_support_programmes: 2 records
   -> operational_bindings: 5 records
-  -> organizations: 4 records
-  -> principal_assignments: 12 records
-  -> procedure_executions: 2 records
-  -> procedure_resources: 8 records
-  -> procedure_status_changes: 5 records
-  -> procedure_types: 2 records
-  -> procedure_version_links: 1 records
-  -> procedure_versions: 3 records
-  -> procedures: 2 records
-  -> process_mining_runs: 4 records
+  -> organizations: 18 records
+  -> practitioner_expertise: 5 records
+  -> principal_assignments: 22 records
+  -> problem_occurrences: 5 records
+  -> procedure_adoptions: 3 records
+  -> procedure_executions: 10 records
+  -> procedure_facet_assignments: 12 records
+  -> procedure_lens_views: 15 records
+  -> procedure_outcome_criteria: 5 records
+  -> procedure_resources: 12 records
+  -> procedure_status_changes: 13 records
+  -> procedure_targets: 6 records
+  -> procedure_types: 17 records
+  -> procedure_version_links: 2 records
+  -> procedure_versions: 9 records
+  -> procedures: 10 records
+  -> process_design_decisions: 3 records
+  -> process_interdependencies: 4 records
+  -> process_knowledge_levels: 3 records
+  -> process_level_statements: 8 records
+  -> process_mining_runs: 5 records
+  -> process_outcome_measures: 5 records
+  -> process_stages: 7 records
+  -> process_strategic_alignments: 4 records
+  -> prompt_templates: 5 records
+  -> protective_equipment: 3 records
+  -> provider_engagements: 7 records
+  -> quality_assessments: 11 records
+  -> quality_criteria: 8 records
   -> rationales: 4 records
+  -> reasoner_runs: 5 records
   -> recipients: 5 records
+  -> records_retention_policies: 4 records
+  -> regulatory_frameworks: 2 records
+  -> relation_types: 11 records
+  -> repertory_grid_constructs: 3 records
+  -> representation_reviews: 4 records
   -> requirement_satisfactions: 8 records
-  -> requirements: 13 records
-  -> resources: 8 records
+  -> requirements: 16 records
+  -> resources: 19 records
+  -> retrieval_segments: 9 records
   -> review_events: 3 records
-  -> role_assignments: 13 records
-  -> role_questions: 111 records
-  -> role_schema_views: 202 records
-  -> role_schemas: 12 records
-  -> roles: 12 records
-  -> rulebook_fields: 1897 records
-  -> rulebook_releases: 1 records
-  -> rulebook_tables: 92 records
-  -> semantic_mappings: 47 records
+  -> role_assignment_update_tasks: 6 records
+  -> role_assignments: 36 records
+  -> role_capability_tags: 9 records
+  -> role_questions: 442 records
+  -> role_schema_views: 762 records
+  -> role_schemas: 20 records
+  -> roles: 33 records
+  -> rulebook_fields: 5185 records
+  -> rulebook_releases: 9 records
+  -> rulebook_tables: 264 records
+  -> scheme_refinements: 2 records
+  -> semantic_mappings: 357 records
   -> send_intents: 7 records
-  -> step_actions: 9 records
-  -> step_executions: 12 records
-  -> step_functions: 8 records
-  -> step_requirements: 15 records
-  -> step_tools: 10 records
-  -> step_transitions: 20 records
+  -> sharing_recognitions: 2 records
+  -> situational_variants: 4 records
+  -> snapshot_assertions: 15 records
+  -> source_articles: 5 records
+  -> source_relationships: 4 records
+  -> source_term_mentions: 25 records
+  -> sourcing_functions: 12 records
+  -> stakeholder_lenses: 9 records
+  -> stakeholder_perspectives: 5 records
+  -> stakeholder_questions: 6 records
+  -> staleness_query_runs: 3 records
+  -> step_actions: 10 records
+  -> step_conditions: 7 records
+  -> step_context_sensitivities: 4 records
+  -> step_cues: 4 records
+  -> step_executions: 70 records
+  -> step_functions: 10 records
+  -> step_lock_requirements: 3 records
+  -> step_protective_equipment: 3 records
+  -> step_requirements: 18 records
+  -> step_resources: 2 records
+  -> step_tools: 11 records
+  -> step_transitions: 43 records
+  -> step_variables: 21 records
   -> step_verifications: 11 records
-  -> steps: 17 records
+  -> steps: 41 records
+  -> steward_activities: 10 records
   -> stewardship_assignments: 2 records
-  -> substrate_run_scores: 28 records
+  -> substrate_run_scores: 35 records
   -> table_conformance: 623 records
+  -> tactical_resource_allocations: 5 records
   -> template_approvals: 2 records
+  -> term_definitions: 3 records
+  -> term_label_variants: 53 records
+  -> term_meaning_changes: 3 records
+  -> term_relations: 4 records
   -> test_cases: 1794 records
   -> test_suites: 6 records
-  -> tools: 8 records
-  -> user_feedback: 2 records
-  -> user_questions: 2 records
+  -> tools: 9 records
+  -> user_feedback: 6 records
+  -> user_questions: 4 records
   -> verification_outcomes: 4 records
-  -> vocabularies: 2 records
-  -> vocabulary_terms: 12 records
-  -> witness_loops: 4 records
-Python substrate: wrote 10119 records across 89 tables to /Users/eejai42/development/effortless-rulebooks/rulebook-examples/procedural-knowledge-ontology/testing/effortless-python/test-answers
+  -> vocabularies: 12 records
+  -> vocabulary_terms: 44 records
+  -> witness_loops: 16 records
+  -> workflow_view_divergences: 2 records
+Python substrate: wrote 33556 records across 258 tables to /Users/eejai42/development/effortless-rulebooks/rulebook-examples/procedural-knowledge-ontology/testing/effortless-python/test-answers
 

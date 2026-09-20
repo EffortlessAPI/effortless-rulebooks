@@ -1,0 +1,72 @@
+[
+  {
+    "process_outcome_measure_id": "pom-convmaint-rollers",
+    "name": "conveyor-maintenance: Rollers replaced per shift",
+    "procedure": "conveyor-maintenance",
+    "label": "Rollers replaced per shift",
+    "unit": "count",
+    "target_value": 12,
+    "observed_value": 10,
+    "measured_over_period": "July 2026",
+    "business_outcome": null,
+    "link_rationale": "",
+    "is_unlinked_to_business_outcome": true,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ProcessOutcomeMeasure"
+  },
+  {
+    "process_outcome_measure_id": "pom-deploy-change-failure",
+    "name": "production-deployment: Change failure rate",
+    "procedure": "production-deployment",
+    "label": "Change failure rate",
+    "unit": "percent",
+    "target_value": 5,
+    "observed_value": 33,
+    "measured_over_period": "Q3 2026 to date",
+    "business_outcome": "bo-platform-availability",
+    "link_rationale": "Failed changes are the largest source of downtime.",
+    "is_unlinked_to_business_outcome": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ProcessOutcomeMeasure"
+  },
+  {
+    "process_outcome_measure_id": "pom-deploy-lead-time",
+    "name": "production-deployment: Lead time for changes",
+    "procedure": "production-deployment",
+    "label": "Lead time for changes",
+    "unit": "hours",
+    "target_value": 24,
+    "observed_value": 30,
+    "measured_over_period": "Q3 2026 to date",
+    "business_outcome": "bo-customer-delivery",
+    "link_rationale": "Features reach customers only once deployed.",
+    "is_unlinked_to_business_outcome": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ProcessOutcomeMeasure"
+  },
+  {
+    "process_outcome_measure_id": "pom-loto-deviation-free",
+    "name": "lockout-tagout: Lockouts completed without deviation",
+    "procedure": "lockout-tagout",
+    "label": "Lockouts completed without deviation",
+    "unit": "percent",
+    "target_value": 100,
+    "observed_value": 75,
+    "measured_over_period": "July 2026",
+    "business_outcome": "bo-injury-free-plant",
+    "link_rationale": "Deviations in isolation are how energy-release injuries happen.",
+    "is_unlinked_to_business_outcome": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ProcessOutcomeMeasure"
+  },
+  {
+    "process_outcome_measure_id": "pom-loto-first-pass",
+    "name": "lockout-tagout: Zero-energy verification first-pass rate",
+    "procedure": "lockout-tagout",
+    "label": "Zero-energy verification first-pass rate",
+    "unit": "percent",
+    "target_value": 95,
+    "observed_value": 60,
+    "measured_over_period": "July 2026",
+    "business_outcome": "bo-injury-free-plant",
+    "link_rationale": "Every failed first verification is a near-miss with stored energy.",
+    "is_unlinked_to_business_outcome": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ProcessOutcomeMeasure"
+  }
+]

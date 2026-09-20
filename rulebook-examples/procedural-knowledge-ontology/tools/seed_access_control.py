@@ -13,7 +13,7 @@ import json, os, re, subprocess, sys
 RB = "effortless-rulebook/procedural-knowledge-ontology-rulebook.json"
 DB = os.environ.get("DATABASE_URL",
      "postgresql://postgres@localhost:5432/erb_procedural_knowledge_ontology")
-IRI = "urn:effortless:pko-extension#"
+IRI = "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#"
 
 def snake(n):
     s = re.sub(r'(?<!^)(?=[A-Z])', '_', n).lower()

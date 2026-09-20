@@ -122,6 +122,34 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             get => F.AsBool(F.Memo(this, "IsUnsecuredGovernanceRecord", () => F.And(F.Bool3(F.Eq(F.Nullif(F.Of(this.SubjectArea)), F.S("governance"))), F.Bool3(F.Eq(F.Of(this.PolicyCount), F.I(0)))))); set { }
         }
 
+        // Formula UnrestrictedNonAdminPolicyCount (rulebook: =COUNTIFS(AccessPolicies!{{TargetTable}}, {{RulebookTableId}}, AccessPolicies!{{IsUnrestrictedNonAdminGrant}}, TRUE))
+        [NotMapped]
+        public int? UnrestrictedNonAdminPolicyCount
+        {
+            get => F.AsInt(F.Memo(this, "UnrestrictedNonAdminPolicyCount", () => F.Integer((base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<AccessPolicy>(base.SoAContext, "AccessPolicies", __c => __c.AccessPolicies), __r => F.CritField(F.Of(__r.TargetTable), F.Of(this.RulebookTableId)) && F.CritLiteral(F.Of(__r.IsUnrestrictedNonAdminGrant), F.B(true))))))); set { }
+        }
+
+        // Formula RestrictedNonAdminPolicyCount (rulebook: =COUNTIFS(AccessPolicies!{{TargetTable}}, {{RulebookTableId}}, AccessPolicies!{{IsUnrestrictedNonAdminGrant}}, FALSE, AccessPolicies!{{PrincipalIsAdmin}}, FALSE))
+        [NotMapped]
+        public int? RestrictedNonAdminPolicyCount
+        {
+            get => F.AsInt(F.Memo(this, "RestrictedNonAdminPolicyCount", () => F.Integer((base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<AccessPolicy>(base.SoAContext, "AccessPolicies", __c => __c.AccessPolicies), __r => F.CritField(F.Of(__r.TargetTable), F.Of(this.RulebookTableId)) && F.CritLiteral(F.Of(__r.IsUnrestrictedNonAdminGrant), F.B(false)) && F.CritLiteral(F.Of(__r.PrincipalIsAdmin), F.B(false))))))); set { }
+        }
+
+        // Formula IsReadableInFullByNonAdmin (rulebook: ={{UnrestrictedNonAdminPolicyCount}} > 0)
+        [NotMapped]
+        public bool? IsReadableInFullByNonAdmin
+        {
+            get => F.AsBool(F.Memo(this, "IsReadableInFullByNonAdmin", () => F.Cmp(F.Of(this.UnrestrictedNonAdminPolicyCount), ">", F.I(0)))); set { }
+        }
+
+        // Formula IsControlledForEveryNonAdmin (rulebook: =AND({{RestrictedNonAdminPolicyCount}} > 0, {{UnrestrictedNonAdminPolicyCount}} = 0))
+        [NotMapped]
+        public bool? IsControlledForEveryNonAdmin
+        {
+            get => F.AsBool(F.Memo(this, "IsControlledForEveryNonAdmin", () => F.And(F.Bool3(F.Cmp(F.Of(this.RestrictedNonAdminPolicyCount), ">", F.I(0))), F.Bool3(F.Eq(F.Of(this.UnrestrictedNonAdminPolicyCount), F.I(0)))))); set { }
+        }
+
 
 
         private ObservableCollection<AccessPolicy> _accessPolicies;
@@ -674,6 +702,116 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             }
         }
 
+        private ObservableCollection<AppAction> _appActions;
+
+        [InverseProperty("RulebookTable")]
+        public virtual ObservableCollection<AppAction> AppActions
+        {
+            get
+            {
+                if (_appActions == null)
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access AppActions - no database context is set. RulebookTableId: " + this.RulebookTableId + ".");
+                        }
+                        _appActions = new ObservableCollection<AppAction>();
+                    }
+                    else
+                    {
+                        var items = base.SoAContext.AppActions.Where(x => x.TargetTable == this.RulebookTableId).ToList<AppAction>();
+                        _appActions = new ObservableCollection<AppAction>(items);
+                        if (items.Any())
+                        {
+                            base.SoAContext.AttachRange(items);
+                        }
+                    }
+                    _appActions.CollectionChanged += AppActions_CollectionChanged;
+                }
+                return _appActions;
+            }
+            private set
+            {
+                if (_appActions != null)
+                {
+                    _appActions.CollectionChanged -= AppActions_CollectionChanged;
+                }
+                _appActions = value;
+                if (_appActions != null)
+                {
+                    _appActions.CollectionChanged += AppActions_CollectionChanged;
+                }
+            }
+        }
+
+        private void AppActions_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems != null)
+            {
+                foreach (var item in e.NewItems.Cast<AppAction>())
+                {
+                    item.TargetTable = this.RulebookTableId;
+                }
+            }
+        }
+
+        private ObservableCollection<AbundantKnowledgeGap> _abundantKnowledgeGaps;
+
+        [InverseProperty("RulebookTable")]
+        public virtual ObservableCollection<AbundantKnowledgeGap> AbundantKnowledgeGaps
+        {
+            get
+            {
+                if (_abundantKnowledgeGaps == null)
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access AbundantKnowledgeGaps - no database context is set. RulebookTableId: " + this.RulebookTableId + ".");
+                        }
+                        _abundantKnowledgeGaps = new ObservableCollection<AbundantKnowledgeGap>();
+                    }
+                    else
+                    {
+                        var items = base.SoAContext.AbundantKnowledgeGaps.Where(x => x.RepresentedByTable == this.RulebookTableId).ToList<AbundantKnowledgeGap>();
+                        _abundantKnowledgeGaps = new ObservableCollection<AbundantKnowledgeGap>(items);
+                        if (items.Any())
+                        {
+                            base.SoAContext.AttachRange(items);
+                        }
+                    }
+                    _abundantKnowledgeGaps.CollectionChanged += AbundantKnowledgeGaps_CollectionChanged;
+                }
+                return _abundantKnowledgeGaps;
+            }
+            private set
+            {
+                if (_abundantKnowledgeGaps != null)
+                {
+                    _abundantKnowledgeGaps.CollectionChanged -= AbundantKnowledgeGaps_CollectionChanged;
+                }
+                _abundantKnowledgeGaps = value;
+                if (_abundantKnowledgeGaps != null)
+                {
+                    _abundantKnowledgeGaps.CollectionChanged += AbundantKnowledgeGaps_CollectionChanged;
+                }
+            }
+        }
+
+        private void AbundantKnowledgeGaps_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems != null)
+            {
+                foreach (var item in e.NewItems.Cast<AbundantKnowledgeGap>())
+                {
+                    item.RepresentedByTable = this.RulebookTableId;
+                }
+            }
+        }
+
 
         protected override void LazyLoadProperties()
         {
@@ -687,6 +825,8 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             _ = this.TermDefinitions;
             _ = this.DomainCoverageAreas;
             _ = this.ModelChangeLogEntries;
+            _ = this.AppActions;
+            _ = this.AbundantKnowledgeGaps;
         }
 
         public override string ToString()

@@ -1,0 +1,110 @@
+[
+  {
+    "community_membership_id": "cm12-grace-release",
+    "community_of_practice": "release-engineering-guild",
+    "agent": "grace-holloway",
+    "is_specialist": true,
+    "joined_at": "2016-01-01 06:00:00",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CommunityMembership",
+    "name": "grace-holloway in release-engineering-guild",
+    "member_organization": "acme-engineering",
+    "community_organization": "acme-engineering",
+    "is_external_member": false
+  },
+  {
+    "community_membership_id": "cm12-joao-eastvale",
+    "community_of_practice": "eastvale-packaging-cluster",
+    "agent": "joao-ferreira",
+    "is_specialist": false,
+    "joined_at": "2011-04-01 05:00:00",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CommunityMembership",
+    "name": "joao-ferreira in eastvale-packaging-cluster",
+    "member_organization": "baxter-hydraulics",
+    "community_organization": null,
+    "is_external_member": true
+  },
+  {
+    "community_membership_id": "cm12-joao-riverbend",
+    "community_of_practice": "riverbend-press-cluster",
+    "agent": "joao-ferreira",
+    "is_specialist": false,
+    "joined_at": "2019-06-01 05:00:00",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CommunityMembership",
+    "name": "joao-ferreira in riverbend-press-cluster",
+    "member_organization": "baxter-hydraulics",
+    "community_organization": "acme-plant",
+    "is_external_member": true
+  },
+  {
+    "community_membership_id": "cm12-ken-plant",
+    "community_of_practice": "plant-maintenance-guild",
+    "agent": "ken-watanabe",
+    "is_specialist": false,
+    "joined_at": "2019-02-01 06:00:00",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CommunityMembership",
+    "name": "ken-watanabe in plant-maintenance-guild",
+    "member_organization": "acme-plant",
+    "community_organization": "acme-plant",
+    "is_external_member": false
+  },
+  {
+    "community_membership_id": "cm12-ken-riverbend",
+    "community_of_practice": "riverbend-press-cluster",
+    "agent": "ken-watanabe",
+    "is_specialist": false,
+    "joined_at": "2022-09-01 05:00:00",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CommunityMembership",
+    "name": "ken-watanabe in riverbend-press-cluster",
+    "member_organization": "acme-plant",
+    "community_organization": "acme-plant",
+    "is_external_member": false
+  },
+  {
+    "community_membership_id": "cm12-lin-plant",
+    "community_of_practice": "plant-maintenance-guild",
+    "agent": "lin-zhao",
+    "is_specialist": false,
+    "joined_at": "2021-05-01 05:00:00",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CommunityMembership",
+    "name": "lin-zhao in plant-maintenance-guild",
+    "member_organization": "acme-plant",
+    "community_organization": "acme-plant",
+    "is_external_member": false
+  },
+  {
+    "community_membership_id": "cm12-lin-portal",
+    "community_of_practice": "km-portal-community",
+    "agent": "lin-zhao",
+    "is_specialist": false,
+    "joined_at": "2025-02-01 06:00:00",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CommunityMembership",
+    "name": "lin-zhao in km-portal-community",
+    "member_organization": "acme-plant",
+    "community_organization": "acme-corp",
+    "is_external_member": true
+  },
+  {
+    "community_membership_id": "cm12-petra-riverbend",
+    "community_of_practice": "riverbend-press-cluster",
+    "agent": "petra-lindqvist",
+    "is_specialist": true,
+    "joined_at": "2016-03-01 06:00:00",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CommunityMembership",
+    "name": "petra-lindqvist in riverbend-press-cluster",
+    "member_organization": "northfield-conveyor",
+    "community_organization": "acme-plant",
+    "is_external_member": true
+  },
+  {
+    "community_membership_id": "cm12-tomas-plant",
+    "community_of_practice": "plant-maintenance-guild",
+    "agent": "tomas-reyes",
+    "is_specialist": true,
+    "joined_at": "2008-01-10 06:00:00",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CommunityMembership",
+    "name": "tomas-reyes in plant-maintenance-guild",
+    "member_organization": "acme-plant",
+    "community_organization": "acme-plant",
+    "is_external_member": false
+  }
+]

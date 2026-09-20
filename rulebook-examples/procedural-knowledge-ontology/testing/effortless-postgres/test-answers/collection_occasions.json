@@ -1,0 +1,50 @@
+[
+  {
+    "collection_occasion_id": "co13-close-improvement",
+    "name": "ImprovementInitiative: Close cycle-time improvement initiative",
+    "label": "Close cycle-time improvement initiative",
+    "occasion_kind": "ImprovementInitiative",
+    "procedure": "quarter-end-close",
+    "cadence_days": 90,
+    "last_held_at": "2026-03-15 10:00:00-05:00",
+    "evaluation_context": "eval-current",
+    "as_of_instant": "2026-07-19 13:00:00-05:00",
+    "days_since_held": 126,
+    "is_lapsed": true,
+    "captured_material_count": 0,
+    "is_held_without_capture": true,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CollectionOccasion"
+  },
+  {
+    "collection_occasion_id": "co13-deploy-release-retro",
+    "name": "Retrospective: Monthly release retrospective",
+    "label": "Monthly release retrospective",
+    "occasion_kind": "Retrospective",
+    "procedure": "production-deployment",
+    "cadence_days": 30,
+    "last_held_at": "2026-07-18 14:00:00-05:00",
+    "evaluation_context": "eval-current",
+    "as_of_instant": "2026-07-19 13:00:00-05:00",
+    "days_since_held": 1,
+    "is_lapsed": false,
+    "captured_material_count": 1,
+    "is_held_without_capture": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CollectionOccasion"
+  },
+  {
+    "collection_occasion_id": "co13-loto-quarterly-review",
+    "name": "ProcessReview: Quarterly lockout process review",
+    "label": "Quarterly lockout process review",
+    "occasion_kind": "ProcessReview",
+    "procedure": "lockout-tagout",
+    "cadence_days": 90,
+    "last_held_at": "2026-06-30 10:00:00-05:00",
+    "evaluation_context": "eval-current",
+    "as_of_instant": "2026-07-19 13:00:00-05:00",
+    "days_since_held": 19,
+    "is_lapsed": false,
+    "captured_material_count": 1,
+    "is_held_without_capture": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CollectionOccasion"
+  }
+]

@@ -308,7 +308,11 @@ _RUNNER = ["Procedures", "ProcedureVersions", "Steps", "StepTransitions", "StepC
            "ProcedureExecutions", "StepExecutions", "CueObservations",
            "KnowledgeFragments", "ExpertCognitions", "ConceptLadderRungs",
            "KnowHowCarriers", "AssistantAnswers", "KnowledgeQueryDefinitions",
-           "Agents", "Roles"]
+           "Agents", "Roles",
+           # what was checked on a step, and whether it held: a technician reads their own run's checks (loop 18)
+           "ConditionChecks",
+           # the one current row carries the register-wide totals the floor pages read (loop 17)
+           "EvaluationContexts"]
 
 _OWN_AGENT = "executed_by_agent = app.jwt_agent()"
 _DECIDE = ("NOT (requested_by_agent = app.jwt_agent() AND decided_at IS NOT NULL)")
@@ -324,6 +328,7 @@ EXPERIENCE_PROFILES = {
             ("ProcedureExecutions", "UPDATE", _OWN_AGENT, _OWN_AGENT, "A technician may pause or finish their own run."),
             ("StepExecutions", "INSERT", "", _OWN_AGENT, "A technician records the steps they carried out themselves."),
             ("StepExecutions", "UPDATE", _OWN_AGENT, _OWN_AGENT, "A technician completes a step they began themselves."),
+            ("ConditionChecks", "INSERT", "", "checked_by_agent = app.jwt_agent()", "A technician answers a check on their own step, in their own name (loop 20)."),
             ("CueObservations", "INSERT", "", "observed_by_agent = app.jwt_agent()",
              "A warning sign is recorded by the person who saw it."),
             ("CueObservations", "UPDATE", "observed_by_agent = app.jwt_agent()", "observed_by_agent = app.jwt_agent()",
@@ -346,8 +351,13 @@ EXPERIENCE_PROFILES = {
     "plant-safety-officer": {
         "why": "Owns lockout safety: receives escalations, validates what the assistant proposes, "
                "and is the authority on changes to the plant's procedures.",
+        # Requirements / StepRequirements / RequirementSatisfactions: the officer cannot judge whether a
+        # blocking control is real without seeing the control, the step it is bound to, and every
+        # evaluation ever recorded against it.
         "tables": {t: ALL for t in _RUNNER + ["AiInsightProposals", "ChangeRequests", "KnowledgeGaps",
-                                              "WorkflowViewDivergences", "StakeholderPerspectives"]},
+                                              "WorkflowViewDivergences", "StakeholderPerspectives",
+                                              "Requirements", "StepRequirements",
+                                              "RequirementSatisfactions", "ConditionChecks"]},
         "rows": PLANT_ROWS,
         "writes": [
             ("CueObservations", "UPDATE", "escalated_to_agent = app.jwt_agent()", "escalated_to_agent = app.jwt_agent()",
@@ -356,6 +366,11 @@ EXPERIENCE_PROFILES = {
              "A person, never the proposing agent, validates an insight, in their own name."),
             ("ChangeRequests", "UPDATE", "authority_role = app.jwt_role()", _DECIDE,
              "The authority may hand a decision up or decide it, but never decide a request they raised themselves."),
+            ("RequirementSatisfactions", "INSERT", "", "evaluated_by_agent = app.jwt_agent()",
+             "The safety officer records whether a blocking control held, in their own name. The model "
+             "then judges the record itself: EvaluatorIsStepExecutor is TRUE when the person scoring the "
+             "control is the person who performed the step, and IsBareAssertion is TRUE when a control "
+             "was cleared with no evidence and no computed witness."),
         ],
     },
     "plant-operations-manager": {
@@ -384,7 +399,9 @@ EXPERIENCE_PROFILES = {
             "KnowledgeBrokerLinks", "Vocabularies", "VocabularyTerms", "TermLabelVariants",
             "StakeholderLenses", "ProcedureLensViews", "KnowledgeTraces",
             "CollectedSourceMaterials", "KnowledgeSearchEvents", "KnowledgeMethods",
-            "KnowledgeGaps", "ChangeRequests", "OnboardingRecords", "CommunitiesOfPractice"]},
+            "KnowledgeGaps", "ChangeRequests", "OnboardingRecords", "CommunitiesOfPractice",
+            # a control, its binding, its evaluations and the checks that enforce it (loop 18)
+            "Requirements", "StepRequirements", "RequirementSatisfactions", "ConditionChecks"]},
         "writes": [
             ("KnowledgeRepositoryEntries", "INSERT", "", "author_agent = app.jwt_agent()",
              "A repository entry is written in its author's own name."),
@@ -394,6 +411,10 @@ EXPERIENCE_PROFILES = {
              "Encoding a warning sign onto a step is the knowledge engineer's job."),
             ("ChangeRequests", "UPDATE", "decided_at IS NOT NULL", "decided_at IS NOT NULL",
              "The steward marks a DECIDED request implemented; it cannot touch an undecided one."),
+            ("Requirements", "UPDATE", "is_blocking", "has_computed_witness",
+             "The knowledge engineer names the column that computes a blocking control, and in doing "
+             "so claims it is computed. Whether that column really exists is the model's judgement "
+             "(Requirements.WitnessClaimIsUnverified), not the engineer's."),
         ],
     },
     "sourcing-manager": {

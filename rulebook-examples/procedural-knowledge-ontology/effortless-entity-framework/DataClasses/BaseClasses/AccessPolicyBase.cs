@@ -218,12 +218,68 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             }
         }
 
+        private ObservableCollection<AppAction> _appActions;
+
+        [InverseProperty("AccessPolicy")]
+        public virtual ObservableCollection<AppAction> AppActions
+        {
+            get
+            {
+                if (_appActions == null)
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access AppActions - no database context is set. AccessPolicyId: " + this.AccessPolicyId + ".");
+                        }
+                        _appActions = new ObservableCollection<AppAction>();
+                    }
+                    else
+                    {
+                        var items = base.SoAContext.AppActions.Where(x => x.Policy == this.AccessPolicyId).ToList<AppAction>();
+                        _appActions = new ObservableCollection<AppAction>(items);
+                        if (items.Any())
+                        {
+                            base.SoAContext.AttachRange(items);
+                        }
+                    }
+                    _appActions.CollectionChanged += AppActions_CollectionChanged;
+                }
+                return _appActions;
+            }
+            private set
+            {
+                if (_appActions != null)
+                {
+                    _appActions.CollectionChanged -= AppActions_CollectionChanged;
+                }
+                _appActions = value;
+                if (_appActions != null)
+                {
+                    _appActions.CollectionChanged += AppActions_CollectionChanged;
+                }
+            }
+        }
+
+        private void AppActions_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems != null)
+            {
+                foreach (var item in e.NewItems.Cast<AppAction>())
+                {
+                    item.Policy = this.AccessPolicyId;
+                }
+            }
+        }
+
 
         protected override void LazyLoadProperties()
         {
             _ = this.AccessPrincipal;
             _ = this.RulebookTable;
             _ = this.AccessDenialTests;
+            _ = this.AppActions;
         }
 
         public override string ToString()

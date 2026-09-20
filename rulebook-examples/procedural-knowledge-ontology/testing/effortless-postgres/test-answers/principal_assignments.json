@@ -1,5 +1,18 @@
 [
   {
+    "principal_assignment_id": "pa-aisha-bello-maintenance-technician",
+    "name": "user-aisha-bello as principal-maintenance-technician",
+    "app_user": "user-aisha-bello",
+    "principal": "principal-maintenance-technician",
+    "is_default": true,
+    "granted_rationale": "aisha-bello works as maintenance-technician in the domain model, so may act as its principal.",
+    "principal_is_admin": false,
+    "user_organization": "acme-plant",
+    "principal_organization": "acme-plant",
+    "is_cross_organization_grant": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#PrincipalAssignment"
+  },
+  {
     "principal_assignment_id": "pa-amina-yusuf-communications-manager",
     "name": "user-amina-yusuf as principal-communications-manager",
     "app_user": "user-amina-yusuf",
@@ -10,7 +23,20 @@
     "user_organization": "acme-people",
     "principal_organization": "acme-people",
     "is_cross_organization_grant": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#PrincipalAssignment"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#PrincipalAssignment"
+  },
+  {
+    "principal_assignment_id": "pa-claire-dubois-sourcing-manager",
+    "name": "user-claire-dubois as principal-sourcing-manager",
+    "app_user": "user-claire-dubois",
+    "principal": "principal-sourcing-manager",
+    "is_default": true,
+    "granted_rationale": "claire-dubois works as sourcing-manager in the domain model, so may act as its principal.",
+    "principal_is_admin": false,
+    "user_organization": "acme-home-brands",
+    "principal_organization": "acme-home-brands",
+    "is_cross_organization_grant": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#PrincipalAssignment"
   },
   {
     "principal_assignment_id": "pa-close-pipeline-close-automation",
@@ -23,7 +49,7 @@
     "user_organization": "acme-finance",
     "principal_organization": "acme-finance",
     "is_cross_organization_grant": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#PrincipalAssignment"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#PrincipalAssignment"
   },
   {
     "principal_assignment_id": "pa-devon-okafor-controller",
@@ -36,7 +62,7 @@
     "user_organization": "acme-finance",
     "principal_organization": "acme-finance",
     "is_cross_organization_grant": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#PrincipalAssignment"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#PrincipalAssignment"
   },
   {
     "principal_assignment_id": "pa-elena-garcia-hr-policy-owner",
@@ -49,7 +75,7 @@
     "user_organization": "acme-people",
     "principal_organization": "acme-people",
     "is_cross_organization_grant": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#PrincipalAssignment"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#PrincipalAssignment"
   },
   {
     "principal_assignment_id": "pa-elena-garcia-process-steward",
@@ -62,7 +88,59 @@
     "user_organization": "acme-people",
     "principal_organization": "acme-people",
     "is_cross_organization_grant": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#PrincipalAssignment"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#PrincipalAssignment"
+  },
+  {
+    "principal_assignment_id": "pa-grace-holloway-release-manager",
+    "name": "user-grace-holloway as principal-release-manager",
+    "app_user": "user-grace-holloway",
+    "principal": "principal-release-manager",
+    "is_default": true,
+    "granted_rationale": "grace-holloway works as release-manager in the domain model, so may act as its principal.",
+    "principal_is_admin": false,
+    "user_organization": "acme-engineering",
+    "principal_organization": "acme-engineering",
+    "is_cross_organization_grant": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#PrincipalAssignment"
+  },
+  {
+    "principal_assignment_id": "pa-hana-kowalski-plant-operations-manager",
+    "name": "user-hana-kowalski as principal-plant-operations-manager",
+    "app_user": "user-hana-kowalski",
+    "principal": "principal-plant-operations-manager",
+    "is_default": true,
+    "granted_rationale": "hana-kowalski works as plant-operations-manager in the domain model, so may act as its principal.",
+    "principal_is_admin": false,
+    "user_organization": "acme-plant",
+    "principal_organization": "acme-plant",
+    "is_cross_organization_grant": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#PrincipalAssignment"
+  },
+  {
+    "principal_assignment_id": "pa-ken-watanabe-maintenance-technician",
+    "name": "user-ken-watanabe as principal-maintenance-technician",
+    "app_user": "user-ken-watanabe",
+    "principal": "principal-maintenance-technician",
+    "is_default": true,
+    "granted_rationale": "ken-watanabe works as maintenance-technician in the domain model, so may act as its principal.",
+    "principal_is_admin": false,
+    "user_organization": "acme-plant",
+    "principal_organization": "acme-plant",
+    "is_cross_organization_grant": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#PrincipalAssignment"
+  },
+  {
+    "principal_assignment_id": "pa-lin-zhao-plant-safety-officer",
+    "name": "user-lin-zhao as principal-plant-safety-officer",
+    "app_user": "user-lin-zhao",
+    "principal": "principal-plant-safety-officer",
+    "is_default": true,
+    "granted_rationale": "lin-zhao works as plant-safety-officer in the domain model, so may act as its principal.",
+    "principal_is_admin": false,
+    "user_organization": "acme-plant",
+    "principal_organization": "acme-plant",
+    "is_cross_organization_grant": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#PrincipalAssignment"
   },
   {
     "principal_assignment_id": "pa-maria-chen-finance-analyst",
@@ -75,7 +153,20 @@
     "user_organization": "acme-finance",
     "principal_organization": "acme-finance",
     "is_cross_organization_grant": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#PrincipalAssignment"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#PrincipalAssignment"
+  },
+  {
+    "principal_assignment_id": "pa-nadia-petrova-ontology-authority",
+    "name": "user-nadia-petrova as principal-ontology-authority",
+    "app_user": "user-nadia-petrova",
+    "principal": "principal-ontology-authority",
+    "is_default": true,
+    "granted_rationale": "nadia-petrova works as ontology-authority in the domain model, so may act as its principal.",
+    "principal_is_admin": false,
+    "user_organization": "acme-corp",
+    "principal_organization": "acme-corp",
+    "is_cross_organization_grant": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#PrincipalAssignment"
   },
   {
     "principal_assignment_id": "pa-noah-williams-employment-counsel",
@@ -88,7 +179,7 @@
     "user_organization": "acme-legal",
     "principal_organization": "acme-legal",
     "is_cross_organization_grant": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#PrincipalAssignment"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#PrincipalAssignment"
   },
   {
     "principal_assignment_id": "pa-notification-pipeline-notification-publisher",
@@ -101,7 +192,20 @@
     "user_organization": "acme-people",
     "principal_organization": "acme-people",
     "is_cross_organization_grant": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#PrincipalAssignment"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#PrincipalAssignment"
+  },
+  {
+    "principal_assignment_id": "pa-plant-copilot-1-2-plant-assistant",
+    "name": "user-plant-copilot-1-2 as principal-plant-assistant",
+    "app_user": "user-plant-copilot-1-2",
+    "principal": "principal-plant-assistant",
+    "is_default": true,
+    "granted_rationale": "plant-copilot-1-2 works as plant-assistant in the domain model, so may act as its principal.",
+    "principal_is_admin": false,
+    "user_organization": "acme-plant",
+    "principal_organization": "acme-plant",
+    "is_cross_organization_grant": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#PrincipalAssignment"
   },
   {
     "principal_assignment_id": "pa-policy-drafting-ai-policy-drafting-agent",
@@ -114,7 +218,7 @@
     "user_organization": "acme-people",
     "principal_organization": "acme-people",
     "is_cross_organization_grant": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#PrincipalAssignment"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#PrincipalAssignment"
   },
   {
     "principal_assignment_id": "pa-priya-raman-cfo",
@@ -127,7 +231,7 @@
     "user_organization": "acme-finance",
     "principal_organization": "acme-finance",
     "is_cross_organization_grant": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#PrincipalAssignment"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#PrincipalAssignment"
   },
   {
     "principal_assignment_id": "pa-priya-raman-knowledge-authority",
@@ -140,7 +244,33 @@
     "user_organization": "acme-finance",
     "principal_organization": "acme-finance",
     "is_cross_organization_grant": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#PrincipalAssignment"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#PrincipalAssignment"
+  },
+  {
+    "principal_assignment_id": "pa-sam-adeyemi-knowledge-engineer",
+    "name": "user-sam-adeyemi as principal-knowledge-engineer",
+    "app_user": "user-sam-adeyemi",
+    "principal": "principal-knowledge-engineer",
+    "is_default": true,
+    "granted_rationale": "sam-adeyemi works as knowledge-engineer in the domain model, so may act as its principal.",
+    "principal_is_admin": false,
+    "user_organization": "acme-corp",
+    "principal_organization": "acme-corp",
+    "is_cross_organization_grant": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#PrincipalAssignment"
+  },
+  {
+    "principal_assignment_id": "pa-tomas-reyes-maintenance-technician",
+    "name": "user-tomas-reyes as principal-maintenance-technician",
+    "app_user": "user-tomas-reyes",
+    "principal": "principal-maintenance-technician",
+    "is_default": true,
+    "granted_rationale": "tomas-reyes works as maintenance-technician in the domain model, so may act as its principal.",
+    "principal_is_admin": false,
+    "user_organization": "acme-plant",
+    "principal_organization": "acme-plant",
+    "is_cross_organization_grant": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#PrincipalAssignment"
   },
   {
     "principal_assignment_id": "pa-variance-ai-variance-review-agent",
@@ -153,6 +283,6 @@
     "user_organization": "acme-finance",
     "principal_organization": "acme-finance",
     "is_cross_organization_grant": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#PrincipalAssignment"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#PrincipalAssignment"
   }
 ]

@@ -1,0 +1,32 @@
+[
+  {
+    "knowledge_capture_initiative_id": "kci-corp-deal-pairing",
+    "name": "sf-corp-deal-analysis by PractitionerInterview",
+    "sourcing_function": "sf-corp-deal-analysis",
+    "knowledge_method": "PractitionerInterview",
+    "lead_agent": "priya-raman",
+    "started_at": "2024-03-01T09:00:00-06:00",
+    "status": "Completed",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#KnowledgeCaptureInitiative"
+  },
+  {
+    "knowledge_capture_initiative_id": "kci-plant-mixer2-incidents",
+    "name": "sf-plant-lockout by CriticalIncidentTechnique",
+    "sourcing_function": "sf-plant-lockout",
+    "knowledge_method": "CriticalIncidentTechnique",
+    "lead_agent": "sam-adeyemi",
+    "started_at": "2026-06-15T09:00:00-05:00",
+    "status": "Active",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#KnowledgeCaptureInitiative"
+  },
+  {
+    "knowledge_capture_initiative_id": "kci-plant-press-shadowing",
+    "name": "sf-plant-press-overhaul by Shadowing",
+    "sourcing_function": "sf-plant-press-overhaul",
+    "knowledge_method": "Shadowing",
+    "lead_agent": "sam-adeyemi",
+    "started_at": "2026-06-01T09:00:00-05:00",
+    "status": "Active",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#KnowledgeCaptureInitiative"
+  }
+]

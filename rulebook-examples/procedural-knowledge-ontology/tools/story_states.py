@@ -80,6 +80,7 @@ def refused(n, who, what, result, want_status, want_error):
 def main():
     sam = sign_in("sam-adeyemi", "knowledge-engineer")
     aisha = sign_in("aisha-bello", "maintenance-technician")
+    ken = sign_in("ken-watanabe", "maintenance-technician")
     lin = sign_in("lin-zhao", "plant-safety-officer")
     hana = sign_in("hana-kowalski", "plant-operations-manager")
     claire = sign_in("claire-dubois", "sourcing-manager")
@@ -171,6 +172,53 @@ def main():
     if not ok:
         failures.append(f"51: still at risk on the last day: {[r['know_how_carrier_id'] for r in at_risk]}")
     states.append({"state": 51, "name": "nothing-at-risk", "rows": at_risk})
+
+    # ---- "Everything Says Pass" (series 18): the control nobody ever asked ----------------------
+    # The zero-energy control reads Inoperative with six PASS marks on its step and a failed check of
+    # the condition it enforces. Lin evaluates it against Ken's July 9 run (NotSatisfied), which makes
+    # it Asserted; Sam names the column that computes its breach, which makes it Demonstrated. Only
+    # the officer may evaluate a control, and she may not name its witness.
+    z = "req-loto-zero-energy"
+    refused(60, "Sam", "evaluate a control (the safety officer's job)",
+            act(sam, "act-safety-evaluate-control", context={"Requirement": z, "StepExecution": "se-loto0709-06"},
+                values={"SatisfactionLevel": "Satisfied", "Evidence": "x"}), 403, "not_your_action")
+    state(61, "control-evaluated", "Lin", "Evaluate the zero-energy control: it did not hold", True, False,
+          act(lin, "act-safety-evaluate-control", watch=z, context={"Requirement": z, "StepExecution": "se-loto0709-06"},
+              values={"SatisfactionLevel": "NotSatisfied",
+                      "Evidence": "Hiss after the pneumatic valve closed at 04b. At 1:00 AM the check that zero energy "
+                                  "had been verified did not hold, and maintenance went ahead."}))
+    state(62, "control-witnessed", "Sam", "Name the column that computes the zero-energy control", "Asserted", "Demonstrated",
+          act(sam, "act-ke-name-witness", key=z, watch=z, values={"WitnessFieldName": "StepExecutions.ProceededDespiteFailedPrecondition"}))
+
+    # ---- series 18, video 1: the proof run. A no cannot become a done (loop 20) -------------------
+    status, run2 = act(ken, "act-tech-start-lockout", values={"ExecutedOnMachine": "press-7", "Facility": "plant-south", "Shift": "Night"})
+    if status != 200:
+        raise SystemExit(f"FATAL: Ken start lockout: {run2}")
+    run2_id = run2["key"]
+    states.append({"state": 70, "name": "proof-run-started", "who": "Ken", "result": run2})
+    print(f"  ok  70  {'Ken':<16} {'Start a lockout on press 7, again':<52} run {run2_id}")
+    se = None
+    for step in ["loto-01", "loto-02", "loto-03", "loto-04", "loto-04a", "loto-04b", "loto-04c", "loto-05", "loto-06", "loto-07"]:
+        if se:
+            state(71, f"proof-done-{step}", "Ken", f"Done ({se[1]})", False, True,
+                  act(ken, "act-tech-complete-step", key=se[0], watch=se[0], context={"VerificationResult": "PASS"}))
+        status, out = act(ken, "act-tech-begin-step", context={"ProcedureExecution": run2_id, "Step": step})
+        if status != 200:
+            raise SystemExit(f"FATAL: Ken begin {step}: {out}")
+        se = (out["key"], step)
+    chk = state(72, "check-said-no", "Ken", "The zero-energy check on step 07: no, it does not hold", False, True,
+                act(ken, "act-tech-check-condition", watch=se[0], context={"StepExecution": se[0], "StepCondition": "cond-loto07-pre-zeroenergy"},
+                    values={"Held": False}))
+    scored = rows(lin, "condition_checks", is_scored_breach=True)
+    ok = chk.get("key") in {r["condition_check_id"] for r in scored} and "cc-0709-07-zero" in {r["condition_check_id"] for r in scored}
+    print(("  ok " if ok else "FAIL ") + f" 73  {'Lin':<16} {'Rules broken, by the register itself: July 9 and today':<52} {len(scored)} scored breach(es)")
+    if not ok:
+        failures.append("73 scored breaches")
+    state(74, "proof-way-out", "Ken", "Fallback: stop, keep the locks on, escalate (WARN)", False, True,
+          act(ken, "act-tech-complete-step", key=se[0], watch=se[0], context={"VerificationResult": "WARN"}))
+    status, out = act(ken, "act-tech-begin-step", context={"ProcedureExecution": run2_id, "Step": "loto-09"})
+    if status != 200:
+        raise SystemExit(f"FATAL: Ken begin loto-09: {out}")
 
     if not CHECK:
         os.makedirs(OUT, exist_ok=True)

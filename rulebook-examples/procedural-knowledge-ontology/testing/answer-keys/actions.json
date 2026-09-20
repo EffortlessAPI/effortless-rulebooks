@@ -1,5 +1,12 @@
 [
   {
+    "action_id": "apply-lock",
+    "label": "Apply personal lock and tag",
+    "definition": "Attach one's own lock and tag to an isolation point.",
+    "semantic_type_iri": "https://w3id.org/pko#Action",
+    "name": "Apply personal lock and tag"
+  },
+  {
     "action_id": "approve-close",
     "label": "Approve close",
     "definition": "Authorize publication of the financial statements package.",

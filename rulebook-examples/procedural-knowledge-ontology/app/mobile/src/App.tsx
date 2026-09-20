@@ -10,11 +10,12 @@ import Sourcing from "./pages/Sourcing";
 import ChangeBoard from "./pages/ChangeBoard";
 import ReleaseGate from "./pages/ReleaseGate";
 import Admin from "./pages/Admin";
+import Steward from "./pages/Steward";
 import RoleHome from "./pages/RoleHome";
 
 // Routes are AppRoleProfiles.HomeRoute values. A role with no hand-built home lands on RoleHome,
 // which is generated from the tables in that sign-in's schema.
-const TABLET = ["/knowledge-engineer", "/sourcing-manager", "/release-manager", "/ontology-authority", "/admin"];
+const TABLET = ["/knowledge-engineer", "/sourcing-manager", "/release-manager", "/ontology-authority", "/process-steward", "/admin"];
 
 export default function App() {
   const { shell, loading } = useSession();
@@ -35,6 +36,7 @@ export default function App() {
         <Route path="/sourcing-manager/what-we-still-know" element={<Sourcing />} />
         <Route path="/ontology-authority/change-board" element={<ChangeBoard />} />
         <Route path="/release-manager/release-gate" element={<ReleaseGate />} />
+        <Route path="/process-steward/plan-versus-reality" element={<Steward />} />
         <Route path="/admin/*" element={shell.claims.is_admin ? <Admin /> : <Navigate to={home} replace />} />
         <Route path="*" element={<RoleHome />} />
       </Routes>

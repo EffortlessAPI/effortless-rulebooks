@@ -2,30 +2,141 @@
   "rulebook_releases": {
     "primary_key": "rulebook_release_id",
     "computed_columns": [
-      "name"
+      "name",
+      "prev_major",
+      "prev_minor",
+      "prev_patch",
+      "prev_issued_at",
+      "model_current_release",
+      "expected_major",
+      "expected_minor",
+      "expected_patch",
+      "is_increment_inconsistent_with_scale",
+      "days_since_previous_release",
+      "is_long_release_cycle",
+      "is_declared_current_release",
+      "log_entry_count",
+      "logical_change_count",
+      "non_additive_change_count",
+      "class_removal_or_rename_count",
+      "invalidating_domain_range_count",
+      "inconsistent_disjointness_count",
+      "schema_addition_count",
+      "suite_update_count",
+      "consumer_count",
+      "notified_consumer_count",
+      "revalidated_consumer_count",
+      "validation_run_count",
+      "validation_failure_total",
+      "consistent_run_count",
+      "cq_run_count",
+      "answerable_cq_run_count",
+      "regressed_baseline_count",
+      "cq_coverage_percent",
+      "prev_cq_coverage_percent",
+      "prev_cq_run_count",
+      "scored_criterion_count",
+      "stated_criterion_count",
+      "patch_alters_logical_model",
+      "minor_is_not_backward_compatible",
+      "class_removal_without_major",
+      "invalidating_domain_range_without_major",
+      "inconsistent_disjointness_without_major",
+      "is_breaking_release",
+      "breaking_release_with_unrevalidated_consumers",
+      "breaking_release_without_migration_plan",
+      "is_undocumented_version_decision",
+      "is_unannounced_to_dependents",
+      "is_release_without_recorded_changes",
+      "suite_lags_release",
+      "is_untagged_release",
+      "published_without_approval",
+      "released_despite_failed_validation",
+      "released_without_consistency_check",
+      "passed_validation_at_release",
+      "cq_coverage_declined",
+      "has_baseline_regression",
+      "released_without_cq_task_test",
+      "well_formed_but_requirements_unshown",
+      "is_not_scored_against_criteria",
+      "is_released_without_licence_or_permanent_id"
     ],
-    "record_count": 1
+    "record_count": 9
   },
   "ontology_profiles": {
     "primary_key": "ontology_profile_id",
     "computed_columns": [
-      "name"
+      "name",
+      "mapping_count",
+      "as_of_instant",
+      "days_since_last_revision",
+      "days_since_major_revision",
+      "days_since_dependency_reviewed",
+      "recent_deprecation_count",
+      "requires_frequent_review",
+      "change_rate_profile",
+      "is_review_overdue_for_change_rate",
+      "prerequisite_adopted_at",
+      "skips_adoption_path",
+      "namespace_is_http",
+      "namespace_dereferences",
+      "publishes_following_linked_data_principles"
     ],
-    "record_count": 11
+    "record_count": 27
   },
   "evaluation_contexts": {
     "primary_key": "evaluation_context_id",
     "computed_columns": [
-      "name"
+      "name",
+      "explicit_fragment_count",
+      "tacit_fragment_count",
+      "implicit_fragment_count",
+      "situated_judgment_fragment_count",
+      "model_reasoned_answer_count",
+      "otherwise_reasoned_answer_count",
+      "assistant_answer_count",
+      "model_reasoned_failed_answer_count",
+      "out_of_order_step_execution_count",
+      "in_order_step_execution_count",
+      "step_execution_count",
+      "early_start_step_execution_count",
+      "exact_mapping_count",
+      "aligned_mapping_count",
+      "extension_mapping_count"
     ],
     "record_count": 1
   },
   "organizations": {
     "primary_key": "organization_id",
     "computed_columns": [
-      "name"
+      "name",
+      "failed_ai_initiative_count",
+      "owned_procedure_count",
+      "ai_fails_for_lack_of_captured_knowledge",
+      "product_delivery_function_count",
+      "provider_held_delivery_method_count",
+      "is_hollowed_out_firm",
+      "audit_finding_count",
+      "filled_knowledge_position_count",
+      "has_knowledge_findings_without_knowledge_staff",
+      "departed_holder_know_how_count",
+      "lost_departed_know_how_count",
+      "retained_departed_know_how_percent",
+      "memory_leaves_with_staff",
+      "captured_own_know_how_count",
+      "documentation_entry_count",
+      "unallocated_documentation_count",
+      "transfer_given_count",
+      "unallocated_transfer_count",
+      "treats_knowledge_work_as_unvalued",
+      "person_carried_know_how_count",
+      "facility_carried_know_how_count",
+      "system_carried_know_how_count",
+      "holds_know_how_in_people_plants_and_systems",
+      "staged_decline_count",
+      "eroded_in_stages"
     ],
-    "record_count": 4
+    "record_count": 18
   },
   "agents": {
     "primary_key": "agent_id",
@@ -45,9 +156,42 @@
       "times_named_as_broker",
       "is_recognized_broker",
       "at_risk_reliance_count",
-      "has_at_risk_knowledge_reliance"
+      "has_at_risk_knowledge_reliance",
+      "is_organization_agent",
+      "answer_count",
+      "ai_task_completed_count",
+      "ai_task_completion_percent",
+      "is_below_task_completion_target",
+      "runtime_integration_count",
+      "lacks_runtime_knowledge_integration",
+      "search_event_count",
+      "is_untracked_ai_consumer",
+      "accountability_assertion_count",
+      "inferred_category_count",
+      "category_not_available_as_inference",
+      "is_unclassified_agent",
+      "is_ai_agent_without_model_version",
+      "attributed_artifact_count",
+      "has_produced_artifacts",
+      "has_artifact_blast_radius",
+      "registry_version_match_count",
+      "is_ai_agent_not_filled_from_registry",
+      "current_accountable_human_count",
+      "is_ai_agent_without_accountable_human",
+      "community_count",
+      "is_boundary_spanner",
+      "sna_identification_count",
+      "is_unidentified_boundary_spanner",
+      "located_know_how_count",
+      "required_mentoring_hours_per_week",
+      "lacks_time_to_mentor",
+      "transfers_given_count",
+      "recognition_count",
+      "is_unrewarded_sharer",
+      "downstream_of_held_steps_count",
+      "artifact_blast_radius_step_count"
     ],
-    "record_count": 11
+    "record_count": 55
   },
   "roles": {
     "primary_key": "role_id",
@@ -68,9 +212,28 @@
       "is_governed_by_lapsed_authority",
       "unescalated_refusal_count",
       "unauthorized_enforcement_assignment_count",
-      "is_ungoverned_enforcement_role"
+      "is_ungoverned_enforcement_role",
+      "specialized_role_family",
+      "specialization_count",
+      "has_specializations",
+      "is_senior_variant_not_specialization",
+      "organization_type",
+      "is_not_housed_in_department",
+      "capability_tag_count",
+      "compliance_review_tag_count",
+      "has_compliance_review_capability",
+      "role_mention_count",
+      "unresolved_role_mention_count",
+      "is_missed_by_phrase_query",
+      "current_holder_name",
+      "backup_role_holder",
+      "has_escalation_backup",
+      "has_unfilled_escalation_backup",
+      "release_approval_step_count",
+      "is_production_release_approver",
+      "approval_step_count"
     ],
-    "record_count": 12
+    "record_count": 33
   },
   "role_assignments": {
     "primary_key": "role_assignment_id",
@@ -121,37 +284,140 @@
       "has_authorizing_change_request",
       "is_unauthorized_enforcement_agent",
       "governance_evidence_count",
-      "unauthorized_enforcement_role_key"
+      "unauthorized_enforcement_role_key",
+      "scoped_version_status",
+      "is_scoped_to_retired_version",
+      "predecessor_valid_to",
+      "predecessor_lacks_validity_end",
+      "agent_version_key",
+      "agent_role_pair_key",
+      "is_open_ended",
+      "role_approval_step_count",
+      "receives_approval_notices_now"
     ],
-    "record_count": 13
+    "record_count": 36
   },
   "communities_of_practice": {
     "primary_key": "community_of_practice_id",
     "computed_columns": [
-      "name"
+      "name",
+      "has_own_vocabulary_and_norms",
+      "sharing_event_count",
+      "is_mandated_without_sharing_norm",
+      "interconnected_know_how_count",
+      "physical_know_how_count",
+      "digital_know_how_count",
+      "person_carried_know_how_count",
+      "spans_physical_and_digital_with_humans",
+      "external_member_count",
+      "specialist_member_count",
+      "employer_move_count",
+      "is_cross_firm_practice_cluster",
+      "recent_apprenticeship_count",
+      "is_circulation_ending_for_lack_of_apprentices",
+      "ambient_absorption_count",
+      "has_ambient_trade_know_how"
     ],
-    "record_count": 2
+    "record_count": 7
   },
   "mentorships": {
     "primary_key": "mentorship_id",
     "computed_columns": [
-      "name"
+      "name",
+      "as_of_instant",
+      "is_active",
+      "days_since_started",
+      "is_recent_apprenticeship",
+      "community_label"
     ],
-    "record_count": 1
+    "record_count": 5
   },
   "procedure_types": {
     "primary_key": "procedure_type_id",
     "computed_columns": [
-      "name"
+      "name",
+      "narrower_type_count",
+      "has_narrower_types",
+      "is_detached_from_taxonomy",
+      "broader_is_detached",
+      "is_unreachable_by_navigation",
+      "member_count",
+      "members_lacking_distinction_count",
+      "is_arbitrary_grouping"
     ],
-    "record_count": 2
+    "record_count": 17
   },
   "procedures": {
     "primary_key": "procedure_id",
     "computed_columns": [
-      "name"
+      "name",
+      "execution_count",
+      "is_template_instance",
+      "target_count",
+      "adoption_count",
+      "specified_step_total",
+      "has_no_explicit_steps",
+      "called_by_step_count",
+      "is_nested_procedure",
+      "failure_criterion_count",
+      "has_no_failure_criterion",
+      "lens_view_count",
+      "privileges_single_stakeholder_view",
+      "step_level_view_count",
+      "category_level_view_count",
+      "procedure_type_rank",
+      "procedure_type_definition",
+      "has_step_and_category_resolutions",
+      "is_missing_demanded_resolution",
+      "is_inconsistently_categorized",
+      "strategic_alignment_count",
+      "has_no_stated_reason_for_existing",
+      "outcome_measure_count",
+      "unlinked_measure_count",
+      "measures_performance_without_business_link",
+      "hindered_by_count",
+      "is_hindered_by_another_operation",
+      "type_distinguishing_facet",
+      "type_distinguishing_value",
+      "matching_distinction_count",
+      "lacks_type_distinction",
+      "lacks_distinction_type_key",
+      "managed_vocabulary_count",
+      "lacks_managed_controlled_vocabulary",
+      "compliance_review_step_count",
+      "involves_compliance_review_role",
+      "is_regulated_but_unformalized",
+      "agent_intended_count",
+      "is_tacit_only_agent_target",
+      "repository_entry_count",
+      "stale_entry_count",
+      "departed_only_know_how_count",
+      "has_decayed_transfer_channel",
+      "execution_feedback_entry_count",
+      "is_executed_without_feedback_loop",
+      "machine_authored_entry_count",
+      "practitioner_relationship_count",
+      "is_captured_by_automation_alone",
+      "unengaged_stakeholder_count",
+      "has_unengaged_stakeholder",
+      "recent_starter_count",
+      "untransferred_veteran_know_how_count",
+      "departing_veteran_know_how_count",
+      "has_transfer_shortfall_exposure",
+      "proficient_with_capture_count",
+      "proficient_without_capture_count",
+      "days_with_capture_total",
+      "days_without_capture_total",
+      "avg_days_to_proficiency_with_capture",
+      "avg_days_to_proficiency_without_capture",
+      "formalization_does_not_ease_onboarding",
+      "collected_material_count",
+      "in_work_capture_count",
+      "is_capture_separate_from_work",
+      "expert_acquisition_hours",
+      "compliance_document_count"
     ],
-    "record_count": 2
+    "record_count": 10
   },
   "procedure_versions": {
     "primary_key": "procedure_version_id",
@@ -228,9 +494,115 @@
       "mining_run_count",
       "drifted_mining_run_count",
       "has_unresolved_mining_drift",
-      "entry_step_id"
+      "entry_step_id",
+      "execution_count",
+      "status_is_pko",
+      "uses_non_pko_status",
+      "exception_count",
+      "fallback_transition_count",
+      "alternative_transition_count",
+      "has_no_exception_handling",
+      "latest_source_document_modified_at",
+      "days_document_trails_version",
+      "document_lags_practice",
+      "human_step_count",
+      "non_human_step_count",
+      "mixes_human_and_software_steps",
+      "day_run_count",
+      "night_run_count",
+      "day_deviating_run_count",
+      "night_deviating_run_count",
+      "is_inconsistent_across_shifts",
+      "overlaps_relation_count",
+      "enables_relation_count",
+      "prevents_relation_count",
+      "steps_without_ontology_type_count",
+      "rests_on_notation_only",
+      "is_current_without_motivation",
+      "conditionless_step_count",
+      "is_under_specified_for_execution",
+      "coarse_top_level_step_count",
+      "fine_top_level_step_count",
+      "mixes_granularity_at_one_level",
+      "procedure_type_of_version",
+      "created_by_agent_kind",
+      "elicitation_session_count",
+      "expert_capture_count",
+      "elicitation_evidence_count",
+      "indexed_segment_count",
+      "search_count",
+      "successful_search_count",
+      "search_success_percent",
+      "open_question_annotation_count",
+      "is_inadequate_for_use",
+      "served_assertion_count",
+      "lacks_machine_interpretable_encoding",
+      "structured_query_count",
+      "profile_validated_submission_count",
+      "reasoned_assertion_count",
+      "is_not_query_validate_reason_ready",
+      "published_projection_count",
+      "consumer_sync_count",
+      "is_unreachable_knowledge",
+      "human_sync_count",
+      "machine_sync_count",
+      "human_channel_count",
+      "machine_channel_count",
+      "serves_only_humans_or_only_machines",
+      "fresh_mining_run_count",
+      "lacks_continuous_drift_detection",
+      "outcome_measurement_count",
+      "is_disconnected_from_outcomes",
+      "ai_contribution_count",
+      "ai_consumption_count",
+      "uses_ai_in_one_direction_only",
+      "is_unmodified_for_twelve_months",
+      "design_decision_count",
+      "is_live_without_recorded_decisions",
+      "ai_artifact_consuming_input_count",
+      "contains_steps_affected_by_ai_agent_change",
+      "interview_session_count",
+      "observation_session_count",
+      "workshop_session_count",
+      "protocol_session_count",
+      "incident_session_count",
+      "reconciled_divergence_count",
+      "complementary_method_count",
+      "relies_on_single_method",
+      "misses_a_required_elicitation_mode",
+      "critical_incident_count",
+      "judgment_unprobed_by_incidents",
+      "sme_approval_count",
+      "sme_ai_evaluation_count",
+      "is_approved_without_sme_signoff",
+      "experts_evaluate_ai_not_representation",
+      "ke_session_count",
+      "ke_field_session_count",
+      "is_studied_only_from_the_desk",
+      "judgment_held_outside_sop_count",
+      "tacit_holding_count",
+      "explicit_holding_count",
+      "tacit_share_exceeds_explicit",
+      "hands_held_count",
+      "negotiated_practice_count",
+      "lives_in_hands_silence_and_negotiation",
+      "process_model_trace_count",
+      "is_live_model_untraced",
+      "trailing_practice_trace_count",
+      "is_documented_behind_practice",
+      "tacit_fragment_count",
+      "is_standardized_without_tacit_capture",
+      "tacit_form_fragment_count",
+      "situated_judgment_fragment_count",
+      "tacit_judgment_fragment_count",
+      "first_step",
+      "fallback_step",
+      "first_step_disagrees_with_graph",
+      "declared_first_step_count",
+      "graph_entry_step_count",
+      "owner_organization"
     ],
-    "record_count": 3
+    "record_count": 9
   },
   "procedure_version_links": {
     "primary_key": "procedure_version_link_id",
@@ -238,14 +610,16 @@
       "name",
       "superseded_version_key"
     ],
-    "record_count": 1
+    "record_count": 2
   },
   "procedure_status_changes": {
     "primary_key": "procedure_status_change_id",
     "computed_columns": [
-      "name"
+      "name",
+      "is_unattributed_change",
+      "change_kind_contradicts_target"
     ],
-    "record_count": 5
+    "record_count": 13
   },
   "steps": {
     "primary_key": "step_id",
@@ -291,9 +665,76 @@
       "version_entry_step_id",
       "gate_free_reach_from_entry_count",
       "is_reachable_from_entry_without_human_gate",
-      "is_gate_bypassed_publication"
+      "is_gate_bypassed_publication",
+      "child_step_count",
+      "parent_step_kind",
+      "is_composite_without_children",
+      "precondition_count",
+      "postcondition_count",
+      "invariant_count",
+      "safety_critical_condition_count",
+      "failure_mode_count",
+      "cue_count",
+      "danger_cue_count",
+      "decision_point_count",
+      "knowledge_fragment_count",
+      "has_instruction_only",
+      "input_variable_count",
+      "output_variable_count",
+      "required_lock_count",
+      "required_protective_equipment_count",
+      "is_isolation_without_lock",
+      "referenced_resource_count",
+      "untyped_version_key",
+      "is_accountable_to_software",
+      "has_downstream_steps",
+      "incompleteness_cue_count",
+      "has_incompleteness_cue",
+      "has_postcondition",
+      "accountable_agent",
+      "has_no_accountable_agent",
+      "conditionless_version_key",
+      "prerequisite_downstream_count",
+      "prerequisite_is_downstream",
+      "states_operational_knowledge",
+      "bottleneck_allocation_count",
+      "is_bottleneck_step",
+      "coarse_top_level_version_key",
+      "fine_top_level_version_key",
+      "context_sensitivity_count",
+      "unscoped_sensitivity_count",
+      "is_context_sensitive_but_unscoped",
+      "version_procedure",
+      "assigned_role_does_compliance_review",
+      "compliance_review_procedure_key",
+      "step_procedure_type",
+      "is_release_approval_gate",
+      "regulatory_requirement_count",
+      "tool_function_count",
+      "parseable_condition_count",
+      "dmn_decision_count",
+      "tool_use_rules_only_in_prose",
+      "open_outdated_flag_count",
+      "has_reported_reality_mismatch",
+      "deviated_run_count",
+      "is_drifted_from_practice",
+      "ai_failure_count",
+      "is_ai_failure_point",
+      "ai_artifact_input_count",
+      "consumes_ai_agent_artifact",
+      "collection_evidence_count",
+      "has_collection_evidence",
+      "activity_origin_trace_count",
+      "version_model_trace_count",
+      "is_untraced_activity_in_traced_model",
+      "elicited_validation_count",
+      "elicited_extension_count",
+      "downstream_artifact_step_count",
+      "declared_first_step_key",
+      "declared_fallback_step_key",
+      "owner_organization"
     ],
-    "record_count": 17
+    "record_count": 41
   },
   "step_transitions": {
     "primary_key": "step_transition_id",
@@ -315,51 +756,53 @@
       "unrehearsed_control_version_key",
       "from_step_is_human_approval_gate",
       "to_step_is_human_approval_gate",
-      "avoids_human_approval_gate"
+      "avoids_human_approval_gate",
+      "decision_point_count",
+      "is_undocumented_branch"
     ],
-    "record_count": 20
+    "record_count": 43
   },
   "actions": {
     "primary_key": "action_id",
     "computed_columns": [
       "name"
     ],
-    "record_count": 9
+    "record_count": 10
   },
   "functions": {
     "primary_key": "function_id",
     "computed_columns": [
       "name"
     ],
-    "record_count": 8
+    "record_count": 11
   },
   "tools": {
     "primary_key": "tool_id",
     "computed_columns": [
       "name"
     ],
-    "record_count": 8
+    "record_count": 9
   },
   "step_actions": {
     "primary_key": "step_action_id",
     "computed_columns": [
       "name"
     ],
-    "record_count": 9
+    "record_count": 10
   },
   "step_functions": {
     "primary_key": "step_function_id",
     "computed_columns": [
       "name"
     ],
-    "record_count": 8
+    "record_count": 10
   },
   "step_tools": {
     "primary_key": "step_tool_id",
     "computed_columns": [
       "name"
     ],
-    "record_count": 10
+    "record_count": 11
   },
   "requirements": {
     "primary_key": "requirement_id",
@@ -394,9 +837,12 @@
       "is_unwatched_and_unowned",
       "attestation_exposure_note",
       "unwatched_unowned_flag",
-      "uses_controlled_vocabulary"
+      "uses_controlled_vocabulary",
+      "is_regulatory_requirement",
+      "constraint_trace_count",
+      "is_untraced_bound_constraint"
     ],
-    "record_count": 13
+    "record_count": 16
   },
   "step_requirements": {
     "primary_key": "step_requirement_id",
@@ -410,9 +856,10 @@
       "satisfaction_count_for_binding",
       "binding_was_ever_exercised",
       "is_unexercised_blocking_binding",
-      "unexercised_binding_requirement_key"
+      "unexercised_binding_requirement_key",
+      "requirement_is_regulatory"
     ],
-    "record_count": 15
+    "record_count": 18
   },
   "step_verifications": {
     "primary_key": "step_verification_id",
@@ -440,17 +887,26 @@
     "primary_key": "resource_id",
     "computed_columns": [
       "name",
-      "is_approved_source"
+      "is_approved_source",
+      "source_modified_at",
+      "is_stale_extraction",
+      "referencing_step_count",
+      "referencing_version_count",
+      "is_unused_resource",
+      "is_content_without_organization",
+      "trailing_practice_count",
+      "is_behind_current_practice"
     ],
-    "record_count": 8
+    "record_count": 19
   },
   "procedure_resources": {
     "primary_key": "procedure_resource_id",
     "computed_columns": [
       "name",
-      "relation_iri"
+      "relation_iri",
+      "resource_modified_at"
     ],
-    "record_count": 8
+    "record_count": 12
   },
   "elicitation_sessions": {
     "primary_key": "elicitation_session_id",
@@ -464,9 +920,28 @@
       "is_high_yield_session",
       "is_concentrated_single_witness",
       "is_stale_concentrated_witness",
-      "concentrated_session_version_key"
+      "concentrated_session_version_key",
+      "elicitation_mode",
+      "is_interview",
+      "is_workshop",
+      "why_probe_count",
+      "shortfall_probe_count",
+      "is_interview_without_why_probe",
+      "is_interview_without_shortfall_probe",
+      "initiator_count",
+      "executor_count",
+      "dependent_count",
+      "uninvited_participant_count",
+      "gathers_whole_process_chain",
+      "is_workshop_without_usual_outsiders",
+      "method_family",
+      "facilitator_knowledge_engineer_role_count",
+      "facilitator_is_knowledge_engineer",
+      "is_generic_or_unskilled_capture",
+      "is_ke_field_session",
+      "is_reviewed_recording"
     ],
-    "record_count": 3
+    "record_count": 13
   },
   "knowledge_fragments": {
     "primary_key": "knowledge_fragment_id",
@@ -535,9 +1010,13 @@
       "unapproved_load_bearing_version_key",
       "owner_role_is_vacated",
       "is_orphaned_by_role",
-      "valid_fragment_version_key"
+      "valid_fragment_version_key",
+      "is_flattened_to_brittle_rule",
+      "corroboration_count",
+      "rests_on_single_data_point",
+      "owner_organization"
     ],
-    "record_count": 7
+    "record_count": 12
   },
   "knowledge_gaps": {
     "primary_key": "knowledge_gap_id",
@@ -557,16 +1036,25 @@
       "is_abandoned_unknown",
       "open_blocking_gap_version_key",
       "owner_role_is_vacated",
-      "is_ownerless_open_gap"
+      "is_ownerless_open_gap",
+      "is_known_and_unresolved",
+      "is_gatekeeping_or_sabotage",
+      "is_unattributed_gatekeeping",
+      "is_required_gatekept_uncodified",
+      "owner_organization",
+      "answering_change_title",
+      "answering_change_status"
     ],
-    "record_count": 8
+    "record_count": 15
   },
   "fa_qs": {
     "primary_key": "faq_id",
     "computed_columns": [
-      "name"
+      "name",
+      "resolution_count",
+      "is_unused_faq"
     ],
-    "record_count": 3
+    "record_count": 4
   },
   "explanations": {
     "primary_key": "explanation_id",
@@ -646,9 +1134,27 @@
       "unrecorded_refusal_count",
       "has_unrecorded_refusals",
       "independently_confirmed_intent_count",
-      "send_decisions_are_entirely_self_witnessed"
+      "send_decisions_are_entirely_self_witnessed",
+      "participant_count",
+      "deviating_step_count",
+      "has_step_deviation",
+      "deviating_facility_key",
+      "clean_facility_key",
+      "deviating_day_version_key",
+      "deviating_night_version_key",
+      "status_change_count",
+      "claims_completion_without_all_steps",
+      "is_unconfirmed_completion",
+      "has_no_recorded_outcome",
+      "feedback_count",
+      "is_unreported_mistake",
+      "owner_organization",
+      "stopped_at_gap_statement",
+      "stopped_at_gap_status",
+      "stopped_at_gap_change_title",
+      "stopped_at_gap_change_status"
     ],
-    "record_count": 2
+    "record_count": 10
   },
   "step_executions": {
     "primary_key": "step_execution_id",
@@ -751,9 +1257,36 @@
       "version_of_step",
       "is_ungoverned_divergence",
       "ungoverned_divergence_execution_key",
-      "self_attested_approval_execution_key"
+      "self_attested_approval_execution_key",
+      "previous_executed_step",
+      "specified_transition_from_previous_count",
+      "is_out_of_specified_order",
+      "execution_version",
+      "executes_step_of_other_version",
+      "repetition_count",
+      "step_max_repetitions",
+      "exceeds_max_repetitions",
+      "lacks_required_confirmation",
+      "failed_precondition_count",
+      "violated_invariant_count",
+      "proceeded_despite_failed_precondition",
+      "unescalated_danger_cue_count",
+      "ignored_danger_cue",
+      "used_entity_count",
+      "generated_entity_count",
+      "step_input_variable_count",
+      "ran_without_declared_inputs",
+      "step_prerequisite",
+      "completed_prerequisite_run_count",
+      "ran_before_prerequisite_completed",
+      "deviation_execution_key",
+      "broke_invariant",
+      "is_blocked_by_incomplete_prerequisite",
+      "owner_organization",
+      "incomplete_cue_observation_count",
+      "is_blocked_by_observed_cue"
     ],
-    "record_count": 12
+    "record_count": 70
   },
   "requirement_satisfactions": {
     "primary_key": "requirement_satisfaction_id",
@@ -802,32 +1335,46 @@
   "errors": {
     "primary_key": "error_id",
     "computed_columns": [
-      "name"
+      "name",
+      "remedy_step_count",
+      "occurrence_count",
+      "has_no_remedy_step"
     ],
-    "record_count": 2
+    "record_count": 4
   },
   "issue_occurrences": {
     "primary_key": "issue_occurrence_id",
     "computed_columns": [
       "name",
       "is_unresolved",
-      "step_execution_when_unresolved"
+      "step_execution_when_unresolved",
+      "executed_step",
+      "failed_condition_count_on_run",
+      "coincided_with_failed_condition",
+      "has_no_recorded_solution",
+      "redesign_implemented_at",
+      "is_failure_without_landed_redesign",
+      "improvement_cycle_path"
     ],
-    "record_count": 2
+    "record_count": 4
   },
   "user_questions": {
     "primary_key": "user_question_id",
     "computed_columns": [
-      "name"
+      "name",
+      "is_unaddressed_question"
     ],
-    "record_count": 2
+    "record_count": 4
   },
   "user_feedback": {
     "primary_key": "user_feedback_id",
     "computed_columns": [
-      "name"
+      "name",
+      "is_unactioned_procedure_critique",
+      "collection_follow_up_count",
+      "is_tacit_signal_not_fed_into_collection"
     ],
-    "record_count": 2
+    "record_count": 6
   },
   "stewardship_assignments": {
     "primary_key": "stewardship_assignment_id",
@@ -874,9 +1421,10 @@
       "is_stalled_implementation",
       "stalled_implementation_version_key",
       "approved_version_key",
-      "is_approved_decision"
+      "is_approved_decision",
+      "owner_organization"
     ],
-    "record_count": 2
+    "record_count": 4
   },
   "review_events": {
     "primary_key": "review_event_id",
@@ -890,7 +1438,9 @@
       "exceeds_promised_cadence",
       "cadence_drift_days",
       "promise_and_behavior_disagree",
-      "cadence_breach_version_key"
+      "cadence_breach_version_key",
+      "version_modified_at",
+      "review_did_not_refresh_modified"
     ],
     "record_count": 3
   },
@@ -953,9 +1503,12 @@
   "semantic_mappings": {
     "primary_key": "semantic_mapping_id",
     "computed_columns": [
-      "name"
+      "name",
+      "profile_namespace_dereferences",
+      "reinvents_standard_term",
+      "is_non_resolvable_term_iri"
     ],
-    "record_count": 47
+    "record_count": 357
   },
   "witness_loops": {
     "primary_key": "witness_loop_id",
@@ -964,7 +1517,7 @@
       "question_count",
       "is_complete"
     ],
-    "record_count": 4
+    "record_count": 16
   },
   "role_questions": {
     "primary_key": "role_question_id",
@@ -973,7 +1526,7 @@
       "predicate_count",
       "is_answered"
     ],
-    "record_count": 111
+    "record_count": 442
   },
   "rulebook_fields": {
     "primary_key": "rulebook_field_id",
@@ -982,9 +1535,11 @@
       "is_derived",
       "is_witness",
       "disagreeing_substrate_count",
-      "is_substrate_contested"
+      "is_substrate_contested",
+      "has_measured_data",
+      "is_discriminating"
     ],
-    "record_count": 1897
+    "record_count": 5185
   },
   "test_suites": {
     "primary_key": "test_suite_id",
@@ -1327,7 +1882,7 @@
       "name",
       "route_count"
     ],
-    "record_count": 12
+    "record_count": 20
   },
   "app_nav_groups": {
     "primary_key": "app_nav_group_id",
@@ -1371,9 +1926,22 @@
       "field_count",
       "policy_count",
       "is_unsecured",
-      "disagreeing_substrate_count"
+      "disagreeing_substrate_count",
+      "has_measured_rows",
+      "semantic_mapping_count",
+      "meaning_is_only_tabular",
+      "exact_mapping_count",
+      "aligned_mapping_count",
+      "is_unaligned_to_standard",
+      "semantic_type_iri_field_count",
+      "lacks_semantic_type_convention",
+      "is_unsecured_governance_record",
+      "unrestricted_non_admin_policy_count",
+      "restricted_non_admin_policy_count",
+      "is_readable_in_full_by_non_admin",
+      "is_controlled_for_every_non_admin"
     ],
-    "record_count": 92
+    "record_count": 264
   },
   "access_principals": {
     "primary_key": "access_principal_id",
@@ -1387,7 +1955,7 @@
       "has_no_access",
       "is_over_privileged"
     ],
-    "record_count": 12
+    "record_count": 20
   },
   "access_policies": {
     "primary_key": "access_policy_id",
@@ -1400,7 +1968,7 @@
       "is_unwitnessed_write",
       "denial_test_count"
     ],
-    "record_count": 202
+    "record_count": 781
   },
   "field_grants": {
     "primary_key": "field_grant_id",
@@ -1413,7 +1981,7 @@
       "is_masked",
       "grant_key_when_readable"
     ],
-    "record_count": 3639
+    "record_count": 18467
   },
   "role_schemas": {
     "primary_key": "role_schema_id",
@@ -1423,7 +1991,7 @@
       "view_count",
       "is_empty_schema"
     ],
-    "record_count": 12
+    "record_count": 20
   },
   "role_schema_views": {
     "primary_key": "role_schema_view_id",
@@ -1437,7 +2005,7 @@
       "is_full_width",
       "is_degenerate_view"
     ],
-    "record_count": 202
+    "record_count": 762
   },
   "jwt_claim_mappings": {
     "primary_key": "jwt_claim_mapping_id",
@@ -1470,7 +2038,7 @@
       "holds_multiple_principals",
       "is_non_human_sign_in"
     ],
-    "record_count": 10
+    "record_count": 20
   },
   "principal_assignments": {
     "primary_key": "principal_assignment_id",
@@ -1481,7 +2049,7 @@
       "principal_organization",
       "is_cross_organization_grant"
     ],
-    "record_count": 12
+    "record_count": 22
   },
   "process_mining_runs": {
     "primary_key": "process_mining_run_id",
@@ -1495,9 +2063,14 @@
       "is_stale_mining_evidence",
       "procedure_version_is_live",
       "is_drift_on_live_version",
-      "drifted_mining_run_key"
+      "drifted_mining_run_key",
+      "people_capture_complement_count",
+      "is_deviation_unexplained_by_people",
+      "undocumented_path_count",
+      "has_undocumented_enacted_path",
+      "conformance_percent"
     ],
-    "record_count": 4
+    "record_count": 5
   },
   "vocabularies": {
     "primary_key": "vocabulary_id",
@@ -1505,9 +2078,23 @@
       "name",
       "term_count",
       "orphan_term_count",
-      "has_orphan_terms"
+      "has_orphan_terms",
+      "is_machine_accessible",
+      "managed_scheme_procedure_key",
+      "organized_transcript_count",
+      "organized_field_notes_count",
+      "organized_process_map_count",
+      "organized_mined_event_trace_count",
+      "organized_document_excerpt_count",
+      "organized_material_count",
+      "organized_kind_count",
+      "is_single_kind_frame",
+      "latest_organized_material_at",
+      "refinement_count",
+      "is_frozen_despite_new_collection",
+      "ontology_preceded_vocabulary_control"
     ],
-    "record_count": 2
+    "record_count": 12
   },
   "vocabulary_terms": {
     "primary_key": "vocabulary_term_id",
@@ -1516,9 +2103,22 @@
       "usage_count",
       "is_orphan_term",
       "is_widely_adopted_term",
-      "orphan_term_vocabulary_key"
+      "orphan_term_vocabulary_key",
+      "broader_term_parent",
+      "scheme_governed_dimension",
+      "introduced_release_issued_at",
+      "latest_meaning_change_at",
+      "has_stale_definition",
+      "structural_shift_count",
+      "has_structural_sense_shift_across_years",
+      "pref_label_practitioner_mention_count",
+      "alt_label_practitioner_mention_count",
+      "is_organized_around_official_term",
+      "source_phrasing_count",
+      "unreconciled_phrasing_count",
+      "has_unreconciled_variant_phrasings"
     ],
-    "record_count": 12
+    "record_count": 44
   },
   "knowledge_broker_links": {
     "primary_key": "knowledge_broker_link_id",
@@ -1530,9 +2130,12 @@
       "broker_is_still_engaged",
       "is_at_risk_reliance",
       "active_reliance_broker_key",
-      "at_risk_broker_key"
+      "at_risk_broker_key",
+      "pointed_holder",
+      "locates_other_holder",
+      "translation_between_vocabularies"
     ],
-    "record_count": 5
+    "record_count": 8
   },
   "conformance_substrates": {
     "primary_key": "conformance_substrate_id",
@@ -1564,7 +2167,7 @@
       "imperfect_substrate_count",
       "is_fully_conformant"
     ],
-    "record_count": 4
+    "record_count": 5
   },
   "substrate_run_scores": {
     "primary_key": "substrate_run_score_id",
@@ -1583,7 +2186,7 @@
       "latest_error_flag",
       "substrate_label"
     ],
-    "record_count": 28
+    "record_count": 35
   },
   "table_conformance": {
     "primary_key": "table_conformance_id",
@@ -1609,7 +2212,7 @@
       "formula",
       "substrate_label"
     ],
-    "record_count": 49
+    "record_count": 27
   },
   "cell_disagreements": {
     "primary_key": "cell_disagreement_id",
@@ -1618,6 +2221,2061 @@
       "substrate",
       "rulebook_field"
     ],
-    "record_count": 339
+    "record_count": 205
+  },
+  "knowledge_methods": {
+    "primary_key": "knowledge_method_id",
+    "computed_columns": [
+      "name",
+      "elicitation_use_count",
+      "application_count",
+      "usage_count",
+      "is_applied"
+    ],
+    "record_count": 26
+  },
+  "source_articles": {
+    "primary_key": "source_article_id",
+    "computed_columns": [
+      "name",
+      "claim_count",
+      "covered_claim_count",
+      "agreed_claim_count",
+      "uncovered_claim_count",
+      "coverage_percent",
+      "agreed_coverage_percent",
+      "is_fully_covered"
+    ],
+    "record_count": 5
+  },
+  "article_claims": {
+    "primary_key": "article_claim_id",
+    "computed_columns": [
+      "name",
+      "required_evidence",
+      "evidence_count",
+      "valid_evidence_count",
+      "agreed_evidence_count",
+      "is_covered",
+      "is_agreed",
+      "has_rejected_evidence"
+    ],
+    "record_count": 900
+  },
+  "claim_evidence": {
+    "primary_key": "claim_evidence_id",
+    "computed_columns": [
+      "name",
+      "claim_kind",
+      "field_catalog_name",
+      "field_is_witness",
+      "field_has_data",
+      "field_is_discriminating",
+      "field_is_contested",
+      "table_has_rows",
+      "question_is_answered",
+      "question_witnessed_answer",
+      "profile_mapping_count",
+      "method_is_applied",
+      "procedure_execution_count",
+      "has_justification",
+      "is_witness_proof",
+      "is_structural_proof",
+      "is_question_proof",
+      "is_standard_proof",
+      "is_scenario_proof",
+      "is_valid",
+      "is_contested",
+      "is_agreed_evidence"
+    ],
+    "record_count": 900
+  },
+  "method_applications": {
+    "primary_key": "method_application_id",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 20
+  },
+  "lifecycle_statuses": {
+    "primary_key": "lifecycle_status_id",
+    "computed_columns": [
+      "name",
+      "version_use_count",
+      "execution_use_count",
+      "is_non_pko_status_in_use"
+    ],
+    "record_count": 11
+  },
+  "facilities": {
+    "primary_key": "facility_id",
+    "computed_columns": [
+      "name",
+      "deviating_run_count",
+      "clean_run_count",
+      "is_deviation_only_facility"
+    ],
+    "record_count": 3
+  },
+  "machine_types": {
+    "primary_key": "machine_type_id",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 3
+  },
+  "energy_sources": {
+    "primary_key": "energy_source_id",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 4
+  },
+  "machines": {
+    "primary_key": "machine_id",
+    "computed_columns": [
+      "name",
+      "energy_source_count",
+      "unisolated_energy_source_count",
+      "is_non_standard_configuration",
+      "has_unisolated_energy_source"
+    ],
+    "record_count": 3
+  },
+  "machine_energy_sources": {
+    "primary_key": "machine_energy_source_id",
+    "computed_columns": [
+      "name",
+      "machine_procedure_version",
+      "isolation_step_count",
+      "is_unisolated_energy_source",
+      "unisolated_machine_key"
+    ],
+    "record_count": 6
+  },
+  "lock_devices": {
+    "primary_key": "lock_device_id",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 3
+  },
+  "protective_equipment": {
+    "primary_key": "protective_equipment_id",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 3
+  },
+  "step_lock_requirements": {
+    "primary_key": "step_lock_requirement_id",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 3
+  },
+  "step_protective_equipment": {
+    "primary_key": "step_protective_equipment_id",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 3
+  },
+  "regulatory_frameworks": {
+    "primary_key": "regulatory_framework_id",
+    "computed_columns": [
+      "name",
+      "requirement_count",
+      "required_procedure_count"
+    ],
+    "record_count": 2
+  },
+  "procedure_targets": {
+    "primary_key": "procedure_target_id",
+    "computed_columns": [
+      "name",
+      "machine_is_non_standard",
+      "handling_failure_mode_count",
+      "is_unhandled_non_standard_target"
+    ],
+    "record_count": 6
+  },
+  "procedure_adoptions": {
+    "primary_key": "procedure_adoption_id",
+    "computed_columns": [
+      "name",
+      "is_adoption_mode_unstated"
+    ],
+    "record_count": 3
+  },
+  "procedure_outcome_criteria": {
+    "primary_key": "procedure_outcome_criterion_id",
+    "computed_columns": [
+      "name",
+      "failure_procedure_key"
+    ],
+    "record_count": 5
+  },
+  "relation_types": {
+    "primary_key": "relation_type_id",
+    "computed_columns": [
+      "name",
+      "usage_count"
+    ],
+    "record_count": 11
+  },
+  "activity_relations": {
+    "primary_key": "activity_relation_id",
+    "computed_columns": [
+      "name",
+      "relation_type_is_defined",
+      "uses_undefined_relation_type",
+      "from_step_version",
+      "overlaps_version_key",
+      "enables_version_key",
+      "prevents_version_key"
+    ],
+    "record_count": 5
+  },
+  "step_variables": {
+    "primary_key": "step_variable_id",
+    "computed_columns": [
+      "name",
+      "source_direction",
+      "source_step",
+      "is_dangling_input",
+      "is_miswired_source",
+      "consumer_count",
+      "input_step_key",
+      "output_step_key",
+      "step_accountable_agent",
+      "step_agent_kind",
+      "consumer_role",
+      "consumer_workflow",
+      "source_step_agent",
+      "source_step_agent_kind",
+      "is_input_from_ai_artifact",
+      "ai_artifact_consumer_has_no_accountable_agent",
+      "ai_blast_radius_path"
+    ],
+    "record_count": 21
+  },
+  "execution_entities": {
+    "primary_key": "execution_entity_id",
+    "computed_columns": [
+      "name",
+      "variable_direction",
+      "variable_step",
+      "executed_step",
+      "is_usage_direction_mismatch",
+      "is_foreign_variable",
+      "used_execution_key",
+      "generated_execution_key",
+      "variable_datatype",
+      "variable_expected_format",
+      "violates_declared_datatype_or_format",
+      "generating_agent",
+      "attributed_to_agent"
+    ],
+    "record_count": 15
+  },
+  "step_conditions": {
+    "primary_key": "step_condition_id",
+    "computed_columns": [
+      "name",
+      "check_count",
+      "is_never_checked",
+      "precondition_step_key",
+      "postcondition_step_key",
+      "invariant_step_key",
+      "safety_critical_step_key",
+      "is_machine_parseable"
+    ],
+    "record_count": 7
+  },
+  "condition_checks": {
+    "primary_key": "condition_check_id",
+    "computed_columns": [
+      "name",
+      "condition_kind",
+      "is_failed_precondition",
+      "is_violated_invariant",
+      "failed_precondition_execution_key",
+      "violated_invariant_execution_key"
+    ],
+    "record_count": 7
+  },
+  "failure_modes": {
+    "primary_key": "failure_mode_id",
+    "computed_columns": [
+      "name",
+      "escalation_role_has_no_holder",
+      "escalates_to_vacant_role",
+      "has_no_response"
+    ],
+    "record_count": 5
+  },
+  "step_cues": {
+    "primary_key": "step_cue_id",
+    "computed_columns": [
+      "name",
+      "observation_count",
+      "unescalated_observation_count",
+      "danger_cue_step_key",
+      "incomplete_cue_step_key",
+      "failure_mode_response",
+      "is_unanswerable_sign"
+    ],
+    "record_count": 4
+  },
+  "cue_observations": {
+    "primary_key": "cue_observation_id",
+    "computed_columns": [
+      "name",
+      "cue_requires_escalation",
+      "is_unescalated_danger_cue",
+      "unescalated_cue_key",
+      "unescalated_execution_key",
+      "owner_organization",
+      "cue_signals_incomplete_step",
+      "is_awaiting_acknowledgement"
+    ],
+    "record_count": 3
+  },
+  "decision_points": {
+    "primary_key": "decision_point_id",
+    "computed_columns": [
+      "name",
+      "has_no_deciding_factors",
+      "is_dmn_encoded"
+    ],
+    "record_count": 5
+  },
+  "execution_participants": {
+    "primary_key": "execution_participant_id",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 4
+  },
+  "step_resources": {
+    "primary_key": "step_resource_id",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 2
+  },
+  "faq_categories": {
+    "primary_key": "faq_category_id",
+    "computed_columns": [
+      "name",
+      "faq_count"
+    ],
+    "record_count": 4
+  },
+  "faq_targets": {
+    "primary_key": "faq_target_id",
+    "computed_columns": [
+      "name",
+      "faq_count"
+    ],
+    "record_count": 2
+  },
+  "authoring_submissions": {
+    "primary_key": "authoring_submission_id",
+    "computed_columns": [
+      "name",
+      "is_expert_authored_conforming",
+      "is_non_conforming_accepted"
+    ],
+    "record_count": 3
+  },
+  "process_knowledge_levels": {
+    "primary_key": "process_knowledge_level_id",
+    "computed_columns": [
+      "name",
+      "tacit_strategy_count",
+      "explicit_strategy_count",
+      "lacks_capture_strategy_for_either_form"
+    ],
+    "record_count": 3
+  },
+  "level_capture_strategies": {
+    "primary_key": "level_capture_strategy_id",
+    "computed_columns": [
+      "name",
+      "contradicts_knowledge_form"
+    ],
+    "record_count": 5
+  },
+  "level_pyramid_questions": {
+    "primary_key": "level_pyramid_question_id",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 5
+  },
+  "process_level_statements": {
+    "primary_key": "process_level_statement_id",
+    "computed_columns": [
+      "name",
+      "level_question_key",
+      "pyramid_match_count",
+      "is_filed_at_wrong_level"
+    ],
+    "record_count": 8
+  },
+  "tactical_resource_allocations": {
+    "primary_key": "tactical_resource_allocation_id",
+    "computed_columns": [
+      "name",
+      "utilization_percent",
+      "is_bottleneck"
+    ],
+    "record_count": 5
+  },
+  "process_strategic_alignments": {
+    "primary_key": "process_strategic_alignment_id",
+    "computed_columns": [
+      "name",
+      "states_no_trade_off"
+    ],
+    "record_count": 4
+  },
+  "business_outcomes": {
+    "primary_key": "business_outcome_id",
+    "computed_columns": [
+      "name",
+      "linked_measure_count"
+    ],
+    "record_count": 3
+  },
+  "process_outcome_measures": {
+    "primary_key": "process_outcome_measure_id",
+    "computed_columns": [
+      "name",
+      "is_unlinked_to_business_outcome"
+    ],
+    "record_count": 5
+  },
+  "process_stages": {
+    "primary_key": "process_stage_id",
+    "computed_columns": [
+      "name",
+      "step_count",
+      "owner_has_no_holder",
+      "is_unowned_or_empty_stage"
+    ],
+    "record_count": 7
+  },
+  "process_interdependencies": {
+    "primary_key": "process_interdependency_id",
+    "computed_columns": [
+      "name",
+      "is_hindering_dependency",
+      "hindered_procedure_key"
+    ],
+    "record_count": 4
+  },
+  "stakeholder_lenses": {
+    "primary_key": "stakeholder_lens_id",
+    "computed_columns": [
+      "name",
+      "granularity_rank"
+    ],
+    "record_count": 9
+  },
+  "procedure_lens_views": {
+    "primary_key": "procedure_lens_view_id",
+    "computed_columns": [
+      "name",
+      "procedure_current_version",
+      "lens_granularity_rank",
+      "view_granularity_rank",
+      "is_granularity_misfit",
+      "is_disconnected_silo",
+      "step_level_procedure_key",
+      "category_level_procedure_key"
+    ],
+    "record_count": 15
+  },
+  "applicability_scopes": {
+    "primary_key": "applicability_scope_id",
+    "computed_columns": [
+      "name",
+      "dimension_count",
+      "states_conditions"
+    ],
+    "record_count": 5
+  },
+  "step_context_sensitivities": {
+    "primary_key": "step_context_sensitivity_id",
+    "computed_columns": [
+      "name",
+      "unscoped_step_key"
+    ],
+    "record_count": 4
+  },
+  "situational_variants": {
+    "primary_key": "situational_variant_id",
+    "computed_columns": [
+      "name",
+      "scope_dimension_count",
+      "scope_states_conditions",
+      "has_no_applicability_dimension",
+      "diverges_without_stated_conditions"
+    ],
+    "record_count": 4
+  },
+  "collected_source_materials": {
+    "primary_key": "collected_source_material_id",
+    "computed_columns": [
+      "name",
+      "is_modeled_before_organized",
+      "source_document_revised_at",
+      "is_document_source",
+      "is_people_capture",
+      "is_practice_evidence",
+      "is_captured_in_flow_of_work",
+      "dependent_trace_count",
+      "is_dependency_invisible_to_change",
+      "changed_dependent_count",
+      "has_knowledge_affected_by_source_change"
+    ],
+    "record_count": 15
+  },
+  "scheme_refinements": {
+    "primary_key": "scheme_refinement_id",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 2
+  },
+  "term_label_variants": {
+    "primary_key": "term_label_variant_id",
+    "computed_columns": [
+      "name",
+      "term_scheme",
+      "term_pref_label",
+      "wording_key",
+      "pref_wording_key",
+      "concepts_sharing_wording",
+      "is_ambiguous_label",
+      "practitioner_mention_count",
+      "pref_wording",
+      "same_pref_wording_count",
+      "is_cross_scheme_duplicate_pref"
+    ],
+    "record_count": 53
+  },
+  "ai_labeling_runs": {
+    "primary_key": "ai_labeling_run_id",
+    "computed_columns": [
+      "name",
+      "output_count",
+      "non_canonical_output_count",
+      "grounding_scheme_is_machine_accessible",
+      "is_ungrounded_synonym_sprawl",
+      "grounded_in_non_machine_readable_scheme"
+    ],
+    "record_count": 3
+  },
+  "source_term_mentions": {
+    "primary_key": "source_term_mention_id",
+    "computed_columns": [
+      "name",
+      "wording_key",
+      "matching_label_count",
+      "matching_pref_label_count",
+      "is_uncontrolled_wording",
+      "is_non_canonical_generated_value",
+      "intended_term_role",
+      "unresolved_intended_term_key",
+      "unresolved_role_key"
+    ],
+    "record_count": 25
+  },
+  "term_relations": {
+    "primary_key": "term_relation_id",
+    "computed_columns": [
+      "name",
+      "from_term_grandparent",
+      "asserts_indirect_link_as_direct"
+    ],
+    "record_count": 4
+  },
+  "term_meaning_changes": {
+    "primary_key": "term_meaning_change_id",
+    "computed_columns": [
+      "name",
+      "span_days"
+    ],
+    "record_count": 3
+  },
+  "external_standard_terms": {
+    "primary_key": "external_standard_term_id",
+    "computed_columns": [
+      "name",
+      "as_of_instant",
+      "rehomed_term_same_as",
+      "rehomed_term_namespace",
+      "rehomed_term_release_issued_at",
+      "profile_namespace_iri",
+      "days_since_deprecated",
+      "is_recent_deprecation",
+      "using_mapping_count",
+      "stale_identifier_mapping_count",
+      "is_adopted_but_deprecated",
+      "is_alignment_stale_after_deprecation",
+      "is_needed_deprecated_term_not_rehomed",
+      "is_rehomed_without_identity_link",
+      "is_rehomed_without_new_release",
+      "has_unpropagated_identifier_change",
+      "rehoming_kept_external_namespace"
+    ],
+    "record_count": 9
+  },
+  "role_capability_tags": {
+    "primary_key": "role_capability_tag_id",
+    "computed_columns": [
+      "name",
+      "capability_scheme_dimension",
+      "is_tag_outside_capability_scheme"
+    ],
+    "record_count": 9
+  },
+  "classification_facets": {
+    "primary_key": "classification_facet_id",
+    "computed_columns": [
+      "name",
+      "assignment_count"
+    ],
+    "record_count": 4
+  },
+  "procedure_facet_assignments": {
+    "primary_key": "procedure_facet_assignment_id",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 12
+  },
+  "encoding_lifecycle_stages": {
+    "primary_key": "encoding_lifecycle_stage_id",
+    "computed_columns": [
+      "name",
+      "annotation_count",
+      "is_stage_without_feedback"
+    ],
+    "record_count": 6
+  },
+  "knowledge_consumer_systems": {
+    "primary_key": "knowledge_consumer_system_id",
+    "computed_columns": [
+      "name",
+      "model_sync_count",
+      "integration_count",
+      "is_knowledge_silo",
+      "is_unlinked_toolchain_component",
+      "semantic_layer_component_count",
+      "platform_capability_count",
+      "is_immature_graph_platform",
+      "holds_computationally_encoded_procedure_knowledge",
+      "stores_procedure_knowledge_without_computational_access"
+    ],
+    "record_count": 8
+  },
+  "consumer_system_syncs": {
+    "primary_key": "consumer_system_sync_id",
+    "computed_columns": [
+      "name",
+      "system_audience",
+      "loaded_procedure",
+      "canonical_version",
+      "canonical_version_modified_at",
+      "loaded_version_creator",
+      "is_behind_canonical_version",
+      "predates_version_change",
+      "is_ai_fed_from_forked_copy",
+      "drops_provenance_in_transit",
+      "reaches_humans",
+      "reaches_machines"
+    ],
+    "record_count": 6
+  },
+  "integration_pathways": {
+    "primary_key": "integration_pathway_id",
+    "computed_columns": [
+      "name",
+      "integration_count_on_pathway"
+    ],
+    "record_count": 4
+  },
+  "agent_integrations": {
+    "primary_key": "agent_integration_id",
+    "computed_columns": [
+      "name",
+      "pathway_integration_count",
+      "observed_answer_count",
+      "is_shadow_integration",
+      "is_one_off_connection",
+      "snapshot_is_governed",
+      "is_deployed_on_ungoverned_graph"
+    ],
+    "record_count": 7
+  },
+  "grounding_snapshots": {
+    "primary_key": "grounding_snapshot_id",
+    "computed_columns": [
+      "name",
+      "is_governed",
+      "reasoner_run_count",
+      "consistent_reasoner_run_count",
+      "latest_materialized_at",
+      "served_without_consistency_check",
+      "served_before_materialization",
+      "assertion_count",
+      "stale_assignment_assertion_count",
+      "serves_stale_role_assignments",
+      "deprecated_as_current_count",
+      "serves_deprecated_as_current"
+    ],
+    "record_count": 3
+  },
+  "reasoner_runs": {
+    "primary_key": "reasoner_run_id",
+    "computed_columns": [
+      "name",
+      "is_richness_tractability_failure",
+      "passes_schema_but_fails_reasoner"
+    ],
+    "record_count": 5
+  },
+  "snapshot_assertions": {
+    "primary_key": "snapshot_assertion_id",
+    "computed_columns": [
+      "name",
+      "source_version_status",
+      "source_assignment_is_current",
+      "snapshot_consistent_run_count",
+      "snapshot_is_reasoned",
+      "is_stale_role_assertion",
+      "presents_deprecated_as_current",
+      "lacks_provenance",
+      "has_opaque_identifier",
+      "lacks_dublin_core"
+    ],
+    "record_count": 15
+  },
+  "retrieval_segments": {
+    "primary_key": "retrieval_segment_id",
+    "computed_columns": [
+      "name",
+      "author_agent_kind",
+      "related_from_count",
+      "is_isolated_chunk",
+      "contradicted_is_indexed",
+      "is_inconsistent_grounding",
+      "is_machine_held_knowledge"
+    ],
+    "record_count": 9
+  },
+  "knowledge_query_definitions": {
+    "primary_key": "knowledge_query_definition_id",
+    "computed_columns": [
+      "name",
+      "source_system_count",
+      "misses_a_layer",
+      "consolidated_distributed_sources"
+    ],
+    "record_count": 4
+  },
+  "knowledge_query_sources": {
+    "primary_key": "knowledge_query_source_id",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 6
+  },
+  "assistant_answers": {
+    "primary_key": "assistant_answer_id",
+    "computed_columns": [
+      "name",
+      "grounding_count",
+      "own_knowledge_grounding_count",
+      "cited_grounding_count",
+      "stale_grounding_count",
+      "is_not_from_own_knowledge",
+      "is_untraceable_to_source",
+      "context_unescalated_danger_cue_count",
+      "stayed_silent_on_safety_problem",
+      "context_step_ended_at",
+      "arrived_after_step_ended",
+      "execution_of_context",
+      "context_step",
+      "assumed_step_completed_count",
+      "lost_track_of_state",
+      "specified_transition_count",
+      "contradicts_shared_model",
+      "is_explicitly_grounded_recommendation",
+      "recommendation_rests_on_nothing_explicit",
+      "recommended_step_regulatory_count",
+      "requirement_check_count",
+      "conflict_count",
+      "conflicts_with_regulation",
+      "is_unchecked_regulated_recommendation",
+      "delivered_despite_conflict",
+      "recommended_step_needs_human",
+      "acted_on_without_human_judgment",
+      "answered_compliance_question_from_documents",
+      "document_interpretation_erred",
+      "model_did_the_reasoning",
+      "wrong_because_graph_was_stale",
+      "owner_organization",
+      "model_reasoned_and_task_failed"
+    ],
+    "record_count": 13
+  },
+  "answer_groundings": {
+    "primary_key": "answer_grounding_id",
+    "computed_columns": [
+      "name",
+      "is_from_own_knowledge",
+      "assertion_is_stale",
+      "assertion_presents_deprecated",
+      "grounds_on_stale_assertion"
+    ],
+    "record_count": 14
+  },
+  "answer_requirement_checks": {
+    "primary_key": "answer_requirement_check_id",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 2
+  },
+  "ai_tool_invocations": {
+    "primary_key": "ai_tool_invocation_id",
+    "computed_columns": [
+      "name",
+      "executed_step",
+      "declared_function_count",
+      "is_undeclared_tool_use",
+      "declared_input_count",
+      "acted_without_declared_context"
+    ],
+    "record_count": 3
+  },
+  "embedding_probes": {
+    "primary_key": "embedding_probe_id",
+    "computed_columns": [
+      "name",
+      "synonyms_not_similar",
+      "opposites_not_opposed"
+    ],
+    "record_count": 6
+  },
+  "prompt_templates": {
+    "primary_key": "prompt_template_id",
+    "computed_columns": [
+      "name",
+      "child_template_count",
+      "is_disconnected_prompt_knowledge",
+      "is_unmanaged_prompt_in_use",
+      "spends_budget_on_rare_detail",
+      "condensation_percent",
+      "is_verbatim_dump"
+    ],
+    "record_count": 5
+  },
+  "knowledge_projections": {
+    "primary_key": "knowledge_projection_id",
+    "computed_columns": [
+      "name",
+      "version_modified_at",
+      "open_count",
+      "diagram_can_diverge_from_model",
+      "narrative_not_generated_from_model",
+      "narrative_unreachable",
+      "is_published"
+    ],
+    "record_count": 7
+  },
+  "model_annotations": {
+    "primary_key": "model_annotation_id",
+    "computed_columns": [
+      "name",
+      "is_discussion_in_authoritative_model",
+      "flag_bypassed_annotation_interface",
+      "is_lost_new_knowledge",
+      "is_friction_without_gap",
+      "is_open_outdated_flag"
+    ],
+    "record_count": 9
+  },
+  "knowledge_search_events": {
+    "primary_key": "knowledge_search_event_id",
+    "computed_columns": [
+      "name",
+      "found_nothing_useful",
+      "gave_up_after_seeing_results",
+      "is_unlinked_failed_search"
+    ],
+    "record_count": 6
+  },
+  "ai_adoption_initiatives": {
+    "primary_key": "ai_adoption_initiative_id",
+    "computed_columns": [
+      "name",
+      "as_of_instant",
+      "target_has_no_explicit_steps",
+      "target_version_issued_at",
+      "target_version_under_specified",
+      "target_version_notation_only",
+      "target_elicitation_evidence_count",
+      "reviewed_output_count",
+      "preceding_reviewed_output_count",
+      "last_outcome_measured_at",
+      "days_since_outcome_measured",
+      "ai_insight_count",
+      "hands_tacit_procedure_to_agent",
+      "agent_on_under_specified_procedure",
+      "agent_on_notation_only_procedure",
+      "calls_for_process_knowledge_framework",
+      "redesigned_before_documented",
+      "breaks_elicit_encode_connect_order",
+      "went_full_without_reviewed_partial_stage",
+      "underinvests_knowledge_layer",
+      "not_anchored_in_process_knowledge",
+      "agentic_without_knowledge_capture",
+      "is_ai_outcome_unmeasured",
+      "adopted_without_bottom_line_result",
+      "failed_without_formalized_knowledge"
+    ],
+    "record_count": 9
+  },
+  "knowledge_outcome_measurements": {
+    "primary_key": "knowledge_outcome_measurement_id",
+    "computed_columns": [
+      "name",
+      "baseline_access_score",
+      "baseline_error_rate",
+      "baseline_minutes_per_run",
+      "baseline_satisfaction",
+      "higher_access_fewer_errors",
+      "higher_access_more_efficient",
+      "higher_access_more_satisfied",
+      "is_unacted_adverse_outcome",
+      "is_gain_outside_procedural_scope"
+    ],
+    "record_count": 7
+  },
+  "ai_insight_proposals": {
+    "primary_key": "ai_insight_proposal_id",
+    "computed_columns": [
+      "name",
+      "target_creator_kind",
+      "is_unvalidated_or_stranded_insight",
+      "grew_model_without_human_seed"
+    ],
+    "record_count": 6
+  },
+  "assistant_benchmarks": {
+    "primary_key": "assistant_benchmark_id",
+    "computed_columns": [
+      "name",
+      "accuracy_lift_points",
+      "shows_spatial_lift_from_graph_queries",
+      "shows_geospatial_retrieval_lift"
+    ],
+    "record_count": 4
+  },
+  "governed_models": {
+    "primary_key": "governed_model_id",
+    "computed_columns": [
+      "name",
+      "as_of_instant",
+      "days_since_registered",
+      "charter_count",
+      "current_charter_count",
+      "current_steward_role",
+      "current_steward_agent",
+      "current_authority_role",
+      "current_authority_agent",
+      "is_ownerless",
+      "is_ownerless_past_a_year",
+      "governance_lapsed",
+      "has_no_current_steward",
+      "has_no_current_authority",
+      "is_procedure_without_change_authority",
+      "last_steward_activity_at",
+      "days_since_steward_activity",
+      "is_unmaintained",
+      "documents_behind_count",
+      "is_not_kept_current",
+      "open_practice_drift_count",
+      "has_open_practice_drift",
+      "is_neglected_and_drifting",
+      "expert_found_drift_count",
+      "cq_review_count",
+      "last_cq_review_at",
+      "days_since_cq_review",
+      "cq_review_overdue",
+      "degradation_hidden_until_wrong_answer",
+      "baseline_question_count",
+      "requirements_spec_incomplete",
+      "collection_control_count",
+      "stewardship_control_count",
+      "retrieval_control_count",
+      "use_control_count",
+      "continuous_pipeline_stage_count",
+      "lacks_lifecycle_stage_control",
+      "pipeline_not_continuous",
+      "procedure_has_no_explicit_steps",
+      "is_unmanageable_undocumented_work",
+      "is_without_originating_use_case",
+      "pilot_count",
+      "is_adopted_without_pilot",
+      "requirements_expert_count",
+      "implementation_expert_count",
+      "publication_expert_count",
+      "maintenance_expert_count",
+      "experts_not_involved_throughout",
+      "real_data_mapping_run_count",
+      "is_implemented_without_real_data"
+    ],
+    "record_count": 7
+  },
+  "model_charters": {
+    "primary_key": "model_charter_id",
+    "computed_columns": [
+      "name",
+      "as_of_instant",
+      "is_current",
+      "steward_agent",
+      "authority_agent",
+      "authority_organization",
+      "model_kind",
+      "model_domain_owner",
+      "model_headcount",
+      "model_tooling_owner_role",
+      "model_first_control_adopted_at",
+      "is_steward_unwritten",
+      "is_authority_scope_unstated",
+      "conflates_steward_and_authority",
+      "is_sanctioned_dual_holding",
+      "is_authority_outside_domain_owner",
+      "controls_precede_ownership",
+      "steward_activity_count",
+      "last_drift_watch_at",
+      "days_since_drift_watch",
+      "is_drift_watch_lapsed",
+      "procedure_decision_count",
+      "model_review_count",
+      "is_named_but_unexercised",
+      "steward_is_outside_tooling",
+      "adopted_template_without_adaptation"
+    ],
+    "record_count": 8
+  },
+  "steward_activities": {
+    "primary_key": "steward_activity_id",
+    "computed_columns": [
+      "name",
+      "activity_model"
+    ],
+    "record_count": 10
+  },
+  "model_change_requests": {
+    "primary_key": "model_change_request_id",
+    "computed_columns": [
+      "name",
+      "steward_agent",
+      "authority_agent",
+      "rule_key",
+      "required_route",
+      "is_accepted",
+      "is_modeling_change",
+      "is_schema_change",
+      "has_authority_review",
+      "requires_authority_review",
+      "is_minor_scope",
+      "steward_own_change_unreviewed",
+      "steward_approval_out_of_bounds",
+      "authority_review_skipped",
+      "placement_not_decided_by_authority",
+      "is_misrouted",
+      "lacks_motivating_question",
+      "unmotivated_and_not_returned",
+      "motivated_by_failing_question",
+      "is_accepted_without_named_approver",
+      "deployed_without_target_release",
+      "is_misclassified_agent_swap",
+      "ai_to_human_move_without_compliance_review",
+      "ai_to_human_move_unaudited",
+      "is_ai_to_human_move",
+      "lifecycle_change_by_unauthorized_agent",
+      "assessed_inconsistent_count",
+      "post_deploy_inconsistent_count",
+      "assessed_inference_count",
+      "post_deploy_inference_count",
+      "assessed_query_result_count",
+      "post_deploy_query_result_count",
+      "assessed_coverage_gap_count",
+      "would_make_instances_inconsistent",
+      "would_alter_inferences",
+      "would_alter_query_results",
+      "would_leave_coverage_incomplete",
+      "missed_inconsistent_instances",
+      "missed_altered_inferences",
+      "missed_altered_query_results",
+      "leaves_coverage_unchecked",
+      "domain_change_spread_wrong_inferences",
+      "intuitive_disjointness_broke_individuals",
+      "validation_run_count",
+      "acceptance_failure_total",
+      "structural_pass_count",
+      "vocabulary_pass_count",
+      "accepted_without_test_run",
+      "accepted_with_failing_suite",
+      "accepted_without_structural_check",
+      "accepted_without_vocabulary_check",
+      "integrity_check_count",
+      "human_integrity_check_count",
+      "disjointness_check_count",
+      "domain_inference_check_count",
+      "range_consistency_check_count",
+      "integrity_decided_without_human",
+      "skipped_disjointness_review",
+      "skipped_domain_inference_review",
+      "skipped_range_review",
+      "unresolved_objection_count",
+      "approved_over_unresolved_objection"
+    ],
+    "record_count": 17
+  },
+  "change_authority_rules": {
+    "primary_key": "change_authority_rule_id",
+    "computed_columns": [
+      "name",
+      "misrouted_request_count",
+      "is_rule_bypassed"
+    ],
+    "record_count": 4
+  },
+  "change_impact_findings": {
+    "primary_key": "change_impact_finding_id",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 10
+  },
+  "change_integrity_checks": {
+    "primary_key": "change_integrity_check_id",
+    "computed_columns": [
+      "name",
+      "checker_kind"
+    ],
+    "record_count": 15
+  },
+  "change_objections": {
+    "primary_key": "change_objection_id",
+    "computed_columns": [
+      "name",
+      "is_unresolved"
+    ],
+    "record_count": 2
+  },
+  "change_validation_runs": {
+    "primary_key": "change_validation_run_id",
+    "computed_columns": [
+      "name",
+      "release",
+      "expected_chain_count",
+      "unproduced_chain_count",
+      "has_uninspected_failures",
+      "is_unconfirmed_consistency",
+      "misses_expected_inference"
+    ],
+    "record_count": 8
+  },
+  "expected_inference_checks": {
+    "primary_key": "expected_inference_check_id",
+    "computed_columns": [
+      "name",
+      "is_unproduced"
+    ],
+    "record_count": 4
+  },
+  "model_consumers": {
+    "primary_key": "model_consumer_id",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 4
+  },
+  "consumer_revalidations": {
+    "primary_key": "consumer_revalidation_id",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 26
+  },
+  "model_documents": {
+    "primary_key": "model_document_id",
+    "computed_columns": [
+      "name",
+      "model_current_release",
+      "is_behind_current_release"
+    ],
+    "record_count": 5
+  },
+  "staleness_query_runs": {
+    "primary_key": "staleness_query_run_id",
+    "computed_columns": [
+      "name",
+      "runner_kind",
+      "not_surfaced_to_steward"
+    ],
+    "record_count": 3
+  },
+  "external_dependency_revisions": {
+    "primary_key": "external_dependency_revision_id",
+    "computed_columns": [
+      "name",
+      "affected_mapping_count",
+      "as_of_instant",
+      "days_since_published",
+      "is_untracked_revision"
+    ],
+    "record_count": 3
+  },
+  "stakeholder_questions": {
+    "primary_key": "stakeholder_question_id",
+    "computed_columns": [
+      "name",
+      "triager_kind",
+      "result_route",
+      "as_of_instant",
+      "days_open",
+      "is_unanswered_past_due",
+      "is_unanswerable_today",
+      "is_untriaged_unanswerable",
+      "needs_structural_change",
+      "unanswerable_without_scope_request",
+      "is_misrouted_after_triage"
+    ],
+    "record_count": 6
+  },
+  "model_expansion_requests": {
+    "primary_key": "model_expansion_request_id",
+    "computed_columns": [
+      "name",
+      "model_domain_owner",
+      "concept_count",
+      "uncovered_concept_count",
+      "is_cross_function_expansion",
+      "requires_schema_extension",
+      "fit_decision_contradicts_concept_fit"
+    ],
+    "record_count": 3
+  },
+  "expansion_concept_fits": {
+    "primary_key": "expansion_concept_fit_id",
+    "computed_columns": [
+      "name",
+      "is_uncovered"
+    ],
+    "record_count": 9
+  },
+  "competency_question_set_entries": {
+    "primary_key": "competency_question_set_entry_id",
+    "computed_columns": [
+      "name",
+      "as_of_instant",
+      "days_since_added",
+      "is_outgrown_baseline_question",
+      "irrelevant_but_still_active",
+      "governance_use_count",
+      "serves_every_governance_use"
+    ],
+    "record_count": 8
+  },
+  "competency_question_runs": {
+    "primary_key": "competency_question_run_id",
+    "computed_columns": [
+      "name",
+      "entry_is_original",
+      "prior_was_answerable",
+      "is_baseline_regression",
+      "is_unfixed_wrong_answer"
+    ],
+    "record_count": 10
+  },
+  "competency_question_reviews": {
+    "primary_key": "competency_question_review_id",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 4
+  },
+  "quality_criteria": {
+    "primary_key": "quality_criterion_id",
+    "computed_columns": [
+      "name",
+      "assessment_count"
+    ],
+    "record_count": 8
+  },
+  "quality_assessments": {
+    "primary_key": "quality_assessment_id",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 11
+  },
+  "term_definitions": {
+    "primary_key": "term_definition_id",
+    "computed_columns": [
+      "name",
+      "drafter_kind",
+      "ai_draft_adopted_unrevised"
+    ],
+    "record_count": 3
+  },
+  "model_proposals": {
+    "primary_key": "model_proposal_id",
+    "computed_columns": [
+      "name",
+      "proposer_kind",
+      "reviewer_kind",
+      "committer_kind",
+      "model_steward_agent",
+      "is_ai_candidate",
+      "is_only_proposed",
+      "committed_without_expert_review",
+      "entered_without_quality_check",
+      "approver_unknown",
+      "committed_outside_any_version",
+      "ai_question_adopted_unvetted",
+      "ai_alignment_decided_by_ai",
+      "ai_axiom_without_human_review",
+      "adoption_not_answered_by_person",
+      "has_no_human_touchpoint",
+      "ai_instance_data_loaded_without_steward",
+      "awaits_engineer_vetting",
+      "is_pending_alignment_decision",
+      "awaits_steward_approval"
+    ],
+    "record_count": 11
+  },
+  "assignment_instant_checks": {
+    "primary_key": "assignment_instant_check_id",
+    "computed_columns": [
+      "name",
+      "step_role",
+      "assignment_role",
+      "assignment_valid_from",
+      "assignment_valid_to",
+      "assignment_agent",
+      "assignment_agent_version",
+      "held_step_at_instant"
+    ],
+    "record_count": 4
+  },
+  "instance_data_versions": {
+    "primary_key": "instance_data_version_id",
+    "computed_columns": [
+      "name",
+      "logged_change_count"
+    ],
+    "record_count": 2
+  },
+  "domain_coverage_areas": {
+    "primary_key": "domain_coverage_area_id",
+    "computed_columns": [
+      "name",
+      "is_uncovered_area"
+    ],
+    "record_count": 4
+  },
+  "governance_stage_controls": {
+    "primary_key": "governance_stage_control_id",
+    "computed_columns": [
+      "name",
+      "is_continuous_pipeline_stage"
+    ],
+    "record_count": 20
+  },
+  "process_design_decisions": {
+    "primary_key": "process_design_decision_id",
+    "computed_columns": [
+      "name",
+      "is_commitment_without_rationale",
+      "days_before_recorded",
+      "is_recorded_after_the_fact"
+    ],
+    "record_count": 3
+  },
+  "model_change_log_entries": {
+    "primary_key": "model_change_log_entry_id",
+    "computed_columns": [
+      "name",
+      "motivating_question",
+      "release_version",
+      "release_decision_undocumented",
+      "alters_logical_model",
+      "is_class_removal_or_rename",
+      "is_invalidating_domain_range_change",
+      "is_inconsistent_disjointness",
+      "is_backward_incompatible",
+      "is_additive_schema_change",
+      "is_unexplained_modification",
+      "rationale_without_question",
+      "is_schema_change_without_increment",
+      "is_instance_change_in_schema_release",
+      "schema_change_without_request",
+      "cannot_be_audited",
+      "cannot_be_rolled_back",
+      "is_untraceable_breaking_change"
+    ],
+    "record_count": 17
+  },
+  "drift_observations": {
+    "primary_key": "drift_observation_id",
+    "computed_columns": [
+      "name",
+      "release_passed_validation",
+      "release_issued_at",
+      "is_open_practice_mismatch",
+      "went_undetected_by_passing_suite",
+      "drift_follows_clean_release"
+    ],
+    "record_count": 4
+  },
+  "sourcing_functions": {
+    "primary_key": "sourcing_function_id",
+    "computed_columns": [
+      "name",
+      "is_outsourced",
+      "is_business_process_outsourcing",
+      "is_knowledge_process_outsourcing",
+      "is_vital_expertise_classed_non_core",
+      "is_what_how_split",
+      "is_method_knowledge_held_outside",
+      "claims_how_without_doing",
+      "is_vital_expertise_process",
+      "is_outsourced_vital_expertise_process",
+      "audit_item_count",
+      "dependency_count",
+      "coverage_gap_count",
+      "specification_audit_count",
+      "specification_shortfall_count",
+      "method_shortfall_count",
+      "provider_ip_documentation_count",
+      "designs_what_it_cannot_build",
+      "is_unaudited_function",
+      "capture_initiative_count",
+      "is_uncaptured_priority_process"
+    ],
+    "record_count": 12
+  },
+  "knowledge_audits": {
+    "primary_key": "knowledge_audit_id",
+    "computed_columns": [
+      "name",
+      "finding_count",
+      "treats_deficit_as_cost_problem"
+    ],
+    "record_count": 4
+  },
+  "knowledge_audit_items": {
+    "primary_key": "knowledge_audit_item_id",
+    "computed_columns": [
+      "name",
+      "client_organization",
+      "has_internal_shortfall",
+      "is_knowledge_dependency",
+      "is_coverage_gap",
+      "is_unnamed_finding",
+      "is_single_team_silo"
+    ],
+    "record_count": 12
+  },
+  "knowledge_capture_initiatives": {
+    "primary_key": "knowledge_capture_initiative_id",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 3
+  },
+  "knowledge_workforce_positions": {
+    "primary_key": "knowledge_workforce_position_id",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 4
+  },
+  "provider_engagements": {
+    "primary_key": "provider_engagement_id",
+    "computed_columns": [
+      "name",
+      "is_active",
+      "relied_dependency_count",
+      "is_unplanned_knowledge_return",
+      "is_knowledge_access_unsecured",
+      "required_deliverable_count",
+      "to_client_required_count",
+      "to_client_delivered_count",
+      "to_provider_delivered_count",
+      "joint_deliverable_count",
+      "lacks_knowledge_deliverables",
+      "is_one_way_learning",
+      "is_short_term_without_joint_knowledge",
+      "obliges_knowledge_flow_back"
+    ],
+    "record_count": 7
+  },
+  "knowledge_deliverables": {
+    "primary_key": "knowledge_deliverable_id",
+    "computed_columns": [
+      "name",
+      "is_delivered"
+    ],
+    "record_count": 10
+  },
+  "corporate_governance_programs": {
+    "primary_key": "corporate_governance_program_id",
+    "computed_columns": [
+      "name",
+      "is_compliance_only"
+    ],
+    "record_count": 3
+  },
+  "records_retention_policies": {
+    "primary_key": "records_retention_policy_id",
+    "computed_columns": [
+      "name",
+      "program_sponsor_discipline",
+      "is_legal_led_knowledge_destruction"
+    ],
+    "record_count": 4
+  },
+  "ai_registry_model_versions": {
+    "primary_key": "ai_registry_model_version_id",
+    "computed_columns": [
+      "name",
+      "graph_individual_count",
+      "live_production_deployment_count",
+      "is_live_but_unregistered_in_graph"
+    ],
+    "record_count": 6
+  },
+  "ai_model_deployments": {
+    "primary_key": "ai_model_deployment_id",
+    "computed_columns": [
+      "name",
+      "as_of_instant",
+      "is_live_in_production",
+      "agent_identifier",
+      "assignment_link_count",
+      "artifact_link_count",
+      "is_isolated_registry_fact"
+    ],
+    "record_count": 6
+  },
+  "ai_model_evaluations": {
+    "primary_key": "ai_model_evaluation_id",
+    "computed_columns": [
+      "name",
+      "passed"
+    ],
+    "record_count": 3
+  },
+  "ai_agent_accountabilities": {
+    "primary_key": "ai_agent_accountability_id",
+    "computed_columns": [
+      "name",
+      "as_of_instant",
+      "is_current",
+      "accountable_agent_kind",
+      "is_accountable_to_non_person",
+      "is_current_human_accountability"
+    ],
+    "record_count": 4
+  },
+  "agent_upgrade_assessments": {
+    "primary_key": "agent_upgrade_assessment_id",
+    "computed_columns": [
+      "name",
+      "attributed_artifact_count",
+      "traversed_downstream_step_count",
+      "missed_traversed_impact"
+    ],
+    "record_count": 2
+  },
+  "assignment_update_policies": {
+    "primary_key": "assignment_update_policy_id",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 3
+  },
+  "role_assignment_update_tasks": {
+    "primary_key": "role_assignment_update_task_id",
+    "computed_columns": [
+      "name",
+      "as_of_instant",
+      "policy_trigger_owner_role",
+      "trigger_owner_cover_count",
+      "lacks_named_trigger_owner",
+      "policy_sla_hours",
+      "elapsed_minutes",
+      "exceeded_update_sla",
+      "ending_role",
+      "replacement_role",
+      "changed_role_instead_of_assignment",
+      "dependent_run_version",
+      "dependent_run_started_at",
+      "dependent_run_role_step_count",
+      "missed_next_dependent_run",
+      "failed_notice_count",
+      "stale_assignment_broke_routing"
+    ],
+    "record_count": 6
+  },
+  "assignment_routed_notices": {
+    "primary_key": "assignment_routed_notice_id",
+    "computed_columns": [
+      "name",
+      "notice_role",
+      "recipient_role_key",
+      "recipient_pair_assignment_count",
+      "recipient_valid_from",
+      "recipient_latest_valid_to",
+      "recipient_open_ended_count",
+      "recipient_held_role_when_sent",
+      "reached_wrong_person_or_nobody",
+      "routed_around_model"
+    ],
+    "record_count": 6
+  },
+  "practitioner_expertise": {
+    "primary_key": "practitioner_expertise_id",
+    "computed_columns": [
+      "name",
+      "knows_more_than_can_say",
+      "is_unexplained_foresight"
+    ],
+    "record_count": 5
+  },
+  "critical_incidents": {
+    "primary_key": "critical_incident_id",
+    "computed_columns": [
+      "name",
+      "is_adverse_or_improvised",
+      "has_surfaced_judgment"
+    ],
+    "record_count": 3
+  },
+  "interview_probes": {
+    "primary_key": "interview_probe_id",
+    "computed_columns": [
+      "name",
+      "why_answer",
+      "shortfall_answer"
+    ],
+    "record_count": 4
+  },
+  "observed_actions": {
+    "primary_key": "observed_action_id",
+    "computed_columns": [
+      "name",
+      "is_small_choice",
+      "is_unofficial_workaround",
+      "is_omitted_from_own_account",
+      "is_missed_step_left_uncaptured",
+      "is_watched_not_questioned",
+      "has_recorded_reason",
+      "has_counterfactual_answer"
+    ],
+    "record_count": 5
+  },
+  "elicitation_participants": {
+    "primary_key": "elicitation_participant_id",
+    "computed_columns": [
+      "name",
+      "is_practitioner",
+      "is_subject_matter_expert",
+      "is_knowledge_engineer",
+      "is_knowledge_producer",
+      "is_knowledge_consumer"
+    ],
+    "record_count": 7
+  },
+  "representation_reviews": {
+    "primary_key": "representation_review_id",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 4
+  },
+  "workflow_view_divergences": {
+    "primary_key": "workflow_view_divergence_id",
+    "computed_columns": [
+      "name",
+      "is_reconciled",
+      "is_surfaced_but_unreconciled"
+    ],
+    "record_count": 2
+  },
+  "expert_cognitions": {
+    "primary_key": "expert_cognition_id",
+    "computed_columns": [
+      "name",
+      "is_mental_model",
+      "is_automatic_heuristic",
+      "is_heuristic_oversimplified"
+    ],
+    "record_count": 3
+  },
+  "concept_ladder_rungs": {
+    "primary_key": "concept_ladder_rung_id",
+    "computed_columns": [
+      "name",
+      "step_top_level",
+      "is_ultimate_goal",
+      "is_decomposition_rung"
+    ],
+    "record_count": 5
+  },
+  "repertory_grid_constructs": {
+    "primary_key": "repertory_grid_construct_id",
+    "computed_columns": [
+      "name",
+      "dimension",
+      "is_never_stated_dimension",
+      "is_recorded_discriminating_dimension"
+    ],
+    "record_count": 3
+  },
+  "knowledge_conversions": {
+    "primary_key": "knowledge_conversion_id",
+    "computed_columns": [
+      "name",
+      "is_mode_inconsistent_with_forms"
+    ],
+    "record_count": 5
+  },
+  "knowledge_holdings": {
+    "primary_key": "knowledge_holding_id",
+    "computed_columns": [
+      "name",
+      "formalized_fragment_session",
+      "is_unformalized_process_knowledge",
+      "is_procedural_knowledge",
+      "is_judgment_outside_document",
+      "is_veteran_discretion",
+      "is_formalized_without_elicitation_work"
+    ],
+    "record_count": 10
+  },
+  "fragment_corroborations": {
+    "primary_key": "fragment_corroboration_id",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 4
+  },
+  "knowledge_test_outcomes": {
+    "primary_key": "knowledge_test_outcome_id",
+    "computed_columns": [
+      "name",
+      "is_improved"
+    ],
+    "record_count": 5
+  },
+  "know_how_carriers": {
+    "primary_key": "know_how_carrier_id",
+    "computed_columns": [
+      "name",
+      "as_of_instant",
+      "holder_is_still_engaged",
+      "holder_service_started_at",
+      "holder_departure_at",
+      "days_until_holder_departure",
+      "days_served_to_as_of",
+      "days_served_to_departure",
+      "holder_tenure_years",
+      "is_veteran_held",
+      "is_holder_leaving_soon",
+      "transfer_count",
+      "repository_entry_count",
+      "source_relationship_count",
+      "is_held_in_both_forms",
+      "is_held_by_current_practitioner",
+      "is_untransferred_veteran_know_how",
+      "is_at_risk_of_imminent_loss",
+      "is_held_only_by_departed",
+      "is_held_by_departed_holder",
+      "is_captured",
+      "must_be_relearned_if_holder_leaves",
+      "is_overlooked_living_holder",
+      "transfer_stops_without_veteran",
+      "dependency_community",
+      "builds_on_same_community_know_how",
+      "lost_accumulation_years",
+      "is_delegated_to_unfit_source"
+    ],
+    "record_count": 13
+  },
+  "knowledge_transfers": {
+    "primary_key": "knowledge_transfer_id",
+    "computed_columns": [
+      "name",
+      "from_organization",
+      "recipient_role_count",
+      "is_traditional_channel",
+      "is_social_network_channel",
+      "is_ambient_absorption_by_non_practitioner",
+      "know_how_topic"
+    ],
+    "record_count": 9
+  },
+  "knowledge_repository_entries": {
+    "primary_key": "knowledge_repository_entry_id",
+    "computed_columns": [
+      "name",
+      "as_of_instant",
+      "author_is_still_engaged",
+      "author_agent_kind",
+      "owner_organization",
+      "days_since_updated",
+      "is_stale",
+      "is_execution_feedback",
+      "is_machine_authored",
+      "outlives_author_tenure",
+      "is_uncredited_expert_know_how"
+    ],
+    "record_count": 8
+  },
+  "community_memberships": {
+    "primary_key": "community_membership_id",
+    "computed_columns": [
+      "name",
+      "member_organization",
+      "community_organization",
+      "is_external_member"
+    ],
+    "record_count": 9
+  },
+  "source_relationships": {
+    "primary_key": "source_relationship_id",
+    "computed_columns": [
+      "name",
+      "is_unnegotiated_power_gap",
+      "is_extractive_relationship"
+    ],
+    "record_count": 4
+  },
+  "department_process_accounts": {
+    "primary_key": "department_process_account_id",
+    "computed_columns": [
+      "name",
+      "conflicting_department",
+      "is_awaiting_engagement",
+      "is_conflicting_account",
+      "is_unresolved_disagreement"
+    ],
+    "record_count": 5
+  },
+  "problem_occurrences": {
+    "primary_key": "problem_occurrence_id",
+    "computed_columns": [
+      "name",
+      "solver_is_still_engaged",
+      "is_solved",
+      "prior_was_solved",
+      "prior_solution_entry",
+      "prior_solver",
+      "prior_solver_is_still_engaged",
+      "is_solved_without_recorded_solution",
+      "has_been_solved_before",
+      "has_consultable_specialist",
+      "is_relearned_solved_problem",
+      "is_turnover_regression"
+    ],
+    "record_count": 5
+  },
+  "onboarding_records": {
+    "primary_key": "onboarding_record_id",
+    "computed_columns": [
+      "name",
+      "as_of_instant",
+      "is_proficient",
+      "days_to_proficiency",
+      "days_since_start",
+      "is_recent_start",
+      "procedure_repository_entry_count",
+      "procedure_departed_only_count",
+      "is_starting_from_nothing"
+    ],
+    "record_count": 7
+  },
+  "sharing_recognitions": {
+    "primary_key": "sharing_recognition_id",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 2
+  },
+  "capability_declines": {
+    "primary_key": "capability_decline_id",
+    "computed_columns": [
+      "name",
+      "preceding_stage",
+      "preceding_decline_started_at",
+      "follows_preceding_stage_decline"
+    ],
+    "record_count": 4
+  },
+  "knowledge_traces": {
+    "primary_key": "knowledge_trace_id",
+    "computed_columns": [
+      "name",
+      "source_material_kind",
+      "source_collected_at",
+      "source_revised_at",
+      "source_is_document",
+      "source_is_people_capture",
+      "source_is_practice_evidence",
+      "is_source_changed_since_taken",
+      "modeled_duration_minutes",
+      "is_unfaithful_to_source",
+      "derived_by_agent_kind",
+      "is_machine_derived",
+      "is_self_validated",
+      "has_incomplete_provenance",
+      "provenance_statement",
+      "is_aspect_unsupported_by_source_kind",
+      "is_document_origin",
+      "step_elicited_validation_count",
+      "step_elicited_extension_count",
+      "is_document_start_never_validated",
+      "is_document_start_never_extended",
+      "contradicted_document_revised_at",
+      "is_document_trailing_practice",
+      "prescribed_versus_enacted"
+    ],
+    "record_count": 15
+  },
+  "mined_flow_edges": {
+    "primary_key": "mined_flow_edge_id",
+    "computed_columns": [
+      "name",
+      "documented_transition_count",
+      "is_undocumented_path",
+      "to_step_expected_minutes",
+      "is_bottleneck",
+      "is_mined_path_recorded_as_intent_without_decision"
+    ],
+    "record_count": 6
+  },
+  "collection_occasions": {
+    "primary_key": "collection_occasion_id",
+    "computed_columns": [
+      "name",
+      "as_of_instant",
+      "days_since_held",
+      "is_lapsed",
+      "captured_material_count",
+      "is_held_without_capture"
+    ],
+    "record_count": 3
+  },
+  "stakeholder_perspectives": {
+    "primary_key": "stakeholder_perspective_id",
+    "computed_columns": [
+      "name",
+      "source_material_kind",
+      "conflict_partner_count",
+      "is_in_conflict",
+      "is_dissenting_view_not_kept_with_source"
+    ],
+    "record_count": 5
+  },
+  "model_pilots": {
+    "primary_key": "model_pilot_id",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 3
+  },
+  "model_activity_experts": {
+    "primary_key": "model_activity_expert_id",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 16
+  },
+  "model_data_mapping_runs": {
+    "primary_key": "model_data_mapping_run_id",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 4
+  },
+  "artifact_handoffs": {
+    "primary_key": "artifact_handoff_id",
+    "computed_columns": [
+      "name",
+      "declared_source_step",
+      "declared_consumer_step",
+      "disagrees_with_declared_variable"
+    ],
+    "record_count": 12
+  },
+  "app_actions": {
+    "primary_key": "app_action_id",
+    "computed_columns": [
+      "name",
+      "policy_command",
+      "policy_denial_test_count",
+      "watched_field_is_witness",
+      "input_field_count",
+      "is_unpermitted",
+      "policy_command_disagrees",
+      "is_unproven_write"
+    ],
+    "record_count": 20
+  },
+  "app_action_fields": {
+    "primary_key": "app_action_field_id",
+    "computed_columns": [
+      "name",
+      "target_field_type",
+      "writes_derived_field"
+    ],
+    "record_count": 100
+  },
+  "abundant_knowledge_gaps": {
+    "primary_key": "abundant_knowledge_gap_id",
+    "computed_columns": [
+      "name",
+      "representing_table_row_count"
+    ],
+    "record_count": 3
+  },
+  "ontology_support_programmes": {
+    "primary_key": "ontology_support_programme_id",
+    "computed_columns": [
+      "name",
+      "as_of_instant",
+      "supported_profile_count",
+      "has_ended",
+      "days_until_programme_ends",
+      "is_ended_with_no_steward_named",
+      "is_ending_soon_with_no_steward_named"
+    ],
+    "record_count": 2
   }
 }

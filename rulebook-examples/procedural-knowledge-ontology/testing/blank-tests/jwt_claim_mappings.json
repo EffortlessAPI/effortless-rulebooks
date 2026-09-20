@@ -6,7 +6,7 @@
     "is_reserved_claim": true,
     "maps_to_principal": true,
     "description2": "Verified email address. Magic-links asserts only that the bearer controls this mailbox; everything else about the caller is resolved from it inside this database.",
-    "semantic_type_iri": "urn:effortless:pko-extension#JwtClaimMapping",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#JwtClaimMapping",
     "name": null,
     "usage_count": null
   },
@@ -17,7 +17,7 @@
     "is_reserved_claim": false,
     "maps_to_principal": false,
     "description2": "Organization the caller belongs to, derived from their principal's domain role. The default tenancy boundary for row predicates.",
-    "semantic_type_iri": "urn:effortless:pko-extension#JwtClaimMapping",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#JwtClaimMapping",
     "name": null,
     "usage_count": null
   },
@@ -28,7 +28,7 @@
     "is_reserved_claim": false,
     "maps_to_principal": true,
     "description2": "AccessPrincipals row the caller acts as, resolved from the verified email via vw_agents. Not trusted from the token itself.",
-    "semantic_type_iri": "urn:effortless:pko-extension#JwtClaimMapping",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#JwtClaimMapping",
     "name": null,
     "usage_count": null
   },
@@ -39,7 +39,7 @@
     "is_reserved_claim": true,
     "maps_to_principal": false,
     "description2": "Magic-links tenant the token was minted for. Pinned so a token from another tenant cannot authenticate here.",
-    "semantic_type_iri": "urn:effortless:pko-extension#JwtClaimMapping",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#JwtClaimMapping",
     "name": null,
     "usage_count": null
   }

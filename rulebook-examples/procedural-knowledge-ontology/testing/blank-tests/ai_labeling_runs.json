@@ -1,0 +1,44 @@
+[
+  {
+    "ai_labeling_run_id": "run-status-grounded",
+    "agent": "status-tagger-ai",
+    "grounding_scheme": "voc-workflow-status",
+    "run_at": "2026-06-21T10:00:00-05:00",
+    "task_description": "Label the same release notes, grounded in the workflow status scheme.",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AiLabelingRun",
+    "name": null,
+    "output_count": null,
+    "non_canonical_output_count": null,
+    "grounding_scheme_is_machine_accessible": null,
+    "is_ungrounded_synonym_sprawl": null,
+    "grounded_in_non_machine_readable_scheme": null
+  },
+  {
+    "ai_labeling_run_id": "run-status-ungrounded",
+    "agent": "status-tagger-ai",
+    "grounding_scheme": null,
+    "run_at": "2026-06-20T10:00:00-05:00",
+    "task_description": "Label the workflow status of each release note, with no scheme supplied.",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AiLabelingRun",
+    "name": null,
+    "output_count": null,
+    "non_canonical_output_count": null,
+    "grounding_scheme_is_machine_accessible": null,
+    "is_ungrounded_synonym_sprawl": null,
+    "grounded_in_non_machine_readable_scheme": null
+  },
+  {
+    "ai_labeling_run_id": "run-support-glossary",
+    "agent": "status-tagger-ai",
+    "grounding_scheme": "voc-support-glossary",
+    "run_at": "2026-06-22T10:00:00-05:00",
+    "task_description": "Label customer tickets, grounded in the support team's PDF glossary.",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AiLabelingRun",
+    "name": null,
+    "output_count": null,
+    "non_canonical_output_count": null,
+    "grounding_scheme_is_machine_accessible": null,
+    "is_ungrounded_synonym_sprawl": null,
+    "grounded_in_non_machine_readable_scheme": null
+  }
+]

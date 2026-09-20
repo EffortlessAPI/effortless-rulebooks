@@ -1,0 +1,20 @@
+[
+  {
+    "protective_equipment_id": "Gloves",
+    "name": "Gloves",
+    "label": "Gloves",
+    "semantic_type_iri": "https://w3id.org/pko/industry#PersonalProtectiveEquipment"
+  },
+  {
+    "protective_equipment_id": "HardHat",
+    "name": "Hard hat",
+    "label": "Hard hat",
+    "semantic_type_iri": "https://w3id.org/pko/industry#PersonalProtectiveEquipment"
+  },
+  {
+    "protective_equipment_id": "SafetyGlasses",
+    "name": "Safety glasses",
+    "label": "Safety glasses",
+    "semantic_type_iri": "https://w3id.org/pko/industry#PersonalProtectiveEquipment"
+  }
+]

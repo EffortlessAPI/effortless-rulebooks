@@ -1,0 +1,50 @@
+[
+  {
+    "records_retention_policy_id": "rrp-hb-chat-2016",
+    "governance_program": "gp-hb-compliance-2016",
+    "record_class": "Email and chat",
+    "retention_driver": "ComplianceRisk",
+    "retention_years": 1,
+    "knowledge_useful_life_years": 1,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RecordsRetentionPolicy",
+    "name": "Email and chat / ComplianceRisk",
+    "program_sponsor_discipline": "Legal",
+    "is_legal_led_knowledge_destruction": false
+  },
+  {
+    "records_retention_policy_id": "rrp-hb-design-history-2004",
+    "governance_program": "gp-hb-engineering-records-2004",
+    "record_class": "Design history files",
+    "retention_driver": "KnowledgeValue",
+    "retention_years": 25,
+    "knowledge_useful_life_years": 15,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RecordsRetentionPolicy",
+    "name": "Design history files / KnowledgeValue",
+    "program_sponsor_discipline": "Engineering",
+    "is_legal_led_knowledge_destruction": false
+  },
+  {
+    "records_retention_policy_id": "rrp-hb-design-history-2016",
+    "governance_program": "gp-hb-compliance-2016",
+    "record_class": "Design history and engineering change records",
+    "retention_driver": "ComplianceRisk",
+    "retention_years": 3,
+    "knowledge_useful_life_years": 15,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RecordsRetentionPolicy",
+    "name": "Design history and engineering change records / ComplianceRisk",
+    "program_sponsor_discipline": "Legal",
+    "is_legal_led_knowledge_destruction": true
+  },
+  {
+    "records_retention_policy_id": "rrp-plant-maintenance-logs",
+    "governance_program": "gp-plant-information-2021",
+    "record_class": "Maintenance and lockout logs",
+    "retention_driver": "KnowledgeValue",
+    "retention_years": 10,
+    "knowledge_useful_life_years": 10,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RecordsRetentionPolicy",
+    "name": "Maintenance and lockout logs / KnowledgeValue",
+    "program_sponsor_discipline": "Engineering",
+    "is_legal_led_knowledge_destruction": false
+  }
+]

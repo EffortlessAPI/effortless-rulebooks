@@ -1,0 +1,22 @@
+[
+  {
+    "answer_requirement_check_id": "arc-0301-approval",
+    "assistant_answer": "ans-0301-risk",
+    "requirement": "req-deploy-approval",
+    "verdict": "Complies",
+    "checked_at": "2026-03-01T07:10:00-06:00",
+    "checked_by_agent": "deploy-pipeline",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AnswerRequirementCheck",
+    "name": null
+  },
+  {
+    "answer_requirement_check_id": "arc-0714-approval",
+    "assistant_answer": "ans-0714-deploy",
+    "requirement": "req-deploy-approval",
+    "verdict": "Conflicts",
+    "checked_at": "2026-07-14T07:11:00-05:00",
+    "checked_by_agent": "deploy-pipeline",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AnswerRequirementCheck",
+    "name": null
+  }
+]

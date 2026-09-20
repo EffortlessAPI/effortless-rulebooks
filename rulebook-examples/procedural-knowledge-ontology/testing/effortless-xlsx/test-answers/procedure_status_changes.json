@@ -8,7 +8,11 @@
     "changed_by_agent": "priya-raman",
     "motivation": "Final authority approved release.",
     "semantic_type_iri": "https://w3id.org/pko#ChangeOfStatus",
-    "name": "close-v1.1.0: Approval -> Approved"
+    "name": "close-v1.1.0: Approval -> Approved",
+    "change_kind": "Approve",
+    "is_unattributed_change": false,
+    "change_kind_contradicts_target": false,
+    "procedure_execution": null
   },
   {
     "procedure_status_change_id": "status-close-draft-validation",
@@ -19,7 +23,11 @@
     "changed_by_agent": "maria-chen",
     "motivation": "Ready for control and ontology validation.",
     "semantic_type_iri": "https://w3id.org/pko#ChangeOfStatus",
-    "name": "close-v1.1.0: Draft -> Validation"
+    "name": "close-v1.1.0: Draft -> Validation",
+    "change_kind": "Validate",
+    "is_unattributed_change": false,
+    "change_kind_contradicts_target": false,
+    "procedure_execution": null
   },
   {
     "procedure_status_change_id": "status-close-validation-approval",
@@ -30,7 +38,131 @@
     "changed_by_agent": "devon-okafor",
     "motivation": "All requirements and test cases passed.",
     "semantic_type_iri": "https://w3id.org/pko#ChangeOfStatus",
-    "name": "close-v1.1.0: Validation -> Approval"
+    "name": "close-v1.1.0: Validation -> Approval",
+    "change_kind": "Modify",
+    "is_unattributed_change": false,
+    "change_kind_contradicts_target": false,
+    "procedure_execution": null
+  },
+  {
+    "procedure_status_change_id": "status-convmaint-publish",
+    "procedure_version": "convmaint-v1.0.0",
+    "from_status": "Draft",
+    "to_status": "Published",
+    "changed_at": "2026-02-01 14:00:00",
+    "changed_by_agent": null,
+    "motivation": "Bulk import from the document system.",
+    "change_kind": "Approve",
+    "semantic_type_iri": "https://w3id.org/pko#ChangeOfStatus",
+    "name": "convmaint-v1.0.0: Draft -> Published",
+    "is_unattributed_change": true,
+    "change_kind_contradicts_target": true,
+    "procedure_execution": null
+  },
+  {
+    "procedure_status_change_id": "status-exec-loto-0716-pause",
+    "procedure_version": "loto-v2.0.0",
+    "procedure_execution": "exec-loto-0716-north-night",
+    "from_status": "InProgress",
+    "to_status": "Paused",
+    "changed_at": "2026-07-17 04:30:00",
+    "changed_by_agent": "aisha-bello",
+    "motivation": "Waiting for missing padlocks.",
+    "change_kind": "Modify",
+    "semantic_type_iri": "https://w3id.org/pko#ChangeOfStatus",
+    "name": "loto-v2.0.0: InProgress -> Paused",
+    "is_unattributed_change": false,
+    "change_kind_contradicts_target": false
+  },
+  {
+    "procedure_status_change_id": "status-loto1-archive",
+    "procedure_version": "loto-v1.0.0",
+    "from_status": "Approved",
+    "to_status": "Deprecated",
+    "changed_at": "2026-05-20 14:05:00",
+    "changed_by_agent": "sam-adeyemi",
+    "motivation": "Superseded by 2.0.0.",
+    "change_kind": "Archive",
+    "semantic_type_iri": "https://w3id.org/pko#ChangeOfStatus",
+    "name": "loto-v1.0.0: Approved -> Deprecated",
+    "is_unattributed_change": false,
+    "change_kind_contradicts_target": false,
+    "procedure_execution": null
+  },
+  {
+    "procedure_status_change_id": "status-loto2-approve",
+    "procedure_version": "loto-v2.0.0",
+    "from_status": "Approval",
+    "to_status": "Approved",
+    "changed_at": "2026-05-20 14:00:00",
+    "changed_by_agent": "lin-zhao",
+    "motivation": "Approved by the plant safety officer.",
+    "change_kind": "Approve",
+    "semantic_type_iri": "https://w3id.org/pko#ChangeOfStatus",
+    "name": "loto-v2.0.0: Approval -> Approved",
+    "is_unattributed_change": false,
+    "change_kind_contradicts_target": false,
+    "procedure_execution": null
+  },
+  {
+    "procedure_status_change_id": "status-loto2-create",
+    "procedure_version": "loto-v2.0.0",
+    "from_status": null,
+    "to_status": "Draft",
+    "changed_at": "2026-05-12 14:00:00",
+    "changed_by_agent": "sam-adeyemi",
+    "motivation": "Created from the workshop capture form.",
+    "change_kind": "Create",
+    "semantic_type_iri": "https://w3id.org/pko#ChangeOfStatus",
+    "name": "loto-v2.0.0:  -> Draft",
+    "is_unattributed_change": false,
+    "change_kind_contradicts_target": false,
+    "procedure_execution": null
+  },
+  {
+    "procedure_status_change_id": "status-loto2-extract",
+    "procedure_version": "loto-v2.0.0",
+    "from_status": "Draft",
+    "to_status": "Draft",
+    "changed_at": "2026-05-13 14:00:00",
+    "changed_by_agent": "sam-adeyemi",
+    "motivation": "Steps extracted from the 2019 SOP.",
+    "change_kind": "Extract",
+    "semantic_type_iri": "https://w3id.org/pko#ChangeOfStatus",
+    "name": "loto-v2.0.0: Draft -> Draft",
+    "is_unattributed_change": false,
+    "change_kind_contradicts_target": false,
+    "procedure_execution": null
+  },
+  {
+    "procedure_status_change_id": "status-loto2-to-approval",
+    "procedure_version": "loto-v2.0.0",
+    "from_status": "Validation",
+    "to_status": "Approval",
+    "changed_at": "2026-05-18 14:00:00",
+    "changed_by_agent": "sam-adeyemi",
+    "motivation": "Submitted for approval.",
+    "change_kind": "Modify",
+    "semantic_type_iri": "https://w3id.org/pko#ChangeOfStatus",
+    "name": "loto-v2.0.0: Validation -> Approval",
+    "is_unattributed_change": false,
+    "change_kind_contradicts_target": false,
+    "procedure_execution": null
+  },
+  {
+    "procedure_status_change_id": "status-loto2-validate",
+    "procedure_version": "loto-v2.0.0",
+    "from_status": "Draft",
+    "to_status": "Validation",
+    "changed_at": "2026-05-15 14:00:00",
+    "changed_by_agent": "lin-zhao",
+    "motivation": "Safety validation.",
+    "change_kind": "Validate",
+    "semantic_type_iri": "https://w3id.org/pko#ChangeOfStatus",
+    "name": "loto-v2.0.0: Draft -> Validation",
+    "is_unattributed_change": false,
+    "change_kind_contradicts_target": false,
+    "procedure_execution": null
   },
   {
     "procedure_status_change_id": "status-policy-draft-validation",
@@ -41,7 +173,11 @@
     "changed_by_agent": "elena-garcia",
     "motivation": "Ready for legal and communications review.",
     "semantic_type_iri": "https://w3id.org/pko#ChangeOfStatus",
-    "name": "policy-v1.0.0: Draft -> Validation"
+    "name": "policy-v1.0.0: Draft -> Validation",
+    "change_kind": "Validate",
+    "is_unattributed_change": false,
+    "change_kind_contradicts_target": false,
+    "procedure_execution": null
   },
   {
     "procedure_status_change_id": "status-policy-validation-approved",
@@ -52,6 +188,10 @@
     "changed_by_agent": "priya-raman",
     "motivation": "Approved with channel safeguards.",
     "semantic_type_iri": "https://w3id.org/pko#ChangeOfStatus",
-    "name": "policy-v1.0.0: Validation -> Approved"
+    "name": "policy-v1.0.0: Validation -> Approved",
+    "change_kind": "Approve",
+    "is_unattributed_change": false,
+    "change_kind_contradicts_target": false,
+    "procedure_execution": null
   }
 ]

@@ -793,6 +793,13 @@ type OntologyProfile struct {
 	PrerequisiteProfile *string `json:"prerequisite_profile"` // Earlier-stage standard this one builds on.
 	PrerequisiteAdoptedAt *string `json:"prerequisite_adopted_at"` // When that standard was adopted.
 	SkipsAdoptionPath *bool `json:"skips_adoption_path"` // TRUE when a later-stage standard was adopted before the earlier-stage standard it builds on, or with none.
+	SupportingProgramme *string `json:"supporting_programme"` // The funded programme that produced or supported this vocabulary.
+	NamespaceCheckedAt *string `json:"namespace_checked_at"` // When the namespace was last fetched by tools/check_namespace_resolution.py.
+	NamespaceHttpStatus *int `json:"namespace_http_status"` // HTTP status the namespace returned when last fetched.
+	NamespaceServesRdf *bool `json:"namespace_serves_rdf"` // Whether fetching the namespace with an RDF Accept header returned RDF.
+	NamespaceIsHttp *bool `json:"namespace_is_http"` // Whether the namespace is an HTTP(S) URI, the first Linked Data requirement, rather than a urn: or other non-resolvable identifier.
+	NamespaceDereferences *bool `json:"namespace_dereferences"` // The namespace is an HTTP URI and fetching it actually returned a document.
+	PublishesFollowingLinkedDataPrinciples *bool `json:"publishes_following_linked_data_principles"` // The vocabulary is published the way Linked Data requires: an HTTP URI that resolves, serves RDF when asked for it, and carries links to other terms.
 	ErbErrors map[string]string `json:"_erb_errors,omitempty"`
 	erbAggregates map[string]Value
 }
@@ -853,6 +860,27 @@ func (tc *OntologyProfile) CalcSkipsAdoptionPath() *bool {
 	return toBoolPtr(erbAnd(erbBool3(erbCmp(erbNullif(vInt(tc.AdoptionStage)), ">", vI(1))), erbBool3(erbOr(erbBool3(erbIsBlank(vStr(tc.PrerequisiteProfile))), erbBool3(erbIsBlank(vStr(tc.PrerequisiteAdoptedAt))), erbBool3(erbCmp(vStr(tc.PrerequisiteAdoptedAt), ">", erbNullif(vStr(tc.AdoptedAt))))))))
 }
 
+// CalcNamespaceIsHttp computes the NamespaceIsHttp calculated field
+// Whether the namespace is an HTTP(S) URI, the first Linked Data requirement, rather than a urn: or other non-resolvable identifier.
+// Formula: =OR(LEFT({{NamespaceIri}}, 7) = "http://", LEFT({{NamespaceIri}}, 8) = "https://")
+func (tc *OntologyProfile) CalcNamespaceIsHttp() *bool {
+	return toBoolPtr(erbOr(erbBool3(erbEq(erbLeft(vStr(tc.NamespaceIri), vI(7)), vS("http://"))), erbBool3(erbEq(erbLeft(vStr(tc.NamespaceIri), vI(8)), vS("https://")))))
+}
+
+// CalcNamespaceDereferences computes the NamespaceDereferences calculated field
+// The namespace is an HTTP URI and fetching it actually returned a document.
+// Formula: =AND({{NamespaceIsHttp}}, {{NamespaceHttpStatus}} = 200)
+func (tc *OntologyProfile) CalcNamespaceDereferences() *bool {
+	return toBoolPtr(erbAnd(erbBool3(vBool(tc.NamespaceIsHttp)), erbBool3(erbEq(erbNullif(vInt(tc.NamespaceHttpStatus)), vI(200)))))
+}
+
+// CalcPublishesFollowingLinkedDataPrinciples computes the PublishesFollowingLinkedDataPrinciples calculated field
+// The vocabulary is published the way Linked Data requires: an HTTP URI that resolves, serves RDF when asked for it, and carries links to other terms.
+// Formula: =AND({{NamespaceDereferences}}, {{NamespaceServesRdf}}, {{MappingCount}} > 0)
+func (tc *OntologyProfile) CalcPublishesFollowingLinkedDataPrinciples() *bool {
+	return toBoolPtr(erbAnd(erbBool3(vBool(tc.NamespaceDereferences)), erbIsTrue(vBool(tc.NamespaceServesRdf)), erbBool3(erbCmp(vInt(tc.MappingCount), ">", vI(0)))))
+}
+
 // erbComputeCalculations computes every calculated field of the row in dependency order.
 func (tc *OntologyProfile) erbComputeCalculations() {
 	// Level 1
@@ -861,11 +889,14 @@ func (tc *OntologyProfile) erbComputeCalculations() {
 	calcGuard(tc, "days_since_major_revision", func() { tc.DaysSinceMajorRevision = tc.CalcDaysSinceMajorRevision() })
 	calcGuard(tc, "days_since_dependency_reviewed", func() { tc.DaysSinceDependencyReviewed = tc.CalcDaysSinceDependencyReviewed() })
 	calcGuard(tc, "skips_adoption_path", func() { tc.SkipsAdoptionPath = tc.CalcSkipsAdoptionPath() })
+	calcGuard(tc, "namespace_is_http", func() { tc.NamespaceIsHttp = tc.CalcNamespaceIsHttp() })
 	// Level 2
 	calcGuard(tc, "requires_frequent_review", func() { tc.RequiresFrequentReview = tc.CalcRequiresFrequentReview() })
 	calcGuard(tc, "change_rate_profile", func() { tc.ChangeRateProfile = tc.CalcChangeRateProfile() })
+	calcGuard(tc, "namespace_dereferences", func() { tc.NamespaceDereferences = tc.CalcNamespaceDereferences() })
 	// Level 3
 	calcGuard(tc, "is_review_overdue_for_change_rate", func() { tc.IsReviewOverdueForChangeRate = tc.CalcIsReviewOverdueForChangeRate() })
+	calcGuard(tc, "publishes_following_linked_data_principles", func() { tc.PublishesFollowingLinkedDataPrinciples = tc.CalcPublishesFollowingLinkedDataPrinciples() })
 }
 
 // ComputeAll computes every calculated field from the row's current inputs.
@@ -928,6 +959,20 @@ func (tc *OntologyProfile) erbGet(field string) Value {
 		return vStr(tc.PrerequisiteAdoptedAt)
 	case "skips_adoption_path":
 		return vBool(tc.SkipsAdoptionPath)
+	case "supporting_programme":
+		return vStr(tc.SupportingProgramme)
+	case "namespace_checked_at":
+		return vStr(tc.NamespaceCheckedAt)
+	case "namespace_http_status":
+		return vInt(tc.NamespaceHttpStatus)
+	case "namespace_serves_rdf":
+		return vBool(tc.NamespaceServesRdf)
+	case "namespace_is_http":
+		return vBool(tc.NamespaceIsHttp)
+	case "namespace_dereferences":
+		return vBool(tc.NamespaceDereferences)
+	case "publishes_following_linked_data_principles":
+		return vBool(tc.PublishesFollowingLinkedDataPrinciples)
 	}
 	panic("OntologyProfiles has no field " + field)
 }
@@ -986,6 +1031,20 @@ func (tc *OntologyProfile) erbSet(field string, v Value) {
 		tc.PrerequisiteAdoptedAt = toStringPtr(v)
 	case "skips_adoption_path":
 		tc.SkipsAdoptionPath = toBoolPtr(v)
+	case "supporting_programme":
+		tc.SupportingProgramme = toStringPtr(v)
+	case "namespace_checked_at":
+		tc.NamespaceCheckedAt = toStringPtr(v)
+	case "namespace_http_status":
+		tc.NamespaceHttpStatus = toIntPtr(v)
+	case "namespace_serves_rdf":
+		tc.NamespaceServesRdf = toBoolPtr(v)
+	case "namespace_is_http":
+		tc.NamespaceIsHttp = toBoolPtr(v)
+	case "namespace_dereferences":
+		tc.NamespaceDereferences = toBoolPtr(v)
+	case "publishes_following_linked_data_principles":
+		tc.PublishesFollowingLinkedDataPrinciples = toBoolPtr(v)
 	default:
 		panic("OntologyProfiles has no field " + field)
 	}
@@ -994,7 +1053,7 @@ func (tc *OntologyProfile) erbSet(field string, v Value) {
 func (tc *OntologyProfile) erbLoad(row map[string]any) {
 	for key, value := range row {
 		switch key {
-		case "ontology_profile_id", "name", "label", "version", "version_iri", "namespace_iri", "license", "scope", "mapping_count", "evaluation_context", "as_of_instant", "last_revised_at", "last_major_revision_at", "dependency_reviewed_at", "days_since_last_revision", "days_since_major_revision", "days_since_dependency_reviewed", "recent_deprecation_count", "requires_frequent_review", "change_rate_profile", "is_review_overdue_for_change_rate", "adoption_stage", "adopted_at", "prerequisite_profile", "prerequisite_adopted_at", "skips_adoption_path":
+		case "ontology_profile_id", "name", "label", "version", "version_iri", "namespace_iri", "license", "scope", "mapping_count", "evaluation_context", "as_of_instant", "last_revised_at", "last_major_revision_at", "dependency_reviewed_at", "days_since_last_revision", "days_since_major_revision", "days_since_dependency_reviewed", "recent_deprecation_count", "requires_frequent_review", "change_rate_profile", "is_review_overdue_for_change_rate", "adoption_stage", "adopted_at", "prerequisite_profile", "prerequisite_adopted_at", "skips_adoption_path", "supporting_programme", "namespace_checked_at", "namespace_http_status", "namespace_serves_rdf", "namespace_is_http", "namespace_dereferences", "publishes_following_linked_data_principles":
 			tc.erbSet(key, fromJSON(value))
 		}
 	}
@@ -1045,6 +1104,21 @@ type EvaluationContext struct {
 	IsCurrent *bool `json:"is_current"` // TRUE for the single active evaluation context.
 	Rationale *string `json:"rationale"` // Why this instant was chosen.
 	SemanticTypeIri *string `json:"semantic_type_iri"` // Extension class IRI.
+	ExplicitFragmentCount *int `json:"explicit_fragment_count"` // Pieces of knowledge on record, judged at this instant, that are written down.
+	TacitFragmentCount *int `json:"tacit_fragment_count"` // Pieces of knowledge on record that live in practiced hands and were drawn out of a person.
+	ImplicitFragmentCount *int `json:"implicit_fragment_count"` // Pieces of knowledge on record that everybody acts on and nobody had ever stated.
+	SituatedJudgmentFragmentCount *int `json:"situated_judgment_fragment_count"` // Pieces of knowledge on record that are a judgment call for one situation.
+	ModelReasonedAnswerCount *int `json:"model_reasoned_answer_count"` // Assistant answers on record where the language model did the reasoning itself.
+	OtherwiseReasonedAnswerCount *int `json:"otherwise_reasoned_answer_count"` // Assistant answers on record where the reasoning was done by a query or a reasoner, or none was needed.
+	AssistantAnswerCount *int `json:"assistant_answer_count"` // Every assistant answer on record.
+	ModelReasonedFailedAnswerCount *int `json:"model_reasoned_failed_answer_count"` // Of the answers the language model reasoned out itself, how many of the tasks failed.
+	OutOfOrderStepExecutionCount *int `json:"out_of_order_step_execution_count"` // Step executions on record that were carried out of the order the procedure specifies.
+	InOrderStepExecutionCount *int `json:"in_order_step_execution_count"` // Step executions on record that followed the order the procedure specifies.
+	StepExecutionCount *int `json:"step_execution_count"` // Every step execution on record.
+	EarlyStartStepExecutionCount *int `json:"early_start_step_execution_count"` // Step executions on record that began before the step they depend on had finished.
+	ExactMappingCount *int `json:"exact_mapping_count"` // Concepts of this book that map exactly onto a term PKO itself defines.
+	AlignedMappingCount *int `json:"aligned_mapping_count"` // Concepts of this book that map onto one of the older standards PKO reuses.
+	ExtensionMappingCount *int `json:"extension_mapping_count"` // Concepts of this book that PKO does not define: the book's own extensions, labelled as such.
 	ErbErrors map[string]string `json:"_erb_errors,omitempty"`
 	erbAggregates map[string]Value
 }
@@ -1056,10 +1130,26 @@ func (tc *EvaluationContext) CalcName() *string {
 	return toStringPtr(erbConcat(erbText(vStr(tc.Label)), vS(" @ "), erbDatetimeText(vStrPlain(tc.AsOfInstant))))
 }
 
+// CalcAssistantAnswerCount computes the AssistantAnswerCount calculated field
+// Every assistant answer on record.
+// Formula: ={{ModelReasonedAnswerCount}} + {{OtherwiseReasonedAnswerCount}}
+func (tc *EvaluationContext) CalcAssistantAnswerCount() *int {
+	return toIntPtr(erbInteger(erbAdd(vInt(tc.ModelReasonedAnswerCount), vInt(tc.OtherwiseReasonedAnswerCount))))
+}
+
+// CalcStepExecutionCount computes the StepExecutionCount calculated field
+// Every step execution on record.
+// Formula: ={{OutOfOrderStepExecutionCount}} + {{InOrderStepExecutionCount}}
+func (tc *EvaluationContext) CalcStepExecutionCount() *int {
+	return toIntPtr(erbInteger(erbAdd(vInt(tc.OutOfOrderStepExecutionCount), vInt(tc.InOrderStepExecutionCount))))
+}
+
 // erbComputeCalculations computes every calculated field of the row in dependency order.
 func (tc *EvaluationContext) erbComputeCalculations() {
 	// Level 1
 	calcGuard(tc, "name", func() { tc.Name = tc.CalcName() })
+	calcGuard(tc, "assistant_answer_count", func() { tc.AssistantAnswerCount = tc.CalcAssistantAnswerCount() })
+	calcGuard(tc, "step_execution_count", func() { tc.StepExecutionCount = tc.CalcStepExecutionCount() })
 }
 
 // ComputeAll computes every calculated field from the row's current inputs.
@@ -1084,6 +1174,36 @@ func (tc *EvaluationContext) erbGet(field string) Value {
 		return vStr(tc.Rationale)
 	case "semantic_type_iri":
 		return vStr(tc.SemanticTypeIri)
+	case "explicit_fragment_count":
+		return vInt(tc.ExplicitFragmentCount)
+	case "tacit_fragment_count":
+		return vInt(tc.TacitFragmentCount)
+	case "implicit_fragment_count":
+		return vInt(tc.ImplicitFragmentCount)
+	case "situated_judgment_fragment_count":
+		return vInt(tc.SituatedJudgmentFragmentCount)
+	case "model_reasoned_answer_count":
+		return vInt(tc.ModelReasonedAnswerCount)
+	case "otherwise_reasoned_answer_count":
+		return vInt(tc.OtherwiseReasonedAnswerCount)
+	case "assistant_answer_count":
+		return vInt(tc.AssistantAnswerCount)
+	case "model_reasoned_failed_answer_count":
+		return vInt(tc.ModelReasonedFailedAnswerCount)
+	case "out_of_order_step_execution_count":
+		return vInt(tc.OutOfOrderStepExecutionCount)
+	case "in_order_step_execution_count":
+		return vInt(tc.InOrderStepExecutionCount)
+	case "step_execution_count":
+		return vInt(tc.StepExecutionCount)
+	case "early_start_step_execution_count":
+		return vInt(tc.EarlyStartStepExecutionCount)
+	case "exact_mapping_count":
+		return vInt(tc.ExactMappingCount)
+	case "aligned_mapping_count":
+		return vInt(tc.AlignedMappingCount)
+	case "extension_mapping_count":
+		return vInt(tc.ExtensionMappingCount)
 	}
 	panic("EvaluationContexts has no field " + field)
 }
@@ -1104,6 +1224,36 @@ func (tc *EvaluationContext) erbSet(field string, v Value) {
 		tc.Rationale = toStringPtr(v)
 	case "semantic_type_iri":
 		tc.SemanticTypeIri = toStringPtr(v)
+	case "explicit_fragment_count":
+		tc.ExplicitFragmentCount = toIntPtr(v)
+	case "tacit_fragment_count":
+		tc.TacitFragmentCount = toIntPtr(v)
+	case "implicit_fragment_count":
+		tc.ImplicitFragmentCount = toIntPtr(v)
+	case "situated_judgment_fragment_count":
+		tc.SituatedJudgmentFragmentCount = toIntPtr(v)
+	case "model_reasoned_answer_count":
+		tc.ModelReasonedAnswerCount = toIntPtr(v)
+	case "otherwise_reasoned_answer_count":
+		tc.OtherwiseReasonedAnswerCount = toIntPtr(v)
+	case "assistant_answer_count":
+		tc.AssistantAnswerCount = toIntPtr(v)
+	case "model_reasoned_failed_answer_count":
+		tc.ModelReasonedFailedAnswerCount = toIntPtr(v)
+	case "out_of_order_step_execution_count":
+		tc.OutOfOrderStepExecutionCount = toIntPtr(v)
+	case "in_order_step_execution_count":
+		tc.InOrderStepExecutionCount = toIntPtr(v)
+	case "step_execution_count":
+		tc.StepExecutionCount = toIntPtr(v)
+	case "early_start_step_execution_count":
+		tc.EarlyStartStepExecutionCount = toIntPtr(v)
+	case "exact_mapping_count":
+		tc.ExactMappingCount = toIntPtr(v)
+	case "aligned_mapping_count":
+		tc.AlignedMappingCount = toIntPtr(v)
+	case "extension_mapping_count":
+		tc.ExtensionMappingCount = toIntPtr(v)
 	default:
 		panic("EvaluationContexts has no field " + field)
 	}
@@ -1112,7 +1262,7 @@ func (tc *EvaluationContext) erbSet(field string, v Value) {
 func (tc *EvaluationContext) erbLoad(row map[string]any) {
 	for key, value := range row {
 		switch key {
-		case "evaluation_context_id", "name", "label", "as_of_instant", "is_current", "rationale", "semantic_type_iri":
+		case "evaluation_context_id", "name", "label", "as_of_instant", "is_current", "rationale", "semantic_type_iri", "explicit_fragment_count", "tacit_fragment_count", "implicit_fragment_count", "situated_judgment_fragment_count", "model_reasoned_answer_count", "otherwise_reasoned_answer_count", "assistant_answer_count", "model_reasoned_failed_answer_count", "out_of_order_step_execution_count", "in_order_step_execution_count", "step_execution_count", "early_start_step_execution_count", "exact_mapping_count", "aligned_mapping_count", "extension_mapping_count":
 			tc.erbSet(key, fromJSON(value))
 		}
 	}
@@ -3562,6 +3712,7 @@ type Mentorship struct {
 	IsActive *bool `json:"is_active"` // TRUE when the mentorship runs at the evaluation instant.
 	DaysSinceStarted *int `json:"days_since_started"` // Days since the mentorship began.
 	IsRecentApprenticeship *bool `json:"is_recent_apprenticeship"` // TRUE for an apprenticeship started within three years.
+	CommunityLabel *string `json:"community_label"` // The name of the community of practice this mentorship belongs to.
 	ErbErrors map[string]string `json:"_erb_errors,omitempty"`
 	erbAggregates map[string]Value
 }
@@ -3648,6 +3799,8 @@ func (tc *Mentorship) erbGet(field string) Value {
 		return vInt(tc.DaysSinceStarted)
 	case "is_recent_apprenticeship":
 		return vBool(tc.IsRecentApprenticeship)
+	case "community_label":
+		return vStr(tc.CommunityLabel)
 	}
 	panic("Mentorships has no field " + field)
 }
@@ -3690,6 +3843,8 @@ func (tc *Mentorship) erbSet(field string, v Value) {
 		tc.DaysSinceStarted = toIntPtr(v)
 	case "is_recent_apprenticeship":
 		tc.IsRecentApprenticeship = toBoolPtr(v)
+	case "community_label":
+		tc.CommunityLabel = toStringPtr(v)
 	default:
 		panic("Mentorships has no field " + field)
 	}
@@ -3698,7 +3853,7 @@ func (tc *Mentorship) erbSet(field string, v Value) {
 func (tc *Mentorship) erbLoad(row map[string]any) {
 	for key, value := range row {
 		switch key {
-		case "mentorship_id", "name", "community_of_practice", "mentor_agent", "learner_agent", "valid_from", "valid_to", "learning_objective", "evidence_of_completion", "semantic_type_iri", "evaluation_context", "as_of_instant", "mentorship_form", "employer_worker_obligation", "expected_weekly_hours", "is_active", "days_since_started", "is_recent_apprenticeship":
+		case "mentorship_id", "name", "community_of_practice", "mentor_agent", "learner_agent", "valid_from", "valid_to", "learning_objective", "evidence_of_completion", "semantic_type_iri", "evaluation_context", "as_of_instant", "mentorship_form", "employer_worker_obligation", "expected_weekly_hours", "is_active", "days_since_started", "is_recent_apprenticeship", "community_label":
 			tc.erbSet(key, fromJSON(value))
 		}
 	}
@@ -4820,6 +4975,7 @@ type ProcedureVersion struct {
 	FirstStepDisagreesWithGraph *bool `json:"first_step_disagrees_with_graph"` // TRUE when the transition graph has an entry step and the declared first step is a different one. A graph whose first step also receives a loop-back has no entry step, and is not a disagreement.
 	DeclaredFirstStepCount *int `json:"declared_first_step_count"` // Steps of the version that declare themselves its first step.
 	GraphEntryStepCount *int `json:"graph_entry_step_count"` // Steps of the version with no incoming transition.
+	OwnerOrganization *string `json:"owner_organization"` // The organization that owns the procedure this row belongs to, one hop at a time from Procedures.OwnerOrganization. A row policy compares it to the caller's organization, so a plant sign-in never sees the finance close.
 	ErbErrors map[string]string `json:"_erb_errors,omitempty"`
 	erbAggregates map[string]Value
 }
@@ -5845,6 +6001,8 @@ func (tc *ProcedureVersion) erbGet(field string) Value {
 		return vInt(tc.DeclaredFirstStepCount)
 	case "graph_entry_step_count":
 		return vInt(tc.GraphEntryStepCount)
+	case "owner_organization":
+		return vStr(tc.OwnerOrganization)
 	}
 	panic("ProcedureVersions has no field " + field)
 }
@@ -6241,6 +6399,8 @@ func (tc *ProcedureVersion) erbSet(field string, v Value) {
 		tc.DeclaredFirstStepCount = toIntPtr(v)
 	case "graph_entry_step_count":
 		tc.GraphEntryStepCount = toIntPtr(v)
+	case "owner_organization":
+		tc.OwnerOrganization = toStringPtr(v)
 	default:
 		panic("ProcedureVersions has no field " + field)
 	}
@@ -6249,7 +6409,7 @@ func (tc *ProcedureVersion) erbSet(field string, v Value) {
 func (tc *ProcedureVersion) erbLoad(row map[string]any) {
 	for key, value := range row {
 		switch key {
-		case "procedure_version_id", "name", "procedure", "version_number", "title", "status", "issued_at", "modified_at", "created_by_agent", "modified_by_agent", "new_version_motivation", "changelog_description", "is_current", "count_of_steps", "count_of_open_knowledge_gaps", "is_ready_for_execution", "specified_step_count", "overdue_review_count", "open_change_request_count", "open_high_severity_gap_count", "is_fit_to_execute", "steward_review_cadence_days", "count_of_stewardship_assignments", "has_any_steward", "is_live", "is_unstewarded", "is_live_and_unstewarded", "count_of_open_blocking_gaps", "has_open_blocking_gap", "is_live_with_blocking_gap", "should_not_be_executable", "count_of_unapproved_reliance_fragments", "runs_on_unapproved_knowledge", "count_of_overdue_gaps", "count_of_change_requests", "count_of_review_events", "has_governance_record", "evaluation_context", "as_of_instant", "days_since_modified", "days_since_last_review", "was_modified_since_last_review", "modifier_is_authority", "has_unwitnessed_change", "count_of_stale_fragments", "knowledge_is_staler_than_cadence", "compound_fragile_fragment_count", "rests_on_compound_fragile_knowledge", "concentrated_witness_session_count", "knowledge_base_is_concentrated", "machine_consumed_unapproved_count", "feeds_unapproved_knowledge_to_machines", "genuinely_overdue_fragment_count", "awaited_decision_count", "scoped_open_blocking_gap_count", "is_blocked_on_pending_decision", "unexercised_human_gate_count", "ai_boundary_is_unevidenced", "load_bearing_unapproved_count", "unlanded_decision_count", "unrehearsed_control_entry_count", "has_unrehearsed_control_entry", "is_live_with_unrehearsed_control", "cadence_breach_count", "is_in_cadence_breach", "has_decision_in_flight", "is_unremediated_cadence_breach", "is_managed_cadence_breach", "governance_is_silent", "valid_fragment_count", "still_owns_valid_knowledge", "incoming_supersession_count", "is_still_referenced", "is_load_bearing_orphan", "is_cleanly_retired", "stalled_implementation_count", "is_held_unfit_by_landed_decisions", "undeclared_control_kind_count", "control_taxonomy_is_incomplete", "has_approved_change_request", "approved_change_request_count", "unwatched_unowned_control_count", "mining_run_count", "drifted_mining_run_count", "has_unresolved_mining_drift", "entry_step_id", "semantic_type_iri", "execution_count", "expected_duration_value", "expected_duration_unit", "status_is_pko", "uses_non_pko_status", "exception_count", "fallback_transition_count", "alternative_transition_count", "has_no_exception_handling", "latest_source_document_modified_at", "days_document_trails_version", "document_lags_practice", "human_step_count", "non_human_step_count", "mixes_human_and_software_steps", "day_run_count", "night_run_count", "day_deviating_run_count", "night_deviating_run_count", "is_inconsistent_across_shifts", "overlaps_relation_count", "enables_relation_count", "prevents_relation_count", "steps_without_ontology_type_count", "rests_on_notation_only", "is_current_without_motivation", "conditionless_step_count", "is_under_specified_for_execution", "coarse_top_level_step_count", "fine_top_level_step_count", "mixes_granularity_at_one_level", "procedure_type_of_version", "created_by_agent_kind", "elicitation_session_count", "expert_capture_count", "elicitation_evidence_count", "indexed_segment_count", "search_count", "successful_search_count", "search_success_percent", "open_question_annotation_count", "is_inadequate_for_use", "served_assertion_count", "lacks_machine_interpretable_encoding", "structured_query_count", "profile_validated_submission_count", "reasoned_assertion_count", "is_not_query_validate_reason_ready", "published_projection_count", "consumer_sync_count", "is_unreachable_knowledge", "human_sync_count", "machine_sync_count", "human_channel_count", "machine_channel_count", "serves_only_humans_or_only_machines", "fresh_mining_run_count", "lacks_continuous_drift_detection", "outcome_measurement_count", "is_disconnected_from_outcomes", "ai_contribution_count", "ai_consumption_count", "uses_ai_in_one_direction_only", "is_unmodified_for_twelve_months", "design_decision_count", "is_live_without_recorded_decisions", "ai_artifact_consuming_input_count", "contains_steps_affected_by_ai_agent_change", "interview_session_count", "observation_session_count", "workshop_session_count", "protocol_session_count", "incident_session_count", "reconciled_divergence_count", "complementary_method_count", "relies_on_single_method", "misses_a_required_elicitation_mode", "critical_incident_count", "judgment_unprobed_by_incidents", "sme_approval_count", "sme_ai_evaluation_count", "is_approved_without_sme_signoff", "experts_evaluate_ai_not_representation", "ke_session_count", "ke_field_session_count", "is_studied_only_from_the_desk", "judgment_held_outside_sop_count", "tacit_holding_count", "explicit_holding_count", "tacit_share_exceeds_explicit", "hands_held_count", "negotiated_practice_count", "lives_in_hands_silence_and_negotiation", "process_model_trace_count", "is_live_model_untraced", "trailing_practice_trace_count", "is_documented_behind_practice", "standardization_driver", "tacit_fragment_count", "is_standardized_without_tacit_capture", "tacit_form_fragment_count", "situated_judgment_fragment_count", "tacit_judgment_fragment_count", "first_step", "fallback_step", "first_step_disagrees_with_graph", "declared_first_step_count", "graph_entry_step_count":
+		case "procedure_version_id", "name", "procedure", "version_number", "title", "status", "issued_at", "modified_at", "created_by_agent", "modified_by_agent", "new_version_motivation", "changelog_description", "is_current", "count_of_steps", "count_of_open_knowledge_gaps", "is_ready_for_execution", "specified_step_count", "overdue_review_count", "open_change_request_count", "open_high_severity_gap_count", "is_fit_to_execute", "steward_review_cadence_days", "count_of_stewardship_assignments", "has_any_steward", "is_live", "is_unstewarded", "is_live_and_unstewarded", "count_of_open_blocking_gaps", "has_open_blocking_gap", "is_live_with_blocking_gap", "should_not_be_executable", "count_of_unapproved_reliance_fragments", "runs_on_unapproved_knowledge", "count_of_overdue_gaps", "count_of_change_requests", "count_of_review_events", "has_governance_record", "evaluation_context", "as_of_instant", "days_since_modified", "days_since_last_review", "was_modified_since_last_review", "modifier_is_authority", "has_unwitnessed_change", "count_of_stale_fragments", "knowledge_is_staler_than_cadence", "compound_fragile_fragment_count", "rests_on_compound_fragile_knowledge", "concentrated_witness_session_count", "knowledge_base_is_concentrated", "machine_consumed_unapproved_count", "feeds_unapproved_knowledge_to_machines", "genuinely_overdue_fragment_count", "awaited_decision_count", "scoped_open_blocking_gap_count", "is_blocked_on_pending_decision", "unexercised_human_gate_count", "ai_boundary_is_unevidenced", "load_bearing_unapproved_count", "unlanded_decision_count", "unrehearsed_control_entry_count", "has_unrehearsed_control_entry", "is_live_with_unrehearsed_control", "cadence_breach_count", "is_in_cadence_breach", "has_decision_in_flight", "is_unremediated_cadence_breach", "is_managed_cadence_breach", "governance_is_silent", "valid_fragment_count", "still_owns_valid_knowledge", "incoming_supersession_count", "is_still_referenced", "is_load_bearing_orphan", "is_cleanly_retired", "stalled_implementation_count", "is_held_unfit_by_landed_decisions", "undeclared_control_kind_count", "control_taxonomy_is_incomplete", "has_approved_change_request", "approved_change_request_count", "unwatched_unowned_control_count", "mining_run_count", "drifted_mining_run_count", "has_unresolved_mining_drift", "entry_step_id", "semantic_type_iri", "execution_count", "expected_duration_value", "expected_duration_unit", "status_is_pko", "uses_non_pko_status", "exception_count", "fallback_transition_count", "alternative_transition_count", "has_no_exception_handling", "latest_source_document_modified_at", "days_document_trails_version", "document_lags_practice", "human_step_count", "non_human_step_count", "mixes_human_and_software_steps", "day_run_count", "night_run_count", "day_deviating_run_count", "night_deviating_run_count", "is_inconsistent_across_shifts", "overlaps_relation_count", "enables_relation_count", "prevents_relation_count", "steps_without_ontology_type_count", "rests_on_notation_only", "is_current_without_motivation", "conditionless_step_count", "is_under_specified_for_execution", "coarse_top_level_step_count", "fine_top_level_step_count", "mixes_granularity_at_one_level", "procedure_type_of_version", "created_by_agent_kind", "elicitation_session_count", "expert_capture_count", "elicitation_evidence_count", "indexed_segment_count", "search_count", "successful_search_count", "search_success_percent", "open_question_annotation_count", "is_inadequate_for_use", "served_assertion_count", "lacks_machine_interpretable_encoding", "structured_query_count", "profile_validated_submission_count", "reasoned_assertion_count", "is_not_query_validate_reason_ready", "published_projection_count", "consumer_sync_count", "is_unreachable_knowledge", "human_sync_count", "machine_sync_count", "human_channel_count", "machine_channel_count", "serves_only_humans_or_only_machines", "fresh_mining_run_count", "lacks_continuous_drift_detection", "outcome_measurement_count", "is_disconnected_from_outcomes", "ai_contribution_count", "ai_consumption_count", "uses_ai_in_one_direction_only", "is_unmodified_for_twelve_months", "design_decision_count", "is_live_without_recorded_decisions", "ai_artifact_consuming_input_count", "contains_steps_affected_by_ai_agent_change", "interview_session_count", "observation_session_count", "workshop_session_count", "protocol_session_count", "incident_session_count", "reconciled_divergence_count", "complementary_method_count", "relies_on_single_method", "misses_a_required_elicitation_mode", "critical_incident_count", "judgment_unprobed_by_incidents", "sme_approval_count", "sme_ai_evaluation_count", "is_approved_without_sme_signoff", "experts_evaluate_ai_not_representation", "ke_session_count", "ke_field_session_count", "is_studied_only_from_the_desk", "judgment_held_outside_sop_count", "tacit_holding_count", "explicit_holding_count", "tacit_share_exceeds_explicit", "hands_held_count", "negotiated_practice_count", "lives_in_hands_silence_and_negotiation", "process_model_trace_count", "is_live_model_untraced", "trailing_practice_trace_count", "is_documented_behind_practice", "standardization_driver", "tacit_fragment_count", "is_standardized_without_tacit_capture", "tacit_form_fragment_count", "situated_judgment_fragment_count", "tacit_judgment_fragment_count", "first_step", "fallback_step", "first_step_disagrees_with_graph", "declared_first_step_count", "graph_entry_step_count", "owner_organization":
 			tc.erbSet(key, fromJSON(value))
 		}
 	}
@@ -6717,6 +6877,7 @@ type Step struct {
 	IsDeclaredFallbackStep *bool `json:"is_declared_fallback_step"` // TRUE for the step its version declares as its fallback step.
 	DeclaredFirstStepKey *string `json:"declared_first_step_key"` // Step key when declared first.
 	DeclaredFallbackStepKey *string `json:"declared_fallback_step_key"` // Step key when declared the fallback.
+	OwnerOrganization *string `json:"owner_organization"` // The organization that owns the procedure this row belongs to, one hop at a time from Procedures.OwnerOrganization. A row policy compares it to the caller's organization, so a plant sign-in never sees the finance close.
 	ErbErrors map[string]string `json:"_erb_errors,omitempty"`
 	erbAggregates map[string]Value
 }
@@ -7397,6 +7558,8 @@ func (tc *Step) erbGet(field string) Value {
 		return vStr(tc.DeclaredFirstStepKey)
 	case "declared_fallback_step_key":
 		return vStr(tc.DeclaredFallbackStepKey)
+	case "owner_organization":
+		return vStr(tc.OwnerOrganization)
 	}
 	panic("Steps has no field " + field)
 }
@@ -7671,6 +7834,8 @@ func (tc *Step) erbSet(field string, v Value) {
 		tc.DeclaredFirstStepKey = toStringPtr(v)
 	case "declared_fallback_step_key":
 		tc.DeclaredFallbackStepKey = toStringPtr(v)
+	case "owner_organization":
+		tc.OwnerOrganization = toStringPtr(v)
 	default:
 		panic("Steps has no field " + field)
 	}
@@ -7679,7 +7844,7 @@ func (tc *Step) erbSet(field string, v Value) {
 func (tc *Step) erbLoad(row map[string]any) {
 	for key, value := range row {
 		switch key {
-		case "step_id", "name", "procedure_version", "step_number", "title", "step_kind", "assigned_role", "assigned_role_label", "assigned_agent_kind", "instruction", "expected_duration_minutes", "expertise_level", "requires_human_confirmation", "blocking_requirement_count", "stale_binding_count", "authoritative_stale_count", "available_exception_count", "declared_verification_count", "is_preparation_step", "is_approval_step", "stale_authoritative_binding_count", "inputs_are_fresh", "is_software_assigned", "is_human_approval_gate", "gate_held_by_human", "binding_boundary_count", "assigned_role_is_ungoverned", "unusable_binding_count", "all_sources_usable", "control_kind", "unwarranted_boundary_count", "is_governed_by_unwarranted_boundary", "software_execution_count", "has_been_approached_by_software", "is_unexercised_human_gate", "is_demonstrated_human_gate", "unexercised_gate_version_key", "has_declared_control_kind", "undeclared_control_version_key", "approval_step_is_software_assigned", "unwitnessed_blocking_count", "reachable_step_count", "reached_from_step_count", "self_reach_count", "is_on_rework_loop", "is_blocking_control_on_rework_loop", "incoming_transition_count", "is_entry_step", "entry_step_key", "version_entry_step_id", "gate_free_reach_from_entry_count", "is_reachable_from_entry_without_human_gate", "is_gate_bypassed_publication", "semantic_type_iri", "parent_step", "first_child_step", "verifies_step", "remedy_for_error", "calls_procedure", "isolates_energy_source", "prerequisite_step", "min_repetitions", "max_repetitions", "description", "child_step_count", "parent_step_kind", "is_composite_without_children", "precondition_count", "postcondition_count", "invariant_count", "safety_critical_condition_count", "failure_mode_count", "cue_count", "danger_cue_count", "decision_point_count", "knowledge_fragment_count", "has_instruction_only", "input_variable_count", "output_variable_count", "required_lock_count", "required_protective_equipment_count", "is_isolation_without_lock", "referenced_resource_count", "untyped_version_key", "is_accountable_to_software", "has_downstream_steps", "incompleteness_cue_count", "has_incompleteness_cue", "has_postcondition", "accountable_agent", "has_no_accountable_agent", "conditionless_version_key", "prerequisite_downstream_count", "prerequisite_is_downstream", "states_operational_knowledge", "bottleneck_allocation_count", "is_bottleneck_step", "stage", "detail_level", "coarse_top_level_version_key", "fine_top_level_version_key", "context_sensitivity_count", "unscoped_sensitivity_count", "is_context_sensitive_but_unscoped", "version_procedure", "assigned_role_does_compliance_review", "compliance_review_procedure_key", "step_procedure_type", "is_release_approval_gate", "regulatory_requirement_count", "tool_function_count", "parseable_condition_count", "dmn_decision_count", "tool_use_rules_only_in_prose", "open_outdated_flag_count", "has_reported_reality_mismatch", "deviated_run_count", "is_drifted_from_practice", "ai_failure_count", "is_ai_failure_point", "ai_artifact_input_count", "consumes_ai_agent_artifact", "collection_evidence_count", "has_collection_evidence", "activity_origin_trace_count", "version_model_trace_count", "is_untraced_activity_in_traced_model", "elicited_validation_count", "elicited_extension_count", "downstream_artifact_step_count", "is_declared_first_step", "is_declared_fallback_step", "declared_first_step_key", "declared_fallback_step_key":
+		case "step_id", "name", "procedure_version", "step_number", "title", "step_kind", "assigned_role", "assigned_role_label", "assigned_agent_kind", "instruction", "expected_duration_minutes", "expertise_level", "requires_human_confirmation", "blocking_requirement_count", "stale_binding_count", "authoritative_stale_count", "available_exception_count", "declared_verification_count", "is_preparation_step", "is_approval_step", "stale_authoritative_binding_count", "inputs_are_fresh", "is_software_assigned", "is_human_approval_gate", "gate_held_by_human", "binding_boundary_count", "assigned_role_is_ungoverned", "unusable_binding_count", "all_sources_usable", "control_kind", "unwarranted_boundary_count", "is_governed_by_unwarranted_boundary", "software_execution_count", "has_been_approached_by_software", "is_unexercised_human_gate", "is_demonstrated_human_gate", "unexercised_gate_version_key", "has_declared_control_kind", "undeclared_control_version_key", "approval_step_is_software_assigned", "unwitnessed_blocking_count", "reachable_step_count", "reached_from_step_count", "self_reach_count", "is_on_rework_loop", "is_blocking_control_on_rework_loop", "incoming_transition_count", "is_entry_step", "entry_step_key", "version_entry_step_id", "gate_free_reach_from_entry_count", "is_reachable_from_entry_without_human_gate", "is_gate_bypassed_publication", "semantic_type_iri", "parent_step", "first_child_step", "verifies_step", "remedy_for_error", "calls_procedure", "isolates_energy_source", "prerequisite_step", "min_repetitions", "max_repetitions", "description", "child_step_count", "parent_step_kind", "is_composite_without_children", "precondition_count", "postcondition_count", "invariant_count", "safety_critical_condition_count", "failure_mode_count", "cue_count", "danger_cue_count", "decision_point_count", "knowledge_fragment_count", "has_instruction_only", "input_variable_count", "output_variable_count", "required_lock_count", "required_protective_equipment_count", "is_isolation_without_lock", "referenced_resource_count", "untyped_version_key", "is_accountable_to_software", "has_downstream_steps", "incompleteness_cue_count", "has_incompleteness_cue", "has_postcondition", "accountable_agent", "has_no_accountable_agent", "conditionless_version_key", "prerequisite_downstream_count", "prerequisite_is_downstream", "states_operational_knowledge", "bottleneck_allocation_count", "is_bottleneck_step", "stage", "detail_level", "coarse_top_level_version_key", "fine_top_level_version_key", "context_sensitivity_count", "unscoped_sensitivity_count", "is_context_sensitive_but_unscoped", "version_procedure", "assigned_role_does_compliance_review", "compliance_review_procedure_key", "step_procedure_type", "is_release_approval_gate", "regulatory_requirement_count", "tool_function_count", "parseable_condition_count", "dmn_decision_count", "tool_use_rules_only_in_prose", "open_outdated_flag_count", "has_reported_reality_mismatch", "deviated_run_count", "is_drifted_from_practice", "ai_failure_count", "is_ai_failure_point", "ai_artifact_input_count", "consumes_ai_agent_artifact", "collection_evidence_count", "has_collection_evidence", "activity_origin_trace_count", "version_model_trace_count", "is_untraced_activity_in_traced_model", "elicited_validation_count", "elicited_extension_count", "downstream_artifact_step_count", "is_declared_first_step", "is_declared_fallback_step", "declared_first_step_key", "declared_fallback_step_key", "owner_organization":
 			tc.erbSet(key, fromJSON(value))
 		}
 	}
@@ -10739,6 +10904,7 @@ type KnowledgeFragment struct {
 	IsFlattenedToBrittleRule *bool `json:"is_flattened_to_brittle_rule"` // TRUE when tacit or situated knowledge was encoded as a hard rule with no conditions saying when it holds.
 	CorroborationCount *int `json:"corroboration_count"` // Independent supporting data points.
 	RestsOnSingleDataPoint *bool `json:"rests_on_single_data_point"` // TRUE for approved knowledge no second session or practitioner supports.
+	OwnerOrganization *string `json:"owner_organization"` // The organization that owns the procedure this row belongs to, one hop at a time from Procedures.OwnerOrganization. A row policy compares it to the caller's organization, so a plant sign-in never sees the finance close.
 	ErbErrors map[string]string `json:"_erb_errors,omitempty"`
 	erbAggregates map[string]Value
 }
@@ -11336,6 +11502,8 @@ func (tc *KnowledgeFragment) erbGet(field string) Value {
 		return vInt(tc.CorroborationCount)
 	case "rests_on_single_data_point":
 		return vBool(tc.RestsOnSingleDataPoint)
+	case "owner_organization":
+		return vStr(tc.OwnerOrganization)
 	}
 	panic("KnowledgeFragments has no field " + field)
 }
@@ -11518,6 +11686,8 @@ func (tc *KnowledgeFragment) erbSet(field string, v Value) {
 		tc.CorroborationCount = toIntPtr(v)
 	case "rests_on_single_data_point":
 		tc.RestsOnSingleDataPoint = toBoolPtr(v)
+	case "owner_organization":
+		tc.OwnerOrganization = toStringPtr(v)
 	default:
 		panic("KnowledgeFragments has no field " + field)
 	}
@@ -11526,7 +11696,7 @@ func (tc *KnowledgeFragment) erbSet(field string, v Value) {
 func (tc *KnowledgeFragment) erbLoad(row map[string]any) {
 	for key, value := range row {
 		switch key {
-		case "knowledge_fragment_id", "name", "procedure_version", "step", "knowledge_form", "statement", "elicitation_session", "source_agent", "confidence", "valid_from", "valid_to", "status", "owner_role", "evaluation_context", "as_of_instant", "is_currently_valid", "source_agent_is_still_engaged", "source_agent_kind", "has_human_source", "has_orphaned_provenance", "is_undefendable_tacit_claim", "is_approved", "is_within_validity_window", "is_relied_upon", "step_procedure_version_status", "is_attached_to_live_version", "is_unapproved_but_relied_on", "evidence_age_days", "has_recorded_elicitation", "is_from_single_witness", "evidence_expiry_days", "evidence_has_expired", "owner_agent", "is_awaiting_approval", "owner_is_me", "is_my_unfinished_approval", "is_invoked_by_an_exception", "has_operational_reliance", "is_unapproved_and_operationally_live", "age_days", "is_low_confidence", "owning_version_cadence_days", "exceeds_owning_cadence", "is_aging_low_confidence_claim", "owner_role_agent_kind", "is_human_owned", "is_ai_validated_by_ai", "review_cadence_days", "is_overdue_for_review", "predates_current_role_holder", "owner_role_assignment_valid_from", "last_reviewed_at", "fragility_signal_count", "is_compound_fragile", "is_single_point_of_failure", "is_expiring_single_point_of_failure", "compound_fragile_version_key", "valid_fragment_session_key", "consuming_step_is_software_assigned", "consuming_step_agent_kind", "is_unapproved_and_machine_consumed", "is_unapproved_and_human_consumed", "machine_consumed_unapproved_version_key", "has_review_record", "days_since_actual_review", "is_unreviewed_since_authoring", "is_genuinely_overdue", "review_recency_is_inferred", "inference_disagrees_with_record", "genuinely_overdue_version_key", "ratified_boundary_count", "reliance_surface_count", "days_awaiting_my_approval", "is_high_blast_radius_unapproved", "is_long_unapproved", "unapproved_load_bearing_version_key", "owner_role_is_vacated", "is_orphaned_by_role", "valid_fragment_version_key", "semantic_type_iri", "cognitive_basis", "tacitness_degree", "lost_in_translation", "encoded_as", "stated_conditions", "is_flattened_to_brittle_rule", "corroboration_count", "rests_on_single_data_point":
+		case "knowledge_fragment_id", "name", "procedure_version", "step", "knowledge_form", "statement", "elicitation_session", "source_agent", "confidence", "valid_from", "valid_to", "status", "owner_role", "evaluation_context", "as_of_instant", "is_currently_valid", "source_agent_is_still_engaged", "source_agent_kind", "has_human_source", "has_orphaned_provenance", "is_undefendable_tacit_claim", "is_approved", "is_within_validity_window", "is_relied_upon", "step_procedure_version_status", "is_attached_to_live_version", "is_unapproved_but_relied_on", "evidence_age_days", "has_recorded_elicitation", "is_from_single_witness", "evidence_expiry_days", "evidence_has_expired", "owner_agent", "is_awaiting_approval", "owner_is_me", "is_my_unfinished_approval", "is_invoked_by_an_exception", "has_operational_reliance", "is_unapproved_and_operationally_live", "age_days", "is_low_confidence", "owning_version_cadence_days", "exceeds_owning_cadence", "is_aging_low_confidence_claim", "owner_role_agent_kind", "is_human_owned", "is_ai_validated_by_ai", "review_cadence_days", "is_overdue_for_review", "predates_current_role_holder", "owner_role_assignment_valid_from", "last_reviewed_at", "fragility_signal_count", "is_compound_fragile", "is_single_point_of_failure", "is_expiring_single_point_of_failure", "compound_fragile_version_key", "valid_fragment_session_key", "consuming_step_is_software_assigned", "consuming_step_agent_kind", "is_unapproved_and_machine_consumed", "is_unapproved_and_human_consumed", "machine_consumed_unapproved_version_key", "has_review_record", "days_since_actual_review", "is_unreviewed_since_authoring", "is_genuinely_overdue", "review_recency_is_inferred", "inference_disagrees_with_record", "genuinely_overdue_version_key", "ratified_boundary_count", "reliance_surface_count", "days_awaiting_my_approval", "is_high_blast_radius_unapproved", "is_long_unapproved", "unapproved_load_bearing_version_key", "owner_role_is_vacated", "is_orphaned_by_role", "valid_fragment_version_key", "semantic_type_iri", "cognitive_basis", "tacitness_degree", "lost_in_translation", "encoded_as", "stated_conditions", "is_flattened_to_brittle_rule", "corroboration_count", "rests_on_single_data_point", "owner_organization":
 			tc.erbSet(key, fromJSON(value))
 		}
 	}
@@ -11607,6 +11777,10 @@ type KnowledgeGap struct {
 	IsGatekeepingOrSabotage *bool `json:"is_gatekeeping_or_sabotage"` // TRUE for a gap caused by gatekeeping or knowledge sabotage.
 	IsUnattributedGatekeeping *bool `json:"is_unattributed_gatekeeping"` // TRUE when a holder was recorded declining to share but the gap is not identified as gatekeeping or sabotage.
 	IsRequiredGatekeptUncodified *bool `json:"is_required_gatekept_uncodified"` // TRUE for blocking gatekept or sabotaged knowledge never drawn out and codified.
+	OwnerOrganization *string `json:"owner_organization"` // The organization that owns the procedure this row belongs to, one hop at a time from Procedures.OwnerOrganization. A row policy compares it to the caller's organization, so a plant sign-in never sees the finance close.
+	AnsweredByModelChangeRequest *string `json:"answered_by_model_change_request"` // The change to the book that was raised to close this gap, when there is one.
+	AnsweringChangeTitle *string `json:"answering_change_title"` // What the change that answers this gap asks for.
+	AnsweringChangeStatus *string `json:"answering_change_status"` // Where the change that answers this gap has got to.
 	ErbErrors map[string]string `json:"_erb_errors,omitempty"`
 	erbAggregates map[string]Value
 }
@@ -11829,6 +12003,14 @@ func (tc *KnowledgeGap) erbGet(field string) Value {
 		return vBool(tc.IsUnattributedGatekeeping)
 	case "is_required_gatekept_uncodified":
 		return vBool(tc.IsRequiredGatekeptUncodified)
+	case "owner_organization":
+		return vStr(tc.OwnerOrganization)
+	case "answered_by_model_change_request":
+		return vStr(tc.AnsweredByModelChangeRequest)
+	case "answering_change_title":
+		return vStr(tc.AnsweringChangeTitle)
+	case "answering_change_status":
+		return vStr(tc.AnsweringChangeStatus)
 	}
 	panic("KnowledgeGaps has no field " + field)
 }
@@ -11909,6 +12091,14 @@ func (tc *KnowledgeGap) erbSet(field string, v Value) {
 		tc.IsUnattributedGatekeeping = toBoolPtr(v)
 	case "is_required_gatekept_uncodified":
 		tc.IsRequiredGatekeptUncodified = toBoolPtr(v)
+	case "owner_organization":
+		tc.OwnerOrganization = toStringPtr(v)
+	case "answered_by_model_change_request":
+		tc.AnsweredByModelChangeRequest = toStringPtr(v)
+	case "answering_change_title":
+		tc.AnsweringChangeTitle = toStringPtr(v)
+	case "answering_change_status":
+		tc.AnsweringChangeStatus = toStringPtr(v)
 	default:
 		panic("KnowledgeGaps has no field " + field)
 	}
@@ -11917,7 +12107,7 @@ func (tc *KnowledgeGap) erbSet(field string, v Value) {
 func (tc *KnowledgeGap) erbLoad(row map[string]any) {
 	for key, value := range row {
 		switch key {
-		case "knowledge_gap_id", "name", "procedure_version", "step", "statement", "severity", "blocking_kind", "status", "owner_role", "identified_at", "resolution_plan", "is_open", "open_gap_version_key", "is_blocking", "is_open_and_blocking", "evaluation_context", "as_of_instant", "days_open", "tolerance_days", "is_overdue_gap", "owner_agent", "owner_is_still_engaged", "has_resolution_plan", "is_abandoned_unknown", "open_blocking_gap_version_key", "owner_role_is_vacated", "is_ownerless_open_gap", "semantic_type_iri", "gap_cause", "holder_declined_to_share", "siloed_within", "drawn_out_by_session", "codified_as_fragment", "is_known_and_unresolved", "is_gatekeeping_or_sabotage", "is_unattributed_gatekeeping", "is_required_gatekept_uncodified":
+		case "knowledge_gap_id", "name", "procedure_version", "step", "statement", "severity", "blocking_kind", "status", "owner_role", "identified_at", "resolution_plan", "is_open", "open_gap_version_key", "is_blocking", "is_open_and_blocking", "evaluation_context", "as_of_instant", "days_open", "tolerance_days", "is_overdue_gap", "owner_agent", "owner_is_still_engaged", "has_resolution_plan", "is_abandoned_unknown", "open_blocking_gap_version_key", "owner_role_is_vacated", "is_ownerless_open_gap", "semantic_type_iri", "gap_cause", "holder_declined_to_share", "siloed_within", "drawn_out_by_session", "codified_as_fragment", "is_known_and_unresolved", "is_gatekeeping_or_sabotage", "is_unattributed_gatekeeping", "is_required_gatekept_uncodified", "owner_organization", "answered_by_model_change_request", "answering_change_title", "answering_change_status":
 			tc.erbSet(key, fromJSON(value))
 		}
 	}
@@ -12329,6 +12519,12 @@ type ProcedureExecution struct {
 	HasNoRecordedOutcome *bool `json:"has_no_recorded_outcome"` // TRUE when an execution records no outcome.
 	FeedbackCount *int `json:"feedback_count"` // Feedback filed about the execution.
 	IsUnreportedMistake *bool `json:"is_unreported_mistake"` // TRUE when an execution deviated from its steps and nobody filed any feedback about it.
+	OwnerOrganization *string `json:"owner_organization"` // The organization that owns the procedure this row belongs to, one hop at a time from Procedures.OwnerOrganization. A row policy compares it to the caller's organization, so a plant sign-in never sees the finance close.
+	StoppedAtKnowledgeGap *string `json:"stopped_at_knowledge_gap"` // The knowledge gap this run stopped at: the procedure had no answer, so the run ended instead of someone guessing.
+	StoppedAtGapStatement *string `json:"stopped_at_gap_statement"` // What nobody knows, in the gap this run stopped at.
+	StoppedAtGapStatus *string `json:"stopped_at_gap_status"` // Whether the gap this run stopped at is still open.
+	StoppedAtGapChangeTitle *string `json:"stopped_at_gap_change_title"` // The change to the book that answers the gap this run stopped at.
+	StoppedAtGapChangeStatus *string `json:"stopped_at_gap_change_status"` // Where the change that answers this run's gap has got to.
 	ErbErrors map[string]string `json:"_erb_errors,omitempty"`
 	erbAggregates map[string]Value
 }
@@ -12891,6 +13087,18 @@ func (tc *ProcedureExecution) erbGet(field string) Value {
 		return vInt(tc.FeedbackCount)
 	case "is_unreported_mistake":
 		return vBool(tc.IsUnreportedMistake)
+	case "owner_organization":
+		return vStr(tc.OwnerOrganization)
+	case "stopped_at_knowledge_gap":
+		return vStr(tc.StoppedAtKnowledgeGap)
+	case "stopped_at_gap_statement":
+		return vStr(tc.StoppedAtGapStatement)
+	case "stopped_at_gap_status":
+		return vStr(tc.StoppedAtGapStatus)
+	case "stopped_at_gap_change_title":
+		return vStr(tc.StoppedAtGapChangeTitle)
+	case "stopped_at_gap_change_status":
+		return vStr(tc.StoppedAtGapChangeStatus)
 	}
 	panic("ProcedureExecutions has no field " + field)
 }
@@ -13095,6 +13303,18 @@ func (tc *ProcedureExecution) erbSet(field string, v Value) {
 		tc.FeedbackCount = toIntPtr(v)
 	case "is_unreported_mistake":
 		tc.IsUnreportedMistake = toBoolPtr(v)
+	case "owner_organization":
+		tc.OwnerOrganization = toStringPtr(v)
+	case "stopped_at_knowledge_gap":
+		tc.StoppedAtKnowledgeGap = toStringPtr(v)
+	case "stopped_at_gap_statement":
+		tc.StoppedAtGapStatement = toStringPtr(v)
+	case "stopped_at_gap_status":
+		tc.StoppedAtGapStatus = toStringPtr(v)
+	case "stopped_at_gap_change_title":
+		tc.StoppedAtGapChangeTitle = toStringPtr(v)
+	case "stopped_at_gap_change_status":
+		tc.StoppedAtGapChangeStatus = toStringPtr(v)
 	default:
 		panic("ProcedureExecutions has no field " + field)
 	}
@@ -13103,7 +13323,7 @@ func (tc *ProcedureExecution) erbSet(field string, v Value) {
 func (tc *ProcedureExecution) erbLoad(row map[string]any) {
 	for key, value := range row {
 		switch key {
-		case "procedure_execution_id", "name", "procedure_version", "execution_status", "started_at", "ended_at", "executed_by_agent", "context", "operational_record_uri", "expected_step_count", "completed_step_count", "control_breach_count", "late_step_count", "is_structurally_complete", "diverged_from_specification", "all_blocking_controls_evaluated", "unevaluated_blocking_total", "separation_of_duties_held", "separation_violation_count", "is_attestation_ready", "attestation_blocker_summary", "executed_version_is_fit", "signed_against_unfit_version", "asserted_only_control_count", "assurance_is_mostly_asserted", "unreachable_handling_failure_count", "retention_breach_count", "cleared_legal_review_count", "has_cleared_legal_review", "abandoned_failure_count", "delivered_count", "total_delivery_attempt_count", "has_abandoned_failures", "mishandled_refusal_count", "unclean_step_count", "ran_clean", "count_of_approval_executions", "has_human_approval", "count_of_delivery_executions", "has_delivered", "delivered_without_approval", "invalid_approval_count", "approval_chain_is_complete", "vacuously_clean_step_count", "preparation_step_count", "approval_step_count", "separation_was_testable", "separation_held_under_test", "separation_is_vacuously_green", "separation_assurance_note", "ungoverned_divergence_count", "divergence_was_fully_governed", "computedly_witnessed_control_count", "evaluated_control_count", "computed_assurance_ratio", "interested_party_assertion_count", "assurance_grade", "attestation_would_be_weakly_based", "independent_human_observation_count", "has_any_independent_observation", "self_attested_approval_count", "assurance_chain_is_circular", "latest_attestation_instant", "has_been_attested", "attestation_count", "post_attestation_score_count", "basis_changed_after_signature", "requires_re_attestation", "intended_recipient_count", "reached_recipient_count", "silently_dropped_count", "delivery_yield_percent", "campaign_silently_lost_audience", "unrecorded_refusal_count", "has_unrecorded_refusals", "independently_confirmed_intent_count", "send_decisions_are_entirely_self_witnessed", "semantic_type_iri", "title", "description", "confirmed_by_agent", "facility", "shift", "executed_on_machine", "observations", "outcome", "participant_count", "deviating_step_count", "has_step_deviation", "deviating_facility_key", "clean_facility_key", "deviating_day_version_key", "deviating_night_version_key", "status_change_count", "claims_completion_without_all_steps", "is_unconfirmed_completion", "has_no_recorded_outcome", "feedback_count", "is_unreported_mistake":
+		case "procedure_execution_id", "name", "procedure_version", "execution_status", "started_at", "ended_at", "executed_by_agent", "context", "operational_record_uri", "expected_step_count", "completed_step_count", "control_breach_count", "late_step_count", "is_structurally_complete", "diverged_from_specification", "all_blocking_controls_evaluated", "unevaluated_blocking_total", "separation_of_duties_held", "separation_violation_count", "is_attestation_ready", "attestation_blocker_summary", "executed_version_is_fit", "signed_against_unfit_version", "asserted_only_control_count", "assurance_is_mostly_asserted", "unreachable_handling_failure_count", "retention_breach_count", "cleared_legal_review_count", "has_cleared_legal_review", "abandoned_failure_count", "delivered_count", "total_delivery_attempt_count", "has_abandoned_failures", "mishandled_refusal_count", "unclean_step_count", "ran_clean", "count_of_approval_executions", "has_human_approval", "count_of_delivery_executions", "has_delivered", "delivered_without_approval", "invalid_approval_count", "approval_chain_is_complete", "vacuously_clean_step_count", "preparation_step_count", "approval_step_count", "separation_was_testable", "separation_held_under_test", "separation_is_vacuously_green", "separation_assurance_note", "ungoverned_divergence_count", "divergence_was_fully_governed", "computedly_witnessed_control_count", "evaluated_control_count", "computed_assurance_ratio", "interested_party_assertion_count", "assurance_grade", "attestation_would_be_weakly_based", "independent_human_observation_count", "has_any_independent_observation", "self_attested_approval_count", "assurance_chain_is_circular", "latest_attestation_instant", "has_been_attested", "attestation_count", "post_attestation_score_count", "basis_changed_after_signature", "requires_re_attestation", "intended_recipient_count", "reached_recipient_count", "silently_dropped_count", "delivery_yield_percent", "campaign_silently_lost_audience", "unrecorded_refusal_count", "has_unrecorded_refusals", "independently_confirmed_intent_count", "send_decisions_are_entirely_self_witnessed", "semantic_type_iri", "title", "description", "confirmed_by_agent", "facility", "shift", "executed_on_machine", "observations", "outcome", "participant_count", "deviating_step_count", "has_step_deviation", "deviating_facility_key", "clean_facility_key", "deviating_day_version_key", "deviating_night_version_key", "status_change_count", "claims_completion_without_all_steps", "is_unconfirmed_completion", "has_no_recorded_outcome", "feedback_count", "is_unreported_mistake", "owner_organization", "stopped_at_knowledge_gap", "stopped_at_gap_statement", "stopped_at_gap_status", "stopped_at_gap_change_title", "stopped_at_gap_change_status":
 			tc.erbSet(key, fromJSON(value))
 		}
 	}
@@ -13283,6 +13503,9 @@ type StepExecution struct {
 	DeviationExecutionKey *string `json:"deviation_execution_key"` // Procedure execution key when the step deviated.
 	BrokeInvariant *bool `json:"broke_invariant"` // TRUE when an invariant did not hold during the step.
 	IsBlockedByIncompletePrerequisite *bool `json:"is_blocked_by_incomplete_prerequisite"` // TRUE for an unfinished step whose prerequisite has not completed in the same execution.
+	OwnerOrganization *string `json:"owner_organization"` // The organization that owns the procedure this row belongs to, one hop at a time from Procedures.OwnerOrganization. A row policy compares it to the caller's organization, so a plant sign-in never sees the finance close.
+	IncompleteCueObservationCount *int `json:"incomplete_cue_observation_count"` // Warning signs observed on this step execution that mean the step is not finished.
+	IsBlockedByObservedCue *bool `json:"is_blocked_by_observed_cue"` // A warning sign that means 'not finished' was seen on this step execution, so the normal next step must not be offered; only a fallback is.
 	ErbErrors map[string]string `json:"_erb_errors,omitempty"`
 	erbAggregates map[string]Value
 }
@@ -13798,6 +14021,13 @@ func (tc *StepExecution) CalcIsBlockedByIncompletePrerequisite() *bool {
 	return toBoolPtr(erbAnd(erbBool3(erbIsNotBlank(vStr(tc.StepPrerequisite))), erbBool3(erbEq(vInt(tc.CompletedPrerequisiteRunCount), vI(0))), erbBool3(erbNe(erbNullif(vStr(tc.ExecutionStatus)), vS("Completed")))))
 }
 
+// CalcIsBlockedByObservedCue computes the IsBlockedByObservedCue calculated field
+// A warning sign that means 'not finished' was seen on this step execution, so the normal next step must not be offered; only a fallback is.
+// Formula: ={{IncompleteCueObservationCount}} > 0
+func (tc *StepExecution) CalcIsBlockedByObservedCue() *bool {
+	return toBoolPtr(erbCmp(vInt(tc.IncompleteCueObservationCount), ">", vI(0)))
+}
+
 // erbComputeCalculations computes every calculated field of the row in dependency order.
 func (tc *StepExecution) erbComputeCalculations() {
 	// Level 1
@@ -13842,6 +14072,7 @@ func (tc *StepExecution) erbComputeCalculations() {
 	calcGuard(tc, "ran_before_prerequisite_completed", func() { tc.RanBeforePrerequisiteCompleted = tc.CalcRanBeforePrerequisiteCompleted() })
 	calcGuard(tc, "broke_invariant", func() { tc.BrokeInvariant = tc.CalcBrokeInvariant() })
 	calcGuard(tc, "is_blocked_by_incomplete_prerequisite", func() { tc.IsBlockedByIncompletePrerequisite = tc.CalcIsBlockedByIncompletePrerequisite() })
+	calcGuard(tc, "is_blocked_by_observed_cue", func() { tc.IsBlockedByObservedCue = tc.CalcIsBlockedByObservedCue() })
 	// Level 2
 	calcGuard(tc, "is_late", func() { tc.IsLate = tc.CalcIsLate() })
 	calcGuard(tc, "has_unevaluated_blocking_control", func() { tc.HasUnevaluatedBlockingControl = tc.CalcHasUnevaluatedBlockingControl() })
@@ -14160,6 +14391,12 @@ func (tc *StepExecution) erbGet(field string) Value {
 		return vBool(tc.BrokeInvariant)
 	case "is_blocked_by_incomplete_prerequisite":
 		return vBool(tc.IsBlockedByIncompletePrerequisite)
+	case "owner_organization":
+		return vStr(tc.OwnerOrganization)
+	case "incomplete_cue_observation_count":
+		return vInt(tc.IncompleteCueObservationCount)
+	case "is_blocked_by_observed_cue":
+		return vBool(tc.IsBlockedByObservedCue)
 	}
 	panic("StepExecutions has no field " + field)
 }
@@ -14438,6 +14675,12 @@ func (tc *StepExecution) erbSet(field string, v Value) {
 		tc.BrokeInvariant = toBoolPtr(v)
 	case "is_blocked_by_incomplete_prerequisite":
 		tc.IsBlockedByIncompletePrerequisite = toBoolPtr(v)
+	case "owner_organization":
+		tc.OwnerOrganization = toStringPtr(v)
+	case "incomplete_cue_observation_count":
+		tc.IncompleteCueObservationCount = toIntPtr(v)
+	case "is_blocked_by_observed_cue":
+		tc.IsBlockedByObservedCue = toBoolPtr(v)
 	default:
 		panic("StepExecutions has no field " + field)
 	}
@@ -14446,7 +14689,7 @@ func (tc *StepExecution) erbSet(field string, v Value) {
 func (tc *StepExecution) erbLoad(row map[string]any) {
 	for key, value := range row {
 		switch key {
-		case "step_execution_id", "name", "procedure_execution", "step", "executed_by_agent", "execution_status", "started_at", "ended_at", "verification_result", "deviation", "actual_duration_minutes", "expected_duration_minutes", "is_late", "blocking_unmet_count", "blocking_unmet_count_safe", "proceeded_past_blocking_control", "expected_blocking_count", "evaluated_blocking_count", "unevaluated_blocking_count", "has_unevaluated_blocking_control", "stale_authoritative_source_count", "ran_on_stale_authoritative_source", "has_deviation_note", "is_late_and_unexplained", "available_exception_count_for_step", "had_uninvoked_exception_available", "expected_verification_count", "performed_verification_count", "skipped_verification_count", "has_skipped_verification", "claims_pass_without_evidence", "step_is_preparation", "step_is_approval", "preparer_agent_key", "approver_agent_key", "prepared_by_this_agent_count", "violates_separation_of_duties", "required_role_for_step", "executor_role_key", "executor_authority_count", "executor_held_required_role", "is_unauthorized_approval", "completed_execution_key", "control_breach_execution_key", "late_execution_key", "executor_agent_kind", "executor_is_human", "step_requires_human_confirmation", "non_human_ran_human_step", "non_human_approval", "unevaluated_blocking_execution_key", "separation_violation_execution_key", "self_witnessed_verification_count", "unbacked_verification_count", "approval_rests_on_self_attestation", "exception_invocation_count", "ran_under_exception", "is_completed", "is_verification_passed", "is_legal_review_step", "cleared_legal_review_key", "assigned_role", "role_current_agent", "executor_is_designated_agent", "inputs_were_fresh_at_run", "ran_on_stale_inputs", "unresolved_issue_count", "has_deviation", "is_clean", "procedure_execution_when_unclean", "evaluated_requirement_count", "required_blocking_count", "has_unevaluated_blocking_requirement", "executing_agent_kind", "was_executed_by_software", "step_is_software_assigned", "software_did_human_work", "is_approval_execution", "is_verified", "unconfirmed_non_human_decision_count", "requires_human_confirmation", "human_confirmation_missing", "drafted_from_unusable_source", "inputs_were_usable", "software_execution_step_key", "step_control_kind", "unfalsified_clearance_count", "all_clearances_are_unfalsified", "stale_at_run_count", "was_stale_when_i_ran_it", "staleness_answer_is_tense_dependent", "has_any_declared_check", "performed_check_count", "declared_check_count", "is_unchecked_by_design", "is_vacuously_clean", "is_substantively_clean", "vacuously_clean_execution_key", "uncorroborated_pass_count", "evidence_position_is_weak", "preparation_execution_key", "approval_execution_key", "has_governing_instrument", "has_approved_change_coverage", "version_of_step", "is_ungoverned_divergence", "ungoverned_divergence_execution_key", "self_attested_approval_execution_key", "semantic_type_iri", "previous_step_execution", "confirmed_by_agent", "description", "previous_executed_step", "specified_transition_from_previous_count", "is_out_of_specified_order", "execution_version", "executes_step_of_other_version", "repetition_count", "step_max_repetitions", "exceeds_max_repetitions", "lacks_required_confirmation", "failed_precondition_count", "violated_invariant_count", "proceeded_despite_failed_precondition", "unescalated_danger_cue_count", "ignored_danger_cue", "used_entity_count", "generated_entity_count", "step_input_variable_count", "ran_without_declared_inputs", "step_prerequisite", "completed_prerequisite_run_count", "ran_before_prerequisite_completed", "deviation_execution_key", "broke_invariant", "is_blocked_by_incomplete_prerequisite":
+		case "step_execution_id", "name", "procedure_execution", "step", "executed_by_agent", "execution_status", "started_at", "ended_at", "verification_result", "deviation", "actual_duration_minutes", "expected_duration_minutes", "is_late", "blocking_unmet_count", "blocking_unmet_count_safe", "proceeded_past_blocking_control", "expected_blocking_count", "evaluated_blocking_count", "unevaluated_blocking_count", "has_unevaluated_blocking_control", "stale_authoritative_source_count", "ran_on_stale_authoritative_source", "has_deviation_note", "is_late_and_unexplained", "available_exception_count_for_step", "had_uninvoked_exception_available", "expected_verification_count", "performed_verification_count", "skipped_verification_count", "has_skipped_verification", "claims_pass_without_evidence", "step_is_preparation", "step_is_approval", "preparer_agent_key", "approver_agent_key", "prepared_by_this_agent_count", "violates_separation_of_duties", "required_role_for_step", "executor_role_key", "executor_authority_count", "executor_held_required_role", "is_unauthorized_approval", "completed_execution_key", "control_breach_execution_key", "late_execution_key", "executor_agent_kind", "executor_is_human", "step_requires_human_confirmation", "non_human_ran_human_step", "non_human_approval", "unevaluated_blocking_execution_key", "separation_violation_execution_key", "self_witnessed_verification_count", "unbacked_verification_count", "approval_rests_on_self_attestation", "exception_invocation_count", "ran_under_exception", "is_completed", "is_verification_passed", "is_legal_review_step", "cleared_legal_review_key", "assigned_role", "role_current_agent", "executor_is_designated_agent", "inputs_were_fresh_at_run", "ran_on_stale_inputs", "unresolved_issue_count", "has_deviation", "is_clean", "procedure_execution_when_unclean", "evaluated_requirement_count", "required_blocking_count", "has_unevaluated_blocking_requirement", "executing_agent_kind", "was_executed_by_software", "step_is_software_assigned", "software_did_human_work", "is_approval_execution", "is_verified", "unconfirmed_non_human_decision_count", "requires_human_confirmation", "human_confirmation_missing", "drafted_from_unusable_source", "inputs_were_usable", "software_execution_step_key", "step_control_kind", "unfalsified_clearance_count", "all_clearances_are_unfalsified", "stale_at_run_count", "was_stale_when_i_ran_it", "staleness_answer_is_tense_dependent", "has_any_declared_check", "performed_check_count", "declared_check_count", "is_unchecked_by_design", "is_vacuously_clean", "is_substantively_clean", "vacuously_clean_execution_key", "uncorroborated_pass_count", "evidence_position_is_weak", "preparation_execution_key", "approval_execution_key", "has_governing_instrument", "has_approved_change_coverage", "version_of_step", "is_ungoverned_divergence", "ungoverned_divergence_execution_key", "self_attested_approval_execution_key", "semantic_type_iri", "previous_step_execution", "confirmed_by_agent", "description", "previous_executed_step", "specified_transition_from_previous_count", "is_out_of_specified_order", "execution_version", "executes_step_of_other_version", "repetition_count", "step_max_repetitions", "exceeds_max_repetitions", "lacks_required_confirmation", "failed_precondition_count", "violated_invariant_count", "proceeded_despite_failed_precondition", "unescalated_danger_cue_count", "ignored_danger_cue", "used_entity_count", "generated_entity_count", "step_input_variable_count", "ran_without_declared_inputs", "step_prerequisite", "completed_prerequisite_run_count", "ran_before_prerequisite_completed", "deviation_execution_key", "broke_invariant", "is_blocked_by_incomplete_prerequisite", "owner_organization", "incomplete_cue_observation_count", "is_blocked_by_observed_cue":
 			tc.erbSet(key, fromJSON(value))
 		}
 	}
@@ -15905,6 +16148,7 @@ type ChangeRequest struct {
 	ApprovedVersionKey *string `json:"approved_version_key"` // Echoes the target version id when this change request was approved.
 	IsApprovedDecision *bool `json:"is_approved_decision"` // TRUE when this change request was decided in the affirmative.
 	SemanticTypeIri *string `json:"semantic_type_iri"` // Extension class IRI.
+	OwnerOrganization *string `json:"owner_organization"` // The organization that owns the procedure this row belongs to, one hop at a time from Procedures.OwnerOrganization. A row policy compares it to the caller's organization, so a plant sign-in never sees the finance close.
 	ErbErrors map[string]string `json:"_erb_errors,omitempty"`
 	erbAggregates map[string]Value
 }
@@ -16241,6 +16485,8 @@ func (tc *ChangeRequest) erbGet(field string) Value {
 		return vBool(tc.IsApprovedDecision)
 	case "semantic_type_iri":
 		return vStr(tc.SemanticTypeIri)
+	case "owner_organization":
+		return vStr(tc.OwnerOrganization)
 	}
 	panic("ChangeRequests has no field " + field)
 }
@@ -16337,6 +16583,8 @@ func (tc *ChangeRequest) erbSet(field string, v Value) {
 		tc.IsApprovedDecision = toBoolPtr(v)
 	case "semantic_type_iri":
 		tc.SemanticTypeIri = toStringPtr(v)
+	case "owner_organization":
+		tc.OwnerOrganization = toStringPtr(v)
 	default:
 		panic("ChangeRequests has no field " + field)
 	}
@@ -16345,7 +16593,7 @@ func (tc *ChangeRequest) erbSet(field string, v Value) {
 func (tc *ChangeRequest) erbLoad(row map[string]any) {
 	for key, value := range row {
 		switch key {
-		case "change_request_id", "name", "procedure_version", "title", "change_kind", "status", "requested_by_agent", "authority_role", "requested_at", "decided_at", "impact_assessment", "is_open", "open_change_version_key", "is_decided", "evaluation_context", "as_of_instant", "days_pending", "is_still_pending", "is_stalled", "authority_agent", "requester_is_authority", "awaits_authority_decision", "authority_role_label", "touches_live_version", "is_live_decision_backlog", "blocks_an_open_gap", "implemented_at", "backlog_version_key", "is_my_pending_decision", "is_my_blocking_backlog", "is_my_overdue_backlog", "is_implemented", "is_my_decided_request", "is_my_decided_but_unlanded", "decision_latency_days", "implementation_latency_days", "delay_is_downstream_of_me", "unlanded_version_key", "is_approved_not_implemented", "days_since_approval", "is_stalled_implementation", "stalled_implementation_version_key", "approved_version_key", "is_approved_decision", "semantic_type_iri":
+		case "change_request_id", "name", "procedure_version", "title", "change_kind", "status", "requested_by_agent", "authority_role", "requested_at", "decided_at", "impact_assessment", "is_open", "open_change_version_key", "is_decided", "evaluation_context", "as_of_instant", "days_pending", "is_still_pending", "is_stalled", "authority_agent", "requester_is_authority", "awaits_authority_decision", "authority_role_label", "touches_live_version", "is_live_decision_backlog", "blocks_an_open_gap", "implemented_at", "backlog_version_key", "is_my_pending_decision", "is_my_blocking_backlog", "is_my_overdue_backlog", "is_implemented", "is_my_decided_request", "is_my_decided_but_unlanded", "decision_latency_days", "implementation_latency_days", "delay_is_downstream_of_me", "unlanded_version_key", "is_approved_not_implemented", "days_since_approval", "is_stalled_implementation", "stalled_implementation_version_key", "approved_version_key", "is_approved_decision", "semantic_type_iri", "owner_organization":
 			tc.erbSet(key, fromJSON(value))
 		}
 	}
@@ -17519,10 +17767,11 @@ type SemanticMapping struct {
 	TargetIri *string `json:"target_iri"` // Exact target semantic IRI.
 	MappingRelation *string `json:"mapping_relation"` // exact, aligned, subclass, subproperty, or extension.
 	OntologyProfile *string `json:"ontology_profile"` // Versioned ontology profile containing the target term.
+	ProfileNamespaceDereferences *bool `json:"profile_namespace_dereferences"` // Whether the profile's namespace answered when it was last fetched.
 	Notes *string `json:"notes"` // Mapping semantics and boundaries.
 	AvailableStandardIri *string `json:"available_standard_iri"` // A term in a reused standard that already means what this extension term means.
 	ReinventsStandardTerm *bool `json:"reinvents_standard_term"` // TRUE when an extension term was minted although a reused standard already has one.
-	IsNonResolvableTermIri *bool `json:"is_non_resolvable_term_iri"` // TRUE when a term was published under an identifier that is not an HTTP IRI, so it cannot be looked up and linked.
+	IsNonResolvableTermIri *bool `json:"is_non_resolvable_term_iri"` // The term cannot be looked up: either its IRI is not an HTTP URI, or the namespace it lives in did not answer when it was last fetched. Measured, not inferred from the IRI's spelling.
 	ErbErrors map[string]string `json:"_erb_errors,omitempty"`
 	erbAggregates map[string]Value
 }
@@ -17542,10 +17791,10 @@ func (tc *SemanticMapping) CalcReinventsStandardTerm() *bool {
 }
 
 // CalcIsNonResolvableTermIri computes the IsNonResolvableTermIri calculated field
-// TRUE when a term was published under an identifier that is not an HTTP IRI, so it cannot be looked up and linked.
-// Formula: =AND({{MappingRelation}} = "extension", LEFT({{TargetIri}}, 4) <> "http")
+// The term cannot be looked up: either its IRI is not an HTTP URI, or the namespace it lives in did not answer when it was last fetched. Measured, not inferred from the IRI's spelling.
+// Formula: =OR(LEFT({{TargetIri}}, 4) <> "http", AND({{OntologyProfile}} <> "", {{ProfileNamespaceDereferences}} = FALSE))
 func (tc *SemanticMapping) CalcIsNonResolvableTermIri() *bool {
-	return toBoolPtr(erbAnd(erbBool3(erbEq(erbNullif(vStr(tc.MappingRelation)), vS("extension"))), erbBool3(erbNe(erbLeft(vStr(tc.TargetIri), vI(4)), vS("http")))))
+	return toBoolPtr(erbOr(erbBool3(erbNe(erbLeft(vStr(tc.TargetIri), vI(4)), vS("http"))), erbBool3(erbAnd(erbBool3(erbIsNotBlank(vStr(tc.OntologyProfile))), erbBool3(erbEq(vBool(tc.ProfileNamespaceDereferences), vB(false)))))))
 }
 
 // erbComputeCalculations computes every calculated field of the row in dependency order.
@@ -17578,6 +17827,8 @@ func (tc *SemanticMapping) erbGet(field string) Value {
 		return vStr(tc.MappingRelation)
 	case "ontology_profile":
 		return vStr(tc.OntologyProfile)
+	case "profile_namespace_dereferences":
+		return vBool(tc.ProfileNamespaceDereferences)
 	case "notes":
 		return vStr(tc.Notes)
 	case "available_standard_iri":
@@ -17606,6 +17857,8 @@ func (tc *SemanticMapping) erbSet(field string, v Value) {
 		tc.MappingRelation = toStringPtr(v)
 	case "ontology_profile":
 		tc.OntologyProfile = toStringPtr(v)
+	case "profile_namespace_dereferences":
+		tc.ProfileNamespaceDereferences = toBoolPtr(v)
 	case "notes":
 		tc.Notes = toStringPtr(v)
 	case "available_standard_iri":
@@ -17622,7 +17875,7 @@ func (tc *SemanticMapping) erbSet(field string, v Value) {
 func (tc *SemanticMapping) erbLoad(row map[string]any) {
 	for key, value := range row {
 		switch key {
-		case "semantic_mapping_id", "name", "source_path", "mapping_kind", "target_iri", "mapping_relation", "ontology_profile", "notes", "available_standard_iri", "reinvents_standard_term", "is_non_resolvable_term_iri":
+		case "semantic_mapping_id", "name", "source_path", "mapping_kind", "target_iri", "mapping_relation", "ontology_profile", "profile_namespace_dereferences", "notes", "available_standard_iri", "reinvents_standard_term", "is_non_resolvable_term_iri":
 			tc.erbSet(key, fromJSON(value))
 		}
 	}
@@ -17975,6 +18228,7 @@ type RulebookField struct {
 	FieldType *string `json:"field_type"` // raw, calculated, lookup, relationship, or aggregation.
 	Datatype *string `json:"datatype"` // The field's declared datatype.
 	Formula *string `json:"formula"` // The field's formula when it is derived. Null for raw and relationship fields.
+	RelatedTo *string `json:"related_to"` // For a relationship field, the table it points at. Structural catalog metadata beside FieldType and Datatype; the published vocabulary reads it to give each object property its range.
 	InventedForQuestion *string `json:"invented_for_question"` // The role question that motivated this field's existence. Null for fields that predate the witness-loop exercise.
 	IsDerived *bool `json:"is_derived"` // TRUE when this field is computed rather than stored.
 	IsWitness *bool `json:"is_witness"` // TRUE when this field exists because a role asked a question. These are the fields the witness loops added.
@@ -18064,6 +18318,8 @@ func (tc *RulebookField) erbGet(field string) Value {
 		return vStr(tc.Datatype)
 	case "formula":
 		return vStr(tc.Formula)
+	case "related_to":
+		return vStr(tc.RelatedTo)
 	case "invented_for_question":
 		return vStr(tc.InventedForQuestion)
 	case "is_derived":
@@ -18104,6 +18360,8 @@ func (tc *RulebookField) erbSet(field string, v Value) {
 		tc.Datatype = toStringPtr(v)
 	case "formula":
 		tc.Formula = toStringPtr(v)
+	case "related_to":
+		tc.RelatedTo = toStringPtr(v)
 	case "invented_for_question":
 		tc.InventedForQuestion = toStringPtr(v)
 	case "is_derived":
@@ -18132,7 +18390,7 @@ func (tc *RulebookField) erbSet(field string, v Value) {
 func (tc *RulebookField) erbLoad(row map[string]any) {
 	for key, value := range row {
 		switch key {
-		case "rulebook_field_id", "name", "target_table", "field_name", "field_type", "datatype", "formula", "invented_for_question", "is_derived", "is_witness", "disagreeing_substrate_count", "is_substrate_contested", "measured_substantive_count", "measured_distinct_value_count", "has_measured_data", "is_discriminating", "semantic_type_iri":
+		case "rulebook_field_id", "name", "target_table", "field_name", "field_type", "datatype", "formula", "related_to", "invented_for_question", "is_derived", "is_witness", "disagreeing_substrate_count", "is_substrate_contested", "measured_substantive_count", "measured_distinct_value_count", "has_measured_data", "is_discriminating", "semantic_type_iri":
 			tc.erbSet(key, fromJSON(value))
 		}
 	}
@@ -19406,7 +19664,7 @@ func LoadVerificationOutcomeRecords(path string) ([]VerificationOutcome, error) 
 
 // =============================================================================
 // OBSERVEDTRANSITIONS TABLE
-// The proxy above cannot tell a walked fallback from a happy-path step that happens to share an endpoint. PKO models Transition as a first-class thing; its execution counterpart is missing. Without a table that records WHICH transition a step execution arrived by, 'has this fallback ever been walked' is permanently unanswerable rather than merely unanswered. This is an extension (urn:effortless:pko-extension#ObservedTransition), not a native PKO term.
+// The proxy above cannot tell a walked fallback from a happy-path step that happens to share an endpoint. PKO models Transition as a first-class thing; its execution counterpart is missing. Without a table that records WHICH transition a step execution arrived by, 'has this fallback ever been walked' is permanently unanswerable rather than merely unanswered. This is an extension (https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ObservedTransition), not a native PKO term.
 // =============================================================================
 
 // ObservedTransition represents a row in the ObservedTransitions table
@@ -22399,7 +22657,7 @@ func LoadAgentDecisionRecordRecords(path string) ([]AgentDecisionRecord, error) 
 
 // =============================================================================
 // DELIVEREDCOMMUNICATIONS TABLE
-// Everything above is a proxy for the real question, which is instance-level: THIS message, to THIS recipient, rendered from THIS template, authorized by THIS approval. The model has MessageTemplates and CommunicationPolicies as specifications and no record of a single thing ever sent. Without an instance table, 'can I show that what was sent matched what I approved' is permanently unanswerable rather than merely unanswered — and it is the question a disputing employee actually asks. Extension term (urn:effortless:pko-extension#DeliveredCommunication); PKO has no native class for a delivered artifact instance.
+// Everything above is a proxy for the real question, which is instance-level: THIS message, to THIS recipient, rendered from THIS template, authorized by THIS approval. The model has MessageTemplates and CommunicationPolicies as specifications and no record of a single thing ever sent. Without an instance table, 'can I show that what was sent matched what I approved' is permanently unanswerable rather than merely unanswered — and it is the question a disputing employee actually asks. Extension term (https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#DeliveredCommunication); PKO has no native class for a delivered artifact instance.
 // =============================================================================
 
 // DeliveredCommunication represents a row in the DeliveredCommunications table
@@ -23317,6 +23575,9 @@ type AppRoleProfile struct {
 	SortOrder *float64 `json:"sort_order"` // Display order on the login screen. Human roles first, then software roles.
 	RouteCount *float64 `json:"route_count"` // How many routes this role has.
 	SemanticTypeIri *string `json:"semantic_type_iri"` // Semantic type IRI for this row. An extension: PKO does not model application presentation.
+	Device *string `json:"device"` // The device this role's experience is designed for: phone or tablet.
+	HomeRoute *string `json:"home_route"` // The route this role lands on after signing in.
+	HomeTitle *string `json:"home_title"` // The title of that home page, as the role would say it.
 	ErbErrors map[string]string `json:"_erb_errors,omitempty"`
 	erbAggregates map[string]Value
 }
@@ -23366,6 +23627,12 @@ func (tc *AppRoleProfile) erbGet(field string) Value {
 		return vNum(tc.RouteCount)
 	case "semantic_type_iri":
 		return vStr(tc.SemanticTypeIri)
+	case "device":
+		return vStr(tc.Device)
+	case "home_route":
+		return vStr(tc.HomeRoute)
+	case "home_title":
+		return vStr(tc.HomeTitle)
 	}
 	panic("AppRoleProfiles has no field " + field)
 }
@@ -23396,6 +23663,12 @@ func (tc *AppRoleProfile) erbSet(field string, v Value) {
 		tc.RouteCount = toFloatPtr(v)
 	case "semantic_type_iri":
 		tc.SemanticTypeIri = toStringPtr(v)
+	case "device":
+		tc.Device = toStringPtr(v)
+	case "home_route":
+		tc.HomeRoute = toStringPtr(v)
+	case "home_title":
+		tc.HomeTitle = toStringPtr(v)
 	default:
 		panic("AppRoleProfiles has no field " + field)
 	}
@@ -23404,7 +23677,7 @@ func (tc *AppRoleProfile) erbSet(field string, v Value) {
 func (tc *AppRoleProfile) erbLoad(row map[string]any) {
 	for key, value := range row {
 		switch key {
-		case "app_role_profile_id", "name", "role", "display_label", "role_kind", "accent_color", "icon_mark", "icon_png_base64", "pitch", "sort_order", "route_count", "semantic_type_iri":
+		case "app_role_profile_id", "name", "role", "display_label", "role_kind", "accent_color", "icon_mark", "icon_png_base64", "pitch", "sort_order", "route_count", "semantic_type_iri", "device", "home_route", "home_title":
 			tc.erbSet(key, fromJSON(value))
 		}
 	}
@@ -24001,6 +24274,10 @@ type RulebookTable struct {
 	SemanticTypeIriFieldCount *int `json:"semantic_type_iri_field_count"` // SemanticTypeIri columns the table declares.
 	LacksSemanticTypeConvention *bool `json:"lacks_semantic_type_convention"` // TRUE when a table breaks the modeling convention that every row carries a SemanticTypeIri.
 	IsUnsecuredGovernanceRecord *bool `json:"is_unsecured_governance_record"` // TRUE for a governance table no access policy controls.
+	UnrestrictedNonAdminPolicyCount *int `json:"unrestricted_non_admin_policy_count"` // How many of this table's row policies name a principal who is not an administrator and carry no row predicate, so that principal reads every row of the table.
+	RestrictedNonAdminPolicyCount *int `json:"restricted_non_admin_policy_count"` // How many of this table's row policies name a principal who is not an administrator and do cut the rows that principal sees.
+	IsReadableInFullByNonAdmin *bool `json:"is_readable_in_full_by_non_admin"` // Some principal who is not an administrator can read every row of this table: a policy exists, so the table is secured, but it controls nothing. This is the violation an access review looks for, and it is the reason 'has a policy' is not the test.
+	IsControlledForEveryNonAdmin *bool `json:"is_controlled_for_every_non_admin"` // Every non-administrator who can reach this table reaches it through a policy that cuts rows. The table is not merely policed; access to it is controlled.
 	ErbErrors map[string]string `json:"_erb_errors,omitempty"`
 	erbAggregates map[string]Value
 }
@@ -24054,6 +24331,20 @@ func (tc *RulebookTable) CalcIsUnsecuredGovernanceRecord() *bool {
 	return toBoolPtr(erbAnd(erbBool3(erbEq(erbNullif(vStr(tc.SubjectArea)), vS("governance"))), erbBool3(erbEq(vNum(tc.PolicyCount), vI(0)))))
 }
 
+// CalcIsReadableInFullByNonAdmin computes the IsReadableInFullByNonAdmin calculated field
+// Some principal who is not an administrator can read every row of this table: a policy exists, so the table is secured, but it controls nothing. This is the violation an access review looks for, and it is the reason 'has a policy' is not the test.
+// Formula: ={{UnrestrictedNonAdminPolicyCount}} > 0
+func (tc *RulebookTable) CalcIsReadableInFullByNonAdmin() *bool {
+	return toBoolPtr(erbCmp(vInt(tc.UnrestrictedNonAdminPolicyCount), ">", vI(0)))
+}
+
+// CalcIsControlledForEveryNonAdmin computes the IsControlledForEveryNonAdmin calculated field
+// Every non-administrator who can reach this table reaches it through a policy that cuts rows. The table is not merely policed; access to it is controlled.
+// Formula: =AND({{RestrictedNonAdminPolicyCount}} > 0, {{UnrestrictedNonAdminPolicyCount}} = 0)
+func (tc *RulebookTable) CalcIsControlledForEveryNonAdmin() *bool {
+	return toBoolPtr(erbAnd(erbBool3(erbCmp(vInt(tc.RestrictedNonAdminPolicyCount), ">", vI(0))), erbBool3(erbEq(vInt(tc.UnrestrictedNonAdminPolicyCount), vI(0)))))
+}
+
 // erbComputeCalculations computes every calculated field of the row in dependency order.
 func (tc *RulebookTable) erbComputeCalculations() {
 	// Level 1
@@ -24064,6 +24355,8 @@ func (tc *RulebookTable) erbComputeCalculations() {
 	calcGuard(tc, "is_unaligned_to_standard", func() { tc.IsUnalignedToStandard = tc.CalcIsUnalignedToStandard() })
 	calcGuard(tc, "lacks_semantic_type_convention", func() { tc.LacksSemanticTypeConvention = tc.CalcLacksSemanticTypeConvention() })
 	calcGuard(tc, "is_unsecured_governance_record", func() { tc.IsUnsecuredGovernanceRecord = tc.CalcIsUnsecuredGovernanceRecord() })
+	calcGuard(tc, "is_readable_in_full_by_non_admin", func() { tc.IsReadableInFullByNonAdmin = tc.CalcIsReadableInFullByNonAdmin() })
+	calcGuard(tc, "is_controlled_for_every_non_admin", func() { tc.IsControlledForEveryNonAdmin = tc.CalcIsControlledForEveryNonAdmin() })
 }
 
 // ComputeAll computes every calculated field from the row's current inputs.
@@ -24120,6 +24413,14 @@ func (tc *RulebookTable) erbGet(field string) Value {
 		return vBool(tc.LacksSemanticTypeConvention)
 	case "is_unsecured_governance_record":
 		return vBool(tc.IsUnsecuredGovernanceRecord)
+	case "unrestricted_non_admin_policy_count":
+		return vInt(tc.UnrestrictedNonAdminPolicyCount)
+	case "restricted_non_admin_policy_count":
+		return vInt(tc.RestrictedNonAdminPolicyCount)
+	case "is_readable_in_full_by_non_admin":
+		return vBool(tc.IsReadableInFullByNonAdmin)
+	case "is_controlled_for_every_non_admin":
+		return vBool(tc.IsControlledForEveryNonAdmin)
 	}
 	panic("RulebookTables has no field " + field)
 }
@@ -24172,6 +24473,14 @@ func (tc *RulebookTable) erbSet(field string, v Value) {
 		tc.LacksSemanticTypeConvention = toBoolPtr(v)
 	case "is_unsecured_governance_record":
 		tc.IsUnsecuredGovernanceRecord = toBoolPtr(v)
+	case "unrestricted_non_admin_policy_count":
+		tc.UnrestrictedNonAdminPolicyCount = toIntPtr(v)
+	case "restricted_non_admin_policy_count":
+		tc.RestrictedNonAdminPolicyCount = toIntPtr(v)
+	case "is_readable_in_full_by_non_admin":
+		tc.IsReadableInFullByNonAdmin = toBoolPtr(v)
+	case "is_controlled_for_every_non_admin":
+		tc.IsControlledForEveryNonAdmin = toBoolPtr(v)
 	default:
 		panic("RulebookTables has no field " + field)
 	}
@@ -24180,7 +24489,7 @@ func (tc *RulebookTable) erbSet(field string, v Value) {
 func (tc *RulebookTable) erbLoad(row map[string]any) {
 	for key, value := range row {
 		switch key {
-		case "rulebook_table_id", "table_name", "name", "physical_table", "physical_view", "subject_area", "is_extension", "field_count", "policy_count", "is_unsecured", "disagreeing_substrate_count", "measured_row_count", "has_measured_rows", "semantic_type_iri", "organization_level", "semantic_mapping_count", "meaning_is_only_tabular", "exact_mapping_count", "aligned_mapping_count", "is_unaligned_to_standard", "semantic_type_iri_field_count", "lacks_semantic_type_convention", "is_unsecured_governance_record":
+		case "rulebook_table_id", "table_name", "name", "physical_table", "physical_view", "subject_area", "is_extension", "field_count", "policy_count", "is_unsecured", "disagreeing_substrate_count", "measured_row_count", "has_measured_rows", "semantic_type_iri", "organization_level", "semantic_mapping_count", "meaning_is_only_tabular", "exact_mapping_count", "aligned_mapping_count", "is_unaligned_to_standard", "semantic_type_iri_field_count", "lacks_semantic_type_convention", "is_unsecured_governance_record", "unrestricted_non_admin_policy_count", "restricted_non_admin_policy_count", "is_readable_in_full_by_non_admin", "is_controlled_for_every_non_admin":
 			tc.erbSet(key, fromJSON(value))
 		}
 	}
@@ -25921,6 +26230,7 @@ type ProcessMiningRun struct {
 	IsDeviationUnexplainedByPeople *bool `json:"is_deviation_unexplained_by_people"` // TRUE when mining found non-conforming variants and no capture from experienced workers explains them.
 	UndocumentedPathCount *int `json:"undocumented_path_count"` // Mined hand-offs the documented model does not contain.
 	HasUndocumentedEnactedPath *bool `json:"has_undocumented_enacted_path"` // TRUE when the enacted flow the run reconstructed contains a path the documentation lacks.
+	ConformancePercent *int `json:"conformance_percent"` // The share of the paths people really took that match the documented procedure, as a whole percent.
 	ErbErrors map[string]string `json:"_erb_errors,omitempty"`
 	erbAggregates map[string]Value
 }
@@ -25995,6 +26305,13 @@ func (tc *ProcessMiningRun) CalcHasUndocumentedEnactedPath() *bool {
 	return toBoolPtr(erbCmp(vInt(tc.UndocumentedPathCount), ">", vI(0)))
 }
 
+// CalcConformancePercent computes the ConformancePercent calculated field
+// The share of the paths people really took that match the documented procedure, as a whole percent.
+// Formula: =ROUND({{ConformanceRate}} * 100, 0)
+func (tc *ProcessMiningRun) CalcConformancePercent() *int {
+	return toIntPtr(erbInteger(erbRound(erbMul(vNum(tc.ConformanceRate), vI(100)), vI(0))))
+}
+
 // erbComputeCalculations computes every calculated field of the row in dependency order.
 func (tc *ProcessMiningRun) erbComputeCalculations() {
 	// Level 1
@@ -26007,6 +26324,7 @@ func (tc *ProcessMiningRun) erbComputeCalculations() {
 	calcGuard(tc, "is_conformant", func() { tc.IsConformant = tc.CalcIsConformant() })
 	calcGuard(tc, "has_major_drift_from_documentation", func() { tc.HasMajorDriftFromDocumentation = tc.CalcHasMajorDriftFromDocumentation() })
 	calcGuard(tc, "is_stale_mining_evidence", func() { tc.IsStaleMiningEvidence = tc.CalcIsStaleMiningEvidence() })
+	calcGuard(tc, "conformance_percent", func() { tc.ConformancePercent = tc.CalcConformancePercent() })
 	// Level 3
 	calcGuard(tc, "is_drift_on_live_version", func() { tc.IsDriftOnLiveVersion = tc.CalcIsDriftOnLiveVersion() })
 	// Level 4
@@ -26067,6 +26385,8 @@ func (tc *ProcessMiningRun) erbGet(field string) Value {
 		return vInt(tc.UndocumentedPathCount)
 	case "has_undocumented_enacted_path":
 		return vBool(tc.HasUndocumentedEnactedPath)
+	case "conformance_percent":
+		return vInt(tc.ConformancePercent)
 	}
 	panic("ProcessMiningRuns has no field " + field)
 }
@@ -26119,6 +26439,8 @@ func (tc *ProcessMiningRun) erbSet(field string, v Value) {
 		tc.UndocumentedPathCount = toIntPtr(v)
 	case "has_undocumented_enacted_path":
 		tc.HasUndocumentedEnactedPath = toBoolPtr(v)
+	case "conformance_percent":
+		tc.ConformancePercent = toIntPtr(v)
 	default:
 		panic("ProcessMiningRuns has no field " + field)
 	}
@@ -26127,7 +26449,7 @@ func (tc *ProcessMiningRun) erbSet(field string, v Value) {
 func (tc *ProcessMiningRun) erbLoad(row map[string]any) {
 	for key, value := range row {
 		switch key {
-		case "process_mining_run_id", "name", "procedure_version", "event_log_source", "mined_at", "discovered_variant_count", "conforming_variant_count", "deviation_description", "evaluation_context", "as_of_instant", "conformance_rate", "is_conformant", "has_major_drift_from_documentation", "days_since_mined", "is_stale_mining_evidence", "procedure_version_is_live", "is_drift_on_live_version", "drifted_mining_run_key", "semantic_type_iri", "people_capture_complement_count", "is_deviation_unexplained_by_people", "undocumented_path_count", "has_undocumented_enacted_path":
+		case "process_mining_run_id", "name", "procedure_version", "event_log_source", "mined_at", "discovered_variant_count", "conforming_variant_count", "deviation_description", "evaluation_context", "as_of_instant", "conformance_rate", "is_conformant", "has_major_drift_from_documentation", "days_since_mined", "is_stale_mining_evidence", "procedure_version_is_live", "is_drift_on_live_version", "drifted_mining_run_key", "semantic_type_iri", "people_capture_complement_count", "is_deviation_unexplained_by_people", "undocumented_path_count", "has_undocumented_enacted_path", "conformance_percent":
 			tc.erbSet(key, fromJSON(value))
 		}
 	}
@@ -32368,6 +32690,10 @@ type StepCue struct {
 	DangerCueStepKey *string `json:"danger_cue_step_key"` // Step key for a danger cue.
 	IncompleteCueStepKey *string `json:"incomplete_cue_step_key"` // Step key for a cue that shows the step did not take effect.
 	SemanticTypeIri *string `json:"semantic_type_iri"` // Semantic type IRI.
+	OperatorQuestion *string `json:"operator_question"` // How a technician on the floor would ask about this warning sign. The assistant offers it verbatim.
+	SignalsFailureMode *string `json:"signals_failure_mode"` // The failure mode this warning sign is evidence of. Its recorded response is the assistant's answer.
+	FailureModeResponse *string `json:"failure_mode_response"` // What to do, from the failure mode this sign points at.
+	IsUnanswerableSign *bool `json:"is_unanswerable_sign"` // A sign that means 'not finished' but points at no failure mode, so neither the runner nor the assistant can say what to do about it.
 	ErbErrors map[string]string `json:"_erb_errors,omitempty"`
 	erbAggregates map[string]Value
 }
@@ -32393,12 +32719,20 @@ func (tc *StepCue) CalcIncompleteCueStepKey() *string {
 	return toStringPtr(erbIf(erbIsTrue(vBool(tc.SignalsIncompleteStep)), func() Value { return vStr(tc.Step) }, func() Value { return vS("") }))
 }
 
+// CalcIsUnanswerableSign computes the IsUnanswerableSign calculated field
+// A sign that means 'not finished' but points at no failure mode, so neither the runner nor the assistant can say what to do about it.
+// Formula: =AND({{SignalsIncompleteStep}} = TRUE, {{SignalsFailureMode}} = "")
+func (tc *StepCue) CalcIsUnanswerableSign() *bool {
+	return toBoolPtr(erbAnd(erbBool3(erbEq(erbNullif(vBool(tc.SignalsIncompleteStep)), vB(true))), erbBool3(erbIsBlank(vStr(tc.SignalsFailureMode)))))
+}
+
 // erbComputeCalculations computes every calculated field of the row in dependency order.
 func (tc *StepCue) erbComputeCalculations() {
 	// Level 1
 	calcGuard(tc, "name", func() { tc.Name = tc.CalcName() })
 	calcGuard(tc, "danger_cue_step_key", func() { tc.DangerCueStepKey = tc.CalcDangerCueStepKey() })
 	calcGuard(tc, "incomplete_cue_step_key", func() { tc.IncompleteCueStepKey = tc.CalcIncompleteCueStepKey() })
+	calcGuard(tc, "is_unanswerable_sign", func() { tc.IsUnanswerableSign = tc.CalcIsUnanswerableSign() })
 }
 
 // ComputeAll computes every calculated field from the row's current inputs.
@@ -32435,6 +32769,14 @@ func (tc *StepCue) erbGet(field string) Value {
 		return vStr(tc.IncompleteCueStepKey)
 	case "semantic_type_iri":
 		return vStr(tc.SemanticTypeIri)
+	case "operator_question":
+		return vStr(tc.OperatorQuestion)
+	case "signals_failure_mode":
+		return vStr(tc.SignalsFailureMode)
+	case "failure_mode_response":
+		return vStr(tc.FailureModeResponse)
+	case "is_unanswerable_sign":
+		return vBool(tc.IsUnanswerableSign)
 	}
 	panic("StepCues has no field " + field)
 }
@@ -32467,6 +32809,14 @@ func (tc *StepCue) erbSet(field string, v Value) {
 		tc.IncompleteCueStepKey = toStringPtr(v)
 	case "semantic_type_iri":
 		tc.SemanticTypeIri = toStringPtr(v)
+	case "operator_question":
+		tc.OperatorQuestion = toStringPtr(v)
+	case "signals_failure_mode":
+		tc.SignalsFailureMode = toStringPtr(v)
+	case "failure_mode_response":
+		tc.FailureModeResponse = toStringPtr(v)
+	case "is_unanswerable_sign":
+		tc.IsUnanswerableSign = toBoolPtr(v)
 	default:
 		panic("StepCues has no field " + field)
 	}
@@ -32475,7 +32825,7 @@ func (tc *StepCue) erbSet(field string, v Value) {
 func (tc *StepCue) erbLoad(row map[string]any) {
 	for key, value := range row {
 		switch key {
-		case "step_cue_id", "name", "step", "cue_kind", "description", "signals_incomplete_step", "requires_escalation", "escalate_to_role", "observation_count", "unescalated_observation_count", "danger_cue_step_key", "incomplete_cue_step_key", "semantic_type_iri":
+		case "step_cue_id", "name", "step", "cue_kind", "description", "signals_incomplete_step", "requires_escalation", "escalate_to_role", "observation_count", "unescalated_observation_count", "danger_cue_step_key", "incomplete_cue_step_key", "semantic_type_iri", "operator_question", "signals_failure_mode", "failure_mode_response", "is_unanswerable_sign":
 			tc.erbSet(key, fromJSON(value))
 		}
 	}
@@ -32532,6 +32882,10 @@ type CueObservation struct {
 	UnescalatedCueKey *string `json:"unescalated_cue_key"` // Cue key when unescalated.
 	UnescalatedExecutionKey *string `json:"unescalated_execution_key"` // Step execution key when unescalated.
 	SemanticTypeIri *string `json:"semantic_type_iri"` // Semantic type IRI.
+	OwnerOrganization *string `json:"owner_organization"` // The organization that owns the procedure this row belongs to, one hop at a time from Procedures.OwnerOrganization. A row policy compares it to the caller's organization, so a plant sign-in never sees the finance close.
+	CueSignalsIncompleteStep *bool `json:"cue_signals_incomplete_step"` // Whether the observed warning sign means the step is not finished.
+	AcknowledgedAt *string `json:"acknowledged_at"` // When the person it was escalated to acknowledged it. Blank until they do.
+	IsAwaitingAcknowledgement *bool `json:"is_awaiting_acknowledgement"` // Escalated to someone who has not acknowledged it yet: the safety desk's inbox.
 	ErbErrors map[string]string `json:"_erb_errors,omitempty"`
 	erbAggregates map[string]Value
 }
@@ -32564,11 +32918,19 @@ func (tc *CueObservation) CalcUnescalatedExecutionKey() *string {
 	return toStringPtr(erbIf(erbBool3(vBool(tc.IsUnescalatedDangerCue)), func() Value { return vStr(tc.StepExecution) }, func() Value { return vS("") }))
 }
 
+// CalcIsAwaitingAcknowledgement computes the IsAwaitingAcknowledgement calculated field
+// Escalated to someone who has not acknowledged it yet: the safety desk's inbox.
+// Formula: =AND({{WasEscalated}} = TRUE, {{AcknowledgedAt}} = "")
+func (tc *CueObservation) CalcIsAwaitingAcknowledgement() *bool {
+	return toBoolPtr(erbAnd(erbBool3(erbEq(erbNullif(vBool(tc.WasEscalated)), vB(true))), erbBool3(erbIsBlank(vStr(tc.AcknowledgedAt)))))
+}
+
 // erbComputeCalculations computes every calculated field of the row in dependency order.
 func (tc *CueObservation) erbComputeCalculations() {
 	// Level 1
 	calcGuard(tc, "name", func() { tc.Name = tc.CalcName() })
 	calcGuard(tc, "is_unescalated_danger_cue", func() { tc.IsUnescalatedDangerCue = tc.CalcIsUnescalatedDangerCue() })
+	calcGuard(tc, "is_awaiting_acknowledgement", func() { tc.IsAwaitingAcknowledgement = tc.CalcIsAwaitingAcknowledgement() })
 	// Level 2
 	calcGuard(tc, "unescalated_cue_key", func() { tc.UnescalatedCueKey = tc.CalcUnescalatedCueKey() })
 	calcGuard(tc, "unescalated_execution_key", func() { tc.UnescalatedExecutionKey = tc.CalcUnescalatedExecutionKey() })
@@ -32608,6 +32970,14 @@ func (tc *CueObservation) erbGet(field string) Value {
 		return vStr(tc.UnescalatedExecutionKey)
 	case "semantic_type_iri":
 		return vStr(tc.SemanticTypeIri)
+	case "owner_organization":
+		return vStr(tc.OwnerOrganization)
+	case "cue_signals_incomplete_step":
+		return vBool(tc.CueSignalsIncompleteStep)
+	case "acknowledged_at":
+		return vStr(tc.AcknowledgedAt)
+	case "is_awaiting_acknowledgement":
+		return vBool(tc.IsAwaitingAcknowledgement)
 	}
 	panic("CueObservations has no field " + field)
 }
@@ -32640,6 +33010,14 @@ func (tc *CueObservation) erbSet(field string, v Value) {
 		tc.UnescalatedExecutionKey = toStringPtr(v)
 	case "semantic_type_iri":
 		tc.SemanticTypeIri = toStringPtr(v)
+	case "owner_organization":
+		tc.OwnerOrganization = toStringPtr(v)
+	case "cue_signals_incomplete_step":
+		tc.CueSignalsIncompleteStep = toBoolPtr(v)
+	case "acknowledged_at":
+		tc.AcknowledgedAt = toStringPtr(v)
+	case "is_awaiting_acknowledgement":
+		tc.IsAwaitingAcknowledgement = toBoolPtr(v)
 	default:
 		panic("CueObservations has no field " + field)
 	}
@@ -32648,7 +33026,7 @@ func (tc *CueObservation) erbSet(field string, v Value) {
 func (tc *CueObservation) erbLoad(row map[string]any) {
 	for key, value := range row {
 		switch key {
-		case "cue_observation_id", "name", "step_execution", "step_cue", "observed_at", "observed_by_agent", "was_escalated", "escalated_to_agent", "cue_requires_escalation", "is_unescalated_danger_cue", "unescalated_cue_key", "unescalated_execution_key", "semantic_type_iri":
+		case "cue_observation_id", "name", "step_execution", "step_cue", "observed_at", "observed_by_agent", "was_escalated", "escalated_to_agent", "cue_requires_escalation", "is_unescalated_danger_cue", "unescalated_cue_key", "unescalated_execution_key", "semantic_type_iri", "owner_organization", "cue_signals_incomplete_step", "acknowledged_at", "is_awaiting_acknowledgement":
 			tc.erbSet(key, fromJSON(value))
 		}
 	}
@@ -36072,6 +36450,7 @@ type TermLabelVariant struct {
 	LabelKind *string `json:"label_kind"` // pref (skos:prefLabel) or alt (skos:altLabel).
 	Wording *string `json:"wording"` // The wording, lower case.
 	TermScheme *string `json:"term_scheme"` // Scheme the concept belongs to.
+	TermPrefLabel *string `json:"term_pref_label"` // The preferred label of the concept this wording belongs to. What a vocabulary search answers with, whichever wording was typed.
 	WordingKey *string `json:"wording_key"` // Scheme and wording.
 	PrefWordingKey *string `json:"pref_wording_key"` // Scheme and wording for a preferred label.
 	ConceptsSharingWording *int `json:"concepts_sharing_wording"` // Labels in the same scheme with this exact wording.
@@ -36159,6 +36538,8 @@ func (tc *TermLabelVariant) erbGet(field string) Value {
 		return vStr(tc.Wording)
 	case "term_scheme":
 		return vStr(tc.TermScheme)
+	case "term_pref_label":
+		return vStr(tc.TermPrefLabel)
 	case "wording_key":
 		return vStr(tc.WordingKey)
 	case "pref_wording_key":
@@ -36195,6 +36576,8 @@ func (tc *TermLabelVariant) erbSet(field string, v Value) {
 		tc.Wording = toStringPtr(v)
 	case "term_scheme":
 		tc.TermScheme = toStringPtr(v)
+	case "term_pref_label":
+		tc.TermPrefLabel = toStringPtr(v)
 	case "wording_key":
 		tc.WordingKey = toStringPtr(v)
 	case "pref_wording_key":
@@ -36221,7 +36604,7 @@ func (tc *TermLabelVariant) erbSet(field string, v Value) {
 func (tc *TermLabelVariant) erbLoad(row map[string]any) {
 	for key, value := range row {
 		switch key {
-		case "term_label_variant_id", "name", "vocabulary_term", "label_kind", "wording", "term_scheme", "wording_key", "pref_wording_key", "concepts_sharing_wording", "is_ambiguous_label", "practitioner_mention_count", "pref_wording", "same_pref_wording_count", "is_cross_scheme_duplicate_pref", "semantic_type_iri":
+		case "term_label_variant_id", "name", "vocabulary_term", "label_kind", "wording", "term_scheme", "term_pref_label", "wording_key", "pref_wording_key", "concepts_sharing_wording", "is_ambiguous_label", "practitioner_mention_count", "pref_wording", "same_pref_wording_count", "is_cross_scheme_duplicate_pref", "semantic_type_iri":
 			tc.erbSet(key, fromJSON(value))
 		}
 	}
@@ -37723,6 +38106,10 @@ type KnowledgeConsumerSystem struct {
 	PlatformCapabilityCount *int `json:"platform_capability_count"` // How many of reasoner, semantic storage, graph algorithms and machine learning the system has.
 	IsImmatureGraphPlatform *bool `json:"is_immature_graph_platform"` // TRUE for a knowledge graph platform that lacks one of reasoner, semantic storage, graph algorithms or machine learning.
 	SemanticTypeIri *string `json:"semantic_type_iri"` // Semantic type IRI.
+	IsComputationallyQueryable *bool `json:"is_computationally_queryable"` // Whether the procedure knowledge this system holds can be queried structurally, rather than only opened and read by a person.
+	IsComputationallyValidatable *bool `json:"is_computationally_validatable"` // Whether the procedure knowledge this system holds can be checked automatically against rules.
+	HoldsComputationallyEncodedProcedureKnowledge *bool `json:"holds_computationally_encoded_procedure_knowledge"` // The system holds procedure knowledge in a form that can be queried, validated and reasoned over computationally -- the shift that encoded representations made possible.
+	StoresProcedureKnowledgeWithoutComputationalAccess *bool `json:"stores_procedure_knowledge_without_computational_access"` // The system holds procedure knowledge that no machine can query, validate or reason over: storage without encoding.
 	ErbErrors map[string]string `json:"_erb_errors,omitempty"`
 	erbAggregates map[string]Value
 }
@@ -37769,6 +38156,20 @@ func (tc *KnowledgeConsumerSystem) CalcIsImmatureGraphPlatform() *bool {
 	return toBoolPtr(erbAnd(erbBool3(erbEq(erbNullif(vStr(tc.SystemKind)), vS("KnowledgeGraphPlatform"))), erbBool3(erbCmp(vInt(tc.PlatformCapabilityCount), "<", vI(4)))))
 }
 
+// CalcHoldsComputationallyEncodedProcedureKnowledge computes the HoldsComputationallyEncodedProcedureKnowledge calculated field
+// The system holds procedure knowledge in a form that can be queried, validated and reasoned over computationally -- the shift that encoded representations made possible.
+// Formula: =AND({{HoldsProcedureKnowledge}}, {{IsComputationallyQueryable}}, {{IsComputationallyValidatable}}, {{HasReasoner}})
+func (tc *KnowledgeConsumerSystem) CalcHoldsComputationallyEncodedProcedureKnowledge() *bool {
+	return toBoolPtr(erbAnd(erbIsTrue(vBool(tc.HoldsProcedureKnowledge)), erbIsTrue(vBool(tc.IsComputationallyQueryable)), erbIsTrue(vBool(tc.IsComputationallyValidatable)), erbIsTrue(vBool(tc.HasReasoner))))
+}
+
+// CalcStoresProcedureKnowledgeWithoutComputationalAccess computes the StoresProcedureKnowledgeWithoutComputationalAccess calculated field
+// The system holds procedure knowledge that no machine can query, validate or reason over: storage without encoding.
+// Formula: =AND({{HoldsProcedureKnowledge}}, {{HoldsComputationallyEncodedProcedureKnowledge}} = FALSE)
+func (tc *KnowledgeConsumerSystem) CalcStoresProcedureKnowledgeWithoutComputationalAccess() *bool {
+	return toBoolPtr(erbAnd(erbIsTrue(vBool(tc.HoldsProcedureKnowledge)), erbBool3(erbEq(vBool(tc.HoldsComputationallyEncodedProcedureKnowledge), vB(false)))))
+}
+
 // erbComputeCalculations computes every calculated field of the row in dependency order.
 func (tc *KnowledgeConsumerSystem) erbComputeCalculations() {
 	// Level 1
@@ -37777,8 +38178,10 @@ func (tc *KnowledgeConsumerSystem) erbComputeCalculations() {
 	calcGuard(tc, "is_unlinked_toolchain_component", func() { tc.IsUnlinkedToolchainComponent = tc.CalcIsUnlinkedToolchainComponent() })
 	calcGuard(tc, "semantic_layer_component_count", func() { tc.SemanticLayerComponentCount = tc.CalcSemanticLayerComponentCount() })
 	calcGuard(tc, "platform_capability_count", func() { tc.PlatformCapabilityCount = tc.CalcPlatformCapabilityCount() })
+	calcGuard(tc, "holds_computationally_encoded_procedure_knowledge", func() { tc.HoldsComputationallyEncodedProcedureKnowledge = tc.CalcHoldsComputationallyEncodedProcedureKnowledge() })
 	// Level 2
 	calcGuard(tc, "is_immature_graph_platform", func() { tc.IsImmatureGraphPlatform = tc.CalcIsImmatureGraphPlatform() })
+	calcGuard(tc, "stores_procedure_knowledge_without_computational_access", func() { tc.StoresProcedureKnowledgeWithoutComputationalAccess = tc.CalcStoresProcedureKnowledgeWithoutComputationalAccess() })
 }
 
 // ComputeAll computes every calculated field from the row's current inputs.
@@ -37839,6 +38242,14 @@ func (tc *KnowledgeConsumerSystem) erbGet(field string) Value {
 		return vBool(tc.IsImmatureGraphPlatform)
 	case "semantic_type_iri":
 		return vStr(tc.SemanticTypeIri)
+	case "is_computationally_queryable":
+		return vBool(tc.IsComputationallyQueryable)
+	case "is_computationally_validatable":
+		return vBool(tc.IsComputationallyValidatable)
+	case "holds_computationally_encoded_procedure_knowledge":
+		return vBool(tc.HoldsComputationallyEncodedProcedureKnowledge)
+	case "stores_procedure_knowledge_without_computational_access":
+		return vBool(tc.StoresProcedureKnowledgeWithoutComputationalAccess)
 	}
 	panic("KnowledgeConsumerSystems has no field " + field)
 }
@@ -37895,6 +38306,14 @@ func (tc *KnowledgeConsumerSystem) erbSet(field string, v Value) {
 		tc.IsImmatureGraphPlatform = toBoolPtr(v)
 	case "semantic_type_iri":
 		tc.SemanticTypeIri = toStringPtr(v)
+	case "is_computationally_queryable":
+		tc.IsComputationallyQueryable = toBoolPtr(v)
+	case "is_computationally_validatable":
+		tc.IsComputationallyValidatable = toBoolPtr(v)
+	case "holds_computationally_encoded_procedure_knowledge":
+		tc.HoldsComputationallyEncodedProcedureKnowledge = toBoolPtr(v)
+	case "stores_procedure_knowledge_without_computational_access":
+		tc.StoresProcedureKnowledgeWithoutComputationalAccess = toBoolPtr(v)
 	default:
 		panic("KnowledgeConsumerSystems has no field " + field)
 	}
@@ -37903,7 +38322,7 @@ func (tc *KnowledgeConsumerSystem) erbSet(field string, v Value) {
 func (tc *KnowledgeConsumerSystem) erbLoad(row map[string]any) {
 	for key, value := range row {
 		switch key {
-		case "knowledge_consumer_system_id", "name", "label", "system_kind", "organization", "audience", "holds_procedure_knowledge", "exports_standard_format", "export_format", "has_reasoner", "has_semantic_storage", "has_graph_algorithms", "has_machine_learning", "has_taxonomy", "has_thesaurus", "has_ontology", "has_metadata_schema", "model_sync_count", "integration_count", "is_knowledge_silo", "is_unlinked_toolchain_component", "semantic_layer_component_count", "platform_capability_count", "is_immature_graph_platform", "semantic_type_iri":
+		case "knowledge_consumer_system_id", "name", "label", "system_kind", "organization", "audience", "holds_procedure_knowledge", "exports_standard_format", "export_format", "has_reasoner", "has_semantic_storage", "has_graph_algorithms", "has_machine_learning", "has_taxonomy", "has_thesaurus", "has_ontology", "has_metadata_schema", "model_sync_count", "integration_count", "is_knowledge_silo", "is_unlinked_toolchain_component", "semantic_layer_component_count", "platform_capability_count", "is_immature_graph_platform", "semantic_type_iri", "is_computationally_queryable", "is_computationally_validatable", "holds_computationally_encoded_procedure_knowledge", "stores_procedure_knowledge_without_computational_access":
 			tc.erbSet(key, fromJSON(value))
 		}
 	}
@@ -39687,6 +40106,8 @@ type AssistantAnswer struct {
 	ModelDidTheReasoning *bool `json:"model_did_the_reasoning"` // TRUE when an answer that needed inference had its logic produced by the language model, not a reasoner or query.
 	WrongBecauseGraphWasStale *bool `json:"wrong_because_graph_was_stale"` // TRUE when a graph-grounded answer was wrong and rested on a stale or deprecated assertion.
 	SemanticTypeIri *string `json:"semantic_type_iri"` // Semantic type IRI.
+	OwnerOrganization *string `json:"owner_organization"` // The organization that owns the procedure this row belongs to, one hop at a time from Procedures.OwnerOrganization. A row policy compares it to the caller's organization, so a plant sign-in never sees the finance close.
+	ModelReasonedAndTaskFailed *bool `json:"model_reasoned_and_task_failed"` // The language model did the reasoning for this answer itself, and the task it was asked about ended in failure.
 	ErbErrors map[string]string `json:"_erb_errors,omitempty"`
 	erbAggregates map[string]Value
 }
@@ -39810,6 +40231,13 @@ func (tc *AssistantAnswer) CalcWrongBecauseGraphWasStale() *bool {
 	return toBoolPtr(erbAnd(erbBool3(erbEq(erbNullif(vStr(tc.RetrievalMode)), vS("StructuredQuery"))), erbBool3(erbEq(erbNullif(vBool(tc.WasCorrect)), vB(false))), erbBool3(erbCmp(vInt(tc.StaleGroundingCount), ">", vI(0)))))
 }
 
+// CalcModelReasonedAndTaskFailed computes the ModelReasonedAndTaskFailed calculated field
+// The language model did the reasoning for this answer itself, and the task it was asked about ended in failure.
+// Formula: =AND({{ModelDidTheReasoning}}, {{TaskOutcome}} = "Failed")
+func (tc *AssistantAnswer) CalcModelReasonedAndTaskFailed() *bool {
+	return toBoolPtr(erbAnd(erbBool3(vBool(tc.ModelDidTheReasoning)), erbBool3(erbEq(erbNullif(vStr(tc.TaskOutcome)), vS("Failed")))))
+}
+
 // erbComputeCalculations computes every calculated field of the row in dependency order.
 func (tc *AssistantAnswer) erbComputeCalculations() {
 	// Level 1
@@ -39830,6 +40258,8 @@ func (tc *AssistantAnswer) erbComputeCalculations() {
 	calcGuard(tc, "document_interpretation_erred", func() { tc.DocumentInterpretationErred = tc.CalcDocumentInterpretationErred() })
 	calcGuard(tc, "model_did_the_reasoning", func() { tc.ModelDidTheReasoning = tc.CalcModelDidTheReasoning() })
 	calcGuard(tc, "wrong_because_graph_was_stale", func() { tc.WrongBecauseGraphWasStale = tc.CalcWrongBecauseGraphWasStale() })
+	// Level 2
+	calcGuard(tc, "model_reasoned_and_task_failed", func() { tc.ModelReasonedAndTaskFailed = tc.CalcModelReasonedAndTaskFailed() })
 }
 
 // ComputeAll computes every calculated field from the row's current inputs.
@@ -39954,6 +40384,10 @@ func (tc *AssistantAnswer) erbGet(field string) Value {
 		return vBool(tc.WrongBecauseGraphWasStale)
 	case "semantic_type_iri":
 		return vStr(tc.SemanticTypeIri)
+	case "owner_organization":
+		return vStr(tc.OwnerOrganization)
+	case "model_reasoned_and_task_failed":
+		return vBool(tc.ModelReasonedAndTaskFailed)
 	}
 	panic("AssistantAnswers has no field " + field)
 }
@@ -40074,6 +40508,10 @@ func (tc *AssistantAnswer) erbSet(field string, v Value) {
 		tc.WrongBecauseGraphWasStale = toBoolPtr(v)
 	case "semantic_type_iri":
 		tc.SemanticTypeIri = toStringPtr(v)
+	case "owner_organization":
+		tc.OwnerOrganization = toStringPtr(v)
+	case "model_reasoned_and_task_failed":
+		tc.ModelReasonedAndTaskFailed = toBoolPtr(v)
 	default:
 		panic("AssistantAnswers has no field " + field)
 	}
@@ -40082,7 +40520,7 @@ func (tc *AssistantAnswer) erbSet(field string, v Value) {
 func (tc *AssistantAnswer) erbLoad(row map[string]any) {
 	for key, value := range row {
 		switch key {
-		case "assistant_answer_id", "name", "answering_agent", "asked_by_agent", "via_integration", "step_execution", "asked_at", "answered_at", "answer_kind", "question_topic", "question_text", "answer_text", "retrieval_mode", "derivation_performed_by", "needs_inference", "assumed_current_step", "asserted_next_step", "recommended_step", "raised_safety_concern", "delivery_disposition", "was_acted_on", "human_reviewed_by", "reviewed_for_initiative", "was_correct", "documented_inaccuracy", "task_outcome", "grounding_count", "own_knowledge_grounding_count", "cited_grounding_count", "stale_grounding_count", "is_not_from_own_knowledge", "is_untraceable_to_source", "context_unescalated_danger_cue_count", "stayed_silent_on_safety_problem", "context_step_ended_at", "arrived_after_step_ended", "execution_of_context", "context_step", "assumed_step_completed_count", "lost_track_of_state", "specified_transition_count", "contradicts_shared_model", "is_explicitly_grounded_recommendation", "recommendation_rests_on_nothing_explicit", "recommended_step_regulatory_count", "requirement_check_count", "conflict_count", "conflicts_with_regulation", "is_unchecked_regulated_recommendation", "delivered_despite_conflict", "recommended_step_needs_human", "acted_on_without_human_judgment", "answered_compliance_question_from_documents", "document_interpretation_erred", "model_did_the_reasoning", "wrong_because_graph_was_stale", "semantic_type_iri":
+		case "assistant_answer_id", "name", "answering_agent", "asked_by_agent", "via_integration", "step_execution", "asked_at", "answered_at", "answer_kind", "question_topic", "question_text", "answer_text", "retrieval_mode", "derivation_performed_by", "needs_inference", "assumed_current_step", "asserted_next_step", "recommended_step", "raised_safety_concern", "delivery_disposition", "was_acted_on", "human_reviewed_by", "reviewed_for_initiative", "was_correct", "documented_inaccuracy", "task_outcome", "grounding_count", "own_knowledge_grounding_count", "cited_grounding_count", "stale_grounding_count", "is_not_from_own_knowledge", "is_untraceable_to_source", "context_unescalated_danger_cue_count", "stayed_silent_on_safety_problem", "context_step_ended_at", "arrived_after_step_ended", "execution_of_context", "context_step", "assumed_step_completed_count", "lost_track_of_state", "specified_transition_count", "contradicts_shared_model", "is_explicitly_grounded_recommendation", "recommendation_rests_on_nothing_explicit", "recommended_step_regulatory_count", "requirement_check_count", "conflict_count", "conflicts_with_regulation", "is_unchecked_regulated_recommendation", "delivered_despite_conflict", "recommended_step_needs_human", "acted_on_without_human_judgment", "answered_compliance_question_from_documents", "document_interpretation_erred", "model_did_the_reasoning", "wrong_because_graph_was_stale", "semantic_type_iri", "owner_organization", "model_reasoned_and_task_failed":
 			tc.erbSet(key, fromJSON(value))
 		}
 	}
@@ -55316,6 +55754,7 @@ type KnowledgeTransfer struct {
 	IsSocialNetworkChannel *bool `json:"is_social_network_channel"` // TRUE for relationships, collaboration, design-production iteration and people changing employers.
 	IsAmbientAbsorptionByNonPractitioner *bool `json:"is_ambient_absorption_by_non_practitioner"` // TRUE when someone holding no role absorbed the know-how by living among the trade.
 	SemanticTypeIri *string `json:"semantic_type_iri"` // Semantic type IRI.
+	KnowHowTopic *string `json:"know_how_topic"` // What was handed over, in words: the topic of the know-how.
 	ErbErrors map[string]string `json:"_erb_errors,omitempty"`
 	erbAggregates map[string]Value
 }
@@ -55395,6 +55834,8 @@ func (tc *KnowledgeTransfer) erbGet(field string) Value {
 		return vBool(tc.IsAmbientAbsorptionByNonPractitioner)
 	case "semantic_type_iri":
 		return vStr(tc.SemanticTypeIri)
+	case "know_how_topic":
+		return vStr(tc.KnowHowTopic)
 	}
 	panic("KnowledgeTransfers has no field " + field)
 }
@@ -55431,6 +55872,8 @@ func (tc *KnowledgeTransfer) erbSet(field string, v Value) {
 		tc.IsAmbientAbsorptionByNonPractitioner = toBoolPtr(v)
 	case "semantic_type_iri":
 		tc.SemanticTypeIri = toStringPtr(v)
+	case "know_how_topic":
+		tc.KnowHowTopic = toStringPtr(v)
 	default:
 		panic("KnowledgeTransfers has no field " + field)
 	}
@@ -55439,7 +55882,7 @@ func (tc *KnowledgeTransfer) erbSet(field string, v Value) {
 func (tc *KnowledgeTransfer) erbLoad(row map[string]any) {
 	for key, value := range row {
 		switch key {
-		case "knowledge_transfer_id", "name", "know_how", "from_agent", "recipient_agent", "channel", "community_of_practice", "occurred_at", "on_allocated_time", "from_organization", "recipient_role_count", "is_traditional_channel", "is_social_network_channel", "is_ambient_absorption_by_non_practitioner", "semantic_type_iri":
+		case "knowledge_transfer_id", "name", "know_how", "from_agent", "recipient_agent", "channel", "community_of_practice", "occurred_at", "on_allocated_time", "from_organization", "recipient_role_count", "is_traditional_channel", "is_social_network_channel", "is_ambient_absorption_by_non_practitioner", "semantic_type_iri", "know_how_topic":
 			tc.erbSet(key, fromJSON(value))
 		}
 	}
@@ -58363,8 +58806,710 @@ func LoadArtifactHandoffRecords(path string) ([]ArtifactHandoff, error) {
 	return rows, nil
 }
 
+// =============================================================================
+// APPACTIONS TABLE
+// One row per thing a role may DO in the app: the base table it writes, the operation, the access policy that permits it, and the derived value the page highlights afterwards. The app has no per-action endpoint; it executes these rows.
+// =============================================================================
+
+// AppAction represents a row in the AppActions table
+type AppAction struct {
+	AppActionId string `json:"app_action_id"` // Stable key, e.g. act-tech-start-lockout.
+	Name *string `json:"name"` // Display name.
+	Label *string `json:"label"` // The button's words.
+	OwningRole *string `json:"owning_role"` // The role that performs this action.
+	RoutePath *string `json:"route_path"` // The app route the action appears on.
+	TargetTable *string `json:"target_table"` // The base table written.
+	Operation *string `json:"operation"` // INSERT or UPDATE, spelled as the policy's Command is.
+	Policy *string `json:"policy"` // The write policy that permits it. Blank means nothing permits it.
+	WatchedField *string `json:"watched_field"` // The derived value the page highlights after the write.
+	StoryEpisode *int `json:"story_episode"` // The episode of the video series that performs this action on camera.
+	Description *string `json:"description"` // What the action means, in the role's words.
+	PolicyCommand *string `json:"policy_command"` // The permitting policy's SQL command.
+	PolicyDenialTestCount *int `json:"policy_denial_test_count"` // Denial tests that exercise the permitting policy.
+	WatchedFieldIsWitness *bool `json:"watched_field_is_witness"` // Whether the highlighted value is a boolean witness.
+	InputFieldCount *int `json:"input_field_count"` // Fields this action writes.
+	IsUnpermitted *bool `json:"is_unpermitted"` // No access policy permits this action, so the database would refuse it.
+	PolicyCommandDisagrees *bool `json:"policy_command_disagrees"` // The permitting policy is for a different SQL command than the action performs.
+	IsUnprovenWrite *bool `json:"is_unproven_write"` // Permitted, but no denial test proves the policy refuses anyone else.
+	SemanticTypeIri *string `json:"semantic_type_iri"` // Extension IRI.
+	ErbErrors map[string]string `json:"_erb_errors,omitempty"`
+	erbAggregates map[string]Value
+}
+
+// CalcName computes the Name calculated field
+// Display name.
+// Formula: ={{Label}}
+func (tc *AppAction) CalcName() *string {
+	return toStringPtr(vStr(tc.Label))
+}
+
+// CalcIsUnpermitted computes the IsUnpermitted calculated field
+// No access policy permits this action, so the database would refuse it.
+// Formula: ={{Policy}} = ""
+func (tc *AppAction) CalcIsUnpermitted() *bool {
+	return toBoolPtr(erbIsBlank(vStr(tc.Policy)))
+}
+
+// CalcPolicyCommandDisagrees computes the PolicyCommandDisagrees calculated field
+// The permitting policy is for a different SQL command than the action performs.
+// Formula: =AND({{Policy}} <> "", {{Operation}} <> {{PolicyCommand}})
+func (tc *AppAction) CalcPolicyCommandDisagrees() *bool {
+	return toBoolPtr(erbAnd(erbBool3(erbIsNotBlank(vStr(tc.Policy))), erbBool3(erbNe(erbNullif(vStr(tc.Operation)), vStr(tc.PolicyCommand)))))
+}
+
+// CalcIsUnprovenWrite computes the IsUnprovenWrite calculated field
+// Permitted, but no denial test proves the policy refuses anyone else.
+// Formula: =AND({{Policy}} <> "", {{PolicyDenialTestCount}} = 0)
+func (tc *AppAction) CalcIsUnprovenWrite() *bool {
+	return toBoolPtr(erbAnd(erbBool3(erbIsNotBlank(vStr(tc.Policy))), erbBool3(erbEq(vInt(tc.PolicyDenialTestCount), vI(0)))))
+}
+
+// erbComputeCalculations computes every calculated field of the row in dependency order.
+func (tc *AppAction) erbComputeCalculations() {
+	// Level 1
+	calcGuard(tc, "name", func() { tc.Name = tc.CalcName() })
+	calcGuard(tc, "is_unpermitted", func() { tc.IsUnpermitted = tc.CalcIsUnpermitted() })
+	calcGuard(tc, "policy_command_disagrees", func() { tc.PolicyCommandDisagrees = tc.CalcPolicyCommandDisagrees() })
+	calcGuard(tc, "is_unproven_write", func() { tc.IsUnprovenWrite = tc.CalcIsUnprovenWrite() })
+}
+
+// ComputeAll computes every calculated field from the row's current inputs.
+func (tc *AppAction) ComputeAll() *AppAction {
+	tc.erbComputeCalculations()
+	return tc
+}
+
+func (tc *AppAction) erbGet(field string) Value {
+	switch field {
+	case "app_action_id":
+		return vStrPlain(tc.AppActionId)
+	case "name":
+		return vStr(tc.Name)
+	case "label":
+		return vStr(tc.Label)
+	case "owning_role":
+		return vStr(tc.OwningRole)
+	case "route_path":
+		return vStr(tc.RoutePath)
+	case "target_table":
+		return vStr(tc.TargetTable)
+	case "operation":
+		return vStr(tc.Operation)
+	case "policy":
+		return vStr(tc.Policy)
+	case "watched_field":
+		return vStr(tc.WatchedField)
+	case "story_episode":
+		return vInt(tc.StoryEpisode)
+	case "description":
+		return vStr(tc.Description)
+	case "policy_command":
+		return vStr(tc.PolicyCommand)
+	case "policy_denial_test_count":
+		return vInt(tc.PolicyDenialTestCount)
+	case "watched_field_is_witness":
+		return vBool(tc.WatchedFieldIsWitness)
+	case "input_field_count":
+		return vInt(tc.InputFieldCount)
+	case "is_unpermitted":
+		return vBool(tc.IsUnpermitted)
+	case "policy_command_disagrees":
+		return vBool(tc.PolicyCommandDisagrees)
+	case "is_unproven_write":
+		return vBool(tc.IsUnprovenWrite)
+	case "semantic_type_iri":
+		return vStr(tc.SemanticTypeIri)
+	}
+	panic("AppActions has no field " + field)
+}
+
+func (tc *AppAction) erbSet(field string, v Value) {
+	switch field {
+	case "app_action_id":
+		tc.AppActionId = strPlain(v)
+	case "name":
+		tc.Name = toStringPtr(v)
+	case "label":
+		tc.Label = toStringPtr(v)
+	case "owning_role":
+		tc.OwningRole = toStringPtr(v)
+	case "route_path":
+		tc.RoutePath = toStringPtr(v)
+	case "target_table":
+		tc.TargetTable = toStringPtr(v)
+	case "operation":
+		tc.Operation = toStringPtr(v)
+	case "policy":
+		tc.Policy = toStringPtr(v)
+	case "watched_field":
+		tc.WatchedField = toStringPtr(v)
+	case "story_episode":
+		tc.StoryEpisode = toIntPtr(v)
+	case "description":
+		tc.Description = toStringPtr(v)
+	case "policy_command":
+		tc.PolicyCommand = toStringPtr(v)
+	case "policy_denial_test_count":
+		tc.PolicyDenialTestCount = toIntPtr(v)
+	case "watched_field_is_witness":
+		tc.WatchedFieldIsWitness = toBoolPtr(v)
+	case "input_field_count":
+		tc.InputFieldCount = toIntPtr(v)
+	case "is_unpermitted":
+		tc.IsUnpermitted = toBoolPtr(v)
+	case "policy_command_disagrees":
+		tc.PolicyCommandDisagrees = toBoolPtr(v)
+	case "is_unproven_write":
+		tc.IsUnprovenWrite = toBoolPtr(v)
+	case "semantic_type_iri":
+		tc.SemanticTypeIri = toStringPtr(v)
+	default:
+		panic("AppActions has no field " + field)
+	}
+}
+
+func (tc *AppAction) erbLoad(row map[string]any) {
+	for key, value := range row {
+		switch key {
+		case "app_action_id", "name", "label", "owning_role", "route_path", "target_table", "operation", "policy", "watched_field", "story_episode", "description", "policy_command", "policy_denial_test_count", "watched_field_is_witness", "input_field_count", "is_unpermitted", "policy_command_disagrees", "is_unproven_write", "semantic_type_iri":
+			tc.erbSet(key, fromJSON(value))
+		}
+	}
+}
+
+func (tc *AppAction) erbErrors() map[string]string {
+	if tc.ErbErrors == nil {
+		tc.ErbErrors = map[string]string{}
+	}
+	return tc.ErbErrors
+}
+
+func (tc *AppAction) erbResetErrors() { tc.ErbErrors = nil }
+
+func (tc *AppAction) erbAggregate(name string) Value { return tc.erbAggregates[name] }
+
+func (tc *AppAction) erbSetAggregate(name string, v Value) {
+	if tc.erbAggregates == nil {
+		tc.erbAggregates = map[string]Value{}
+	}
+	tc.erbAggregates[name] = v
+}
+
+// LoadAppActionRecords reads AppActions rows from a JSON array file.
+func LoadAppActionRecords(path string) ([]AppAction, error) {
+	records, err := loadRecords(path, func() Record { return &AppAction{} })
+	if err != nil {
+		return nil, err
+	}
+	rows := make([]AppAction, len(records))
+	for i, r := range records {
+		rows[i] = *r.(*AppAction)
+	}
+	return rows, nil
+}
+
+// =============================================================================
+// APPACTIONFIELDS TABLE
+// The fields one action writes, one row each, and where each value comes from: typed by the person, picked from a list, fixed by the action, or stamped by the server.
+// =============================================================================
+
+// AppActionField represents a row in the AppActionFields table
+type AppActionField struct {
+	AppActionFieldId string `json:"app_action_field_id"` // Stable key.
+	Name *string `json:"name"` // Display name.
+	AppAction *string `json:"app_action"` // The action.
+	TargetField *string `json:"target_field"` // The field written.
+	FieldLabel *string `json:"field_label"` // The label shown beside the input.
+	InputKind *string `json:"input_kind"` // text, longtext, note (a long text that may be left empty), choice, toggle, date, fixed, or server.
+	FixedValue *string `json:"fixed_value"` // For fixed: the value. For server: what is stamped (agent, instant, id, iri).
+	ChoicesFrom *string `json:"choices_from"` // For choice: the table whose rows are offered.
+	SortOrder *int `json:"sort_order"` // Position in the form.
+	TargetFieldType *string `json:"target_field_type"` // raw, relationship, calculated, lookup or aggregation.
+	WritesDerivedField *bool `json:"writes_derived_field"` // The action tries to write a value the model works out for itself. That is never allowed.
+	SemanticTypeIri *string `json:"semantic_type_iri"` // Extension IRI.
+	ErbErrors map[string]string `json:"_erb_errors,omitempty"`
+	erbAggregates map[string]Value
+}
+
+// CalcName computes the Name calculated field
+// Display name.
+// Formula: ={{AppAction}} & " / " & {{FieldLabel}}
+func (tc *AppActionField) CalcName() *string {
+	return toStringPtr(erbConcat(erbText(vStr(tc.AppAction)), vS(" / "), erbText(vStr(tc.FieldLabel))))
+}
+
+// CalcWritesDerivedField computes the WritesDerivedField calculated field
+// The action tries to write a value the model works out for itself. That is never allowed.
+// Formula: =AND({{TargetField}} <> "", {{TargetFieldType}} <> "raw", {{TargetFieldType}} <> "relationship")
+func (tc *AppActionField) CalcWritesDerivedField() *bool {
+	return toBoolPtr(erbAnd(erbBool3(erbIsNotBlank(vStr(tc.TargetField))), erbBool3(erbNe(vStr(tc.TargetFieldType), vS("raw"))), erbBool3(erbNe(vStr(tc.TargetFieldType), vS("relationship")))))
+}
+
+// erbComputeCalculations computes every calculated field of the row in dependency order.
+func (tc *AppActionField) erbComputeCalculations() {
+	// Level 1
+	calcGuard(tc, "name", func() { tc.Name = tc.CalcName() })
+	calcGuard(tc, "writes_derived_field", func() { tc.WritesDerivedField = tc.CalcWritesDerivedField() })
+}
+
+// ComputeAll computes every calculated field from the row's current inputs.
+func (tc *AppActionField) ComputeAll() *AppActionField {
+	tc.erbComputeCalculations()
+	return tc
+}
+
+func (tc *AppActionField) erbGet(field string) Value {
+	switch field {
+	case "app_action_field_id":
+		return vStrPlain(tc.AppActionFieldId)
+	case "name":
+		return vStr(tc.Name)
+	case "app_action":
+		return vStr(tc.AppAction)
+	case "target_field":
+		return vStr(tc.TargetField)
+	case "field_label":
+		return vStr(tc.FieldLabel)
+	case "input_kind":
+		return vStr(tc.InputKind)
+	case "fixed_value":
+		return vStr(tc.FixedValue)
+	case "choices_from":
+		return vStr(tc.ChoicesFrom)
+	case "sort_order":
+		return vInt(tc.SortOrder)
+	case "target_field_type":
+		return vStr(tc.TargetFieldType)
+	case "writes_derived_field":
+		return vBool(tc.WritesDerivedField)
+	case "semantic_type_iri":
+		return vStr(tc.SemanticTypeIri)
+	}
+	panic("AppActionFields has no field " + field)
+}
+
+func (tc *AppActionField) erbSet(field string, v Value) {
+	switch field {
+	case "app_action_field_id":
+		tc.AppActionFieldId = strPlain(v)
+	case "name":
+		tc.Name = toStringPtr(v)
+	case "app_action":
+		tc.AppAction = toStringPtr(v)
+	case "target_field":
+		tc.TargetField = toStringPtr(v)
+	case "field_label":
+		tc.FieldLabel = toStringPtr(v)
+	case "input_kind":
+		tc.InputKind = toStringPtr(v)
+	case "fixed_value":
+		tc.FixedValue = toStringPtr(v)
+	case "choices_from":
+		tc.ChoicesFrom = toStringPtr(v)
+	case "sort_order":
+		tc.SortOrder = toIntPtr(v)
+	case "target_field_type":
+		tc.TargetFieldType = toStringPtr(v)
+	case "writes_derived_field":
+		tc.WritesDerivedField = toBoolPtr(v)
+	case "semantic_type_iri":
+		tc.SemanticTypeIri = toStringPtr(v)
+	default:
+		panic("AppActionFields has no field " + field)
+	}
+}
+
+func (tc *AppActionField) erbLoad(row map[string]any) {
+	for key, value := range row {
+		switch key {
+		case "app_action_field_id", "name", "app_action", "target_field", "field_label", "input_kind", "fixed_value", "choices_from", "sort_order", "target_field_type", "writes_derived_field", "semantic_type_iri":
+			tc.erbSet(key, fromJSON(value))
+		}
+	}
+}
+
+func (tc *AppActionField) erbErrors() map[string]string {
+	if tc.ErbErrors == nil {
+		tc.ErbErrors = map[string]string{}
+	}
+	return tc.ErbErrors
+}
+
+func (tc *AppActionField) erbResetErrors() { tc.ErbErrors = nil }
+
+func (tc *AppActionField) erbAggregate(name string) Value { return tc.erbAggregates[name] }
+
+func (tc *AppActionField) erbSetAggregate(name string, v Value) {
+	if tc.erbAggregates == nil {
+		tc.erbAggregates = map[string]Value{}
+	}
+	tc.erbAggregates[name] = v
+}
+
+// LoadAppActionFieldRecords reads AppActionFields rows from a JSON array file.
+func LoadAppActionFieldRecords(path string) ([]AppActionField, error) {
+	records, err := loadRecords(path, func() Record { return &AppActionField{} })
+	if err != nil {
+		return nil, err
+	}
+	rows := make([]AppActionField, len(records))
+	for i, r := range records {
+		rows[i] = *r.(*AppActionField)
+	}
+	return rows, nil
+}
+
+// =============================================================================
+// ABUNDANTKNOWLEDGEGAPS TABLE
+// The kinds of knowledge that an abundance of information does not supply, each pointing at the table in this model that represents it. One row per kind named in the source material's 'paradox of abundant knowledge'.
+// =============================================================================
+
+// AbundantKnowledgeGap represents a row in the AbundantKnowledgeGaps table
+type AbundantKnowledgeGap struct {
+	AbundantKnowledgeGapId string `json:"abundant_knowledge_gap_id"` // Readable key for the kind of knowledge.
+	Name *string `json:"name"` // Display name.
+	Label *string `json:"label"` // Short name of this kind of knowledge.
+	GapKind *string `json:"gap_kind"` // HumanJudgment | UndiscoveredTacitKnowledge | CuratedToUserAndUseCase.
+	Description *string `json:"description"` // What this kind of knowledge is.
+	WhyAbundanceDoesNotSupplyIt *string `json:"why_abundance_does_not_supply_it"` // Why having more information available does not produce this kind of knowledge.
+	RepresentedByTable *string `json:"represented_by_table"` // The table in this model that holds this kind of knowledge.
+	RepresentingTableRowCount *int `json:"representing_table_row_count"` // Rows measured in the representing table, from the field catalog. This is how much of this kind of knowledge the model actually holds; a kind that is named but held nowhere reads zero. Deliberately a count rather than a yes/no: all three kinds are represented here, so a boolean would be all-true and would state nothing, while the counts differ and say which kind is thinnest.
+	SemanticTypeIri *string `json:"semantic_type_iri"` // Semantic type.
+	ErbErrors map[string]string `json:"_erb_errors,omitempty"`
+	erbAggregates map[string]Value
+}
+
+// CalcName computes the Name calculated field
+// Display name.
+// Formula: ={{Label}}
+func (tc *AbundantKnowledgeGap) CalcName() *string {
+	return toStringPtr(vStr(tc.Label))
+}
+
+// erbComputeCalculations computes every calculated field of the row in dependency order.
+func (tc *AbundantKnowledgeGap) erbComputeCalculations() {
+	// Level 1
+	calcGuard(tc, "name", func() { tc.Name = tc.CalcName() })
+}
+
+// ComputeAll computes every calculated field from the row's current inputs.
+func (tc *AbundantKnowledgeGap) ComputeAll() *AbundantKnowledgeGap {
+	tc.erbComputeCalculations()
+	return tc
+}
+
+func (tc *AbundantKnowledgeGap) erbGet(field string) Value {
+	switch field {
+	case "abundant_knowledge_gap_id":
+		return vStrPlain(tc.AbundantKnowledgeGapId)
+	case "name":
+		return vStr(tc.Name)
+	case "label":
+		return vStr(tc.Label)
+	case "gap_kind":
+		return vStr(tc.GapKind)
+	case "description":
+		return vStr(tc.Description)
+	case "why_abundance_does_not_supply_it":
+		return vStr(tc.WhyAbundanceDoesNotSupplyIt)
+	case "represented_by_table":
+		return vStr(tc.RepresentedByTable)
+	case "representing_table_row_count":
+		return vInt(tc.RepresentingTableRowCount)
+	case "semantic_type_iri":
+		return vStr(tc.SemanticTypeIri)
+	}
+	panic("AbundantKnowledgeGaps has no field " + field)
+}
+
+func (tc *AbundantKnowledgeGap) erbSet(field string, v Value) {
+	switch field {
+	case "abundant_knowledge_gap_id":
+		tc.AbundantKnowledgeGapId = strPlain(v)
+	case "name":
+		tc.Name = toStringPtr(v)
+	case "label":
+		tc.Label = toStringPtr(v)
+	case "gap_kind":
+		tc.GapKind = toStringPtr(v)
+	case "description":
+		tc.Description = toStringPtr(v)
+	case "why_abundance_does_not_supply_it":
+		tc.WhyAbundanceDoesNotSupplyIt = toStringPtr(v)
+	case "represented_by_table":
+		tc.RepresentedByTable = toStringPtr(v)
+	case "representing_table_row_count":
+		tc.RepresentingTableRowCount = toIntPtr(v)
+	case "semantic_type_iri":
+		tc.SemanticTypeIri = toStringPtr(v)
+	default:
+		panic("AbundantKnowledgeGaps has no field " + field)
+	}
+}
+
+func (tc *AbundantKnowledgeGap) erbLoad(row map[string]any) {
+	for key, value := range row {
+		switch key {
+		case "abundant_knowledge_gap_id", "name", "label", "gap_kind", "description", "why_abundance_does_not_supply_it", "represented_by_table", "representing_table_row_count", "semantic_type_iri":
+			tc.erbSet(key, fromJSON(value))
+		}
+	}
+}
+
+func (tc *AbundantKnowledgeGap) erbErrors() map[string]string {
+	if tc.ErbErrors == nil {
+		tc.ErbErrors = map[string]string{}
+	}
+	return tc.ErbErrors
+}
+
+func (tc *AbundantKnowledgeGap) erbResetErrors() { tc.ErbErrors = nil }
+
+func (tc *AbundantKnowledgeGap) erbAggregate(name string) Value { return tc.erbAggregates[name] }
+
+func (tc *AbundantKnowledgeGap) erbSetAggregate(name string, v Value) {
+	if tc.erbAggregates == nil {
+		tc.erbAggregates = map[string]Value{}
+	}
+	tc.erbAggregates[name] = v
+}
+
+// LoadAbundantKnowledgeGapRecords reads AbundantKnowledgeGaps rows from a JSON array file.
+func LoadAbundantKnowledgeGapRecords(path string) ([]AbundantKnowledgeGap, error) {
+	records, err := loadRecords(path, func() Record { return &AbundantKnowledgeGap{} })
+	if err != nil {
+		return nil, err
+	}
+	rows := make([]AbundantKnowledgeGap, len(records))
+	for i, r := range records {
+		rows[i] = *r.(*AbundantKnowledgeGap)
+	}
+	return rows, nil
+}
+
+// =============================================================================
+// ONTOLOGYSUPPORTPROGRAMMES TABLE
+// Funded research programmes that produced or supported the ontologies this model reuses. Recorded so the ontology authority can see what happens to a reused vocabulary when the programme behind it ends.
+// =============================================================================
+
+// OntologySupportProgramme represents a row in the OntologySupportProgrammes table
+type OntologySupportProgramme struct {
+	OntologySupportProgrammeId string `json:"ontology_support_programme_id"` // Readable key for the programme.
+	Name *string `json:"name"` // Display name.
+	Label *string `json:"label"` // Full programme title.
+	Acronym *string `json:"acronym"` // Programme acronym.
+	Funder *string `json:"funder"` // Body that funded the programme.
+	GrantReference *string `json:"grant_reference"` // Grant agreement number, as published by the funder.
+	ProgrammeIri *string `json:"programme_iri"` // Public record of the programme.
+	Coordinator *string `json:"coordinator"` // Organization coordinating the programme.
+	StartedOn *string `json:"started_on"` // Programme start date, as published by the funder.
+	EndsOn *string `json:"ends_on"` // Programme end date, as published by the funder.
+	IsIndustryFocused *bool `json:"is_industry_focused"` // Whether the programme's purpose is ontology development for industry.
+	OurSuccessorSteward *string `json:"our_successor_steward"` // Who this organization relies on to maintain the terms it took from this programme once the programme ends. Blank means nobody has been named.
+	WhyRecorded *string `json:"why_recorded"` // Why the ontology authority tracks this programme, whether or not anything has been adopted from it yet.
+	EvaluationContext *string `json:"evaluation_context"` // The instant this row is judged against.
+	AsOfInstant *string `json:"as_of_instant"` // The modelled instant.
+	SupportedProfileCount *int `json:"supported_profile_count"` // Ontology profiles in this model that name this programme.
+	HasEnded *bool `json:"has_ended"` // Whether the programme has ended as of the modelled instant.
+	DaysUntilProgrammeEnds *int `json:"days_until_programme_ends"` // Days from the modelled instant to the programme's end date.
+	IsEndedWithNoStewardNamed *bool `json:"is_ended_with_no_steward_named"` // The programme has ended and this organization has named nobody to maintain what it took from it.
+	IsEndingSoonWithNoStewardNamed *bool `json:"is_ending_soon_with_no_steward_named"` // The programme has not ended yet, ends within six months of the modelled instant, and nobody here has been named to maintain what we took from it. This is the window in which something can still be done about it.
+	SemanticTypeIri *string `json:"semantic_type_iri"` // Semantic type.
+	ErbErrors map[string]string `json:"_erb_errors,omitempty"`
+	erbAggregates map[string]Value
+}
+
+// CalcName computes the Name calculated field
+// Display name.
+// Formula: ={{Label}}
+func (tc *OntologySupportProgramme) CalcName() *string {
+	return toStringPtr(vStr(tc.Label))
+}
+
+// CalcHasEnded computes the HasEnded calculated field
+// Whether the programme has ended as of the modelled instant.
+// Formula: =AND({{EndsOn}} <> "", {{EndsOn}} < {{AsOfInstant}})
+func (tc *OntologySupportProgramme) CalcHasEnded() *bool {
+	return toBoolPtr(erbAnd(erbBool3(erbIsNotBlank(vStr(tc.EndsOn))), erbBool3(erbCmp(erbNullif(vStr(tc.EndsOn)), "<", vStr(tc.AsOfInstant)))))
+}
+
+// CalcDaysUntilProgrammeEnds computes the DaysUntilProgrammeEnds calculated field
+// Days from the modelled instant to the programme's end date.
+// Formula: =IF({{EndsOn}} = "", 0, DATETIME_DIFF({{EndsOn}}, {{AsOfInstant}}, "days"))
+func (tc *OntologySupportProgramme) CalcDaysUntilProgrammeEnds() *int {
+	return toIntPtr(erbInteger(erbIf(erbBool3(erbIsBlank(vStr(tc.EndsOn))), func() Value { return vI(0) }, func() Value { return erbDatetimeDiff(vStr(tc.EndsOn), vStr(tc.AsOfInstant), vS("days")) })))
+}
+
+// CalcIsEndedWithNoStewardNamed computes the IsEndedWithNoStewardNamed calculated field
+// The programme has ended and this organization has named nobody to maintain what it took from it.
+// Formula: =AND({{HasEnded}}, {{OurSuccessorSteward}} = "")
+func (tc *OntologySupportProgramme) CalcIsEndedWithNoStewardNamed() *bool {
+	return toBoolPtr(erbAnd(erbBool3(vBool(tc.HasEnded)), erbBool3(erbIsBlank(vStr(tc.OurSuccessorSteward)))))
+}
+
+// CalcIsEndingSoonWithNoStewardNamed computes the IsEndingSoonWithNoStewardNamed calculated field
+// The programme has not ended yet, ends within six months of the modelled instant, and nobody here has been named to maintain what we took from it. This is the window in which something can still be done about it.
+// Formula: =AND({{HasEnded}} = FALSE, {{EndsOn}} <> "", {{DaysUntilProgrammeEnds}} <= 180, {{OurSuccessorSteward}} = "")
+func (tc *OntologySupportProgramme) CalcIsEndingSoonWithNoStewardNamed() *bool {
+	return toBoolPtr(erbAnd(erbBool3(erbEq(vBool(tc.HasEnded), vB(false))), erbBool3(erbIsNotBlank(vStr(tc.EndsOn))), erbBool3(erbCmp(vInt(tc.DaysUntilProgrammeEnds), "<=", vI(180))), erbBool3(erbIsBlank(vStr(tc.OurSuccessorSteward)))))
+}
+
+// erbComputeCalculations computes every calculated field of the row in dependency order.
+func (tc *OntologySupportProgramme) erbComputeCalculations() {
+	// Level 1
+	calcGuard(tc, "name", func() { tc.Name = tc.CalcName() })
+	calcGuard(tc, "has_ended", func() { tc.HasEnded = tc.CalcHasEnded() })
+	calcGuard(tc, "days_until_programme_ends", func() { tc.DaysUntilProgrammeEnds = tc.CalcDaysUntilProgrammeEnds() })
+	// Level 2
+	calcGuard(tc, "is_ended_with_no_steward_named", func() { tc.IsEndedWithNoStewardNamed = tc.CalcIsEndedWithNoStewardNamed() })
+	calcGuard(tc, "is_ending_soon_with_no_steward_named", func() { tc.IsEndingSoonWithNoStewardNamed = tc.CalcIsEndingSoonWithNoStewardNamed() })
+}
+
+// ComputeAll computes every calculated field from the row's current inputs.
+func (tc *OntologySupportProgramme) ComputeAll() *OntologySupportProgramme {
+	tc.erbComputeCalculations()
+	return tc
+}
+
+func (tc *OntologySupportProgramme) erbGet(field string) Value {
+	switch field {
+	case "ontology_support_programme_id":
+		return vStrPlain(tc.OntologySupportProgrammeId)
+	case "name":
+		return vStr(tc.Name)
+	case "label":
+		return vStr(tc.Label)
+	case "acronym":
+		return vStr(tc.Acronym)
+	case "funder":
+		return vStr(tc.Funder)
+	case "grant_reference":
+		return vStr(tc.GrantReference)
+	case "programme_iri":
+		return vStr(tc.ProgrammeIri)
+	case "coordinator":
+		return vStr(tc.Coordinator)
+	case "started_on":
+		return vStr(tc.StartedOn)
+	case "ends_on":
+		return vStr(tc.EndsOn)
+	case "is_industry_focused":
+		return vBool(tc.IsIndustryFocused)
+	case "our_successor_steward":
+		return vStr(tc.OurSuccessorSteward)
+	case "why_recorded":
+		return vStr(tc.WhyRecorded)
+	case "evaluation_context":
+		return vStr(tc.EvaluationContext)
+	case "as_of_instant":
+		return vStr(tc.AsOfInstant)
+	case "supported_profile_count":
+		return vInt(tc.SupportedProfileCount)
+	case "has_ended":
+		return vBool(tc.HasEnded)
+	case "days_until_programme_ends":
+		return vInt(tc.DaysUntilProgrammeEnds)
+	case "is_ended_with_no_steward_named":
+		return vBool(tc.IsEndedWithNoStewardNamed)
+	case "is_ending_soon_with_no_steward_named":
+		return vBool(tc.IsEndingSoonWithNoStewardNamed)
+	case "semantic_type_iri":
+		return vStr(tc.SemanticTypeIri)
+	}
+	panic("OntologySupportProgrammes has no field " + field)
+}
+
+func (tc *OntologySupportProgramme) erbSet(field string, v Value) {
+	switch field {
+	case "ontology_support_programme_id":
+		tc.OntologySupportProgrammeId = strPlain(v)
+	case "name":
+		tc.Name = toStringPtr(v)
+	case "label":
+		tc.Label = toStringPtr(v)
+	case "acronym":
+		tc.Acronym = toStringPtr(v)
+	case "funder":
+		tc.Funder = toStringPtr(v)
+	case "grant_reference":
+		tc.GrantReference = toStringPtr(v)
+	case "programme_iri":
+		tc.ProgrammeIri = toStringPtr(v)
+	case "coordinator":
+		tc.Coordinator = toStringPtr(v)
+	case "started_on":
+		tc.StartedOn = toStringPtr(v)
+	case "ends_on":
+		tc.EndsOn = toStringPtr(v)
+	case "is_industry_focused":
+		tc.IsIndustryFocused = toBoolPtr(v)
+	case "our_successor_steward":
+		tc.OurSuccessorSteward = toStringPtr(v)
+	case "why_recorded":
+		tc.WhyRecorded = toStringPtr(v)
+	case "evaluation_context":
+		tc.EvaluationContext = toStringPtr(v)
+	case "as_of_instant":
+		tc.AsOfInstant = toStringPtr(v)
+	case "supported_profile_count":
+		tc.SupportedProfileCount = toIntPtr(v)
+	case "has_ended":
+		tc.HasEnded = toBoolPtr(v)
+	case "days_until_programme_ends":
+		tc.DaysUntilProgrammeEnds = toIntPtr(v)
+	case "is_ended_with_no_steward_named":
+		tc.IsEndedWithNoStewardNamed = toBoolPtr(v)
+	case "is_ending_soon_with_no_steward_named":
+		tc.IsEndingSoonWithNoStewardNamed = toBoolPtr(v)
+	case "semantic_type_iri":
+		tc.SemanticTypeIri = toStringPtr(v)
+	default:
+		panic("OntologySupportProgrammes has no field " + field)
+	}
+}
+
+func (tc *OntologySupportProgramme) erbLoad(row map[string]any) {
+	for key, value := range row {
+		switch key {
+		case "ontology_support_programme_id", "name", "label", "acronym", "funder", "grant_reference", "programme_iri", "coordinator", "started_on", "ends_on", "is_industry_focused", "our_successor_steward", "why_recorded", "evaluation_context", "as_of_instant", "supported_profile_count", "has_ended", "days_until_programme_ends", "is_ended_with_no_steward_named", "is_ending_soon_with_no_steward_named", "semantic_type_iri":
+			tc.erbSet(key, fromJSON(value))
+		}
+	}
+}
+
+func (tc *OntologySupportProgramme) erbErrors() map[string]string {
+	if tc.ErbErrors == nil {
+		tc.ErbErrors = map[string]string{}
+	}
+	return tc.ErbErrors
+}
+
+func (tc *OntologySupportProgramme) erbResetErrors() { tc.ErbErrors = nil }
+
+func (tc *OntologySupportProgramme) erbAggregate(name string) Value { return tc.erbAggregates[name] }
+
+func (tc *OntologySupportProgramme) erbSetAggregate(name string, v Value) {
+	if tc.erbAggregates == nil {
+		tc.erbAggregates = map[string]Value{}
+	}
+	tc.erbAggregates[name] = v
+}
+
+// LoadOntologySupportProgrammeRecords reads OntologySupportProgrammes rows from a JSON array file.
+func LoadOntologySupportProgrammeRecords(path string) ([]OntologySupportProgramme, error) {
+	records, err := loadRecords(path, func() Record { return &OntologySupportProgramme{} })
+	if err != nil {
+		return nil, err
+	}
+	rows := make([]OntologySupportProgramme, len(records))
+	for i, r := range records {
+		rows[i] = *r.(*OntologySupportProgramme)
+	}
+	return rows, nil
+}
+
 // calculatedFieldCount bounds the runner's passes over the dataset.
-const calculatedFieldCount = 1676
+const calculatedFieldCount = 1702
 
 // erbTables is every table, in rulebook order.
 var erbTables = []TableSpec{
@@ -58406,7 +59551,20 @@ var erbTables = []TableSpec{
 			{Field: "recent_deprecation_count", Op: "COUNTIFS", Table: "external_standard_terms", Criteria: []Criterion{{Range: "ontology_profile", Kind: "field", Field: "ontology_profile_id"}, {Range: "is_recent_deprecation", Kind: "literal", Literal: vB(true)}}},}},
 	{Name: "EvaluationContexts", File: "evaluation_contexts", RulebookRows: 1, New: func() Record { return &EvaluationContext{} },
 		Lookups: []LookupSpec{},
-		Aggregations: []AggregateSpec{}},
+		Aggregations: []AggregateSpec{
+			{Field: "explicit_fragment_count", Op: "COUNTIFS", Table: "knowledge_fragments", Criteria: []Criterion{{Range: "knowledge_form", Kind: "literal", Literal: vS("Explicit")}}},
+			{Field: "tacit_fragment_count", Op: "COUNTIFS", Table: "knowledge_fragments", Criteria: []Criterion{{Range: "knowledge_form", Kind: "literal", Literal: vS("Tacit")}}},
+			{Field: "implicit_fragment_count", Op: "COUNTIFS", Table: "knowledge_fragments", Criteria: []Criterion{{Range: "knowledge_form", Kind: "literal", Literal: vS("Implicit")}}},
+			{Field: "situated_judgment_fragment_count", Op: "COUNTIFS", Table: "knowledge_fragments", Criteria: []Criterion{{Range: "knowledge_form", Kind: "literal", Literal: vS("SituatedJudgment")}}},
+			{Field: "model_reasoned_answer_count", Op: "COUNTIFS", Table: "assistant_answers", Criteria: []Criterion{{Range: "model_did_the_reasoning", Kind: "literal", Literal: vB(true)}}},
+			{Field: "otherwise_reasoned_answer_count", Op: "COUNTIFS", Table: "assistant_answers", Criteria: []Criterion{{Range: "model_did_the_reasoning", Kind: "literal", Literal: vB(false)}}},
+			{Field: "model_reasoned_failed_answer_count", Op: "COUNTIFS", Table: "assistant_answers", Criteria: []Criterion{{Range: "model_reasoned_and_task_failed", Kind: "literal", Literal: vB(true)}}},
+			{Field: "out_of_order_step_execution_count", Op: "COUNTIFS", Table: "step_executions", Criteria: []Criterion{{Range: "is_out_of_specified_order", Kind: "literal", Literal: vB(true)}}},
+			{Field: "in_order_step_execution_count", Op: "COUNTIFS", Table: "step_executions", Criteria: []Criterion{{Range: "is_out_of_specified_order", Kind: "literal", Literal: vB(false)}}},
+			{Field: "early_start_step_execution_count", Op: "COUNTIFS", Table: "step_executions", Criteria: []Criterion{{Range: "ran_before_prerequisite_completed", Kind: "literal", Literal: vB(true)}}},
+			{Field: "exact_mapping_count", Op: "COUNTIFS", Table: "semantic_mappings", Criteria: []Criterion{{Range: "mapping_relation", Kind: "literal", Literal: vS("exact")}}},
+			{Field: "aligned_mapping_count", Op: "COUNTIFS", Table: "semantic_mappings", Criteria: []Criterion{{Range: "mapping_relation", Kind: "literal", Literal: vS("aligned")}}},
+			{Field: "extension_mapping_count", Op: "COUNTIFS", Table: "semantic_mappings", Criteria: []Criterion{{Range: "mapping_relation", Kind: "literal", Literal: vS("extension")}}},}},
 	{Name: "Organizations", File: "organizations", RulebookRows: 18, New: func() Record { return &Organization{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{
@@ -58509,7 +59667,8 @@ var erbTables = []TableSpec{
 			{Field: "ambient_absorption_count", Op: "COUNTIFS", Table: "knowledge_transfers", Criteria: []Criterion{{Range: "community_of_practice", Kind: "field", Field: "community_of_practice_id"}, {Range: "is_ambient_absorption_by_non_practitioner", Kind: "literal", Literal: vB(true)}}},}},
 	{Name: "Mentorships", File: "mentorships", RulebookRows: 5, New: func() Record { return &Mentorship{} },
 		Lookups: []LookupSpec{
-			{Field: "as_of_instant", Target: "evaluation_contexts", Return: "as_of_instant", Key: "evaluation_context", Match: "evaluation_context_id"},},
+			{Field: "as_of_instant", Target: "evaluation_contexts", Return: "as_of_instant", Key: "evaluation_context", Match: "evaluation_context_id"},
+			{Field: "community_label", Target: "communities_of_practice", Return: "label", Key: "community_of_practice", Match: "community_of_practice_id"},},
 		Aggregations: []AggregateSpec{}},
 	{Name: "ProcedureTypes", File: "procedure_types", RulebookRows: 17, New: func() Record { return &ProcedureType{} },
 		Lookups: []LookupSpec{
@@ -58566,7 +59725,8 @@ var erbTables = []TableSpec{
 			{Field: "modifier_is_authority", Target: "agents", Return: "agent_kind", Key: "modified_by_agent", Match: "agent_id"},
 			{Field: "status_is_pko", Target: "lifecycle_statuses", Return: "is_pko_status", Key: "status", Match: "lifecycle_status_id"},
 			{Field: "procedure_type_of_version", Target: "procedures", Return: "procedure_type", Key: "procedure", Match: "procedure_id"},
-			{Field: "created_by_agent_kind", Target: "agents", Return: "agent_kind", Key: "created_by_agent", Match: "agent_id"},},
+			{Field: "created_by_agent_kind", Target: "agents", Return: "agent_kind", Key: "created_by_agent", Match: "agent_id"},
+			{Field: "owner_organization", Target: "procedures", Return: "owner_organization", Key: "procedure", Match: "procedure_id"},},
 		Aggregations: []AggregateSpec{
 			{Field: "count_of_steps", Op: "COUNTIFS", Table: "steps", Criteria: []Criterion{{Range: "procedure_version", Kind: "field", Field: "procedure_version_id"}}},
 			{Field: "count_of_open_knowledge_gaps", Op: "COUNTIFS", Table: "knowledge_gaps", Criteria: []Criterion{{Range: "procedure_version", Kind: "field", Field: "procedure_version_id"}, {Range: "status", Kind: "literal", Literal: vS("Open")}}},
@@ -58681,7 +59841,8 @@ var erbTables = []TableSpec{
 			{Field: "version_procedure", Target: "procedure_versions", Return: "procedure", Key: "procedure_version", Match: "procedure_version_id"},
 			{Field: "assigned_role_does_compliance_review", Target: "roles", Return: "has_compliance_review_capability", Key: "assigned_role", Match: "role_id"},
 			{Field: "step_procedure_type", Target: "procedure_versions", Return: "procedure_type_of_version", Key: "procedure_version", Match: "procedure_version_id"},
-			{Field: "version_model_trace_count", Target: "procedure_versions", Return: "process_model_trace_count", Key: "procedure_version", Match: "procedure_version_id"},},
+			{Field: "version_model_trace_count", Target: "procedure_versions", Return: "process_model_trace_count", Key: "procedure_version", Match: "procedure_version_id"},
+			{Field: "owner_organization", Target: "procedure_versions", Return: "owner_organization", Key: "procedure_version", Match: "procedure_version_id"},},
 		Aggregations: []AggregateSpec{
 			{Field: "blocking_requirement_count", Op: "COUNTIFS", Table: "step_requirements", Criteria: []Criterion{{Range: "blocking_step_key", Kind: "field", Field: "step_id"}}},
 			{Field: "stale_binding_count", Op: "COUNTIFS", Table: "operational_bindings", Criteria: []Criterion{{Range: "stale_binding_step_key", Kind: "field", Field: "step_id"}}},
@@ -58827,7 +59988,8 @@ var erbTables = []TableSpec{
 			{Field: "owner_role_assignment_valid_from", Target: "roles", Return: "current_assignment_valid_from", Key: "owner_role", Match: "role_id"},
 			{Field: "consuming_step_is_software_assigned", Target: "steps", Return: "is_software_assigned", Key: "step", Match: "step_id"},
 			{Field: "consuming_step_agent_kind", Target: "steps", Return: "assigned_agent_kind", Key: "step", Match: "step_id"},
-			{Field: "owner_role_is_vacated", Target: "roles", Return: "is_vacated_role", Key: "owner_role", Match: "role_id"},},
+			{Field: "owner_role_is_vacated", Target: "roles", Return: "is_vacated_role", Key: "owner_role", Match: "role_id"},
+			{Field: "owner_organization", Target: "procedure_versions", Return: "owner_organization", Key: "procedure_version", Match: "procedure_version_id"},},
 		Aggregations: []AggregateSpec{
 			{Field: "is_invoked_by_an_exception", Op: "COUNTIFS", Table: "exceptions", Criteria: []Criterion{{Range: "trigger_step", Kind: "field", Field: "step"}}},
 			{Field: "ratified_boundary_count", Op: "COUNTIFS", Table: "authority_boundaries", Criteria: []Criterion{{Range: "ratifying_fragment_key", Kind: "field", Field: "knowledge_fragment_id"}}},
@@ -58837,7 +59999,10 @@ var erbTables = []TableSpec{
 			{Field: "as_of_instant", Target: "evaluation_contexts", Return: "as_of_instant", Key: "evaluation_context", Match: "evaluation_context_id"},
 			{Field: "owner_agent", Target: "roles", Return: "current_agent", Key: "owner_role", Match: "role_id"},
 			{Field: "owner_is_still_engaged", Target: "agents", Return: "is_still_engaged", Key: "owner_agent", Match: "agent_id"},
-			{Field: "owner_role_is_vacated", Target: "roles", Return: "is_vacated_role", Key: "owner_role", Match: "role_id"},},
+			{Field: "owner_role_is_vacated", Target: "roles", Return: "is_vacated_role", Key: "owner_role", Match: "role_id"},
+			{Field: "owner_organization", Target: "procedure_versions", Return: "owner_organization", Key: "procedure_version", Match: "procedure_version_id"},
+			{Field: "answering_change_title", Target: "model_change_requests", Return: "title", Key: "answered_by_model_change_request", Match: "model_change_request_id"},
+			{Field: "answering_change_status", Target: "model_change_requests", Return: "status", Key: "answered_by_model_change_request", Match: "model_change_request_id"},},
 		Aggregations: []AggregateSpec{}},
 	{Name: "FAQs", File: "fa_qs", RulebookRows: 4, New: func() Record { return &FAQ{} },
 		Lookups: []LookupSpec{},
@@ -58849,7 +60014,12 @@ var erbTables = []TableSpec{
 	{Name: "ProcedureExecutions", File: "procedure_executions", RulebookRows: 10, New: func() Record { return &ProcedureExecution{} },
 		Lookups: []LookupSpec{
 			{Field: "expected_step_count", Target: "procedure_versions", Return: "specified_step_count", Key: "procedure_version", Match: "procedure_version_id"},
-			{Field: "executed_version_is_fit", Target: "procedure_versions", Return: "is_fit_to_execute", Key: "procedure_version", Match: "procedure_version_id"},},
+			{Field: "executed_version_is_fit", Target: "procedure_versions", Return: "is_fit_to_execute", Key: "procedure_version", Match: "procedure_version_id"},
+			{Field: "owner_organization", Target: "procedure_versions", Return: "owner_organization", Key: "procedure_version", Match: "procedure_version_id"},
+			{Field: "stopped_at_gap_statement", Target: "knowledge_gaps", Return: "statement", Key: "stopped_at_knowledge_gap", Match: "knowledge_gap_id"},
+			{Field: "stopped_at_gap_status", Target: "knowledge_gaps", Return: "status", Key: "stopped_at_knowledge_gap", Match: "knowledge_gap_id"},
+			{Field: "stopped_at_gap_change_title", Target: "knowledge_gaps", Return: "answering_change_title", Key: "stopped_at_knowledge_gap", Match: "knowledge_gap_id"},
+			{Field: "stopped_at_gap_change_status", Target: "knowledge_gaps", Return: "answering_change_status", Key: "stopped_at_knowledge_gap", Match: "knowledge_gap_id"},},
 		Aggregations: []AggregateSpec{
 			{Field: "completed_step_count", Op: "COUNTIFS", Table: "step_executions", Criteria: []Criterion{{Range: "completed_execution_key", Kind: "field", Field: "procedure_execution_id"}}},
 			{Field: "control_breach_count", Op: "COUNTIFS", Table: "step_executions", Criteria: []Criterion{{Range: "control_breach_execution_key", Kind: "field", Field: "procedure_execution_id"}}},
@@ -58916,7 +60086,8 @@ var erbTables = []TableSpec{
 			{Field: "execution_version", Target: "procedure_executions", Return: "procedure_version", Key: "procedure_execution", Match: "procedure_execution_id"},
 			{Field: "step_max_repetitions", Target: "steps", Return: "max_repetitions", Key: "step", Match: "step_id"},
 			{Field: "step_input_variable_count", Target: "steps", Return: "input_variable_count", Key: "step", Match: "step_id"},
-			{Field: "step_prerequisite", Target: "steps", Return: "prerequisite_step", Key: "step", Match: "step_id"},},
+			{Field: "step_prerequisite", Target: "steps", Return: "prerequisite_step", Key: "step", Match: "step_id"},
+			{Field: "owner_organization", Target: "procedure_executions", Return: "owner_organization", Key: "procedure_execution", Match: "procedure_execution_id"},},
 		Aggregations: []AggregateSpec{
 			{Field: "blocking_unmet_count", Op: "COUNTIFS", Table: "requirement_satisfactions", Criteria: []Criterion{{Range: "step_execution", Kind: "field", Field: "step_execution_id"}, {Range: "is_blocking_and_unmet", Kind: "literal", Literal: vB(true)}}},
 			{Field: "blocking_unmet_count_safe", Op: "COUNTIFS", Table: "requirement_satisfactions", Criteria: []Criterion{{Range: "blocking_unmet_step_key", Kind: "field", Field: "step_execution_id"}}},
@@ -58940,7 +60111,8 @@ var erbTables = []TableSpec{
 			{Field: "unescalated_danger_cue_count", Op: "COUNTIFS", Table: "cue_observations", Criteria: []Criterion{{Range: "unescalated_execution_key", Kind: "field", Field: "step_execution_id"}}},
 			{Field: "used_entity_count", Op: "COUNTIFS", Table: "execution_entities", Criteria: []Criterion{{Range: "used_execution_key", Kind: "field", Field: "step_execution_id"}}},
 			{Field: "generated_entity_count", Op: "COUNTIFS", Table: "execution_entities", Criteria: []Criterion{{Range: "generated_execution_key", Kind: "field", Field: "step_execution_id"}}},
-			{Field: "completed_prerequisite_run_count", Op: "COUNTIFS", Table: "step_executions", Criteria: []Criterion{{Range: "step", Kind: "field", Field: "step_prerequisite"}, {Range: "procedure_execution", Kind: "field", Field: "procedure_execution"}, {Range: "execution_status", Kind: "literal", Literal: vS("Completed")}}},}},
+			{Field: "completed_prerequisite_run_count", Op: "COUNTIFS", Table: "step_executions", Criteria: []Criterion{{Range: "step", Kind: "field", Field: "step_prerequisite"}, {Range: "procedure_execution", Kind: "field", Field: "procedure_execution"}, {Range: "execution_status", Kind: "literal", Literal: vS("Completed")}}},
+			{Field: "incomplete_cue_observation_count", Op: "COUNTIFS", Table: "cue_observations", Criteria: []Criterion{{Range: "step_execution", Kind: "field", Field: "step_execution_id"}, {Range: "cue_signals_incomplete_step", Kind: "literal", Literal: vB(true)}}},}},
 	{Name: "RequirementSatisfactions", File: "requirement_satisfactions", RulebookRows: 8, New: func() Record { return &RequirementSatisfaction{} },
 		Lookups: []LookupSpec{
 			{Field: "requirement_is_blocking", Target: "requirements", Return: "is_blocking", Key: "requirement", Match: "requirement_id"},
@@ -58985,7 +60157,8 @@ var erbTables = []TableSpec{
 			{Field: "as_of_instant", Target: "evaluation_contexts", Return: "as_of_instant", Key: "evaluation_context", Match: "evaluation_context_id"},
 			{Field: "authority_agent", Target: "roles", Return: "current_agent", Key: "authority_role", Match: "role_id"},
 			{Field: "authority_role_label", Target: "roles", Return: "label", Key: "authority_role", Match: "role_id"},
-			{Field: "touches_live_version", Target: "procedure_versions", Return: "is_live", Key: "procedure_version", Match: "procedure_version_id"},},
+			{Field: "touches_live_version", Target: "procedure_versions", Return: "is_live", Key: "procedure_version", Match: "procedure_version_id"},
+			{Field: "owner_organization", Target: "procedure_versions", Return: "owner_organization", Key: "procedure_version", Match: "procedure_version_id"},},
 		Aggregations: []AggregateSpec{}},
 	{Name: "ReviewEvents", File: "review_events", RulebookRows: 3, New: func() Record { return &ReviewEvent{} },
 		Lookups: []LookupSpec{
@@ -59017,18 +60190,19 @@ var erbTables = []TableSpec{
 			{Field: "drifted_send_count", Op: "COUNTIFS", Table: "message_deliveries", Criteria: []Criterion{{Range: "drifted_send_template_key", Kind: "field", Field: "message_template_id"}}},
 			{Field: "unanswered_delivery_count", Op: "COUNTIFS", Table: "message_deliveries", Criteria: []Criterion{{Range: "unanswered_template_key", Kind: "field", Field: "message_template_id"}}},
 			{Field: "transmitted_delivery_count", Op: "COUNTIFS", Table: "message_deliveries", Criteria: []Criterion{{Range: "transmitted_template_key", Kind: "field", Field: "message_template_id"}}},}},
-	{Name: "SemanticMappings", File: "semantic_mappings", RulebookRows: 299, New: func() Record { return &SemanticMapping{} },
-		Lookups: []LookupSpec{},
+	{Name: "SemanticMappings", File: "semantic_mappings", RulebookRows: 357, New: func() Record { return &SemanticMapping{} },
+		Lookups: []LookupSpec{
+			{Field: "profile_namespace_dereferences", Target: "ontology_profiles", Return: "namespace_dereferences", Key: "ontology_profile", Match: "ontology_profile_id"},},
 		Aggregations: []AggregateSpec{}},
-	{Name: "WitnessLoops", File: "witness_loops", RulebookRows: 13, New: func() Record { return &WitnessLoop{} },
+	{Name: "WitnessLoops", File: "witness_loops", RulebookRows: 16, New: func() Record { return &WitnessLoop{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{
 			{Field: "question_count", Op: "COUNTIFS", Table: "role_questions", Criteria: []Criterion{{Range: "witness_loop", Kind: "field", Field: "witness_loop_id"}}},}},
-	{Name: "RoleQuestions", File: "role_questions", RulebookRows: 425, New: func() Record { return &RoleQuestion{} },
+	{Name: "RoleQuestions", File: "role_questions", RulebookRows: 442, New: func() Record { return &RoleQuestion{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{
 			{Field: "predicate_count", Op: "COUNTIFS", Table: "rulebook_fields", Criteria: []Criterion{{Range: "invented_for_question", Kind: "field", Field: "role_question_id"}}},}},
-	{Name: "RulebookFields", File: "rulebook_fields", RulebookRows: 5058, New: func() Record { return &RulebookField{} },
+	{Name: "RulebookFields", File: "rulebook_fields", RulebookRows: 5185, New: func() Record { return &RulebookField{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{
 			{Field: "disagreeing_substrate_count", Op: "COUNTIFS", Table: "field_disagreements", Criteria: []Criterion{{Range: "rulebook_field", Kind: "field", Field: "rulebook_field_id"}}},}},
@@ -59155,7 +60329,7 @@ var erbTables = []TableSpec{
 			{Field: "version_is_fit_now", Target: "procedure_executions", Return: "executed_version_is_fit", Key: "procedure_execution", Match: "procedure_execution_id"},
 			{Field: "assurance_grade_now", Target: "procedure_executions", Return: "assurance_grade", Key: "procedure_execution", Match: "procedure_execution_id"},},
 		Aggregations: []AggregateSpec{}},
-	{Name: "AppRoleProfiles", File: "app_role_profiles", RulebookRows: 12, New: func() Record { return &AppRoleProfile{} },
+	{Name: "AppRoleProfiles", File: "app_role_profiles", RulebookRows: 20, New: func() Record { return &AppRoleProfile{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{
 			{Field: "route_count", Op: "COUNTIFS", Table: "app_routes", Criteria: []Criterion{{Range: "owning_role", Kind: "field", Field: "role"}}},}},
@@ -59174,7 +60348,7 @@ var erbTables = []TableSpec{
 	{Name: "AppRouteReferences", File: "app_route_references", RulebookRows: 315, New: func() Record { return &AppRouteReference{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{}},
-	{Name: "RulebookTables", File: "rulebook_tables", RulebookRows: 260, New: func() Record { return &RulebookTable{} },
+	{Name: "RulebookTables", File: "rulebook_tables", RulebookRows: 264, New: func() Record { return &RulebookTable{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{
 			{Field: "field_count", Op: "COUNTIFS", Table: "rulebook_fields", Criteria: []Criterion{{Range: "target_table", Kind: "field", Field: "rulebook_table_id"}}},
@@ -59183,8 +60357,10 @@ var erbTables = []TableSpec{
 			{Field: "semantic_mapping_count", Op: "COUNTIFS", Table: "semantic_mappings", Criteria: []Criterion{{Range: "source_path", Kind: "field", Field: "rulebook_table_id"}}},
 			{Field: "exact_mapping_count", Op: "COUNTIFS", Table: "semantic_mappings", Criteria: []Criterion{{Range: "source_path", Kind: "field", Field: "rulebook_table_id"}, {Range: "mapping_relation", Kind: "literal", Literal: vS("exact")}}},
 			{Field: "aligned_mapping_count", Op: "COUNTIFS", Table: "semantic_mappings", Criteria: []Criterion{{Range: "source_path", Kind: "field", Field: "rulebook_table_id"}, {Range: "mapping_relation", Kind: "literal", Literal: vS("aligned")}}},
-			{Field: "semantic_type_iri_field_count", Op: "COUNTIFS", Table: "rulebook_fields", Criteria: []Criterion{{Range: "target_table", Kind: "field", Field: "rulebook_table_id"}, {Range: "field_name", Kind: "literal", Literal: vS("SemanticTypeIri")}}},}},
-	{Name: "AccessPrincipals", File: "access_principals", RulebookRows: 12, New: func() Record { return &AccessPrincipal{} },
+			{Field: "semantic_type_iri_field_count", Op: "COUNTIFS", Table: "rulebook_fields", Criteria: []Criterion{{Range: "target_table", Kind: "field", Field: "rulebook_table_id"}, {Range: "field_name", Kind: "literal", Literal: vS("SemanticTypeIri")}}},
+			{Field: "unrestricted_non_admin_policy_count", Op: "COUNTIFS", Table: "access_policies", Criteria: []Criterion{{Range: "target_table", Kind: "field", Field: "rulebook_table_id"}, {Range: "is_unrestricted_non_admin_grant", Kind: "literal", Literal: vB(true)}}},
+			{Field: "restricted_non_admin_policy_count", Op: "COUNTIFS", Table: "access_policies", Criteria: []Criterion{{Range: "target_table", Kind: "field", Field: "rulebook_table_id"}, {Range: "is_unrestricted_non_admin_grant", Kind: "literal", Literal: vB(false)}, {Range: "principal_is_admin", Kind: "literal", Literal: vB(false)}}},}},
+	{Name: "AccessPrincipals", File: "access_principals", RulebookRows: 20, New: func() Record { return &AccessPrincipal{} },
 		Lookups: []LookupSpec{
 			{Field: "organization_scope", Target: "roles", Return: "organization", Key: "domain_role", Match: "role_id"},
 			{Field: "role_label", Target: "roles", Return: "label", Key: "domain_role", Match: "role_id"},},
@@ -59192,28 +60368,28 @@ var erbTables = []TableSpec{
 			{Field: "policy_count", Op: "COUNTIFS", Table: "access_policies", Criteria: []Criterion{{Range: "principal", Kind: "field", Field: "access_principal_id"}}},
 			{Field: "grant_count", Op: "COUNTIFS", Table: "field_grants", Criteria: []Criterion{{Range: "principal", Kind: "field", Field: "access_principal_id"}}},
 			{Field: "visible_table_count", Op: "COUNTIFS", Table: "role_schema_views", Criteria: []Criterion{{Range: "principal", Kind: "field", Field: "access_principal_id"}}},}},
-	{Name: "AccessPolicies", File: "access_policies", RulebookRows: 202, New: func() Record { return &AccessPolicie{} },
+	{Name: "AccessPolicies", File: "access_policies", RulebookRows: 781, New: func() Record { return &AccessPolicie{} },
 		Lookups: []LookupSpec{
 			{Field: "principal_is_admin", Target: "access_principals", Return: "is_administrator", Key: "principal", Match: "access_principal_id"},},
 		Aggregations: []AggregateSpec{
 			{Field: "denial_test_count", Op: "COUNTIFS", Table: "access_denial_tests", Criteria: []Criterion{{Range: "target_policy", Kind: "field", Field: "access_policy_id"}}},}},
-	{Name: "FieldGrants", File: "field_grants", RulebookRows: 3639, New: func() Record { return &FieldGrant{} },
+	{Name: "FieldGrants", File: "field_grants", RulebookRows: 18467, New: func() Record { return &FieldGrant{} },
 		Lookups: []LookupSpec{
 			{Field: "field_table", Target: "rulebook_fields", Return: "target_table", Key: "target_field", Match: "rulebook_field_id"},
 			{Field: "field_name", Target: "rulebook_fields", Return: "field_name", Key: "target_field", Match: "rulebook_field_id"},
 			{Field: "field_is_derived", Target: "rulebook_fields", Return: "is_derived", Key: "target_field", Match: "rulebook_field_id"},},
 		Aggregations: []AggregateSpec{}},
-	{Name: "RoleSchemas", File: "role_schemas", RulebookRows: 12, New: func() Record { return &RoleSchema{} },
+	{Name: "RoleSchemas", File: "role_schemas", RulebookRows: 20, New: func() Record { return &RoleSchema{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{
 			{Field: "view_count", Op: "COUNTIFS", Table: "role_schema_views", Criteria: []Criterion{{Range: "role_schema", Kind: "field", Field: "role_schema_id"}}},}},
-	{Name: "RoleSchemaViews", File: "role_schema_views", RulebookRows: 202, New: func() Record { return &RoleSchemaView{} },
+	{Name: "RoleSchemaViews", File: "role_schema_views", RulebookRows: 762, New: func() Record { return &RoleSchemaView{} },
 		Lookups: []LookupSpec{
 			{Field: "schema_name", Target: "role_schemas", Return: "schema_name", Key: "role_schema", Match: "role_schema_id"},
 			{Field: "source_view", Target: "rulebook_tables", Return: "physical_view", Key: "target_table", Match: "rulebook_table_id"},
 			{Field: "table_field_count", Target: "rulebook_tables", Return: "field_count", Key: "target_table", Match: "rulebook_table_id"},},
 		Aggregations: []AggregateSpec{
-			{Field: "column_count", Op: "COUNTIFS", Table: "field_grants", Criteria: []Criterion{{Range: "grant_key_when_readable", Kind: "field", Field: "grant_key"}}},}},
+			{Field: "column_count", Op: "COUNTIFS", Table: "field_grants", Criteria: []Criterion{{Range: "principal", Kind: "field", Field: "principal"}, {Range: "can_read", Kind: "literal", Literal: vB(true)}, {Range: "field_table", Kind: "field", Field: "target_table"}}},}},
 	{Name: "JwtClaimMappings", File: "jwt_claim_mappings", RulebookRows: 4, New: func() Record { return &JwtClaimMapping{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{
@@ -59221,13 +60397,13 @@ var erbTables = []TableSpec{
 	{Name: "AccessDenialTests", File: "access_denial_tests", RulebookRows: 17, New: func() Record { return &AccessDenialTest{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{}},
-	{Name: "AppUsers", File: "app_users", RulebookRows: 10, New: func() Record { return &AppUser{} },
+	{Name: "AppUsers", File: "app_users", RulebookRows: 20, New: func() Record { return &AppUser{} },
 		Lookups: []LookupSpec{
 			{Field: "agent_kind", Target: "agents", Return: "agent_kind", Key: "linked_agent", Match: "agent_id"},
 			{Field: "organization", Target: "agents", Return: "organization", Key: "linked_agent", Match: "agent_id"},},
 		Aggregations: []AggregateSpec{
 			{Field: "assignment_count", Op: "COUNTIFS", Table: "principal_assignments", Criteria: []Criterion{{Range: "app_user", Kind: "field", Field: "app_user_id"}}},}},
-	{Name: "PrincipalAssignments", File: "principal_assignments", RulebookRows: 12, New: func() Record { return &PrincipalAssignment{} },
+	{Name: "PrincipalAssignments", File: "principal_assignments", RulebookRows: 22, New: func() Record { return &PrincipalAssignment{} },
 		Lookups: []LookupSpec{
 			{Field: "principal_is_admin", Target: "access_principals", Return: "is_administrator", Key: "principal", Match: "access_principal_id"},
 			{Field: "user_organization", Target: "app_users", Return: "organization", Key: "app_user", Match: "app_user_id"},
@@ -59313,7 +60489,7 @@ var erbTables = []TableSpec{
 			{Field: "substrate", Target: "field_disagreements", Return: "substrate", Key: "field_disagreement", Match: "field_disagreement_id"},
 			{Field: "rulebook_field", Target: "field_disagreements", Return: "rulebook_field", Key: "field_disagreement", Match: "field_disagreement_id"},},
 		Aggregations: []AggregateSpec{}},
-	{Name: "KnowledgeMethods", File: "knowledge_methods", RulebookRows: 25, New: func() Record { return &KnowledgeMethod{} },
+	{Name: "KnowledgeMethods", File: "knowledge_methods", RulebookRows: 26, New: func() Record { return &KnowledgeMethod{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{
 			{Field: "elicitation_use_count", Op: "COUNTIFS", Table: "elicitation_sessions", Criteria: []Criterion{{Range: "method", Kind: "field", Field: "knowledge_method_id"}}},
@@ -59330,7 +60506,7 @@ var erbTables = []TableSpec{
 			{Field: "evidence_count", Op: "COUNTIFS", Table: "claim_evidence", Criteria: []Criterion{{Range: "article_claim", Kind: "field", Field: "article_claim_id"}}},
 			{Field: "valid_evidence_count", Op: "COUNTIFS", Table: "claim_evidence", Criteria: []Criterion{{Range: "article_claim", Kind: "field", Field: "article_claim_id"}, {Range: "is_valid", Kind: "literal", Literal: vB(true)}}},
 			{Field: "agreed_evidence_count", Op: "COUNTIFS", Table: "claim_evidence", Criteria: []Criterion{{Range: "article_claim", Kind: "field", Field: "article_claim_id"}, {Range: "is_agreed_evidence", Kind: "literal", Literal: vB(true)}}},}},
-	{Name: "ClaimEvidence", File: "claim_evidence", RulebookRows: 895, New: func() Record { return &ClaimEvidence{} },
+	{Name: "ClaimEvidence", File: "claim_evidence", RulebookRows: 900, New: func() Record { return &ClaimEvidence{} },
 		Lookups: []LookupSpec{
 			{Field: "claim_kind", Target: "article_claims", Return: "claim_kind", Key: "article_claim", Match: "article_claim_id"},
 			{Field: "field_catalog_name", Target: "rulebook_fields", Return: "field_name", Key: "rulebook_field", Match: "rulebook_field_id"},
@@ -59345,7 +60521,7 @@ var erbTables = []TableSpec{
 			{Field: "method_is_applied", Target: "knowledge_methods", Return: "is_applied", Key: "knowledge_method", Match: "knowledge_method_id"},
 			{Field: "procedure_execution_count", Target: "procedures", Return: "execution_count", Key: "procedure", Match: "procedure_id"},},
 		Aggregations: []AggregateSpec{}},
-	{Name: "MethodApplications", File: "method_applications", RulebookRows: 19, New: func() Record { return &MethodApplication{} },
+	{Name: "MethodApplications", File: "method_applications", RulebookRows: 20, New: func() Record { return &MethodApplication{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{}},
 	{Name: "LifecycleStatuses", File: "lifecycle_statuses", RulebookRows: 11, New: func() Record { return &LifecycleStatuse{} },
@@ -59445,13 +60621,16 @@ var erbTables = []TableSpec{
 			{Field: "escalation_role_has_no_holder", Target: "roles", Return: "has_no_current_holder", Key: "escalate_to_role", Match: "role_id"},},
 		Aggregations: []AggregateSpec{}},
 	{Name: "StepCues", File: "step_cues", RulebookRows: 4, New: func() Record { return &StepCue{} },
-		Lookups: []LookupSpec{},
+		Lookups: []LookupSpec{
+			{Field: "failure_mode_response", Target: "failure_modes", Return: "response", Key: "signals_failure_mode", Match: "failure_mode_id"},},
 		Aggregations: []AggregateSpec{
 			{Field: "observation_count", Op: "COUNTIFS", Table: "cue_observations", Criteria: []Criterion{{Range: "step_cue", Kind: "field", Field: "step_cue_id"}}},
 			{Field: "unescalated_observation_count", Op: "COUNTIFS", Table: "cue_observations", Criteria: []Criterion{{Range: "unescalated_cue_key", Kind: "field", Field: "step_cue_id"}}},}},
 	{Name: "CueObservations", File: "cue_observations", RulebookRows: 3, New: func() Record { return &CueObservation{} },
 		Lookups: []LookupSpec{
-			{Field: "cue_requires_escalation", Target: "step_cues", Return: "requires_escalation", Key: "step_cue", Match: "step_cue_id"},},
+			{Field: "cue_requires_escalation", Target: "step_cues", Return: "requires_escalation", Key: "step_cue", Match: "step_cue_id"},
+			{Field: "owner_organization", Target: "step_executions", Return: "owner_organization", Key: "step_execution", Match: "step_execution_id"},
+			{Field: "cue_signals_incomplete_step", Target: "step_cues", Return: "signals_incomplete_step", Key: "step_cue", Match: "step_cue_id"},},
 		Aggregations: []AggregateSpec{}},
 	{Name: "DecisionPoints", File: "decision_points", RulebookRows: 5, New: func() Record { return &DecisionPoint{} },
 		Lookups: []LookupSpec{},
@@ -59539,7 +60718,8 @@ var erbTables = []TableSpec{
 		Aggregations: []AggregateSpec{}},
 	{Name: "TermLabelVariants", File: "term_label_variants", RulebookRows: 53, New: func() Record { return &TermLabelVariant{} },
 		Lookups: []LookupSpec{
-			{Field: "term_scheme", Target: "vocabulary_terms", Return: "vocabulary", Key: "vocabulary_term", Match: "vocabulary_term_id"},},
+			{Field: "term_scheme", Target: "vocabulary_terms", Return: "vocabulary", Key: "vocabulary_term", Match: "vocabulary_term_id"},
+			{Field: "term_pref_label", Target: "vocabulary_terms", Return: "pref_label", Key: "vocabulary_term", Match: "vocabulary_term_id"},},
 		Aggregations: []AggregateSpec{
 			{Field: "concepts_sharing_wording", Op: "COUNTIFS", Table: "term_label_variants", Criteria: []Criterion{{Range: "wording_key", Kind: "field", Field: "wording_key"}}},
 			{Field: "practitioner_mention_count", Op: "COUNTIFS", Table: "source_term_mentions", Criteria: []Criterion{{Range: "wording_key", Kind: "field", Field: "wording_key"}, {Range: "mention_origin", Kind: "literal", Literal: vS("Practitioner")}}},
@@ -59649,7 +60829,8 @@ var erbTables = []TableSpec{
 			{Field: "execution_of_context", Target: "step_executions", Return: "procedure_execution", Key: "step_execution", Match: "step_execution_id"},
 			{Field: "context_step", Target: "step_executions", Return: "step", Key: "step_execution", Match: "step_execution_id"},
 			{Field: "recommended_step_regulatory_count", Target: "steps", Return: "regulatory_requirement_count", Key: "recommended_step", Match: "step_id"},
-			{Field: "recommended_step_needs_human", Target: "steps", Return: "requires_human_confirmation", Key: "recommended_step", Match: "step_id"},},
+			{Field: "recommended_step_needs_human", Target: "steps", Return: "requires_human_confirmation", Key: "recommended_step", Match: "step_id"},
+			{Field: "owner_organization", Target: "step_executions", Return: "owner_organization", Key: "step_execution", Match: "step_execution_id"},},
 		Aggregations: []AggregateSpec{
 			{Field: "grounding_count", Op: "COUNTIFS", Table: "answer_groundings", Criteria: []Criterion{{Range: "assistant_answer", Kind: "field", Field: "assistant_answer_id"}}},
 			{Field: "own_knowledge_grounding_count", Op: "COUNTIFS", Table: "answer_groundings", Criteria: []Criterion{{Range: "assistant_answer", Kind: "field", Field: "assistant_answer_id"}, {Range: "is_from_own_knowledge", Kind: "literal", Literal: vB(true)}}},
@@ -60061,7 +61242,8 @@ var erbTables = []TableSpec{
 	{Name: "KnowledgeTransfers", File: "knowledge_transfers", RulebookRows: 9, New: func() Record { return &KnowledgeTransfer{} },
 		Lookups: []LookupSpec{
 			{Field: "from_organization", Target: "agents", Return: "organization", Key: "from_agent", Match: "agent_id"},
-			{Field: "recipient_role_count", Target: "agents", Return: "count_of_current_role_assignments", Key: "recipient_agent", Match: "agent_id"},},
+			{Field: "recipient_role_count", Target: "agents", Return: "count_of_current_role_assignments", Key: "recipient_agent", Match: "agent_id"},
+			{Field: "know_how_topic", Target: "know_how_carriers", Return: "topic", Key: "know_how", Match: "know_how_carrier_id"},},
 		Aggregations: []AggregateSpec{}},
 	{Name: "KnowledgeRepositoryEntries", File: "knowledge_repository_entries", RulebookRows: 8, New: func() Record { return &KnowledgeRepositoryEntrie{} },
 		Lookups: []LookupSpec{
@@ -60147,6 +61329,26 @@ var erbTables = []TableSpec{
 			{Field: "declared_source_step", Target: "step_variables", Return: "source_step", Key: "step_variable", Match: "step_variable_id"},
 			{Field: "declared_consumer_step", Target: "step_variables", Return: "step", Key: "step_variable", Match: "step_variable_id"},},
 		Aggregations: []AggregateSpec{}},
+	{Name: "AppActions", File: "app_actions", RulebookRows: 20, New: func() Record { return &AppAction{} },
+		Lookups: []LookupSpec{
+			{Field: "policy_command", Target: "access_policies", Return: "command", Key: "policy", Match: "access_policy_id"},
+			{Field: "policy_denial_test_count", Target: "access_policies", Return: "denial_test_count", Key: "policy", Match: "access_policy_id"},
+			{Field: "watched_field_is_witness", Target: "rulebook_fields", Return: "is_witness", Key: "watched_field", Match: "rulebook_field_id"},},
+		Aggregations: []AggregateSpec{
+			{Field: "input_field_count", Op: "COUNTIFS", Table: "app_action_fields", Criteria: []Criterion{{Range: "app_action", Kind: "field", Field: "app_action_id"}}},}},
+	{Name: "AppActionFields", File: "app_action_fields", RulebookRows: 100, New: func() Record { return &AppActionField{} },
+		Lookups: []LookupSpec{
+			{Field: "target_field_type", Target: "rulebook_fields", Return: "field_type", Key: "target_field", Match: "rulebook_field_id"},},
+		Aggregations: []AggregateSpec{}},
+	{Name: "AbundantKnowledgeGaps", File: "abundant_knowledge_gaps", RulebookRows: 3, New: func() Record { return &AbundantKnowledgeGap{} },
+		Lookups: []LookupSpec{
+			{Field: "representing_table_row_count", Target: "rulebook_tables", Return: "measured_row_count", Key: "represented_by_table", Match: "rulebook_table_id"},},
+		Aggregations: []AggregateSpec{}},
+	{Name: "OntologySupportProgrammes", File: "ontology_support_programmes", RulebookRows: 2, New: func() Record { return &OntologySupportProgramme{} },
+		Lookups: []LookupSpec{
+			{Field: "as_of_instant", Target: "evaluation_contexts", Return: "as_of_instant", Key: "evaluation_context", Match: "evaluation_context_id"},},
+		Aggregations: []AggregateSpec{
+			{Field: "supported_profile_count", Op: "COUNTIFS", Table: "ontology_profiles", Criteria: []Criterion{{Range: "supporting_programme", Kind: "field", Field: "ontology_support_programme_id"}}},}},
 }
 
 // erbClosures materializes each vw_<entity>_closure view aggregations read.

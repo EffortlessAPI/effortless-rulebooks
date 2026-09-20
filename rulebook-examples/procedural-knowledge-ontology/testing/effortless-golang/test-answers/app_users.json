@@ -1,5 +1,20 @@
 [
   {
+    "app_user_id": "user-aisha-bello",
+    "name": "Aisha Bello",
+    "email_address": "aisha.bello@example.com",
+    "display_name": "Aisha Bello",
+    "linked_agent": "aisha-bello",
+    "is_enabled": true,
+    "agent_kind": "Human",
+    "organization": "acme-plant",
+    "assignment_count": 1,
+    "has_no_principal": false,
+    "holds_multiple_principals": false,
+    "is_non_human_sign_in": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppUser"
+  },
+  {
     "app_user_id": "user-amina-yusuf",
     "name": "Amina Yusuf",
     "email_address": "amina.yusuf@example.com",
@@ -12,7 +27,22 @@
     "has_no_principal": false,
     "holds_multiple_principals": false,
     "is_non_human_sign_in": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppUser"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppUser"
+  },
+  {
+    "app_user_id": "user-claire-dubois",
+    "name": "Claire Dubois",
+    "email_address": "claire.dubois@example.com",
+    "display_name": "Claire Dubois",
+    "linked_agent": "claire-dubois",
+    "is_enabled": true,
+    "agent_kind": "Human",
+    "organization": "acme-home-brands",
+    "assignment_count": 1,
+    "has_no_principal": false,
+    "holds_multiple_principals": false,
+    "is_non_human_sign_in": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppUser"
   },
   {
     "app_user_id": "user-close-pipeline",
@@ -27,7 +57,7 @@
     "has_no_principal": false,
     "holds_multiple_principals": false,
     "is_non_human_sign_in": true,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppUser"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppUser"
   },
   {
     "app_user_id": "user-devon-okafor",
@@ -42,7 +72,7 @@
     "has_no_principal": false,
     "holds_multiple_principals": false,
     "is_non_human_sign_in": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppUser"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppUser"
   },
   {
     "app_user_id": "user-elena-garcia",
@@ -57,7 +87,67 @@
     "has_no_principal": false,
     "holds_multiple_principals": true,
     "is_non_human_sign_in": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppUser"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppUser"
+  },
+  {
+    "app_user_id": "user-grace-holloway",
+    "name": "Grace Holloway",
+    "email_address": "grace.holloway@example.com",
+    "display_name": "Grace Holloway",
+    "linked_agent": "grace-holloway",
+    "is_enabled": true,
+    "agent_kind": "Human",
+    "organization": "acme-engineering",
+    "assignment_count": 1,
+    "has_no_principal": false,
+    "holds_multiple_principals": false,
+    "is_non_human_sign_in": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppUser"
+  },
+  {
+    "app_user_id": "user-hana-kowalski",
+    "name": "Hana Kowalski",
+    "email_address": "hana.kowalski@example.com",
+    "display_name": "Hana Kowalski",
+    "linked_agent": "hana-kowalski",
+    "is_enabled": true,
+    "agent_kind": "Human",
+    "organization": "acme-plant",
+    "assignment_count": 1,
+    "has_no_principal": false,
+    "holds_multiple_principals": false,
+    "is_non_human_sign_in": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppUser"
+  },
+  {
+    "app_user_id": "user-ken-watanabe",
+    "name": "Ken Watanabe",
+    "email_address": "ken.watanabe@example.com",
+    "display_name": "Ken Watanabe",
+    "linked_agent": "ken-watanabe",
+    "is_enabled": true,
+    "agent_kind": "Human",
+    "organization": "acme-plant",
+    "assignment_count": 1,
+    "has_no_principal": false,
+    "holds_multiple_principals": false,
+    "is_non_human_sign_in": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppUser"
+  },
+  {
+    "app_user_id": "user-lin-zhao",
+    "name": "Lin Zhao",
+    "email_address": "lin.zhao@example.com",
+    "display_name": "Lin Zhao",
+    "linked_agent": "lin-zhao",
+    "is_enabled": true,
+    "agent_kind": "Human",
+    "organization": "acme-plant",
+    "assignment_count": 1,
+    "has_no_principal": false,
+    "holds_multiple_principals": false,
+    "is_non_human_sign_in": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppUser"
   },
   {
     "app_user_id": "user-maria-chen",
@@ -72,7 +162,22 @@
     "has_no_principal": false,
     "holds_multiple_principals": false,
     "is_non_human_sign_in": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppUser"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppUser"
+  },
+  {
+    "app_user_id": "user-nadia-petrova",
+    "name": "Nadia Petrova",
+    "email_address": "nadia.petrova@example.com",
+    "display_name": "Nadia Petrova",
+    "linked_agent": "nadia-petrova",
+    "is_enabled": true,
+    "agent_kind": "Human",
+    "organization": "acme-corp",
+    "assignment_count": 1,
+    "has_no_principal": false,
+    "holds_multiple_principals": false,
+    "is_non_human_sign_in": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppUser"
   },
   {
     "app_user_id": "user-noah-williams",
@@ -87,7 +192,7 @@
     "has_no_principal": false,
     "holds_multiple_principals": false,
     "is_non_human_sign_in": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppUser"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppUser"
   },
   {
     "app_user_id": "user-notification-pipeline",
@@ -102,7 +207,22 @@
     "has_no_principal": false,
     "holds_multiple_principals": false,
     "is_non_human_sign_in": true,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppUser"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppUser"
+  },
+  {
+    "app_user_id": "user-plant-copilot-1-2",
+    "name": "Plant Copilot 1.2",
+    "email_address": "copilot@example.com",
+    "display_name": "Plant Copilot 1.2",
+    "linked_agent": "plant-copilot-1-2",
+    "is_enabled": true,
+    "agent_kind": "AIAgent",
+    "organization": "acme-plant",
+    "assignment_count": 1,
+    "has_no_principal": false,
+    "holds_multiple_principals": false,
+    "is_non_human_sign_in": true,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppUser"
   },
   {
     "app_user_id": "user-policy-drafting-ai",
@@ -117,7 +237,7 @@
     "has_no_principal": false,
     "holds_multiple_principals": false,
     "is_non_human_sign_in": true,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppUser"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppUser"
   },
   {
     "app_user_id": "user-priya-raman",
@@ -132,7 +252,37 @@
     "has_no_principal": false,
     "holds_multiple_principals": true,
     "is_non_human_sign_in": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppUser"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppUser"
+  },
+  {
+    "app_user_id": "user-sam-adeyemi",
+    "name": "Sam Adeyemi",
+    "email_address": "sam.adeyemi@example.com",
+    "display_name": "Sam Adeyemi",
+    "linked_agent": "sam-adeyemi",
+    "is_enabled": true,
+    "agent_kind": "Human",
+    "organization": "acme-corp",
+    "assignment_count": 1,
+    "has_no_principal": false,
+    "holds_multiple_principals": false,
+    "is_non_human_sign_in": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppUser"
+  },
+  {
+    "app_user_id": "user-tomas-reyes",
+    "name": "Tomas Reyes",
+    "email_address": "tomas.reyes@example.com",
+    "display_name": "Tomas Reyes",
+    "linked_agent": "tomas-reyes",
+    "is_enabled": true,
+    "agent_kind": "Human",
+    "organization": "acme-plant",
+    "assignment_count": 1,
+    "has_no_principal": false,
+    "holds_multiple_principals": false,
+    "is_non_human_sign_in": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppUser"
   },
   {
     "app_user_id": "user-variance-ai",
@@ -147,6 +297,6 @@
     "has_no_principal": false,
     "holds_multiple_principals": false,
     "is_non_human_sign_in": true,
-    "semantic_type_iri": "urn:effortless:pko-extension#AppUser"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AppUser"
   }
 ]

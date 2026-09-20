@@ -1,0 +1,46 @@
+[
+  {
+    "term_relation_id": "tr-bleed-broader-lockout",
+    "from_term": "vt-hydraulic-bleed",
+    "relation_kind": "broader",
+    "to_term": "vt-lockout",
+    "note": "Added from the SOP index, which lists accumulator bleed-down directly under lockout.",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#TermRelation",
+    "name": "vt-hydraulic-bleed broader vt-lockout",
+    "from_term_grandparent": null,
+    "asserts_indirect_link_as_direct": false
+  },
+  {
+    "term_relation_id": "tr-risk-related-approval",
+    "from_term": "vt-risk-classification",
+    "relation_kind": "related",
+    "to_term": "vt-release-approval",
+    "note": "The approver decides on the risk class.",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#TermRelation",
+    "name": "vt-risk-classification related vt-release-approval",
+    "from_term_grandparent": null,
+    "asserts_indirect_link_as_direct": false
+  },
+  {
+    "term_relation_id": "tr-rollback-related-approval",
+    "from_term": "vt-rollback",
+    "relation_kind": "related",
+    "to_term": "vt-release-approval",
+    "note": "A rejected release after rollout is rolled back.",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#TermRelation",
+    "name": "vt-rollback related vt-release-approval",
+    "from_term_grandparent": null,
+    "asserts_indirect_link_as_direct": false
+  },
+  {
+    "term_relation_id": "tr-zero-related-isolation",
+    "from_term": "vt-zero-energy-verification",
+    "relation_kind": "related",
+    "to_term": "vt-isolation",
+    "note": "Verification checks what isolation achieved.",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#TermRelation",
+    "name": "vt-zero-energy-verification related vt-isolation",
+    "from_term_grandparent": null,
+    "asserts_indirect_link_as_direct": false
+  }
+]

@@ -1,0 +1,46 @@
+[
+  {
+    "expected_inference_check_id": "eic-01-children",
+    "name": "vr-01: loto-04 is a multi-step with three sub-steps.",
+    "change_validation_run": "vr-01",
+    "chain_description": "loto-04 is a multi-step with three sub-steps.",
+    "expected_field": "Steps.ChildStepCount",
+    "expected_value": "3",
+    "produced_value": "3",
+    "is_unproduced": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ExpectedInferenceCheck"
+  },
+  {
+    "expected_inference_check_id": "eic-01-software",
+    "name": "vr-01: Classifier 2.4.1 holds the risk role, so deploy-02",
+    "change_validation_run": "vr-01",
+    "chain_description": "Classifier 2.4.1 holds the risk role, so deploy-02 is accountable to software.",
+    "expected_field": "Steps.IsAccountableToSoftware",
+    "expected_value": "true",
+    "produced_value": "true",
+    "is_unproduced": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ExpectedInferenceCheck"
+  },
+  {
+    "expected_inference_check_id": "eic-05-doclag",
+    "name": "vr-05: The deployment runbook trails the deployment versi",
+    "change_validation_run": "vr-05",
+    "chain_description": "The deployment runbook trails the deployment version by more than sixty days.",
+    "expected_field": "ProcedureVersions.DocumentLagsPractice",
+    "expected_value": "true",
+    "produced_value": "false",
+    "is_unproduced": true,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ExpectedInferenceCheck"
+  },
+  {
+    "expected_inference_check_id": "eic-05-duration",
+    "name": "vr-05: loto-v2.0.0 declares a sixty-minute expected durat",
+    "change_validation_run": "vr-05",
+    "chain_description": "loto-v2.0.0 declares a sixty-minute expected duration.",
+    "expected_field": "ProcedureVersions.ExpectedDurationValue",
+    "expected_value": "60",
+    "produced_value": "60",
+    "is_unproduced": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ExpectedInferenceCheck"
+  }
+]

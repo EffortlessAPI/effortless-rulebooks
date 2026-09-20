@@ -1,0 +1,46 @@
+[
+  {
+    "knowledge_workforce_position_id": "kwp-eng-ia",
+    "organization": "acme-engineering",
+    "discipline": "InformationArchitect",
+    "role": null,
+    "status": "Open",
+    "opened_at": "2026-06-15T09:00:00-05:00",
+    "filled_by_agent": null,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#KnowledgeWorkforcePosition",
+    "name": "acme-engineering InformationArchitect"
+  },
+  {
+    "knowledge_workforce_position_id": "kwp-eng-ontologist",
+    "organization": "acme-engineering",
+    "discipline": "Ontologist",
+    "role": null,
+    "status": "Filled",
+    "opened_at": "2026-01-15T09:00:00-06:00",
+    "filled_by_agent": "ines-moreau",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#KnowledgeWorkforcePosition",
+    "name": "acme-engineering Ontologist"
+  },
+  {
+    "knowledge_workforce_position_id": "kwp-hb-ke",
+    "organization": "acme-home-brands",
+    "discipline": "KnowledgeEngineer",
+    "role": null,
+    "status": "NotBudgeted",
+    "opened_at": "2025-10-01T09:00:00-05:00",
+    "filled_by_agent": null,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#KnowledgeWorkforcePosition",
+    "name": "acme-home-brands KnowledgeEngineer"
+  },
+  {
+    "knowledge_workforce_position_id": "kwp-plant-ke",
+    "organization": "acme-plant",
+    "discipline": "KnowledgeEngineer",
+    "role": "knowledge-engineer",
+    "status": "Filled",
+    "opened_at": "2025-06-01T09:00:00-05:00",
+    "filled_by_agent": "sam-adeyemi",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#KnowledgeWorkforcePosition",
+    "name": "acme-plant KnowledgeEngineer"
+  }
+]

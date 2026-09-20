@@ -1,0 +1,22 @@
+[
+  {
+    "sharing_recognition_id": "rec12-joao-cluster",
+    "recognized_agent": "joao-ferreira",
+    "organization": "baxter-hydraulics",
+    "recognition_kind": "PeerAward",
+    "for_contribution": "Shared servo timing practice across the Riverbend cluster.",
+    "awarded_at": "2026-02-20T00:00:00-06:00",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#SharingRecognition",
+    "name": null
+  },
+  {
+    "sharing_recognition_id": "rec12-tomas-teaching",
+    "recognized_agent": "tomas-reyes",
+    "organization": "acme-plant",
+    "recognition_kind": "TeachingAward",
+    "for_contribution": "Trained the plant's lockout apprentices and wrote the Press 7 bleed fix.",
+    "awarded_at": "2026-03-15T00:00:00-05:00",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#SharingRecognition",
+    "name": null
+  }
+]

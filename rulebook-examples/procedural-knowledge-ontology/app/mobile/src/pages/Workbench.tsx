@@ -1,9 +1,10 @@
 import { useState } from "react";
 import * as api from "../api";
 import { useRows } from "../session";
+import { Controls } from "../ui/controls";
 import { ActionSheet, AppBar, Err, ExplainerNote, Explains, Fact, KV, Loading, Tag, Th, Val, Why, fmtDay, fmtTime, human, useQuickAction, yn } from "../ui/kit";
 
-type Tab = "board" | "collect" | "organize" | "encode" | "searches" | "changes";
+type Tab = "board" | "controls" | "collect" | "organize" | "encode" | "searches" | "changes";
 const PROCEDURE = "lockout-tagout"; const VERSION = "loto-v2.0.0";
 
 export default function Workbench() {
@@ -15,6 +16,7 @@ export default function Workbench() {
       <AppBar title="Capture Workbench" />
       <div className="tabs">
         <button className="tab" aria-selected={tab === "board"} onClick={() => setTab("board")}>Know-how<span className={`n ${risk ? "red" : ""}`}>{board.rows?.length ?? "·"}</span></button>
+        <button className="tab" aria-selected={tab === "controls"} onClick={() => setTab("controls")}>Controls</button>
         <button className="tab" aria-selected={tab === "collect"} onClick={() => setTab("collect")}>1 · Collect</button>
         <button className="tab" aria-selected={tab === "organize"} onClick={() => setTab("organize")}>2 · Organize</button>
         <button className="tab" aria-selected={tab === "encode"} onClick={() => setTab("encode")}>3 · Encode</button>
@@ -23,6 +25,7 @@ export default function Workbench() {
       </div>
       <div className="content">
         {tab === "board" && <Board board={board} />}
+        {tab === "controls" && <Controls mode="engineer" />}
         {tab === "collect" && <Collect />}
         {tab === "organize" && <Organize />}
         {tab === "encode" && <Encode />}

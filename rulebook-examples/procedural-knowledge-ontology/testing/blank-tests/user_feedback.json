@@ -8,7 +8,42 @@
     "disposition": "Accepted",
     "change_request_key": "cr-close-timestamp",
     "semantic_type_iri": "https://w3id.org/pko#UserFeedbackOccurrence",
-    "name": null
+    "name": null,
+    "is_unactioned_procedure_critique": null,
+    "collection_follow_up_count": null,
+    "is_tacit_signal_not_fed_into_collection": null
+  },
+  {
+    "user_feedback_id": "fb-loto-0708",
+    "procedure_execution": "exec-loto-0708-north-day",
+    "provided_by_agent": "tomas-reyes",
+    "provided_at": "2026-07-08T14:00:00-05:00",
+    "feedback_text": "Smooth run.",
+    "disposition": "Accepted",
+    "change_request_key": "",
+    "feedback_on_procedure": "",
+    "feedback_on_execution": "Second verification caught the residual pressure.",
+    "semantic_type_iri": "https://w3id.org/pko#UserFeedbackOccurrence",
+    "name": null,
+    "is_unactioned_procedure_critique": null,
+    "collection_follow_up_count": null,
+    "is_tacit_signal_not_fed_into_collection": null
+  },
+  {
+    "user_feedback_id": "fb-loto-0709",
+    "procedure_execution": "exec-loto-0709-south-night",
+    "provided_by_agent": "ken-watanabe",
+    "provided_at": "2026-07-10T05:00:00-05:00",
+    "feedback_text": "Press-7 map is missing the accumulator; night shift has no second verifier.",
+    "disposition": "UnderReview",
+    "change_request_key": "",
+    "feedback_on_procedure": "The press-7 isolation map does not show the accumulator.",
+    "feedback_on_execution": "Nobody was available on nights to verify zero energy.",
+    "semantic_type_iri": "https://w3id.org/pko#UserFeedbackOccurrence",
+    "name": null,
+    "is_unactioned_procedure_critique": null,
+    "collection_follow_up_count": null,
+    "is_tacit_signal_not_fed_into_collection": null
   },
   {
     "user_feedback_id": "fb-policy-sms",
@@ -19,6 +54,43 @@
     "disposition": "UnderReview",
     "change_request_key": "cr-policy-delivery",
     "semantic_type_iri": "https://w3id.org/pko#UserFeedbackOccurrence",
-    "name": null
+    "name": null,
+    "is_unactioned_procedure_critique": null,
+    "collection_follow_up_count": null,
+    "is_tacit_signal_not_fed_into_collection": null
+  },
+  {
+    "user_feedback_id": "uf13-deploy-cache-warm",
+    "procedure_execution": "exec-deploy-2026-03-01",
+    "provided_by_agent": "grace-holloway",
+    "provided_at": "2026-03-01T15:00:00-06:00",
+    "feedback_text": "Before switching traffic we warm the caches by hand; nothing written says when that is safe.",
+    "disposition": "Acknowledged",
+    "change_request_key": "",
+    "feedback_on_procedure": "",
+    "feedback_on_execution": "",
+    "reveals_tacit_knowledge": true,
+    "semantic_type_iri": "https://w3id.org/pko#UserFeedbackOccurrence",
+    "name": null,
+    "is_unactioned_procedure_critique": null,
+    "collection_follow_up_count": null,
+    "is_tacit_signal_not_fed_into_collection": null
+  },
+  {
+    "user_feedback_id": "uf13-loto-hiss-cue",
+    "procedure_execution": "exec-loto-0718-north-day",
+    "provided_by_agent": "tomas-reyes",
+    "provided_at": "2026-07-18T07:30:00-05:00",
+    "feedback_text": "On press-7 we wait for the accumulator hiss to stop before trusting the gauge; the bleed step does not say so.",
+    "disposition": "Accepted",
+    "change_request_key": "",
+    "feedback_on_procedure": "",
+    "feedback_on_execution": "",
+    "reveals_tacit_knowledge": true,
+    "semantic_type_iri": "https://w3id.org/pko#UserFeedbackOccurrence",
+    "name": null,
+    "is_unactioned_procedure_critique": null,
+    "collection_follow_up_count": null,
+    "is_tacit_signal_not_fed_into_collection": null
   }
 ]

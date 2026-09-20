@@ -19,7 +19,9 @@
     "exceeds_promised_cadence": null,
     "cadence_drift_days": null,
     "promise_and_behavior_disagree": null,
-    "cadence_breach_version_key": null
+    "cadence_breach_version_key": null,
+    "version_modified_at": null,
+    "review_did_not_refresh_modified": null
   },
   {
     "review_event_id": "review-close-q2",
@@ -41,7 +43,9 @@
     "exceeds_promised_cadence": null,
     "cadence_drift_days": null,
     "promise_and_behavior_disagree": null,
-    "cadence_breach_version_key": null
+    "cadence_breach_version_key": null,
+    "version_modified_at": null,
+    "review_did_not_refresh_modified": null
   },
   {
     "review_event_id": "review-policy-prelaunch",
@@ -63,6 +67,8 @@
     "exceeds_promised_cadence": null,
     "cadence_drift_days": null,
     "promise_and_behavior_disagree": null,
-    "cadence_breach_version_key": null
+    "cadence_breach_version_key": null,
+    "version_modified_at": null,
+    "review_did_not_refresh_modified": null
   }
 ]

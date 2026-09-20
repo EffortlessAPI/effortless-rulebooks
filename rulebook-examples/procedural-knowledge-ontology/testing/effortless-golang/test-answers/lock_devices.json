@@ -1,0 +1,20 @@
+[
+  {
+    "lock_device_id": "BallValveLockout",
+    "name": "Ball valve lockout",
+    "label": "Ball valve lockout",
+    "semantic_type_iri": "https://w3id.org/pko/industry#Lock"
+  },
+  {
+    "lock_device_id": "CircuitBreakerLockout",
+    "name": "Circuit breaker lockout",
+    "label": "Circuit breaker lockout",
+    "semantic_type_iri": "https://w3id.org/pko/industry#Lock"
+  },
+  {
+    "lock_device_id": "StandardPadlock",
+    "name": "Standard padlock",
+    "label": "Standard padlock",
+    "semantic_type_iri": "https://w3id.org/pko/industry#Lock"
+  }
+]

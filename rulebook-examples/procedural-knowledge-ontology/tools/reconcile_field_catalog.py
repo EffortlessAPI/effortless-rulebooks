@@ -30,7 +30,7 @@ from pathlib import Path
 
 CATALOG = "RulebookFields"
 DEFAULT_RB = "effortless-rulebook/procedural-knowledge-ontology-rulebook.json"
-EXTENSION_IRI = "urn:effortless:pko-extension#RulebookField"
+EXTENSION_IRI = "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RulebookField"
 
 # Tables that describe the model itself rather than the procedural domain.
 META_TABLES = {"WitnessLoops", "RoleQuestions", "RulebookFields", "__meta__",
@@ -65,6 +65,10 @@ def build_rows(rb: OrderedDict, provenance: dict[str, str],
                 ("FieldType", field.get("type")),
                 ("Datatype", field.get("datatype")),
                 ("Formula", field.get("formula")),
+                # Structural catalog metadata, like FieldType and Datatype beside it. The
+                # published vocabulary needs it: an object property's range is the table its
+                # relationship points at, and without this column the catalog could not say.
+                ("RelatedTo", field.get("RelatedTo")),
                 ("InventedForQuestion", provenance.get(fid)),
                 ("SemanticTypeIri", EXTENSION_IRI),
             ]))

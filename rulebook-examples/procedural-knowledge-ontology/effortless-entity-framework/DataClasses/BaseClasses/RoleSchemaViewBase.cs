@@ -45,11 +45,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             get => F.AsString(F.Memo(this, "GrantKey", () => F.Concat(F.Text(F.Of(this.Principal)), F.S("|"), F.Text(F.Of(this.TargetTable))))); set { }
         }
 
-        // Formula ColumnCount (rulebook: =COUNTIFS(FieldGrants!{{GrantKeyWhenReadable}}, {{GrantKey}}))
+        // Formula ColumnCount (rulebook: =COUNTIFS(FieldGrants!{{Principal}}, {{Principal}}, FieldGrants!{{CanRead}}, TRUE, FieldGrants!{{FieldTable}}, {{TargetTable}}))
         [NotMapped]
         public decimal? ColumnCount
         {
-            get => F.AsDecimal(F.Memo(this, "ColumnCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<FieldGrant>(base.SoAContext, "FieldGrants", __c => __c.FieldGrants), __r => F.CritField(F.Of(__r.GrantKeyWhenReadable), F.Of(this.GrantKey)))))); set { }
+            get => F.AsDecimal(F.Memo(this, "ColumnCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<FieldGrant>(base.SoAContext, "FieldGrants", __c => __c.FieldGrants), __r => F.CritField(F.Of(__r.Principal), F.Of(this.Principal)) && F.CritLiteral(F.Of(__r.CanRead), F.B(true)) && F.CritField(F.Of(__r.FieldTable), F.Of(this.TargetTable)))))); set { }
         }
 
         // Formula TableFieldCount (rulebook: =INDEX(RulebookTables!{{FieldCount}}, MATCH({{TargetTable}}, RulebookTables!{{RulebookTableId}}, 0)))

@@ -27,6 +27,13 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string? MappingKind { get; set; }
         public string? TargetIri { get; set; }
         public string? MappingRelation { get; set; }
+        // Formula ProfileNamespaceDereferences (rulebook: =INDEX(OntologyProfiles!{{NamespaceDereferences}}, MATCH({{OntologyProfile}}, OntologyProfiles!{{OntologyProfileId}}, 0)))
+        [NotMapped]
+        public bool? ProfileNamespaceDereferences
+        {
+            get => F.AsBool(F.Memo(this, "ProfileNamespaceDereferences", () => F.Lookup<OntologyProfile>(this, "OntologyProfiles", "OntologyProfileId", __c => __c.OntologyProfiles, __r => F.Of(__r.OntologyProfileId), F.Of(this.OntologyProfile), __r => F.Of(__r.NamespaceDereferences), () => F.Of(new OntologyProfile().NamespaceDereferences)))); set { }
+        }
+
         public string? Notes { get; set; }
         public string? AvailableStandardIri { get; set; }
         // Formula ReinventsStandardTerm (rulebook: =AND({{MappingRelation}} = "extension", {{AvailableStandardIri}} <> ""))
@@ -36,11 +43,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             get => F.AsBool(F.Memo(this, "ReinventsStandardTerm", () => F.And(F.Bool3(F.Eq(F.Nullif(F.Of(this.MappingRelation)), F.S("extension"))), F.Bool3(F.IsNotBlank(F.Of(this.AvailableStandardIri)))))); set { }
         }
 
-        // Formula IsNonResolvableTermIri (rulebook: =AND({{MappingRelation}} = "extension", LEFT({{TargetIri}}, 4) <> "http"))
+        // Formula IsNonResolvableTermIri (rulebook: =OR(LEFT({{TargetIri}}, 4) <> "http", AND({{OntologyProfile}} <> "", {{ProfileNamespaceDereferences}} = FALSE)))
         [NotMapped]
         public bool? IsNonResolvableTermIri
         {
-            get => F.AsBool(F.Memo(this, "IsNonResolvableTermIri", () => F.And(F.Bool3(F.Eq(F.Nullif(F.Of(this.MappingRelation)), F.S("extension"))), F.Bool3(F.Ne(F.Left(F.Of(this.TargetIri), F.I(4)), F.S("http")))))); set { }
+            get => F.AsBool(F.Memo(this, "IsNonResolvableTermIri", () => F.Or(F.Bool3(F.Ne(F.Left(F.Of(this.TargetIri), F.I(4)), F.S("http"))), F.Bool3(F.And(F.Bool3(F.IsNotBlank(F.Of(this.OntologyProfile))), F.Bool3(F.Eq(F.Of(this.ProfileNamespaceDereferences), F.B(false)))))))); set { }
         }
 
 

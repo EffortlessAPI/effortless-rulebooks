@@ -14,7 +14,7 @@
     "is_sms_reachable": true,
     "is_unreachable": false,
     "is_communicationally_stranded": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#Recipient"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#Recipient"
   },
   {
     "recipient_id": "rec-002",
@@ -31,7 +31,7 @@
     "is_sms_reachable": true,
     "is_unreachable": false,
     "is_communicationally_stranded": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#Recipient"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#Recipient"
   },
   {
     "recipient_id": "rec-003",
@@ -48,7 +48,7 @@
     "is_sms_reachable": true,
     "is_unreachable": false,
     "is_communicationally_stranded": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#Recipient"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#Recipient"
   },
   {
     "recipient_id": "rec-004",
@@ -65,7 +65,7 @@
     "is_sms_reachable": true,
     "is_unreachable": false,
     "is_communicationally_stranded": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#Recipient"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#Recipient"
   },
   {
     "recipient_id": "rec-005",
@@ -82,6 +82,6 @@
     "is_sms_reachable": false,
     "is_unreachable": false,
     "is_communicationally_stranded": false,
-    "semantic_type_iri": "urn:effortless:pko-extension#Recipient"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#Recipient"
   }
 ]

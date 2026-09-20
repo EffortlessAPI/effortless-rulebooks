@@ -1,0 +1,50 @@
+[
+  {
+    "authoring_submission_id": "sub-convmaint-ken",
+    "procedure_version": "convmaint-v1.0.0",
+    "submitted_by_agent": "ken-watanabe",
+    "submitted_at": "2026-01-30 21:00:00",
+    "authoring_tool": "knowledge-capture-form",
+    "submitter_expertise": "DomainExpert",
+    "step_count": 3,
+    "profile_validation_passed": false,
+    "validation_error_count": 3,
+    "was_accepted": true,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AuthoringSubmission",
+    "name": "convmaint-v1.0.0 by ken-watanabe",
+    "is_expert_authored_conforming": false,
+    "is_non_conforming_accepted": true
+  },
+  {
+    "authoring_submission_id": "sub-deploy-sam",
+    "procedure_version": "deploy-v3.2.0",
+    "submitted_by_agent": "sam-adeyemi",
+    "submitted_at": "2025-12-20 21:00:00",
+    "authoring_tool": "knowledge-capture-form",
+    "submitter_expertise": "KnowledgeEngineer",
+    "step_count": 5,
+    "profile_validation_passed": true,
+    "validation_error_count": 0,
+    "was_accepted": true,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AuthoringSubmission",
+    "name": "deploy-v3.2.0 by sam-adeyemi",
+    "is_expert_authored_conforming": false,
+    "is_non_conforming_accepted": false
+  },
+  {
+    "authoring_submission_id": "sub-loto2-tomas",
+    "procedure_version": "loto-v2.0.0",
+    "submitted_by_agent": "tomas-reyes",
+    "submitted_at": "2026-05-12 20:00:00",
+    "authoring_tool": "knowledge-capture-form",
+    "submitter_expertise": "DomainExpert",
+    "step_count": 12,
+    "profile_validation_passed": true,
+    "validation_error_count": 0,
+    "was_accepted": true,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AuthoringSubmission",
+    "name": "loto-v2.0.0 by tomas-reyes",
+    "is_expert_authored_conforming": true,
+    "is_non_conforming_accepted": false
+  }
+]

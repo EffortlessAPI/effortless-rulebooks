@@ -251,99 +251,268 @@ Effortless-XLSX Substrate Test Runner
 
 Workbook: rulebook-examples/procedural-knowledge-ontology/effortless-xlsx/pko-native-procedural-knowledge-rulebook.xlsx
   (LibreOffice not installed — relying on cached formula values)
-Sheets: [&#x27;RulebookReleases&#x27;, &#x27;OntologyProfiles&#x27;, &#x27;EvaluationContexts&#x27;, &#x27;Organizations&#x27;, &#x27;Agents&#x27;, &#x27;Roles&#x27;, &#x27;RoleAssignments&#x27;, &#x27;CommunitiesOfPractice&#x27;, &#x27;Mentorships&#x27;, &#x27;ProcedureTypes&#x27;, &#x27;Procedures&#x27;, &#x27;ProcedureVersions&#x27;, &#x27;ProcedureVersionLinks&#x27;, &#x27;ProcedureStatusChanges&#x27;, &#x27;Steps&#x27;, &#x27;StepTransitions&#x27;, &#x27;Actions&#x27;, &#x27;Functions&#x27;, &#x27;Tools&#x27;, &#x27;StepActions&#x27;, &#x27;StepFunctions&#x27;, &#x27;StepTools&#x27;, &#x27;Requirements&#x27;, &#x27;StepRequirements&#x27;, &#x27;StepVerifications&#x27;, &#x27;Rationales&#x27;, &#x27;Exceptions&#x27;, &#x27;Resources&#x27;, &#x27;ProcedureResources&#x27;, &#x27;ElicitationSessions&#x27;, &#x27;KnowledgeFragments&#x27;, &#x27;KnowledgeGaps&#x27;, &#x27;FAQs&#x27;, &#x27;Explanations&#x27;, &#x27;ProcedureExecutions&#x27;, &#x27;StepExecutions&#x27;, &#x27;RequirementSatisfactions&#x27;, &#x27;Errors&#x27;, &#x27;IssueOccurrences&#x27;, &#x27;UserQuestions&#x27;, &#x27;UserFeedback&#x27;, &#x27;StewardshipAssignments&#x27;, &#x27;ChangeRequests&#x27;, &#x27;ReviewEvents&#x27;, &#x27;LearningActivities&#x27;, &#x27;OperationalBindings&#x27;, &#x27;CommunicationPolicies&#x27;, &#x27;MessageTemplates&#x27;, &#x27;SemanticMappings&#x27;, &#x27;WitnessLoops&#x27;, &#x27;RoleQuestions&#x27;, &#x27;RulebookFields&#x27;, &#x27;TestSuites&#x27;, &#x27;TestCases&#x27;, &#x27;ERBVersions&#x27;, &#x27;ERBCustomizations&#x27;, &#x27;ExceptionInvocations&#x27;, &#x27;VerificationOutcomes&#x27;, &#x27;ObservedTransitions&#x27;, &#x27;Recipients&#x27;, &#x27;MessageDeliveries&#x27;, &#x27;TemplateApprovals&#x27;, &#x27;SendIntents&#x27;, &#x27;AgentDecisionRecords&#x27;, &#x27;DeliveredCommunications&#x27;, &#x27;AuthorityBoundaries&#x27;, &#x27;BindingObservations&#x27;, &#x27;Attestations&#x27;, &#x27;AppRoleProfiles&#x27;, &#x27;AppNavGroups&#x27;, &#x27;AppRoutes&#x27;, &#x27;AppRouteQuestions&#x27;, &#x27;AppRouteReferences&#x27;, &#x27;RulebookTables&#x27;, &#x27;AccessPrincipals&#x27;, &#x27;AccessPolicies&#x27;, &#x27;FieldGrants&#x27;, &#x27;RoleSchemas&#x27;, &#x27;RoleSchemaViews&#x27;, &#x27;JwtClaimMappings&#x27;, &#x27;AccessDenialTests&#x27;, &#x27;AppUsers&#x27;, &#x27;PrincipalAssignments&#x27;, &#x27;IssuedTokens&#x27;, &#x27;ProcessMiningRuns&#x27;, &#x27;Vocabularies&#x27;, &#x27;VocabularyTerms&#x27;, &#x27;KnowledgeBrokerLinks&#x27;, &#x27;ConformanceSubstrates&#x27;, &#x27;ConformanceRuns&#x27;, &#x27;SubstrateRunScores&#x27;, &#x27;TableConformance&#x27;, &#x27;FieldDisagreements&#x27;, &#x27;CellDisagreements&#x27;, &#x27;__parameters__&#x27;, &#x27;_original_json&#x27;]
+Sheets: [&#x27;RulebookReleases&#x27;, &#x27;OntologyProfiles&#x27;, &#x27;EvaluationContexts&#x27;, &#x27;Organizations&#x27;, &#x27;Agents&#x27;, &#x27;Roles&#x27;, &#x27;RoleAssignments&#x27;, &#x27;CommunitiesOfPractice&#x27;, &#x27;Mentorships&#x27;, &#x27;ProcedureTypes&#x27;, &#x27;Procedures&#x27;, &#x27;ProcedureVersions&#x27;, &#x27;ProcedureVersionLinks&#x27;, &#x27;ProcedureStatusChanges&#x27;, &#x27;Steps&#x27;, &#x27;StepTransitions&#x27;, &#x27;Actions&#x27;, &#x27;Functions&#x27;, &#x27;Tools&#x27;, &#x27;StepActions&#x27;, &#x27;StepFunctions&#x27;, &#x27;StepTools&#x27;, &#x27;Requirements&#x27;, &#x27;StepRequirements&#x27;, &#x27;StepVerifications&#x27;, &#x27;Rationales&#x27;, &#x27;Exceptions&#x27;, &#x27;Resources&#x27;, &#x27;ProcedureResources&#x27;, &#x27;ElicitationSessions&#x27;, &#x27;KnowledgeFragments&#x27;, &#x27;KnowledgeGaps&#x27;, &#x27;FAQs&#x27;, &#x27;Explanations&#x27;, &#x27;ProcedureExecutions&#x27;, &#x27;StepExecutions&#x27;, &#x27;RequirementSatisfactions&#x27;, &#x27;Errors&#x27;, &#x27;IssueOccurrences&#x27;, &#x27;UserQuestions&#x27;, &#x27;UserFeedback&#x27;, &#x27;StewardshipAssignments&#x27;, &#x27;ChangeRequests&#x27;, &#x27;ReviewEvents&#x27;, &#x27;LearningActivities&#x27;, &#x27;OperationalBindings&#x27;, &#x27;CommunicationPolicies&#x27;, &#x27;MessageTemplates&#x27;, &#x27;SemanticMappings&#x27;, &#x27;WitnessLoops&#x27;, &#x27;RoleQuestions&#x27;, &#x27;RulebookFields&#x27;, &#x27;TestSuites&#x27;, &#x27;TestCases&#x27;, &#x27;ERBVersions&#x27;, &#x27;ERBCustomizations&#x27;, &#x27;ExceptionInvocations&#x27;, &#x27;VerificationOutcomes&#x27;, &#x27;ObservedTransitions&#x27;, &#x27;Recipients&#x27;, &#x27;MessageDeliveries&#x27;, &#x27;TemplateApprovals&#x27;, &#x27;SendIntents&#x27;, &#x27;AgentDecisionRecords&#x27;, &#x27;DeliveredCommunications&#x27;, &#x27;AuthorityBoundaries&#x27;, &#x27;BindingObservations&#x27;, &#x27;Attestations&#x27;, &#x27;AppRoleProfiles&#x27;, &#x27;AppNavGroups&#x27;, &#x27;AppRoutes&#x27;, &#x27;AppRouteQuestions&#x27;, &#x27;AppRouteReferences&#x27;, &#x27;RulebookTables&#x27;, &#x27;AccessPrincipals&#x27;, &#x27;AccessPolicies&#x27;, &#x27;FieldGrants&#x27;, &#x27;RoleSchemas&#x27;, &#x27;RoleSchemaViews&#x27;, &#x27;JwtClaimMappings&#x27;, &#x27;AccessDenialTests&#x27;, &#x27;AppUsers&#x27;, &#x27;PrincipalAssignments&#x27;, &#x27;IssuedTokens&#x27;, &#x27;ProcessMiningRuns&#x27;, &#x27;Vocabularies&#x27;, &#x27;VocabularyTerms&#x27;, &#x27;KnowledgeBrokerLinks&#x27;, &#x27;ConformanceSubstrates&#x27;, &#x27;ConformanceRuns&#x27;, &#x27;SubstrateRunScores&#x27;, &#x27;TableConformance&#x27;, &#x27;FieldDisagreements&#x27;, &#x27;CellDisagreements&#x27;, &#x27;KnowledgeMethods&#x27;, &#x27;SourceArticles&#x27;, &#x27;ArticleClaims&#x27;, &#x27;ClaimEvidence&#x27;, &#x27;MethodApplications&#x27;, &#x27;LifecycleStatuses&#x27;, &#x27;Facilities&#x27;, &#x27;MachineTypes&#x27;, &#x27;EnergySources&#x27;, &#x27;Machines&#x27;, &#x27;MachineEnergySources&#x27;, &#x27;LockDevices&#x27;, &#x27;ProtectiveEquipment&#x27;, &#x27;StepLockRequirements&#x27;, &#x27;StepProtectiveEquipment&#x27;, &#x27;RegulatoryFrameworks&#x27;, &#x27;ProcedureTargets&#x27;, &#x27;ProcedureAdoptions&#x27;, &#x27;ProcedureOutcomeCriteria&#x27;, &#x27;RelationTypes&#x27;, &#x27;ActivityRelations&#x27;, &#x27;StepVariables&#x27;, &#x27;ExecutionEntities&#x27;, &#x27;StepConditions&#x27;, &#x27;ConditionChecks&#x27;, &#x27;FailureModes&#x27;, &#x27;StepCues&#x27;, &#x27;CueObservations&#x27;, &#x27;DecisionPoints&#x27;, &#x27;ExecutionParticipants&#x27;, &#x27;StepResources&#x27;, &#x27;FaqCategories&#x27;, &#x27;FaqTargets&#x27;, &#x27;AuthoringSubmissions&#x27;, &#x27;ProcessKnowledgeLevels&#x27;, &#x27;LevelCaptureStrategies&#x27;, &#x27;LevelPyramidQuestions&#x27;, &#x27;ProcessLevelStatements&#x27;, &#x27;TacticalResourceAllocations&#x27;, &#x27;ProcessStrategicAlignments&#x27;, &#x27;BusinessOutcomes&#x27;, &#x27;ProcessOutcomeMeasures&#x27;, &#x27;ProcessStages&#x27;, &#x27;ProcessInterdependencies&#x27;, &#x27;StakeholderLenses&#x27;, &#x27;ProcedureLensViews&#x27;, &#x27;ApplicabilityScopes&#x27;, &#x27;StepContextSensitivities&#x27;, &#x27;SituationalVariants&#x27;, &#x27;CollectedSourceMaterials&#x27;, &#x27;SchemeRefinements&#x27;, &#x27;TermLabelVariants&#x27;, &#x27;AiLabelingRuns&#x27;, &#x27;SourceTermMentions&#x27;, &#x27;TermRelations&#x27;, &#x27;TermMeaningChanges&#x27;, &#x27;ExternalStandardTerms&#x27;, &#x27;RoleCapabilityTags&#x27;, &#x27;ClassificationFacets&#x27;, &#x27;ProcedureFacetAssignments&#x27;, &#x27;EncodingLifecycleStages&#x27;, &#x27;KnowledgeConsumerSystems&#x27;, &#x27;ConsumerSystemSyncs&#x27;, &#x27;IntegrationPathways&#x27;, &#x27;AgentIntegrations&#x27;, &#x27;GroundingSnapshots&#x27;, &#x27;ReasonerRuns&#x27;, &#x27;SnapshotAssertions&#x27;, &#x27;RetrievalSegments&#x27;, &#x27;KnowledgeQueryDefinitions&#x27;, &#x27;KnowledgeQuerySources&#x27;, &#x27;AssistantAnswers&#x27;, &#x27;AnswerGroundings&#x27;, &#x27;AnswerRequirementChecks&#x27;, &#x27;AiToolInvocations&#x27;, &#x27;EmbeddingProbes&#x27;, &#x27;PromptTemplates&#x27;, &#x27;KnowledgeProjections&#x27;, &#x27;ModelAnnotations&#x27;, &#x27;KnowledgeSearchEvents&#x27;, &#x27;AiAdoptionInitiatives&#x27;, &#x27;KnowledgeOutcomeMeasurements&#x27;, &#x27;AiInsightProposals&#x27;, &#x27;AssistantBenchmarks&#x27;, &#x27;GovernedModels&#x27;, &#x27;ModelCharters&#x27;, &#x27;StewardActivities&#x27;, &#x27;ModelChangeRequests&#x27;, &#x27;ChangeAuthorityRules&#x27;, &#x27;ChangeImpactFindings&#x27;, &#x27;ChangeIntegrityChecks&#x27;, &#x27;ChangeObjections&#x27;, &#x27;ChangeValidationRuns&#x27;, &#x27;ExpectedInferenceChecks&#x27;, &#x27;ModelConsumers&#x27;, &#x27;ConsumerRevalidations&#x27;, &#x27;ModelDocuments&#x27;, &#x27;StalenessQueryRuns&#x27;, &#x27;ExternalDependencyRevisions&#x27;, &#x27;StakeholderQuestions&#x27;, &#x27;ModelExpansionRequests&#x27;, &#x27;ExpansionConceptFits&#x27;, &#x27;CompetencyQuestionSetEntries&#x27;, &#x27;CompetencyQuestionRuns&#x27;, &#x27;CompetencyQuestionReviews&#x27;, &#x27;QualityCriteria&#x27;, &#x27;QualityAssessments&#x27;, &#x27;TermDefinitions&#x27;, &#x27;ModelProposals&#x27;, &#x27;AssignmentInstantChecks&#x27;, &#x27;InstanceDataVersions&#x27;, &#x27;DomainCoverageAreas&#x27;, &#x27;GovernanceStageControls&#x27;, &#x27;ProcessDesignDecisions&#x27;, &#x27;ModelChangeLogEntries&#x27;, &#x27;DriftObservations&#x27;, &#x27;SourcingFunctions&#x27;, &#x27;KnowledgeAudits&#x27;, &#x27;KnowledgeAuditItems&#x27;, &#x27;KnowledgeCaptureInitiatives&#x27;, &#x27;KnowledgeWorkforcePositions&#x27;, &#x27;ProviderEngagements&#x27;, &#x27;KnowledgeDeliverables&#x27;, &#x27;CorporateGovernancePrograms&#x27;, &#x27;RecordsRetentionPolicies&#x27;, &#x27;AiRegistryModelVersions&#x27;, &#x27;AiModelDeployments&#x27;, &#x27;AiModelEvaluations&#x27;, &#x27;AiAgentAccountabilities&#x27;, &#x27;AgentUpgradeAssessments&#x27;, &#x27;AssignmentUpdatePolicies&#x27;, &#x27;RoleAssignmentUpdateTasks&#x27;, &#x27;AssignmentRoutedNotices&#x27;, &#x27;PractitionerExpertise&#x27;, &#x27;CriticalIncidents&#x27;, &#x27;InterviewProbes&#x27;, &#x27;ObservedActions&#x27;, &#x27;ElicitationParticipants&#x27;, &#x27;RepresentationReviews&#x27;, &#x27;WorkflowViewDivergences&#x27;, &#x27;ExpertCognitions&#x27;, &#x27;ConceptLadderRungs&#x27;, &#x27;RepertoryGridConstructs&#x27;, &#x27;KnowledgeConversions&#x27;, &#x27;KnowledgeHoldings&#x27;, &#x27;FragmentCorroborations&#x27;, &#x27;KnowledgeTestOutcomes&#x27;, &#x27;KnowHowCarriers&#x27;, &#x27;KnowledgeTransfers&#x27;, &#x27;KnowledgeRepositoryEntries&#x27;, &#x27;CommunityMemberships&#x27;, &#x27;SourceRelationships&#x27;, &#x27;DepartmentProcessAccounts&#x27;, &#x27;ProblemOccurrences&#x27;, &#x27;OnboardingRecords&#x27;, &#x27;SharingRecognitions&#x27;, &#x27;CapabilityDeclines&#x27;, &#x27;KnowledgeTraces&#x27;, &#x27;MinedFlowEdges&#x27;, &#x27;CollectionOccasions&#x27;, &#x27;StakeholderPerspectives&#x27;, &#x27;ModelPilots&#x27;, &#x27;ModelActivityExperts&#x27;, &#x27;ModelDataMappingRuns&#x27;, &#x27;ArtifactHandoffs&#x27;, &#x27;AppActions&#x27;, &#x27;AppActionFields&#x27;, &#x27;AbundantKnowledgeGaps&#x27;, &#x27;OntologySupportProgrammes&#x27;, &#x27;_original_json&#x27;]
 
+  -&gt; abundant_knowledge_gaps: 3 records
   -&gt; access_denial_tests: 17 records
-  -&gt; access_policies: 202 records
-  -&gt; access_principals: 12 records
-  -&gt; actions: 9 records
+  -&gt; access_policies: 781 records
+  -&gt; access_principals: 20 records
+  -&gt; actions: 10 records
+  -&gt; activity_relations: 5 records
   -&gt; agent_decision_records: 3 records
-  -&gt; agents: 11 records
+  -&gt; agent_integrations: 7 records
+  -&gt; agent_upgrade_assessments: 2 records
+  -&gt; agents: 55 records
+  -&gt; ai_adoption_initiatives: 9 records
+  -&gt; ai_agent_accountabilities: 4 records
+  -&gt; ai_insight_proposals: 6 records
+  -&gt; ai_labeling_runs: 3 records
+  -&gt; ai_model_deployments: 6 records
+  -&gt; ai_model_evaluations: 3 records
+  -&gt; ai_registry_model_versions: 6 records
+  -&gt; ai_tool_invocations: 3 records
+  -&gt; answer_groundings: 14 records
+  -&gt; answer_requirement_checks: 2 records
+  -&gt; app_action_fields: 100 records
+  -&gt; app_actions: 20 records
   -&gt; app_nav_groups: 23 records
-  -&gt; app_role_profiles: 12 records
+  -&gt; app_role_profiles: 20 records
   -&gt; app_route_questions: 151 records
   -&gt; app_route_references: 315 records
   -&gt; app_routes: 149 records
-  -&gt; app_users: 10 records
+  -&gt; app_users: 20 records
+  -&gt; applicability_scopes: 5 records
+  -&gt; article_claims: 900 records
+  -&gt; artifact_handoffs: 12 records
+  -&gt; assignment_instant_checks: 4 records
+  -&gt; assignment_routed_notices: 6 records
+  -&gt; assignment_update_policies: 3 records
+  -&gt; assistant_answers: 13 records
+  -&gt; assistant_benchmarks: 4 records
+  -&gt; authoring_submissions: 3 records
   -&gt; authority_boundaries: 3 records
-  -&gt; cell_disagreements: 339 records
-  -&gt; change_requests: 2 records
+  -&gt; business_outcomes: 3 records
+  -&gt; capability_declines: 4 records
+  -&gt; cell_disagreements: 205 records
+  -&gt; change_authority_rules: 4 records
+  -&gt; change_impact_findings: 10 records
+  -&gt; change_integrity_checks: 15 records
+  -&gt; change_objections: 2 records
+  -&gt; change_requests: 4 records
+  -&gt; change_validation_runs: 8 records
+  -&gt; claim_evidence: 900 records
+  -&gt; classification_facets: 4 records
+  -&gt; collected_source_materials: 15 records
+  -&gt; collection_occasions: 3 records
   -&gt; communication_policies: 2 records
-  -&gt; communities_of_practice: 2 records
-  -&gt; conformance_runs: 4 records
+  -&gt; communities_of_practice: 7 records
+  -&gt; community_memberships: 9 records
+  -&gt; competency_question_reviews: 4 records
+  -&gt; competency_question_runs: 10 records
+  -&gt; competency_question_set_entries: 8 records
+  -&gt; concept_ladder_rungs: 5 records
+  -&gt; condition_checks: 7 records
+  -&gt; conformance_runs: 5 records
   -&gt; conformance_substrates: 8 records
+  -&gt; consumer_revalidations: 26 records
+  -&gt; consumer_system_syncs: 6 records
+  -&gt; corporate_governance_programs: 3 records
+  -&gt; critical_incidents: 3 records
+  -&gt; cue_observations: 3 records
+  -&gt; decision_points: 5 records
   -&gt; delivered_communications: 1 records
-  -&gt; elicitation_sessions: 3 records
-  -&gt; errors: 2 records
+  -&gt; department_process_accounts: 5 records
+  -&gt; domain_coverage_areas: 4 records
+  -&gt; drift_observations: 4 records
+  -&gt; elicitation_participants: 7 records
+  -&gt; elicitation_sessions: 13 records
+  -&gt; embedding_probes: 6 records
+  -&gt; encoding_lifecycle_stages: 6 records
+  -&gt; energy_sources: 4 records
+  -&gt; errors: 4 records
   -&gt; evaluation_contexts: 1 records
   -&gt; exception_invocations: 1 records
   -&gt; exceptions: 4 records
+  -&gt; execution_entities: 15 records
+  -&gt; execution_participants: 4 records
+  -&gt; expansion_concept_fits: 9 records
+  -&gt; expected_inference_checks: 4 records
+  -&gt; expert_cognitions: 3 records
   -&gt; explanations: 2 records
+  -&gt; external_dependency_revisions: 3 records
+  -&gt; external_standard_terms: 9 records
   Skipping fa_qs (no matching sheet in workbook)
-  -&gt; field_disagreements: 49 records
-  -&gt; field_grants: 3639 records
-  -&gt; functions: 8 records
-  -&gt; issue_occurrences: 2 records
+  -&gt; facilities: 3 records
+  -&gt; failure_modes: 5 records
+  -&gt; faq_categories: 4 records
+  -&gt; faq_targets: 2 records
+  -&gt; field_disagreements: 27 records
+  -&gt; field_grants: 18467 records
+  -&gt; fragment_corroborations: 4 records
+  -&gt; functions: 11 records
+  -&gt; governance_stage_controls: 20 records
+  -&gt; governed_models: 7 records
+  -&gt; grounding_snapshots: 3 records
+  -&gt; instance_data_versions: 2 records
+  -&gt; integration_pathways: 4 records
+  -&gt; interview_probes: 4 records
+  -&gt; issue_occurrences: 4 records
   -&gt; jwt_claim_mappings: 4 records
-  -&gt; knowledge_broker_links: 5 records
-  -&gt; knowledge_fragments: 7 records
-  -&gt; knowledge_gaps: 8 records
+  -&gt; know_how_carriers: 13 records
+  -&gt; knowledge_audit_items: 12 records
+  -&gt; knowledge_audits: 4 records
+  -&gt; knowledge_broker_links: 8 records
+  -&gt; knowledge_capture_initiatives: 3 records
+  -&gt; knowledge_consumer_systems: 8 records
+  -&gt; knowledge_conversions: 5 records
+  -&gt; knowledge_deliverables: 10 records
+  -&gt; knowledge_fragments: 12 records
+  -&gt; knowledge_gaps: 15 records
+  -&gt; knowledge_holdings: 10 records
+  -&gt; knowledge_methods: 26 records
+  -&gt; knowledge_outcome_measurements: 7 records
+  -&gt; knowledge_projections: 7 records
+  -&gt; knowledge_query_definitions: 4 records
+  -&gt; knowledge_query_sources: 6 records
+  -&gt; knowledge_repository_entries: 8 records
+  -&gt; knowledge_search_events: 6 records
+  -&gt; knowledge_test_outcomes: 5 records
+  -&gt; knowledge_traces: 15 records
+  -&gt; knowledge_transfers: 9 records
+  -&gt; knowledge_workforce_positions: 4 records
   -&gt; learning_activities: 2 records
-  -&gt; mentorships: 1 records
+  -&gt; level_capture_strategies: 5 records
+  -&gt; level_pyramid_questions: 5 records
+  -&gt; lifecycle_statuses: 11 records
+  -&gt; lock_devices: 3 records
+  -&gt; machine_energy_sources: 6 records
+  -&gt; machine_types: 3 records
+  -&gt; machines: 3 records
+  -&gt; mentorships: 5 records
   -&gt; message_deliveries: 6 records
   -&gt; message_templates: 2 records
+  -&gt; method_applications: 20 records
+  -&gt; mined_flow_edges: 6 records
+  -&gt; model_activity_experts: 16 records
+  -&gt; model_annotations: 9 records
+  -&gt; model_change_log_entries: 17 records
+  -&gt; model_change_requests: 17 records
+  -&gt; model_charters: 8 records
+  -&gt; model_consumers: 4 records
+  -&gt; model_data_mapping_runs: 4 records
+  -&gt; model_documents: 5 records
+  -&gt; model_expansion_requests: 3 records
+  -&gt; model_pilots: 3 records
+  -&gt; model_proposals: 11 records
+  -&gt; observed_actions: 5 records
   -&gt; observed_transitions: 10 records
-  -&gt; ontology_profiles: 11 records
+  -&gt; onboarding_records: 7 records
+  -&gt; ontology_profiles: 27 records
+  -&gt; ontology_support_programmes: 2 records
   -&gt; operational_bindings: 5 records
-  -&gt; organizations: 4 records
-  -&gt; principal_assignments: 12 records
-  -&gt; procedure_executions: 2 records
-  -&gt; procedure_resources: 8 records
-  -&gt; procedure_status_changes: 5 records
-  -&gt; procedure_types: 2 records
-  -&gt; procedure_version_links: 1 records
-  -&gt; procedure_versions: 3 records
-  -&gt; procedures: 2 records
-  -&gt; process_mining_runs: 4 records
+  -&gt; organizations: 18 records
+  -&gt; practitioner_expertise: 5 records
+  -&gt; principal_assignments: 22 records
+  -&gt; problem_occurrences: 5 records
+  -&gt; procedure_adoptions: 3 records
+  -&gt; procedure_executions: 10 records
+  -&gt; procedure_facet_assignments: 12 records
+  -&gt; procedure_lens_views: 15 records
+  -&gt; procedure_outcome_criteria: 5 records
+  -&gt; procedure_resources: 12 records
+  -&gt; procedure_status_changes: 13 records
+  -&gt; procedure_targets: 6 records
+  -&gt; procedure_types: 17 records
+  -&gt; procedure_version_links: 2 records
+  -&gt; procedure_versions: 9 records
+  -&gt; procedures: 10 records
+  -&gt; process_design_decisions: 3 records
+  -&gt; process_interdependencies: 4 records
+  -&gt; process_knowledge_levels: 3 records
+  -&gt; process_level_statements: 8 records
+  -&gt; process_mining_runs: 5 records
+  -&gt; process_outcome_measures: 5 records
+  -&gt; process_stages: 7 records
+  -&gt; process_strategic_alignments: 4 records
+  -&gt; prompt_templates: 5 records
+  -&gt; protective_equipment: 3 records
+  -&gt; provider_engagements: 7 records
+  -&gt; quality_assessments: 11 records
+  -&gt; quality_criteria: 8 records
   -&gt; rationales: 4 records
+  -&gt; reasoner_runs: 5 records
   -&gt; recipients: 5 records
+  -&gt; records_retention_policies: 4 records
+  -&gt; regulatory_frameworks: 2 records
+  -&gt; relation_types: 11 records
+  -&gt; repertory_grid_constructs: 3 records
+  -&gt; representation_reviews: 4 records
   -&gt; requirement_satisfactions: 8 records
-  -&gt; requirements: 13 records
-  -&gt; resources: 8 records
+  -&gt; requirements: 16 records
+  -&gt; resources: 19 records
+  -&gt; retrieval_segments: 9 records
   -&gt; review_events: 3 records
-  -&gt; role_assignments: 13 records
-  -&gt; role_questions: 111 records
-  -&gt; role_schema_views: 202 records
-  -&gt; role_schemas: 12 records
-  -&gt; roles: 12 records
-  -&gt; rulebook_fields: 1897 records
-  -&gt; rulebook_releases: 1 records
-  -&gt; rulebook_tables: 92 records
-  -&gt; semantic_mappings: 47 records
+  -&gt; role_assignment_update_tasks: 6 records
+  -&gt; role_assignments: 36 records
+  -&gt; role_capability_tags: 9 records
+  -&gt; role_questions: 442 records
+  -&gt; role_schema_views: 762 records
+  -&gt; role_schemas: 20 records
+  -&gt; roles: 33 records
+  -&gt; rulebook_fields: 5185 records
+  -&gt; rulebook_releases: 9 records
+  -&gt; rulebook_tables: 264 records
+  -&gt; scheme_refinements: 2 records
+  -&gt; semantic_mappings: 357 records
   -&gt; send_intents: 7 records
-  -&gt; step_actions: 9 records
-  -&gt; step_executions: 12 records
-  -&gt; step_functions: 8 records
-  -&gt; step_requirements: 15 records
-  -&gt; step_tools: 10 records
-  -&gt; step_transitions: 20 records
+  -&gt; sharing_recognitions: 2 records
+  -&gt; situational_variants: 4 records
+  -&gt; snapshot_assertions: 15 records
+  -&gt; source_articles: 5 records
+  -&gt; source_relationships: 4 records
+  -&gt; source_term_mentions: 25 records
+  -&gt; sourcing_functions: 12 records
+  -&gt; stakeholder_lenses: 9 records
+  -&gt; stakeholder_perspectives: 5 records
+  -&gt; stakeholder_questions: 6 records
+  -&gt; staleness_query_runs: 3 records
+  -&gt; step_actions: 10 records
+  -&gt; step_conditions: 7 records
+  -&gt; step_context_sensitivities: 4 records
+  -&gt; step_cues: 4 records
+  -&gt; step_executions: 70 records
+  -&gt; step_functions: 10 records
+  -&gt; step_lock_requirements: 3 records
+  -&gt; step_protective_equipment: 3 records
+  -&gt; step_requirements: 18 records
+  -&gt; step_resources: 2 records
+  -&gt; step_tools: 11 records
+  -&gt; step_transitions: 43 records
+  -&gt; step_variables: 21 records
   -&gt; step_verifications: 11 records
-  -&gt; steps: 17 records
+  -&gt; steps: 41 records
+  -&gt; steward_activities: 10 records
   -&gt; stewardship_assignments: 2 records
-  -&gt; substrate_run_scores: 28 records
+  -&gt; substrate_run_scores: 35 records
   -&gt; table_conformance: 623 records
+  -&gt; tactical_resource_allocations: 5 records
   -&gt; template_approvals: 2 records
+  -&gt; term_definitions: 3 records
+  -&gt; term_label_variants: 53 records
+  -&gt; term_meaning_changes: 3 records
+  -&gt; term_relations: 4 records
   -&gt; test_cases: 1794 records
   -&gt; test_suites: 6 records
-  -&gt; tools: 8 records
-  -&gt; user_feedback: 2 records
-  -&gt; user_questions: 2 records
+  -&gt; tools: 9 records
+  -&gt; user_feedback: 6 records
+  -&gt; user_questions: 4 records
   -&gt; verification_outcomes: 4 records
-  -&gt; vocabularies: 2 records
-  -&gt; vocabulary_terms: 12 records
-  -&gt; witness_loops: 4 records
+  -&gt; vocabularies: 12 records
+  -&gt; vocabulary_terms: 44 records
+  -&gt; witness_loops: 16 records
+  -&gt; workflow_view_divergences: 2 records
 
-effortless-xlsx: Processed 88 entities, 10116 total records
+effortless-xlsx: Processed 257 entities, 33552 total records
 
 </pre>
         </div>

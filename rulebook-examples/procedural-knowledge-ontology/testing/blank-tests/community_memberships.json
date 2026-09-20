@@ -1,0 +1,110 @@
+[
+  {
+    "community_membership_id": "cm12-grace-release",
+    "community_of_practice": "release-engineering-guild",
+    "agent": "grace-holloway",
+    "is_specialist": true,
+    "joined_at": "2016-01-01T00:00:00-06:00",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CommunityMembership",
+    "name": null,
+    "member_organization": null,
+    "community_organization": null,
+    "is_external_member": null
+  },
+  {
+    "community_membership_id": "cm12-joao-eastvale",
+    "community_of_practice": "eastvale-packaging-cluster",
+    "agent": "joao-ferreira",
+    "is_specialist": false,
+    "joined_at": "2011-04-01T00:00:00-05:00",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CommunityMembership",
+    "name": null,
+    "member_organization": null,
+    "community_organization": null,
+    "is_external_member": null
+  },
+  {
+    "community_membership_id": "cm12-joao-riverbend",
+    "community_of_practice": "riverbend-press-cluster",
+    "agent": "joao-ferreira",
+    "is_specialist": false,
+    "joined_at": "2019-06-01T00:00:00-05:00",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CommunityMembership",
+    "name": null,
+    "member_organization": null,
+    "community_organization": null,
+    "is_external_member": null
+  },
+  {
+    "community_membership_id": "cm12-ken-plant",
+    "community_of_practice": "plant-maintenance-guild",
+    "agent": "ken-watanabe",
+    "is_specialist": false,
+    "joined_at": "2019-02-01T00:00:00-06:00",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CommunityMembership",
+    "name": null,
+    "member_organization": null,
+    "community_organization": null,
+    "is_external_member": null
+  },
+  {
+    "community_membership_id": "cm12-ken-riverbend",
+    "community_of_practice": "riverbend-press-cluster",
+    "agent": "ken-watanabe",
+    "is_specialist": false,
+    "joined_at": "2022-09-01T00:00:00-05:00",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CommunityMembership",
+    "name": null,
+    "member_organization": null,
+    "community_organization": null,
+    "is_external_member": null
+  },
+  {
+    "community_membership_id": "cm12-lin-plant",
+    "community_of_practice": "plant-maintenance-guild",
+    "agent": "lin-zhao",
+    "is_specialist": false,
+    "joined_at": "2021-05-01T00:00:00-05:00",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CommunityMembership",
+    "name": null,
+    "member_organization": null,
+    "community_organization": null,
+    "is_external_member": null
+  },
+  {
+    "community_membership_id": "cm12-lin-portal",
+    "community_of_practice": "km-portal-community",
+    "agent": "lin-zhao",
+    "is_specialist": false,
+    "joined_at": "2025-02-01T00:00:00-06:00",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CommunityMembership",
+    "name": null,
+    "member_organization": null,
+    "community_organization": null,
+    "is_external_member": null
+  },
+  {
+    "community_membership_id": "cm12-petra-riverbend",
+    "community_of_practice": "riverbend-press-cluster",
+    "agent": "petra-lindqvist",
+    "is_specialist": true,
+    "joined_at": "2016-03-01T00:00:00-06:00",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CommunityMembership",
+    "name": null,
+    "member_organization": null,
+    "community_organization": null,
+    "is_external_member": null
+  },
+  {
+    "community_membership_id": "cm12-tomas-plant",
+    "community_of_practice": "plant-maintenance-guild",
+    "agent": "tomas-reyes",
+    "is_specialist": true,
+    "joined_at": "2008-01-10T00:00:00-06:00",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CommunityMembership",
+    "name": null,
+    "member_organization": null,
+    "community_organization": null,
+    "is_external_member": null
+  }
+]

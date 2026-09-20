@@ -56,9 +56,25 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         }
 
         public string? SemanticTypeIri { get; set; }
+        public string? OperatorQuestion { get; set; }
+        // Formula FailureModeResponse (rulebook: =INDEX(FailureModes!{{Response}}, MATCH({{SignalsFailureMode}}, FailureModes!{{FailureModeId}}, 0)))
+        [NotMapped]
+        public string? FailureModeResponse
+        {
+            get => F.AsString(F.Memo(this, "FailureModeResponse", () => F.Lookup<FailureMode>(this, "FailureModes", "FailureModeId", __c => __c.FailureModes, __r => F.Of(__r.FailureModeId), F.Of(this.SignalsFailureMode), __r => F.Of(__r.Response), () => F.Of(new FailureMode().Response)))); set { }
+        }
+
+        // Formula IsUnanswerableSign (rulebook: =AND({{SignalsIncompleteStep}} = TRUE, {{SignalsFailureMode}} = ""))
+        [NotMapped]
+        public bool? IsUnanswerableSign
+        {
+            get => F.AsBool(F.Memo(this, "IsUnanswerableSign", () => F.And(F.Bool3(F.Eq(F.Nullif(F.Of(this.SignalsIncompleteStep)), F.B(true))), F.Bool3(F.IsBlank(F.Of(this.SignalsFailureMode)))))); set { }
+        }
+
 
         public string? Step { get; set; }
         public string? EscalateToRole { get; set; }
+        public string? SignalsFailureMode { get; set; }
 
         private Step _stepRef;
 
@@ -148,6 +164,50 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             }
         }
 
+        private FailureMode _failureMode;
+
+        [ForeignKey("SignalsFailureMode")]
+        public virtual FailureMode FailureMode
+        {
+            get
+            {
+                if (_failureMode == null && !string.IsNullOrEmpty(SignalsFailureMode))
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access FailureMode - no database context is set. SignalsFailureMode: " + SignalsFailureMode + ".");
+                        }
+                        return null;
+                    }
+                    _failureMode = base.SoAContext.FailureModes.Find(SignalsFailureMode);
+                    if (_failureMode != null)
+                    {
+                        base.SoAContext.Attach(_failureMode);
+                    }
+                }
+                return _failureMode;
+            }
+            set
+            {
+                if (_failureMode != value)
+                {
+                    _failureMode = value;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_failureMode != null)
+                    {
+                        SignalsFailureMode = _failureMode.FailureModeId;
+                    }
+                }
+            }
+        }
+
         private ObservableCollection<CueObservation> _cueObservations;
 
         [InverseProperty("StepCueRef")]
@@ -208,6 +268,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         {
             _ = this.StepRef;
             _ = this.Role;
+            _ = this.FailureMode;
             _ = this.CueObservations;
         }
 

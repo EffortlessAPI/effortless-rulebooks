@@ -9,7 +9,8 @@
     "resolved_by_faq": "faq-close-workpapers",
     "addressed_by_resource": "res-close-sop-pdf",
     "status": "Answered",
-    "semantic_type_iri": "https://w3id.org/pko#UserQuestionOccurrence"
+    "semantic_type_iri": "https://w3id.org/pko#UserQuestionOccurrence",
+    "is_unaddressed_question": false
   },
   {
     "user_question_id": "q-policy-ai",
@@ -21,6 +22,33 @@
     "resolved_by_faq": "faq-policy-ai",
     "addressed_by_resource": "res-policy-source",
     "status": "Answered",
-    "semantic_type_iri": "https://w3id.org/pko#UserQuestionOccurrence"
+    "semantic_type_iri": "https://w3id.org/pko#UserQuestionOccurrence",
+    "is_unaddressed_question": false
+  },
+  {
+    "user_question_id": "uq-loto-gauge",
+    "name": "The gauge flickers just above zero. Is that zero?",
+    "step_execution": "se-loto0714-06",
+    "asked_by_agent": "aisha-bello",
+    "asked_at": "2026-07-14 10:30:00-05:00",
+    "question_text": "The gauge flickers just above zero. Is that zero?",
+    "resolved_by_faq": "faq-loto-gauge",
+    "addressed_by_resource": "res-loto-v2-spec",
+    "status": "Answered",
+    "semantic_type_iri": "https://w3id.org/pko#UserQuestionOccurrence",
+    "is_unaddressed_question": false
+  },
+  {
+    "user_question_id": "uq-loto-press7",
+    "name": "Does the press-7 retrofit use the standard isolation map?",
+    "step_execution": "se-loto0709-03",
+    "asked_by_agent": "ken-watanabe",
+    "asked_at": "2026-07-09 22:20:00-05:00",
+    "question_text": "Does the press-7 retrofit use the standard isolation map?",
+    "resolved_by_faq": null,
+    "addressed_by_resource": null,
+    "status": "Open",
+    "semantic_type_iri": "https://w3id.org/pko#UserQuestionOccurrence",
+    "is_unaddressed_question": true
   }
 ]

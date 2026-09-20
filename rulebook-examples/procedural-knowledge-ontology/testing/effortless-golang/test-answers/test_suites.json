@@ -7,7 +7,7 @@
     "pass_count": 160,
     "blocking_fail_count": 0,
     "is_green": true,
-    "semantic_type_iri": "urn:effortless:pko-extension#TestSuite"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#TestSuite"
   },
   {
     "test_suite_id": "suite-invariant",
@@ -17,7 +17,7 @@
     "pass_count": 7,
     "blocking_fail_count": 0,
     "is_green": true,
-    "semantic_type_iri": "urn:effortless:pko-extension#TestSuite"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#TestSuite"
   },
   {
     "test_suite_id": "suite-provenance",
@@ -27,7 +27,7 @@
     "pass_count": 107,
     "blocking_fail_count": 0,
     "is_green": true,
-    "semantic_type_iri": "urn:effortless:pko-extension#TestSuite"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#TestSuite"
   },
   {
     "test_suite_id": "suite-structure",
@@ -37,7 +37,7 @@
     "pass_count": 69,
     "blocking_fail_count": 0,
     "is_green": true,
-    "semantic_type_iri": "urn:effortless:pko-extension#TestSuite"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#TestSuite"
   },
   {
     "test_suite_id": "suite-substrate",
@@ -47,7 +47,7 @@
     "pass_count": 991,
     "blocking_fail_count": 0,
     "is_green": true,
-    "semantic_type_iri": "urn:effortless:pko-extension#TestSuite"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#TestSuite"
   },
   {
     "test_suite_id": "suite-witness",
@@ -57,6 +57,6 @@
     "pass_count": 225,
     "blocking_fail_count": 0,
     "is_green": true,
-    "semantic_type_iri": "urn:effortless:pko-extension#TestSuite"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#TestSuite"
   }
 ]

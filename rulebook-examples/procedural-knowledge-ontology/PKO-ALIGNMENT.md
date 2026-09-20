@@ -87,7 +87,7 @@ The following concepts are not represented as native PKO 2.0.0 classes. They are
 | `Vocabularies` / `VocabularyTerms` | A SKOS-style controlled vocabulary/taxonomy that requirements point at instead of free-texting a concept |
 | `KnowledgeBrokerLinks` | The informal expertise network — who people actually consult, independent of any formal role |
 
-Each extension row carries an explicit `SemanticTypeIri` under `urn:effortless:pko-extension#`, and `SemanticMappings.MappingRelation` is `extension`, not `exact`.
+Each extension row carries an explicit `SemanticTypeIri` under `https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#`, and `SemanticMappings.MappingRelation` is `extension`, not `exact`.
 
 ## Why the relational shape is not a semantic downgrade
 

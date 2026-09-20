@@ -1,0 +1,80 @@
+[
+  {
+    "embedding_probe_id": "emb-general-approve-authorize",
+    "term_a": "approve",
+    "term_b": "authorize",
+    "expected_relation": "NearSynonym",
+    "embedding_model": "general-embed-3",
+    "cosine_similarity": 0.91,
+    "probed_at": "2026-06-10 14:00:00",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#EmbeddingProbe",
+    "name": "approve / authorize @ general-embed-3",
+    "synonyms_not_similar": false,
+    "opposites_not_opposed": false
+  },
+  {
+    "embedding_probe_id": "emb-general-approve-reject",
+    "term_a": "approve",
+    "term_b": "reject",
+    "expected_relation": "Opposite",
+    "embedding_model": "general-embed-3",
+    "cosine_similarity": 0.83,
+    "probed_at": "2026-06-10 14:00:00",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#EmbeddingProbe",
+    "name": "approve / reject @ general-embed-3",
+    "synonyms_not_similar": false,
+    "opposites_not_opposed": true
+  },
+  {
+    "embedding_probe_id": "emb-general-lockout-isolate",
+    "term_a": "lock out",
+    "term_b": "isolate",
+    "expected_relation": "NearSynonym",
+    "embedding_model": "general-embed-3",
+    "cosine_similarity": 0.52,
+    "probed_at": "2026-06-10 14:00:00",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#EmbeddingProbe",
+    "name": "lock out / isolate @ general-embed-3",
+    "synonyms_not_similar": true,
+    "opposites_not_opposed": false
+  },
+  {
+    "embedding_probe_id": "emb-tuned-approve-reject",
+    "term_a": "approve",
+    "term_b": "reject",
+    "expected_relation": "Opposite",
+    "embedding_model": "procedure-embed-1",
+    "cosine_similarity": 0.12,
+    "probed_at": "2026-07-05 14:00:00",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#EmbeddingProbe",
+    "name": "approve / reject @ procedure-embed-1",
+    "synonyms_not_similar": false,
+    "opposites_not_opposed": false
+  },
+  {
+    "embedding_probe_id": "emb-tuned-escalate-standdown",
+    "term_a": "escalate",
+    "term_b": "stand down",
+    "expected_relation": "Opposite",
+    "embedding_model": "procedure-embed-1",
+    "cosine_similarity": 0.05,
+    "probed_at": "2026-07-05 14:00:00",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#EmbeddingProbe",
+    "name": "escalate / stand down @ procedure-embed-1",
+    "synonyms_not_similar": false,
+    "opposites_not_opposed": false
+  },
+  {
+    "embedding_probe_id": "emb-tuned-lockout-isolate",
+    "term_a": "lock out",
+    "term_b": "isolate",
+    "expected_relation": "NearSynonym",
+    "embedding_model": "procedure-embed-1",
+    "cosine_similarity": 0.88,
+    "probed_at": "2026-07-05 14:00:00",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#EmbeddingProbe",
+    "name": "lock out / isolate @ procedure-embed-1",
+    "synonyms_not_similar": false,
+    "opposites_not_opposed": false
+  }
+]

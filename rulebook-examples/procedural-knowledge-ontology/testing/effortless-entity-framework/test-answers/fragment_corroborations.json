@@ -1,0 +1,38 @@
+[
+  {
+    "fragment_corroboration_id": "fc7-hiss-incident",
+    "knowledge_fragment": "kf7-loto-hiss",
+    "elicitation_session": "el7-loto-cit",
+    "agent": "tomas-reyes",
+    "agrees": true,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#FragmentCorroboration",
+    "name": "kf7-loto-hiss via el7-loto-cit"
+  },
+  {
+    "fragment_corroboration_id": "fc7-hiss-shadow",
+    "knowledge_fragment": "kf7-loto-hiss",
+    "elicitation_session": "el7-loto-shadow",
+    "agent": "ken-watanabe",
+    "agrees": true,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#FragmentCorroboration",
+    "name": "kf7-loto-hiss via el7-loto-shadow"
+  },
+  {
+    "fragment_corroboration_id": "fc7-last-tag-workshop",
+    "knowledge_fragment": "kf7-loto-tag-handover",
+    "elicitation_session": "el7-loto-workshop",
+    "agent": "rosa-delgado",
+    "agrees": true,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#FragmentCorroboration",
+    "name": "kf7-loto-tag-handover via el7-loto-workshop"
+  },
+  {
+    "fragment_corroboration_id": "fc7-mixer2-ken-disagrees",
+    "knowledge_fragment": "kf7-loto-mixer2",
+    "elicitation_session": "el7-loto-thinkaloud",
+    "agent": "ken-watanabe",
+    "agrees": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#FragmentCorroboration",
+    "name": "kf7-loto-mixer2 via el7-loto-thinkaloud"
+  }
+]

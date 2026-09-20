@@ -38,6 +38,9 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         }
 
         public string? SemanticTypeIri { get; set; }
+        public string? Device { get; set; }
+        public string? HomeRoute { get; set; }
+        public string? HomeTitle { get; set; }
 
         public string? Role { get; set; }
 

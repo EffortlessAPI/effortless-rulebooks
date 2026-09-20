@@ -600,6 +600,41 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             get => F.AsBool(F.Memo(this, "IsUnreportedMistake", () => F.And(F.Bool3(F.Of(this.HasStepDeviation)), F.Bool3(F.Eq(F.Of(this.FeedbackCount), F.I(0)))))); set { }
         }
 
+        // Formula OwnerOrganization (rulebook: =INDEX(ProcedureVersions!{{OwnerOrganization}}, MATCH({{ProcedureVersion}}, ProcedureVersions!{{ProcedureVersionId}}, 0)))
+        [NotMapped]
+        public string? OwnerOrganization
+        {
+            get => F.AsString(F.Memo(this, "OwnerOrganization", () => F.Lookup<ProcedureVersion>(this, "ProcedureVersions", "ProcedureVersionId", __c => __c.ProcedureVersions, __r => F.Of(__r.ProcedureVersionId), F.Of(this.ProcedureVersion), __r => F.Of(__r.OwnerOrganization), () => F.Of(new ProcedureVersion().OwnerOrganization)))); set { }
+        }
+
+        // Formula StoppedAtGapStatement (rulebook: =INDEX(KnowledgeGaps!{{Statement}}, MATCH({{StoppedAtKnowledgeGap}}, KnowledgeGaps!{{KnowledgeGapId}}, 0)))
+        [NotMapped]
+        public string? StoppedAtGapStatement
+        {
+            get => F.AsString(F.Memo(this, "StoppedAtGapStatement", () => F.Lookup<KnowledgeGap>(this, "KnowledgeGaps", "KnowledgeGapId", __c => __c.KnowledgeGaps, __r => F.Of(__r.KnowledgeGapId), F.Of(this.StoppedAtKnowledgeGap), __r => F.Of(__r.Statement), () => F.Of(new KnowledgeGap().Statement)))); set { }
+        }
+
+        // Formula StoppedAtGapStatus (rulebook: =INDEX(KnowledgeGaps!{{Status}}, MATCH({{StoppedAtKnowledgeGap}}, KnowledgeGaps!{{KnowledgeGapId}}, 0)))
+        [NotMapped]
+        public string? StoppedAtGapStatus
+        {
+            get => F.AsString(F.Memo(this, "StoppedAtGapStatus", () => F.Lookup<KnowledgeGap>(this, "KnowledgeGaps", "KnowledgeGapId", __c => __c.KnowledgeGaps, __r => F.Of(__r.KnowledgeGapId), F.Of(this.StoppedAtKnowledgeGap), __r => F.Of(__r.Status), () => F.Of(new KnowledgeGap().Status)))); set { }
+        }
+
+        // Formula StoppedAtGapChangeTitle (rulebook: =INDEX(KnowledgeGaps!{{AnsweringChangeTitle}}, MATCH({{StoppedAtKnowledgeGap}}, KnowledgeGaps!{{KnowledgeGapId}}, 0)))
+        [NotMapped]
+        public string? StoppedAtGapChangeTitle
+        {
+            get => F.AsString(F.Memo(this, "StoppedAtGapChangeTitle", () => F.Lookup<KnowledgeGap>(this, "KnowledgeGaps", "KnowledgeGapId", __c => __c.KnowledgeGaps, __r => F.Of(__r.KnowledgeGapId), F.Of(this.StoppedAtKnowledgeGap), __r => F.Of(__r.AnsweringChangeTitle), () => F.Of(new KnowledgeGap().AnsweringChangeTitle)))); set { }
+        }
+
+        // Formula StoppedAtGapChangeStatus (rulebook: =INDEX(KnowledgeGaps!{{AnsweringChangeStatus}}, MATCH({{StoppedAtKnowledgeGap}}, KnowledgeGaps!{{KnowledgeGapId}}, 0)))
+        [NotMapped]
+        public string? StoppedAtGapChangeStatus
+        {
+            get => F.AsString(F.Memo(this, "StoppedAtGapChangeStatus", () => F.Lookup<KnowledgeGap>(this, "KnowledgeGaps", "KnowledgeGapId", __c => __c.KnowledgeGaps, __r => F.Of(__r.KnowledgeGapId), F.Of(this.StoppedAtKnowledgeGap), __r => F.Of(__r.AnsweringChangeStatus), () => F.Of(new KnowledgeGap().AnsweringChangeStatus)))); set { }
+        }
+
 
         public string? ProcedureVersion { get; set; }
         public string? ExecutionStatus { get; set; }
@@ -607,6 +642,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string? ConfirmedByAgent { get; set; }
         public string? Facility { get; set; }
         public string? ExecutedOnMachine { get; set; }
+        public string? StoppedAtKnowledgeGap { get; set; }
 
         private ProcedureVersion _procedureVersionRef;
 
@@ -867,6 +903,50 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     if (_machine != null)
                     {
                         ExecutedOnMachine = _machine.MachineId;
+                    }
+                }
+            }
+        }
+
+        private KnowledgeGap _knowledgeGap;
+
+        [ForeignKey("StoppedAtKnowledgeGap")]
+        public virtual KnowledgeGap KnowledgeGap
+        {
+            get
+            {
+                if (_knowledgeGap == null && !string.IsNullOrEmpty(StoppedAtKnowledgeGap))
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access KnowledgeGap - no database context is set. StoppedAtKnowledgeGap: " + StoppedAtKnowledgeGap + ".");
+                        }
+                        return null;
+                    }
+                    _knowledgeGap = base.SoAContext.KnowledgeGaps.Find(StoppedAtKnowledgeGap);
+                    if (_knowledgeGap != null)
+                    {
+                        base.SoAContext.Attach(_knowledgeGap);
+                    }
+                }
+                return _knowledgeGap;
+            }
+            set
+            {
+                if (_knowledgeGap != value)
+                {
+                    _knowledgeGap = value;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_knowledgeGap != null)
+                    {
+                        StoppedAtKnowledgeGap = _knowledgeGap.KnowledgeGapId;
                     }
                 }
             }
@@ -1596,6 +1676,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             _ = this.AgentRef;
             _ = this.FacilityRef;
             _ = this.Machine;
+            _ = this.KnowledgeGap;
             _ = this.ProcedureStatusChanges;
             _ = this.StepExecutions;
             _ = this.UserFeedback;

@@ -1,0 +1,30 @@
+[
+  {
+    "faq_category_id": "Authority",
+    "label": "Authority",
+    "semantic_type_iri": "https://w3id.org/pko#FAQCategory",
+    "name": null,
+    "faq_count": null
+  },
+  {
+    "faq_category_id": "Consent",
+    "label": "Consent",
+    "semantic_type_iri": "https://w3id.org/pko#FAQCategory",
+    "name": null,
+    "faq_count": null
+  },
+  {
+    "faq_category_id": "Safety",
+    "label": "Safety",
+    "semantic_type_iri": "https://w3id.org/pko#FAQCategory",
+    "name": null,
+    "faq_count": null
+  },
+  {
+    "faq_category_id": "Storage",
+    "label": "Storage",
+    "semantic_type_iri": "https://w3id.org/pko#FAQCategory",
+    "name": null,
+    "faq_count": null
+  }
+]

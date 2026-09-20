@@ -17,7 +17,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from rulebook_edit import agg, calc, idx, lookup, raw, rel  # noqa: E402
 
 PKO = "https://w3id.org/pko#"
-EXT = "urn:effortless:pko-extension#"
+EXT = "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#"
 SKOS = "http://www.w3.org/2004/02/skos/core#"
 EV = "eval-current"
 
@@ -1224,7 +1224,7 @@ ROWS.update({
     ],
 })
 
-LOCAL_NS = "urn:effortless:pko-extension#"
+LOCAL_NS = "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#"
 FOAF = "http://xmlns.com/foaf/0.1/"
 
 ROWS["VocabularyTerms"] = [

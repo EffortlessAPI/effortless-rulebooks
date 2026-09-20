@@ -32,7 +32,7 @@
     "binds_despite_lapsed_ratification": false,
     "is_ungrounded_and_untested": false,
     "constrained_role_assignment_key": "",
-    "semantic_type_iri": "urn:effortless:pko-extension#AuthorityBoundary"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AuthorityBoundary"
   },
   {
     "authority_boundary_id": "bnd-close-06-no-nonhuman-approval",
@@ -67,7 +67,7 @@
     "binds_despite_lapsed_ratification": false,
     "is_ungrounded_and_untested": false,
     "constrained_role_assignment_key": "",
-    "semantic_type_iri": "urn:effortless:pko-extension#AuthorityBoundary"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AuthorityBoundary"
   },
   {
     "authority_boundary_id": "bnd-policy-03-no-ai-commitment",
@@ -102,6 +102,6 @@
     "binds_despite_lapsed_ratification": false,
     "is_ungrounded_and_untested": false,
     "constrained_role_assignment_key": "",
-    "semantic_type_iri": "urn:effortless:pko-extension#AuthorityBoundary"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AuthorityBoundary"
   }
 ]

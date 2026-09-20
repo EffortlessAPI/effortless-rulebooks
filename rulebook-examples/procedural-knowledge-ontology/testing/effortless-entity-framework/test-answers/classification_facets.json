@@ -1,0 +1,34 @@
+[
+  {
+    "classification_facet_id": "facet-audience",
+    "label": "Audience",
+    "dimension_description": "Who performs or receives the procedure.",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ClassificationFacet",
+    "name": "Audience",
+    "assignment_count": 2
+  },
+  {
+    "classification_facet_id": "facet-change-type",
+    "label": "Change type",
+    "dimension_description": "The kind of change the procedure makes.",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ClassificationFacet",
+    "name": "Change type",
+    "assignment_count": 1
+  },
+  {
+    "classification_facet_id": "facet-functional-domain",
+    "label": "Functional domain",
+    "dimension_description": "The business function the procedure serves.",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ClassificationFacet",
+    "name": "Functional domain",
+    "assignment_count": 4
+  },
+  {
+    "classification_facet_id": "facet-hazard",
+    "label": "Hazard",
+    "dimension_description": "The hazard the procedure controls.",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ClassificationFacet",
+    "name": "Hazard",
+    "assignment_count": 5
+  }
+]

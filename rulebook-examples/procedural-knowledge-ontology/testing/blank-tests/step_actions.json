@@ -30,6 +30,12 @@
     "name": null
   },
   {
+    "step_action_id": "sa-loto05-applylock",
+    "step": "loto-05",
+    "action": "apply-lock",
+    "name": null
+  },
+  {
     "step_action_id": "sa-policy02",
     "step": "policy-02",
     "action": "interview-practitioner",

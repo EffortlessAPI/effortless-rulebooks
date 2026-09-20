@@ -2,7 +2,7 @@
 """Seed AppUsers + PrincipalAssignments from the real Agents/Roles mapping."""
 import json, os, subprocess
 RB="effortless-rulebook/procedural-knowledge-ontology-rulebook.json"
-IRI="urn:effortless:pko-extension#"
+IRI="https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#"
 DB=os.environ.get("DATABASE_URL","postgresql://postgres@localhost:5432/erb_procedural_knowledge_ontology")
 
 def q(sql):

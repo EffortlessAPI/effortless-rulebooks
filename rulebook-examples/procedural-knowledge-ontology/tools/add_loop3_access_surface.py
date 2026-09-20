@@ -17,7 +17,7 @@ from collections import OrderedDict
 from pathlib import Path
 
 RB = Path("effortless-rulebook/procedural-knowledge-ontology-rulebook.json")
-EXT = "urn:effortless:pko-extension#"
+EXT = "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#"
 PRINCIPALS = [("principal-process-steward", "processsteward", "schema-process-steward"),
               ("principal-knowledge-authority", "knowledgeauthority", "schema-knowledge-authority")]
 NEW_TABLES = ["ProcessMiningRuns", "Vocabularies", "VocabularyTerms", "KnowledgeBrokerLinks"]

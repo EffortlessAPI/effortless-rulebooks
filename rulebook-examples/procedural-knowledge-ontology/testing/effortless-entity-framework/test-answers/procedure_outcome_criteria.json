@@ -1,0 +1,47 @@
+[
+  {
+    "procedure_outcome_criterion_id": "crit-close-success",
+    "procedure": "quarter-end-close",
+    "polarity": "Success",
+    "statement": "Package published with every blocking control evidenced.",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#OutcomeCriterion",
+    "name": "quarter-end-close Success",
+    "failure_procedure_key": ""
+  },
+  {
+    "procedure_outcome_criterion_id": "crit-deploy-failure",
+    "procedure": "production-deployment",
+    "polarity": "Failure",
+    "statement": "Rollback required, or a change reached production without a recorded approval.",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#OutcomeCriterion",
+    "name": "production-deployment Failure",
+    "failure_procedure_key": "production-deployment"
+  },
+  {
+    "procedure_outcome_criterion_id": "crit-deploy-success",
+    "procedure": "production-deployment",
+    "polarity": "Success",
+    "statement": "Change live with health signals green for thirty minutes.",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#OutcomeCriterion",
+    "name": "production-deployment Success",
+    "failure_procedure_key": ""
+  },
+  {
+    "procedure_outcome_criterion_id": "crit-loto-failure",
+    "procedure": "lockout-tagout",
+    "polarity": "Failure",
+    "statement": "Any stored energy released while someone is working on the machine.",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#OutcomeCriterion",
+    "name": "lockout-tagout Failure",
+    "failure_procedure_key": "lockout-tagout"
+  },
+  {
+    "procedure_outcome_criterion_id": "crit-loto-success",
+    "procedure": "lockout-tagout",
+    "polarity": "Success",
+    "statement": "Work finished with zero energy verified and every lock removed by the person who applied it.",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#OutcomeCriterion",
+    "name": "lockout-tagout Success",
+    "failure_procedure_key": ""
+  }
+]
