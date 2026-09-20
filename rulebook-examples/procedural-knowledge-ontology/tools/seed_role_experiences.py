@@ -20,7 +20,7 @@ import sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 RB = os.path.join(ROOT, "effortless-rulebook", "procedural-knowledge-ontology-rulebook.json")
-IRI = "urn:effortless:pko-extension#"
+IRI = "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#"
 
 # agent -> the role they sign in as. Signing in is independent of Roles.CurrentAgent: Aisha and
 # Ken work as maintenance technicians without being the role's single recorded holder.
@@ -220,12 +220,23 @@ def fill_physical_names(rb):
     if r.returncode:
         raise SystemExit(f"FATAL: cannot read live table names: {r.stderr}")
     live = set(r.stdout.split())
+    # Match on the name with every separator removed, so the transpiler's own casing decision
+    # wins over any rule restated here. A per-word rule reads FAQs as f_a_qs, which is in no
+    # database, and the table was silently left with no policy and no role view.
+    by_norm = {}
+    for name in live:
+        if name.startswith("vw_"):
+            continue
+        by_norm.setdefault(re.sub(r"[^a-z0-9]", "", name.lower()), []).append(name)
     filled, absent = 0, []
     for t in rb["RulebookTables"]["data"]:
         if t.get("PhysicalTable") and t.get("PhysicalView"):
             continue
-        phys = snake(t["TableName"])
-        if phys in live and f"vw_{phys}" in live:
+        candidates = by_norm.get(re.sub(r"[^a-z0-9]", "", t["TableName"].lower()), [])
+        if len(candidates) > 1:
+            raise SystemExit(f"FATAL: {t['TableName']} matches more than one live table: {candidates}")
+        phys = candidates[0] if candidates else None
+        if phys and f"vw_{phys}" in live:
             t["PhysicalTable"], t["PhysicalView"] = phys, f"vw_{phys}"
             filled += 1
         else:
