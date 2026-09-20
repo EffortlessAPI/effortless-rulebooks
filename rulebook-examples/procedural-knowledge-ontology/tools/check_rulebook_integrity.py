@@ -23,6 +23,21 @@ broken database.
   4. INDEX/MATCH on a non-primary-key
      Only matches the target table's PK; anything else generates nothing.
 
+  5. instance types that are not declared classes (TBox/ABox agreement)
+     Every row's `SemanticTypeIri` is the IRI of the class it is an instance
+     of. Three ways that went wrong here, all of them silent:
+       - an extension term used by rows but never declared by a
+         `SemanticMappings` class row, so the published vocabulary does not
+         define a term the data uses (170 terms), and the mirror image, a
+         declared term nothing is typed as (133 terms). Both came from
+         declaring the plural table name while rows carried the singular.
+       - a CURIE (`prov:Agent`) rather than an absolute IRI, which is not an
+         identifier any consumer can resolve (55 rows).
+       - a *property* IRI (`dcterms:references`) as an instance's type, which
+         asserts the row is a property rather than a thing (15 rows).
+     Fixed by tools/fix_semantic_type_iris.py and
+     tools/align_extension_class_iris.py; gated here so it cannot return.
+
 Exit 1 on any finding.
 """
 import json, os, re, sys
@@ -95,8 +110,49 @@ def main():
                     f"{where}: MATCH on a string literal generates no "
                     f"function, while the view calling it is still emitted.")
 
+    # 5. every instance's type is an absolute class IRI that the model declares.
+    mappings = rb["SemanticMappings"]["data"]
+    declared = {m["TargetIri"] for m in mappings if m.get("MappingKind") == "class"}
+    property_iris = {m["TargetIri"] for m in mappings if m.get("MappingKind") == "property"}
+    typed_rows = 0
+    for tname, t in tables.items():
+        if not any(f["name"] == "SemanticTypeIri" for f in t["schema"]):
+            continue
+        for row in t.get("data") or []:
+            iri = (row.get("SemanticTypeIri") or "").strip()
+            key = row.get(t["schema"][0]["name"])
+            where = f"{tname}.{key}"
+            if not iri:
+                problems.append(f"{where}: no SemanticTypeIri. Every row states the class it "
+                                f"instantiates; an untyped row is invisible to every consumer "
+                                f"that selects by type.")
+                continue
+            typed_rows += 1
+            if not iri.startswith(("http://", "https://")):
+                problems.append(f"{where}: SemanticTypeIri {iri!r} is not an absolute IRI. A CURIE "
+                                f"is only meaningful next to the prefix table that defines it.")
+                continue
+            if iri in property_iris:
+                problems.append(f"{where}: typed with {iri!r}, which this model declares as a "
+                                f"property. An instance is not a property; type it with the class "
+                                f"its table maps to.")
+                continue
+            if iri not in declared:
+                problems.append(f"{where}: typed {iri!r}, which no SemanticMappings class row "
+                                f"declares. Run tools/align_extension_class_iris.py.")
+    unused = sorted(d for d in declared if d.startswith("https://effortlessapi.github.io/")) 
+    used = {(row.get("SemanticTypeIri") or "").strip()
+            for t in tables.values() if any(f["name"] == "SemanticTypeIri" for f in t["schema"])
+            for row in (t.get("data") or [])}
+    for d in unused:
+        if d not in used:
+            problems.append(f"SemanticMappings declares {d!r}, but no row in the model is an "
+                            f"instance of it. The published vocabulary would define a term the "
+                            f"data never uses.")
+
     print(f"checked {len(tables)} tables, "
-          f"{sum(len(t['schema']) for t in tables.values())} fields")
+          f"{sum(len(t['schema']) for t in tables.values())} fields, "
+          f"{typed_rows} typed rows against {len(declared)} declared classes")
     if problems:
         print(f"\n{len(problems)} PROBLEM(S):\n", file=sys.stderr)
         for p in problems:
