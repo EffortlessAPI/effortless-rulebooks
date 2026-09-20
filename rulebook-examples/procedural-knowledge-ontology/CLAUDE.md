@@ -280,6 +280,13 @@ that every refusal is real. It is the acceptance test for this app. Keep it at z
 10. **`DROP DATABASE ... WITH (FORCE)` emits `error` on an idle pg pool client, and an unhandled
     pool error kills Node.** The app's own Reset would have crashed the API every time. Both pools
     now handle it; the pool reconnects on the next query.
+    The pool's handler covers a client only while it is idle IN the pool: `bash init-db.sh` from a
+    terminal still killed the API through a client's own `error` event, so every client now gets a
+    handler on `connect` as well.
+11. **The default row policy on `RoleAssignments` is `IsCurrent`.** A role that must answer a question
+    about a past date (the release manager's "Who held the role that day") needs an explicit `rows`
+    entry in `tools/role_profiles.py`, or it only ever sees today's holders and the page looks right
+    while answering the wrong question.
 
 ## Conformance — every installed tool, graded cell by cell
 
