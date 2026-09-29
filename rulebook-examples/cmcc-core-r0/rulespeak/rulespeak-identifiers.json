@@ -1,0 +1,28 @@
+{
+  "_comment": "Stable DR-number ledger for rulebook-to-rulespeak. Auto-maintained; feed this file back in on the next build to keep rule numbers stable. Numbers in 'Retired' are tombstones and are never reissued. Hand-edit an Assignments number only to deliberately re-pin a rule.",
+  "NextId": 22,
+  "Assignments": {
+    "EDBRelations.Name": 1,
+    "Commands.Name": 2,
+    "Rules.Name": 3,
+    "Transitions.Name": 4,
+    "TransitionEffects.Name": 5,
+    "TransitionEvents.Name": 6,
+    "IntegrityConstraints.Name": 7,
+    "Observables.Name": 8,
+    "SeedFacts.Name": 9,
+    "InputHistories.Name": 10,
+    "ReflectionConditions.Name": 11,
+    "Substrates.Name": 12,
+    "Substrates.AnswerKeyResultCount": 13,
+    "Substrates.AnswerKeyFailCount": 14,
+    "Substrates.AnswerKeyOk": 15,
+    "Substrates.ReflectionResultCount": 16,
+    "Substrates.ReflectionFailCount": 17,
+    "Substrates.ReflectionOk": 18,
+    "Substrates.Conformant": 19,
+    "AnswerKeyResults.Name": 20,
+    "ReflectionResults.Name": 21
+  },
+  "Retired": []
+}

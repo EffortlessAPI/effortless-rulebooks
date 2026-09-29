@@ -1,0 +1,90 @@
+{
+ "spec": "warehouse-network",
+ "lint": true,
+ "substrates": {
+  "transparent": {
+   "answer_key": {
+    "i1-routes": {
+     "traces_produced": 1,
+     "permitted": 1,
+     "ok": true
+    },
+    "i2-bitemporal": {
+     "traces_produced": 1,
+     "permitted": 2,
+     "ok": true
+    }
+   },
+   "reflection": {
+    "ok": true,
+    "recoverable_G_R": true,
+    "conditions": {
+     "1_constructor_preservation": true,
+     "3_addressability": true,
+     "2_dependency_preservation": true,
+     "4_local_adequacy": null,
+     "5_injectivity": true,
+     "6_bounded_locality": true
+    }
+   },
+   "answer_key_ok": true,
+   "conformant": true
+  },
+  "tangled": {
+   "answer_key": {
+    "i1-routes": {
+     "traces_produced": 1,
+     "permitted": 1,
+     "ok": true
+    },
+    "i2-bitemporal": {
+     "traces_produced": 1,
+     "permitted": 2,
+     "ok": true
+    }
+   },
+   "reflection": {
+    "ok": false,
+    "recoverable_G_R": false,
+    "conditions": {
+     "1_constructor_preservation": true,
+     "3_addressability": true,
+     "2_dependency_preservation": false,
+     "4_local_adequacy": null,
+     "5_injectivity": true,
+     "6_bounded_locality": false
+    }
+   },
+   "answer_key_ok": true,
+   "conformant": false
+  },
+  "interpreter": {
+   "answer_key": {
+    "i1-routes": {
+     "traces_produced": 1,
+     "permitted": 1,
+     "ok": true
+    },
+    "i2-bitemporal": {
+     "traces_produced": 1,
+     "permitted": 2,
+     "ok": true
+    }
+   },
+   "reflection": {
+    "ok": false,
+    "recoverable_G_R": false,
+    "conditions": {
+     "1_constructor_preservation": false,
+     "3_addressability": false,
+     "2_dependency_preservation": false,
+     "4_local_adequacy": null,
+     "5_injectivity": true,
+     "6_bounded_locality": false
+    }
+   },
+   "answer_key_ok": true,
+   "conformant": false
+  }
+ }
+}

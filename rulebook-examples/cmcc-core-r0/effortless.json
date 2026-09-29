@@ -1,0 +1,62 @@
+{
+  "SSoTmeProjectId": "de8678b0-89ac-4a85-967d-e183c4cce07a",
+  "Name": "cmcc-core-r0",
+  "Description": "The runnable companion to the CMCC-Core Representation Theorem paper: an R0 warehouse-network spec, two independent oracles building an answer key, and a conformance matrix (answer key x reflection) over three substrates (transparent, tangled, interpreter), retrofitted into a full ERB project shape with the spec, matrix and results modeled as rulebook data.",
+  "ProjectSettings": [
+    {
+      "Name": "project-name",
+      "Value": "cmcc-core-r0"
+    },
+    {
+      "Name": "erbDateDiff",
+      "Value": "calendar"
+    },
+    {
+      "Name": "erbTimezone",
+      "Value": "UTC"
+    },
+    {
+      "Name": "erbDateTimeText",
+      "Value": "iso8601"
+    },
+    {
+      "Name": "erbBlankLogic",
+      "Value": "coerce"
+    },
+    {
+      "Name": "erbWholeNumber",
+      "Value": "by-field-type"
+    }
+  ],
+  "ProjectTranspilers": [
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebooktopostgres",
+      "RelativePath": "/postgres",
+      "CommandLine": "rulebook-to-postgres -i ../effortless-rulebook/effortless-rulebook.json -p drop_all=true",
+      "IsDisabled": false,
+      "LastVersionUsed": "v2026.09.27.1534",
+      "LastUrl": "https://effortless-rulebook-to-postgres-v2026-09-27-1534-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "init-db",
+      "RelativePath": "/postgres",
+      "CommandLine": "-exec ./reset-rulebook-db.sh",
+      "IsDisabled": false
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebooktorulespeak",
+      "RelativePath": "/rulespeak",
+      "CommandLine": "rulebook-to-rulespeak -i ../effortless-rulebook/effortless-rulebook.json",
+      "IsDisabled": false,
+      "LastVersionUsed": "v2026.09.17.2011",
+      "LastUrl": "https://effortless-rulebook-to-rulespeak-v2026-09-17-2011-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+    }
+  ],
+  "ShowHidden": false,
+  "ShowAllFiles": false,
+  "CurrentPath": "/effortless-rulebook",
+  "SSoTmeProjectFiles": null
+}

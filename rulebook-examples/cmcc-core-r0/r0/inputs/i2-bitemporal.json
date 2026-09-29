@@ -1,0 +1,12 @@
+{
+  "name": "i2-bitemporal",
+  "description": "A knowledge-time correction observed at different (valid, knowledge) pairs, then a nondeterministic command producing two permitted successors.",
+  "steps": [
+    {"command": "CorrectShipment", "params": ["s1", 12, 3], "k": 4},
+    {"command": "Observe", "params": ["valid-2-known-4"], "k": 4, "v": 2},
+    {"command": "Observe", "params": ["valid-5-known-4"], "k": 4, "v": 5},
+    {"command": "Observe", "params": ["valid-5-known-1"], "k": 5, "v": 5, "obs_k": 1},
+    {"command": "Reroute", "params": ["c"], "k": 6},
+    {"command": "Observe", "params": ["after-reroute"], "k": 7}
+  ]
+}

@@ -1,0 +1,1472 @@
+{
+ "$schema": "https://effortlessapi.com/schemas/effortless-rulebook.schema.json",
+ "Name": "cmcc-core-r0",
+ "Description": "The runnable companion to the CMCC-Core Representation Theorem, retrofitted into ERB shape: the R0 warehouse-network spec's own structure, its conformance matrix (answer key x reflection), and the resulting per-substrate roll-ups, all as rulebook data.",
+ "EDBRelations": {
+  "Description": "The R0 spec's extensional database relations (r0/spec.json's 'edb' map): the fixed vocabulary every rule and command is built from.",
+  "schema": [
+   {
+    "name": "RelationId",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": false,
+    "Description": "Stored identity: the EDB relation name from r0/spec.json's edb map (e.g. 'Warehouse')."
+   },
+   {
+    "name": "Fields",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": false,
+    "Description": "JSON array of the relation's field names, verbatim from spec.json (e.g. '[\"id\"]')."
+   },
+   {
+    "name": "FieldCount",
+    "datatype": "integer",
+    "type": "raw",
+    "nullable": false,
+    "Description": "Number of fields, counted once at transcription time."
+   },
+   {
+    "name": "Description",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": false,
+    "Description": "What this EDB relation models in the warehouse-network domain."
+   },
+   {
+    "name": "Name",
+    "datatype": "string",
+    "type": "calculated",
+    "nullable": false,
+    "Description": "Display alias.",
+    "formula": "={{RelationId}}"
+   },
+   {
+    "name": "SeedFacts",
+    "datatype": "string",
+    "type": "relationship",
+    "nullable": false,
+    "Description": "h0 seed facts whose Relation is this EDB relation.",
+    "RelatedTo": "SeedFacts"
+   },
+   {
+    "name": "TransitionEffects",
+    "datatype": "string",
+    "type": "relationship",
+    "nullable": false,
+    "Description": "Transition effects that assert/retract into this relation.",
+    "RelatedTo": "TransitionEffects"
+   }
+  ],
+  "data": [
+   {
+    "RelationId": "Warehouse",
+    "Fields": "[\"id\"]",
+    "FieldCount": 1,
+    "Description": "A node in the network (the hub, satellite depots, or ordinary warehouses)."
+   },
+   {
+    "RelationId": "Route",
+    "Fields": "[\"src\", \"dst\", \"cap\"]",
+    "FieldCount": 3,
+    "Description": "A directed shipping lane between two warehouses with a capacity."
+   },
+   {
+    "RelationId": "Shipment",
+    "Fields": "[\"id\", \"wh\", \"day\"]",
+    "FieldCount": 3,
+    "Description": "A shipment currently sitting at a warehouse on a given day."
+   }
+  ]
+ },
+ "Commands": {
+  "Description": "The R0 spec's commands (r0/spec.json's 'commands' map): the only way an input history can act on the state.",
+  "schema": [
+   {
+    "name": "CommandId",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": false,
+    "Description": "Stored identity: the command name from r0/spec.json's commands map (e.g. 'AddRoute')."
+   },
+   {
+    "name": "Params",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": false,
+    "Description": "JSON array of the command's parameter names, verbatim from spec.json."
+   },
+   {
+    "name": "ParamCount",
+    "datatype": "integer",
+    "type": "raw",
+    "nullable": false,
+    "Description": "Number of parameters, counted once at transcription time."
+   },
+   {
+    "name": "Description",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": false,
+    "Description": "What issuing this command means in the warehouse-network domain."
+   },
+   {
+    "name": "Name",
+    "datatype": "string",
+    "type": "calculated",
+    "nullable": false,
+    "Description": "Display alias.",
+    "formula": "={{CommandId}}"
+   },
+   {
+    "name": "Transitions",
+    "datatype": "string",
+    "type": "relationship",
+    "nullable": false,
+    "Description": "Transitions this command can fire.",
+    "RelatedTo": "Transitions"
+   }
+  ],
+  "data": [
+   {
+    "CommandId": "AddRoute",
+    "Params": "[\"s\", \"d\", \"c\"]",
+    "ParamCount": 3,
+    "Description": "Open a new directed route s -> d with capacity c."
+   },
+   {
+    "CommandId": "CloseRoute",
+    "Params": "[\"s\", \"d\"]",
+    "ParamCount": 2,
+    "Description": "Close (retract) an existing route s -> d."
+   },
+   {
+    "CommandId": "CorrectShipment",
+    "Params": "[\"id\", \"newday\", \"at\"]",
+    "ParamCount": 3,
+    "Description": "Bitemporal correction: retract the recorded day for a shipment and re-assert a new day, both visible at knowledge time 'at'."
+   },
+   {
+    "CommandId": "Reroute",
+    "Params": "[\"x\"]",
+    "ParamCount": 1,
+    "Description": "Ask that a warehouse gain a fallback route, either via the hub or via the depot (two enabled transitions -> nondeterminism)."
+   },
+   {
+    "CommandId": "Observe",
+    "Params": "[\"tag\"]",
+    "ParamCount": 1,
+    "Description": "A no-op command that only emits an observation tag; asserts and retracts nothing."
+   }
+  ]
+ },
+ "Rules": {
+  "Description": "Every stratified Datalog-with-negation-and-aggregation rule in the R0 spec (r0/spec.json's 'rules' array), including guard/effect/event rules for transitions and the two integrity-constraint rules.",
+  "schema": [
+   {
+    "name": "RuleId",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": false,
+    "Description": "Stored identity: the rule's 'id' in r0/spec.json's rules array (e.g. 'reach_base')."
+   },
+   {
+    "name": "HeadPredicate",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": false,
+    "Description": "The rule's head predicate name (head[0] in spec.json), e.g. 'Reachable'."
+   },
+   {
+    "name": "Kind",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": false,
+    "Description": "'rule' for a body-clause rule, 'aggregation' for an agg-clause rule (spec.json's 'agg' key)."
+   },
+   {
+    "name": "HeadJson",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": false,
+    "Description": "The rule's head tuple, verbatim JSON from spec.json."
+   },
+   {
+    "name": "BodyJson",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": true,
+    "Description": "The rule's body clause list, verbatim JSON from spec.json (null for aggregation rules)."
+   },
+   {
+    "name": "AggJson",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": true,
+    "Description": "The rule's agg clause, verbatim JSON from spec.json (null for body rules)."
+   },
+   {
+    "name": "PaperSectionRef",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": false,
+    "Description": "CMCC-Core Representation Theorem section(s) this rule exercises."
+   },
+   {
+    "name": "Description",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": false,
+    "Description": "What the rule computes and, for reflection.py, which G_R node it constructs."
+   },
+   {
+    "name": "Name",
+    "datatype": "string",
+    "type": "calculated",
+    "nullable": false,
+    "Description": "Display alias.",
+    "formula": "={{RuleId}}"
+   },
+   {
+    "name": "GuardedTransitions",
+    "datatype": "string",
+    "type": "relationship",
+    "nullable": false,
+    "Description": "Transitions whose Guard is this rule.",
+    "RelatedTo": "Transitions"
+   },
+   {
+    "name": "TransitionEffects",
+    "datatype": "string",
+    "type": "relationship",
+    "nullable": false,
+    "Description": "Transition effects whose FromRule is this rule.",
+    "RelatedTo": "TransitionEffects"
+   },
+   {
+    "name": "TransitionEvents",
+    "datatype": "string",
+    "type": "relationship",
+    "nullable": false,
+    "Description": "Transition events whose FromRule is this rule.",
+    "RelatedTo": "TransitionEvents"
+   },
+   {
+    "name": "IntegrityConstraints",
+    "datatype": "string",
+    "type": "relationship",
+    "nullable": false,
+    "Description": "Integrity constraints whose Rule is this rule.",
+    "RelatedTo": "IntegrityConstraints"
+   }
+  ],
+  "data": [
+   {
+    "RuleId": "reach_base",
+    "HeadPredicate": "Reachable",
+    "Kind": "rule",
+    "HeadJson": "[\"Reachable\", \"x\", \"y\"]",
+    "BodyJson": "[{\"atom\": [\"Route\", \"x\", \"y\", \"_\"]}]",
+    "AggJson": null,
+    "PaperSectionRef": "§4, §12",
+    "Description": "Base case of positive recursion: a direct route makes y reachable from x."
+   },
+   {
+    "RuleId": "reach_step",
+    "HeadPredicate": "Reachable",
+    "Kind": "rule",
+    "HeadJson": "[\"Reachable\", \"x\", \"y\"]",
+    "BodyJson": "[{\"atom\": [\"Reachable\", \"x\", \"z\"]}, {\"atom\": [\"Route\", \"z\", \"y\", \"_\"]}]",
+    "AggJson": null,
+    "PaperSectionRef": "§4, §12",
+    "Description": "Recursive step of positive recursion: Reachable composes with one more Route hop."
+   },
+   {
+    "RuleId": "isolated",
+    "HeadPredicate": "Isolated",
+    "Kind": "rule",
+    "HeadJson": "[\"Isolated\", \"x\"]",
+    "BodyJson": "[{\"atom\": [\"Warehouse\", \"x\"]}, {\"cmp\": [\"!=\", \"x\", {\"$\": \"hub\"}]}, {\"not\": [\"Reachable\", {\"$\": \"hub\"}, \"x\"]}]",
+    "AggJson": null,
+    "PaperSectionRef": "§7 (negation), §12",
+    "Description": "Negation over a strictly lower stratum: a warehouse not reachable from the hub."
+   },
+   {
+    "RuleId": "fanout",
+    "HeadPredicate": "Fanout",
+    "Kind": "aggregation",
+    "HeadJson": "[\"Fanout\", \"x\", \"n\"]",
+    "BodyJson": null,
+    "AggJson": "{\"op\": \"COUNT\", \"expr\": \"y\", \"keys\": [{\"atom\": [\"Warehouse\", \"x\"]}], \"over\": [{\"atom\": [\"Route\", \"x\", \"y\", \"_\"]}]}",
+    "PaperSectionRef": "§5 (aggregation), §12",
+    "Description": "COUNT aggregation: out-degree of a warehouse; the empty group gives 0."
+   },
+   {
+    "RuleId": "maxcap",
+    "HeadPredicate": "MaxCap",
+    "Kind": "aggregation",
+    "HeadJson": "[\"MaxCap\", \"x\", \"m\"]",
+    "BodyJson": null,
+    "AggJson": "{\"op\": \"MAX\", \"expr\": \"c\", \"keys\": [{\"atom\": [\"Warehouse\", \"x\"]}], \"over\": [{\"atom\": [\"Route\", \"x\", \"_\", \"c\"]}]}",
+    "PaperSectionRef": "§5 (aggregation), §12",
+    "Description": "MAX aggregation: largest outgoing route capacity; the empty group derives nothing."
+   },
+   {
+    "RuleId": "big",
+    "HeadPredicate": "Big",
+    "Kind": "rule",
+    "HeadJson": "[\"Big\", \"x\"]",
+    "BodyJson": "[{\"atom\": [\"MaxCap\", \"x\", \"m\"]}, {\"cmp\": [\">=\", \"m\", 50]}]",
+    "AggJson": null,
+    "PaperSectionRef": "§12",
+    "Description": "Comparison over an aggregation result: warehouses whose MaxCap is at least 50."
+   },
+   {
+    "RuleId": "double",
+    "HeadPredicate": "DoubleCap",
+    "Kind": "rule",
+    "HeadJson": "[\"DoubleCap\", \"s\", \"d\", \"c2\"]",
+    "BodyJson": "[{\"atom\": [\"Route\", \"s\", \"d\", \"c\"]}, {\"let\": [\"c2\", [\"*\", \"c\", 2]]}]",
+    "AggJson": null,
+    "PaperSectionRef": "§12",
+    "Description": "A 'let' binding: DoubleCap re-derives a value via arithmetic, not just projection."
+   },
+   {
+    "RuleId": "late",
+    "HeadPredicate": "Late",
+    "Kind": "rule",
+    "HeadJson": "[\"Late\", \"id\"]",
+    "BodyJson": "[{\"atom\": [\"Shipment\", \"id\", \"_\", \"day\"]}, {\"cmp\": [\">\", \"day\", 10]}]",
+    "AggJson": null,
+    "PaperSectionRef": "§12",
+    "Description": "Comparison over an EDB field: shipments recorded past day 10."
+   },
+   {
+    "RuleId": "known_at",
+    "HeadPredicate": "KnownAt",
+    "Kind": "rule",
+    "HeadJson": "[\"KnownAt\", \"id\", \"day\", \"k\"]",
+    "BodyJson": "[{\"atom\": [\"Hist_Shipment\", \"_\", {\"$\": \"assert\"}, \"id\", \"_\", \"day\", \"_\", \"_\", \"k\"]}]",
+    "AggJson": null,
+    "PaperSectionRef": "§7 (bitemporal)",
+    "Description": "Reads Hist_Shipment at a given knowledge time k, exercising the bitemporal snapshot rules tau generates."
+   },
+   {
+    "RuleId": "g_addroute",
+    "HeadPredicate": "Guard_AddRoute",
+    "Kind": "rule",
+    "HeadJson": "[\"Guard_AddRoute\", \"s\", \"d\", \"c\"]",
+    "BodyJson": "[{\"atom\": [\"Cmd_AddRoute\", \"s\", \"d\", \"c\"]}, {\"atom\": [\"Warehouse\", \"s\"]}, {\"atom\": [\"Warehouse\", \"d\"]}, {\"not\": [\"Route\", \"s\", \"d\", \"_\"]}]",
+    "AggJson": null,
+    "PaperSectionRef": "§8 (transitions)",
+    "Description": "Guard for AddRoute: both endpoints exist and no route already connects them."
+   },
+   {
+    "RuleId": "e_addroute",
+    "HeadPredicate": "Eff_AddRoute",
+    "Kind": "rule",
+    "HeadJson": "[\"Eff_AddRoute\", \"s\", \"d\", \"c\", \"vf\", \"vt\"]",
+    "BodyJson": "[{\"atom\": [\"Guard_AddRoute\", \"s\", \"d\", \"c\"]}, {\"atom\": [\"Now\", \"vf\", \"_\"]}, {\"let\": [\"vt\", 4611686018427387904]}]",
+    "AggJson": null,
+    "PaperSectionRef": "§8 (transitions)",
+    "Description": "Effect for AddRoute: the asserted Route tuple, valid from now to +inf."
+   },
+   {
+    "RuleId": "ev_addroute",
+    "HeadPredicate": "Ev_RouteAdded",
+    "Kind": "rule",
+    "HeadJson": "[\"Ev_RouteAdded\", \"s\", \"d\"]",
+    "BodyJson": "[{\"atom\": [\"Guard_AddRoute\", \"s\", \"d\", \"_\"]}]",
+    "AggJson": null,
+    "PaperSectionRef": "§8 (transitions)",
+    "Description": "Event for AddRoute: emits RouteAdded."
+   },
+   {
+    "RuleId": "g_closeroute",
+    "HeadPredicate": "Guard_CloseRoute",
+    "Kind": "rule",
+    "HeadJson": "[\"Guard_CloseRoute\", \"s\", \"d\"]",
+    "BodyJson": "[{\"atom\": [\"Cmd_CloseRoute\", \"s\", \"d\"]}, {\"atom\": [\"Route\", \"s\", \"d\", \"_\"]}]",
+    "AggJson": null,
+    "PaperSectionRef": "§8 (transitions)",
+    "Description": "Guard for CloseRoute: the route currently exists."
+   },
+   {
+    "RuleId": "e_closeroute",
+    "HeadPredicate": "Eff_CloseRoute",
+    "Kind": "rule",
+    "HeadJson": "[\"Eff_CloseRoute\", \"s\", \"d\", \"c\", \"vf\", \"vt\"]",
+    "BodyJson": "[{\"atom\": [\"Guard_CloseRoute\", \"s\", \"d\"]}, {\"atom\": [\"Hist_Route\", \"n\", {\"$\": \"assert\"}, \"s\", \"d\", \"c\", \"vf\", \"vt\", \"_\"]}, {\"not\": [\"Retracted_Route\", \"n\"]}]",
+    "AggJson": null,
+    "PaperSectionRef": "§7, §8",
+    "Description": "Effect for CloseRoute: retracts the live Hist_Route tuple for s -> d."
+   },
+   {
+    "RuleId": "g_correct",
+    "HeadPredicate": "Guard_CorrectShipment",
+    "Kind": "rule",
+    "HeadJson": "[\"Guard_CorrectShipment\", \"id\", \"newday\", \"at\"]",
+    "BodyJson": "[{\"atom\": [\"Cmd_CorrectShipment\", \"id\", \"newday\", \"at\"]}, {\"atom\": [\"Shipment\", \"id\", \"_\", \"_\"]}]",
+    "AggJson": null,
+    "PaperSectionRef": "§8 (transitions)",
+    "Description": "Guard for CorrectShipment: the shipment currently exists."
+   },
+   {
+    "RuleId": "e_correct_retract",
+    "HeadPredicate": "Eff_CorrectRetract",
+    "Kind": "rule",
+    "HeadJson": "[\"Eff_CorrectRetract\", \"id\", \"wh\", \"day\", \"vf\", \"vt\"]",
+    "BodyJson": "[{\"atom\": [\"Guard_CorrectShipment\", \"id\", \"_\", \"_\"]}, {\"atom\": [\"Hist_Shipment\", \"n\", {\"$\": \"assert\"}, \"id\", \"wh\", \"day\", \"vf\", \"vt\", \"_\"]}, {\"not\": [\"Retracted_Shipment\", \"n\"]}]",
+    "AggJson": null,
+    "PaperSectionRef": "§7 (bitemporal correction)",
+    "Description": "Retract half of the correction: the live Hist_Shipment tuple for this shipment."
+   },
+   {
+    "RuleId": "e_correct_assert",
+    "HeadPredicate": "Eff_CorrectAssert",
+    "Kind": "rule",
+    "HeadJson": "[\"Eff_CorrectAssert\", \"id\", \"wh\", \"newday\", \"at\", \"vt\"]",
+    "BodyJson": "[{\"atom\": [\"Guard_CorrectShipment\", \"id\", \"newday\", \"at\"]}, {\"atom\": [\"Shipment\", \"id\", \"wh\", \"_\"]}, {\"let\": [\"vt\", 4611686018427387904]}]",
+    "AggJson": null,
+    "PaperSectionRef": "§7 (bitemporal correction)",
+    "Description": "Assert half of the correction: the new day, valid from the given knowledge time 'at'."
+   },
+   {
+    "RuleId": "ev_corrected",
+    "HeadPredicate": "Ev_ShipmentCorrected",
+    "Kind": "rule",
+    "HeadJson": "[\"Ev_ShipmentCorrected\", \"id\", \"newday\"]",
+    "BodyJson": "[{\"atom\": [\"Guard_CorrectShipment\", \"id\", \"newday\", \"_\"]}]",
+    "AggJson": null,
+    "PaperSectionRef": "§8 (transitions)",
+    "Description": "Event for CorrectShipment: emits ShipmentCorrected."
+   },
+   {
+    "RuleId": "g_reroute_hub",
+    "HeadPredicate": "Guard_RerouteHub",
+    "Kind": "rule",
+    "HeadJson": "[\"Guard_RerouteHub\", \"x\"]",
+    "BodyJson": "[{\"atom\": [\"Cmd_Reroute\", \"x\"]}, {\"atom\": [\"Warehouse\", \"x\"]}, {\"not\": [\"Route\", \"x\", {\"$\": \"hub\"}, \"_\"]}]",
+    "AggJson": null,
+    "PaperSectionRef": "§8, §20 (nondeterminism)",
+    "Description": "Guard for RerouteViaHub: enabled whenever x has no route to the hub."
+   },
+   {
+    "RuleId": "e_reroute_hub",
+    "HeadPredicate": "Eff_RerouteHub",
+    "Kind": "rule",
+    "HeadJson": "[\"Eff_RerouteHub\", \"x\", \"h\", \"c\", \"vf\", \"vt\"]",
+    "BodyJson": "[{\"atom\": [\"Guard_RerouteHub\", \"x\"]}, {\"atom\": [\"Now\", \"vf\", \"_\"]}, {\"let\": [\"h\", {\"$\": \"hub\"}]}, {\"let\": [\"c\", 10]}, {\"let\": [\"vt\", 4611686018427387904]}]",
+    "AggJson": null,
+    "PaperSectionRef": "§8, §20",
+    "Description": "Effect for RerouteViaHub: asserts a route from x to the hub."
+   },
+   {
+    "RuleId": "g_reroute_depot",
+    "HeadPredicate": "Guard_RerouteDepot",
+    "Kind": "rule",
+    "HeadJson": "[\"Guard_RerouteDepot\", \"x\"]",
+    "BodyJson": "[{\"atom\": [\"Cmd_Reroute\", \"x\"]}, {\"atom\": [\"Warehouse\", \"x\"]}, {\"not\": [\"Route\", \"x\", {\"$\": \"depot\"}, \"_\"]}]",
+    "AggJson": null,
+    "PaperSectionRef": "§8, §20 (nondeterminism)",
+    "Description": "Guard for RerouteViaDepot: enabled whenever x has no route to the depot."
+   },
+   {
+    "RuleId": "e_reroute_depot",
+    "HeadPredicate": "Eff_RerouteDepot",
+    "Kind": "rule",
+    "HeadJson": "[\"Eff_RerouteDepot\", \"x\", \"h\", \"c\", \"vf\", \"vt\"]",
+    "BodyJson": "[{\"atom\": [\"Guard_RerouteDepot\", \"x\"]}, {\"atom\": [\"Now\", \"vf\", \"_\"]}, {\"let\": [\"h\", {\"$\": \"depot\"}]}, {\"let\": [\"c\", 10]}, {\"let\": [\"vt\", 4611686018427387904]}]",
+    "AggJson": null,
+    "PaperSectionRef": "§8, §20",
+    "Description": "Effect for RerouteViaDepot: asserts a route from x to the depot."
+   },
+   {
+    "RuleId": "g_observe",
+    "HeadPredicate": "Guard_Observe",
+    "Kind": "rule",
+    "HeadJson": "[\"Guard_Observe\", \"tag\"]",
+    "BodyJson": "[{\"atom\": [\"Cmd_Observe\", \"tag\"]}]",
+    "AggJson": null,
+    "PaperSectionRef": "§8 (transitions)",
+    "Description": "Guard for Observe: always enabled when the command is issued."
+   },
+   {
+    "RuleId": "c_negcap",
+    "HeadPredicate": "NegativeCap",
+    "Kind": "rule",
+    "HeadJson": "[\"NegativeCap\", \"s\", \"d\"]",
+    "BodyJson": "[{\"atom\": [\"Route\", \"s\", \"d\", \"c\"]}, {\"cmp\": [\"<\", \"c\", 0]}]",
+    "AggJson": null,
+    "PaperSectionRef": "§8 (integrity constraints)",
+    "Description": "Constraint: a route with negative capacity, which rejects the transition that would create it."
+   },
+   {
+    "RuleId": "c_selfroute",
+    "HeadPredicate": "SelfRoute",
+    "Kind": "rule",
+    "HeadJson": "[\"SelfRoute\", \"x\"]",
+    "BodyJson": "[{\"atom\": [\"Route\", \"x\", \"x\", \"_\"]}]",
+    "AggJson": null,
+    "PaperSectionRef": "§8 (integrity constraints)",
+    "Description": "Constraint: a route from a warehouse to itself, which rejects the transition that would create it."
+   }
+  ]
+ },
+ "Transitions": {
+  "Description": "The R0 spec's transitions (r0/spec.json's 'transitions' array): command + guard pairs that may fire, each with its effects and events.",
+  "schema": [
+   {
+    "name": "TransitionId",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": false,
+    "Description": "Stored identity: the transition's 'name' in r0/spec.json's transitions array (e.g. 'AddRoute')."
+   },
+   {
+    "name": "Command",
+    "datatype": "string",
+    "type": "relationship",
+    "nullable": false,
+    "Description": "The command that can fire this transition.",
+    "RelatedTo": "Commands"
+   },
+   {
+    "name": "Guard",
+    "datatype": "string",
+    "type": "relationship",
+    "nullable": false,
+    "Description": "The rule whose head predicate gates this transition.",
+    "RelatedTo": "Rules"
+   },
+   {
+    "name": "Description",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": false,
+    "Description": "What this transition does when its guard is satisfied."
+   },
+   {
+    "name": "Name",
+    "datatype": "string",
+    "type": "calculated",
+    "nullable": false,
+    "Description": "Display alias.",
+    "formula": "={{TransitionId}}"
+   },
+   {
+    "name": "Effects",
+    "datatype": "string",
+    "type": "relationship",
+    "nullable": false,
+    "Description": "This transition's ordered assert/retract effects.",
+    "RelatedTo": "TransitionEffects"
+   },
+   {
+    "name": "Events",
+    "datatype": "string",
+    "type": "relationship",
+    "nullable": false,
+    "Description": "This transition's emitted events.",
+    "RelatedTo": "TransitionEvents"
+   }
+  ],
+  "data": [
+   {
+    "TransitionId": "AddRoute",
+    "Command": "AddRoute",
+    "Guard": "g_addroute",
+    "Description": "Opens a new route; the sole enabled transition for command AddRoute."
+   },
+   {
+    "TransitionId": "CloseRoute",
+    "Command": "CloseRoute",
+    "Guard": "g_closeroute",
+    "Description": "Closes an existing route; the sole enabled transition for command CloseRoute."
+   },
+   {
+    "TransitionId": "CorrectShipment",
+    "Command": "CorrectShipment",
+    "Guard": "g_correct",
+    "Description": "Bitemporal correction of a shipment's recorded day: retracts the old fact and asserts the new one under one knowledge time."
+   },
+   {
+    "TransitionId": "RerouteViaHub",
+    "Command": "Reroute",
+    "Guard": "g_reroute_hub",
+    "Description": "One of two transitions enabled by command Reroute: adds a fallback route via the hub."
+   },
+   {
+    "TransitionId": "RerouteViaDepot",
+    "Command": "Reroute",
+    "Guard": "g_reroute_depot",
+    "Description": "The other transition enabled by command Reroute: adds a fallback route via the depot. Together with RerouteViaHub this is the spec's one genuinely nondeterministic command (§20)."
+   },
+   {
+    "TransitionId": "Observe",
+    "Command": "Observe",
+    "Guard": "g_observe",
+    "Description": "A no-op transition: enabled whenever Observe is issued, asserts and retracts nothing."
+   }
+  ]
+ },
+ "TransitionEffects": {
+  "Description": "One row per (transition, effect) pair: an ordered assert/retract of a rule's derived tuples into an EDB relation.",
+  "schema": [
+   {
+    "name": "EffectId",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": false,
+    "Description": "Stored identity: '<TransitionId>#effect<index>', ordered as in spec.json."
+   },
+   {
+    "name": "Transition",
+    "datatype": "string",
+    "type": "relationship",
+    "nullable": false,
+    "Description": "The transition this effect belongs to.",
+    "RelatedTo": "Transitions"
+   },
+   {
+    "name": "Op",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": false,
+    "Description": "'assert' or 'retract'."
+   },
+   {
+    "name": "Relation",
+    "datatype": "string",
+    "type": "relationship",
+    "nullable": false,
+    "Description": "The EDB relation this effect asserts into or retracts from.",
+    "RelatedTo": "EDBRelations"
+   },
+   {
+    "name": "FromRule",
+    "datatype": "string",
+    "type": "relationship",
+    "nullable": false,
+    "Description": "The rule whose derived tuples this effect applies.",
+    "RelatedTo": "Rules"
+   },
+   {
+    "name": "Name",
+    "datatype": "string",
+    "type": "calculated",
+    "nullable": false,
+    "Description": "Display alias.",
+    "formula": "={{EffectId}}"
+   }
+  ],
+  "data": [
+   {
+    "EffectId": "AddRoute#effect0",
+    "Transition": "AddRoute",
+    "Op": "assert",
+    "Relation": "Route",
+    "FromRule": "e_addroute"
+   },
+   {
+    "EffectId": "CloseRoute#effect0",
+    "Transition": "CloseRoute",
+    "Op": "retract",
+    "Relation": "Route",
+    "FromRule": "e_closeroute"
+   },
+   {
+    "EffectId": "CorrectShipment#effect0",
+    "Transition": "CorrectShipment",
+    "Op": "retract",
+    "Relation": "Shipment",
+    "FromRule": "e_correct_retract"
+   },
+   {
+    "EffectId": "CorrectShipment#effect1",
+    "Transition": "CorrectShipment",
+    "Op": "assert",
+    "Relation": "Shipment",
+    "FromRule": "e_correct_assert"
+   },
+   {
+    "EffectId": "RerouteViaHub#effect0",
+    "Transition": "RerouteViaHub",
+    "Op": "assert",
+    "Relation": "Route",
+    "FromRule": "e_reroute_hub"
+   },
+   {
+    "EffectId": "RerouteViaDepot#effect0",
+    "Transition": "RerouteViaDepot",
+    "Op": "assert",
+    "Relation": "Route",
+    "FromRule": "e_reroute_depot"
+   }
+  ]
+ },
+ "TransitionEvents": {
+  "Description": "One row per (transition, event) pair: an event relation emitted when the transition fires.",
+  "schema": [
+   {
+    "name": "EventId",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": false,
+    "Description": "Stored identity: '<TransitionId>#event<index>', ordered as in spec.json."
+   },
+   {
+    "name": "Transition",
+    "datatype": "string",
+    "type": "relationship",
+    "nullable": false,
+    "Description": "The transition this event belongs to.",
+    "RelatedTo": "Transitions"
+   },
+   {
+    "name": "EventRelation",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": false,
+    "Description": "The event relation name emitted (e.g. 'RouteAdded'); not an EDB relation."
+   },
+   {
+    "name": "FromRule",
+    "datatype": "string",
+    "type": "relationship",
+    "nullable": false,
+    "Description": "The rule whose derived tuples produce this event.",
+    "RelatedTo": "Rules"
+   },
+   {
+    "name": "Name",
+    "datatype": "string",
+    "type": "calculated",
+    "nullable": false,
+    "Description": "Display alias.",
+    "formula": "={{EventId}}"
+   }
+  ],
+  "data": [
+   {
+    "EventId": "AddRoute#event0",
+    "Transition": "AddRoute",
+    "EventRelation": "RouteAdded",
+    "FromRule": "ev_addroute"
+   },
+   {
+    "EventId": "CorrectShipment#event0",
+    "Transition": "CorrectShipment",
+    "EventRelation": "ShipmentCorrected",
+    "FromRule": "ev_corrected"
+   }
+  ]
+ },
+ "IntegrityConstraints": {
+  "Description": "The R0 spec's integrity constraints (r0/spec.json's 'constraints' array): predicates whose nonempty derivation rejects a transition. Named IntegrityConstraints, not Constraints -- rulebook-to-rulespeak v2026.09.17.2011 treats a table literally named 'Constraints' as a reserved word and fails the whole build with \"Entity '' does not resolve to any table.\"",
+  "schema": [
+   {
+    "name": "ConstraintId",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": false,
+    "Description": "Stored identity: the constraint's head predicate name, verbatim from spec.json's constraints array (e.g. 'NegativeCap')."
+   },
+   {
+    "name": "Rule",
+    "datatype": "string",
+    "type": "relationship",
+    "nullable": false,
+    "Description": "The rule that derives this constraint's violations.",
+    "RelatedTo": "Rules"
+   },
+   {
+    "name": "Description",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": false,
+    "Description": "What a nonempty derivation of this predicate means, and which transition it rejects."
+   },
+   {
+    "name": "Name",
+    "datatype": "string",
+    "type": "calculated",
+    "nullable": false,
+    "Description": "Display alias.",
+    "formula": "={{ConstraintId}}"
+   }
+  ],
+  "data": [
+   {
+    "ConstraintId": "NegativeCap",
+    "Rule": "c_negcap",
+    "Description": "Rejects any transition whose effect would leave a route with negative capacity."
+   },
+   {
+    "ConstraintId": "SelfRoute",
+    "Rule": "c_selfroute",
+    "Description": "Rejects any transition whose effect would leave a route from a warehouse to itself."
+   }
+  ]
+ },
+ "Observables": {
+  "Description": "The R0 spec's observables (r0/spec.json's 'observables' map): the predicates exposed in Obs_R0(c, i, h), section 9.",
+  "schema": [
+   {
+    "name": "ObservableId",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": false,
+    "Description": "Stored identity: the observable's key in spec.json's observables map (e.g. 'reachable')."
+   },
+   {
+    "name": "ExposedPredicate",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": false,
+    "Description": "The predicate this observable exposes (e.g. 'Reachable')."
+   },
+   {
+    "name": "Description",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": false,
+    "Description": "Why this predicate is exposed as an observable in Obs_R0(c, i, h)."
+   },
+   {
+    "name": "Name",
+    "datatype": "string",
+    "type": "calculated",
+    "nullable": false,
+    "Description": "Display alias.",
+    "formula": "={{ObservableId}}"
+   }
+  ],
+  "data": [
+   {
+    "ObservableId": "reachable",
+    "ExposedPredicate": "Reachable",
+    "Description": "Positive recursive closure over Route; the paper's running example of Lemma 1's finite lattice."
+   },
+   {
+    "ObservableId": "isolated",
+    "ExposedPredicate": "Isolated",
+    "Description": "Negation over Reachable: witnesses the stratum operator's monotonicity (§7)."
+   },
+   {
+    "ObservableId": "fanout",
+    "ExposedPredicate": "Fanout",
+    "Description": "COUNT aggregation over Route; witnesses the empty-group case (§5)."
+   },
+   {
+    "ObservableId": "maxcap",
+    "ExposedPredicate": "MaxCap",
+    "Description": "MAX aggregation over Route; witnesses the empty-group case (§5)."
+   },
+   {
+    "ObservableId": "big",
+    "ExposedPredicate": "Big",
+    "Description": "Comparison over an aggregation result."
+   },
+   {
+    "ObservableId": "double",
+    "ExposedPredicate": "DoubleCap",
+    "Description": "A 'let'-derived value, not a bare projection."
+   },
+   {
+    "ObservableId": "shipment",
+    "ExposedPredicate": "Shipment",
+    "Description": "Raw EDB relation, exposed directly so bitemporal corrections are visible in the answer key."
+   },
+   {
+    "ObservableId": "late",
+    "ExposedPredicate": "Late",
+    "Description": "Comparison over an EDB field."
+   },
+   {
+    "ObservableId": "known_at",
+    "ExposedPredicate": "KnownAt",
+    "Description": "Bitemporal snapshot read of Hist_Shipment at a given knowledge time (§7)."
+   }
+  ]
+ },
+ "SeedFacts": {
+  "Description": "The R0 spec's initial history h0 (r0/spec.json's 'h0' array): the seed facts every input history starts from.",
+  "schema": [
+   {
+    "name": "SeedFactId",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": false,
+    "Description": "Stored identity: 'h0-<n>', where n is the fact's position in spec.json's h0 array."
+   },
+   {
+    "name": "N",
+    "datatype": "integer",
+    "type": "raw",
+    "nullable": false,
+    "Description": "The fact's 'n' (insertion order) in spec.json's h0 array."
+   },
+   {
+    "name": "Op",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": false,
+    "Description": "'assert' (h0 is assert-only)."
+   },
+   {
+    "name": "Relation",
+    "datatype": "string",
+    "type": "relationship",
+    "nullable": false,
+    "Description": "The EDB relation this seed fact populates.",
+    "RelatedTo": "EDBRelations"
+   },
+   {
+    "name": "TupleJson",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": false,
+    "Description": "The seeded tuple, verbatim JSON from spec.json."
+   },
+   {
+    "name": "K",
+    "datatype": "integer",
+    "type": "raw",
+    "nullable": false,
+    "Description": "Knowledge time of the seed fact (0 for all of h0)."
+   },
+   {
+    "name": "Name",
+    "datatype": "string",
+    "type": "calculated",
+    "nullable": false,
+    "Description": "Display alias.",
+    "formula": "={{SeedFactId}}"
+   }
+  ],
+  "data": [
+   {
+    "SeedFactId": "h0-0",
+    "N": 0,
+    "Op": "assert",
+    "Relation": "Warehouse",
+    "TupleJson": "[\"hub\"]",
+    "K": 0
+   },
+   {
+    "SeedFactId": "h0-1",
+    "N": 1,
+    "Op": "assert",
+    "Relation": "Warehouse",
+    "TupleJson": "[\"a\"]",
+    "K": 0
+   },
+   {
+    "SeedFactId": "h0-2",
+    "N": 2,
+    "Op": "assert",
+    "Relation": "Warehouse",
+    "TupleJson": "[\"b\"]",
+    "K": 0
+   },
+   {
+    "SeedFactId": "h0-3",
+    "N": 3,
+    "Op": "assert",
+    "Relation": "Warehouse",
+    "TupleJson": "[\"c\"]",
+    "K": 0
+   },
+   {
+    "SeedFactId": "h0-4",
+    "N": 4,
+    "Op": "assert",
+    "Relation": "Warehouse",
+    "TupleJson": "[\"depot\"]",
+    "K": 0
+   },
+   {
+    "SeedFactId": "h0-5",
+    "N": 5,
+    "Op": "assert",
+    "Relation": "Route",
+    "TupleJson": "[\"hub\", \"c\", 30]",
+    "K": 0
+   },
+   {
+    "SeedFactId": "h0-6",
+    "N": 6,
+    "Op": "assert",
+    "Relation": "Shipment",
+    "TupleJson": "[\"s1\", \"a\", 8]",
+    "K": 0
+   }
+  ]
+ },
+ "InputHistories": {
+  "Description": "The two input histories this example runs (r0/inputs/*.json): what each is designed to exercise.",
+  "schema": [
+   {
+    "name": "InputHistoryId",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": false,
+    "Description": "Stored identity: the input file's stem under r0/inputs/ (e.g. 'i1-routes')."
+   },
+   {
+    "name": "SourceFile",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": false,
+    "Description": "Path to the input history file, relative to the project root."
+   },
+   {
+    "name": "EventCount",
+    "datatype": "integer",
+    "type": "raw",
+    "nullable": false,
+    "Description": "Number of command events in the input history, counted once at transcription time."
+   },
+   {
+    "name": "Description",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": false,
+    "Description": "What this input history is designed to exercise."
+   },
+   {
+    "name": "Name",
+    "datatype": "string",
+    "type": "calculated",
+    "nullable": false,
+    "Description": "Display alias.",
+    "formula": "={{InputHistoryId}}"
+   },
+   {
+    "name": "AnswerKeyResults",
+    "datatype": "string",
+    "type": "relationship",
+    "nullable": false,
+    "Description": "Per-substrate answer-key results computed against this input history.",
+    "RelatedTo": "AnswerKeyResults"
+   }
+  ],
+  "data": [
+   {
+    "InputHistoryId": "i1-routes",
+    "SourceFile": "r0/inputs/i1-routes.json",
+    "EventCount": 3,
+    "Description": "AddRoute/CloseRoute/Reroute traffic over the warehouse network; exercises recursion, negation, aggregation and the nondeterministic Reroute command."
+   },
+   {
+    "InputHistoryId": "i2-bitemporal",
+    "SourceFile": "r0/inputs/i2-bitemporal.json",
+    "EventCount": 3,
+    "Description": "Observes one shipment at three (valid time, knowledge time) pairs around a CorrectShipment command; exercises the bitemporal snapshot rules tau generates (§7)."
+   }
+  ]
+ },
+ "ReflectionConditions": {
+  "Description": "The six conditions of constructor reflection, section 13 of the paper.",
+  "schema": [
+   {
+    "name": "ConditionId",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": false,
+    "Description": "Stored identity, matching conformance/matrix.json's condition keys (e.g. '1_constructor_preservation')."
+   },
+   {
+    "name": "ConditionNumber",
+    "datatype": "integer",
+    "type": "raw",
+    "nullable": false,
+    "Description": "The condition's number in §13 (1-6)."
+   },
+   {
+    "name": "Title",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": false,
+    "Description": "Short name of the condition."
+   },
+   {
+    "name": "PaperSectionRef",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": false,
+    "Description": "Paper section this condition is defined in."
+   },
+   {
+    "name": "Description",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": false,
+    "Description": "What the condition checks on the substrate artifact's call graph."
+   },
+   {
+    "name": "Name",
+    "datatype": "string",
+    "type": "calculated",
+    "nullable": false,
+    "Description": "Display alias.",
+    "formula": "={{ConditionId}}"
+   },
+   {
+    "name": "ReflectionResults",
+    "datatype": "string",
+    "type": "relationship",
+    "nullable": false,
+    "Description": "Per-substrate pass/fail/delegated outcomes for this condition.",
+    "RelatedTo": "ReflectionResults"
+   }
+  ],
+  "data": [
+   {
+    "ConditionId": "1_constructor_preservation",
+    "ConditionNumber": 1,
+    "Title": "Constructor preservation",
+    "PaperSectionRef": "§13",
+    "Description": "Every G_R node has a function of its kind in the artifact."
+   },
+   {
+    "ConditionId": "2_dependency_preservation",
+    "ConditionNumber": 2,
+    "Title": "Dependency preservation",
+    "PaperSectionRef": "§13",
+    "Description": "Every source edge in G_R is a call edge in the artifact."
+   },
+   {
+    "ConditionId": "3_addressability",
+    "ConditionNumber": 3,
+    "Title": "Addressability",
+    "PaperSectionRef": "§13",
+    "Description": "Every G_R node has an image (a named function) in the artifact."
+   },
+   {
+    "ConditionId": "4_local_adequacy",
+    "ConditionNumber": 4,
+    "Title": "Local adequacy",
+    "PaperSectionRef": "§11, §13",
+    "Description": "Delegated to the answer key by design (§13); this condition is always recorded as delegated, never pass/fail."
+   },
+   {
+    "ConditionId": "5_injectivity",
+    "ConditionNumber": 5,
+    "Title": "Injectivity",
+    "PaperSectionRef": "§13",
+    "Description": "Distinct G_R nodes map to distinct functions."
+   },
+   {
+    "ConditionId": "6_bounded_locality",
+    "ConditionNumber": 6,
+    "Title": "Bounded locality",
+    "PaperSectionRef": "§13",
+    "Description": "No public function that is not an image; no call between images that is not a source edge; no run-time name resolution."
+   }
+  ]
+ },
+ "Substrates": {
+  "Description": "The three substrates checked against the R0 spec: transparent (the real representation) and two controls, tangled and interpreter, that are expected to fail reflection on purpose.",
+  "schema": [
+   {
+    "name": "SubstrateId",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": false,
+    "Description": "Stored identity, matching conformance/matrix.json's substrate keys."
+   },
+   {
+    "name": "Description",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": false,
+    "Description": "What this substrate is and how it is generated."
+   },
+   {
+    "name": "PaperSectionRef",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": false,
+    "Description": "Paper section(s) this substrate demonstrates."
+   },
+   {
+    "name": "IsControl",
+    "datatype": "boolean",
+    "type": "raw",
+    "nullable": false,
+    "Description": "True for the two substrates that are deliberately expected to fail reflection (tangled, interpreter)."
+   },
+   {
+    "name": "Name",
+    "datatype": "string",
+    "type": "calculated",
+    "nullable": false,
+    "Description": "Display alias.",
+    "formula": "={{SubstrateId}}"
+   },
+   {
+    "name": "AnswerKeyResults",
+    "datatype": "string",
+    "type": "relationship",
+    "nullable": false,
+    "Description": "This substrate's per-input-history answer-key results.",
+    "RelatedTo": "AnswerKeyResults"
+   },
+   {
+    "name": "ReflectionResults",
+    "datatype": "string",
+    "type": "relationship",
+    "nullable": false,
+    "Description": "This substrate's per-condition reflection results.",
+    "RelatedTo": "ReflectionResults"
+   },
+   {
+    "name": "AnswerKeyResultCount",
+    "datatype": "integer",
+    "type": "aggregation",
+    "nullable": false,
+    "Description": "Number of answer-key results recorded for this substrate.",
+    "formula": "=COUNTIFS(AnswerKeyResults!{{Substrate}}, {{SubstrateId}})"
+   },
+   {
+    "name": "AnswerKeyFailCount",
+    "datatype": "integer",
+    "type": "aggregation",
+    "nullable": false,
+    "Description": "Number of answer-key results recorded as a failure for this substrate.",
+    "formula": "=COUNTIFS(AnswerKeyResults!{{Substrate}}, {{SubstrateId}}, AnswerKeyResults!{{Outcome}}, \"fail\")"
+   },
+   {
+    "name": "AnswerKeyOk",
+    "datatype": "boolean",
+    "type": "calculated",
+    "nullable": false,
+    "Description": "True when every recorded answer-key result for this substrate passed (§11).",
+    "formula": "=AND({{AnswerKeyResultCount}} > 0, {{AnswerKeyFailCount}} = 0)"
+   },
+   {
+    "name": "ReflectionResultCount",
+    "datatype": "integer",
+    "type": "aggregation",
+    "nullable": false,
+    "Description": "Number of reflection results recorded for this substrate.",
+    "formula": "=COUNTIFS(ReflectionResults!{{Substrate}}, {{SubstrateId}})"
+   },
+   {
+    "name": "ReflectionFailCount",
+    "datatype": "integer",
+    "type": "aggregation",
+    "nullable": false,
+    "Description": "Number of reflection conditions recorded as a failure for this substrate.",
+    "formula": "=COUNTIFS(ReflectionResults!{{Substrate}}, {{SubstrateId}}, ReflectionResults!{{Outcome}}, \"fail\")"
+   },
+   {
+    "name": "ReflectionOk",
+    "datatype": "boolean",
+    "type": "calculated",
+    "nullable": false,
+    "Description": "True when no recorded reflection condition failed for this substrate (§13). Delegated conditions never count as a failure.",
+    "formula": "=AND({{ReflectionResultCount}} > 0, {{ReflectionFailCount}} = 0)"
+   },
+   {
+    "name": "Conformant",
+    "datatype": "boolean",
+    "type": "calculated",
+    "nullable": false,
+    "Description": "True only when this substrate passes both gates: the answer key and reflection.",
+    "formula": "=AND({{AnswerKeyOk}}, {{ReflectionOk}})"
+   }
+  ],
+  "data": [
+   {
+    "SubstrateId": "transparent",
+    "IsControl": false,
+    "PaperSectionRef": "§12-13",
+    "Description": "transpile.py emits one function per G_R node: a rule body as explicit nested loops, a non-recursive predicate as the union of its rules, a recursive stratum as a c_mu_* fixed-point driver. runtime.py never reads the spec JSON."
+   },
+   {
+    "SubstrateId": "tangled",
+    "IsControl": true,
+    "PaperSectionRef": "§23",
+    "Description": "The transparent module with every predicate read inside a rule routed through _dispatch(name, S), which resolves the target by name at run time. Same computation, same answers; dependency preservation and bounded locality fail because dependencies are now strings resolved dynamically."
+   },
+   {
+    "SubstrateId": "interpreter",
+    "IsControl": true,
+    "PaperSectionRef": "§6, §13",
+    "Description": "The rulebook loaded as inert JSON and handed to one universal evaluator (the SQLite oracle, compiling at request time). Zero image functions; constructor preservation, dependency preservation and addressability all fail."
+   }
+  ]
+ },
+ "AnswerKeyResults": {
+  "Description": "Per (substrate, input history) answer-key outcomes, ingested from a fresh run of conformance/run.py (conformance/matrix.json). Witnessed data, never recomputed here.",
+  "schema": [
+   {
+    "name": "AnswerKeyResultId",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": false,
+    "Description": "Stored identity: '<SubstrateId>__<InputHistoryId>'."
+   },
+   {
+    "name": "Substrate",
+    "datatype": "string",
+    "type": "relationship",
+    "nullable": false,
+    "Description": "The substrate this result was computed for.",
+    "RelatedTo": "Substrates"
+   },
+   {
+    "name": "InputHistory",
+    "datatype": "string",
+    "type": "relationship",
+    "nullable": false,
+    "Description": "The input history this result was computed against.",
+    "RelatedTo": "InputHistories"
+   },
+   {
+    "name": "TracesProduced",
+    "datatype": "integer",
+    "type": "raw",
+    "nullable": false,
+    "Description": "Number of distinct traces this substrate produced for this input history (witnessed by conformance/run.py)."
+   },
+   {
+    "name": "Permitted",
+    "datatype": "integer",
+    "type": "raw",
+    "nullable": false,
+    "Description": "Size of the permitted (expected) trace set for this input history (witnessed by tools/gen_expected.py)."
+   },
+   {
+    "name": "Outcome",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": false,
+    "Description": "'pass' if every produced trace was inside the permitted set, else 'fail'. Witnessed by conformance/run.py; never recomputed here."
+   },
+   {
+    "name": "Name",
+    "datatype": "string",
+    "type": "calculated",
+    "nullable": false,
+    "Description": "Display alias.",
+    "formula": "={{AnswerKeyResultId}}"
+   }
+  ],
+  "data": []
+ },
+ "ReflectionResults": {
+  "Description": "Per (substrate, reflection condition) outcomes, ingested from a fresh run of conformance/run.py (conformance/matrix.json). Witnessed data, never recomputed here.",
+  "schema": [
+   {
+    "name": "ReflectionResultId",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": false,
+    "Description": "Stored identity: '<SubstrateId>__<ConditionId>'."
+   },
+   {
+    "name": "Substrate",
+    "datatype": "string",
+    "type": "relationship",
+    "nullable": false,
+    "Description": "The substrate this reflection outcome was computed for.",
+    "RelatedTo": "Substrates"
+   },
+   {
+    "name": "ReflectionCondition",
+    "datatype": "string",
+    "type": "relationship",
+    "nullable": false,
+    "Description": "The §13 condition this outcome is for.",
+    "RelatedTo": "ReflectionConditions"
+   },
+   {
+    "name": "Outcome",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": false,
+    "Description": "'pass', 'fail' or 'delegated' (condition 4 is always delegated to the answer key by design). Witnessed by tools/reflection_check.py; never recomputed here."
+   },
+   {
+    "name": "Name",
+    "datatype": "string",
+    "type": "calculated",
+    "nullable": false,
+    "Description": "Display alias.",
+    "formula": "={{ReflectionResultId}}"
+   }
+  ],
+  "data": []
+ },
+ "__meta__": {
+  "Description": "Project-level metadata as typed rows (MetaKey, ValueType, StringValue, JsonValue). The only home for metadata in this rulebook.",
+  "schema": [
+   {
+    "name": "MetaKey",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": false,
+    "Description": "The metadata key. Unique within the table."
+   },
+   {
+    "name": "Name",
+    "datatype": "string",
+    "type": "calculated",
+    "nullable": false,
+    "Description": "Display alias.",
+    "formula": "={{MetaKey}}"
+   },
+   {
+    "name": "ValueType",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": false,
+    "Description": "How to interpret the value columns: 'string', 'object' or 'array'."
+   },
+   {
+    "name": "StringValue",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": true,
+    "Description": "Plain string value. Populated when ValueType == 'string'; null otherwise."
+   },
+   {
+    "name": "JsonValue",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": true,
+    "Description": "JSON-encoded value. Populated when ValueType == 'object' or 'array'; null when ValueType == 'string'."
+   }
+  ],
+  "data": [
+   {
+    "MetaKey": "tagline",
+    "ValueType": "string",
+    "StringValue": "The CMCC-Core Representation Theorem, made runnable: two gates, three substrates, one divergence.",
+    "JsonValue": null
+   },
+   {
+    "MetaKey": "description_rich",
+    "ValueType": "string",
+    "StringValue": "Runnable companion to the CMCC-Core Representation Theorem paper. An R0 warehouse-network spec is checked two ways -- an answer key (adequacy, section 11) and reflection (structural transparency, section 13) -- across three substrates. All three pass the answer key; only the transparent substrate passes reflection. This rulebook models the spec's own structure (relations, rules, transitions, constraints, observables, seed facts) and the conformance matrix as first-class data; it does not re-implement R0's stratified Datalog semantics, which stays the exclusive job of the reference evaluator and the SQLite oracle.",
+    "JsonValue": null
+   },
+   {
+    "MetaKey": "cmcc_summary",
+    "ValueType": "string",
+    "StringValue": "Direction of truth: r0/spec.json is transcribed into EDBRelations/Commands/Rules/Transitions/.../SeedFacts as static structural data (a mirror, not a computation). conformance/matrix.json -- produced fresh by conformance/run.py from the reference evaluator and the independent SQLite oracle -- is ingested into AnswerKeyResults and ReflectionResults. Substrates.AnswerKeyOk / ReflectionOk / Conformant are the one legitimate rulebook computation here: an AND/COUNT rollup of those already-witnessed rows, never a re-derivation of R0 semantics itself.",
+    "JsonValue": null
+   },
+   {
+    "MetaKey": "source_paper",
+    "ValueType": "string",
+    "StringValue": "CMCC-Core Representation Theorem (section references throughout this rulebook are to that paper).",
+    "JsonValue": null
+   }
+  ]
+ }
+}

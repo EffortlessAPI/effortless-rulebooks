@@ -1,0 +1,655 @@
+{
+ "input": "i1-routes",
+ "states_cross_checked": 21,
+ "trace_count": 1,
+ "traces": [
+  [
+   {
+    "events": {
+     "RouteAdded": [
+      [
+       "hub",
+       "a"
+      ]
+     ]
+    },
+    "obs": {
+     "big": [],
+     "double": [
+      [
+       "hub",
+       "a",
+       40
+      ],
+      [
+       "hub",
+       "c",
+       60
+      ]
+     ],
+     "fanout": [
+      [
+       "a",
+       0
+      ],
+      [
+       "b",
+       0
+      ],
+      [
+       "c",
+       0
+      ],
+      [
+       "depot",
+       0
+      ],
+      [
+       "hub",
+       2
+      ]
+     ],
+     "isolated": [
+      [
+       "b"
+      ],
+      [
+       "depot"
+      ]
+     ],
+     "known_at": [
+      [
+       "s1",
+       8,
+       0
+      ]
+     ],
+     "late": [],
+     "maxcap": [
+      [
+       "hub",
+       30
+      ]
+     ],
+     "reachable": [
+      [
+       "hub",
+       "a"
+      ],
+      [
+       "hub",
+       "c"
+      ]
+     ],
+     "shipment": [
+      [
+       "s1",
+       "a",
+       8
+      ]
+     ]
+    },
+    "outcome": "committed"
+   },
+   {
+    "events": {
+     "RouteAdded": [
+      [
+       "a",
+       "b"
+      ]
+     ]
+    },
+    "obs": {
+     "big": [
+      [
+       "a"
+      ]
+     ],
+     "double": [
+      [
+       "a",
+       "b",
+       120
+      ],
+      [
+       "hub",
+       "a",
+       40
+      ],
+      [
+       "hub",
+       "c",
+       60
+      ]
+     ],
+     "fanout": [
+      [
+       "a",
+       1
+      ],
+      [
+       "b",
+       0
+      ],
+      [
+       "c",
+       0
+      ],
+      [
+       "depot",
+       0
+      ],
+      [
+       "hub",
+       2
+      ]
+     ],
+     "isolated": [
+      [
+       "depot"
+      ]
+     ],
+     "known_at": [
+      [
+       "s1",
+       8,
+       0
+      ]
+     ],
+     "late": [],
+     "maxcap": [
+      [
+       "a",
+       60
+      ],
+      [
+       "hub",
+       30
+      ]
+     ],
+     "reachable": [
+      [
+       "a",
+       "b"
+      ],
+      [
+       "hub",
+       "a"
+      ],
+      [
+       "hub",
+       "b"
+      ],
+      [
+       "hub",
+       "c"
+      ]
+     ],
+     "shipment": [
+      [
+       "s1",
+       "a",
+       8
+      ]
+     ]
+    },
+    "outcome": "committed"
+   },
+   {
+    "events": {},
+    "obs": {
+     "big": [
+      [
+       "a"
+      ]
+     ],
+     "double": [
+      [
+       "a",
+       "b",
+       120
+      ],
+      [
+       "hub",
+       "a",
+       40
+      ],
+      [
+       "hub",
+       "c",
+       60
+      ]
+     ],
+     "fanout": [
+      [
+       "a",
+       1
+      ],
+      [
+       "b",
+       0
+      ],
+      [
+       "c",
+       0
+      ],
+      [
+       "depot",
+       0
+      ],
+      [
+       "hub",
+       2
+      ]
+     ],
+     "isolated": [
+      [
+       "depot"
+      ]
+     ],
+     "known_at": [
+      [
+       "s1",
+       8,
+       0
+      ]
+     ],
+     "late": [],
+     "maxcap": [
+      [
+       "a",
+       60
+      ],
+      [
+       "hub",
+       30
+      ]
+     ],
+     "reachable": [
+      [
+       "a",
+       "b"
+      ],
+      [
+       "hub",
+       "a"
+      ],
+      [
+       "hub",
+       "b"
+      ],
+      [
+       "hub",
+       "c"
+      ]
+     ],
+     "shipment": [
+      [
+       "s1",
+       "a",
+       8
+      ]
+     ]
+    },
+    "outcome": "rejected(constraint:SelfRoute)"
+   },
+   {
+    "events": {},
+    "obs": {
+     "big": [
+      [
+       "a"
+      ]
+     ],
+     "double": [
+      [
+       "a",
+       "b",
+       120
+      ],
+      [
+       "hub",
+       "a",
+       40
+      ],
+      [
+       "hub",
+       "c",
+       60
+      ]
+     ],
+     "fanout": [
+      [
+       "a",
+       1
+      ],
+      [
+       "b",
+       0
+      ],
+      [
+       "c",
+       0
+      ],
+      [
+       "depot",
+       0
+      ],
+      [
+       "hub",
+       2
+      ]
+     ],
+     "isolated": [
+      [
+       "depot"
+      ]
+     ],
+     "known_at": [
+      [
+       "s1",
+       8,
+       0
+      ]
+     ],
+     "late": [],
+     "maxcap": [
+      [
+       "a",
+       60
+      ],
+      [
+       "hub",
+       30
+      ]
+     ],
+     "reachable": [
+      [
+       "a",
+       "b"
+      ],
+      [
+       "hub",
+       "a"
+      ],
+      [
+       "hub",
+       "b"
+      ],
+      [
+       "hub",
+       "c"
+      ]
+     ],
+     "shipment": [
+      [
+       "s1",
+       "a",
+       8
+      ]
+     ]
+    },
+    "outcome": "rejected(constraint:NegativeCap)"
+   },
+   {
+    "events": {},
+    "obs": {
+     "big": [
+      [
+       "a"
+      ]
+     ],
+     "double": [
+      [
+       "a",
+       "b",
+       120
+      ],
+      [
+       "hub",
+       "a",
+       40
+      ],
+      [
+       "hub",
+       "c",
+       60
+      ]
+     ],
+     "fanout": [
+      [
+       "a",
+       1
+      ],
+      [
+       "b",
+       0
+      ],
+      [
+       "c",
+       0
+      ],
+      [
+       "depot",
+       0
+      ],
+      [
+       "hub",
+       2
+      ]
+     ],
+     "isolated": [
+      [
+       "depot"
+      ]
+     ],
+     "known_at": [
+      [
+       "s1",
+       8,
+       0
+      ]
+     ],
+     "late": [],
+     "maxcap": [
+      [
+       "a",
+       60
+      ],
+      [
+       "hub",
+       30
+      ]
+     ],
+     "reachable": [
+      [
+       "a",
+       "b"
+      ],
+      [
+       "hub",
+       "a"
+      ],
+      [
+       "hub",
+       "b"
+      ],
+      [
+       "hub",
+       "c"
+      ]
+     ],
+     "shipment": [
+      [
+       "s1",
+       "a",
+       8
+      ]
+     ]
+    },
+    "outcome": "committed"
+   },
+   {
+    "events": {},
+    "obs": {
+     "big": [],
+     "double": [
+      [
+       "hub",
+       "a",
+       40
+      ],
+      [
+       "hub",
+       "c",
+       60
+      ]
+     ],
+     "fanout": [
+      [
+       "a",
+       0
+      ],
+      [
+       "b",
+       0
+      ],
+      [
+       "c",
+       0
+      ],
+      [
+       "depot",
+       0
+      ],
+      [
+       "hub",
+       2
+      ]
+     ],
+     "isolated": [
+      [
+       "b"
+      ],
+      [
+       "depot"
+      ]
+     ],
+     "known_at": [
+      [
+       "s1",
+       8,
+       0
+      ]
+     ],
+     "late": [],
+     "maxcap": [
+      [
+       "hub",
+       30
+      ]
+     ],
+     "reachable": [
+      [
+       "hub",
+       "a"
+      ],
+      [
+       "hub",
+       "c"
+      ]
+     ],
+     "shipment": [
+      [
+       "s1",
+       "a",
+       8
+      ]
+     ]
+    },
+    "outcome": "committed"
+   },
+   {
+    "events": {},
+    "obs": {
+     "big": [],
+     "double": [
+      [
+       "hub",
+       "a",
+       40
+      ],
+      [
+       "hub",
+       "c",
+       60
+      ]
+     ],
+     "fanout": [
+      [
+       "a",
+       0
+      ],
+      [
+       "b",
+       0
+      ],
+      [
+       "c",
+       0
+      ],
+      [
+       "depot",
+       0
+      ],
+      [
+       "hub",
+       2
+      ]
+     ],
+     "isolated": [
+      [
+       "b"
+      ],
+      [
+       "depot"
+      ]
+     ],
+     "known_at": [
+      [
+       "s1",
+       8,
+       0
+      ]
+     ],
+     "late": [],
+     "maxcap": [
+      [
+       "hub",
+       30
+      ]
+     ],
+     "reachable": [
+      [
+       "hub",
+       "a"
+      ],
+      [
+       "hub",
+       "c"
+      ]
+     ],
+     "shipment": [
+      [
+       "s1",
+       "a",
+       8
+      ]
+     ]
+    },
+    "outcome": "committed"
+   }
+  ]
+ ]
+}

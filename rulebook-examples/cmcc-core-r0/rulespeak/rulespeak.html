@@ -1,0 +1,2558 @@
+<!doctype html>
+<html lang="en" data-lang="en" class="show-english show-desc show-consumers show-data">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>cmcc-core-r0 — RuleSpeak®</title>
+<style>
+
+:root{
+  --raw:#003a70; --calc:#5a3aa0; --agg:#0a7b78; --rel:#666; --lookup:#9a6708;
+  --raw-bg:#eaf0f8; --calc-bg:#f1ebfb; --agg-bg:#e5f4f3; --rel-bg:#f0f0f0; --lookup-bg:#fbf2dd;
+  --ink:#1a1a22; --muted:#6b6b78; --line:#e3e3ea; --bg:#fafafc; --card:#fff;
+  --bar-h:48px;                 /* sticky topbar height — anchors clear it */
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font:15px/1.55 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  color:var(--ink);background:var(--bg);}
+a{color:var(--calc);text-decoration:none}
+a:hover{text-decoration:underline}
+code{font:0.85em ui-monospace,SFMono-Regular,Menlo,monospace;background:#f3f3f7;padding:1px 5px;border-radius:4px}
+
+/* ── One language visible at a time; <html data-lang> picks it (rules per
+      language are appended at render time). ─────────────────────────────── */
+.lang-doc{display:none}
+
+/* ── Element visibility: each doc element shows only when <html> carries its flag. */
+.elem{display:none}
+html.show-rulespeak .elem-rulespeak{display:block}
+html.show-english   .elem-english{display:block}
+html.show-formula   .elem-formula{display:block}
+html.show-desc      .elem-desc{display:block}
+html.show-inputs    .elem-inputs{display:block}
+html.show-consumers .elem-consumers{display:block}
+html.show-data      .elem-data{display:block}
+
+/* ── Sticky top bar — brand · breadcrumb · language · gear ───────────────── */
+.topbar{position:sticky;top:0;z-index:40;height:var(--bar-h);
+  background:rgba(255,255,255,.92);border-bottom:1px solid var(--line);
+  backdrop-filter:saturate(1.1) blur(8px)}
+.topbar-inner{max-width:960px;margin:0 auto;padding:0 24px;height:var(--bar-h);
+  display:flex;align-items:center;gap:12px}
+.topbar-brand{font-weight:800;font-size:15px;color:var(--ink);white-space:nowrap;flex:none}
+.topbar-brand:hover{text-decoration:none}
+.topbar-tag{font-size:11px;font-weight:700;color:var(--calc);background:var(--calc-bg);
+  padding:1px 7px;border-radius:999px;margin-left:4px;vertical-align:middle}
+.crumb{flex:1;min-width:0;display:flex;align-items:center;gap:7px;
+  font-size:13px;color:var(--muted);overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.crumb-entity{font-weight:700;color:var(--ink)}
+.crumb-sep{color:var(--line)}
+.crumb-field{color:var(--calc);font-weight:600;overflow:hidden;text-overflow:ellipsis}
+.lang-select{flex:none;height:32px;border:1px solid var(--line);border-radius:9px;background:#fff;
+  color:var(--ink);font:600 13px/1 inherit;padding:0 8px;cursor:pointer;max-width:150px}
+.lang-select:hover{border-color:var(--calc)}
+.gear{flex:none;width:34px;height:34px;border-radius:9px;border:1px solid var(--line);
+  background:#fff;cursor:pointer;font-size:17px;line-height:1;color:var(--muted);
+  display:inline-flex;align-items:center;justify-content:center;transition:all .12s}
+.gear:hover{color:var(--ink);border-color:var(--calc);box-shadow:0 1px 4px rgba(90,58,160,.15)}
+.gear[aria-expanded='true']{background:var(--calc);color:#fff;border-color:var(--calc)}
+
+/* ── Gear popup ──────────────────────────────────────────────────────────── */
+.gear-pop{position:absolute;top:calc(var(--bar-h) + 6px);right:24px;z-index:50;width:290px;
+  background:#fff;border:1px solid var(--line);border-radius:12px;
+  box-shadow:0 10px 32px rgba(20,20,40,.18);padding:12px}
+.gear-pop[hidden]{display:none}
+.gear-pop-title{margin:2px 4px 8px;font-size:11px;font-weight:700;text-transform:uppercase;
+  letter-spacing:.06em;color:var(--muted)}
+.gear-opt{display:grid;grid-template-columns:auto 1fr;column-gap:9px;align-items:baseline;
+  padding:7px 6px;border-radius:8px;cursor:pointer}
+.gear-opt:hover{background:var(--calc-bg)}
+.gear-opt input{grid-row:1 / span 2;align-self:center;width:16px;height:16px;accent-color:var(--calc);cursor:pointer}
+.gear-opt-label{font-weight:600;font-size:14px;color:var(--ink)}
+.gear-opt-hint{grid-column:2;font-size:12px;color:var(--muted);line-height:1.35}
+.gear-reset{margin:8px 4px 2px;border:0;background:transparent;color:var(--calc);
+  font:600 12px/1 inherit;cursor:pointer;padding:4px}
+.gear-reset:hover{text-decoration:underline}
+.gear-inline{border:1px solid var(--line);background:#fff;border-radius:7px;padding:1px 7px;
+  font:600 12px/1 inherit;color:var(--calc);cursor:pointer}
+.gear-inline:hover{border-color:var(--calc)}
+
+.doc-header{background:linear-gradient(180deg,#fff,#f5f4fb);border-bottom:1px solid var(--line)}
+.doc-header-inner{max-width:960px;margin:0 auto;padding:18px 24px}
+.doc-title{margin:0;font-size:24px;font-weight:800}
+.doc-title-sub{font-size:13px;font-weight:600;color:var(--calc);background:var(--calc-bg);
+  padding:2px 8px;border-radius:999px;vertical-align:middle;margin-left:6px}
+.doc-lede{margin:6px 0 0;font-style:italic;color:var(--muted)}
+.doc-note{margin:8px 0 12px;color:var(--muted);font-size:13px;max-width:70ch}
+.narr-hint{margin:8px 0 0;font-size:12px;color:var(--muted);max-width:78ch}
+
+.toc{max-width:960px;margin:22px auto 0;padding:0 24px;scroll-margin-top:calc(var(--bar-h) + 12px)}
+.toc-title{font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:0 0 8px}
+.toc-list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:6px}
+.toc-list a{font-weight:600}
+.toc-meta{font-size:12px;color:var(--muted);margin-left:6px}
+
+.entity{max-width:960px;margin:34px auto 0;padding:0 24px;scroll-margin-top:calc(var(--bar-h) + 14px)}
+.entity-head{border-bottom:2px solid var(--line);padding-bottom:8px;margin-bottom:14px}
+.entity-title{margin:0;font-size:21px;font-weight:800}
+.entity-synopsis{margin:4px 0 0;color:var(--muted);max-width:74ch}
+
+.field{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--rel);
+  border-radius:10px;padding:14px 16px;margin:0 0 12px;scroll-margin-top:calc(var(--bar-h) + 14px)}
+.field.tone-raw{border-left-color:var(--raw)} .field.tone-calc{border-left-color:var(--calc)}
+.field.tone-agg{border-left-color:var(--agg)} .field.tone-lookup{border-left-color:var(--lookup)}
+.field.tone-rel{border-left-color:var(--rel)}
+.field-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.field-glyph{width:24px;height:24px;display:inline-flex;align-items:center;justify-content:center;
+  border-radius:6px;font-weight:700;color:#fff;font-size:13px}
+.tone-raw .field-glyph{background:var(--raw)} .tone-calc .field-glyph{background:var(--calc)}
+.tone-agg .field-glyph{background:var(--agg)} .tone-lookup .field-glyph{background:var(--lookup)}
+.tone-rel .field-glyph{background:var(--rel)}
+.field-name{font-weight:700;font-size:16px}
+.pill{font-size:11px;font-weight:600;padding:2px 8px;border-radius:999px;background:#f0f0f5;color:var(--muted)}
+.pill-type{background:var(--calc-bg);color:var(--calc)}
+.tone-raw .pill-type{background:var(--raw-bg);color:var(--raw)}
+.tone-agg .pill-type{background:var(--agg-bg);color:var(--agg)}
+.tone-lookup .pill-type{background:var(--lookup-bg);color:var(--lookup)}
+.tone-rel .pill-type{background:var(--rel-bg);color:var(--rel)}
+.pill-dr{background:#eee;color:#555;font-variant-numeric:tabular-nums}
+
+.narr-views{margin-top:10px;display:flex;flex-direction:column;gap:10px}
+.narr-views:empty{margin-top:0}
+.view-label{display:inline-block;font-size:11px;font-weight:700;text-transform:uppercase;
+  letter-spacing:.05em;color:var(--muted);margin-bottom:4px}
+.view-body{margin:0}
+.mech{color:#9a6708;background:var(--lookup-bg);padding:1px 6px;border-radius:6px;
+  font-weight:600;text-transform:none;letter-spacing:0}
+.fx{font:0.92em ui-monospace,SFMono-Regular,Menlo,monospace;background:#f7f7fb;border:1px solid var(--line);
+  border-radius:8px;padding:8px 10px;overflow-x:auto;white-space:pre-wrap;word-break:break-word}
+.fx-eq{color:var(--muted)}
+.fx-chip{background:var(--calc-bg);color:var(--calc);padding:1px 6px;border-radius:5px;font-weight:600}
+.ref{border-bottom:1px dashed var(--calc);font-weight:600}
+
+.rt-headline{margin:0 0 4px}
+.rt-priority{margin:4px 0;padding-left:22px}
+.rt-priority>li{margin:2px 0}
+.rt-value{font-weight:700;color:var(--calc)}
+.rt-otherwise{color:var(--muted);font-style:italic}
+.rt-group-label{font-weight:600}
+.rt-group{margin:2px 0 6px;padding-left:20px}
+
+.gt{margin-top:8px}
+.gt-body{margin:0;color:var(--muted)}
+.gt-reverse{margin-top:6px}
+
+.prov{margin-top:10px;border-top:1px dashed var(--line);padding-top:8px}
+.prov>summary{cursor:pointer;font-size:13px;font-weight:600;color:var(--ink);list-style:none}
+.prov>summary::-webkit-details-marker{display:none}
+.prov>summary::before{content:'▸';display:inline-block;margin-right:6px;color:var(--muted);transition:transform .1s}
+.prov[open]>summary::before{transform:rotate(90deg)}
+.count{font-size:11px;font-weight:700;background:#eee;color:#555;padding:1px 7px;border-radius:999px;margin-left:4px}
+.count-muted{background:#f5f5f5;color:#999}
+.prov-hint{font-size:12px;font-weight:400;color:var(--muted);margin-left:6px}
+.prov-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px;margin-top:8px}
+.prov-pills{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.input{display:block;border:1px solid var(--line);border-left:3px solid var(--rel);border-radius:8px;
+  padding:8px 10px;background:#fcfcfe}
+.input.tone-raw{border-left-color:var(--raw)} .input.tone-calc{border-left-color:var(--calc)}
+.input.tone-agg{border-left-color:var(--agg)} .input.tone-lookup{border-left-color:var(--lookup)}
+.input.tone-rel{border-left-color:var(--rel)}
+.input:hover{background:#f4f3fb;text-decoration:none}
+.input-static{cursor:default}
+span.input-static:hover{background:#fcfcfe}
+.input-head{display:flex;align-items:center;gap:6px}
+.input-glyph{font-size:12px;color:var(--muted)}
+.input-name{font-weight:700;color:var(--ink)}
+.input-table{font-size:11px;color:var(--muted);margin-left:auto}
+
+/* ── Example data (per entity, collapsible; gear switch: data) ─────────── */
+.entity-data{margin:14px 0 4px;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:10px 14px}
+.entity-data>summary{cursor:pointer;font-size:13px;font-weight:600;color:var(--ink);list-style:none}
+.entity-data>summary::-webkit-details-marker{display:none}
+.entity-data>summary::before{content:'▸';display:inline-block;margin-right:6px;color:var(--muted);transition:transform .1s}
+.entity-data[open]>summary::before{transform:rotate(90deg)}
+.entity-data .sample-scroll{margin-top:10px}
+.sample-note{max-width:960px;margin:16px auto 0;padding:0 24px;color:var(--muted);font-size:13px}
+.sample-scroll{overflow-x:auto}
+.sample-table{border-collapse:collapse;font-size:13px;background:var(--card);
+  border:1px solid var(--line);border-radius:6px}
+.sample-table th,.sample-table td{padding:6px 12px;border-bottom:1px solid var(--line);
+  text-align:left;vertical-align:top;white-space:nowrap}
+.sample-table thead th{background:#f5f5fa;font-weight:600;color:var(--ink)}
+.sample-table tbody tr:last-child td{border-bottom:none}
+.sample-table th.sample-derived{background:var(--calc-bg);color:var(--calc)}
+.sample-table td.sample-derived{color:var(--calc)}
+.sample-fx{margin-left:4px;opacity:.75}
+.sample-legend{color:var(--muted);font-size:12px;margin-top:12px}
+.input-en{display:block;margin-top:3px;font-size:13px;color:var(--muted)}
+.ref-pill{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:600;
+  border:1px solid var(--line);border-radius:999px;padding:3px 10px;background:#fff;color:var(--ink)}
+.ref-pill.tone-raw{border-color:var(--raw);color:var(--raw)} .ref-pill.tone-calc{border-color:var(--calc);color:var(--calc)}
+.ref-pill.tone-agg{border-color:var(--agg);color:var(--agg)} .ref-pill.tone-lookup{border-color:var(--lookup);color:var(--lookup)}
+.ref-pill.faded{opacity:.6}
+.ref-pill-tbl{font-weight:400;color:var(--muted)}
+
+.field-note{margin:8px 0 0;font-size:13px;font-style:italic;color:var(--muted);
+  border-left:2px solid var(--line);padding-left:10px}
+
+.doc-footer{max-width:960px;margin:40px auto;padding:18px 24px;border-top:1px solid var(--line);
+  color:var(--muted);font-size:13px}
+.doc-footer-legend{margin-top:8px;display:flex;flex-wrap:wrap;gap:6px}
+.chip{font-size:12px;font-weight:600;padding:2px 9px;border-radius:999px}
+.chip-raw{background:var(--raw-bg);color:var(--raw)} .chip-calc{background:var(--calc-bg);color:var(--calc)}
+.chip-agg{background:var(--agg-bg);color:var(--agg)} .chip-lookup{background:var(--lookup-bg);color:var(--lookup)}
+.chip-rel{background:var(--rel-bg);color:var(--rel)}
+:target{animation:flash 1.2s ease}
+@keyframes flash{0%{background:var(--calc-bg)}100%{background:var(--card)}}
+
+html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
+</style>
+<script>
+
+(function(){
+  var LANGS=['en'];
+  var DEFAULT_LANG='en';
+  var ELEMS=['rulespeak','english','formula','desc','inputs','consumers','data'];
+  var root=document.documentElement;
+
+  var lang=null;
+  try{ lang=new URLSearchParams(location.search).get('lang'); }catch(e){}
+  if(!lang){ try{ lang=localStorage.getItem('rulespeak.lang'); }catch(e){} }
+  if(LANGS.indexOf(lang)<0) lang=DEFAULT_LANG;
+  root.setAttribute('data-lang',lang);
+  root.setAttribute('lang',lang);
+
+  ELEMS.forEach(function(k){
+    var v=null; try{v=localStorage.getItem('rulespeak.show.'+k);}catch(e){}
+    if(v==='1') root.classList.add('show-'+k);
+    else if(v==='0') root.classList.remove('show-'+k);
+  });
+})();
+
+</script>
+</head>
+<body>
+<div class="lang-doc" data-lang="en" lang="en">
+<div class="topbar">
+  <div class="topbar-inner">
+    <a class="topbar-brand" href="#en-top">📘 cmcc-core-r0 <span class="topbar-tag">RuleSpeak®</span></a>
+    <nav class="crumb" aria-label="You are reading">
+      <span class="crumb-entity"></span>
+      <span class="crumb-sep" hidden>›</span>
+      <span class="crumb-field"></span>
+    </nav>
+    <button type="button" class="gear" aria-haspopup="dialog" aria-expanded="false" title="Documentation options" aria-label="Documentation options">⚙︎</button>
+  </div>
+  <div class="gear-pop" role="dialog" aria-label="Documentation options" hidden>
+    <p class="gear-pop-title">Show in this document</p>
+    <label class="gear-opt" title="The declarative business rule (only if / must / priority)">
+      <input type="checkbox" data-elem="rulespeak">
+      <span class="gear-opt-label">RuleSpeak®</span>
+      <span class="gear-opt-hint">The declarative business rule (only if / must / priority)</span>
+    </label>
+    <label class="gear-opt" title="The formula read aloud as a plain sentence">
+      <input type="checkbox" data-elem="english" checked>
+      <span class="gear-opt-label">Plain reading</span>
+      <span class="gear-opt-hint">The formula read aloud as a plain sentence</span>
+    </label>
+    <label class="gear-opt" title="The raw =expression, with clickable field chips">
+      <input type="checkbox" data-elem="formula">
+      <span class="gear-opt-label">Formulas</span>
+      <span class="gear-opt-hint">The raw =expression, with clickable field chips</span>
+    </label>
+    <label class="gear-opt" title="The author's narrative comment on a field, when present">
+      <input type="checkbox" data-elem="desc" checked>
+      <span class="gear-opt-label">Description</span>
+      <span class="gear-opt-hint">The author's narrative comment on a field, when present</span>
+    </label>
+    <label class="gear-opt" title="The fields each rule reads (its DAG inputs / upstream)">
+      <input type="checkbox" data-elem="inputs">
+      <span class="gear-opt-label">Links to inputs</span>
+      <span class="gear-opt-hint">The fields each rule reads (its DAG inputs / upstream)</span>
+    </label>
+    <label class="gear-opt" title="The rules that read this one (its DAG consumers / downstream)">
+      <input type="checkbox" data-elem="consumers" checked>
+      <span class="gear-opt-label">Links to consumers</span>
+      <span class="gear-opt-hint">The rules that read this one (its DAG consumers / downstream)</span>
+    </label>
+    <label class="gear-opt" title="The first rows of each entity's data, computed columns included">
+      <input type="checkbox" data-elem="data" checked>
+      <span class="gear-opt-label">Example data</span>
+      <span class="gear-opt-hint">The first rows of each entity's data, computed columns included</span>
+    </label>
+    <button type="button" class="gear-reset">Reset to defaults</button>
+  </div>
+</div>
+<header class="doc-header" id="en-top">
+  <div class="doc-header-inner">
+    <h1 class="doc-title">📘 cmcc-core-r0 <span class="doc-title-sub">RuleSpeak®</span></h1>
+    <p class="doc-lede">The runnable companion to the CMCC-Core Representation Theorem, retrofitted into ERB shape: the R0 warehouse-network spec's own structure, its conformance matrix (answer key x reflection), and the resulting per-substrate roll-ups, all as rulebook data.</p>
+    <p class="doc-note">Declarative business rules rendered from the rulebook — the single source of truth. Every statement below is the plain-language reading of a formula; nothing here is hand-authored prose.</p>
+    <p class="narr-hint">Use the <button type="button" class="gear-inline gear-open-inline">⚙︎ options</button> in the top-right corner to turn each part of the documentation on or off — RuleSpeak®, the literal reading, the raw formula, the author's description, and the links to a rule's inputs and consumers. Your choices are remembered.</p>
+  </div>
+</header>
+<nav class="toc">
+  <h2 class="toc-title">Entities</h2>
+  <ul class="toc-list">
+    <li><a href="#en-t-edbrelations">EDB Relation</a> <span class="toc-meta">1 rules · 2 links</span></li>
+    <li><a href="#en-t-commands">Command</a> <span class="toc-meta">1 rules · 1 links</span></li>
+    <li><a href="#en-t-rules">Rule</a> <span class="toc-meta">1 rules · 4 links</span></li>
+    <li><a href="#en-t-transitions">Transition</a> <span class="toc-meta">1 rules · 4 links</span></li>
+    <li><a href="#en-t-transitioneffects">Transition Effect</a> <span class="toc-meta">1 rules · 3 links</span></li>
+    <li><a href="#en-t-transitionevents">Transition Event</a> <span class="toc-meta">1 rules · 2 links</span></li>
+    <li><a href="#en-t-integrityconstraints">Integrity Constraint</a> <span class="toc-meta">1 rules · 1 links</span></li>
+    <li><a href="#en-t-observables">Observable</a> <span class="toc-meta">1 rules · 0 links</span></li>
+    <li><a href="#en-t-seedfacts">Seed Fact</a> <span class="toc-meta">1 rules · 1 links</span></li>
+    <li><a href="#en-t-inputhistories">Input History</a> <span class="toc-meta">1 rules · 1 links</span></li>
+    <li><a href="#en-t-reflectionconditions">Reflection Condition</a> <span class="toc-meta">1 rules · 1 links</span></li>
+    <li><a href="#en-t-substrates">Substrate</a> <span class="toc-meta">8 rules · 2 links</span></li>
+    <li><a href="#en-t-answerkeyresults">Answer Key Result</a> <span class="toc-meta">1 rules · 2 links</span></li>
+    <li><a href="#en-t-reflectionresults">Reflection Result</a> <span class="toc-meta">1 rules · 2 links</span></li>
+  </ul>
+</nav>
+<section class="entity" id="en-t-edbrelations" data-entity="EDB Relation">
+  <header class="entity-head">
+    <h2 class="entity-title">EDB Relation</h2>
+    <p class="entity-synopsis">The R0 spec's extensional database relations (r0/spec.json's 'edb' map): the fixed vocabulary every rule and command is built from.</p>
+  </header>
+  <article class="field tone-raw" id="en-f-edbrelations-fields" data-entity="EDB Relation" data-field="Fields">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Fields</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <p class="field-note elem elem-desc">JSON array of the relation's field names, verbatim from spec.json (e.g. '[&quot;id&quot;]').</p>
+    </article>
+  <article class="field tone-raw" id="en-f-edbrelations-fieldcount" data-entity="EDB Relation" data-field="Field Count">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Field Count</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype integer); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
+      <span class="pill pill-muted">integer</span>
+    </div>
+    <p class="field-note elem elem-desc">Number of fields, counted once at transcription time.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-edbrelations-description" data-entity="EDB Relation" data-field="Description">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Description</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <p class="field-note elem elem-desc">What this EDB relation models in the warehouse-network domain.</p>
+    </article>
+  <article class="field tone-calc" id="en-f-edbrelations-name" data-entity="EDB Relation" data-field="Name">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Name</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">1 hop from ground truth</span>
+      <span class="pill pill-muted">string</span>
+      <span class="pill pill-dr">DR-1</span>
+    </div>
+    <p class="field-note elem elem-desc">Display alias.</p>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak®</span>
+        <p class="view-body">An EDB relation's <a class="ref" href="#en-f-edbrelations-name">name</a> is the same as its relation ID.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In plain words</span>
+        <p class="view-body">Relation ID.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span><span class="fx-chip">Relation ID</span></div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">1</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <span class="input input-static tone-raw">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Relation ID</span><span class="input-table">EDB Relation</span></span>
+          <span class="input-en muted">Stored identity: the EDB relation name from r0/spec.json's edb map (e.g. 'Warehouse').</span>
+        </span>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">1</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <span class="ref-pill tone-raw">● Relation ID <span class="ref-pill-tbl">EDB Relation</span></span>
+      </div>
+    </details>
+    </article>
+  <article class="field tone-rel" id="en-f-edbrelations-seedfacts" data-entity="EDB Relation" data-field="Seed Facts">
+    <div class="field-head">
+      <span class="field-glyph" title="Relationship">⇢</span>
+      <span class="field-name">Seed Facts</span>
+      <span class="pill pill-type">Relationship</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <p class="field-note elem elem-desc">h0 seed facts whose Relation is this EDB relation.</p>
+    <div class="gt">
+      <p class="gt-body">A pointer to <a href="#en-t-seedfacts">Seed Fact</a>. It is not derived from anything else — it is the link the rest of the DAG hangs off.</p>
+    </div>
+    </article>
+  <article class="field tone-rel" id="en-f-edbrelations-transitioneffects" data-entity="EDB Relation" data-field="Transition Effects">
+    <div class="field-head">
+      <span class="field-glyph" title="Relationship">⇢</span>
+      <span class="field-name">Transition Effects</span>
+      <span class="pill pill-type">Relationship</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <p class="field-note elem elem-desc">Transition effects that assert/retract into this relation.</p>
+    <div class="gt">
+      <p class="gt-body">A pointer to <a href="#en-t-transitioneffects">Transition Effect</a>. It is not derived from anything else — it is the link the rest of the DAG hangs off.</p>
+    </div>
+    </article>
+  <details class="entity-data elem elem-data" open>
+    <summary>Example data</summary>
+    <div class="sample-scroll">
+    <table class="sample-table">
+      <thead><tr>
+        <th>Fields</th>
+        <th>Field Count</th>
+        <th>Description</th>
+        <th class="sample-derived">Name<span class="sample-fx">ƒ</span></th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td>[&quot;id&quot;]</td>
+          <td>1</td>
+          <td>A node in the network (the hub, satellite depots, or ordinary warehouses).</td>
+          <td class="sample-derived">Warehouse</td>
+        </tr>
+        <tr>
+          <td>[&quot;src&quot;, &quot;dst&quot;, &quot;cap&quot;]</td>
+          <td>3</td>
+          <td>A directed shipping lane between two warehouses with a capacity.</td>
+          <td class="sample-derived">Route</td>
+        </tr>
+        <tr>
+          <td>[&quot;id&quot;, &quot;wh&quot;, &quot;day&quot;]</td>
+          <td>3</td>
+          <td>A shipment currently sitting at a warehouse on a given day.</td>
+          <td class="sample-derived">Shipment</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="sample-legend">ƒ marks a computed column.</p>
+  </details>
+</section>
+<section class="entity" id="en-t-commands" data-entity="Command">
+  <header class="entity-head">
+    <h2 class="entity-title">Command</h2>
+    <p class="entity-synopsis">The R0 spec's commands (r0/spec.json's 'commands' map): the only way an input history can act on the state.</p>
+  </header>
+  <article class="field tone-raw" id="en-f-commands-params" data-entity="Command" data-field="Params">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Params</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <p class="field-note elem elem-desc">JSON array of the command's parameter names, verbatim from spec.json.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-commands-paramcount" data-entity="Command" data-field="Param Count">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Param Count</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype integer); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
+      <span class="pill pill-muted">integer</span>
+    </div>
+    <p class="field-note elem elem-desc">Number of parameters, counted once at transcription time.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-commands-description" data-entity="Command" data-field="Description">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Description</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <p class="field-note elem elem-desc">What issuing this command means in the warehouse-network domain.</p>
+    </article>
+  <article class="field tone-calc" id="en-f-commands-name" data-entity="Command" data-field="Name">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Name</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">1 hop from ground truth</span>
+      <span class="pill pill-muted">string</span>
+      <span class="pill pill-dr">DR-2</span>
+    </div>
+    <p class="field-note elem elem-desc">Display alias.</p>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak®</span>
+        <p class="view-body">A command's <a class="ref" href="#en-f-commands-name">name</a> is the same as its command ID.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In plain words</span>
+        <p class="view-body">Command ID.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span><span class="fx-chip">Command ID</span></div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">1</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <span class="input input-static tone-raw">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Command ID</span><span class="input-table">Command</span></span>
+          <span class="input-en muted">Stored identity: the command name from r0/spec.json's commands map (e.g. 'AddRoute').</span>
+        </span>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">1</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <span class="ref-pill tone-raw">● Command ID <span class="ref-pill-tbl">Command</span></span>
+      </div>
+    </details>
+    </article>
+  <article class="field tone-rel" id="en-f-commands-transitions" data-entity="Command" data-field="Transitions">
+    <div class="field-head">
+      <span class="field-glyph" title="Relationship">⇢</span>
+      <span class="field-name">Transitions</span>
+      <span class="pill pill-type">Relationship</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <p class="field-note elem elem-desc">Transitions this command can fire.</p>
+    <div class="gt">
+      <p class="gt-body">A pointer to <a href="#en-t-transitions">Transition</a>. It is not derived from anything else — it is the link the rest of the DAG hangs off.</p>
+    </div>
+    </article>
+  <details class="entity-data elem elem-data" open>
+    <summary>Example data</summary>
+    <div class="sample-scroll">
+    <table class="sample-table">
+      <thead><tr>
+        <th>Params</th>
+        <th>Param Count</th>
+        <th>Description</th>
+        <th class="sample-derived">Name<span class="sample-fx">ƒ</span></th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td>[&quot;s&quot;, &quot;d&quot;, &quot;c&quot;]</td>
+          <td>3</td>
+          <td>Open a new directed route s -&gt; d with capacity c.</td>
+          <td class="sample-derived">AddRoute</td>
+        </tr>
+        <tr>
+          <td>[&quot;s&quot;, &quot;d&quot;]</td>
+          <td>2</td>
+          <td>Close (retract) an existing route s -&gt; d.</td>
+          <td class="sample-derived">CloseRoute</td>
+        </tr>
+        <tr>
+          <td>[&quot;id&quot;, &quot;newday&quot;, &quot;at&quot;]</td>
+          <td>3</td>
+          <td>Bitemporal correction: retract the recorded day for a shipment and re-assert a new day, both visible at knowledge time 'at'.</td>
+          <td class="sample-derived">CorrectShipment</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="sample-legend">ƒ marks a computed column.</p>
+  </details>
+</section>
+<section class="entity" id="en-t-rules" data-entity="Rule">
+  <header class="entity-head">
+    <h2 class="entity-title">Rule</h2>
+    <p class="entity-synopsis">Every stratified Datalog-with-negation-and-aggregation rule in the R0 spec (r0/spec.json's 'rules' array), including guard/effect/event rules for transitions and the two integrity-constraint rules.</p>
+  </header>
+  <article class="field tone-raw" id="en-f-rules-headpredicate" data-entity="Rule" data-field="Head Predicate">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Head Predicate</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <p class="field-note elem elem-desc">The rule's head predicate name (head[0] in spec.json), e.g. 'Reachable'.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-rules-kind" data-entity="Rule" data-field="Kind">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Kind</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <p class="field-note elem elem-desc">'rule' for a body-clause rule, 'aggregation' for an agg-clause rule (spec.json's 'agg' key).</p>
+    </article>
+  <article class="field tone-raw" id="en-f-rules-headjson" data-entity="Rule" data-field="Head JSON">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Head JSON</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <p class="field-note elem elem-desc">The rule's head tuple, verbatim JSON from spec.json.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-rules-bodyjson" data-entity="Rule" data-field="Body JSON">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Body JSON</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <p class="field-note elem elem-desc">The rule's body clause list, verbatim JSON from spec.json (null for aggregation rules).</p>
+    </article>
+  <article class="field tone-raw" id="en-f-rules-aggjson" data-entity="Rule" data-field="Agg JSON">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Agg JSON</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <p class="field-note elem elem-desc">The rule's agg clause, verbatim JSON from spec.json (null for body rules).</p>
+    </article>
+  <article class="field tone-raw" id="en-f-rules-papersectionref" data-entity="Rule" data-field="Paper Section Ref">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Paper Section Ref</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <p class="field-note elem elem-desc">CMCC-Core Representation Theorem section(s) this rule exercises.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-rules-description" data-entity="Rule" data-field="Description">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Description</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <p class="field-note elem elem-desc">What the rule computes and, for reflection.py, which G_R node it constructs.</p>
+    </article>
+  <article class="field tone-calc" id="en-f-rules-name" data-entity="Rule" data-field="Name">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Name</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">1 hop from ground truth</span>
+      <span class="pill pill-muted">string</span>
+      <span class="pill pill-dr">DR-3</span>
+    </div>
+    <p class="field-note elem elem-desc">Display alias.</p>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak®</span>
+        <p class="view-body">A rule's <a class="ref" href="#en-f-rules-name">name</a> is the same as its rule ID.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In plain words</span>
+        <p class="view-body">Rule ID.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span><span class="fx-chip">Rule ID</span></div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">1</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <span class="input input-static tone-raw">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Rule ID</span><span class="input-table">Rule</span></span>
+          <span class="input-en muted">Stored identity: the rule's 'id' in r0/spec.json's rules array (e.g. 'reach_base').</span>
+        </span>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">1</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <span class="ref-pill tone-raw">● Rule ID <span class="ref-pill-tbl">Rule</span></span>
+      </div>
+    </details>
+    </article>
+  <article class="field tone-rel" id="en-f-rules-guardedtransitions" data-entity="Rule" data-field="Guarded Transitions">
+    <div class="field-head">
+      <span class="field-glyph" title="Relationship">⇢</span>
+      <span class="field-name">Guarded Transitions</span>
+      <span class="pill pill-type">Relationship</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <p class="field-note elem elem-desc">Transitions whose Guard is this rule.</p>
+    <div class="gt">
+      <p class="gt-body">A pointer to <a href="#en-t-transitions">Transition</a>. It is not derived from anything else — it is the link the rest of the DAG hangs off.</p>
+    </div>
+    </article>
+  <article class="field tone-rel" id="en-f-rules-transitioneffects" data-entity="Rule" data-field="Transition Effects">
+    <div class="field-head">
+      <span class="field-glyph" title="Relationship">⇢</span>
+      <span class="field-name">Transition Effects</span>
+      <span class="pill pill-type">Relationship</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <p class="field-note elem elem-desc">Transition effects whose FromRule is this rule.</p>
+    <div class="gt">
+      <p class="gt-body">A pointer to <a href="#en-t-transitioneffects">Transition Effect</a>. It is not derived from anything else — it is the link the rest of the DAG hangs off.</p>
+    </div>
+    </article>
+  <article class="field tone-rel" id="en-f-rules-transitionevents" data-entity="Rule" data-field="Transition Events">
+    <div class="field-head">
+      <span class="field-glyph" title="Relationship">⇢</span>
+      <span class="field-name">Transition Events</span>
+      <span class="pill pill-type">Relationship</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <p class="field-note elem elem-desc">Transition events whose FromRule is this rule.</p>
+    <div class="gt">
+      <p class="gt-body">A pointer to <a href="#en-t-transitionevents">Transition Event</a>. It is not derived from anything else — it is the link the rest of the DAG hangs off.</p>
+    </div>
+    </article>
+  <article class="field tone-rel" id="en-f-rules-integrityconstraints" data-entity="Rule" data-field="Integrity Constraints">
+    <div class="field-head">
+      <span class="field-glyph" title="Relationship">⇢</span>
+      <span class="field-name">Integrity Constraints</span>
+      <span class="pill pill-type">Relationship</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <p class="field-note elem elem-desc">Integrity constraints whose Rule is this rule.</p>
+    <div class="gt">
+      <p class="gt-body">A pointer to <a href="#en-t-integrityconstraints">Integrity Constraint</a>. It is not derived from anything else — it is the link the rest of the DAG hangs off.</p>
+    </div>
+    </article>
+  <details class="entity-data elem elem-data" open>
+    <summary>Example data</summary>
+    <div class="sample-scroll">
+    <table class="sample-table">
+      <thead><tr>
+        <th>Head Predicate</th>
+        <th>Kind</th>
+        <th>Head JSON</th>
+        <th>Body JSON</th>
+        <th>Agg JSON</th>
+        <th>Paper Section Ref</th>
+        <th>Description</th>
+        <th class="sample-derived">Name<span class="sample-fx">ƒ</span></th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td>Reachable</td>
+          <td>rule</td>
+          <td>[&quot;Reachable&quot;, &quot;x&quot;, &quot;y&quot;]</td>
+          <td>[{&quot;atom&quot;: [&quot;Route&quot;, &quot;x&quot;, &quot;y&quot;, &quot;_&quot;]}]</td>
+          <td>—</td>
+          <td>§4, §12</td>
+          <td>Base case of positive recursion: a direct route makes y reachable from x.</td>
+          <td class="sample-derived">reach_base</td>
+        </tr>
+        <tr>
+          <td>Reachable</td>
+          <td>rule</td>
+          <td>[&quot;Reachable&quot;, &quot;x&quot;, &quot;y&quot;]</td>
+          <td>[{&quot;atom&quot;: [&quot;Reachable&quot;, &quot;x&quot;, &quot;z&quot;]}, {&quot;atom&quot;: [&quot;Route&quot;, &quot;z&quot;, &quot;y&quot;, &quot;_&quot;]}]</td>
+          <td>—</td>
+          <td>§4, §12</td>
+          <td>Recursive step of positive recursion: Reachable composes with one more Route hop.</td>
+          <td class="sample-derived">reach_step</td>
+        </tr>
+        <tr>
+          <td>Isolated</td>
+          <td>rule</td>
+          <td>[&quot;Isolated&quot;, &quot;x&quot;]</td>
+          <td>[{&quot;atom&quot;: [&quot;Warehouse&quot;, &quot;x&quot;]}, {&quot;cmp&quot;: [&quot;!=&quot;, &quot;x&quot;, {&quot;$&quot;: &quot;hub&quot;}]}, {&quot;not&quot;: [&quot;Reachable&quot;, {&quot;$&quot;: &quot;hub&quot;}, &quot;x&quot;]}]</td>
+          <td>—</td>
+          <td>§7 (negation), §12</td>
+          <td>Negation over a strictly lower stratum: a warehouse not reachable from the hub.</td>
+          <td class="sample-derived">isolated</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="sample-legend">ƒ marks a computed column.</p>
+  </details>
+</section>
+<section class="entity" id="en-t-transitions" data-entity="Transition">
+  <header class="entity-head">
+    <h2 class="entity-title">Transition</h2>
+    <p class="entity-synopsis">The R0 spec's transitions (r0/spec.json's 'transitions' array): command + guard pairs that may fire, each with its effects and events.</p>
+  </header>
+  <article class="field tone-rel" id="en-f-transitions-command" data-entity="Transition" data-field="Command">
+    <div class="field-head">
+      <span class="field-glyph" title="Relationship">⇢</span>
+      <span class="field-name">Command</span>
+      <span class="pill pill-type">Relationship</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <p class="field-note elem elem-desc">The command that can fire this transition.</p>
+    <div class="gt">
+      <p class="gt-body">A pointer to <a href="#en-t-commands">Command</a>. It is not derived from anything else — it is the link the rest of the DAG hangs off.</p>
+      <p class="gt-body gt-reverse">Reverse side: <a class="ref-pill tone-rel" href="#en-f-commands-transitions">⇢ Transitions <span class="ref-pill-tbl">Command</span></a></p>
+    </div>
+    </article>
+  <article class="field tone-rel" id="en-f-transitions-guard" data-entity="Transition" data-field="Guard">
+    <div class="field-head">
+      <span class="field-glyph" title="Relationship">⇢</span>
+      <span class="field-name">Guard</span>
+      <span class="pill pill-type">Relationship</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <p class="field-note elem elem-desc">The rule whose head predicate gates this transition.</p>
+    <div class="gt">
+      <p class="gt-body">A pointer to <a href="#en-t-rules">Rule</a>. It is not derived from anything else — it is the link the rest of the DAG hangs off.</p>
+    </div>
+    </article>
+  <article class="field tone-raw" id="en-f-transitions-description" data-entity="Transition" data-field="Description">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Description</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <p class="field-note elem elem-desc">What this transition does when its guard is satisfied.</p>
+    </article>
+  <article class="field tone-calc" id="en-f-transitions-name" data-entity="Transition" data-field="Name">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Name</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">1 hop from ground truth</span>
+      <span class="pill pill-muted">string</span>
+      <span class="pill pill-dr">DR-4</span>
+    </div>
+    <p class="field-note elem elem-desc">Display alias.</p>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak®</span>
+        <p class="view-body">A transition's <a class="ref" href="#en-f-transitions-name">name</a> is the same as its transition ID.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In plain words</span>
+        <p class="view-body">Transition ID.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span><span class="fx-chip">Transition ID</span></div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">1</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <span class="input input-static tone-raw">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Transition ID</span><span class="input-table">Transition</span></span>
+          <span class="input-en muted">Stored identity: the transition's 'name' in r0/spec.json's transitions array (e.g. 'AddRoute').</span>
+        </span>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">1</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <span class="ref-pill tone-raw">● Transition ID <span class="ref-pill-tbl">Transition</span></span>
+      </div>
+    </details>
+    </article>
+  <article class="field tone-rel" id="en-f-transitions-effects" data-entity="Transition" data-field="Effects">
+    <div class="field-head">
+      <span class="field-glyph" title="Relationship">⇢</span>
+      <span class="field-name">Effects</span>
+      <span class="pill pill-type">Relationship</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <p class="field-note elem elem-desc">This transition's ordered assert/retract effects.</p>
+    <div class="gt">
+      <p class="gt-body">A pointer to <a href="#en-t-transitioneffects">Transition Effect</a>. It is not derived from anything else — it is the link the rest of the DAG hangs off.</p>
+    </div>
+    </article>
+  <article class="field tone-rel" id="en-f-transitions-events" data-entity="Transition" data-field="Events">
+    <div class="field-head">
+      <span class="field-glyph" title="Relationship">⇢</span>
+      <span class="field-name">Events</span>
+      <span class="pill pill-type">Relationship</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <p class="field-note elem elem-desc">This transition's emitted events.</p>
+    <div class="gt">
+      <p class="gt-body">A pointer to <a href="#en-t-transitionevents">Transition Event</a>. It is not derived from anything else — it is the link the rest of the DAG hangs off.</p>
+    </div>
+    </article>
+  <details class="entity-data elem elem-data" open>
+    <summary>Example data</summary>
+    <div class="sample-scroll">
+    <table class="sample-table">
+      <thead><tr>
+        <th>Description</th>
+        <th class="sample-derived">Name<span class="sample-fx">ƒ</span></th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td>Opens a new route; the sole enabled transition for command AddRoute.</td>
+          <td class="sample-derived">AddRoute</td>
+        </tr>
+        <tr>
+          <td>Closes an existing route; the sole enabled transition for command CloseRoute.</td>
+          <td class="sample-derived">CloseRoute</td>
+        </tr>
+        <tr>
+          <td>Bitemporal correction of a shipment's recorded day: retracts the old fact and asserts the new one under one knowledge time.</td>
+          <td class="sample-derived">CorrectShipment</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="sample-legend">ƒ marks a computed column.</p>
+  </details>
+</section>
+<section class="entity" id="en-t-transitioneffects" data-entity="Transition Effect">
+  <header class="entity-head">
+    <h2 class="entity-title">Transition Effect</h2>
+    <p class="entity-synopsis">One row per (transition, effect) pair: an ordered assert/retract of a rule's derived tuples into an EDB relation.</p>
+  </header>
+  <article class="field tone-rel" id="en-f-transitioneffects-transition" data-entity="Transition Effect" data-field="Transition">
+    <div class="field-head">
+      <span class="field-glyph" title="Relationship">⇢</span>
+      <span class="field-name">Transition</span>
+      <span class="pill pill-type">Relationship</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <p class="field-note elem elem-desc">The transition this effect belongs to.</p>
+    <div class="gt">
+      <p class="gt-body">A pointer to <a href="#en-t-transitions">Transition</a>. It is not derived from anything else — it is the link the rest of the DAG hangs off.</p>
+    </div>
+    </article>
+  <article class="field tone-raw" id="en-f-transitioneffects-op" data-entity="Transition Effect" data-field="Op">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Op</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <p class="field-note elem elem-desc">'assert' or 'retract'.</p>
+    </article>
+  <article class="field tone-rel" id="en-f-transitioneffects-relation" data-entity="Transition Effect" data-field="Relation">
+    <div class="field-head">
+      <span class="field-glyph" title="Relationship">⇢</span>
+      <span class="field-name">Relation</span>
+      <span class="pill pill-type">Relationship</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <p class="field-note elem elem-desc">The EDB relation this effect asserts into or retracts from.</p>
+    <div class="gt">
+      <p class="gt-body">A pointer to <a href="#en-t-edbrelations">EDB Relation</a>. It is not derived from anything else — it is the link the rest of the DAG hangs off.</p>
+      <p class="gt-body gt-reverse">Reverse side: <a class="ref-pill tone-rel" href="#en-f-edbrelations-transitioneffects">⇢ Transition Effects <span class="ref-pill-tbl">EDB Relation</span></a></p>
+    </div>
+    </article>
+  <article class="field tone-rel" id="en-f-transitioneffects-fromrule" data-entity="Transition Effect" data-field="From Rule">
+    <div class="field-head">
+      <span class="field-glyph" title="Relationship">⇢</span>
+      <span class="field-name">From Rule</span>
+      <span class="pill pill-type">Relationship</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <p class="field-note elem elem-desc">The rule whose derived tuples this effect applies.</p>
+    <div class="gt">
+      <p class="gt-body">A pointer to <a href="#en-t-rules">Rule</a>. It is not derived from anything else — it is the link the rest of the DAG hangs off.</p>
+      <p class="gt-body gt-reverse">Reverse side: <a class="ref-pill tone-rel" href="#en-f-rules-transitioneffects">⇢ Transition Effects <span class="ref-pill-tbl">Rule</span></a></p>
+    </div>
+    </article>
+  <article class="field tone-calc" id="en-f-transitioneffects-name" data-entity="Transition Effect" data-field="Name">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Name</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">1 hop from ground truth</span>
+      <span class="pill pill-muted">string</span>
+      <span class="pill pill-dr">DR-5</span>
+    </div>
+    <p class="field-note elem elem-desc">Display alias.</p>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak®</span>
+        <p class="view-body">A transition effect's <a class="ref" href="#en-f-transitioneffects-name">name</a> is the same as its effect ID.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In plain words</span>
+        <p class="view-body">Effect ID.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span><span class="fx-chip">Effect ID</span></div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">1</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <span class="input input-static tone-raw">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Effect ID</span><span class="input-table">Transition Effect</span></span>
+          <span class="input-en muted">Stored identity: '&lt;TransitionId&gt;#effect&lt;index&gt;', ordered as in spec.json.</span>
+        </span>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">1</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <span class="ref-pill tone-raw">● Effect ID <span class="ref-pill-tbl">Transition Effect</span></span>
+      </div>
+    </details>
+    </article>
+  <details class="entity-data elem elem-data" open>
+    <summary>Example data</summary>
+    <div class="sample-scroll">
+    <table class="sample-table">
+      <thead><tr>
+        <th>Op</th>
+        <th class="sample-derived">Name<span class="sample-fx">ƒ</span></th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td>assert</td>
+          <td class="sample-derived">AddRoute#effect0</td>
+        </tr>
+        <tr>
+          <td>retract</td>
+          <td class="sample-derived">CloseRoute#effect0</td>
+        </tr>
+        <tr>
+          <td>retract</td>
+          <td class="sample-derived">CorrectShipment#effect0</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="sample-legend">ƒ marks a computed column.</p>
+  </details>
+</section>
+<section class="entity" id="en-t-transitionevents" data-entity="Transition Event">
+  <header class="entity-head">
+    <h2 class="entity-title">Transition Event</h2>
+    <p class="entity-synopsis">One row per (transition, event) pair: an event relation emitted when the transition fires.</p>
+  </header>
+  <article class="field tone-rel" id="en-f-transitionevents-transition" data-entity="Transition Event" data-field="Transition">
+    <div class="field-head">
+      <span class="field-glyph" title="Relationship">⇢</span>
+      <span class="field-name">Transition</span>
+      <span class="pill pill-type">Relationship</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <p class="field-note elem elem-desc">The transition this event belongs to.</p>
+    <div class="gt">
+      <p class="gt-body">A pointer to <a href="#en-t-transitions">Transition</a>. It is not derived from anything else — it is the link the rest of the DAG hangs off.</p>
+    </div>
+    </article>
+  <article class="field tone-raw" id="en-f-transitionevents-eventrelation" data-entity="Transition Event" data-field="Event Relation">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Event Relation</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <p class="field-note elem elem-desc">The event relation name emitted (e.g. 'RouteAdded'); not an EDB relation.</p>
+    </article>
+  <article class="field tone-rel" id="en-f-transitionevents-fromrule" data-entity="Transition Event" data-field="From Rule">
+    <div class="field-head">
+      <span class="field-glyph" title="Relationship">⇢</span>
+      <span class="field-name">From Rule</span>
+      <span class="pill pill-type">Relationship</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <p class="field-note elem elem-desc">The rule whose derived tuples produce this event.</p>
+    <div class="gt">
+      <p class="gt-body">A pointer to <a href="#en-t-rules">Rule</a>. It is not derived from anything else — it is the link the rest of the DAG hangs off.</p>
+      <p class="gt-body gt-reverse">Reverse side: <a class="ref-pill tone-rel" href="#en-f-rules-transitionevents">⇢ Transition Events <span class="ref-pill-tbl">Rule</span></a></p>
+    </div>
+    </article>
+  <article class="field tone-calc" id="en-f-transitionevents-name" data-entity="Transition Event" data-field="Name">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Name</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">1 hop from ground truth</span>
+      <span class="pill pill-muted">string</span>
+      <span class="pill pill-dr">DR-6</span>
+    </div>
+    <p class="field-note elem elem-desc">Display alias.</p>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak®</span>
+        <p class="view-body">A transition event's <a class="ref" href="#en-f-transitionevents-name">name</a> is the same as its event ID.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In plain words</span>
+        <p class="view-body">Event ID.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span><span class="fx-chip">Event ID</span></div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">1</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <span class="input input-static tone-raw">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Event ID</span><span class="input-table">Transition Event</span></span>
+          <span class="input-en muted">Stored identity: '&lt;TransitionId&gt;#event&lt;index&gt;', ordered as in spec.json.</span>
+        </span>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">1</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <span class="ref-pill tone-raw">● Event ID <span class="ref-pill-tbl">Transition Event</span></span>
+      </div>
+    </details>
+    </article>
+  <details class="entity-data elem elem-data" open>
+    <summary>Example data</summary>
+    <div class="sample-scroll">
+    <table class="sample-table">
+      <thead><tr>
+        <th>Event Relation</th>
+        <th class="sample-derived">Name<span class="sample-fx">ƒ</span></th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td>RouteAdded</td>
+          <td class="sample-derived">AddRoute#event0</td>
+        </tr>
+        <tr>
+          <td>ShipmentCorrected</td>
+          <td class="sample-derived">CorrectShipment#event0</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="sample-legend">ƒ marks a computed column.</p>
+  </details>
+</section>
+<section class="entity" id="en-t-integrityconstraints" data-entity="Integrity Constraint">
+  <header class="entity-head">
+    <h2 class="entity-title">Integrity Constraint</h2>
+    <p class="entity-synopsis">The R0 spec's integrity constraints (r0/spec.json's 'constraints' array): predicates whose nonempty derivation rejects a transition. Named IntegrityConstraints, not Constraints -- rulebook-to-rulespeak v2026.09.17.2011 treats a table literally named 'Constraints' as a reserved word and fails the whole build with &quot;Entity '' does not resolve to any table.&quot;</p>
+  </header>
+  <article class="field tone-rel" id="en-f-integrityconstraints-rule" data-entity="Integrity Constraint" data-field="Rule">
+    <div class="field-head">
+      <span class="field-glyph" title="Relationship">⇢</span>
+      <span class="field-name">Rule</span>
+      <span class="pill pill-type">Relationship</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <p class="field-note elem elem-desc">The rule that derives this constraint's violations.</p>
+    <div class="gt">
+      <p class="gt-body">A pointer to <a href="#en-t-rules">Rule</a>. It is not derived from anything else — it is the link the rest of the DAG hangs off.</p>
+      <p class="gt-body gt-reverse">Reverse side: <a class="ref-pill tone-rel" href="#en-f-rules-integrityconstraints">⇢ Integrity Constraints <span class="ref-pill-tbl">Rule</span></a></p>
+    </div>
+    </article>
+  <article class="field tone-raw" id="en-f-integrityconstraints-description" data-entity="Integrity Constraint" data-field="Description">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Description</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <p class="field-note elem elem-desc">What a nonempty derivation of this predicate means, and which transition it rejects.</p>
+    </article>
+  <article class="field tone-calc" id="en-f-integrityconstraints-name" data-entity="Integrity Constraint" data-field="Name">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Name</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">1 hop from ground truth</span>
+      <span class="pill pill-muted">string</span>
+      <span class="pill pill-dr">DR-7</span>
+    </div>
+    <p class="field-note elem elem-desc">Display alias.</p>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak®</span>
+        <p class="view-body">An integrity constraint's <a class="ref" href="#en-f-integrityconstraints-name">name</a> is the same as its constraint ID.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In plain words</span>
+        <p class="view-body">Constraint ID.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span><span class="fx-chip">Constraint ID</span></div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">1</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <span class="input input-static tone-raw">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Constraint ID</span><span class="input-table">Integrity Constraint</span></span>
+          <span class="input-en muted">Stored identity: the constraint's head predicate name, verbatim from spec.json's constraints array (e.g. 'NegativeCap').</span>
+        </span>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">1</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <span class="ref-pill tone-raw">● Constraint ID <span class="ref-pill-tbl">Integrity Constraint</span></span>
+      </div>
+    </details>
+    </article>
+  <details class="entity-data elem elem-data" open>
+    <summary>Example data</summary>
+    <div class="sample-scroll">
+    <table class="sample-table">
+      <thead><tr>
+        <th>Description</th>
+        <th class="sample-derived">Name<span class="sample-fx">ƒ</span></th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td>Rejects any transition whose effect would leave a route with negative capacity.</td>
+          <td class="sample-derived">NegativeCap</td>
+        </tr>
+        <tr>
+          <td>Rejects any transition whose effect would leave a route from a warehouse to itself.</td>
+          <td class="sample-derived">SelfRoute</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="sample-legend">ƒ marks a computed column.</p>
+  </details>
+</section>
+<section class="entity" id="en-t-observables" data-entity="Observable">
+  <header class="entity-head">
+    <h2 class="entity-title">Observable</h2>
+    <p class="entity-synopsis">The R0 spec's observables (r0/spec.json's 'observables' map): the predicates exposed in Obs_R0(c, i, h), section 9.</p>
+  </header>
+  <article class="field tone-raw" id="en-f-observables-exposedpredicate" data-entity="Observable" data-field="Exposed Predicate">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Exposed Predicate</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <p class="field-note elem elem-desc">The predicate this observable exposes (e.g. 'Reachable').</p>
+    </article>
+  <article class="field tone-raw" id="en-f-observables-description" data-entity="Observable" data-field="Description">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Description</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <p class="field-note elem elem-desc">Why this predicate is exposed as an observable in Obs_R0(c, i, h).</p>
+    </article>
+  <article class="field tone-calc" id="en-f-observables-name" data-entity="Observable" data-field="Name">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Name</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">1 hop from ground truth</span>
+      <span class="pill pill-muted">string</span>
+      <span class="pill pill-dr">DR-8</span>
+    </div>
+    <p class="field-note elem elem-desc">Display alias.</p>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak®</span>
+        <p class="view-body">An observable's <a class="ref" href="#en-f-observables-name">name</a> is the same as its observable ID.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In plain words</span>
+        <p class="view-body">Observable ID.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span><span class="fx-chip">Observable ID</span></div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">1</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <span class="input input-static tone-raw">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Observable ID</span><span class="input-table">Observable</span></span>
+          <span class="input-en muted">Stored identity: the observable's key in spec.json's observables map (e.g. 'reachable').</span>
+        </span>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">1</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <span class="ref-pill tone-raw">● Observable ID <span class="ref-pill-tbl">Observable</span></span>
+      </div>
+    </details>
+    </article>
+  <details class="entity-data elem elem-data" open>
+    <summary>Example data</summary>
+    <div class="sample-scroll">
+    <table class="sample-table">
+      <thead><tr>
+        <th>Exposed Predicate</th>
+        <th>Description</th>
+        <th class="sample-derived">Name<span class="sample-fx">ƒ</span></th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td>Reachable</td>
+          <td>Positive recursive closure over Route; the paper's running example of Lemma 1's finite lattice.</td>
+          <td class="sample-derived">reachable</td>
+        </tr>
+        <tr>
+          <td>Isolated</td>
+          <td>Negation over Reachable: witnesses the stratum operator's monotonicity (§7).</td>
+          <td class="sample-derived">isolated</td>
+        </tr>
+        <tr>
+          <td>Fanout</td>
+          <td>COUNT aggregation over Route; witnesses the empty-group case (§5).</td>
+          <td class="sample-derived">fanout</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="sample-legend">ƒ marks a computed column.</p>
+  </details>
+</section>
+<section class="entity" id="en-t-seedfacts" data-entity="Seed Fact">
+  <header class="entity-head">
+    <h2 class="entity-title">Seed Fact</h2>
+    <p class="entity-synopsis">The R0 spec's initial history h0 (r0/spec.json's 'h0' array): the seed facts every input history starts from.</p>
+  </header>
+  <article class="field tone-raw" id="en-f-seedfacts-n" data-entity="Seed Fact" data-field="N">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">N</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype integer); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
+      <span class="pill pill-muted">integer</span>
+    </div>
+    <p class="field-note elem elem-desc">The fact's 'n' (insertion order) in spec.json's h0 array.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-seedfacts-op" data-entity="Seed Fact" data-field="Op">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Op</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <p class="field-note elem elem-desc">'assert' (h0 is assert-only).</p>
+    </article>
+  <article class="field tone-rel" id="en-f-seedfacts-relation" data-entity="Seed Fact" data-field="Relation">
+    <div class="field-head">
+      <span class="field-glyph" title="Relationship">⇢</span>
+      <span class="field-name">Relation</span>
+      <span class="pill pill-type">Relationship</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <p class="field-note elem elem-desc">The EDB relation this seed fact populates.</p>
+    <div class="gt">
+      <p class="gt-body">A pointer to <a href="#en-t-edbrelations">EDB Relation</a>. It is not derived from anything else — it is the link the rest of the DAG hangs off.</p>
+      <p class="gt-body gt-reverse">Reverse side: <a class="ref-pill tone-rel" href="#en-f-edbrelations-seedfacts">⇢ Seed Facts <span class="ref-pill-tbl">EDB Relation</span></a></p>
+    </div>
+    </article>
+  <article class="field tone-raw" id="en-f-seedfacts-tuplejson" data-entity="Seed Fact" data-field="Tuple JSON">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Tuple JSON</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <p class="field-note elem elem-desc">The seeded tuple, verbatim JSON from spec.json.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-seedfacts-k" data-entity="Seed Fact" data-field="K">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">K</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype integer); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
+      <span class="pill pill-muted">integer</span>
+    </div>
+    <p class="field-note elem elem-desc">Knowledge time of the seed fact (0 for all of h0).</p>
+    </article>
+  <article class="field tone-calc" id="en-f-seedfacts-name" data-entity="Seed Fact" data-field="Name">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Name</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">1 hop from ground truth</span>
+      <span class="pill pill-muted">string</span>
+      <span class="pill pill-dr">DR-9</span>
+    </div>
+    <p class="field-note elem elem-desc">Display alias.</p>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak®</span>
+        <p class="view-body">A seed fact's <a class="ref" href="#en-f-seedfacts-name">name</a> is the same as its seed fact ID.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In plain words</span>
+        <p class="view-body">Seed fact ID.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span><span class="fx-chip">Seed Fact ID</span></div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">1</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <span class="input input-static tone-raw">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Seed Fact ID</span><span class="input-table">Seed Fact</span></span>
+          <span class="input-en muted">Stored identity: 'h0-&lt;n&gt;', where n is the fact's position in spec.json's h0 array.</span>
+        </span>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">1</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <span class="ref-pill tone-raw">● Seed Fact ID <span class="ref-pill-tbl">Seed Fact</span></span>
+      </div>
+    </details>
+    </article>
+  <details class="entity-data elem elem-data" open>
+    <summary>Example data</summary>
+    <div class="sample-scroll">
+    <table class="sample-table">
+      <thead><tr>
+        <th>N</th>
+        <th>Op</th>
+        <th>Tuple JSON</th>
+        <th>K</th>
+        <th class="sample-derived">Name<span class="sample-fx">ƒ</span></th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td>0</td>
+          <td>assert</td>
+          <td>[&quot;hub&quot;]</td>
+          <td>0</td>
+          <td class="sample-derived">h0-0</td>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td>assert</td>
+          <td>[&quot;a&quot;]</td>
+          <td>0</td>
+          <td class="sample-derived">h0-1</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>assert</td>
+          <td>[&quot;b&quot;]</td>
+          <td>0</td>
+          <td class="sample-derived">h0-2</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="sample-legend">ƒ marks a computed column.</p>
+  </details>
+</section>
+<section class="entity" id="en-t-inputhistories" data-entity="Input History">
+  <header class="entity-head">
+    <h2 class="entity-title">Input History</h2>
+    <p class="entity-synopsis">The two input histories this example runs (r0/inputs/*.json): what each is designed to exercise.</p>
+  </header>
+  <article class="field tone-raw" id="en-f-inputhistories-sourcefile" data-entity="Input History" data-field="Source File">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Source File</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <p class="field-note elem elem-desc">Path to the input history file, relative to the project root.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-inputhistories-eventcount" data-entity="Input History" data-field="Event Count">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Event Count</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype integer); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
+      <span class="pill pill-muted">integer</span>
+    </div>
+    <p class="field-note elem elem-desc">Number of command events in the input history, counted once at transcription time.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-inputhistories-description" data-entity="Input History" data-field="Description">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Description</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <p class="field-note elem elem-desc">What this input history is designed to exercise.</p>
+    </article>
+  <article class="field tone-calc" id="en-f-inputhistories-name" data-entity="Input History" data-field="Name">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Name</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">1 hop from ground truth</span>
+      <span class="pill pill-muted">string</span>
+      <span class="pill pill-dr">DR-10</span>
+    </div>
+    <p class="field-note elem elem-desc">Display alias.</p>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak®</span>
+        <p class="view-body">An input history's <a class="ref" href="#en-f-inputhistories-name">name</a> is the same as its input history ID.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In plain words</span>
+        <p class="view-body">Input history ID.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span><span class="fx-chip">Input History ID</span></div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">1</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <span class="input input-static tone-raw">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Input History ID</span><span class="input-table">Input History</span></span>
+          <span class="input-en muted">Stored identity: the input file's stem under r0/inputs/ (e.g. 'i1-routes').</span>
+        </span>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">1</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <span class="ref-pill tone-raw">● Input History ID <span class="ref-pill-tbl">Input History</span></span>
+      </div>
+    </details>
+    </article>
+  <article class="field tone-rel" id="en-f-inputhistories-answerkeyresults" data-entity="Input History" data-field="Answer Key Results">
+    <div class="field-head">
+      <span class="field-glyph" title="Relationship">⇢</span>
+      <span class="field-name">Answer Key Results</span>
+      <span class="pill pill-type">Relationship</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <p class="field-note elem elem-desc">Per-substrate answer-key results computed against this input history.</p>
+    <div class="gt">
+      <p class="gt-body">A pointer to <a href="#en-t-answerkeyresults">Answer Key Result</a>. It is not derived from anything else — it is the link the rest of the DAG hangs off.</p>
+    </div>
+    </article>
+  <details class="entity-data elem elem-data" open>
+    <summary>Example data</summary>
+    <div class="sample-scroll">
+    <table class="sample-table">
+      <thead><tr>
+        <th>Source File</th>
+        <th>Event Count</th>
+        <th>Description</th>
+        <th class="sample-derived">Name<span class="sample-fx">ƒ</span></th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td>r0/inputs/i1-routes.json</td>
+          <td>3</td>
+          <td>AddRoute/CloseRoute/Reroute traffic over the warehouse network; exercises recursion, negation, aggregation and the nondeterministic Reroute command.</td>
+          <td class="sample-derived">i1-routes</td>
+        </tr>
+        <tr>
+          <td>r0/inputs/i2-bitemporal.json</td>
+          <td>3</td>
+          <td>Observes one shipment at three (valid time, knowledge time) pairs around a CorrectShipment command; exercises the bitemporal snapshot rules tau generates (§7).</td>
+          <td class="sample-derived">i2-bitemporal</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="sample-legend">ƒ marks a computed column.</p>
+  </details>
+</section>
+<section class="entity" id="en-t-reflectionconditions" data-entity="Reflection Condition">
+  <header class="entity-head">
+    <h2 class="entity-title">Reflection Condition</h2>
+    <p class="entity-synopsis">The six conditions of constructor reflection, section 13 of the paper.</p>
+  </header>
+  <article class="field tone-raw" id="en-f-reflectionconditions-conditionnumber" data-entity="Reflection Condition" data-field="Condition Number">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Condition Number</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype integer); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
+      <span class="pill pill-muted">integer</span>
+    </div>
+    <p class="field-note elem elem-desc">The condition's number in §13 (1-6).</p>
+    </article>
+  <article class="field tone-raw" id="en-f-reflectionconditions-title" data-entity="Reflection Condition" data-field="Title">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Title</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <p class="field-note elem elem-desc">Short name of the condition.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-reflectionconditions-papersectionref" data-entity="Reflection Condition" data-field="Paper Section Ref">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Paper Section Ref</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <p class="field-note elem elem-desc">Paper section this condition is defined in.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-reflectionconditions-description" data-entity="Reflection Condition" data-field="Description">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Description</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <p class="field-note elem elem-desc">What the condition checks on the substrate artifact's call graph.</p>
+    </article>
+  <article class="field tone-calc" id="en-f-reflectionconditions-name" data-entity="Reflection Condition" data-field="Name">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Name</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">1 hop from ground truth</span>
+      <span class="pill pill-muted">string</span>
+      <span class="pill pill-dr">DR-11</span>
+    </div>
+    <p class="field-note elem elem-desc">Display alias.</p>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak®</span>
+        <p class="view-body">A reflection condition's <a class="ref" href="#en-f-reflectionconditions-name">name</a> is the same as its condition ID.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In plain words</span>
+        <p class="view-body">Condition ID.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span><span class="fx-chip">Condition ID</span></div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">1</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <span class="input input-static tone-raw">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Condition ID</span><span class="input-table">Reflection Condition</span></span>
+          <span class="input-en muted">Stored identity, matching conformance/matrix.json's condition keys (e.g. '1_constructor_preservation').</span>
+        </span>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">1</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <span class="ref-pill tone-raw">● Condition ID <span class="ref-pill-tbl">Reflection Condition</span></span>
+      </div>
+    </details>
+    </article>
+  <article class="field tone-rel" id="en-f-reflectionconditions-reflectionresults" data-entity="Reflection Condition" data-field="Reflection Results">
+    <div class="field-head">
+      <span class="field-glyph" title="Relationship">⇢</span>
+      <span class="field-name">Reflection Results</span>
+      <span class="pill pill-type">Relationship</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <p class="field-note elem elem-desc">Per-substrate pass/fail/delegated outcomes for this condition.</p>
+    <div class="gt">
+      <p class="gt-body">A pointer to <a href="#en-t-reflectionresults">Reflection Result</a>. It is not derived from anything else — it is the link the rest of the DAG hangs off.</p>
+    </div>
+    </article>
+  <details class="entity-data elem elem-data" open>
+    <summary>Example data</summary>
+    <div class="sample-scroll">
+    <table class="sample-table">
+      <thead><tr>
+        <th>Condition Number</th>
+        <th>Title</th>
+        <th>Paper Section Ref</th>
+        <th>Description</th>
+        <th class="sample-derived">Name<span class="sample-fx">ƒ</span></th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>Constructor preservation</td>
+          <td>§13</td>
+          <td>Every G_R node has a function of its kind in the artifact.</td>
+          <td class="sample-derived">1_constructor_preservation</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>Dependency preservation</td>
+          <td>§13</td>
+          <td>Every source edge in G_R is a call edge in the artifact.</td>
+          <td class="sample-derived">2_dependency_preservation</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>Addressability</td>
+          <td>§13</td>
+          <td>Every G_R node has an image (a named function) in the artifact.</td>
+          <td class="sample-derived">3_addressability</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="sample-legend">ƒ marks a computed column.</p>
+  </details>
+</section>
+<section class="entity" id="en-t-substrates" data-entity="Substrate">
+  <header class="entity-head">
+    <h2 class="entity-title">Substrate</h2>
+    <p class="entity-synopsis">The three substrates checked against the R0 spec: transparent (the real representation) and two controls, tangled and interpreter, that are expected to fail reflection on purpose.</p>
+  </header>
+  <article class="field tone-raw" id="en-f-substrates-description" data-entity="Substrate" data-field="Description">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Description</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <p class="field-note elem elem-desc">What this substrate is and how it is generated.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-substrates-papersectionref" data-entity="Substrate" data-field="Paper Section Ref">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Paper Section Ref</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <p class="field-note elem elem-desc">Paper section(s) this substrate demonstrates.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-substrates-iscontrol" data-entity="Substrate" data-field="Is Control">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Is Control</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype boolean); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
+      <span class="pill pill-muted">boolean</span>
+    </div>
+    <p class="field-note elem elem-desc">True for the two substrates that are deliberately expected to fail reflection (tangled, interpreter).</p>
+    </article>
+  <article class="field tone-calc" id="en-f-substrates-name" data-entity="Substrate" data-field="Name">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Name</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">1 hop from ground truth</span>
+      <span class="pill pill-muted">string</span>
+      <span class="pill pill-dr">DR-12</span>
+    </div>
+    <p class="field-note elem elem-desc">Display alias.</p>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak®</span>
+        <p class="view-body">A substrate's <a class="ref" href="#en-f-substrates-name">name</a> is the same as its substrate ID.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In plain words</span>
+        <p class="view-body">Substrate ID.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span><span class="fx-chip">Substrate ID</span></div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">1</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <span class="input input-static tone-raw">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Substrate ID</span><span class="input-table">Substrate</span></span>
+          <span class="input-en muted">Stored identity, matching conformance/matrix.json's substrate keys.</span>
+        </span>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">1</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <span class="ref-pill tone-raw">● Substrate ID <span class="ref-pill-tbl">Substrate</span></span>
+      </div>
+    </details>
+    </article>
+  <article class="field tone-rel" id="en-f-substrates-answerkeyresults" data-entity="Substrate" data-field="Answer Key Results">
+    <div class="field-head">
+      <span class="field-glyph" title="Relationship">⇢</span>
+      <span class="field-name">Answer Key Results</span>
+      <span class="pill pill-type">Relationship</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <p class="field-note elem elem-desc">This substrate's per-input-history answer-key results.</p>
+    <div class="gt">
+      <p class="gt-body">A pointer to <a href="#en-t-answerkeyresults">Answer Key Result</a>. It is not derived from anything else — it is the link the rest of the DAG hangs off.</p>
+    </div>
+    </article>
+  <article class="field tone-rel" id="en-f-substrates-reflectionresults" data-entity="Substrate" data-field="Reflection Results">
+    <div class="field-head">
+      <span class="field-glyph" title="Relationship">⇢</span>
+      <span class="field-name">Reflection Results</span>
+      <span class="pill pill-type">Relationship</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <p class="field-note elem elem-desc">This substrate's per-condition reflection results.</p>
+    <div class="gt">
+      <p class="gt-body">A pointer to <a href="#en-t-reflectionresults">Reflection Result</a>. It is not derived from anything else — it is the link the rest of the DAG hangs off.</p>
+    </div>
+    </article>
+  <article class="field tone-agg" id="en-f-substrates-answerkeyresultcount" data-entity="Substrate" data-field="Answer Key Result Count">
+    <div class="field-head">
+      <span class="field-glyph" title="Aggregation">Σ</span>
+      <span class="field-name">Answer Key Result Count</span>
+      <span class="pill pill-type">Aggregation</span>
+      <span class="pill pill-depth">1 hop from ground truth</span>
+      <span class="pill pill-muted">integer</span>
+      <span class="pill pill-dr">DR-13</span>
+    </div>
+    <p class="field-note elem elem-desc">Number of answer-key results recorded for this substrate.</p>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak®</span>
+        <p class="view-body">A substrate's <a class="ref" href="#en-f-substrates-answerkeyresultcount">answer key result count</a> is the number of <a class="ref" href="#en-t-answerkeyresults">answer key results</a> related to the substrate.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In plain words</span>
+        <p class="view-body">Count of <a class="ref" href="#en-t-answerkeyresults">answer key results</a> whose <a class="ref" href="#en-f-answerkeyresults-substrate">substrate</a> is substrate ID.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>COUNTIFS(<a class="fx-chip" href="#en-f-answerkeyresults-substrate">Substrate</a>, <span class="fx-chip">Substrate ID</span>)</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">2</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-rel" href="#en-f-answerkeyresults-substrate">
+          <span class="input-head"><span class="input-glyph">⇢</span><span class="input-name">Substrate</span><span class="input-table">Answer Key Result</span></span>
+          <span class="input-en muted">The substrate this result was computed for.</span>
+        </a>
+        <span class="input input-static tone-raw">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Substrate ID</span><span class="input-table">Substrate</span></span>
+          <span class="input-en muted">Stored identity, matching conformance/matrix.json's substrate keys.</span>
+        </span>
+      </div>
+    </details>
+    <details class="prov prov-consumers elem elem-consumers">
+      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+1 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-calc" href="#en-f-substrates-answerkeyok">ƒ Answer Key Ok <span class="ref-pill-tbl">Substrate</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-substrates-conformant">Conformant <span class="ref-pill-tbl">Substrate</span></a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">2</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-rel" href="#en-f-answerkeyresults-substrate">⇢ Substrate <span class="ref-pill-tbl">Answer Key Result</span></a>
+        <span class="ref-pill tone-raw">● Substrate ID <span class="ref-pill-tbl">Substrate</span></span>
+      </div>
+    </details>
+    </article>
+  <article class="field tone-agg" id="en-f-substrates-answerkeyfailcount" data-entity="Substrate" data-field="Answer Key Fail Count">
+    <div class="field-head">
+      <span class="field-glyph" title="Aggregation">Σ</span>
+      <span class="field-name">Answer Key Fail Count</span>
+      <span class="pill pill-type">Aggregation</span>
+      <span class="pill pill-depth">1 hop from ground truth</span>
+      <span class="pill pill-muted">integer</span>
+      <span class="pill pill-dr">DR-14</span>
+    </div>
+    <p class="field-note elem elem-desc">Number of answer-key results recorded as a failure for this substrate.</p>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak®</span>
+        <p class="view-body">A substrate's <a class="ref" href="#en-f-substrates-answerkeyfailcount">answer key fail count</a> is the number of the substrate's <a class="ref" href="#en-t-answerkeyresults">answer key results</a> that have a <a class="ref" href="#en-f-answerkeyresults-outcome">outcome</a> of “fail”.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In plain words</span>
+        <p class="view-body">Count of <a class="ref" href="#en-t-answerkeyresults">answer key results</a> whose <a class="ref" href="#en-f-answerkeyresults-substrate">substrate</a> is substrate ID and <a class="ref" href="#en-f-answerkeyresults-outcome">outcome</a> is &quot;fail&quot;.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>COUNTIFS(<a class="fx-chip" href="#en-f-answerkeyresults-substrate">Substrate</a>, <span class="fx-chip">Substrate ID</span>, <a class="fx-chip" href="#en-f-answerkeyresults-outcome">Outcome</a>, &quot;fail&quot;)</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">3</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-rel" href="#en-f-answerkeyresults-substrate">
+          <span class="input-head"><span class="input-glyph">⇢</span><span class="input-name">Substrate</span><span class="input-table">Answer Key Result</span></span>
+          <span class="input-en muted">The substrate this result was computed for.</span>
+        </a>
+        <span class="input input-static tone-raw">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Substrate ID</span><span class="input-table">Substrate</span></span>
+          <span class="input-en muted">Stored identity, matching conformance/matrix.json's substrate keys.</span>
+        </span>
+        <a class="input tone-raw" href="#en-f-answerkeyresults-outcome">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Outcome</span><span class="input-table">Answer Key Result</span></span>
+          <span class="input-en muted">'pass' if every produced trace was inside the permitted set, else 'fail'. Witnessed by conformance/run.py; never recomputed here.</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-consumers elem elem-consumers">
+      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+1 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-calc" href="#en-f-substrates-answerkeyok">ƒ Answer Key Ok <span class="ref-pill-tbl">Substrate</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-substrates-conformant">Conformant <span class="ref-pill-tbl">Substrate</span></a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">3</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-rel" href="#en-f-answerkeyresults-substrate">⇢ Substrate <span class="ref-pill-tbl">Answer Key Result</span></a>
+        <span class="ref-pill tone-raw">● Substrate ID <span class="ref-pill-tbl">Substrate</span></span>
+        <a class="ref-pill tone-raw" href="#en-f-answerkeyresults-outcome">● Outcome <span class="ref-pill-tbl">Answer Key Result</span></a>
+      </div>
+    </details>
+    </article>
+  <article class="field tone-calc" id="en-f-substrates-answerkeyok" data-entity="Substrate" data-field="Answer Key Ok">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Answer Key Ok</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">2 hops from ground truth</span>
+      <span class="pill pill-muted">boolean</span>
+      <span class="pill pill-dr">DR-15</span>
+    </div>
+    <p class="field-note elem elem-desc">True when every recorded answer-key result for this substrate passed (§11).</p>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak®</span>
+        <div class="view-body"><p class="rt-headline">A substrate is flagged answer key ok if all of the following:</p><ol class="rt-priority"><ul class="rt-group"><li>the <a class="ref" href="#en-f-substrates-answerkeyresultcount">answer key result count</a> is greater than 0</li><li>the <a class="ref" href="#en-f-substrates-answerkeyfailcount">answer key fail count</a> is 0</li></ul></ol></div>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In plain words</span>
+        <p class="view-body"><a class="ref" href="#en-f-substrates-answerkeyresultcount">Answer key result count</a> is greater than 0 and <a class="ref" href="#en-f-substrates-answerkeyfailcount">answer key fail count</a> equals 0.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>AND(<a class="fx-chip" href="#en-f-substrates-answerkeyresultcount">Answer Key Result Count</a> &gt; 0, <a class="fx-chip" href="#en-f-substrates-answerkeyfailcount">Answer Key Fail Count</a> = 0)</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">2</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-agg" href="#en-f-substrates-answerkeyresultcount">
+          <span class="input-head"><span class="input-glyph">Σ</span><span class="input-name">Answer Key Result Count</span><span class="input-table">Substrate</span></span>
+          <span class="input-en">Count of answer key results whose substrate is substrate ID.</span>
+        </a>
+        <a class="input tone-agg" href="#en-f-substrates-answerkeyfailcount">
+          <span class="input-head"><span class="input-glyph">Σ</span><span class="input-name">Answer Key Fail Count</span><span class="input-table">Substrate</span></span>
+          <span class="input-en">Count of answer key results whose substrate is substrate ID and outcome is &quot;fail&quot;.</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-consumers elem elem-consumers">
+      <summary>Consumers <span class="count">1 direct</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-calc" href="#en-f-substrates-conformant">ƒ Conformant <span class="ref-pill-tbl">Substrate</span></a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">3</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-rel" href="#en-f-answerkeyresults-substrate">⇢ Substrate <span class="ref-pill-tbl">Answer Key Result</span></a>
+        <span class="ref-pill tone-raw">● Substrate ID <span class="ref-pill-tbl">Substrate</span></span>
+        <a class="ref-pill tone-raw" href="#en-f-answerkeyresults-outcome">● Outcome <span class="ref-pill-tbl">Answer Key Result</span></a>
+      </div>
+    </details>
+    </article>
+  <article class="field tone-agg" id="en-f-substrates-reflectionresultcount" data-entity="Substrate" data-field="Reflection Result Count">
+    <div class="field-head">
+      <span class="field-glyph" title="Aggregation">Σ</span>
+      <span class="field-name">Reflection Result Count</span>
+      <span class="pill pill-type">Aggregation</span>
+      <span class="pill pill-depth">1 hop from ground truth</span>
+      <span class="pill pill-muted">integer</span>
+      <span class="pill pill-dr">DR-16</span>
+    </div>
+    <p class="field-note elem elem-desc">Number of reflection results recorded for this substrate.</p>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak®</span>
+        <p class="view-body">A substrate's <a class="ref" href="#en-f-substrates-reflectionresultcount">reflection result count</a> is the number of <a class="ref" href="#en-t-reflectionresults">reflection results</a> related to the substrate.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In plain words</span>
+        <p class="view-body">Count of <a class="ref" href="#en-t-reflectionresults">reflection results</a> whose <a class="ref" href="#en-f-reflectionresults-substrate">substrate</a> is substrate ID.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>COUNTIFS(<a class="fx-chip" href="#en-f-reflectionresults-substrate">Substrate</a>, <span class="fx-chip">Substrate ID</span>)</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">2</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-rel" href="#en-f-reflectionresults-substrate">
+          <span class="input-head"><span class="input-glyph">⇢</span><span class="input-name">Substrate</span><span class="input-table">Reflection Result</span></span>
+          <span class="input-en muted">The substrate this reflection outcome was computed for.</span>
+        </a>
+        <span class="input input-static tone-raw">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Substrate ID</span><span class="input-table">Substrate</span></span>
+          <span class="input-en muted">Stored identity, matching conformance/matrix.json's substrate keys.</span>
+        </span>
+      </div>
+    </details>
+    <details class="prov prov-consumers elem elem-consumers">
+      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+1 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-calc" href="#en-f-substrates-reflectionok">ƒ Reflection Ok <span class="ref-pill-tbl">Substrate</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-substrates-conformant">Conformant <span class="ref-pill-tbl">Substrate</span></a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">2</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-rel" href="#en-f-reflectionresults-substrate">⇢ Substrate <span class="ref-pill-tbl">Reflection Result</span></a>
+        <span class="ref-pill tone-raw">● Substrate ID <span class="ref-pill-tbl">Substrate</span></span>
+      </div>
+    </details>
+    </article>
+  <article class="field tone-agg" id="en-f-substrates-reflectionfailcount" data-entity="Substrate" data-field="Reflection Fail Count">
+    <div class="field-head">
+      <span class="field-glyph" title="Aggregation">Σ</span>
+      <span class="field-name">Reflection Fail Count</span>
+      <span class="pill pill-type">Aggregation</span>
+      <span class="pill pill-depth">1 hop from ground truth</span>
+      <span class="pill pill-muted">integer</span>
+      <span class="pill pill-dr">DR-17</span>
+    </div>
+    <p class="field-note elem elem-desc">Number of reflection conditions recorded as a failure for this substrate.</p>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak®</span>
+        <p class="view-body">A substrate's <a class="ref" href="#en-f-substrates-reflectionfailcount">reflection fail count</a> is the number of the substrate's <a class="ref" href="#en-t-reflectionresults">reflection results</a> that have a <a class="ref" href="#en-f-reflectionresults-outcome">outcome</a> of “fail”.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In plain words</span>
+        <p class="view-body">Count of <a class="ref" href="#en-t-reflectionresults">reflection results</a> whose <a class="ref" href="#en-f-reflectionresults-substrate">substrate</a> is substrate ID and <a class="ref" href="#en-f-reflectionresults-outcome">outcome</a> is &quot;fail&quot;.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>COUNTIFS(<a class="fx-chip" href="#en-f-reflectionresults-substrate">Substrate</a>, <span class="fx-chip">Substrate ID</span>, <a class="fx-chip" href="#en-f-reflectionresults-outcome">Outcome</a>, &quot;fail&quot;)</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">3</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-rel" href="#en-f-reflectionresults-substrate">
+          <span class="input-head"><span class="input-glyph">⇢</span><span class="input-name">Substrate</span><span class="input-table">Reflection Result</span></span>
+          <span class="input-en muted">The substrate this reflection outcome was computed for.</span>
+        </a>
+        <span class="input input-static tone-raw">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Substrate ID</span><span class="input-table">Substrate</span></span>
+          <span class="input-en muted">Stored identity, matching conformance/matrix.json's substrate keys.</span>
+        </span>
+        <a class="input tone-raw" href="#en-f-reflectionresults-outcome">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Outcome</span><span class="input-table">Reflection Result</span></span>
+          <span class="input-en muted">'pass', 'fail' or 'delegated' (condition 4 is always delegated to the answer key by design). Witnessed by tools/reflection_check.py; never recomputed here.</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-consumers elem elem-consumers">
+      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+1 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-calc" href="#en-f-substrates-reflectionok">ƒ Reflection Ok <span class="ref-pill-tbl">Substrate</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-substrates-conformant">Conformant <span class="ref-pill-tbl">Substrate</span></a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">3</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-rel" href="#en-f-reflectionresults-substrate">⇢ Substrate <span class="ref-pill-tbl">Reflection Result</span></a>
+        <span class="ref-pill tone-raw">● Substrate ID <span class="ref-pill-tbl">Substrate</span></span>
+        <a class="ref-pill tone-raw" href="#en-f-reflectionresults-outcome">● Outcome <span class="ref-pill-tbl">Reflection Result</span></a>
+      </div>
+    </details>
+    </article>
+  <article class="field tone-calc" id="en-f-substrates-reflectionok" data-entity="Substrate" data-field="Reflection Ok">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Reflection Ok</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">2 hops from ground truth</span>
+      <span class="pill pill-muted">boolean</span>
+      <span class="pill pill-dr">DR-18</span>
+    </div>
+    <p class="field-note elem elem-desc">True when no recorded reflection condition failed for this substrate (§13). Delegated conditions never count as a failure.</p>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak®</span>
+        <div class="view-body"><p class="rt-headline">A substrate is flagged reflection ok if all of the following:</p><ol class="rt-priority"><ul class="rt-group"><li>the <a class="ref" href="#en-f-substrates-reflectionresultcount">reflection result count</a> is greater than 0</li><li>the <a class="ref" href="#en-f-substrates-reflectionfailcount">reflection fail count</a> is 0</li></ul></ol></div>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In plain words</span>
+        <p class="view-body"><a class="ref" href="#en-f-substrates-reflectionresultcount">Reflection result count</a> is greater than 0 and <a class="ref" href="#en-f-substrates-reflectionfailcount">reflection fail count</a> equals 0.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>AND(<a class="fx-chip" href="#en-f-substrates-reflectionresultcount">Reflection Result Count</a> &gt; 0, <a class="fx-chip" href="#en-f-substrates-reflectionfailcount">Reflection Fail Count</a> = 0)</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">2</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-agg" href="#en-f-substrates-reflectionresultcount">
+          <span class="input-head"><span class="input-glyph">Σ</span><span class="input-name">Reflection Result Count</span><span class="input-table">Substrate</span></span>
+          <span class="input-en">Count of reflection results whose substrate is substrate ID.</span>
+        </a>
+        <a class="input tone-agg" href="#en-f-substrates-reflectionfailcount">
+          <span class="input-head"><span class="input-glyph">Σ</span><span class="input-name">Reflection Fail Count</span><span class="input-table">Substrate</span></span>
+          <span class="input-en">Count of reflection results whose substrate is substrate ID and outcome is &quot;fail&quot;.</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-consumers elem elem-consumers">
+      <summary>Consumers <span class="count">1 direct</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-calc" href="#en-f-substrates-conformant">ƒ Conformant <span class="ref-pill-tbl">Substrate</span></a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">3</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-rel" href="#en-f-reflectionresults-substrate">⇢ Substrate <span class="ref-pill-tbl">Reflection Result</span></a>
+        <span class="ref-pill tone-raw">● Substrate ID <span class="ref-pill-tbl">Substrate</span></span>
+        <a class="ref-pill tone-raw" href="#en-f-reflectionresults-outcome">● Outcome <span class="ref-pill-tbl">Reflection Result</span></a>
+      </div>
+    </details>
+    </article>
+  <article class="field tone-calc" id="en-f-substrates-conformant" data-entity="Substrate" data-field="Conformant">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Conformant</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">3 hops from ground truth</span>
+      <span class="pill pill-muted">boolean</span>
+      <span class="pill pill-dr">DR-19</span>
+    </div>
+    <p class="field-note elem elem-desc">True only when this substrate passes both gates: the answer key and reflection.</p>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak®</span>
+        <div class="view-body"><p class="rt-headline">A substrate is flagged conformant if all of the following:</p><ol class="rt-priority"><ul class="rt-group"><li>the <a class="ref" href="#en-f-substrates-answerkeyok">answer key ok</a> flag is set</li><li>the <a class="ref" href="#en-f-substrates-reflectionok">reflection ok</a> flag is set</li></ul></ol></div>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In plain words</span>
+        <p class="view-body"><a class="ref" href="#en-f-substrates-answerkeyok">Answer key ok</a> and <a class="ref" href="#en-f-substrates-reflectionok">reflection ok</a>.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>AND(<a class="fx-chip" href="#en-f-substrates-answerkeyok">Answer Key Ok</a>, <a class="fx-chip" href="#en-f-substrates-reflectionok">Reflection Ok</a>)</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">2</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-calc" href="#en-f-substrates-answerkeyok">
+          <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Answer Key Ok</span><span class="input-table">Substrate</span></span>
+          <span class="input-en">Answer key result count is greater than 0 and answer key fail count equals 0.</span>
+        </a>
+        <a class="input tone-calc" href="#en-f-substrates-reflectionok">
+          <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Reflection Ok</span><span class="input-table">Substrate</span></span>
+          <span class="input-en">Reflection result count is greater than 0 and reflection fail count equals 0.</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">5</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-rel" href="#en-f-answerkeyresults-substrate">⇢ Substrate <span class="ref-pill-tbl">Answer Key Result</span></a>
+        <span class="ref-pill tone-raw">● Substrate ID <span class="ref-pill-tbl">Substrate</span></span>
+        <a class="ref-pill tone-raw" href="#en-f-answerkeyresults-outcome">● Outcome <span class="ref-pill-tbl">Answer Key Result</span></a>
+        <a class="ref-pill tone-rel" href="#en-f-reflectionresults-substrate">⇢ Substrate <span class="ref-pill-tbl">Reflection Result</span></a>
+        <a class="ref-pill tone-raw" href="#en-f-reflectionresults-outcome">● Outcome <span class="ref-pill-tbl">Reflection Result</span></a>
+      </div>
+    </details>
+    </article>
+  <details class="entity-data elem elem-data" open>
+    <summary>Example data</summary>
+    <div class="sample-scroll">
+    <table class="sample-table">
+      <thead><tr>
+        <th>Description</th>
+        <th>Paper Section Ref</th>
+        <th>Is Control</th>
+        <th class="sample-derived">Name<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Answer Key Result Count<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Answer Key Fail Count<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Answer Key Ok<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Reflection Result Count<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Reflection Fail Count<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Reflection Ok<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Conformant<span class="sample-fx">ƒ</span></th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td>transpile.py emits one function per G_R node: a rule body as explicit nested loops, a non-recursive predicate as the union of its rules, a recursive stratum as a c_mu_* fixed-point driver. runtime.py never reads the spec JSON.</td>
+          <td>§12-13</td>
+          <td>false</td>
+          <td class="sample-derived">transparent</td>
+          <td class="sample-derived">0</td>
+          <td class="sample-derived">0</td>
+          <td class="sample-derived">false</td>
+          <td class="sample-derived">0</td>
+          <td class="sample-derived">0</td>
+          <td class="sample-derived">false</td>
+          <td class="sample-derived">false</td>
+        </tr>
+        <tr>
+          <td>The transparent module with every predicate read inside a rule routed through _dispatch(name, S), which resolves the target by name at run time. Same computation, same answers; dependency preservation and bounded locality fail because dependencies are now strings resolved dynamically.</td>
+          <td>§23</td>
+          <td>true</td>
+          <td class="sample-derived">tangled</td>
+          <td class="sample-derived">0</td>
+          <td class="sample-derived">0</td>
+          <td class="sample-derived">false</td>
+          <td class="sample-derived">0</td>
+          <td class="sample-derived">0</td>
+          <td class="sample-derived">false</td>
+          <td class="sample-derived">false</td>
+        </tr>
+        <tr>
+          <td>The rulebook loaded as inert JSON and handed to one universal evaluator (the SQLite oracle, compiling at request time). Zero image functions; constructor preservation, dependency preservation and addressability all fail.</td>
+          <td>§6, §13</td>
+          <td>true</td>
+          <td class="sample-derived">interpreter</td>
+          <td class="sample-derived">0</td>
+          <td class="sample-derived">0</td>
+          <td class="sample-derived">false</td>
+          <td class="sample-derived">0</td>
+          <td class="sample-derived">0</td>
+          <td class="sample-derived">false</td>
+          <td class="sample-derived">false</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="sample-legend">ƒ marks a computed column.</p>
+  </details>
+</section>
+<section class="entity" id="en-t-answerkeyresults" data-entity="Answer Key Result">
+  <header class="entity-head">
+    <h2 class="entity-title">Answer Key Result</h2>
+    <p class="entity-synopsis">Per (substrate, input history) answer-key outcomes, ingested from a fresh run of conformance/run.py (conformance/matrix.json). Witnessed data, never recomputed here.</p>
+  </header>
+  <article class="field tone-rel" id="en-f-answerkeyresults-substrate" data-entity="Answer Key Result" data-field="Substrate">
+    <div class="field-head">
+      <span class="field-glyph" title="Relationship">⇢</span>
+      <span class="field-name">Substrate</span>
+      <span class="pill pill-type">Relationship</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <p class="field-note elem elem-desc">The substrate this result was computed for.</p>
+    <div class="gt">
+      <p class="gt-body">A pointer to <a href="#en-t-substrates">Substrate</a>. It is not derived from anything else — it is the link the rest of the DAG hangs off.</p>
+      <p class="gt-body gt-reverse">Reverse side: <a class="ref-pill tone-rel" href="#en-f-substrates-answerkeyresults">⇢ Answer Key Results <span class="ref-pill-tbl">Substrate</span></a></p>
+    </div>
+    <details class="prov prov-consumers elem elem-consumers" open>
+      <summary>Consumers <span class="count">2 direct</span> <span class="count count-muted">+2 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-agg" href="#en-f-substrates-answerkeyresultcount">Σ Answer Key Result Count <span class="ref-pill-tbl">Substrate</span></a>
+        <a class="ref-pill tone-agg" href="#en-f-substrates-answerkeyfailcount">Σ Answer Key Fail Count <span class="ref-pill-tbl">Substrate</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-substrates-answerkeyok">Answer Key Ok <span class="ref-pill-tbl">Substrate</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-substrates-conformant">Conformant <span class="ref-pill-tbl">Substrate</span></a>
+      </div>
+    </details>
+    </article>
+  <article class="field tone-rel" id="en-f-answerkeyresults-inputhistory" data-entity="Answer Key Result" data-field="Input History">
+    <div class="field-head">
+      <span class="field-glyph" title="Relationship">⇢</span>
+      <span class="field-name">Input History</span>
+      <span class="pill pill-type">Relationship</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <p class="field-note elem elem-desc">The input history this result was computed against.</p>
+    <div class="gt">
+      <p class="gt-body">A pointer to <a href="#en-t-inputhistories">Input History</a>. It is not derived from anything else — it is the link the rest of the DAG hangs off.</p>
+      <p class="gt-body gt-reverse">Reverse side: <a class="ref-pill tone-rel" href="#en-f-inputhistories-answerkeyresults">⇢ Answer Key Results <span class="ref-pill-tbl">Input History</span></a></p>
+    </div>
+    </article>
+  <article class="field tone-raw" id="en-f-answerkeyresults-tracesproduced" data-entity="Answer Key Result" data-field="Traces Produced">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Traces Produced</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype integer); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
+      <span class="pill pill-muted">integer</span>
+    </div>
+    <p class="field-note elem elem-desc">Number of distinct traces this substrate produced for this input history (witnessed by conformance/run.py).</p>
+    </article>
+  <article class="field tone-raw" id="en-f-answerkeyresults-permitted" data-entity="Answer Key Result" data-field="Permitted">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Permitted</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype integer); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
+      <span class="pill pill-muted">integer</span>
+    </div>
+    <p class="field-note elem elem-desc">Size of the permitted (expected) trace set for this input history (witnessed by tools/gen_expected.py).</p>
+    </article>
+  <article class="field tone-raw" id="en-f-answerkeyresults-outcome" data-entity="Answer Key Result" data-field="Outcome">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Outcome</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <p class="field-note elem elem-desc">'pass' if every produced trace was inside the permitted set, else 'fail'. Witnessed by conformance/run.py; never recomputed here.</p>
+    <details class="prov prov-consumers elem elem-consumers" open>
+      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+2 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-agg" href="#en-f-substrates-answerkeyfailcount">Σ Answer Key Fail Count <span class="ref-pill-tbl">Substrate</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-substrates-answerkeyok">Answer Key Ok <span class="ref-pill-tbl">Substrate</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-substrates-conformant">Conformant <span class="ref-pill-tbl">Substrate</span></a>
+      </div>
+    </details>
+    </article>
+  <article class="field tone-calc" id="en-f-answerkeyresults-name" data-entity="Answer Key Result" data-field="Name">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Name</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">1 hop from ground truth</span>
+      <span class="pill pill-muted">string</span>
+      <span class="pill pill-dr">DR-20</span>
+    </div>
+    <p class="field-note elem elem-desc">Display alias.</p>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak®</span>
+        <p class="view-body">An answer key result's <a class="ref" href="#en-f-answerkeyresults-name">name</a> is the same as its answer key result ID.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In plain words</span>
+        <p class="view-body">Answer key result ID.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span><span class="fx-chip">Answer Key Result ID</span></div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">1</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <span class="input input-static tone-raw">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Answer Key Result ID</span><span class="input-table">Answer Key Result</span></span>
+          <span class="input-en muted">Stored identity: '&lt;SubstrateId&gt;__&lt;InputHistoryId&gt;'.</span>
+        </span>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">1</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <span class="ref-pill tone-raw">● Answer Key Result ID <span class="ref-pill-tbl">Answer Key Result</span></span>
+      </div>
+    </details>
+    </article>
+</section>
+<section class="entity" id="en-t-reflectionresults" data-entity="Reflection Result">
+  <header class="entity-head">
+    <h2 class="entity-title">Reflection Result</h2>
+    <p class="entity-synopsis">Per (substrate, reflection condition) outcomes, ingested from a fresh run of conformance/run.py (conformance/matrix.json). Witnessed data, never recomputed here.</p>
+  </header>
+  <article class="field tone-rel" id="en-f-reflectionresults-substrate" data-entity="Reflection Result" data-field="Substrate">
+    <div class="field-head">
+      <span class="field-glyph" title="Relationship">⇢</span>
+      <span class="field-name">Substrate</span>
+      <span class="pill pill-type">Relationship</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <p class="field-note elem elem-desc">The substrate this reflection outcome was computed for.</p>
+    <div class="gt">
+      <p class="gt-body">A pointer to <a href="#en-t-substrates">Substrate</a>. It is not derived from anything else — it is the link the rest of the DAG hangs off.</p>
+      <p class="gt-body gt-reverse">Reverse side: <a class="ref-pill tone-rel" href="#en-f-substrates-reflectionresults">⇢ Reflection Results <span class="ref-pill-tbl">Substrate</span></a></p>
+    </div>
+    <details class="prov prov-consumers elem elem-consumers" open>
+      <summary>Consumers <span class="count">2 direct</span> <span class="count count-muted">+2 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-agg" href="#en-f-substrates-reflectionresultcount">Σ Reflection Result Count <span class="ref-pill-tbl">Substrate</span></a>
+        <a class="ref-pill tone-agg" href="#en-f-substrates-reflectionfailcount">Σ Reflection Fail Count <span class="ref-pill-tbl">Substrate</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-substrates-reflectionok">Reflection Ok <span class="ref-pill-tbl">Substrate</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-substrates-conformant">Conformant <span class="ref-pill-tbl">Substrate</span></a>
+      </div>
+    </details>
+    </article>
+  <article class="field tone-rel" id="en-f-reflectionresults-reflectioncondition" data-entity="Reflection Result" data-field="Reflection Condition">
+    <div class="field-head">
+      <span class="field-glyph" title="Relationship">⇢</span>
+      <span class="field-name">Reflection Condition</span>
+      <span class="pill pill-type">Relationship</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <p class="field-note elem elem-desc">The §13 condition this outcome is for.</p>
+    <div class="gt">
+      <p class="gt-body">A pointer to <a href="#en-t-reflectionconditions">Reflection Condition</a>. It is not derived from anything else — it is the link the rest of the DAG hangs off.</p>
+      <p class="gt-body gt-reverse">Reverse side: <a class="ref-pill tone-rel" href="#en-f-reflectionconditions-reflectionresults">⇢ Reflection Results <span class="ref-pill-tbl">Reflection Condition</span></a></p>
+    </div>
+    </article>
+  <article class="field tone-raw" id="en-f-reflectionresults-outcome" data-entity="Reflection Result" data-field="Outcome">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Outcome</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <p class="field-note elem elem-desc">'pass', 'fail' or 'delegated' (condition 4 is always delegated to the answer key by design). Witnessed by tools/reflection_check.py; never recomputed here.</p>
+    <details class="prov prov-consumers elem elem-consumers" open>
+      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+2 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-agg" href="#en-f-substrates-reflectionfailcount">Σ Reflection Fail Count <span class="ref-pill-tbl">Substrate</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-substrates-reflectionok">Reflection Ok <span class="ref-pill-tbl">Substrate</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-substrates-conformant">Conformant <span class="ref-pill-tbl">Substrate</span></a>
+      </div>
+    </details>
+    </article>
+  <article class="field tone-calc" id="en-f-reflectionresults-name" data-entity="Reflection Result" data-field="Name">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Name</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">1 hop from ground truth</span>
+      <span class="pill pill-muted">string</span>
+      <span class="pill pill-dr">DR-21</span>
+    </div>
+    <p class="field-note elem elem-desc">Display alias.</p>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak®</span>
+        <p class="view-body">A reflection result's <a class="ref" href="#en-f-reflectionresults-name">name</a> is the same as its reflection result ID.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In plain words</span>
+        <p class="view-body">Reflection result ID.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span><span class="fx-chip">Reflection Result ID</span></div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">1</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <span class="input input-static tone-raw">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Reflection Result ID</span><span class="input-table">Reflection Result</span></span>
+          <span class="input-en muted">Stored identity: '&lt;SubstrateId&gt;__&lt;ConditionId&gt;'.</span>
+        </span>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">1</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <span class="ref-pill tone-raw">● Reflection Result ID <span class="ref-pill-tbl">Reflection Result</span></span>
+      </div>
+    </details>
+    </article>
+</section>
+<footer class="doc-footer">
+  <p>Rendered from the rulebook by the shared <b>RuleSpeak®</b> engine (<code>rulebook-rulespeak-core</code>). The same engine narrates the React Explainer DAG, so every narration mode reads identically across both.</p>
+  <p class="doc-footer-legend"><span class="chip chip-raw">● Ground truth</span> <span class="chip chip-calc">ƒ Calculated</span> <span class="chip chip-agg">Σ Aggregation</span> <span class="chip chip-lookup">↗ Lookup</span> <span class="chip chip-rel">⇢ Relationship</span></p>
+</footer>
+</div>
+<script>
+
+(function(){
+  var LANGS=['en'];
+  var ELEMS=['rulespeak','english','formula','desc','inputs','consumers','data'];
+  var DEFAULTS={'rulespeak':false,'english':true,'formula':false,'desc':true,'inputs':false,'consumers':true,'data':true};
+  var root=document.documentElement;
+
+  // ── Language switching. All .lang-select controls stay in sync; the choice
+  //    persists in localStorage and the URL (?lang=…) so links carry it.
+  var selects=Array.prototype.slice.call(document.querySelectorAll('.lang-select'));
+  function currentLang(){ return root.getAttribute('data-lang')||'en'; }
+  function setLang(code,fromHash){
+    if(LANGS.indexOf(code)<0) return;
+    root.setAttribute('data-lang',code);
+    root.setAttribute('lang',code);
+    try{localStorage.setItem('rulespeak.lang',code);}catch(e){}
+    try{
+      var u=new URL(location.href);
+      u.searchParams.set('lang',code);
+      history.replaceState(null,'',u.toString());
+    }catch(e){}
+    selects.forEach(function(s){ s.value=code; });
+    if(!fromHash) rebindSpy();
+  }
+  selects.forEach(function(s){
+    s.addEventListener('change',function(){
+      var was=currentLang();
+      var code=s.value;
+      // Carry the reader to the SAME field in the new language when the hash
+      // points somewhere: swap the language prefix on the anchor.
+      var h=location.hash||'';
+      setLang(code);
+      var m=h.match(/^#([a-z]{2})-(.+)$/);
+      if(m && m[1]===was){
+        var target=document.getElementById(code+'-'+m[2]);
+        if(target){ location.hash='#'+code+'-'+m[2]; }
+      }
+    });
+  });
+
+  // ── Legacy-hash shim: pre-language anchors (#f-…, #t-…, #top) map onto the
+  //    active language's scoped ids so old deep links keep working.
+  (function(){
+    var h=location.hash||'';
+    var m=h.match(/^#((?:f|t)-.+|top)$/);
+    if(m){
+      var scoped=document.getElementById(currentLang()+'-'+m[1]);
+      if(scoped) location.replace('#'+currentLang()+'-'+m[1]);
+    }
+  })();
+
+  // ── Per-element visibility, persisted. Checkboxes exist once per language doc;
+  //    drive them all from the shared <html> classes.
+  var boxes=Array.prototype.slice.call(document.querySelectorAll('.gear-opt input[data-elem]'));
+  function isOn(k){ return root.classList.contains('show-'+k); }
+  function setElem(k,on){
+    root.classList.toggle('show-'+k,on);
+    try{localStorage.setItem('rulespeak.show.'+k,on?'1':'0');}catch(e){}
+    boxes.forEach(function(b){ if(b.getAttribute('data-elem')===k) b.checked=on; });
+  }
+  boxes.forEach(function(b){
+    var k=b.getAttribute('data-elem');
+    b.checked=isOn(k);
+    b.addEventListener('change',function(){ setElem(k,b.checked); });
+  });
+  Array.prototype.forEach.call(document.querySelectorAll('.gear-reset'),function(reset){
+    reset.addEventListener('click',function(){ ELEMS.forEach(function(k){ setElem(k,!!DEFAULTS[k]); }); });
+  });
+
+  // ── Gear popups: each language doc has its own button + popup pair.
+  Array.prototype.forEach.call(document.querySelectorAll('.lang-doc'),function(doc){
+    var gear=doc.querySelector('.gear');
+    var pop=doc.querySelector('.gear-pop');
+    if(!gear||!pop) return;
+    function openPop(o){ pop.hidden=!o; gear.setAttribute('aria-expanded',o?'true':'false'); }
+    gear.addEventListener('click',function(e){ e.stopPropagation(); openPop(pop.hidden); });
+    Array.prototype.forEach.call(doc.querySelectorAll('.gear-open-inline'),function(inline){
+      inline.addEventListener('click',function(e){ e.stopPropagation(); openPop(true); });
+    });
+    document.addEventListener('click',function(e){
+      if(!pop.hidden && !pop.contains(e.target) && e.target!==gear) openPop(false);
+    });
+    document.addEventListener('keydown',function(e){ if(e.key==='Escape') openPop(false); });
+  });
+
+  // ── Scroll-spy breadcrumb, scoped to the ACTIVE language document.
+  var fields=[],entities=[],cE=null,cF=null,cSep=null;
+  function rebindSpy(){
+    var doc=document.querySelector('.lang-doc[data-lang="'+currentLang()+'"]');
+    if(!doc) return;
+    cE=doc.querySelector('.crumb-entity');
+    cF=doc.querySelector('.crumb-field');
+    cSep=doc.querySelector('.crumb-sep');
+    fields=Array.prototype.slice.call(doc.querySelectorAll('.field[data-field]'));
+    entities=Array.prototype.slice.call(doc.querySelectorAll('.entity[data-entity]'));
+    update();
+  }
+  function setCrumb(entity,field){
+    if(!cE) return;
+    cE.textContent=entity||'';
+    if(field){ cF.textContent=field; cSep.hidden=false; }
+    else { cF.textContent=''; cSep.hidden=true; }
+  }
+  var barH=parseInt(getComputedStyle(root).getPropertyValue('--bar-h'),10)||48;
+  function update(){
+    var line=barH+18, curF=null, curE=null;
+    for(var i=0;i<fields.length;i++){ if(fields[i].getBoundingClientRect().top<=line) curF=fields[i]; else break; }
+    for(var j=0;j<entities.length;j++){ if(entities[j].getBoundingClientRect().top<=line) curE=entities[j]; else break; }
+    if(curF){
+      var fEnt=curF.getAttribute('data-entity');
+      var eName=curE?curE.getAttribute('data-entity'):fEnt;
+      if(eName!==fEnt) setCrumb(eName,null);
+      else setCrumb(fEnt,curF.getAttribute('data-field'));
+    } else if(curE){ setCrumb(curE.getAttribute('data-entity'),null); }
+    else { setCrumb('',null); }
+  }
+  var ticking=false;
+  function onScroll(){ if(!ticking){ ticking=true; requestAnimationFrame(function(){ update(); ticking=false; }); } }
+  window.addEventListener('scroll',onScroll,{passive:true});
+  window.addEventListener('resize',onScroll,{passive:true});
+  rebindSpy();
+})();
+
+</script>
+</body>
+</html>

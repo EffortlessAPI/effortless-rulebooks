@@ -5567,6 +5567,21 @@
         "LatestFullyGreenCount": "0",
         "IsGreenInLatestCorpusRun": false,
         "CorpusTestState": "red"
+      },
+      {
+        "DomainId": "domain-cmcc-core-r0",
+        "Area": "rulebook-examples",
+        "Kind": "example",
+        "IsIntentionalException": false,
+        "DomainName": "CMCC-Core R0",
+        "RelativePath": "rulebook-examples/cmcc-core-r0/",
+        "RulebookPath": "rulebook-examples/cmcc-core-r0/effortless-rulebook/effortless-rulebook.json",
+        "ComplexityLevel": "advanced",
+        "KeyFeatures": "Runnable companion to the CMCC-Core Representation Theorem: an R0 warehouse-network spec checked two ways (a reference evaluator + an independent SQLite oracle) to build an answer key, then checked against three substrates (transparent, tangled, interpreter) on two gates -- the answer key (adequacy, section 11) and reflection (structural transparency, section 13). The R0 spec's own structure and the conformance matrix are modeled as rulebook data; the rulebook never re-implements R0's stratified-Datalog/bitemporal semantics -- Substrates.Conformant is a COUNTIFS/AND rollup over witnessed answer-key and reflection rows pushed in from a fresh run of the original 21-test Python/SQLite pipeline.",
+        "Purpose": "External research artifact (the CMCC-Core Representation Theorem's companion repo), retrofitted into this repo's canonical project shape so its proof pipeline is a transparent part of the platform rather than a standalone artifact.",
+        "ParentDomainId": null,
+        "ProgressionNote": null,
+        "Project": "erb-001"
       }
     ]
   },
@@ -11834,10 +11849,10 @@
         "IsRegistered": true,
         "ExpectedSubstrateCount": "0",
         "Notes": "Seeded by scan-test-suites.py from a project with an effortless.json.",
-        "AnswerKeyCount": "5",
+        "AnswerKeyCount": 5,
         "HasEffortlessJson": true,
         "HasPostgresBootstrap": true,
-        "LastScannedOn": "2026-09-09T16:46:28.000Z",
+        "LastScannedOn": "2026-09-29T12:29:25",
         "DomainName": "ACME Corporation",
         "DomainKind": "toy",
         "HasAnswerKeys": true,
@@ -11849,7 +11864,7 @@
         "CorpusDomainRuns": "corpus-20260909-161355:acme-corporation, corpus-20260909-163528:acme-corporation, corpus-20260909-180623:acme-corporation, corpus-20260910-022644:acme-corporation",
         "CorpusDomainRunCount": "4",
         "HasBeenExercised": true,
-        "TestFileCount": "0"
+        "TestFileCount": 0
       },
       {
         "TestSuiteId": "suite-acme-llc",
@@ -11860,10 +11875,10 @@
         "IsRegistered": true,
         "ExpectedSubstrateCount": "17",
         "Notes": "Seeded by scan-test-suites.py from a project with an effortless.json.",
-        "AnswerKeyCount": "1",
+        "AnswerKeyCount": 1,
         "HasEffortlessJson": true,
         "HasPostgresBootstrap": true,
-        "LastScannedOn": "2026-09-09T16:46:28.000Z",
+        "LastScannedOn": "2026-09-29T12:29:25",
         "DomainName": "ACME LLC",
         "DomainKind": "toy",
         "HasAnswerKeys": true,
@@ -11875,7 +11890,7 @@
         "CorpusDomainRuns": "corpus-20260909-161355:acme-llc, corpus-20260909-163528:acme-llc, corpus-20260909-180623:acme-llc, corpus-20260910-022644:acme-llc",
         "CorpusDomainRunCount": "4",
         "HasBeenExercised": true,
-        "TestFileCount": "0"
+        "TestFileCount": 0
       },
       {
         "TestSuiteId": "suite-causal-autoimmune-architecture",
@@ -11886,10 +11901,10 @@
         "IsRegistered": true,
         "ExpectedSubstrateCount": "0",
         "Notes": "Seeded by scan-test-suites.py from a project with an effortless.json.",
-        "AnswerKeyCount": "0",
+        "AnswerKeyCount": 38,
         "HasEffortlessJson": true,
         "HasPostgresBootstrap": false,
-        "LastScannedOn": "2026-09-09T16:46:28.000Z",
+        "LastScannedOn": "2026-09-29T12:29:25",
         "DomainName": "Causal Autoimmune Architecture",
         "DomainKind": "example",
         "HasAnswerKeys": false,
@@ -11901,7 +11916,7 @@
         "CorpusDomainRuns": "corpus-20260909-161355:causal-autoimmune-architecture, corpus-20260909-163528:causal-autoimmune-architecture, corpus-20260909-180623:causal-autoimmune-architecture, corpus-20260910-022644:causal-autoimmune-architecture",
         "CorpusDomainRunCount": "4",
         "HasBeenExercised": false,
-        "TestFileCount": "0"
+        "TestFileCount": 0
       },
       {
         "TestSuiteId": "suite-community-event-planner",
@@ -11912,10 +11927,10 @@
         "IsRegistered": true,
         "ExpectedSubstrateCount": "0",
         "Notes": "Seeded by scan-test-suites.py from a project with an effortless.json.",
-        "AnswerKeyCount": "6",
+        "AnswerKeyCount": 6,
         "HasEffortlessJson": true,
         "HasPostgresBootstrap": true,
-        "LastScannedOn": "2026-09-09T16:46:28.000Z",
+        "LastScannedOn": "2026-09-29T12:29:25",
         "DomainName": "Community Event Planner",
         "DomainKind": "toy",
         "HasAnswerKeys": true,
@@ -11927,7 +11942,7 @@
         "CorpusDomainRuns": "corpus-20260909-161355:community-event-planner, corpus-20260909-163528:community-event-planner, corpus-20260909-180623:community-event-planner, corpus-20260910-022644:community-event-planner",
         "CorpusDomainRunCount": "4",
         "HasBeenExercised": true,
-        "TestFileCount": "0"
+        "TestFileCount": 0
       },
       {
         "TestSuiteId": "suite-customer-crm",
@@ -11938,10 +11953,10 @@
         "IsRegistered": true,
         "ExpectedSubstrateCount": "0",
         "Notes": "Seeded by scan-test-suites.py from a project with an effortless.json.",
-        "AnswerKeyCount": "7",
+        "AnswerKeyCount": 7,
         "HasEffortlessJson": true,
         "HasPostgresBootstrap": true,
-        "LastScannedOn": "2026-09-09T16:46:28.000Z",
+        "LastScannedOn": "2026-09-29T12:29:25",
         "DomainName": "Customer CRM",
         "DomainKind": "toy",
         "HasAnswerKeys": true,
@@ -11953,7 +11968,7 @@
         "CorpusDomainRuns": "corpus-20260909-161355:customer-crm, corpus-20260909-163528:customer-crm, corpus-20260909-180623:customer-crm, corpus-20260910-022644:customer-crm",
         "CorpusDomainRunCount": "4",
         "HasBeenExercised": true,
-        "TestFileCount": "0"
+        "TestFileCount": 0
       },
       {
         "TestSuiteId": "suite-customer-fullname",
@@ -11964,10 +11979,10 @@
         "IsRegistered": true,
         "ExpectedSubstrateCount": "3",
         "Notes": "Seeded by scan-test-suites.py from a project with an effortless.json.",
-        "AnswerKeyCount": "1",
+        "AnswerKeyCount": 1,
         "HasEffortlessJson": true,
         "HasPostgresBootstrap": true,
-        "LastScannedOn": "2026-09-09T16:46:28.000Z",
+        "LastScannedOn": "2026-09-29T12:29:25",
         "DomainName": "Customer FullName",
         "DomainKind": "toy",
         "HasAnswerKeys": true,
@@ -11979,7 +11994,7 @@
         "CorpusDomainRuns": "corpus-20260909-161016:customer-fullname, corpus-20260909-161355:customer-fullname, corpus-20260909-163528:customer-fullname, corpus-20260909-180623:customer-fullname, corpus-20260910-022644:customer-fullname",
         "CorpusDomainRunCount": "5",
         "HasBeenExercised": true,
-        "TestFileCount": "0"
+        "TestFileCount": 0
       },
       {
         "TestSuiteId": "suite-effortless-banking",
@@ -11990,10 +12005,10 @@
         "IsRegistered": true,
         "ExpectedSubstrateCount": "0",
         "Notes": "Seeded by scan-test-suites.py from a project with an effortless.json.",
-        "AnswerKeyCount": "10",
+        "AnswerKeyCount": 11,
         "HasEffortlessJson": true,
-        "HasPostgresBootstrap": false,
-        "LastScannedOn": "2026-09-09T16:46:28.000Z",
+        "HasPostgresBootstrap": true,
+        "LastScannedOn": "2026-09-29T12:29:25",
         "DomainName": "Effortless Banking",
         "DomainKind": "example",
         "HasAnswerKeys": true,
@@ -12005,7 +12020,7 @@
         "CorpusDomainRuns": "corpus-20260909-161355:effortless-banking, corpus-20260909-163528:effortless-banking, corpus-20260909-180623:effortless-banking, corpus-20260910-022644:effortless-banking",
         "CorpusDomainRunCount": "4",
         "HasBeenExercised": true,
-        "TestFileCount": "0"
+        "TestFileCount": 0
       },
       {
         "TestSuiteId": "suite-effortless-math",
@@ -12016,10 +12031,10 @@
         "IsRegistered": true,
         "ExpectedSubstrateCount": "0",
         "Notes": "Seeded by scan-test-suites.py from a project with an effortless.json.",
-        "AnswerKeyCount": "0",
+        "AnswerKeyCount": 15,
         "HasEffortlessJson": true,
         "HasPostgresBootstrap": false,
-        "LastScannedOn": "2026-09-09T16:46:28.000Z",
+        "LastScannedOn": "2026-09-29T12:29:25",
         "DomainName": "Effortless Math",
         "DomainKind": "example",
         "HasAnswerKeys": false,
@@ -12031,7 +12046,7 @@
         "CorpusDomainRuns": "corpus-20260909-161355:effortless-math, corpus-20260909-163528:effortless-math, corpus-20260909-180623:effortless-math, corpus-20260910-022644:effortless-math",
         "CorpusDomainRunCount": "4",
         "HasBeenExercised": false,
-        "TestFileCount": "0"
+        "TestFileCount": 0
       },
       {
         "TestSuiteId": "suite-effortless-rulebooks",
@@ -12042,10 +12057,10 @@
         "IsRegistered": true,
         "ExpectedSubstrateCount": "0",
         "Notes": "Seeded by scan-test-suites.py from a project with an effortless.json.",
-        "AnswerKeyCount": "9",
+        "AnswerKeyCount": 9,
         "HasEffortlessJson": true,
         "HasPostgresBootstrap": true,
-        "LastScannedOn": "2026-09-09T16:46:28.000Z",
+        "LastScannedOn": "2026-09-29T12:29:25",
         "DomainName": "Effortless Rulebooks",
         "DomainKind": "example",
         "HasAnswerKeys": true,
@@ -12057,7 +12072,7 @@
         "CorpusDomainRuns": "corpus-20260909-161355:effortless-rulebooks, corpus-20260909-163528:effortless-rulebooks, corpus-20260909-180623:effortless-rulebooks, corpus-20260910-022644:effortless-rulebooks",
         "CorpusDomainRunCount": "4",
         "HasBeenExercised": true,
-        "TestFileCount": "0"
+        "TestFileCount": 0
       },
       {
         "TestSuiteId": "suite-expense-approval",
@@ -12068,10 +12083,10 @@
         "IsRegistered": true,
         "ExpectedSubstrateCount": "0",
         "Notes": "Seeded by scan-test-suites.py from a project with an effortless.json.",
-        "AnswerKeyCount": "3",
+        "AnswerKeyCount": 3,
         "HasEffortlessJson": true,
         "HasPostgresBootstrap": true,
-        "LastScannedOn": "2026-09-09T16:46:28.000Z",
+        "LastScannedOn": "2026-09-29T12:29:25",
         "DomainName": "Expense Approval",
         "DomainKind": "toy",
         "HasAnswerKeys": true,
@@ -12083,7 +12098,7 @@
         "CorpusDomainRuns": "corpus-20260909-161355:expense-approval, corpus-20260909-163528:expense-approval, corpus-20260909-180623:expense-approval, corpus-20260910-022644:expense-approval",
         "CorpusDomainRunCount": "4",
         "HasBeenExercised": true,
-        "TestFileCount": "0"
+        "TestFileCount": 0
       },
       {
         "TestSuiteId": "suite-fantasy-football",
@@ -12094,10 +12109,10 @@
         "IsRegistered": true,
         "ExpectedSubstrateCount": "0",
         "Notes": "Seeded by scan-test-suites.py from a project with an effortless.json.",
-        "AnswerKeyCount": "6",
+        "AnswerKeyCount": 6,
         "HasEffortlessJson": true,
         "HasPostgresBootstrap": true,
-        "LastScannedOn": "2026-09-09T16:46:28.000Z",
+        "LastScannedOn": "2026-09-29T12:29:25",
         "DomainName": "Fantasy Football",
         "DomainKind": "toy",
         "HasAnswerKeys": true,
@@ -12109,7 +12124,7 @@
         "CorpusDomainRuns": "corpus-20260909-161355:fantasy-football, corpus-20260909-163528:fantasy-football, corpus-20260909-180623:fantasy-football, corpus-20260910-022644:fantasy-football",
         "CorpusDomainRunCount": "4",
         "HasBeenExercised": true,
-        "TestFileCount": "0"
+        "TestFileCount": 0
       },
       {
         "TestSuiteId": "suite-guessing-game",
@@ -12120,10 +12135,10 @@
         "IsRegistered": true,
         "ExpectedSubstrateCount": "0",
         "Notes": "Seeded by scan-test-suites.py from a project with an effortless.json.",
-        "AnswerKeyCount": "0",
+        "AnswerKeyCount": 2,
         "HasEffortlessJson": true,
         "HasPostgresBootstrap": true,
-        "LastScannedOn": "2026-09-09T16:46:28.000Z",
+        "LastScannedOn": "2026-09-29T12:29:25",
         "DomainName": "Guessing Game",
         "DomainKind": "toy",
         "HasAnswerKeys": false,
@@ -12135,7 +12150,7 @@
         "CorpusDomainRuns": "corpus-20260909-161355:guessing-game, corpus-20260909-163528:guessing-game, corpus-20260909-180623:guessing-game, corpus-20260910-022644:guessing-game",
         "CorpusDomainRunCount": "4",
         "HasBeenExercised": true,
-        "TestFileCount": "0"
+        "TestFileCount": 0
       },
       {
         "TestSuiteId": "suite-gym-trainer-invoicing",
@@ -12146,10 +12161,10 @@
         "IsRegistered": true,
         "ExpectedSubstrateCount": "0",
         "Notes": "Seeded by scan-test-suites.py from a project with an effortless.json.",
-        "AnswerKeyCount": "5",
+        "AnswerKeyCount": 5,
         "HasEffortlessJson": true,
         "HasPostgresBootstrap": true,
-        "LastScannedOn": "2026-09-09T16:46:28.000Z",
+        "LastScannedOn": "2026-09-29T12:29:25",
         "DomainName": "Gym Trainer Invoicing",
         "DomainKind": "toy",
         "HasAnswerKeys": true,
@@ -12161,7 +12176,7 @@
         "CorpusDomainRuns": "corpus-20260909-161355:gym-trainer-invoicing, corpus-20260909-163528:gym-trainer-invoicing, corpus-20260909-180623:gym-trainer-invoicing, corpus-20260910-022644:gym-trainer-invoicing",
         "CorpusDomainRunCount": "4",
         "HasBeenExercised": true,
-        "TestFileCount": "0"
+        "TestFileCount": 0
       },
       {
         "TestSuiteId": "suite-intelligence-taxonomy",
@@ -12172,10 +12187,10 @@
         "IsRegistered": true,
         "ExpectedSubstrateCount": "0",
         "Notes": "Seeded by scan-test-suites.py from a project with an effortless.json.",
-        "AnswerKeyCount": "3",
+        "AnswerKeyCount": 3,
         "HasEffortlessJson": true,
         "HasPostgresBootstrap": true,
-        "LastScannedOn": "2026-09-09T16:46:28.000Z",
+        "LastScannedOn": "2026-09-29T12:29:25",
         "DomainName": "Taxonomy of Intelligence",
         "DomainKind": "example",
         "HasAnswerKeys": true,
@@ -12187,7 +12202,7 @@
         "CorpusDomainRuns": "corpus-20260909-161355:intelligence-taxonomy, corpus-20260909-163528:intelligence-taxonomy, corpus-20260909-180623:intelligence-taxonomy, corpus-20260910-022644:intelligence-taxonomy",
         "CorpusDomainRunCount": "4",
         "HasBeenExercised": true,
-        "TestFileCount": "0"
+        "TestFileCount": 0
       },
       {
         "TestSuiteId": "suite-is-everything-a-language",
@@ -12198,10 +12213,10 @@
         "IsRegistered": true,
         "ExpectedSubstrateCount": "2",
         "Notes": "Seeded by scan-test-suites.py from a project with an effortless.json.",
-        "AnswerKeyCount": "3",
+        "AnswerKeyCount": 5,
         "HasEffortlessJson": true,
         "HasPostgresBootstrap": true,
-        "LastScannedOn": "2026-09-09T16:46:28.000Z",
+        "LastScannedOn": "2026-09-29T12:29:25",
         "DomainName": "Is Everything a Language?",
         "DomainKind": "example",
         "HasAnswerKeys": true,
@@ -12213,7 +12228,7 @@
         "CorpusDomainRuns": "corpus-20260909-161355:is-everything-a-language, corpus-20260909-163528:is-everything-a-language, corpus-20260909-180623:is-everything-a-language, corpus-20260910-022644:is-everything-a-language",
         "CorpusDomainRunCount": "4",
         "HasBeenExercised": true,
-        "TestFileCount": "0"
+        "TestFileCount": 0
       },
       {
         "TestSuiteId": "suite-job-search-rag",
@@ -12224,10 +12239,10 @@
         "IsRegistered": true,
         "ExpectedSubstrateCount": "0",
         "Notes": "Seeded by scan-test-suites.py from a project with an effortless.json.",
-        "AnswerKeyCount": "6",
+        "AnswerKeyCount": 6,
         "HasEffortlessJson": true,
         "HasPostgresBootstrap": true,
-        "LastScannedOn": "2026-09-09T16:46:28.000Z",
+        "LastScannedOn": "2026-09-29T12:29:25",
         "DomainName": "Job Search RAG",
         "DomainKind": "toy",
         "HasAnswerKeys": true,
@@ -12239,7 +12254,7 @@
         "CorpusDomainRuns": "corpus-20260909-161355:job-search-rag, corpus-20260909-163528:job-search-rag, corpus-20260909-180623:job-search-rag, corpus-20260910-022644:job-search-rag",
         "CorpusDomainRunCount": "4",
         "HasBeenExercised": true,
-        "TestFileCount": "0"
+        "TestFileCount": 0
       },
       {
         "TestSuiteId": "suite-lazr-coulombs-law",
@@ -12250,10 +12265,10 @@
         "IsRegistered": true,
         "ExpectedSubstrateCount": "0",
         "Notes": "Seeded by scan-test-suites.py from a project with an effortless.json.",
-        "AnswerKeyCount": "0",
+        "AnswerKeyCount": 0,
         "HasEffortlessJson": true,
         "HasPostgresBootstrap": false,
-        "LastScannedOn": "2026-09-09T16:46:28.000Z",
+        "LastScannedOn": "2026-09-29T12:29:25",
         "DomainName": "Lazr Coulombs Law",
         "DomainKind": "toy",
         "HasAnswerKeys": false,
@@ -12265,7 +12280,7 @@
         "CorpusDomainRuns": "corpus-20260909-161355:lazr-coulombs-law, corpus-20260909-163528:lazr-coulombs-law, corpus-20260909-180623:lazr-coulombs-law, corpus-20260910-022644:lazr-coulombs-law",
         "CorpusDomainRunCount": "4",
         "HasBeenExercised": false,
-        "TestFileCount": "0"
+        "TestFileCount": 0
       },
       {
         "TestSuiteId": "suite-mechanical-kitchen-timer",
@@ -12276,10 +12291,10 @@
         "IsRegistered": true,
         "ExpectedSubstrateCount": "0",
         "Notes": "Seeded by scan-test-suites.py from a project with an effortless.json.",
-        "AnswerKeyCount": "26",
+        "AnswerKeyCount": 26,
         "HasEffortlessJson": true,
         "HasPostgresBootstrap": true,
-        "LastScannedOn": "2026-09-09T16:46:28.000Z",
+        "LastScannedOn": "2026-09-29T12:29:25",
         "DomainName": "Mechanical Kitchen Timer",
         "DomainKind": "toy",
         "HasAnswerKeys": true,
@@ -12291,7 +12306,7 @@
         "CorpusDomainRuns": "corpus-20260909-161355:mechanical-kitchen-timer, corpus-20260909-163528:mechanical-kitchen-timer, corpus-20260909-180623:mechanical-kitchen-timer, corpus-20260910-022644:mechanical-kitchen-timer",
         "CorpusDomainRunCount": "4",
         "HasBeenExercised": true,
-        "TestFileCount": "0"
+        "TestFileCount": 0
       },
       {
         "TestSuiteId": "suite-naive-set-theory",
@@ -12302,10 +12317,10 @@
         "IsRegistered": true,
         "ExpectedSubstrateCount": "0",
         "Notes": "Seeded by scan-test-suites.py from a project with an effortless.json.",
-        "AnswerKeyCount": "0",
+        "AnswerKeyCount": 7,
         "HasEffortlessJson": true,
         "HasPostgresBootstrap": false,
-        "LastScannedOn": "2026-09-09T16:46:28.000Z",
+        "LastScannedOn": "2026-09-29T12:29:25",
         "DomainName": "Naive Set Theory",
         "DomainKind": "example",
         "HasAnswerKeys": false,
@@ -12317,7 +12332,7 @@
         "CorpusDomainRuns": "corpus-20260909-161355:naive-set-theory, corpus-20260909-163528:naive-set-theory, corpus-20260909-180623:naive-set-theory, corpus-20260910-022644:naive-set-theory",
         "CorpusDomainRunCount": "4",
         "HasBeenExercised": false,
-        "TestFileCount": "0"
+        "TestFileCount": 0
       },
       {
         "TestSuiteId": "suite-naked-claude-vs-effortless-claude",
@@ -12328,10 +12343,10 @@
         "IsRegistered": false,
         "ExpectedSubstrateCount": "0",
         "Notes": "Intentional exception in RulebookDomains: this container carries no rulebook of its own, so there is nothing for the conformance harness to grade.",
-        "AnswerKeyCount": "0",
+        "AnswerKeyCount": 0,
         "HasEffortlessJson": true,
         "HasPostgresBootstrap": false,
-        "LastScannedOn": "2026-09-09T16:46:28.000Z",
+        "LastScannedOn": "2026-09-29T12:29:25",
         "DomainName": "Naked Claude Vs Effortless Claude",
         "DomainKind": "toy",
         "HasAnswerKeys": false,
@@ -12343,7 +12358,7 @@
         "CorpusDomainRuns": null,
         "CorpusDomainRunCount": "0",
         "HasBeenExercised": false,
-        "TestFileCount": "0"
+        "TestFileCount": 0
       },
       {
         "TestSuiteId": "suite-nakedclaude-v1",
@@ -12354,10 +12369,10 @@
         "IsRegistered": true,
         "ExpectedSubstrateCount": "0",
         "Notes": "Seeded by scan-test-suites.py from a project with an effortless.json.",
-        "AnswerKeyCount": "1",
+        "AnswerKeyCount": 1,
         "HasEffortlessJson": true,
         "HasPostgresBootstrap": true,
-        "LastScannedOn": "2026-09-09T16:46:28.000Z",
+        "LastScannedOn": "2026-09-29T12:29:25",
         "DomainName": "NakedClaude v1",
         "DomainKind": "toy",
         "HasAnswerKeys": true,
@@ -12369,7 +12384,7 @@
         "CorpusDomainRuns": "corpus-20260909-161355:nakedclaude-v1, corpus-20260909-163528:nakedclaude-v1, corpus-20260909-180623:nakedclaude-v1, corpus-20260910-022644:nakedclaude-v1",
         "CorpusDomainRunCount": "4",
         "HasBeenExercised": true,
-        "TestFileCount": "0"
+        "TestFileCount": 0
       },
       {
         "TestSuiteId": "suite-nakedclaude-v2",
@@ -12380,10 +12395,10 @@
         "IsRegistered": true,
         "ExpectedSubstrateCount": "0",
         "Notes": "Seeded by scan-test-suites.py from a project with an effortless.json.",
-        "AnswerKeyCount": "3",
+        "AnswerKeyCount": 3,
         "HasEffortlessJson": true,
         "HasPostgresBootstrap": true,
-        "LastScannedOn": "2026-09-09T16:46:28.000Z",
+        "LastScannedOn": "2026-09-29T12:29:25",
         "DomainName": "NakedClaude v2",
         "DomainKind": "toy",
         "HasAnswerKeys": true,
@@ -12395,7 +12410,7 @@
         "CorpusDomainRuns": "corpus-20260909-161355:nakedclaude-v2, corpus-20260909-163528:nakedclaude-v2, corpus-20260909-180623:nakedclaude-v2, corpus-20260910-022644:nakedclaude-v2",
         "CorpusDomainRunCount": "4",
         "HasBeenExercised": true,
-        "TestFileCount": "0"
+        "TestFileCount": 0
       },
       {
         "TestSuiteId": "suite-nakedclaude-v3",
@@ -12406,10 +12421,10 @@
         "IsRegistered": true,
         "ExpectedSubstrateCount": "0",
         "Notes": "Seeded by scan-test-suites.py from a project with an effortless.json.",
-        "AnswerKeyCount": "8",
+        "AnswerKeyCount": 8,
         "HasEffortlessJson": true,
         "HasPostgresBootstrap": true,
-        "LastScannedOn": "2026-09-09T16:46:28.000Z",
+        "LastScannedOn": "2026-09-29T12:29:25",
         "DomainName": "NakedClaude v3",
         "DomainKind": "toy",
         "HasAnswerKeys": true,
@@ -12421,7 +12436,7 @@
         "CorpusDomainRuns": "corpus-20260909-161355:nakedclaude-v3, corpus-20260909-163528:nakedclaude-v3, corpus-20260909-180623:nakedclaude-v3, corpus-20260910-022644:nakedclaude-v3",
         "CorpusDomainRunCount": "4",
         "HasBeenExercised": true,
-        "TestFileCount": "0"
+        "TestFileCount": 0
       },
       {
         "TestSuiteId": "suite-nakedclaude-v4",
@@ -12432,10 +12447,10 @@
         "IsRegistered": true,
         "ExpectedSubstrateCount": "0",
         "Notes": "Seeded by scan-test-suites.py from a project with an effortless.json.",
-        "AnswerKeyCount": "15",
+        "AnswerKeyCount": 15,
         "HasEffortlessJson": true,
         "HasPostgresBootstrap": true,
-        "LastScannedOn": "2026-09-09T16:46:28.000Z",
+        "LastScannedOn": "2026-09-29T12:29:25",
         "DomainName": "NakedClaude v4",
         "DomainKind": "toy",
         "HasAnswerKeys": true,
@@ -12447,7 +12462,7 @@
         "CorpusDomainRuns": "corpus-20260909-161355:nakedclaude-v4, corpus-20260909-163528:nakedclaude-v4, corpus-20260909-180623:nakedclaude-v4, corpus-20260910-022644:nakedclaude-v4",
         "CorpusDomainRunCount": "4",
         "HasBeenExercised": true,
-        "TestFileCount": "0"
+        "TestFileCount": 0
       },
       {
         "TestSuiteId": "suite-planar-unit-discovery",
@@ -12458,10 +12473,10 @@
         "IsRegistered": true,
         "ExpectedSubstrateCount": "0",
         "Notes": "Seeded by scan-test-suites.py from a project with an effortless.json.",
-        "AnswerKeyCount": "0",
+        "AnswerKeyCount": 36,
         "HasEffortlessJson": true,
         "HasPostgresBootstrap": false,
-        "LastScannedOn": "2026-09-09T16:46:28.000Z",
+        "LastScannedOn": "2026-09-29T12:29:25",
         "DomainName": "Planar Unit Discovery",
         "DomainKind": "example",
         "HasAnswerKeys": false,
@@ -12473,7 +12488,7 @@
         "CorpusDomainRuns": "corpus-20260909-161355:planar-unit-discovery, corpus-20260909-163528:planar-unit-discovery, corpus-20260909-180623:planar-unit-discovery, corpus-20260910-022644:planar-unit-discovery",
         "CorpusDomainRunCount": "4",
         "HasBeenExercised": false,
-        "TestFileCount": "0"
+        "TestFileCount": 0
       },
       {
         "TestSuiteId": "suite-procedural-knowledge-ontology",
@@ -12484,10 +12499,10 @@
         "IsRegistered": true,
         "ExpectedSubstrateCount": "0",
         "Notes": "Seeded by scan-test-suites.py from a project with an effortless.json.",
-        "AnswerKeyCount": "0",
+        "AnswerKeyCount": 259,
         "HasEffortlessJson": true,
         "HasPostgresBootstrap": true,
-        "LastScannedOn": "2026-09-09T16:46:28.000Z",
+        "LastScannedOn": "2026-09-29T12:29:25",
         "DomainName": "Procedural Knowledge Ontology",
         "DomainKind": "example",
         "HasAnswerKeys": false,
@@ -12499,7 +12514,7 @@
         "CorpusDomainRuns": "corpus-20260909-161355:procedural-knowledge-ontology, corpus-20260909-163528:procedural-knowledge-ontology, corpus-20260909-180623:procedural-knowledge-ontology, corpus-20260910-022644:procedural-knowledge-ontology",
         "CorpusDomainRunCount": "4",
         "HasBeenExercised": true,
-        "TestFileCount": "0"
+        "TestFileCount": 0
       },
       {
         "TestSuiteId": "suite-product-inventory",
@@ -12510,10 +12525,10 @@
         "IsRegistered": true,
         "ExpectedSubstrateCount": "0",
         "Notes": "Seeded by scan-test-suites.py from a project with an effortless.json.",
-        "AnswerKeyCount": "3",
+        "AnswerKeyCount": 3,
         "HasEffortlessJson": true,
         "HasPostgresBootstrap": true,
-        "LastScannedOn": "2026-09-09T16:46:28.000Z",
+        "LastScannedOn": "2026-09-29T12:29:25",
         "DomainName": "Product Inventory",
         "DomainKind": "toy",
         "HasAnswerKeys": true,
@@ -12525,7 +12540,7 @@
         "CorpusDomainRuns": "corpus-20260909-161355:product-inventory, corpus-20260909-163528:product-inventory, corpus-20260909-180623:product-inventory, corpus-20260910-022644:product-inventory",
         "CorpusDomainRunCount": "4",
         "HasBeenExercised": true,
-        "TestFileCount": "0"
+        "TestFileCount": 0
       },
       {
         "TestSuiteId": "suite-root-formula-parser",
@@ -12536,10 +12551,10 @@
         "IsRegistered": true,
         "ExpectedSubstrateCount": "0",
         "Notes": "The formula-dialect regression suite behind orchestration/formula_parser.py. Answer-key generation for every domain depends on it, so it is the one suite that must be green before a corpus run means anything.",
-        "AnswerKeyCount": "0",
+        "AnswerKeyCount": 0,
         "HasEffortlessJson": true,
         "HasPostgresBootstrap": true,
-        "LastScannedOn": "2026-09-09T16:46:28.000Z",
+        "LastScannedOn": "2026-09-29T12:29:25",
         "DomainName": "effortless-rulebooks",
         "DomainKind": "root",
         "HasAnswerKeys": false,
@@ -12551,7 +12566,7 @@
         "CorpusDomainRuns": "corpus-20260909-161016:root, corpus-20260909-161355:root, corpus-20260909-163528:root, corpus-20260909-180623:root, corpus-20260910-022644:root",
         "CorpusDomainRunCount": "5",
         "HasBeenExercised": true,
-        "TestFileCount": "0"
+        "TestFileCount": 0
       },
       {
         "TestSuiteId": "suite-ross-style-business-rules",
@@ -12562,10 +12577,10 @@
         "IsRegistered": true,
         "ExpectedSubstrateCount": "0",
         "Notes": "Seeded by scan-test-suites.py from a project with an effortless.json.",
-        "AnswerKeyCount": "0",
+        "AnswerKeyCount": 4,
         "HasEffortlessJson": true,
         "HasPostgresBootstrap": false,
-        "LastScannedOn": "2026-09-09T16:46:28.000Z",
+        "LastScannedOn": "2026-09-29T12:29:25",
         "DomainName": "Ross Style Business Rules",
         "DomainKind": "example",
         "HasAnswerKeys": false,
@@ -12577,7 +12592,7 @@
         "CorpusDomainRuns": "corpus-20260909-161355:ross-style-business-rules, corpus-20260909-163528:ross-style-business-rules, corpus-20260909-180623:ross-style-business-rules, corpus-20260910-022644:ross-style-business-rules",
         "CorpusDomainRunCount": "4",
         "HasBeenExercised": false,
-        "TestFileCount": "0"
+        "TestFileCount": 0
       },
       {
         "TestSuiteId": "suite-simpsons-paradox",
@@ -12588,10 +12603,10 @@
         "IsRegistered": true,
         "ExpectedSubstrateCount": "0",
         "Notes": "Seeded by scan-test-suites.py from a project with an effortless.json.",
-        "AnswerKeyCount": "0",
+        "AnswerKeyCount": 39,
         "HasEffortlessJson": true,
         "HasPostgresBootstrap": false,
-        "LastScannedOn": "2026-09-09T16:46:28.000Z",
+        "LastScannedOn": "2026-09-29T12:29:25",
         "DomainName": "Simpsons Paradox",
         "DomainKind": "example",
         "HasAnswerKeys": false,
@@ -12603,7 +12618,7 @@
         "CorpusDomainRuns": "corpus-20260909-161355:simpsons-paradox, corpus-20260909-163528:simpsons-paradox, corpus-20260909-180623:simpsons-paradox, corpus-20260910-022644:simpsons-paradox",
         "CorpusDomainRunCount": "4",
         "HasBeenExercised": false,
-        "TestFileCount": "0"
+        "TestFileCount": 0
       },
       {
         "TestSuiteId": "suite-star-trek",
@@ -12614,10 +12629,10 @@
         "IsRegistered": true,
         "ExpectedSubstrateCount": "0",
         "Notes": "Seeded by scan-test-suites.py from a project with an effortless.json.",
-        "AnswerKeyCount": "10",
+        "AnswerKeyCount": 10,
         "HasEffortlessJson": true,
         "HasPostgresBootstrap": true,
-        "LastScannedOn": "2026-09-09T16:46:28.000Z",
+        "LastScannedOn": "2026-09-29T12:29:25",
         "DomainName": "StarTrek",
         "DomainKind": "toy",
         "HasAnswerKeys": true,
@@ -12629,7 +12644,7 @@
         "CorpusDomainRuns": "corpus-20260909-161355:star-trek, corpus-20260909-163528:star-trek, corpus-20260909-180623:star-trek, corpus-20260910-022644:star-trek",
         "CorpusDomainRunCount": "4",
         "HasBeenExercised": true,
-        "TestFileCount": "0"
+        "TestFileCount": 0
       },
       {
         "TestSuiteId": "suite-talismans-special-solutions",
@@ -12640,10 +12655,10 @@
         "IsRegistered": true,
         "ExpectedSubstrateCount": "4",
         "Notes": "Seeded by scan-test-suites.py from a project with an effortless.json.",
-        "AnswerKeyCount": "22",
+        "AnswerKeyCount": 22,
         "HasEffortlessJson": true,
         "HasPostgresBootstrap": true,
-        "LastScannedOn": "2026-09-09T16:46:28.000Z",
+        "LastScannedOn": "2026-09-29T12:29:25",
         "DomainName": "Talismans Special Solutions",
         "DomainKind": "example",
         "HasAnswerKeys": true,
@@ -12655,7 +12670,7 @@
         "CorpusDomainRuns": "corpus-20260909-161355:talismans-special-solutions, corpus-20260909-163528:talismans-special-solutions, corpus-20260909-180623:talismans-special-solutions, corpus-20260910-022644:talismans-special-solutions",
         "CorpusDomainRunCount": "4",
         "HasBeenExercised": true,
-        "TestFileCount": "0"
+        "TestFileCount": 0
       },
       {
         "TestSuiteId": "suite-therapist-helper-portal",
@@ -12666,10 +12681,10 @@
         "IsRegistered": true,
         "ExpectedSubstrateCount": "0",
         "Notes": "Seeded by scan-test-suites.py from a project with an effortless.json.",
-        "AnswerKeyCount": "5",
+        "AnswerKeyCount": 5,
         "HasEffortlessJson": true,
         "HasPostgresBootstrap": true,
-        "LastScannedOn": "2026-09-09T16:46:28.000Z",
+        "LastScannedOn": "2026-09-29T12:29:25",
         "DomainName": "Therapist Helper Portal",
         "DomainKind": "toy",
         "HasAnswerKeys": true,
@@ -12681,7 +12696,7 @@
         "CorpusDomainRuns": "corpus-20260909-161355:therapist-helper-portal, corpus-20260909-163528:therapist-helper-portal, corpus-20260909-180623:therapist-helper-portal, corpus-20260910-022644:therapist-helper-portal",
         "CorpusDomainRunCount": "4",
         "HasBeenExercised": true,
-        "TestFileCount": "0"
+        "TestFileCount": 0
       },
       {
         "TestSuiteId": "suite-tiling-the-plane",
@@ -12692,10 +12707,10 @@
         "IsRegistered": true,
         "ExpectedSubstrateCount": "0",
         "Notes": "Seeded by scan-test-suites.py from a project with an effortless.json.",
-        "AnswerKeyCount": "0",
+        "AnswerKeyCount": 8,
         "HasEffortlessJson": true,
         "HasPostgresBootstrap": true,
-        "LastScannedOn": "2026-09-09T16:46:28.000Z",
+        "LastScannedOn": "2026-09-29T12:29:25",
         "DomainName": "Tiling The Plane",
         "DomainKind": "example",
         "HasAnswerKeys": false,
@@ -12707,7 +12722,7 @@
         "CorpusDomainRuns": "corpus-20260909-161355:tiling-the-plane, corpus-20260909-163528:tiling-the-plane, corpus-20260909-180623:tiling-the-plane, corpus-20260910-022644:tiling-the-plane",
         "CorpusDomainRunCount": "4",
         "HasBeenExercised": true,
-        "TestFileCount": "0"
+        "TestFileCount": 0
       },
       {
         "TestSuiteId": "suite-traffic-ticket-contest",
@@ -12718,10 +12733,10 @@
         "IsRegistered": true,
         "ExpectedSubstrateCount": "0",
         "Notes": "Seeded by scan-test-suites.py from a project with an effortless.json.",
-        "AnswerKeyCount": "0",
+        "AnswerKeyCount": 52,
         "HasEffortlessJson": true,
         "HasPostgresBootstrap": true,
-        "LastScannedOn": "2026-09-09T16:46:28.000Z",
+        "LastScannedOn": "2026-09-29T12:29:25",
         "DomainName": "Traffic Ticket Contest",
         "DomainKind": "example",
         "HasAnswerKeys": false,
@@ -12733,7 +12748,7 @@
         "CorpusDomainRuns": "corpus-20260909-161355:traffic-ticket-contest, corpus-20260909-163528:traffic-ticket-contest, corpus-20260909-180623:traffic-ticket-contest, corpus-20260910-022644:traffic-ticket-contest",
         "CorpusDomainRunCount": "4",
         "HasBeenExercised": true,
-        "TestFileCount": "0"
+        "TestFileCount": 0
       },
       {
         "TestSuiteId": "suite-turek-hitchens",
@@ -12744,10 +12759,10 @@
         "IsRegistered": true,
         "ExpectedSubstrateCount": "0",
         "Notes": "Seeded by scan-test-suites.py from a project with an effortless.json.",
-        "AnswerKeyCount": "0",
+        "AnswerKeyCount": 10,
         "HasEffortlessJson": true,
         "HasPostgresBootstrap": false,
-        "LastScannedOn": "2026-09-09T16:46:28.000Z",
+        "LastScannedOn": "2026-09-29T12:29:25",
         "DomainName": "Turek Hitchens",
         "DomainKind": "toy",
         "HasAnswerKeys": false,
@@ -12759,7 +12774,7 @@
         "CorpusDomainRuns": "corpus-20260909-161355:turek-hitchens, corpus-20260909-163528:turek-hitchens, corpus-20260909-180623:turek-hitchens, corpus-20260910-022644:turek-hitchens",
         "CorpusDomainRunCount": "4",
         "HasBeenExercised": false,
-        "TestFileCount": "0"
+        "TestFileCount": 0
       },
       {
         "TestSuiteId": "suite-veritasium-power-laws-and-fractals",
@@ -12770,10 +12785,10 @@
         "IsRegistered": true,
         "ExpectedSubstrateCount": "0",
         "Notes": "Seeded by scan-test-suites.py from a project with an effortless.json.",
-        "AnswerKeyCount": "0",
+        "AnswerKeyCount": 0,
         "HasEffortlessJson": true,
         "HasPostgresBootstrap": false,
-        "LastScannedOn": "2026-09-09T16:46:28.000Z",
+        "LastScannedOn": "2026-09-29T12:29:25",
         "DomainName": "Veritasium Power Laws And Fractals",
         "DomainKind": "example",
         "HasAnswerKeys": false,
@@ -12785,7 +12800,7 @@
         "CorpusDomainRuns": "corpus-20260909-161355:veritasium-power-laws-and-fractals, corpus-20260909-163528:veritasium-power-laws-and-fractals, corpus-20260909-180623:veritasium-power-laws-and-fractals, corpus-20260910-022644:veritasium-power-laws-and-fractals",
         "CorpusDomainRunCount": "4",
         "HasBeenExercised": false,
-        "TestFileCount": "0"
+        "TestFileCount": 0
       },
       {
         "TestSuiteId": "suite-volunteer-shift-scheduler",
@@ -12796,10 +12811,10 @@
         "IsRegistered": true,
         "ExpectedSubstrateCount": "0",
         "Notes": "Seeded by scan-test-suites.py from a project with an effortless.json.",
-        "AnswerKeyCount": "4",
+        "AnswerKeyCount": 4,
         "HasEffortlessJson": true,
         "HasPostgresBootstrap": true,
-        "LastScannedOn": "2026-09-09T16:46:28.000Z",
+        "LastScannedOn": "2026-09-29T12:29:25",
         "DomainName": "Volunteer Shift Scheduler",
         "DomainKind": "toy",
         "HasAnswerKeys": true,
@@ -12811,7 +12826,7 @@
         "CorpusDomainRuns": "corpus-20260909-161355:volunteer-shift-scheduler, corpus-20260909-163528:volunteer-shift-scheduler, corpus-20260909-180623:volunteer-shift-scheduler, corpus-20260910-022644:volunteer-shift-scheduler",
         "CorpusDomainRunCount": "4",
         "HasBeenExercised": true,
-        "TestFileCount": "0"
+        "TestFileCount": 0
       },
       {
         "TestSuiteId": "suite-volunteer-shift-scheduler-demo",
@@ -12822,10 +12837,10 @@
         "IsRegistered": false,
         "ExpectedSubstrateCount": "0",
         "Notes": "Intentional exception in RulebookDomains: this container carries no rulebook of its own, so there is nothing for the conformance harness to grade.",
-        "AnswerKeyCount": "0",
+        "AnswerKeyCount": 0,
         "HasEffortlessJson": false,
         "HasPostgresBootstrap": false,
-        "LastScannedOn": "2026-09-09T16:46:28.000Z",
+        "LastScannedOn": "2026-09-29T12:29:25",
         "DomainName": "Volunteer Shift Scheduler Demo",
         "DomainKind": "toy",
         "HasAnswerKeys": false,
@@ -12837,7 +12852,7 @@
         "CorpusDomainRuns": null,
         "CorpusDomainRunCount": "0",
         "HasBeenExercised": false,
-        "TestFileCount": "0"
+        "TestFileCount": 0
       },
       {
         "TestSuiteId": "suite-wedding-seating-optimizer",
@@ -12848,10 +12863,10 @@
         "IsRegistered": true,
         "ExpectedSubstrateCount": "0",
         "Notes": "Seeded by scan-test-suites.py from a project with an effortless.json.",
-        "AnswerKeyCount": "4",
+        "AnswerKeyCount": 4,
         "HasEffortlessJson": true,
         "HasPostgresBootstrap": true,
-        "LastScannedOn": "2026-09-09T16:46:28.000Z",
+        "LastScannedOn": "2026-09-29T12:29:25",
         "DomainName": "Wedding Seating Optimizer",
         "DomainKind": "toy",
         "HasAnswerKeys": true,
@@ -12863,7 +12878,21 @@
         "CorpusDomainRuns": "corpus-20260909-161355:wedding-seating-optimizer, corpus-20260909-163528:wedding-seating-optimizer, corpus-20260909-180623:wedding-seating-optimizer, corpus-20260910-022644:wedding-seating-optimizer",
         "CorpusDomainRunCount": "4",
         "HasBeenExercised": true,
-        "TestFileCount": "0"
+        "TestFileCount": 0
+      },
+      {
+        "TestSuiteId": "suite-cmcc-core-r0",
+        "Domain": "domain-cmcc-core-r0",
+        "SuiteKind": "pytest",
+        "Runner": "python3 -m pytest rulebook-examples/cmcc-core-r0/tests -q",
+        "IsRegistered": true,
+        "ExpectedSubstrateCount": 0,
+        "Notes": "The project's own self-contained pipeline test suite (21 tests): r0-lint membership, reference-evaluator/SQLite-oracle agreement, nondeterministic-trace and bitemporal-correction behavior, and reflection-check mutation tests. Distinct from this repo's generic per-project run-conformance.py harness -- conformance/run.py and conformance/ingest_conformance.py are this project's own oracle-to-rulebook pipeline, run by ./start.sh.",
+        "AnswerKeyCount": 0,
+        "HasEffortlessJson": true,
+        "HasPostgresBootstrap": false,
+        "TestFileCount": 0,
+        "LastScannedOn": "2026-09-29T12:29:25"
       }
     ]
   },

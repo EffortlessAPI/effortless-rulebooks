@@ -159,6 +159,19 @@ Meta-ontology: the ERB orchestration project modeling itself.
 
 ---
 
+### `cmcc-core-r0` — *an external theorem's own proof pipeline, retrofitted into the platform*
+
+The runnable companion to the CMCC-Core Representation Theorem paper, brought into ERB shape rather than left as a standalone artifact. A small R0 warehouse-network spec is checked against two independent oracles (a reference evaluator and a SQLite oracle) to build an answer key, then checked against three substrates on two gates — the answer key (adequacy) and reflection (structural transparency, §13). All three substrates pass the answer key; only one is also a *representation*.
+
+What this demonstrates:
+- **A rulebook can model a proof pipeline without becoming a fourth implementation of it.** The R0 spec's own structure (relations, rules, transitions, constraints) is a faithful rulebook transcription; the conformance results are witnessed rows pushed in from a fresh run of the original Python/SQLite pipeline — never recomputed by a rulebook formula.
+- **The one legitimate rulebook computation is a roll-up, not a re-derivation.** `Substrates.Conformant` is an `AND`/`COUNTIFS` aggregation over already-witnessed answer-key and reflection rows.
+- **Direction of truth, made concrete.** The original 21-test `pytest` suite still runs unmodified; `./start.sh` runs it, then ingests its output into Postgres.
+
+→ [cmcc-core-r0/README.md](cmcc-core-r0/README.md)
+
+---
+
 ## The invariant
 
 Every domain here satisfies the same property: **if you deleted all the derived artifacts and kept only the rulebook JSON, a transpiler could regenerate everything else identically.** That property — not any specific substrate, not any specific domain — is what this collection is here to demonstrate.

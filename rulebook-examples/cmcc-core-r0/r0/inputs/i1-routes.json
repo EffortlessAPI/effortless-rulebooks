@@ -1,0 +1,13 @@
+{
+  "name": "i1-routes",
+  "description": "Recursion, aggregation, an empty group, a constraint rejection, and a retraction.",
+  "steps": [
+    {"command": "AddRoute", "params": ["hub", "a", 20], "k": 1},
+    {"command": "AddRoute", "params": ["a", "b", 60], "k": 2},
+    {"command": "AddRoute", "params": ["b", "b", 5], "k": 3},
+    {"command": "AddRoute", "params": ["b", "c", -5], "k": 4},
+    {"command": "Observe", "params": ["after-adds"], "k": 5},
+    {"command": "CloseRoute", "params": ["a", "b"], "k": 6},
+    {"command": "Observe", "params": ["after-close"], "k": 7}
+  ]
+}

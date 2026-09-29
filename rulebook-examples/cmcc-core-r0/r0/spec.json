@@ -1,0 +1,151 @@
+{
+  "name": "warehouse-network",
+  "description": "An R0 specification (CMCC-Core paper, sections 2-9). Every construct the proof depends on appears at least once: positive recursion without value generation, negation and aggregation over lower strata, an empty-group aggregate, a bitemporal correction, an integrity constraint that rejects a transition, and a command with two enabled transitions.",
+
+  "edb": {
+    "Warehouse": ["id"],
+    "Route": ["src", "dst", "cap"],
+    "Shipment": ["id", "wh", "day"]
+  },
+
+  "commands": {
+    "AddRoute": ["s", "d", "c"],
+    "CloseRoute": ["s", "d"],
+    "CorrectShipment": ["id", "newday", "at"],
+    "Reroute": ["x"],
+    "Observe": ["tag"]
+  },
+
+  "rules": [
+    {"id": "reach_base", "head": ["Reachable", "x", "y"],
+     "body": [{"atom": ["Route", "x", "y", "_"]}]},
+    {"id": "reach_step", "head": ["Reachable", "x", "y"],
+     "body": [{"atom": ["Reachable", "x", "z"]}, {"atom": ["Route", "z", "y", "_"]}]},
+
+    {"id": "isolated", "head": ["Isolated", "x"],
+     "body": [{"atom": ["Warehouse", "x"]},
+              {"cmp": ["!=", "x", {"$": "hub"}]},
+              {"not": ["Reachable", {"$": "hub"}, "x"]}]},
+
+    {"id": "fanout", "head": ["Fanout", "x", "n"],
+     "agg": {"op": "COUNT", "expr": "y",
+             "keys": [{"atom": ["Warehouse", "x"]}],
+             "over": [{"atom": ["Route", "x", "y", "_"]}]}},
+
+    {"id": "maxcap", "head": ["MaxCap", "x", "m"],
+     "agg": {"op": "MAX", "expr": "c",
+             "keys": [{"atom": ["Warehouse", "x"]}],
+             "over": [{"atom": ["Route", "x", "_", "c"]}]}},
+
+    {"id": "big", "head": ["Big", "x"],
+     "body": [{"atom": ["MaxCap", "x", "m"]}, {"cmp": [">=", "m", 50]}]},
+
+    {"id": "double", "head": ["DoubleCap", "s", "d", "c2"],
+     "body": [{"atom": ["Route", "s", "d", "c"]}, {"let": ["c2", ["*", "c", 2]]}]},
+
+    {"id": "late", "head": ["Late", "id"],
+     "body": [{"atom": ["Shipment", "id", "_", "day"]}, {"cmp": [">", "day", 10]}]},
+
+    {"id": "known_at", "head": ["KnownAt", "id", "day", "k"],
+     "body": [{"atom": ["Hist_Shipment", "_", {"$": "assert"}, "id", "_", "day", "_", "_", "k"]}]},
+
+    {"id": "g_addroute", "head": ["Guard_AddRoute", "s", "d", "c"],
+     "body": [{"atom": ["Cmd_AddRoute", "s", "d", "c"]},
+              {"atom": ["Warehouse", "s"]}, {"atom": ["Warehouse", "d"]},
+              {"not": ["Route", "s", "d", "_"]}]},
+    {"id": "e_addroute", "head": ["Eff_AddRoute", "s", "d", "c", "vf", "vt"],
+     "body": [{"atom": ["Guard_AddRoute", "s", "d", "c"]}, {"atom": ["Now", "vf", "_"]},
+              {"let": ["vt", 4611686018427387904]}]},
+    {"id": "ev_addroute", "head": ["Ev_RouteAdded", "s", "d"],
+     "body": [{"atom": ["Guard_AddRoute", "s", "d", "_"]}]},
+
+    {"id": "g_closeroute", "head": ["Guard_CloseRoute", "s", "d"],
+     "body": [{"atom": ["Cmd_CloseRoute", "s", "d"]}, {"atom": ["Route", "s", "d", "_"]}]},
+    {"id": "e_closeroute", "head": ["Eff_CloseRoute", "s", "d", "c", "vf", "vt"],
+     "body": [{"atom": ["Guard_CloseRoute", "s", "d"]},
+              {"atom": ["Hist_Route", "n", {"$": "assert"}, "s", "d", "c", "vf", "vt", "_"]},
+              {"not": ["Retracted_Route", "n"]}]},
+
+    {"id": "g_correct", "head": ["Guard_CorrectShipment", "id", "newday", "at"],
+     "body": [{"atom": ["Cmd_CorrectShipment", "id", "newday", "at"]},
+              {"atom": ["Shipment", "id", "_", "_"]}]},
+    {"id": "e_correct_retract", "head": ["Eff_CorrectRetract", "id", "wh", "day", "vf", "vt"],
+     "body": [{"atom": ["Guard_CorrectShipment", "id", "_", "_"]},
+              {"atom": ["Hist_Shipment", "n", {"$": "assert"}, "id", "wh", "day", "vf", "vt", "_"]},
+              {"not": ["Retracted_Shipment", "n"]}]},
+    {"id": "e_correct_assert", "head": ["Eff_CorrectAssert", "id", "wh", "newday", "at", "vt"],
+     "body": [{"atom": ["Guard_CorrectShipment", "id", "newday", "at"]},
+              {"atom": ["Shipment", "id", "wh", "_"]},
+              {"let": ["vt", 4611686018427387904]}]},
+    {"id": "ev_corrected", "head": ["Ev_ShipmentCorrected", "id", "newday"],
+     "body": [{"atom": ["Guard_CorrectShipment", "id", "newday", "_"]}]},
+
+    {"id": "g_reroute_hub", "head": ["Guard_RerouteHub", "x"],
+     "body": [{"atom": ["Cmd_Reroute", "x"]}, {"atom": ["Warehouse", "x"]},
+              {"not": ["Route", "x", {"$": "hub"}, "_"]}]},
+    {"id": "e_reroute_hub", "head": ["Eff_RerouteHub", "x", "h", "c", "vf", "vt"],
+     "body": [{"atom": ["Guard_RerouteHub", "x"]}, {"atom": ["Now", "vf", "_"]},
+              {"let": ["h", {"$": "hub"}]}, {"let": ["c", 10]},
+              {"let": ["vt", 4611686018427387904]}]},
+    {"id": "g_reroute_depot", "head": ["Guard_RerouteDepot", "x"],
+     "body": [{"atom": ["Cmd_Reroute", "x"]}, {"atom": ["Warehouse", "x"]},
+              {"not": ["Route", "x", {"$": "depot"}, "_"]}]},
+    {"id": "e_reroute_depot", "head": ["Eff_RerouteDepot", "x", "h", "c", "vf", "vt"],
+     "body": [{"atom": ["Guard_RerouteDepot", "x"]}, {"atom": ["Now", "vf", "_"]},
+              {"let": ["h", {"$": "depot"}]}, {"let": ["c", 10]},
+              {"let": ["vt", 4611686018427387904]}]},
+
+    {"id": "g_observe", "head": ["Guard_Observe", "tag"],
+     "body": [{"atom": ["Cmd_Observe", "tag"]}]},
+
+    {"id": "c_negcap", "head": ["NegativeCap", "s", "d"],
+     "body": [{"atom": ["Route", "s", "d", "c"]}, {"cmp": ["<", "c", 0]}]},
+    {"id": "c_selfroute", "head": ["SelfRoute", "x"],
+     "body": [{"atom": ["Route", "x", "x", "_"]}]}
+  ],
+
+  "transitions": [
+    {"name": "AddRoute", "command": "AddRoute", "guard": "Guard_AddRoute",
+     "effects": [{"op": "assert", "rel": "Route", "from": "Eff_AddRoute"}],
+     "events": [{"rel": "RouteAdded", "from": "Ev_RouteAdded"}]},
+    {"name": "CloseRoute", "command": "CloseRoute", "guard": "Guard_CloseRoute",
+     "effects": [{"op": "retract", "rel": "Route", "from": "Eff_CloseRoute"}],
+     "events": []},
+    {"name": "CorrectShipment", "command": "CorrectShipment", "guard": "Guard_CorrectShipment",
+     "effects": [{"op": "retract", "rel": "Shipment", "from": "Eff_CorrectRetract"},
+                 {"op": "assert", "rel": "Shipment", "from": "Eff_CorrectAssert"}],
+     "events": [{"rel": "ShipmentCorrected", "from": "Ev_ShipmentCorrected"}]},
+    {"name": "RerouteViaHub", "command": "Reroute", "guard": "Guard_RerouteHub",
+     "effects": [{"op": "assert", "rel": "Route", "from": "Eff_RerouteHub"}],
+     "events": []},
+    {"name": "RerouteViaDepot", "command": "Reroute", "guard": "Guard_RerouteDepot",
+     "effects": [{"op": "assert", "rel": "Route", "from": "Eff_RerouteDepot"}],
+     "events": []},
+    {"name": "Observe", "command": "Observe", "guard": "Guard_Observe",
+     "effects": [], "events": []}
+  ],
+
+  "constraints": ["NegativeCap", "SelfRoute"],
+
+  "observables": {
+    "reachable": "Reachable",
+    "isolated": "Isolated",
+    "fanout": "Fanout",
+    "maxcap": "MaxCap",
+    "big": "Big",
+    "double": "DoubleCap",
+    "shipment": "Shipment",
+    "late": "Late",
+    "known_at": "KnownAt"
+  },
+
+  "h0": [
+    {"n": 0, "op": "assert", "rel": "Warehouse", "tuple": ["hub"], "k": 0},
+    {"n": 1, "op": "assert", "rel": "Warehouse", "tuple": ["a"], "k": 0},
+    {"n": 2, "op": "assert", "rel": "Warehouse", "tuple": ["b"], "k": 0},
+    {"n": 3, "op": "assert", "rel": "Warehouse", "tuple": ["c"], "k": 0},
+    {"n": 4, "op": "assert", "rel": "Warehouse", "tuple": ["depot"], "k": 0},
+    {"n": 5, "op": "assert", "rel": "Route", "tuple": ["hub", "c", 30], "k": 0},
+    {"n": 6, "op": "assert", "rel": "Shipment", "tuple": ["s1", "a", 8], "k": 0}
+  ]
+}

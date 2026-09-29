@@ -1,0 +1,1063 @@
+{
+ "input": "i2-bitemporal",
+ "states_cross_checked": 23,
+ "trace_count": 2,
+ "traces": [
+  [
+   {
+    "events": {
+     "ShipmentCorrected": [
+      [
+       "s1",
+       12
+      ]
+     ]
+    },
+    "obs": {
+     "big": [],
+     "double": [
+      [
+       "hub",
+       "c",
+       60
+      ]
+     ],
+     "fanout": [
+      [
+       "a",
+       0
+      ],
+      [
+       "b",
+       0
+      ],
+      [
+       "c",
+       0
+      ],
+      [
+       "depot",
+       0
+      ],
+      [
+       "hub",
+       1
+      ]
+     ],
+     "isolated": [
+      [
+       "a"
+      ],
+      [
+       "b"
+      ],
+      [
+       "depot"
+      ]
+     ],
+     "known_at": [
+      [
+       "s1",
+       8,
+       0
+      ],
+      [
+       "s1",
+       12,
+       4
+      ]
+     ],
+     "late": [
+      [
+       "s1"
+      ]
+     ],
+     "maxcap": [
+      [
+       "hub",
+       30
+      ]
+     ],
+     "reachable": [
+      [
+       "hub",
+       "c"
+      ]
+     ],
+     "shipment": [
+      [
+       "s1",
+       "a",
+       12
+      ]
+     ]
+    },
+    "outcome": "committed"
+   },
+   {
+    "events": {},
+    "obs": {
+     "big": [],
+     "double": [
+      [
+       "hub",
+       "c",
+       60
+      ]
+     ],
+     "fanout": [
+      [
+       "a",
+       0
+      ],
+      [
+       "b",
+       0
+      ],
+      [
+       "c",
+       0
+      ],
+      [
+       "depot",
+       0
+      ],
+      [
+       "hub",
+       1
+      ]
+     ],
+     "isolated": [
+      [
+       "a"
+      ],
+      [
+       "b"
+      ],
+      [
+       "depot"
+      ]
+     ],
+     "known_at": [
+      [
+       "s1",
+       8,
+       0
+      ],
+      [
+       "s1",
+       12,
+       4
+      ]
+     ],
+     "late": [],
+     "maxcap": [
+      [
+       "hub",
+       30
+      ]
+     ],
+     "reachable": [
+      [
+       "hub",
+       "c"
+      ]
+     ],
+     "shipment": []
+    },
+    "outcome": "committed"
+   },
+   {
+    "events": {},
+    "obs": {
+     "big": [],
+     "double": [
+      [
+       "hub",
+       "c",
+       60
+      ]
+     ],
+     "fanout": [
+      [
+       "a",
+       0
+      ],
+      [
+       "b",
+       0
+      ],
+      [
+       "c",
+       0
+      ],
+      [
+       "depot",
+       0
+      ],
+      [
+       "hub",
+       1
+      ]
+     ],
+     "isolated": [
+      [
+       "a"
+      ],
+      [
+       "b"
+      ],
+      [
+       "depot"
+      ]
+     ],
+     "known_at": [
+      [
+       "s1",
+       8,
+       0
+      ],
+      [
+       "s1",
+       12,
+       4
+      ]
+     ],
+     "late": [
+      [
+       "s1"
+      ]
+     ],
+     "maxcap": [
+      [
+       "hub",
+       30
+      ]
+     ],
+     "reachable": [
+      [
+       "hub",
+       "c"
+      ]
+     ],
+     "shipment": [
+      [
+       "s1",
+       "a",
+       12
+      ]
+     ]
+    },
+    "outcome": "committed"
+   },
+   {
+    "events": {},
+    "obs": {
+     "big": [],
+     "double": [
+      [
+       "hub",
+       "c",
+       60
+      ]
+     ],
+     "fanout": [
+      [
+       "a",
+       0
+      ],
+      [
+       "b",
+       0
+      ],
+      [
+       "c",
+       0
+      ],
+      [
+       "depot",
+       0
+      ],
+      [
+       "hub",
+       1
+      ]
+     ],
+     "isolated": [
+      [
+       "a"
+      ],
+      [
+       "b"
+      ],
+      [
+       "depot"
+      ]
+     ],
+     "known_at": [
+      [
+       "s1",
+       8,
+       0
+      ],
+      [
+       "s1",
+       12,
+       4
+      ]
+     ],
+     "late": [],
+     "maxcap": [
+      [
+       "hub",
+       30
+      ]
+     ],
+     "reachable": [
+      [
+       "hub",
+       "c"
+      ]
+     ],
+     "shipment": [
+      [
+       "s1",
+       "a",
+       8
+      ]
+     ]
+    },
+    "outcome": "committed"
+   },
+   {
+    "events": {},
+    "obs": {
+     "big": [],
+     "double": [
+      [
+       "c",
+       "hub",
+       20
+      ],
+      [
+       "hub",
+       "c",
+       60
+      ]
+     ],
+     "fanout": [
+      [
+       "a",
+       0
+      ],
+      [
+       "b",
+       0
+      ],
+      [
+       "c",
+       1
+      ],
+      [
+       "depot",
+       0
+      ],
+      [
+       "hub",
+       1
+      ]
+     ],
+     "isolated": [
+      [
+       "a"
+      ],
+      [
+       "b"
+      ],
+      [
+       "depot"
+      ]
+     ],
+     "known_at": [
+      [
+       "s1",
+       8,
+       0
+      ],
+      [
+       "s1",
+       12,
+       4
+      ]
+     ],
+     "late": [
+      [
+       "s1"
+      ]
+     ],
+     "maxcap": [
+      [
+       "c",
+       10
+      ],
+      [
+       "hub",
+       30
+      ]
+     ],
+     "reachable": [
+      [
+       "c",
+       "c"
+      ],
+      [
+       "c",
+       "hub"
+      ],
+      [
+       "hub",
+       "c"
+      ],
+      [
+       "hub",
+       "hub"
+      ]
+     ],
+     "shipment": [
+      [
+       "s1",
+       "a",
+       12
+      ]
+     ]
+    },
+    "outcome": "committed"
+   },
+   {
+    "events": {},
+    "obs": {
+     "big": [],
+     "double": [
+      [
+       "c",
+       "hub",
+       20
+      ],
+      [
+       "hub",
+       "c",
+       60
+      ]
+     ],
+     "fanout": [
+      [
+       "a",
+       0
+      ],
+      [
+       "b",
+       0
+      ],
+      [
+       "c",
+       1
+      ],
+      [
+       "depot",
+       0
+      ],
+      [
+       "hub",
+       1
+      ]
+     ],
+     "isolated": [
+      [
+       "a"
+      ],
+      [
+       "b"
+      ],
+      [
+       "depot"
+      ]
+     ],
+     "known_at": [
+      [
+       "s1",
+       8,
+       0
+      ],
+      [
+       "s1",
+       12,
+       4
+      ]
+     ],
+     "late": [
+      [
+       "s1"
+      ]
+     ],
+     "maxcap": [
+      [
+       "c",
+       10
+      ],
+      [
+       "hub",
+       30
+      ]
+     ],
+     "reachable": [
+      [
+       "c",
+       "c"
+      ],
+      [
+       "c",
+       "hub"
+      ],
+      [
+       "hub",
+       "c"
+      ],
+      [
+       "hub",
+       "hub"
+      ]
+     ],
+     "shipment": [
+      [
+       "s1",
+       "a",
+       12
+      ]
+     ]
+    },
+    "outcome": "committed"
+   }
+  ],
+  [
+   {
+    "events": {
+     "ShipmentCorrected": [
+      [
+       "s1",
+       12
+      ]
+     ]
+    },
+    "obs": {
+     "big": [],
+     "double": [
+      [
+       "hub",
+       "c",
+       60
+      ]
+     ],
+     "fanout": [
+      [
+       "a",
+       0
+      ],
+      [
+       "b",
+       0
+      ],
+      [
+       "c",
+       0
+      ],
+      [
+       "depot",
+       0
+      ],
+      [
+       "hub",
+       1
+      ]
+     ],
+     "isolated": [
+      [
+       "a"
+      ],
+      [
+       "b"
+      ],
+      [
+       "depot"
+      ]
+     ],
+     "known_at": [
+      [
+       "s1",
+       8,
+       0
+      ],
+      [
+       "s1",
+       12,
+       4
+      ]
+     ],
+     "late": [
+      [
+       "s1"
+      ]
+     ],
+     "maxcap": [
+      [
+       "hub",
+       30
+      ]
+     ],
+     "reachable": [
+      [
+       "hub",
+       "c"
+      ]
+     ],
+     "shipment": [
+      [
+       "s1",
+       "a",
+       12
+      ]
+     ]
+    },
+    "outcome": "committed"
+   },
+   {
+    "events": {},
+    "obs": {
+     "big": [],
+     "double": [
+      [
+       "hub",
+       "c",
+       60
+      ]
+     ],
+     "fanout": [
+      [
+       "a",
+       0
+      ],
+      [
+       "b",
+       0
+      ],
+      [
+       "c",
+       0
+      ],
+      [
+       "depot",
+       0
+      ],
+      [
+       "hub",
+       1
+      ]
+     ],
+     "isolated": [
+      [
+       "a"
+      ],
+      [
+       "b"
+      ],
+      [
+       "depot"
+      ]
+     ],
+     "known_at": [
+      [
+       "s1",
+       8,
+       0
+      ],
+      [
+       "s1",
+       12,
+       4
+      ]
+     ],
+     "late": [],
+     "maxcap": [
+      [
+       "hub",
+       30
+      ]
+     ],
+     "reachable": [
+      [
+       "hub",
+       "c"
+      ]
+     ],
+     "shipment": []
+    },
+    "outcome": "committed"
+   },
+   {
+    "events": {},
+    "obs": {
+     "big": [],
+     "double": [
+      [
+       "hub",
+       "c",
+       60
+      ]
+     ],
+     "fanout": [
+      [
+       "a",
+       0
+      ],
+      [
+       "b",
+       0
+      ],
+      [
+       "c",
+       0
+      ],
+      [
+       "depot",
+       0
+      ],
+      [
+       "hub",
+       1
+      ]
+     ],
+     "isolated": [
+      [
+       "a"
+      ],
+      [
+       "b"
+      ],
+      [
+       "depot"
+      ]
+     ],
+     "known_at": [
+      [
+       "s1",
+       8,
+       0
+      ],
+      [
+       "s1",
+       12,
+       4
+      ]
+     ],
+     "late": [
+      [
+       "s1"
+      ]
+     ],
+     "maxcap": [
+      [
+       "hub",
+       30
+      ]
+     ],
+     "reachable": [
+      [
+       "hub",
+       "c"
+      ]
+     ],
+     "shipment": [
+      [
+       "s1",
+       "a",
+       12
+      ]
+     ]
+    },
+    "outcome": "committed"
+   },
+   {
+    "events": {},
+    "obs": {
+     "big": [],
+     "double": [
+      [
+       "hub",
+       "c",
+       60
+      ]
+     ],
+     "fanout": [
+      [
+       "a",
+       0
+      ],
+      [
+       "b",
+       0
+      ],
+      [
+       "c",
+       0
+      ],
+      [
+       "depot",
+       0
+      ],
+      [
+       "hub",
+       1
+      ]
+     ],
+     "isolated": [
+      [
+       "a"
+      ],
+      [
+       "b"
+      ],
+      [
+       "depot"
+      ]
+     ],
+     "known_at": [
+      [
+       "s1",
+       8,
+       0
+      ],
+      [
+       "s1",
+       12,
+       4
+      ]
+     ],
+     "late": [],
+     "maxcap": [
+      [
+       "hub",
+       30
+      ]
+     ],
+     "reachable": [
+      [
+       "hub",
+       "c"
+      ]
+     ],
+     "shipment": [
+      [
+       "s1",
+       "a",
+       8
+      ]
+     ]
+    },
+    "outcome": "committed"
+   },
+   {
+    "events": {},
+    "obs": {
+     "big": [],
+     "double": [
+      [
+       "c",
+       "depot",
+       20
+      ],
+      [
+       "hub",
+       "c",
+       60
+      ]
+     ],
+     "fanout": [
+      [
+       "a",
+       0
+      ],
+      [
+       "b",
+       0
+      ],
+      [
+       "c",
+       1
+      ],
+      [
+       "depot",
+       0
+      ],
+      [
+       "hub",
+       1
+      ]
+     ],
+     "isolated": [
+      [
+       "a"
+      ],
+      [
+       "b"
+      ]
+     ],
+     "known_at": [
+      [
+       "s1",
+       8,
+       0
+      ],
+      [
+       "s1",
+       12,
+       4
+      ]
+     ],
+     "late": [
+      [
+       "s1"
+      ]
+     ],
+     "maxcap": [
+      [
+       "c",
+       10
+      ],
+      [
+       "hub",
+       30
+      ]
+     ],
+     "reachable": [
+      [
+       "c",
+       "depot"
+      ],
+      [
+       "hub",
+       "c"
+      ],
+      [
+       "hub",
+       "depot"
+      ]
+     ],
+     "shipment": [
+      [
+       "s1",
+       "a",
+       12
+      ]
+     ]
+    },
+    "outcome": "committed"
+   },
+   {
+    "events": {},
+    "obs": {
+     "big": [],
+     "double": [
+      [
+       "c",
+       "depot",
+       20
+      ],
+      [
+       "hub",
+       "c",
+       60
+      ]
+     ],
+     "fanout": [
+      [
+       "a",
+       0
+      ],
+      [
+       "b",
+       0
+      ],
+      [
+       "c",
+       1
+      ],
+      [
+       "depot",
+       0
+      ],
+      [
+       "hub",
+       1
+      ]
+     ],
+     "isolated": [
+      [
+       "a"
+      ],
+      [
+       "b"
+      ]
+     ],
+     "known_at": [
+      [
+       "s1",
+       8,
+       0
+      ],
+      [
+       "s1",
+       12,
+       4
+      ]
+     ],
+     "late": [
+      [
+       "s1"
+      ]
+     ],
+     "maxcap": [
+      [
+       "c",
+       10
+      ],
+      [
+       "hub",
+       30
+      ]
+     ],
+     "reachable": [
+      [
+       "c",
+       "depot"
+      ],
+      [
+       "hub",
+       "c"
+      ],
+      [
+       "hub",
+       "depot"
+      ]
+     ],
+     "shipment": [
+      [
+       "s1",
+       "a",
+       12
+      ]
+     ]
+    },
+    "outcome": "committed"
+   }
+  ]
+ ]
+}

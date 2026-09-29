@@ -1,0 +1,19 @@
+{
+  "name": "path-length-not-r0",
+  "description": "NOT a member of R0: PathLength generates new values (n+1) inside a recursive stratum, so Lemma 1's finite lattice is not available (paper sections 3 and 14). r0-lint must reject it.",
+  "edb": {"Route": ["src", "dst"]},
+  "commands": {"Observe": ["tag"]},
+  "rules": [
+    {"id": "pl_base", "head": ["PathLength", "x", "y", "n"],
+     "body": [{"atom": ["Route", "x", "y"]}, {"let": ["n", 1]}]},
+    {"id": "pl_step", "head": ["PathLength", "x", "y", "n2"],
+     "body": [{"atom": ["PathLength", "x", "z", "n"]}, {"atom": ["Route", "z", "y"]},
+              {"let": ["n2", ["+", "n", 1]]}]},
+    {"id": "g_observe", "head": ["Guard_Observe", "tag"], "body": [{"atom": ["Cmd_Observe", "tag"]}]}
+  ],
+  "transitions": [{"name": "Observe", "command": "Observe", "guard": "Guard_Observe", "effects": [], "events": []}],
+  "constraints": [],
+  "observables": {"pl": "PathLength"},
+  "h0": [{"n": 0, "op": "assert", "rel": "Route", "tuple": ["a", "b"], "k": 0},
+         {"n": 1, "op": "assert", "rel": "Route", "tuple": ["b", "a"], "k": 0}]
+}
