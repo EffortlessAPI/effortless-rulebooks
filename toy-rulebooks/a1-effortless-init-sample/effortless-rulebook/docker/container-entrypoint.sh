@@ -246,7 +246,10 @@ fi
 # Version 6: the ERB module steps (rulebook-to-rbac, the Postgres policy
 #            compiler, the progress report) are added, disabled; the portal's
 #            Modules page switches them on with their module.
-PIPELINE_DEFAULTS_VERSION=6
+# Version 7: the Explainer DAG step bakes RuleSpeak® in every registered
+#            language (-p languages=all), so the Provenance tab's hover cards
+#            and field pages follow the portal's language instead of English.
+PIPELINE_DEFAULTS_VERSION=7
 if ! node - "$EFFORTLESS_ROOT_TARGET/effortless.json" "$PIPELINE_DEFAULTS_VERSION" <<'NODE'
 const fs = require('fs');
 const file = process.argv[2];
@@ -387,6 +390,20 @@ if (currentVersion < targetVersion) {
     }
   }
 
+  if (currentVersion < 7) {
+    // The Explainer DAG step used to bake RuleSpeak in English only, so its hover
+    // cards stayed English whatever the portal language. Only the untouched former
+    // default (no languages= at all) is rewritten; an explicit list survives.
+    const explainer = byName.get('rulebooktoexplainerdag');
+    const command = String((explainer && explainer.CommandLine) || '');
+    if (command.startsWith('rulebook-to-explainer-dag ') && !/(^|\s)-p\s+languages?=/.test(command)) {
+      explainer.CommandLine = command + ' -p languages=all';
+      console.log('[entrypoint] the Explainer DAG step now bakes every RuleSpeak language, so provenance cards follow the portal language');
+    } else {
+      console.log('[entrypoint] preserved customized Explainer DAG command while advancing defaults to v7');
+    }
+  }
+
   if (marker) marker.Value = String(targetVersion);
   else settings.push({ Name: 'editor-pipeline-defaults-version', Value: String(targetVersion) });
   const tmp = file + '.tmp-defaults';
@@ -476,7 +493,14 @@ fi
 # build outright" -- the exact opposite of the point. So: probe once, here, and
 # degrade to the old behavior with a loud warning rather than breaking.
 CONTINUE_ON_ERROR_FLAG=""
-if effortless -help 2>/dev/null | grep -q -- "-continueOnError"; then
+# The CLI's BARE `-help` prints only the top-level meta/project/build/clean
+# summary and never lists -continueOnError -- only `-help all` (or `-help
+# build`) does. Probing bare `-help` always misses it on every current CLI
+# version, silently falling back to "no flag" and defeating the entire point
+# of this probe: one failing transpiler would abort the whole build with no
+# warning that anything was wrong. `-help all` is the one topic guaranteed to
+# list every option regardless of category, so it is the only reliable probe.
+if effortless -help all 2>/dev/null | grep -q -- "-continueOnError"; then
   CONTINUE_ON_ERROR_FLAG="-continueOnError"
 else
   echo "[entrypoint] WARNING: this image's effortless CLI predates -continueOnError."

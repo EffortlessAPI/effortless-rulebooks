@@ -8489,7 +8489,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rulebook_releases_expected_major(p_rulebook_release_id TEXT)
 RETURNS INTEGER AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_rulebook_releases_prev_major(p_rulebook_release_id) AS val) SELECT (CASE WHEN COALESCE((SELECT NULLIF(declared_scale, '') FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id), '') = 'Major' THEN ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0) + COALESCE(1, 0)))::text ELSE ((SELECT val FROM __erb_dedup_v1))::text END)::integer;
+  WITH __erb_dedup_v1 AS (SELECT calc_rulebook_releases_prev_major(p_rulebook_release_id) AS val) SELECT (CASE WHEN COALESCE((SELECT NULLIF(declared_scale, '') FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id), '') = 'Major' THEN ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0) + COALESCE(1, 0)))::text ELSE ((SELECT val FROM __erb_dedup_v1))::text END)::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_releases_expected_minor
@@ -8499,7 +8499,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rulebook_releases_expected_minor(p_rulebook_release_id TEXT)
 RETURNS INTEGER AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_rulebook_releases_prev_minor(p_rulebook_release_id) AS val) SELECT (CASE WHEN COALESCE((SELECT NULLIF(declared_scale, '') FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id), '') = 'Major' THEN (0)::text ELSE (CASE WHEN COALESCE((SELECT NULLIF(declared_scale, '') FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id), '') = 'Minor' THEN ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0) + COALESCE(1, 0)))::text ELSE ((SELECT val FROM __erb_dedup_v1))::text END)::text END)::integer;
+  WITH __erb_dedup_v1 AS (SELECT calc_rulebook_releases_prev_minor(p_rulebook_release_id) AS val) SELECT (CASE WHEN COALESCE((SELECT NULLIF(declared_scale, '') FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id), '') = 'Major' THEN (0)::text ELSE (CASE WHEN COALESCE((SELECT NULLIF(declared_scale, '') FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id), '') = 'Minor' THEN ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0) + COALESCE(1, 0)))::text ELSE ((SELECT val FROM __erb_dedup_v1))::text END)::text END)::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_releases_expected_patch
@@ -8509,7 +8509,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rulebook_releases_expected_patch(p_rulebook_release_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT (CASE WHEN COALESCE((SELECT NULLIF(declared_scale, '') FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id), '') = 'Patch' THEN ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_rulebook_releases_prev_patch(p_rulebook_release_id)) AS v) __safe_numeric), 0) + COALESCE(1, 0)))::text ELSE (0)::text END)::integer;
+  SELECT (CASE WHEN COALESCE((SELECT NULLIF(declared_scale, '') FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id), '') = 'Patch' THEN ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_rulebook_releases_prev_patch(p_rulebook_release_id)) AS v OFFSET 0) __safe_numeric), 0) + COALESCE(1, 0)))::text ELSE (0)::text END)::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_releases_is_increment_inconsistent_with_scale
@@ -8729,7 +8729,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rulebook_releases_cq_coverage_percent(p_rulebook_release_id TEXT)
 RETURNS NUMERIC AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_rulebook_releases_cq_run_count(p_rulebook_release_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 0 THEN (0)::text ELSE (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_rulebook_releases_answerable_cq_run_count(p_rulebook_release_id)) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0), 0))) AS v) __safe_numeric), 0)))::NUMERIC, (1)::INTEGER))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_rulebook_releases_cq_run_count(p_rulebook_release_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 0 THEN (0)::text ELSE (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_rulebook_releases_answerable_cq_run_count(p_rulebook_release_id)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0), 0))) AS v OFFSET 0) __safe_numeric), 0)))::NUMERIC, (1)::INTEGER))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_releases_scored_criterion_count
@@ -9490,7 +9490,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_evaluation_contexts_assistant_answer_count(p_evaluation_context_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_evaluation_contexts_model_reasoned_answer_count(p_evaluation_context_id)) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_evaluation_contexts_otherwise_reasoned_answer_count(p_evaluation_context_id)) AS v) __safe_numeric), 0)))::integer;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_evaluation_contexts_model_reasoned_answer_count(p_evaluation_context_id)) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_evaluation_contexts_otherwise_reasoned_answer_count(p_evaluation_context_id)) AS v OFFSET 0) __safe_numeric), 0)))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_evaluation_contexts_model_reasoned_failed_answer_count
@@ -9530,7 +9530,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_evaluation_contexts_step_execution_count(p_evaluation_context_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_evaluation_contexts_out_of_order_step_execution_count(p_evaluation_context_id)) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_evaluation_contexts_in_order_step_execution_count(p_evaluation_context_id)) AS v) __safe_numeric), 0)))::integer;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_evaluation_contexts_out_of_order_step_execution_count(p_evaluation_context_id)) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_evaluation_contexts_in_order_step_execution_count(p_evaluation_context_id)) AS v OFFSET 0) __safe_numeric), 0)))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_evaluation_contexts_early_start_step_execution_count
@@ -9700,7 +9700,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_organizations_retained_departed_know_how_percent(p_organization_id TEXT)
 RETURNS NUMERIC AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_organizations_departed_holder_know_how_count(p_organization_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 0 THEN (100)::text ELSE (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_organizations_lost_departed_know_how_count(p_organization_id)) AS v) __safe_numeric), 0))) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0), 0))) AS v) __safe_numeric), 0)))::NUMERIC, (0)::INTEGER))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_organizations_departed_holder_know_how_count(p_organization_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 0 THEN (100)::text ELSE (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_organizations_lost_departed_know_how_count(p_organization_id)) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0), 0))) AS v OFFSET 0) __safe_numeric), 0)))::NUMERIC, (0)::INTEGER))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_organizations_memory_leaves_with_staff
@@ -9770,7 +9770,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_organizations_treats_knowledge_work_as_unvalued(p_organization_id TEXT)
 RETURNS BOOLEAN AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_organizations_documentation_entry_count(p_organization_id) AS val), __erb_dedup_v2 AS (SELECT calc_organizations_transfer_given_count(p_organization_id) AS val) SELECT ((COALESCE(COALESCE(((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v2)) AS v) __safe_numeric), 0)))::NUMERIC, 0) > 0, FALSE) AND COALESCE(COALESCE((COALESCE(2, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_organizations_unallocated_documentation_count(p_organization_id)) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_organizations_unallocated_transfer_count(p_organization_id)) AS v) __safe_numeric), 0))) AS v) __safe_numeric), 0)), 0) > COALESCE((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v2)) AS v) __safe_numeric), 0)), 0), FALSE)));
+  WITH __erb_dedup_v1 AS (SELECT calc_organizations_documentation_entry_count(p_organization_id) AS val), __erb_dedup_v2 AS (SELECT calc_organizations_transfer_given_count(p_organization_id) AS val) SELECT ((COALESCE(COALESCE(((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v2)) AS v OFFSET 0) __safe_numeric), 0)))::NUMERIC, 0) > 0, FALSE) AND COALESCE(COALESCE((COALESCE(2, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_organizations_unallocated_documentation_count(p_organization_id)) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_organizations_unallocated_transfer_count(p_organization_id)) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0)), 0) > COALESCE((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v2)) AS v OFFSET 0) __safe_numeric), 0)), 0), FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_organizations_person_carried_know_how_count
@@ -9926,7 +9926,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_agents_override_rate_percent(p_agent_id TEXT)
 RETURNS NUMERIC AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_agents_decision_count(p_agent_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 0 THEN (0)::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_agents_overridden_decision_count(p_agent_id)) AS v) __safe_numeric), 0) * COALESCE(100, 0))) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0), 0)))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_agents_decision_count(p_agent_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 0 THEN (0)::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_agents_overridden_decision_count(p_agent_id)) AS v OFFSET 0) __safe_numeric), 0) * COALESCE(100, 0))) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0), 0)))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_agents_is_non_human
@@ -9986,7 +9986,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_agents_draft_rewrite_rate_percent(p_agent_id TEXT)
 RETURNS NUMERIC AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_agents_draft_decision_count(p_agent_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 0 THEN (0)::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_agents_overridden_draft_count(p_agent_id)) AS v) __safe_numeric), 0) * COALESCE(100, 0))) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0), 0)))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_agents_draft_decision_count(p_agent_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 0 THEN (0)::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_agents_overridden_draft_count(p_agent_id)) AS v OFFSET 0) __safe_numeric), 0) * COALESCE(100, 0))) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0), 0)))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_agents_times_named_as_broker
@@ -10066,7 +10066,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_agents_ai_task_completion_percent(p_agent_id TEXT)
 RETURNS NUMERIC AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_agents_answer_count(p_agent_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 0 THEN (0)::text ELSE (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_agents_ai_task_completed_count(p_agent_id)) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0), 0))) AS v) __safe_numeric), 0)))::NUMERIC, (1)::INTEGER))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_agents_answer_count(p_agent_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 0 THEN (0)::text ELSE (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_agents_ai_task_completed_count(p_agent_id)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0), 0))) AS v OFFSET 0) __safe_numeric), 0)))::NUMERIC, (1)::INTEGER))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_agents_is_below_task_completion_target
@@ -11315,7 +11315,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_role_assignments_override_rate_percent(p_role_assignment_id TEXT)
 RETURNS NUMERIC AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_role_assignments_decision_count(p_role_assignment_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 0 THEN (0)::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_role_assignments_overridden_decision_count(p_role_assignment_id)) AS v) __safe_numeric), 0) * COALESCE(100, 0))) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0), 0)))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_role_assignments_decision_count(p_role_assignment_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 0 THEN (0)::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_role_assignments_overridden_decision_count(p_role_assignment_id)) AS v OFFSET 0) __safe_numeric), 0) * COALESCE(100, 0))) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0), 0)))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_role_assignments_quality_regressed_vs_predecessor
@@ -11375,7 +11375,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_role_assignments_single_override_swing_percent(p_role_assignment_id TEXT)
 RETURNS NUMERIC AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_role_assignments_decision_count(p_role_assignment_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) > 0 THEN ((COALESCE(100, 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0), 0)))::text ELSE (0)::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_role_assignments_decision_count(p_role_assignment_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) > 0 THEN ((COALESCE(100, 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0), 0)))::text ELSE (0)::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_role_assignments_quality_verdict_is_unsupported
@@ -11415,7 +11415,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_role_assignments_error_rate_percent(p_role_assignment_id TEXT)
 RETURNS NUMERIC AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_role_assignments_decision_count(p_role_assignment_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) > 0 THEN ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_role_assignments_error_correction_count(p_role_assignment_id)) AS v) __safe_numeric), 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE(100, 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0), 0))) AS v) __safe_numeric), 0)))::text ELSE (0)::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_role_assignments_decision_count(p_role_assignment_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) > 0 THEN ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_role_assignments_error_correction_count(p_role_assignment_id)) AS v OFFSET 0) __safe_numeric), 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE(100, 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0), 0))) AS v OFFSET 0) __safe_numeric), 0)))::text ELSE (0)::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_role_assignments_has_dated_authorization
@@ -11565,7 +11565,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_role_assignments_governance_evidence_count(p_role_assignment_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN calc_role_assignments_has_approving_authority(p_role_assignment_id) THEN (1)::text ELSE (0)::text END) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN calc_role_assignments_has_authorizing_change_request(p_role_assignment_id) THEN (1)::text ELSE (0)::text END) AS v) __safe_numeric), 0)))::integer;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN calc_role_assignments_has_approving_authority(p_role_assignment_id) THEN (1)::text ELSE (0)::text END) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN calc_role_assignments_has_authorizing_change_request(p_role_assignment_id) THEN (1)::text ELSE (0)::text END) AS v OFFSET 0) __safe_numeric), 0)))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_role_assignments_unauthorized_enforcement_role_key
@@ -12857,7 +12857,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedures_avg_days_to_proficiency_with_capture(p_procedure_id TEXT)
 RETURNS NUMERIC AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_procedures_proficient_with_capture_count(p_procedure_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 0 THEN (0)::text ELSE (ROUND(((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_procedures_days_with_capture_total(p_procedure_id)) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0), 0)))::NUMERIC, (1)::INTEGER))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_procedures_proficient_with_capture_count(p_procedure_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 0 THEN (0)::text ELSE (ROUND(((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_procedures_days_with_capture_total(p_procedure_id)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0), 0)))::NUMERIC, (1)::INTEGER))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedures_avg_days_to_proficiency_without_capture
@@ -12867,7 +12867,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedures_avg_days_to_proficiency_without_capture(p_procedure_id TEXT)
 RETURNS NUMERIC AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_procedures_proficient_without_capture_count(p_procedure_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 0 THEN (0)::text ELSE (ROUND(((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_procedures_days_without_capture_total(p_procedure_id)) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0), 0)))::NUMERIC, (1)::INTEGER))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_procedures_proficient_without_capture_count(p_procedure_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 0 THEN (0)::text ELSE (ROUND(((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_procedures_days_without_capture_total(p_procedure_id)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0), 0)))::NUMERIC, (1)::INTEGER))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedures_formalization_does_not_ease_onboarding
@@ -13867,7 +13867,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_versions_non_human_step_count(p_procedure_version_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_procedure_versions_count_of_steps(p_procedure_version_id)) AS v) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_procedure_versions_human_step_count(p_procedure_version_id)) AS v) __safe_numeric), 0)))::integer;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_procedure_versions_count_of_steps(p_procedure_version_id)) AS v OFFSET 0) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_procedure_versions_human_step_count(p_procedure_version_id)) AS v OFFSET 0) __safe_numeric), 0)))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_versions_mixes_human_and_software_steps
@@ -14067,7 +14067,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_versions_elicitation_evidence_count(p_procedure_version_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_procedure_versions_elicitation_session_count(p_procedure_version_id)) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_procedure_versions_expert_capture_count(p_procedure_version_id)) AS v) __safe_numeric), 0)))::integer;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_procedure_versions_elicitation_session_count(p_procedure_version_id)) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_procedure_versions_expert_capture_count(p_procedure_version_id)) AS v OFFSET 0) __safe_numeric), 0)))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_versions_indexed_segment_count
@@ -14107,7 +14107,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_versions_search_success_percent(p_procedure_version_id TEXT)
 RETURNS NUMERIC AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_procedure_versions_search_count(p_procedure_version_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 0 THEN (0)::text ELSE (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_procedure_versions_successful_search_count(p_procedure_version_id)) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0), 0))) AS v) __safe_numeric), 0)))::NUMERIC, (1)::INTEGER))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_procedure_versions_search_count(p_procedure_version_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 0 THEN (0)::text ELSE (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_procedure_versions_successful_search_count(p_procedure_version_id)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0), 0))) AS v OFFSET 0) __safe_numeric), 0)))::NUMERIC, (1)::INTEGER))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_versions_open_question_annotation_count
@@ -14247,7 +14247,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_versions_human_channel_count(p_procedure_version_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_procedure_versions_published_projection_count(p_procedure_version_id)) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_procedure_versions_human_sync_count(p_procedure_version_id)) AS v) __safe_numeric), 0)))::integer;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_procedure_versions_published_projection_count(p_procedure_version_id)) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_procedure_versions_human_sync_count(p_procedure_version_id)) AS v OFFSET 0) __safe_numeric), 0)))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_versions_machine_channel_count
@@ -14257,7 +14257,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_versions_machine_channel_count(p_procedure_version_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_procedure_versions_machine_sync_count(p_procedure_version_id)) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_procedure_versions_served_assertion_count(p_procedure_version_id)) AS v) __safe_numeric), 0)))::integer;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_procedure_versions_machine_sync_count(p_procedure_version_id)) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_procedure_versions_served_assertion_count(p_procedure_version_id)) AS v OFFSET 0) __safe_numeric), 0)))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_versions_serves_only_humans_or_only_machines
@@ -14267,7 +14267,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_versions_serves_only_humans_or_only_machines(p_procedure_version_id TEXT)
 RETURNS BOOLEAN AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_procedure_versions_human_channel_count(p_procedure_version_id) AS val), __erb_dedup_v2 AS (SELECT calc_procedure_versions_machine_channel_count(p_procedure_version_id) AS val) SELECT ((COALESCE(COALESCE((SELECT is_current FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id), FALSE), FALSE) AND COALESCE(COALESCE(((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v2)) AS v) __safe_numeric), 0)))::NUMERIC, 0) > 0, FALSE) AND COALESCE((COALESCE(COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 0, FALSE) OR COALESCE(COALESCE(((SELECT val FROM __erb_dedup_v2))::NUMERIC, 0) = 0, FALSE)), FALSE)));
+  WITH __erb_dedup_v1 AS (SELECT calc_procedure_versions_human_channel_count(p_procedure_version_id) AS val), __erb_dedup_v2 AS (SELECT calc_procedure_versions_machine_channel_count(p_procedure_version_id) AS val) SELECT ((COALESCE(COALESCE((SELECT is_current FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id), FALSE), FALSE) AND COALESCE(COALESCE(((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v2)) AS v OFFSET 0) __safe_numeric), 0)))::NUMERIC, 0) > 0, FALSE) AND COALESCE((COALESCE(COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 0, FALSE) OR COALESCE(COALESCE(((SELECT val FROM __erb_dedup_v2))::NUMERIC, 0) = 0, FALSE)), FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_versions_fresh_mining_run_count
@@ -14327,7 +14327,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_versions_ai_consumption_count(p_procedure_version_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_procedure_versions_served_assertion_count(p_procedure_version_id)) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_procedure_versions_indexed_segment_count(p_procedure_version_id)) AS v) __safe_numeric), 0)))::integer;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_procedure_versions_served_assertion_count(p_procedure_version_id)) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_procedure_versions_indexed_segment_count(p_procedure_version_id)) AS v OFFSET 0) __safe_numeric), 0)))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_versions_uses_ai_in_one_direction_only
@@ -14457,7 +14457,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_versions_complementary_method_count(p_procedure_version_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN COALESCE((calc_procedure_versions_interview_session_count(p_procedure_version_id))::NUMERIC, 0) > 0 THEN (1)::text ELSE (0)::text END) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN COALESCE((calc_procedure_versions_observation_session_count(p_procedure_version_id))::NUMERIC, 0) > 0 THEN (1)::text ELSE (0)::text END) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN COALESCE((calc_procedure_versions_workshop_session_count(p_procedure_version_id))::NUMERIC, 0) > 0 THEN (1)::text ELSE (0)::text END) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN COALESCE((calc_procedure_versions_protocol_session_count(p_procedure_version_id))::NUMERIC, 0) > 0 THEN (1)::text ELSE (0)::text END) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN COALESCE((calc_procedure_versions_incident_session_count(p_procedure_version_id))::NUMERIC, 0) > 0 THEN (1)::text ELSE (0)::text END) AS v) __safe_numeric), 0))) AS v) __safe_numeric), 0))) AS v) __safe_numeric), 0))) AS v) __safe_numeric), 0)))::integer;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN COALESCE((calc_procedure_versions_interview_session_count(p_procedure_version_id))::NUMERIC, 0) > 0 THEN (1)::text ELSE (0)::text END) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN COALESCE((calc_procedure_versions_observation_session_count(p_procedure_version_id))::NUMERIC, 0) > 0 THEN (1)::text ELSE (0)::text END) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN COALESCE((calc_procedure_versions_workshop_session_count(p_procedure_version_id))::NUMERIC, 0) > 0 THEN (1)::text ELSE (0)::text END) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN COALESCE((calc_procedure_versions_protocol_session_count(p_procedure_version_id))::NUMERIC, 0) > 0 THEN (1)::text ELSE (0)::text END) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN COALESCE((calc_procedure_versions_incident_session_count(p_procedure_version_id))::NUMERIC, 0) > 0 THEN (1)::text ELSE (0)::text END) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0)))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_versions_relies_on_single_method
@@ -14727,7 +14727,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_versions_tacit_judgment_fragment_count(p_procedure_version_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_procedure_versions_tacit_form_fragment_count(p_procedure_version_id)) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_procedure_versions_situated_judgment_fragment_count(p_procedure_version_id)) AS v) __safe_numeric), 0)))::integer;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_procedure_versions_tacit_form_fragment_count(p_procedure_version_id)) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_procedure_versions_situated_judgment_fragment_count(p_procedure_version_id)) AS v OFFSET 0) __safe_numeric), 0)))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_versions_first_step
@@ -15772,7 +15772,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_steps_has_instruction_only(p_step_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(COALESCE(((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_steps_precondition_count(p_step_id)) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_steps_postcondition_count(p_step_id)) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_steps_invariant_count(p_step_id)) AS v) __safe_numeric), 0))) AS v) __safe_numeric), 0)))::NUMERIC, 0) = 0, FALSE) AND COALESCE(COALESCE((calc_steps_cue_count(p_step_id))::NUMERIC, 0) = 0, FALSE) AND COALESCE(COALESCE((calc_steps_failure_mode_count(p_step_id))::NUMERIC, 0) = 0, FALSE) AND COALESCE(COALESCE((calc_steps_decision_point_count(p_step_id))::NUMERIC, 0) = 0, FALSE) AND COALESCE(COALESCE((calc_steps_knowledge_fragment_count(p_step_id))::NUMERIC, 0) = 0, FALSE)));
+  SELECT ((COALESCE(COALESCE(((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_steps_precondition_count(p_step_id)) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_steps_postcondition_count(p_step_id)) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_steps_invariant_count(p_step_id)) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0)))::NUMERIC, 0) = 0, FALSE) AND COALESCE(COALESCE((calc_steps_cue_count(p_step_id))::NUMERIC, 0) = 0, FALSE) AND COALESCE(COALESCE((calc_steps_failure_mode_count(p_step_id))::NUMERIC, 0) = 0, FALSE) AND COALESCE(COALESCE((calc_steps_decision_point_count(p_step_id))::NUMERIC, 0) = 0, FALSE) AND COALESCE(COALESCE((calc_steps_knowledge_fragment_count(p_step_id))::NUMERIC, 0) = 0, FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_steps_input_variable_count
@@ -17573,7 +17573,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_resources_is_content_without_organization(p_resource_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(description, '') FROM resources WHERE resource_id = p_resource_id) IS NOT NULL, FALSE) AND COALESCE((COALESCE((SELECT NULLIF(artifact_type_concept, '') FROM resources WHERE resource_id = p_resource_id) IS NULL, FALSE) OR COALESCE((SELECT NULLIF(keywords, '') FROM resources WHERE resource_id = p_resource_id) IS NULL, FALSE) OR COALESCE(COALESCE(((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_resources_referencing_step_count(p_resource_id)) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_resources_referencing_version_count(p_resource_id)) AS v) __safe_numeric), 0)))::NUMERIC, 0) = 0, FALSE)), FALSE)));
+  SELECT ((COALESCE((SELECT NULLIF(description, '') FROM resources WHERE resource_id = p_resource_id) IS NOT NULL, FALSE) AND COALESCE((COALESCE((SELECT NULLIF(artifact_type_concept, '') FROM resources WHERE resource_id = p_resource_id) IS NULL, FALSE) OR COALESCE((SELECT NULLIF(keywords, '') FROM resources WHERE resource_id = p_resource_id) IS NULL, FALSE) OR COALESCE(COALESCE(((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_resources_referencing_step_count(p_resource_id)) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_resources_referencing_version_count(p_resource_id)) AS v OFFSET 0) __safe_numeric), 0)))::NUMERIC, 0) = 0, FALSE)), FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_resources_trailing_practice_count
@@ -18498,7 +18498,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_knowledge_fragments_fragility_signal_count(p_knowledge_fragment_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN calc_knowledge_fragments_is_from_single_witness(p_knowledge_fragment_id) THEN (1)::text ELSE (0)::text END) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN calc_knowledge_fragments_is_overdue_for_review(p_knowledge_fragment_id) THEN (1)::text ELSE (0)::text END) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN calc_knowledge_fragments_is_low_confidence(p_knowledge_fragment_id) THEN (1)::text ELSE (0)::text END) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN calc_knowledge_fragments_has_operational_reliance(p_knowledge_fragment_id) THEN (1)::text ELSE (0)::text END) AS v) __safe_numeric), 0))) AS v) __safe_numeric), 0))) AS v) __safe_numeric), 0)))::integer;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN calc_knowledge_fragments_is_from_single_witness(p_knowledge_fragment_id) THEN (1)::text ELSE (0)::text END) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN calc_knowledge_fragments_is_overdue_for_review(p_knowledge_fragment_id) THEN (1)::text ELSE (0)::text END) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN calc_knowledge_fragments_is_low_confidence(p_knowledge_fragment_id) THEN (1)::text ELSE (0)::text END) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN calc_knowledge_fragments_has_operational_reliance(p_knowledge_fragment_id) THEN (1)::text ELSE (0)::text END) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0)))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_knowledge_fragments_is_compound_fragile
@@ -18668,7 +18668,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_knowledge_fragments_reliance_surface_count(p_knowledge_fragment_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_knowledge_fragments_is_invoked_by_an_exception(p_knowledge_fragment_id)) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_knowledge_fragments_ratified_boundary_count(p_knowledge_fragment_id)) AS v) __safe_numeric), 0)))::integer;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_knowledge_fragments_is_invoked_by_an_exception(p_knowledge_fragment_id)) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_knowledge_fragments_ratified_boundary_count(p_knowledge_fragment_id)) AS v OFFSET 0) __safe_numeric), 0)))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_knowledge_fragments_days_awaiting_my_approval
@@ -20011,7 +20011,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_executions_evaluated_control_count(p_procedure_execution_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_procedure_executions_computedly_witnessed_control_count(p_procedure_execution_id)) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_procedure_executions_asserted_only_control_count(p_procedure_execution_id)) AS v) __safe_numeric), 0)))::numeric;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_procedure_executions_computedly_witnessed_control_count(p_procedure_execution_id)) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_procedure_executions_asserted_only_control_count(p_procedure_execution_id)) AS v OFFSET 0) __safe_numeric), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_executions_computed_assurance_ratio
@@ -20021,7 +20021,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_executions_computed_assurance_ratio(p_procedure_execution_id TEXT)
 RETURNS NUMERIC AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_procedure_executions_evaluated_control_count(p_procedure_execution_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 0 THEN (0)::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_procedure_executions_computedly_witnessed_control_count(p_procedure_execution_id)) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0), 0)))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_procedure_executions_evaluated_control_count(p_procedure_execution_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 0 THEN (0)::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_procedure_executions_computedly_witnessed_control_count(p_procedure_execution_id)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0), 0)))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_executions_interested_party_assertion_count
@@ -20191,7 +20191,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_executions_delivery_yield_percent(p_procedure_execution_id TEXT)
 RETURNS NUMERIC AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_procedure_executions_intended_recipient_count(p_procedure_execution_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) > 0 THEN ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_procedure_executions_reached_recipient_count(p_procedure_execution_id)) AS v) __safe_numeric), 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE(100, 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0), 0))) AS v) __safe_numeric), 0)))::text ELSE (0)::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_procedure_executions_intended_recipient_count(p_procedure_execution_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) > 0 THEN ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_procedure_executions_reached_recipient_count(p_procedure_execution_id)) AS v OFFSET 0) __safe_numeric), 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE(100, 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0), 0))) AS v OFFSET 0) __safe_numeric), 0)))::text ELSE (0)::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_executions_campaign_silently_lost_audience
@@ -20822,7 +20822,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_step_executions_unevaluated_blocking_count(p_step_execution_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_step_executions_expected_blocking_count(p_step_execution_id)) AS v) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_step_executions_evaluated_blocking_count(p_step_execution_id)) AS v) __safe_numeric), 0)))::numeric;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_step_executions_expected_blocking_count(p_step_execution_id)) AS v OFFSET 0) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_step_executions_evaluated_blocking_count(p_step_execution_id)) AS v OFFSET 0) __safe_numeric), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_step_executions_has_unevaluated_blocking_control
@@ -20892,7 +20892,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_step_executions_skipped_verification_count(p_step_execution_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_step_executions_expected_verification_count(p_step_execution_id)) AS v) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_step_executions_performed_verification_count(p_step_execution_id)) AS v) __safe_numeric), 0)))::numeric;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_step_executions_expected_verification_count(p_step_execution_id)) AS v OFFSET 0) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_step_executions_performed_verification_count(p_step_execution_id)) AS v OFFSET 0) __safe_numeric), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_step_executions_has_skipped_verification
@@ -21382,7 +21382,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_step_executions_performed_check_count(p_step_execution_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_step_executions_performed_verification_count(p_step_execution_id)) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_step_executions_evaluated_blocking_count(p_step_execution_id)) AS v) __safe_numeric), 0)))::numeric;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_step_executions_performed_verification_count(p_step_execution_id)) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_step_executions_evaluated_blocking_count(p_step_execution_id)) AS v OFFSET 0) __safe_numeric), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_step_executions_declared_check_count
@@ -21392,7 +21392,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_step_executions_declared_check_count(p_step_execution_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_step_executions_expected_verification_count(p_step_execution_id)) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_step_executions_expected_blocking_count(p_step_execution_id)) AS v) __safe_numeric), 0)))::numeric;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_step_executions_expected_verification_count(p_step_execution_id)) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_step_executions_expected_blocking_count(p_step_execution_id)) AS v OFFSET 0) __safe_numeric), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_step_executions_is_unchecked_by_design
@@ -21723,6 +21723,16 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_step_executions_is_blocked_by_observed_cue(p_step_execution_id TEXT)
 RETURNS BOOLEAN AS $$
   SELECT (COALESCE((calc_step_executions_incomplete_cue_observation_count(p_step_execution_id))::NUMERIC, 0) > 0)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_step_executions_is_blocked_by_failed_precondition
+-- Field: StepExecutions.IsBlockedByFailedPrecondition
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_step_executions_is_blocked_by_failed_precondition(p_step_execution_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (COALESCE((calc_step_executions_failed_precondition_count(p_step_execution_id))::NUMERIC, 0) > 0)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_requirement_satisfactions_requirement_is_blocking
@@ -22823,7 +22833,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_review_events_cadence_drift_days(p_review_event_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_review_events_days_since_reviewed(p_review_event_id)) AS v) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_review_events_promised_cadence_days(p_review_event_id)) AS v) __safe_numeric), 0)))::integer;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_review_events_days_since_reviewed(p_review_event_id)) AS v OFFSET 0) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_review_events_promised_cadence_days(p_review_event_id)) AS v OFFSET 0) __safe_numeric), 0)))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_review_events_promise_and_behavior_disagree
@@ -24900,7 +24910,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_message_deliveries_segment_count(p_message_delivery_id TEXT)
 RETURNS INTEGER AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_message_deliveries_rendered_body_length(p_message_delivery_id) AS val), __erb_dedup_v2 AS (SELECT calc_message_deliveries_policy_max_message_length_at_send(p_message_delivery_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 0 THEN (0)::text ELSE (CASE WHEN COALESCE((SELECT val FROM __erb_dedup_v1), 0) <= COALESCE((SELECT val FROM __erb_dedup_v2), 0) THEN (1)::text ELSE (CEIL(((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v2)) AS v) __safe_numeric), 0), 0)))::NUMERIC * POWER(10, (0)::INTEGER)) / POWER(10, (0)::INTEGER))::text END)::text END)::integer;
+  WITH __erb_dedup_v1 AS (SELECT calc_message_deliveries_rendered_body_length(p_message_delivery_id) AS val), __erb_dedup_v2 AS (SELECT calc_message_deliveries_policy_max_message_length_at_send(p_message_delivery_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 0 THEN (0)::text ELSE (CASE WHEN COALESCE((SELECT val FROM __erb_dedup_v1), 0) <= COALESCE((SELECT val FROM __erb_dedup_v2), 0) THEN (1)::text ELSE (CEIL(((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v2)) AS v OFFSET 0) __safe_numeric), 0), 0)))::NUMERIC * POWER(10, (0)::INTEGER)) / POWER(10, (0)::INTEGER))::text END)::text END)::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_message_deliveries_is_over_segment_limit
@@ -25860,7 +25870,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_send_intents_hours_until_window_opens(p_send_intent_id TEXT)
 RETURNS INTEGER AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_send_intents_intent_quiet_end_hour(p_send_intent_id) AS val) SELECT (CASE WHEN calc_send_intents_timing_gate_passed(p_send_intent_id) THEN (0)::text ELSE (CASE WHEN COALESCE((SELECT proposed_send_at_local_hour FROM send_intents WHERE send_intent_id = p_send_intent_id), 0) < COALESCE((SELECT val FROM __erb_dedup_v1), 0) THEN ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT proposed_send_at_local_hour FROM send_intents WHERE send_intent_id = p_send_intent_id)) AS v) __safe_numeric), 0)))::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE(24, 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT proposed_send_at_local_hour FROM send_intents WHERE send_intent_id = p_send_intent_id)) AS v) __safe_numeric), 0))) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0)))::text END)::text END)::integer;
+  WITH __erb_dedup_v1 AS (SELECT calc_send_intents_intent_quiet_end_hour(p_send_intent_id) AS val) SELECT (CASE WHEN calc_send_intents_timing_gate_passed(p_send_intent_id) THEN (0)::text ELSE (CASE WHEN COALESCE((SELECT proposed_send_at_local_hour FROM send_intents WHERE send_intent_id = p_send_intent_id), 0) < COALESCE((SELECT val FROM __erb_dedup_v1), 0) THEN ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT proposed_send_at_local_hour FROM send_intents WHERE send_intent_id = p_send_intent_id)) AS v OFFSET 0) __safe_numeric), 0)))::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE(24, 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT proposed_send_at_local_hour FROM send_intents WHERE send_intent_id = p_send_intent_id)) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0)))::text END)::text END)::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_send_intents_length_gate_passed
@@ -27333,7 +27343,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rulebook_tables_is_unaligned_to_standard(p_rulebook_table_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (COALESCE(((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_rulebook_tables_exact_mapping_count(p_rulebook_table_id)) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_rulebook_tables_aligned_mapping_count(p_rulebook_table_id)) AS v) __safe_numeric), 0)))::NUMERIC, 0) = 0)::boolean;
+  SELECT (COALESCE(((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_rulebook_tables_exact_mapping_count(p_rulebook_table_id)) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_rulebook_tables_aligned_mapping_count(p_rulebook_table_id)) AS v OFFSET 0) __safe_numeric), 0)))::NUMERIC, 0) = 0)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_tables_semantic_type_iri_field_count
@@ -28253,7 +28263,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_process_mining_runs_conformance_rate(p_process_mining_run_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN COALESCE(((SELECT discovered_variant_count FROM process_mining_runs WHERE process_mining_run_id = p_process_mining_run_id))::NUMERIC, 0) = 0 THEN (0)::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT conforming_variant_count FROM process_mining_runs WHERE process_mining_run_id = p_process_mining_run_id)) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT discovered_variant_count FROM process_mining_runs WHERE process_mining_run_id = p_process_mining_run_id)) AS v) __safe_numeric), 0), 0)))::text END)::numeric;
+  SELECT (CASE WHEN COALESCE(((SELECT discovered_variant_count FROM process_mining_runs WHERE process_mining_run_id = p_process_mining_run_id))::NUMERIC, 0) = 0 THEN (0)::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT conforming_variant_count FROM process_mining_runs WHERE process_mining_run_id = p_process_mining_run_id)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT discovered_variant_count FROM process_mining_runs WHERE process_mining_run_id = p_process_mining_run_id)) AS v OFFSET 0) __safe_numeric), 0), 0)))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_process_mining_runs_is_conformant
@@ -28363,7 +28373,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_process_mining_runs_conformance_percent(p_process_mining_run_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT (ROUND(((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_process_mining_runs_conformance_rate(p_process_mining_run_id)) AS v) __safe_numeric), 0) * COALESCE(100, 0)))::NUMERIC, (0)::INTEGER))::integer;
+  SELECT (ROUND(((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_process_mining_runs_conformance_rate(p_process_mining_run_id)) AS v OFFSET 0) __safe_numeric), 0) * COALESCE(100, 0)))::NUMERIC, (0)::INTEGER))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_vocabularies_name
@@ -28493,7 +28503,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_vocabularies_organized_kind_count(p_vocabulary_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN COALESCE((calc_vocabularies_organized_transcript_count(p_vocabulary_id))::NUMERIC, 0) > 0 THEN (1)::text ELSE (0)::text END) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN COALESCE((calc_vocabularies_organized_field_notes_count(p_vocabulary_id))::NUMERIC, 0) > 0 THEN (1)::text ELSE (0)::text END) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN COALESCE((calc_vocabularies_organized_process_map_count(p_vocabulary_id))::NUMERIC, 0) > 0 THEN (1)::text ELSE (0)::text END) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN COALESCE((calc_vocabularies_organized_mined_event_trace_count(p_vocabulary_id))::NUMERIC, 0) > 0 THEN (1)::text ELSE (0)::text END) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN COALESCE((calc_vocabularies_organized_document_excerpt_count(p_vocabulary_id))::NUMERIC, 0) > 0 THEN (1)::text ELSE (0)::text END) AS v) __safe_numeric), 0))) AS v) __safe_numeric), 0))) AS v) __safe_numeric), 0))) AS v) __safe_numeric), 0)))::integer;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN COALESCE((calc_vocabularies_organized_transcript_count(p_vocabulary_id))::NUMERIC, 0) > 0 THEN (1)::text ELSE (0)::text END) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN COALESCE((calc_vocabularies_organized_field_notes_count(p_vocabulary_id))::NUMERIC, 0) > 0 THEN (1)::text ELSE (0)::text END) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN COALESCE((calc_vocabularies_organized_process_map_count(p_vocabulary_id))::NUMERIC, 0) > 0 THEN (1)::text ELSE (0)::text END) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN COALESCE((calc_vocabularies_organized_mined_event_trace_count(p_vocabulary_id))::NUMERIC, 0) > 0 THEN (1)::text ELSE (0)::text END) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN COALESCE((calc_vocabularies_organized_document_excerpt_count(p_vocabulary_id))::NUMERIC, 0) > 0 THEN (1)::text ELSE (0)::text END) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0)))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_vocabularies_is_single_kind_frame
@@ -28999,7 +29009,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_conformance_substrates_latest_cells_failed(p_conformance_substrate_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_conformance_substrates_latest_cells_tested(p_conformance_substrate_id)) AS v) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_conformance_substrates_latest_cells_passed(p_conformance_substrate_id)) AS v) __safe_numeric), 0)))::numeric;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_conformance_substrates_latest_cells_tested(p_conformance_substrate_id)) AS v OFFSET 0) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_conformance_substrates_latest_cells_passed(p_conformance_substrate_id)) AS v OFFSET 0) __safe_numeric), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_conformance_substrates_latest_score
@@ -29009,7 +29019,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_conformance_substrates_latest_score(p_conformance_substrate_id TEXT)
 RETURNS NUMERIC AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_conformance_substrates_latest_cells_tested(p_conformance_substrate_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 0 THEN (0)::text ELSE (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_conformance_substrates_latest_cells_passed(p_conformance_substrate_id)) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0), 0))) AS v) __safe_numeric), 0)))::NUMERIC, (2)::INTEGER))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_conformance_substrates_latest_cells_tested(p_conformance_substrate_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 0 THEN (0)::text ELSE (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_conformance_substrates_latest_cells_passed(p_conformance_substrate_id)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0), 0))) AS v OFFSET 0) __safe_numeric), 0)))::NUMERIC, (2)::INTEGER))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_conformance_substrates_disagreeing_field_count
@@ -29171,7 +29181,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_conformance_runs_cells_failed(p_conformance_run_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_conformance_runs_cells_tested(p_conformance_run_id)) AS v) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_conformance_runs_cells_passed(p_conformance_run_id)) AS v) __safe_numeric), 0)))::numeric;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_conformance_runs_cells_tested(p_conformance_run_id)) AS v OFFSET 0) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_conformance_runs_cells_passed(p_conformance_run_id)) AS v OFFSET 0) __safe_numeric), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_conformance_runs_overall_score
@@ -29181,7 +29191,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_conformance_runs_overall_score(p_conformance_run_id TEXT)
 RETURNS NUMERIC AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_conformance_runs_cells_tested(p_conformance_run_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 0 THEN (0)::text ELSE (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_conformance_runs_cells_passed(p_conformance_run_id)) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0), 0))) AS v) __safe_numeric), 0)))::NUMERIC, (2)::INTEGER))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_conformance_runs_cells_tested(p_conformance_run_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 0 THEN (0)::text ELSE (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_conformance_runs_cells_passed(p_conformance_run_id)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0), 0))) AS v OFFSET 0) __safe_numeric), 0)))::NUMERIC, (2)::INTEGER))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_conformance_runs_imperfect_substrate_count
@@ -29191,7 +29201,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_conformance_runs_imperfect_substrate_count(p_conformance_run_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_conformance_runs_substrate_count(p_conformance_run_id)) AS v) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_conformance_runs_perfect_substrate_count(p_conformance_run_id)) AS v) __safe_numeric), 0)))::numeric;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_conformance_runs_substrate_count(p_conformance_run_id)) AS v OFFSET 0) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_conformance_runs_perfect_substrate_count(p_conformance_run_id)) AS v OFFSET 0) __safe_numeric), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_conformance_runs_is_fully_conformant
@@ -29288,7 +29298,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_substrate_run_scores_cells_failed(p_substrate_run_score_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT cells_tested FROM substrate_run_scores WHERE substrate_run_score_id = p_substrate_run_score_id)) AS v) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT cells_passed FROM substrate_run_scores WHERE substrate_run_score_id = p_substrate_run_score_id)) AS v) __safe_numeric), 0)))::numeric;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT cells_tested FROM substrate_run_scores WHERE substrate_run_score_id = p_substrate_run_score_id)) AS v OFFSET 0) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT cells_passed FROM substrate_run_scores WHERE substrate_run_score_id = p_substrate_run_score_id)) AS v OFFSET 0) __safe_numeric), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_substrate_run_scores_score
@@ -29298,7 +29308,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_substrate_run_scores_score(p_substrate_run_score_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN COALESCE(((SELECT cells_tested FROM substrate_run_scores WHERE substrate_run_score_id = p_substrate_run_score_id))::NUMERIC, 0) = 0 THEN (0)::text ELSE (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT cells_passed FROM substrate_run_scores WHERE substrate_run_score_id = p_substrate_run_score_id)) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT cells_tested FROM substrate_run_scores WHERE substrate_run_score_id = p_substrate_run_score_id)) AS v) __safe_numeric), 0), 0))) AS v) __safe_numeric), 0)))::NUMERIC, (2)::INTEGER))::text END)::numeric;
+  SELECT (CASE WHEN COALESCE(((SELECT cells_tested FROM substrate_run_scores WHERE substrate_run_score_id = p_substrate_run_score_id))::NUMERIC, 0) = 0 THEN (0)::text ELSE (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT cells_passed FROM substrate_run_scores WHERE substrate_run_score_id = p_substrate_run_score_id)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT cells_tested FROM substrate_run_scores WHERE substrate_run_score_id = p_substrate_run_score_id)) AS v OFFSET 0) __safe_numeric), 0), 0))) AS v OFFSET 0) __safe_numeric), 0)))::NUMERIC, (2)::INTEGER))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_substrate_run_scores_calculated_score
@@ -29308,7 +29318,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_substrate_run_scores_calculated_score(p_substrate_run_score_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN COALESCE(((SELECT calculated_tested FROM substrate_run_scores WHERE substrate_run_score_id = p_substrate_run_score_id))::NUMERIC, 0) = 0 THEN (0)::text ELSE (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT calculated_passed FROM substrate_run_scores WHERE substrate_run_score_id = p_substrate_run_score_id)) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT calculated_tested FROM substrate_run_scores WHERE substrate_run_score_id = p_substrate_run_score_id)) AS v) __safe_numeric), 0), 0))) AS v) __safe_numeric), 0)))::NUMERIC, (2)::INTEGER))::text END)::numeric;
+  SELECT (CASE WHEN COALESCE(((SELECT calculated_tested FROM substrate_run_scores WHERE substrate_run_score_id = p_substrate_run_score_id))::NUMERIC, 0) = 0 THEN (0)::text ELSE (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT calculated_passed FROM substrate_run_scores WHERE substrate_run_score_id = p_substrate_run_score_id)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT calculated_tested FROM substrate_run_scores WHERE substrate_run_score_id = p_substrate_run_score_id)) AS v OFFSET 0) __safe_numeric), 0), 0))) AS v OFFSET 0) __safe_numeric), 0)))::NUMERIC, (2)::INTEGER))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_substrate_run_scores_lookup_score
@@ -29318,7 +29328,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_substrate_run_scores_lookup_score(p_substrate_run_score_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN COALESCE(((SELECT lookup_tested FROM substrate_run_scores WHERE substrate_run_score_id = p_substrate_run_score_id))::NUMERIC, 0) = 0 THEN (0)::text ELSE (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT lookup_passed FROM substrate_run_scores WHERE substrate_run_score_id = p_substrate_run_score_id)) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT lookup_tested FROM substrate_run_scores WHERE substrate_run_score_id = p_substrate_run_score_id)) AS v) __safe_numeric), 0), 0))) AS v) __safe_numeric), 0)))::NUMERIC, (2)::INTEGER))::text END)::numeric;
+  SELECT (CASE WHEN COALESCE(((SELECT lookup_tested FROM substrate_run_scores WHERE substrate_run_score_id = p_substrate_run_score_id))::NUMERIC, 0) = 0 THEN (0)::text ELSE (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT lookup_passed FROM substrate_run_scores WHERE substrate_run_score_id = p_substrate_run_score_id)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT lookup_tested FROM substrate_run_scores WHERE substrate_run_score_id = p_substrate_run_score_id)) AS v OFFSET 0) __safe_numeric), 0), 0))) AS v OFFSET 0) __safe_numeric), 0)))::NUMERIC, (2)::INTEGER))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_substrate_run_scores_aggregation_score
@@ -29328,7 +29338,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_substrate_run_scores_aggregation_score(p_substrate_run_score_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN COALESCE(((SELECT aggregation_tested FROM substrate_run_scores WHERE substrate_run_score_id = p_substrate_run_score_id))::NUMERIC, 0) = 0 THEN (0)::text ELSE (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT aggregation_passed FROM substrate_run_scores WHERE substrate_run_score_id = p_substrate_run_score_id)) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT aggregation_tested FROM substrate_run_scores WHERE substrate_run_score_id = p_substrate_run_score_id)) AS v) __safe_numeric), 0), 0))) AS v) __safe_numeric), 0)))::NUMERIC, (2)::INTEGER))::text END)::numeric;
+  SELECT (CASE WHEN COALESCE(((SELECT aggregation_tested FROM substrate_run_scores WHERE substrate_run_score_id = p_substrate_run_score_id))::NUMERIC, 0) = 0 THEN (0)::text ELSE (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT aggregation_passed FROM substrate_run_scores WHERE substrate_run_score_id = p_substrate_run_score_id)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT aggregation_tested FROM substrate_run_scores WHERE substrate_run_score_id = p_substrate_run_score_id)) AS v OFFSET 0) __safe_numeric), 0), 0))) AS v OFFSET 0) __safe_numeric), 0)))::NUMERIC, (2)::INTEGER))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_substrate_run_scores_is_perfect
@@ -29420,7 +29430,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_table_conformance_cells_failed(p_table_conformance_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT cells_tested FROM table_conformance WHERE table_conformance_id = p_table_conformance_id)) AS v) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT cells_passed FROM table_conformance WHERE table_conformance_id = p_table_conformance_id)) AS v) __safe_numeric), 0)))::numeric;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT cells_tested FROM table_conformance WHERE table_conformance_id = p_table_conformance_id)) AS v OFFSET 0) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT cells_passed FROM table_conformance WHERE table_conformance_id = p_table_conformance_id)) AS v OFFSET 0) __safe_numeric), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_table_conformance_score
@@ -29430,7 +29440,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_table_conformance_score(p_table_conformance_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN COALESCE(((SELECT cells_tested FROM table_conformance WHERE table_conformance_id = p_table_conformance_id))::NUMERIC, 0) = 0 THEN (0)::text ELSE (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT cells_passed FROM table_conformance WHERE table_conformance_id = p_table_conformance_id)) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT cells_tested FROM table_conformance WHERE table_conformance_id = p_table_conformance_id)) AS v) __safe_numeric), 0), 0))) AS v) __safe_numeric), 0)))::NUMERIC, (2)::INTEGER))::text END)::numeric;
+  SELECT (CASE WHEN COALESCE(((SELECT cells_tested FROM table_conformance WHERE table_conformance_id = p_table_conformance_id))::NUMERIC, 0) = 0 THEN (0)::text ELSE (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT cells_passed FROM table_conformance WHERE table_conformance_id = p_table_conformance_id)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT cells_tested FROM table_conformance WHERE table_conformance_id = p_table_conformance_id)) AS v OFFSET 0) __safe_numeric), 0), 0))) AS v OFFSET 0) __safe_numeric), 0)))::NUMERIC, (2)::INTEGER))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_table_conformance_is_perfect
@@ -29684,7 +29694,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_knowledge_methods_usage_count(p_knowledge_method_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_knowledge_methods_elicitation_use_count(p_knowledge_method_id)) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_knowledge_methods_application_count(p_knowledge_method_id)) AS v) __safe_numeric), 0)))::integer;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_knowledge_methods_elicitation_use_count(p_knowledge_method_id)) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_knowledge_methods_application_count(p_knowledge_method_id)) AS v OFFSET 0) __safe_numeric), 0)))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_knowledge_methods_is_applied
@@ -29744,7 +29754,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_source_articles_uncovered_claim_count(p_source_article_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_source_articles_claim_count(p_source_article_id)) AS v) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_source_articles_covered_claim_count(p_source_article_id)) AS v) __safe_numeric), 0)))::integer;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_source_articles_claim_count(p_source_article_id)) AS v OFFSET 0) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_source_articles_covered_claim_count(p_source_article_id)) AS v OFFSET 0) __safe_numeric), 0)))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_source_articles_coverage_percent
@@ -29754,7 +29764,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_source_articles_coverage_percent(p_source_article_id TEXT)
 RETURNS NUMERIC AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_source_articles_claim_count(p_source_article_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 0 THEN (0)::text ELSE (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_source_articles_covered_claim_count(p_source_article_id)) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0), 0))) AS v) __safe_numeric), 0)))::NUMERIC, (1)::INTEGER))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_source_articles_claim_count(p_source_article_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 0 THEN (0)::text ELSE (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_source_articles_covered_claim_count(p_source_article_id)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0), 0))) AS v OFFSET 0) __safe_numeric), 0)))::NUMERIC, (1)::INTEGER))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_source_articles_agreed_coverage_percent
@@ -29764,7 +29774,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_source_articles_agreed_coverage_percent(p_source_article_id TEXT)
 RETURNS NUMERIC AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_source_articles_claim_count(p_source_article_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 0 THEN (0)::text ELSE (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_source_articles_agreed_claim_count(p_source_article_id)) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0), 0))) AS v) __safe_numeric), 0)))::NUMERIC, (1)::INTEGER))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_source_articles_claim_count(p_source_article_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 0 THEN (0)::text ELSE (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_source_articles_agreed_claim_count(p_source_article_id)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0), 0))) AS v OFFSET 0) __safe_numeric), 0)))::NUMERIC, (1)::INTEGER))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_source_articles_is_fully_covered
@@ -30289,7 +30299,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_lifecycle_statuses_is_non_pko_status_in_use(p_lifecycle_status_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(COALESCE((SELECT is_pko_status FROM lifecycle_statuses WHERE lifecycle_status_id = p_lifecycle_status_id), FALSE) = FALSE, FALSE) AND COALESCE(COALESCE(((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_lifecycle_statuses_version_use_count(p_lifecycle_status_id)) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_lifecycle_statuses_execution_use_count(p_lifecycle_status_id)) AS v) __safe_numeric), 0)))::NUMERIC, 0) > 0, FALSE)));
+  SELECT ((COALESCE(COALESCE((SELECT is_pko_status FROM lifecycle_statuses WHERE lifecycle_status_id = p_lifecycle_status_id), FALSE) = FALSE, FALSE) AND COALESCE(COALESCE(((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_lifecycle_statuses_version_use_count(p_lifecycle_status_id)) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_lifecycle_statuses_execution_use_count(p_lifecycle_status_id)) AS v OFFSET 0) __safe_numeric), 0)))::NUMERIC, 0) > 0, FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_facilities_name
@@ -31172,6 +31182,28 @@ RETURNS TEXT AS $$
   SELECT (CASE WHEN COALESCE((SELECT NULLIF(usage, '') FROM execution_entities WHERE execution_entity_id = p_execution_entity_id), '') = 'Generated' THEN (calc_execution_entities_generating_agent(p_execution_entity_id))::text ELSE ('')::text END)::text;
 $$ LANGUAGE sql STABLE;
 
+-- calc_step_conditions_enforced_requirement_is_computed
+-- Field: StepConditions.EnforcedRequirementIsComputed
+-- Type: lookup | DataType: boolean | Returns: BOOLEAN
+-- Lookup: DerivedHasComputedWitness from related Requirements
+
+
+CREATE OR REPLACE FUNCTION calc_step_conditions_enforced_requirement_is_computed(p_step_condition_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT calc_requirements_derived_has_computed_witness((SELECT enforces_requirement FROM step_conditions WHERE step_condition_id = p_step_condition_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_step_conditions_enforced_requirement_statement
+-- Field: StepConditions.EnforcedRequirementStatement
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: Statement from related Requirements
+
+
+CREATE OR REPLACE FUNCTION calc_step_conditions_enforced_requirement_statement(p_step_condition_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT statement::text FROM requirements WHERE requirement_id = (SELECT enforces_requirement FROM step_conditions WHERE step_condition_id = p_step_condition_id));
+$$ LANGUAGE sql STABLE;
+
 -- calc_step_conditions_name
 -- Field: StepConditions.Name
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -31272,6 +31304,28 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_condition_checks_enforced_requirement(p_condition_check_id TEXT)
 RETURNS TEXT AS $$
   SELECT (SELECT enforces_requirement::text FROM step_conditions WHERE step_condition_id = (SELECT step_condition FROM condition_checks WHERE condition_check_id = p_condition_check_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_condition_checks_enforced_requirement_is_computed
+-- Field: ConditionChecks.EnforcedRequirementIsComputed
+-- Type: lookup | DataType: boolean | Returns: BOOLEAN
+-- Lookup: EnforcedRequirementIsComputed from related StepConditions
+
+
+CREATE OR REPLACE FUNCTION calc_condition_checks_enforced_requirement_is_computed(p_condition_check_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT calc_step_conditions_enforced_requirement_is_computed((SELECT step_condition FROM condition_checks WHERE condition_check_id = p_condition_check_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_condition_checks_enforced_requirement_statement
+-- Field: ConditionChecks.EnforcedRequirementStatement
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: EnforcedRequirementStatement from related StepConditions
+
+
+CREATE OR REPLACE FUNCTION calc_condition_checks_enforced_requirement_statement(p_condition_check_id TEXT)
+RETURNS TEXT AS $$
+  SELECT calc_step_conditions_enforced_requirement_statement((SELECT step_condition FROM condition_checks WHERE condition_check_id = p_condition_check_id));
 $$ LANGUAGE sql STABLE;
 
 -- get_step_conditions_condition_kind
@@ -31377,6 +31431,16 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_condition_checks_failed_check_requirement_key(p_condition_check_id TEXT)
 RETURNS TEXT AS $$
   SELECT (CASE WHEN COALESCE((SELECT held FROM condition_checks WHERE condition_check_id = p_condition_check_id), FALSE) = FALSE THEN (calc_condition_checks_enforced_requirement(p_condition_check_id))::text ELSE ('')::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_condition_checks_is_scored_breach
+-- Field: ConditionChecks.IsScoredBreach
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_condition_checks_is_scored_breach(p_condition_check_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((COALESCE(COALESCE((SELECT held FROM condition_checks WHERE condition_check_id = p_condition_check_id), FALSE) = FALSE, FALSE) AND COALESCE(calc_condition_checks_enforced_requirement_is_computed(p_condition_check_id), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_failure_modes_escalation_role_has_no_holder
@@ -31965,7 +32029,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_tactical_resource_allocations_utilization_percent(p_tactical_resource_allocation_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN COALESCE(((SELECT available_units_per_week FROM tactical_resource_allocations WHERE tactical_resource_allocation_id = p_tactical_resource_allocation_id))::NUMERIC, 0) = 0 THEN (0)::text ELSE (ROUND(((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT demanded_units_per_week FROM tactical_resource_allocations WHERE tactical_resource_allocation_id = p_tactical_resource_allocation_id)) AS v) __safe_numeric), 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE(100, 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT available_units_per_week FROM tactical_resource_allocations WHERE tactical_resource_allocation_id = p_tactical_resource_allocation_id)) AS v) __safe_numeric), 0), 0))) AS v) __safe_numeric), 0)))::NUMERIC, (1)::INTEGER))::text END)::numeric;
+  SELECT (CASE WHEN COALESCE(((SELECT available_units_per_week FROM tactical_resource_allocations WHERE tactical_resource_allocation_id = p_tactical_resource_allocation_id))::NUMERIC, 0) = 0 THEN (0)::text ELSE (ROUND(((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT demanded_units_per_week FROM tactical_resource_allocations WHERE tactical_resource_allocation_id = p_tactical_resource_allocation_id)) AS v OFFSET 0) __safe_numeric), 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE(100, 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT available_units_per_week FROM tactical_resource_allocations WHERE tactical_resource_allocation_id = p_tactical_resource_allocation_id)) AS v OFFSET 0) __safe_numeric), 0), 0))) AS v OFFSET 0) __safe_numeric), 0)))::NUMERIC, (1)::INTEGER))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_tactical_resource_allocations_is_bottleneck
@@ -32336,7 +32400,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_applicability_scopes_dimension_count(p_applicability_scope_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN (SELECT NULLIF(business_unit, '') FROM applicability_scopes WHERE applicability_scope_id = p_applicability_scope_id) IS NOT NULL THEN (1)::text ELSE (0)::text END) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN (SELECT NULLIF(geography, '') FROM applicability_scopes WHERE applicability_scope_id = p_applicability_scope_id) IS NOT NULL THEN (1)::text ELSE (0)::text END) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN (SELECT NULLIF(customer_segment, '') FROM applicability_scopes WHERE applicability_scope_id = p_applicability_scope_id) IS NOT NULL THEN (1)::text ELSE (0)::text END) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN (SELECT NULLIF(regulatory_regime, '') FROM applicability_scopes WHERE applicability_scope_id = p_applicability_scope_id) IS NOT NULL THEN (1)::text ELSE (0)::text END) AS v) __safe_numeric), 0))) AS v) __safe_numeric), 0))) AS v) __safe_numeric), 0)))::integer;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN (SELECT NULLIF(business_unit, '') FROM applicability_scopes WHERE applicability_scope_id = p_applicability_scope_id) IS NOT NULL THEN (1)::text ELSE (0)::text END) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN (SELECT NULLIF(geography, '') FROM applicability_scopes WHERE applicability_scope_id = p_applicability_scope_id) IS NOT NULL THEN (1)::text ELSE (0)::text END) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN (SELECT NULLIF(customer_segment, '') FROM applicability_scopes WHERE applicability_scope_id = p_applicability_scope_id) IS NOT NULL THEN (1)::text ELSE (0)::text END) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN (SELECT NULLIF(regulatory_regime, '') FROM applicability_scopes WHERE applicability_scope_id = p_applicability_scope_id) IS NOT NULL THEN (1)::text ELSE (0)::text END) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0)))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_applicability_scopes_states_conditions
@@ -33530,7 +33594,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_knowledge_consumer_systems_is_unlinked_toolchain_component(p_knowledge_consumer_system_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((COALESCE(COALESCE((SELECT NULLIF(system_kind, '') FROM knowledge_consumer_systems WHERE knowledge_consumer_system_id = p_knowledge_consumer_system_id), '') = 'ProcessModelingTool', FALSE) OR COALESCE(COALESCE((SELECT NULLIF(system_kind, '') FROM knowledge_consumer_systems WHERE knowledge_consumer_system_id = p_knowledge_consumer_system_id), '') = 'SemanticRepository', FALSE) OR COALESCE(COALESCE((SELECT NULLIF(system_kind, '') FROM knowledge_consumer_systems WHERE knowledge_consumer_system_id = p_knowledge_consumer_system_id), '') = 'AIPlatform', FALSE)), FALSE) AND COALESCE(COALESCE(((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_knowledge_consumer_systems_model_sync_count(p_knowledge_consumer_system_id)) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_knowledge_consumer_systems_integration_count(p_knowledge_consumer_system_id)) AS v) __safe_numeric), 0)))::NUMERIC, 0) = 0, FALSE)));
+  SELECT ((COALESCE((COALESCE(COALESCE((SELECT NULLIF(system_kind, '') FROM knowledge_consumer_systems WHERE knowledge_consumer_system_id = p_knowledge_consumer_system_id), '') = 'ProcessModelingTool', FALSE) OR COALESCE(COALESCE((SELECT NULLIF(system_kind, '') FROM knowledge_consumer_systems WHERE knowledge_consumer_system_id = p_knowledge_consumer_system_id), '') = 'SemanticRepository', FALSE) OR COALESCE(COALESCE((SELECT NULLIF(system_kind, '') FROM knowledge_consumer_systems WHERE knowledge_consumer_system_id = p_knowledge_consumer_system_id), '') = 'AIPlatform', FALSE)), FALSE) AND COALESCE(COALESCE(((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_knowledge_consumer_systems_model_sync_count(p_knowledge_consumer_system_id)) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_knowledge_consumer_systems_integration_count(p_knowledge_consumer_system_id)) AS v OFFSET 0) __safe_numeric), 0)))::NUMERIC, 0) = 0, FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_knowledge_consumer_systems_semantic_layer_component_count
@@ -33540,7 +33604,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_knowledge_consumer_systems_semantic_layer_component_count(p_knowledge_consumer_system_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN COALESCE((SELECT has_taxonomy FROM knowledge_consumer_systems WHERE knowledge_consumer_system_id = p_knowledge_consumer_system_id), FALSE) THEN (1)::text ELSE (0)::text END) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN COALESCE((SELECT has_thesaurus FROM knowledge_consumer_systems WHERE knowledge_consumer_system_id = p_knowledge_consumer_system_id), FALSE) THEN (1)::text ELSE (0)::text END) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN COALESCE((SELECT has_ontology FROM knowledge_consumer_systems WHERE knowledge_consumer_system_id = p_knowledge_consumer_system_id), FALSE) THEN (1)::text ELSE (0)::text END) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN COALESCE((SELECT has_metadata_schema FROM knowledge_consumer_systems WHERE knowledge_consumer_system_id = p_knowledge_consumer_system_id), FALSE) THEN (1)::text ELSE (0)::text END) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN COALESCE((SELECT has_reasoner FROM knowledge_consumer_systems WHERE knowledge_consumer_system_id = p_knowledge_consumer_system_id), FALSE) THEN (1)::text ELSE (0)::text END) AS v) __safe_numeric), 0))) AS v) __safe_numeric), 0))) AS v) __safe_numeric), 0))) AS v) __safe_numeric), 0)))::integer;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN COALESCE((SELECT has_taxonomy FROM knowledge_consumer_systems WHERE knowledge_consumer_system_id = p_knowledge_consumer_system_id), FALSE) THEN (1)::text ELSE (0)::text END) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN COALESCE((SELECT has_thesaurus FROM knowledge_consumer_systems WHERE knowledge_consumer_system_id = p_knowledge_consumer_system_id), FALSE) THEN (1)::text ELSE (0)::text END) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN COALESCE((SELECT has_ontology FROM knowledge_consumer_systems WHERE knowledge_consumer_system_id = p_knowledge_consumer_system_id), FALSE) THEN (1)::text ELSE (0)::text END) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN COALESCE((SELECT has_metadata_schema FROM knowledge_consumer_systems WHERE knowledge_consumer_system_id = p_knowledge_consumer_system_id), FALSE) THEN (1)::text ELSE (0)::text END) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN COALESCE((SELECT has_reasoner FROM knowledge_consumer_systems WHERE knowledge_consumer_system_id = p_knowledge_consumer_system_id), FALSE) THEN (1)::text ELSE (0)::text END) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0)))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_knowledge_consumer_systems_platform_capability_count
@@ -33550,7 +33614,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_knowledge_consumer_systems_platform_capability_count(p_knowledge_consumer_system_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN COALESCE((SELECT has_reasoner FROM knowledge_consumer_systems WHERE knowledge_consumer_system_id = p_knowledge_consumer_system_id), FALSE) THEN (1)::text ELSE (0)::text END) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN COALESCE((SELECT has_semantic_storage FROM knowledge_consumer_systems WHERE knowledge_consumer_system_id = p_knowledge_consumer_system_id), FALSE) THEN (1)::text ELSE (0)::text END) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN COALESCE((SELECT has_graph_algorithms FROM knowledge_consumer_systems WHERE knowledge_consumer_system_id = p_knowledge_consumer_system_id), FALSE) THEN (1)::text ELSE (0)::text END) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN COALESCE((SELECT has_machine_learning FROM knowledge_consumer_systems WHERE knowledge_consumer_system_id = p_knowledge_consumer_system_id), FALSE) THEN (1)::text ELSE (0)::text END) AS v) __safe_numeric), 0))) AS v) __safe_numeric), 0))) AS v) __safe_numeric), 0)))::integer;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN COALESCE((SELECT has_reasoner FROM knowledge_consumer_systems WHERE knowledge_consumer_system_id = p_knowledge_consumer_system_id), FALSE) THEN (1)::text ELSE (0)::text END) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN COALESCE((SELECT has_semantic_storage FROM knowledge_consumer_systems WHERE knowledge_consumer_system_id = p_knowledge_consumer_system_id), FALSE) THEN (1)::text ELSE (0)::text END) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN COALESCE((SELECT has_graph_algorithms FROM knowledge_consumer_systems WHERE knowledge_consumer_system_id = p_knowledge_consumer_system_id), FALSE) THEN (1)::text ELSE (0)::text END) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN COALESCE((SELECT has_machine_learning FROM knowledge_consumer_systems WHERE knowledge_consumer_system_id = p_knowledge_consumer_system_id), FALSE) THEN (1)::text ELSE (0)::text END) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0)))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_knowledge_consumer_systems_is_immature_graph_platform
@@ -35560,7 +35624,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_prompt_templates_condensation_percent(p_prompt_template_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN COALESCE(((SELECT source_token_count FROM prompt_templates WHERE prompt_template_id = p_prompt_template_id))::NUMERIC, 0) = 0 THEN (0)::text ELSE (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT estimated_tokens FROM prompt_templates WHERE prompt_template_id = p_prompt_template_id)) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT source_token_count FROM prompt_templates WHERE prompt_template_id = p_prompt_template_id)) AS v) __safe_numeric), 0), 0))) AS v) __safe_numeric), 0)))::NUMERIC, (1)::INTEGER))::text END)::numeric;
+  SELECT (CASE WHEN COALESCE(((SELECT source_token_count FROM prompt_templates WHERE prompt_template_id = p_prompt_template_id))::NUMERIC, 0) = 0 THEN (0)::text ELSE (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT estimated_tokens FROM prompt_templates WHERE prompt_template_id = p_prompt_template_id)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT source_token_count FROM prompt_templates WHERE prompt_template_id = p_prompt_template_id)) AS v OFFSET 0) __safe_numeric), 0), 0))) AS v OFFSET 0) __safe_numeric), 0)))::NUMERIC, (1)::INTEGER))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_prompt_templates_is_verbatim_dump
@@ -36379,7 +36443,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_assistant_benchmarks_accuracy_lift_points(p_assistant_benchmark_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT graph_grounded_accuracy_percent FROM assistant_benchmarks WHERE assistant_benchmark_id = p_assistant_benchmark_id)) AS v) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT ungrounded_accuracy_percent FROM assistant_benchmarks WHERE assistant_benchmark_id = p_assistant_benchmark_id)) AS v) __safe_numeric), 0)))::numeric;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT graph_grounded_accuracy_percent FROM assistant_benchmarks WHERE assistant_benchmark_id = p_assistant_benchmark_id)) AS v OFFSET 0) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT ungrounded_accuracy_percent FROM assistant_benchmarks WHERE assistant_benchmark_id = p_assistant_benchmark_id)) AS v OFFSET 0) __safe_numeric), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_assistant_benchmarks_shows_spatial_lift_from_graph_queries
@@ -37217,7 +37281,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_charters_is_named_but_unexercised(p_model_charter_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(calc_model_charters_is_current(p_model_charter_id), FALSE) AND COALESCE((COALESCE(COALESCE((calc_model_charters_steward_activity_count(p_model_charter_id))::NUMERIC, 0) = 0, FALSE) OR COALESCE(COALESCE(((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_model_charters_procedure_decision_count(p_model_charter_id)) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_model_charters_model_review_count(p_model_charter_id)) AS v) __safe_numeric), 0)))::NUMERIC, 0) = 0, FALSE)), FALSE)));
+  SELECT ((COALESCE(calc_model_charters_is_current(p_model_charter_id), FALSE) AND COALESCE((COALESCE(COALESCE((calc_model_charters_steward_activity_count(p_model_charter_id))::NUMERIC, 0) = 0, FALSE) OR COALESCE(COALESCE(((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_model_charters_procedure_decision_count(p_model_charter_id)) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_model_charters_model_review_count(p_model_charter_id)) AS v OFFSET 0) __safe_numeric), 0)))::NUMERIC, 0) = 0, FALSE)), FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_charters_steward_is_outside_tooling
@@ -37736,7 +37800,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_change_requests_intuitive_disjointness_broke_individ(p_model_change_request_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(COALESCE((SELECT NULLIF(change_operation, '') FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id), '') = 'AddDisjointness', FALSE) AND COALESCE(calc_model_change_requests_lacks_motivating_question(p_model_change_request_id), FALSE) AND COALESCE(COALESCE(((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_model_change_requests_assessed_inconsistent_count(p_model_change_request_id)) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_model_change_requests_post_deploy_inconsistent_count(p_model_change_request_id)) AS v) __safe_numeric), 0)))::NUMERIC, 0) > 0, FALSE)));
+  SELECT ((COALESCE(COALESCE((SELECT NULLIF(change_operation, '') FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id), '') = 'AddDisjointness', FALSE) AND COALESCE(calc_model_change_requests_lacks_motivating_question(p_model_change_request_id), FALSE) AND COALESCE(COALESCE(((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_model_change_requests_assessed_inconsistent_count(p_model_change_request_id)) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_model_change_requests_post_deploy_inconsistent_count(p_model_change_request_id)) AS v OFFSET 0) __safe_numeric), 0)))::NUMERIC, 0) > 0, FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_change_requests_validation_run_count
@@ -38650,7 +38714,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_competency_question_set_entries_governance_use_count(p_competency_question_set_entry_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN COALESCE((SELECT used_for_scoping FROM competency_question_set_entries WHERE competency_question_set_entry_id = p_competency_question_set_entry_id), FALSE) THEN (1)::text ELSE (0)::text END) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN COALESCE((SELECT used_as_acceptance_criterion FROM competency_question_set_entries WHERE competency_question_set_entry_id = p_competency_question_set_entry_id), FALSE) THEN (1)::text ELSE (0)::text END) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN COALESCE((SELECT used_as_test_driver FROM competency_question_set_entries WHERE competency_question_set_entry_id = p_competency_question_set_entry_id), FALSE) THEN (1)::text ELSE (0)::text END) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN COALESCE((SELECT used_for_governance FROM competency_question_set_entries WHERE competency_question_set_entry_id = p_competency_question_set_entry_id), FALSE) THEN (1)::text ELSE (0)::text END) AS v) __safe_numeric), 0))) AS v) __safe_numeric), 0))) AS v) __safe_numeric), 0)))::integer;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN COALESCE((SELECT used_for_scoping FROM competency_question_set_entries WHERE competency_question_set_entry_id = p_competency_question_set_entry_id), FALSE) THEN (1)::text ELSE (0)::text END) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN COALESCE((SELECT used_as_acceptance_criterion FROM competency_question_set_entries WHERE competency_question_set_entry_id = p_competency_question_set_entry_id), FALSE) THEN (1)::text ELSE (0)::text END) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN COALESCE((SELECT used_as_test_driver FROM competency_question_set_entries WHERE competency_question_set_entry_id = p_competency_question_set_entry_id), FALSE) THEN (1)::text ELSE (0)::text END) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN COALESCE((SELECT used_for_governance FROM competency_question_set_entries WHERE competency_question_set_entry_id = p_competency_question_set_entry_id), FALSE) THEN (1)::text ELSE (0)::text END) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0)))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_competency_question_set_entries_serves_every_governance_us
@@ -40982,7 +41046,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_role_assignment_update_tasks_exceeded_update_sla(p_role_assignment_update_task_id TEXT)
 RETURNS BOOLEAN AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_role_assignment_update_tasks_policy_sla_hours(p_role_assignment_update_task_id) AS val) SELECT ((COALESCE(COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 0, FALSE) OR COALESCE(COALESCE(calc_role_assignment_update_tasks_elapsed_minutes(p_role_assignment_update_task_id), 0) > COALESCE((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0) * COALESCE(60, 0)), 0), FALSE)));
+  WITH __erb_dedup_v1 AS (SELECT calc_role_assignment_update_tasks_policy_sla_hours(p_role_assignment_update_task_id) AS val) SELECT ((COALESCE(COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 0, FALSE) OR COALESCE(COALESCE(calc_role_assignment_update_tasks_elapsed_minutes(p_role_assignment_update_task_id), 0) > COALESCE((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0) * COALESCE(60, 0)), 0), FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_role_assignment_update_tasks_changed_role_instead_of_assig
@@ -41749,7 +41813,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_know_how_carriers_holder_tenure_years(p_know_how_carrier_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (ROUND(((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN (COALESCE(calc_know_how_carriers_holder_departure_at(p_know_how_carrier_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE((calc_know_how_carriers_days_until_holder_departure(p_know_how_carrier_id))::NUMERIC, 0) < 0, FALSE)) THEN (calc_know_how_carriers_days_served_to_departure(p_know_how_carrier_id))::text ELSE (calc_know_how_carriers_days_served_to_as_of(p_know_how_carrier_id))::text END) AS v) __safe_numeric), 0) / NULLIF(COALESCE(365, 0), 0)))::NUMERIC, (1)::INTEGER))::numeric;
+  SELECT (ROUND(((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN (COALESCE(calc_know_how_carriers_holder_departure_at(p_know_how_carrier_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE((calc_know_how_carriers_days_until_holder_departure(p_know_how_carrier_id))::NUMERIC, 0) < 0, FALSE)) THEN (calc_know_how_carriers_days_served_to_departure(p_know_how_carrier_id))::text ELSE (calc_know_how_carriers_days_served_to_as_of(p_know_how_carrier_id))::text END) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE(365, 0), 0)))::NUMERIC, (1)::INTEGER))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_know_how_carriers_is_veteran_held
@@ -43009,7 +43073,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_mined_flow_edges_is_bottleneck(p_mined_flow_edge_id TEXT)
 RETURNS BOOLEAN AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_mined_flow_edges_to_step_expected_minutes(p_mined_flow_edge_id) AS val) SELECT ((COALESCE(COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) > 0, FALSE) AND COALESCE(COALESCE((SELECT median_wait_minutes FROM mined_flow_edges WHERE mined_flow_edge_id = p_mined_flow_edge_id), 0) > COALESCE((COALESCE(4, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0)), 0), FALSE)));
+  WITH __erb_dedup_v1 AS (SELECT calc_mined_flow_edges_to_step_expected_minutes(p_mined_flow_edge_id) AS val) SELECT ((COALESCE(COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) > 0, FALSE) AND COALESCE(COALESCE((SELECT median_wait_minutes FROM mined_flow_edges WHERE mined_flow_edge_id = p_mined_flow_edge_id), 0) > COALESCE((COALESCE(4, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0)), 0), FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_mined_flow_edges_is_mined_path_recorded_as_intent_without_
@@ -43800,14 +43864,14 @@ CREATE VIEW vw_rulebook_releases WITH (security_invoker = ON) AS
 WITH RECURSIVE acc AS (
   SELECT 1 AS step,
     COALESCE((SELECT jsonb_object_agg(t.rulebook_release_id, jsonb_build_object(
-      'cq_coverage_percent', CASE WHEN COALESCE(((SELECT COUNT(*) FROM competency_question_runs WHERE rulebook_release = (SELECT NULLIF(t.rulebook_release_id::text,''))))::NUMERIC, 0) = 0 THEN (0)::text ELSE (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT COUNT(*) FROM competency_question_runs WHERE rulebook_release = (SELECT NULLIF(t.rulebook_release_id::text,'')) AND was_answerable = TRUE)) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT COUNT(*) FROM competency_question_runs WHERE rulebook_release = (SELECT NULLIF(t.rulebook_release_id::text,'')))) AS v) __safe_numeric), 0), 0))) AS v) __safe_numeric), 0)))::NUMERIC, (1)::INTEGER))::text END,
+      'cq_coverage_percent', CASE WHEN COALESCE(((SELECT COUNT(*) FROM competency_question_runs WHERE rulebook_release = (SELECT NULLIF(t.rulebook_release_id::text,''))))::NUMERIC, 0) = 0 THEN (0)::text ELSE (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT COUNT(*) FROM competency_question_runs WHERE rulebook_release = (SELECT NULLIF(t.rulebook_release_id::text,'')) AND was_answerable = TRUE)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT COUNT(*) FROM competency_question_runs WHERE rulebook_release = (SELECT NULLIF(t.rulebook_release_id::text,'')))) AS v OFFSET 0) __safe_numeric), 0), 0))) AS v OFFSET 0) __safe_numeric), 0)))::NUMERIC, (1)::INTEGER))::text END,
       'cq_run_count', (SELECT COUNT(*) FROM competency_question_runs WHERE rulebook_release = (SELECT NULLIF(t.rulebook_release_id::text,'')))
     ))
     FROM rulebook_releases t WHERE NULLIF(t.previous_release,'') IS NULL), '{}'::jsonb) AS settled
   UNION ALL
   SELECT a.step + 1, a.settled || COALESCE((
     SELECT jsonb_object_agg(t.rulebook_release_id, jsonb_build_object(
-      'cq_coverage_percent', CASE WHEN COALESCE(((SELECT COUNT(*) FROM competency_question_runs WHERE rulebook_release = (SELECT NULLIF(t.rulebook_release_id::text,''))))::NUMERIC, 0) = 0 THEN (0)::text ELSE (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT COUNT(*) FROM competency_question_runs WHERE rulebook_release = (SELECT NULLIF(t.rulebook_release_id::text,'')) AND was_answerable = TRUE)) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT COUNT(*) FROM competency_question_runs WHERE rulebook_release = (SELECT NULLIF(t.rulebook_release_id::text,'')))) AS v) __safe_numeric), 0), 0))) AS v) __safe_numeric), 0)))::NUMERIC, (1)::INTEGER))::text END,
+      'cq_coverage_percent', CASE WHEN COALESCE(((SELECT COUNT(*) FROM competency_question_runs WHERE rulebook_release = (SELECT NULLIF(t.rulebook_release_id::text,''))))::NUMERIC, 0) = 0 THEN (0)::text ELSE (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT COUNT(*) FROM competency_question_runs WHERE rulebook_release = (SELECT NULLIF(t.rulebook_release_id::text,'')) AND was_answerable = TRUE)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT COUNT(*) FROM competency_question_runs WHERE rulebook_release = (SELECT NULLIF(t.rulebook_release_id::text,'')))) AS v OFFSET 0) __safe_numeric), 0), 0))) AS v OFFSET 0) __safe_numeric), 0)))::NUMERIC, (1)::INTEGER))::text END,
       'cq_run_count', (SELECT COUNT(*) FROM competency_question_runs WHERE rulebook_release = (SELECT NULLIF(t.rulebook_release_id::text,'')))
     ))
     FROM rulebook_releases t
@@ -44161,7 +44225,7 @@ WITH RECURSIVE acc AS (
   SELECT 1 AS step,
     COALESCE((SELECT jsonb_object_agg(t.role_assignment_id, jsonb_build_object(
       'agent_kind', ((SELECT agent_kind FROM agents WHERE agent_id = ((SELECT NULLIF(t.agent::text,'')))::text)),
-      'override_rate_percent', CASE WHEN COALESCE(((SELECT COUNT(*) FROM agent_decision_records WHERE calc_agent_decision_records_role_assignment_when_scored(agent_decision_record_id) = (SELECT NULLIF(t.role_assignment_id::text,''))))::NUMERIC, 0) = 0 THEN (0)::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT COUNT(*) FROM agent_decision_records WHERE calc_agent_decision_records_role_assignment_when_overridden(agent_decision_record_id) = (SELECT NULLIF(t.role_assignment_id::text,'')))) AS v) __safe_numeric), 0) * COALESCE(100, 0))) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT COUNT(*) FROM agent_decision_records WHERE calc_agent_decision_records_role_assignment_when_scored(agent_decision_record_id) = (SELECT NULLIF(t.role_assignment_id::text,'')))) AS v) __safe_numeric), 0), 0)))::text END,
+      'override_rate_percent', CASE WHEN COALESCE(((SELECT COUNT(*) FROM agent_decision_records WHERE calc_agent_decision_records_role_assignment_when_scored(agent_decision_record_id) = (SELECT NULLIF(t.role_assignment_id::text,''))))::NUMERIC, 0) = 0 THEN (0)::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT COUNT(*) FROM agent_decision_records WHERE calc_agent_decision_records_role_assignment_when_overridden(agent_decision_record_id) = (SELECT NULLIF(t.role_assignment_id::text,'')))) AS v OFFSET 0) __safe_numeric), 0) * COALESCE(100, 0))) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT COUNT(*) FROM agent_decision_records WHERE calc_agent_decision_records_role_assignment_when_scored(agent_decision_record_id) = (SELECT NULLIF(t.role_assignment_id::text,'')))) AS v OFFSET 0) __safe_numeric), 0), 0)))::text END,
       'decision_count', (SELECT COUNT(*) FROM agent_decision_records WHERE calc_agent_decision_records_role_assignment_when_scored(agent_decision_record_id) = (SELECT NULLIF(t.role_assignment_id::text,'')))
     ))
     FROM role_assignments t WHERE NULLIF(t.supersedes_assignment,'') IS NULL), '{}'::jsonb) AS settled
@@ -44169,7 +44233,7 @@ WITH RECURSIVE acc AS (
   SELECT a.step + 1, a.settled || COALESCE((
     SELECT jsonb_object_agg(t.role_assignment_id, jsonb_build_object(
       'agent_kind', ((SELECT agent_kind FROM agents WHERE agent_id = ((SELECT NULLIF(t.agent::text,'')))::text)),
-      'override_rate_percent', CASE WHEN COALESCE(((SELECT COUNT(*) FROM agent_decision_records WHERE calc_agent_decision_records_role_assignment_when_scored(agent_decision_record_id) = (SELECT NULLIF(t.role_assignment_id::text,''))))::NUMERIC, 0) = 0 THEN (0)::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT COUNT(*) FROM agent_decision_records WHERE calc_agent_decision_records_role_assignment_when_overridden(agent_decision_record_id) = (SELECT NULLIF(t.role_assignment_id::text,'')))) AS v) __safe_numeric), 0) * COALESCE(100, 0))) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT COUNT(*) FROM agent_decision_records WHERE calc_agent_decision_records_role_assignment_when_scored(agent_decision_record_id) = (SELECT NULLIF(t.role_assignment_id::text,'')))) AS v) __safe_numeric), 0), 0)))::text END,
+      'override_rate_percent', CASE WHEN COALESCE(((SELECT COUNT(*) FROM agent_decision_records WHERE calc_agent_decision_records_role_assignment_when_scored(agent_decision_record_id) = (SELECT NULLIF(t.role_assignment_id::text,''))))::NUMERIC, 0) = 0 THEN (0)::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT COUNT(*) FROM agent_decision_records WHERE calc_agent_decision_records_role_assignment_when_overridden(agent_decision_record_id) = (SELECT NULLIF(t.role_assignment_id::text,'')))) AS v OFFSET 0) __safe_numeric), 0) * COALESCE(100, 0))) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT COUNT(*) FROM agent_decision_records WHERE calc_agent_decision_records_role_assignment_when_scored(agent_decision_record_id) = (SELECT NULLIF(t.role_assignment_id::text,'')))) AS v OFFSET 0) __safe_numeric), 0), 0)))::text END,
       'decision_count', (SELECT COUNT(*) FROM agent_decision_records WHERE calc_agent_decision_records_role_assignment_when_scored(agent_decision_record_id) = (SELECT NULLIF(t.role_assignment_id::text,'')))
     ))
     FROM role_assignments t
@@ -45659,7 +45723,8 @@ SELECT
   calc_step_executions_is_blocked_by_incomplete_prerequisite(t.step_execution_id) AS is_blocked_by_incomplete_prerequisite,-- TRUE for an unfinished step whose prerequisite has not completed in the same execution.
   calc_step_executions_owner_organization(t.step_execution_id) AS owner_organization,-- The organization that owns the procedure this row belongs to, one hop at a time from Procedures.OwnerOrganization. A row policy compares it to the caller's organization, so a plant sign-in never sees the finance close.
   calc_step_executions_incomplete_cue_observation_count(t.step_execution_id) AS incomplete_cue_observation_count,-- Warning signs observed on this step execution that mean the step is not finished.
-  calc_step_executions_is_blocked_by_observed_cue(t.step_execution_id) AS is_blocked_by_observed_cue-- A warning sign that means 'not finished' was seen on this step execution, so the normal next step must not be offered; only a fallback is.
+  calc_step_executions_is_blocked_by_observed_cue(t.step_execution_id) AS is_blocked_by_observed_cue,-- A warning sign that means 'not finished' was seen on this step execution, so the normal next step must not be offered; only a fallback is.
+  calc_step_executions_is_blocked_by_failed_precondition(t.step_execution_id) AS is_blocked_by_failed_precondition-- A check on this step recorded that a precondition did not hold. The step may not be marked done; only a fallback is offered, exactly as for an observed warning sign.
 FROM step_executions t;
 
 -- ----------------------------------------------------------------------------
@@ -47839,7 +47904,9 @@ SELECT
   t.semantic_type_iri,                                                          -- Semantic type IRI.
   t.machine_expression,                                                         -- The condition as an expression an agent or constraint engine can evaluate.
   calc_step_conditions_is_machine_parseable(t.step_condition_id) AS is_machine_parseable,-- TRUE when the condition is stored as an expression, not only prose.
-  t.enforces_requirement                                                        -- The blocking requirement this condition is the physical check of, when it is one. A failed check of the condition is then a failure of that requirement.
+  t.enforces_requirement,                                                       -- The blocking requirement this condition is the physical check of, when it is one. A failed check of the condition is then a failure of that requirement.
+  calc_step_conditions_enforced_requirement_is_computed(t.step_condition_id) AS enforced_requirement_is_computed,-- Whether the requirement this condition enforces has a computed witness (loop 18): a failed check of it is then a breach the register counts on its own.
+  calc_step_conditions_enforced_requirement_statement(t.step_condition_id) AS enforced_requirement_statement-- The statement of the requirement this condition enforces, for the desk that shows a breach.
 FROM step_conditions t;
 
 -- ----------------------------------------------------------------------------
@@ -47863,7 +47930,10 @@ SELECT
   calc_condition_checks_violated_invariant_execution_key(t.condition_check_id) AS violated_invariant_execution_key,-- Step execution key when an invariant failed.
   t.semantic_type_iri,                                                          -- Semantic type IRI.
   calc_condition_checks_enforced_requirement(t.condition_check_id) AS enforced_requirement,-- The requirement the checked condition enforces, copied from the condition.
-  calc_condition_checks_failed_check_requirement_key(t.condition_check_id) AS failed_check_requirement_key-- Echoes the enforced requirement's id when this check recorded that the condition did not hold; blank otherwise.
+  calc_condition_checks_failed_check_requirement_key(t.condition_check_id) AS failed_check_requirement_key,-- Echoes the enforced requirement's id when this check recorded that the condition did not hold; blank otherwise.
+  calc_condition_checks_enforced_requirement_is_computed(t.condition_check_id) AS enforced_requirement_is_computed,-- Copied from the checked condition: the rule it enforces has a computed witness.
+  calc_condition_checks_enforced_requirement_statement(t.condition_check_id) AS enforced_requirement_statement,-- Copied from the checked condition: the rule it enforces, in its own words.
+  calc_condition_checks_is_scored_breach(t.condition_check_id) AS is_scored_breach-- This check recorded that the condition did not hold, and the rule it enforces is computed by the register: a breach counted by the register itself, not by a person looking.
 FROM condition_checks t;
 
 -- ----------------------------------------------------------------------------

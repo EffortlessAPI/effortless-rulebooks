@@ -7,6 +7,12 @@
 
 package main
 
+// The ERB build parameters this SDK was generated under
+// (docs/ERB-BUILD-PARAMETERS.md). The runtime refuses to run unconfigured.
+var erbBuildParameters = map[string]string{"erbDateDiff": "calendar", "erbTimezone": "UTC", "erbDateTimeText": "iso8601", "erbBlankLogic": "coerce", "erbWholeNumber": "by-field-type"}
+
+func init() { erbConfigure(erbBuildParameters) }
+
 // =============================================================================
 // HELLOWHOS TABLE
 // The smallest complete rulebook: an id, a display name, and a rule that derives a greeting from it.
@@ -24,7 +30,7 @@ type HelloWho struct {
 // CalcIntroduction computes the Introduction calculated field
 // Formula: ="Hello " & {{Name}} & "!!!"
 func (tc *HelloWho) CalcIntroduction() *string {
-	return toStringPtr(erbConcat(vS("Hello "), erbTextOr(vStrPlain(tc.Name)), vS("!!!")))
+	return toStringPtr(erbConcat(vS("Hello "), erbText(vStrPlain(tc.Name)), vS("!!!")))
 }
 
 // erbComputeCalculations computes every calculated field of the row in dependency order.

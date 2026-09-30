@@ -14,8 +14,8 @@
       "RelativePath": "/effortless-rulebook",
       "CommandLine": "compile-rulebook -i effortless-rulebook.json",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.09.12.1638",
-      "LastUrl": "https://effortless-compile-rulebook-v2026-09-12-1638-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+      "LastVersionUsed": "v2026.09.14.2215",
+      "LastUrl": "https://effortless-compile-rulebook-v2026-09-14-2215-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     },
     {
       "IsSSoTTranspiler": false,
@@ -23,8 +23,8 @@
       "RelativePath": "/effortless-rulebook",
       "CommandLine": "effortless-rulebook-editor -i effortless-rulebook.json -p rulebookPath=effortless-rulebook.json",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.09.10.1047",
-      "LastUrl": "https://effortless-effortless-rulebook-e-v2026-09-10-1047-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+      "LastVersionUsed": "v2026.09.17.2059",
+      "LastUrl": "https://effortless-effortless-rulebook-e-v2026-09-17-2059-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     },
     {
       "IsSSoTTranspiler": false,
@@ -32,8 +32,8 @@
       "RelativePath": "/go",
       "CommandLine": "rulebook-to-go -i ../effortless-rulebook/effortless-rulebook.json",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.09.13.0108",
-      "LastUrl": "https://effortless-rulebook-to-go-v2026-09-13-0108-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+      "LastVersionUsed": "v2026.09.14.2221",
+      "LastUrl": "https://effortless-rulebook-to-go-v2026-09-14-2221-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     },
     {
       "IsSSoTTranspiler": false,
@@ -41,8 +41,8 @@
       "RelativePath": "/postgres",
       "CommandLine": "rulebook-to-postgres -i ../effortless-rulebook/effortless-rulebook.json",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.09.12.2340",
-      "LastUrl": "https://effortless-rulebook-to-postgres-v2026-09-12-2340-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+      "LastVersionUsed": "v2026.09.27.1534",
+      "LastUrl": "https://effortless-rulebook-to-postgres-v2026-09-27-1534-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     },
     {
       "IsSSoTTranspiler": false,
@@ -50,7 +50,7 @@
       "RelativePath": "/owl",
       "CommandLine": "rulebook-to-owl -i ../effortless-rulebook/effortless-rulebook.json",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.07.08.0207",
+      "LastVersionUsed": "v2026.09.14.2309",
       "LastUrl": "https://effortless-rulebook-to-owl-v2026-07-08-0207-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     },
     {
@@ -59,7 +59,7 @@
       "RelativePath": "/entity-framework",
       "CommandLine": "rulebook-to-entity-framework -i ../effortless-rulebook/effortless-rulebook.json",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.09.13.0144",
+      "LastVersionUsed": "v2026.09.14.2203",
       "LastUrl": "https://effortless-rulebook-to-entity-fr-v2026-09-13-0144-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     },
     {
@@ -68,7 +68,7 @@
       "RelativePath": "/rulespeak",
       "CommandLine": "rulebook-to-rulespeak -i ../effortless-rulebook/effortless-rulebook.json",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.09.13.1044",
+      "LastVersionUsed": "v2026.09.17.2011",
       "LastUrl": "https://effortless-rulebook-to-rulespeak-v2026-09-13-1044-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     },
     {
@@ -77,7 +77,7 @@
       "RelativePath": "/xlsx",
       "CommandLine": "rulebook-to-xlsx -i ../effortless-rulebook/effortless-rulebook.json",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.09.12.2358",
+      "LastVersionUsed": "v2026.09.17.1646",
       "LastUrl": "https://effortless-rulebook-to-xlsx-v2026-09-12-2358-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     },
     {
@@ -86,7 +86,7 @@
       "RelativePath": "/python",
       "CommandLine": "rulebook-to-python -i ../effortless-rulebook/effortless-rulebook.json",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.09.13.0308",
+      "LastVersionUsed": "v2026.09.14.2218",
       "LastUrl": "https://effortless-rulebook-to-python-v2026-09-13-0308-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     },
     {
@@ -95,7 +95,7 @@
       "RelativePath": "/typescript",
       "CommandLine": "rulebook-to-typescript -i ../effortless-rulebook/effortless-rulebook.json",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.09.13.0311",
+      "LastVersionUsed": "v2026.09.14.2224",
       "LastUrl": "https://effortless-rulebook-to-typescrip-v2026-09-13-0311-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     }
   ],
