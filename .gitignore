@@ -96,3 +96,6 @@ erb_test
 **/effortless-typescript/dist/
 **/effortless-typescript/package-lock.json
 **/bootstrap/git-ignored-articles/**/*
+
+# Generated PKO orchestration report — 270MB, exceeds GitHub's 100MB limit; regenerate locally
+rulebook-examples/procedural-knowledge-ontology/orchestration-report.html
