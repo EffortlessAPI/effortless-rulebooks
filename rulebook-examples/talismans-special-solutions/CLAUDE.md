@@ -24,7 +24,7 @@ There is no upstream to "restore from." The JSON is the upstream.
 
 This folder is a **self-contained Effortless Rulebook (ERB) project**. The rulebook is the single source of truth. All other artifacts (Postgres, Python, Go, substrates) are mechanically derived from it.
 
-## Closure is not a formula — it's the boundary of first-order logic with aggregates, not a modeling choice
+## Closure is not a formula — it's a first-class rulebook field type, because the boundary is a theorem
 
 **This is the project's central theoretical claim, not a footnote — lead with it, not with the
 SDLAF machinery around it.** The rulebook's declarative core — Schema, Data, Lookups,
@@ -44,18 +44,24 @@ reachability over a DAG of unbounded depth from inside SDLAF's expressivity clas
 scope when making the claim:** the proof is by locality over unordered relational structures
 (queries that do not exploit an ordering of the keys). With a built-in order plus arithmetic,
 proving it would separate uniform TC⁰ from NL, which is open. That is exactly why `precedesStep` / `delegatesTo` closure is **never**
-a calculated field here: it is handed to a distinct, substrate-native mechanism per target —
+a formula here: it is a **first-class `closure` field declared in the rulebook itself**
+(`PrecedesStepClosure`, `DelegationClosure`, `DerivationClosure`), and every substrate emits that
+one declared field —
 
 - Postgres: a `WITH RECURSIVE` view (`vw_step_precedence_closure`, `vw_roles_closure`), emitted by
   the `rulebook-to-postgres` `closure` field type;
 - OWL: an `owl:TransitiveProperty`;
 - Python: an explicit graph traversal.
 
-— and the conformance harness proves the three independently-built crossings agree. Every
-framework that survives contact with a real DAG hits this same wall eventually (OCL's
-`closure()`, SQL's `WITH RECURSIVE`, OWL's transitive properties) because the wall is a theorem,
-not a gap in any one implementation. When documenting, pitching, or extending this project, this
-boundary — not the SDLAF machinery around it — is the falsifiable, load-bearing claim.
+— and the conformance harness proves the independently-built emissions agree. These are emissions
+of a declared field, no different from a COUNTIFS becoming a SQL aggregate; downstream calculated
+fields (`CountInferredPrecedencePairs`, `CountOfPrecedenceClosurePairs`) consume the closure like
+any other field. Every framework that survives contact with a real DAG grows a closure primitive
+eventually (OCL's `closure()`, SQL's `WITH RECURSIVE`, OWL's transitive properties) because the
+boundary is a theorem, not a gap in any one implementation — which is precisely why the rulebook
+declares closure as its own primitive instead of faking it with a bounded-depth lookup chain.
+When documenting, pitching, or extending this project, this — the theorem plus the declared
+primitive that answers it — is the falsifiable, load-bearing claim.
 
 ## Aim for RIGHT — always most faithful to the original 4-part series
 

@@ -2318,7 +2318,7 @@
     "asking_role": "process-steward",
     "witness_loop": "loop-04",
     "question_text": "Which steps can a procedure send work back to after they have already run \u2014 which steps sit on a rework loop, and which of those carry a blocking control that must hold on every pass?",
-    "why_it_matters": "Fallback and Alternative transitions make the step graph cyclic: close-04 falls back to close-03, and close-06's alternative re-enters close-04, so close-05's approval control can run twice in one close. Every witness we have looks at one transition at a time (IsUnwalkedRecoveryPath asks whether that one edge was ever traversed). None of them can say that a step is re-entered, because loop membership is reachability over paths of any length. That is transitive closure, which no formula expresses, so it needs the substrate-native closure over StepTransitions.",
+    "why_it_matters": "Fallback and Alternative transitions make the step graph cyclic: close-04 falls back to close-03, and close-06's alternative re-enters close-04, so close-05's approval control can run twice in one close. Every witness we have looks at one transition at a time (IsUnwalkedRecoveryPath asks whether that one edge was ever traversed). None of them can say that a step is re-entered, because loop membership is reachability over paths of any length. That is transitive closure, which no formula expresses - it is exactly what the rulebook's declared `closure` field over StepTransitions answers.",
     "answerable_before": false,
     "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RoleQuestion",
     "name": null,

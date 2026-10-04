@@ -45,17 +45,20 @@ aggregate query, however large, computes reachability over a DAG of unbounded de
 proof is by locality over unordered relational structures, i.e. queries that do not exploit an
 ordering of the keys. With a built-in order plus arithmetic, proving the same would separate
 uniform TC⁰ from NL, which is an open problem.) That is
-why `precedesStep` and `delegatesTo` closure in this rulebook are **never** calculated fields:
-they are a `WITH RECURSIVE` view in Postgres (`vw_step_precedence_closure`, `vw_roles_closure`),
-an `owl:TransitiveProperty` in OWL, and an explicit traversal in Python — three different,
-substrate-native mechanisms crossing the one boundary the rulebook's own declarative core cannot
-cross on its own. The conformance suite then proves the three independently-built crossings agree.
+why `precedesStep` and `delegatesTo` closure in this rulebook are **never** formulas: they are
+**first-class `closure` fields declared in the rulebook itself** (`PrecedesStepClosure`,
+`DelegationClosure`, `DerivationClosure`), and every substrate emits that one declared field — a
+`WITH RECURSIVE` view in Postgres (`vw_step_precedence_closure`, `vw_roles_closure`), an
+`owl:TransitiveProperty` in OWL, an explicit traversal in Python. Emissions of a declared field,
+no different from a COUNTIFS becoming a SQL aggregate — and the conformance suite proves the
+independently-built emissions agree.
 
-Every framework that survives contact with a real DAG hits this same wall — OCL added
-`closure()`, SQL added `WITH RECURSIVE`, OWL has transitive properties — because the wall is a
-theorem, not a gap in any one implementation. This repo's contribution isn't inventing new
-expressivity; it's **naming the boundary explicitly** instead of quietly faking it with a
-bounded-depth lookup chain, and proving the substrate-native crossings match.
+Every framework that survives contact with a real DAG grows a closure primitive — OCL added
+`closure()`, SQL added `WITH RECURSIVE`, OWL has transitive properties — because the boundary is
+a theorem, not a gap in any one implementation. That is exactly why closure is a declared
+primitive of the rulebook rather than something quietly faked with a bounded-depth lookup chain —
+the theorem is the *reason* for the primitive, not a wall the rulebook stops at — and the
+conformance suite proves every substrate's emission of it matches.
 
 ### The receipt
 

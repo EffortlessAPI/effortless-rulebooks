@@ -1,21 +1,10 @@
-<!-- DERIVED ARTIFACT — DO NOT EDIT BY HAND -->
-<!-- Source: https://raw.githubusercontent.com/EffortlessAPI/effortless-skills/main/skills/effortless-rationale/SKILL.md -->
-<!-- Mirrored by: docs/skills/clone-skills.sh -->
-<!-- Update: cd effortless-platform && effortless clone-skills -->
-
 ---
 name: effortless-rationale
 description: >
-  Use when explaining or defending the effortless / CMCC methodology to a skeptic
-  — "why use this instead of just writing code", "isn't this overkill", "convince
-  me", "what's wrong with ORM / microservices / hand-written SQL", "why Airtable",
-  "isn't this just MDE", "how is this different from low-code", or any conversation
-  where the user (or someone they're talking to) needs the rationale grounded in
-  receipts rather than enthusiasm. This skill is strictly receipts-based — every
-  claim cites a paper, repo, or runnable demo. Pair with effortless-cmcc for the
-  theory and effortless-rulebooks for the empirical proof.
-
-  **Scope (load gate):** Loads when the user (or a third party) needs the methodology defended. Does not require a marked Effortless project.
+  Defend the Effortless / CMCC methodology to a skeptic, receipts only — "why not just
+  write code", "isn't this overkill", "convince me", "isn't this just MDE / low-code",
+  "what's wrong with ORMs". Pair with effortless-cmcc (theory) and effortless-rulebooks
+  (proof).
 audience: customer
 ---
 
@@ -48,6 +37,35 @@ The goal of *this* skill is not to convert — it is to make the case *honestly*
 - **Prefer the strongest version of the objection.** Steelman first, then respond.
 
 ## The Common Objections (with grounded responses)
+
+### "Isn't most of this just SQL that's been around for 25+ years?"
+
+Fair, and worth conceding directly rather than deflecting: joins, rollups, and calculated fields
+are not novel. They're **first-order logic with aggregates** — roughly FO + aggregation, the same
+expressivity SQL without `WITH RECURSIVE` has had since the 90s. SDLAF is not claiming to invent
+new expressivity for that part, and anyone who finds it impressive on its own hasn't found the
+actual claim yet.
+
+The actual claim is narrower and checkable: **transitive closure (TC) is provably not expressible
+in first-order logic with aggregates** — Hella, Libkin, Nurmonen & Wong, "Logics with Aggregate
+Operators" (J. ACM, 2001), and Libkin, "Expressive Power of SQL" (Theor. Comput. Sci., 2003),
+extending the classical result for plain first-order logic (Aho & Ullman, 1979). (Not Immerman
+1987 — that shows FO plus a TC operator captures NL, the opposite direction. The proof here is by
+locality over unordered structures; with a built-in order plus arithmetic it would resolve the
+open TC⁰-vs-NL question.) So ERB never fakes closure as a formula or a chained lookup. The rulebook
+declares it as a first-class `closure` field, and every substrate emits that one declared field —
+`WITH RECURSIVE` in Postgres, `owl:TransitiveProperty` in OWL, an explicit graph traversal in
+Python — and the conformance suite proves those independently-built emissions agree on every
+reachable pair, including ones never directly asserted.
+
+Receipt: `rulebook-examples/talismans-special-solutions` — `precedesStep`/`delegatesTo` closure
+(`vw_step_precedence_closure`, `vw_roles_closure`) is the runnable demo. See `effortless-cmcc`'s
+"The Falsifiable Core: First-Order Logic with Aggregates and the Transitive-Closure Boundary" for
+the full argument.
+
+Concede: this does not make SDLAF "complete" in the naive sense. CMCC's completeness claim already
+assumes an explicit closure/recursion primitive standing beside the five — the contribution is
+naming that boundary and proving the crossings agree, not claiming SDLAF alone reaches past it.
 
 ### "Isn't this just Model-Driven Engineering with extra steps?"
 
@@ -186,8 +204,13 @@ breaks. That is what the conjecture invites.
 
 ## How To Open A Skeptic Conversation
 
-Three openers, in increasing confrontation order:
+Four openers, in increasing confrontation order:
 
+0. **Technical:** "Most of this will look like SQL you've had for decades — because it is. The one
+   piece that isn't: transitive closure is provably outside first-order logic with aggregates
+   (Hella/Libkin/Nurmonen/Wong 2001), so we never fake it with a formula chain. We hand it to a
+   real recursive mechanism per substrate — Postgres, OWL, Python — and prove they agree. That's
+   the actual claim; the rest is unremarkable by design."
 1. **Curious:** "Have you seen the multi-substrate conformance demo? One
    rulebook, eleven substrates including ARM64 and COBOL, all matching a
    single answer key. That's the empirical claim — happy to walk through it."
@@ -204,6 +227,10 @@ Match the opener to the audience's posture.
 ## Receipts (the citation list)
 
 - **Theory:** `effortless-cmcc` skill + the Medium / Zenodo links it carries.
+- **Complexity theory:** Hella, Libkin, Nurmonen & Wong, "Logics with Aggregate Operators," J.
+  ACM, 2001; Libkin, "Expressive Power of SQL," Theor. Comput. Sci., 2003 — the theorems behind
+  the transitive-closure boundary (not Immerman 1987, which shows the opposite direction: FO plus
+  a TC operator capturing NL); see `effortless-cmcc`'s "The Falsifiable Core."
 - **Empirical:** `effortless-rulebooks` skill + [github.com/effortlessapi/effortless-rulebooks](https://github.com/effortlessapi/effortless-rulebooks).
 - **Operational:** `effortless-pipeline`, `effortless-cli`, `effortless-conventions`
   — the day-to-day mechanics that show the methodology is actually used, not
