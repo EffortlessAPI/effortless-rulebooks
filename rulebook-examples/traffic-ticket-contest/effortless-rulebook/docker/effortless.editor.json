@@ -71,7 +71,7 @@
       "IsSSoTTranspiler": false,
       "Name": "rulebooktoexplainerdag",
       "RelativePath": "/admin-portal/public",
-      "CommandLine": "rulebook-to-explainer-dag -i ../../effortless-rulebook/effortless-rulebook.json",
+      "CommandLine": "rulebook-to-explainer-dag -i ../../effortless-rulebook/effortless-rulebook.json -p languages=all",
       "IsDisabled": false,
       "Description": "Generate the Explainer DAG -- the baked provenance graph the portal uses to make every derived cell clickable (hover for RuleSpeak®, double-click for the full field DAG). The tool namespaces its own output folder, so this lands in admin-portal/public/rulebook-explainer-dag and Vite serves it at /rulebook-explainer-dag/* alongside the portal. NOT optional chrome: the portal loads these five assets from its index.html and its Provenance tab renders nothing without them. Listed AFTER the portal step because it writes inside that step's output directory."
     },

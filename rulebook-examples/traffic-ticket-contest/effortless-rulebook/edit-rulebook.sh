@@ -19,7 +19,7 @@ DOCKERFILE_PATH="docker/Dockerfile"
 EXTERNAL_SRC_MOUNTED=
 EXTERNAL_SRC_HOST_PATH=""
 RULEBOOK_SELF_UPDATE_PATH="traffic-ticket-contest-rulebook.json"
-EDITOR_RUNTIME_VERSION="2026.9.10.1047"
+EDITOR_RUNTIME_VERSION="2026.10.11.1508"
 
 # The launcher is the OUTER half of the editor and therefore cannot rely on the
 # container's inner `effortless -upgradeAll`. Update and regenerate this runtime
@@ -311,6 +311,27 @@ docker run "${DOCKER_RUN_ARGS[@]}" "$IMAGE_NAME"
 RESOLVED_API_PORT="$(docker port "$CONTAINER_NAME" 5177/tcp | awk -F: 'NR == 1 { print $NF }')"
 RESOLVED_UI_PORT="$(docker port "$CONTAINER_NAME" 5174/tcp | awk -F: 'NR == 1 { print $NF }')"
 RESOLVED_PG_PORT="$(docker port "$CONTAINER_NAME" 5432/tcp | awk -F: 'NR == 1 { print $NF }')"
+
+# Docker only assigns these HOST ports once the container is already running,
+# so nothing inside the container (the API included) can know them from its
+# own environment. This script is the only place that ever learns them --
+# drop them into the bind-mounted rulebook folder so the running API can read
+# the file and serve it back to the UI (dashboard: Postgres connection info,
+# API docs / rulespeak / source links). Overwritten on every launch; never
+# meant to be committed.
+CONNECTION_INFO_FILE="$(pwd)/.editor-connection-info.json"
+cat > "$CONNECTION_INFO_FILE" <<EOF
+{
+  "apiPort": $RESOLVED_API_PORT,
+  "uiPort": $RESOLVED_UI_PORT,
+  "pgPort": $RESOLVED_PG_PORT,
+  "pgConnectionString": "postgresql://postgres:postgres@localhost:$RESOLVED_PG_PORT/effortless-rulebook"
+}
+EOF
+GITIGNORE_FILE="$(pwd)/.gitignore"
+if [ ! -f "$GITIGNORE_FILE" ] || ! grep -qxF ".editor-connection-info.json" "$GITIGNORE_FILE"; then
+  echo ".editor-connection-info.json" >> "$GITIGNORE_FILE"
+fi
 
 echo ""
 echo "effortless-rulebook-editor is starting up."

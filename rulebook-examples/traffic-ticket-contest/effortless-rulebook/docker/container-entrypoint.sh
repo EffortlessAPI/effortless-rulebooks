@@ -78,6 +78,12 @@ RULEBOOK_DIR="/app/effortless-rulebook"
 # from a fixed path without knowing where effortless-root actually resolved to.
 ERRORS_JSON_PATH="/app/effortless-root/errors.json"
 BOOT_ERRORS_FILE="/tmp/build-errors.json"
+# Why the app could not START after a build that itself succeeded (the portal's
+# dev server never answered, or it was never generated): a headline line, then
+# the tail of that process's own log. boot-server.js puts it at the top of the
+# boot page and in GET /__boot/status, so the reason is on screen instead of
+# only in /tmp/ui.log inside the container. Present means the last start failed.
+BOOT_FAILURE_FILE="/tmp/boot-failure.txt"
 # Component-level health snapshot written after every build (see
 # write_status_json below), served as GET /__boot/status. This is what makes
 # "which parts of this container are alive?" answerable when most of them aren't.
@@ -142,6 +148,7 @@ BOOT_REBUILD_PROMPT_FILE="$REBUILD_PROMPT_FILE" \
 BOOT_REBUILD_PROMPT_CONFIRM_FILE="$REBUILD_PROMPT_CONFIRM_FILE" \
 BOOT_REBUILD_PROMPT_DISMISS_FILE="$REBUILD_PROMPT_DISMISS_FILE" \
 BOOT_ERRORS_FILE="$BOOT_ERRORS_FILE" \
+BOOT_FAILURE_FILE="$BOOT_FAILURE_FILE" \
 BOOT_STATUS_FILE="$BOOT_STATUS_FILE" \
 BOOT_PIPELINE_FILE="$BOOT_PIPELINE_FILE" \
   node /app/boot-server.js > /tmp/boot-server.log 2>&1 &
@@ -246,7 +253,10 @@ fi
 # Version 6: the ERB module steps (rulebook-to-rbac, the Postgres policy
 #            compiler, the progress report) are added, disabled; the portal's
 #            Modules page switches them on with their module.
-PIPELINE_DEFAULTS_VERSION=6
+# Version 7: the Explainer DAG step bakes RuleSpeak® in every registered
+#            language (-p languages=all), so the Provenance tab's hover cards
+#            and field pages follow the portal's language instead of English.
+PIPELINE_DEFAULTS_VERSION=7
 if ! node - "$EFFORTLESS_ROOT_TARGET/effortless.json" "$PIPELINE_DEFAULTS_VERSION" <<'NODE'
 const fs = require('fs');
 const file = process.argv[2];
@@ -387,6 +397,20 @@ if (currentVersion < targetVersion) {
     }
   }
 
+  if (currentVersion < 7) {
+    // The Explainer DAG step used to bake RuleSpeak in English only, so its hover
+    // cards stayed English whatever the portal language. Only the untouched former
+    // default (no languages= at all) is rewritten; an explicit list survives.
+    const explainer = byName.get('rulebooktoexplainerdag');
+    const command = String((explainer && explainer.CommandLine) || '');
+    if (command.startsWith('rulebook-to-explainer-dag ') && !/(^|\s)-p\s+languages?=/.test(command)) {
+      explainer.CommandLine = command + ' -p languages=all';
+      console.log('[entrypoint] the Explainer DAG step now bakes every RuleSpeak language, so provenance cards follow the portal language');
+    } else {
+      console.log('[entrypoint] preserved customized Explainer DAG command while advancing defaults to v7');
+    }
+  }
+
   if (marker) marker.Value = String(targetVersion);
   else settings.push({ Name: 'editor-pipeline-defaults-version', Value: String(targetVersion) });
   const tmp = file + '.tmp-defaults';
@@ -476,7 +500,14 @@ fi
 # build outright" -- the exact opposite of the point. So: probe once, here, and
 # degrade to the old behavior with a loud warning rather than breaking.
 CONTINUE_ON_ERROR_FLAG=""
-if effortless -help 2>/dev/null | grep -q -- "-continueOnError"; then
+# The CLI's BARE `-help` prints only the top-level meta/project/build/clean
+# summary and never lists -continueOnError -- only `-help all` (or `-help
+# build`) does. Probing bare `-help` always misses it on every current CLI
+# version, silently falling back to "no flag" and defeating the entire point
+# of this probe: one failing transpiler would abort the whole build with no
+# warning that anything was wrong. `-help all` is the one topic guaranteed to
+# list every option regardless of category, so it is the only reliable probe.
+if effortless -help all 2>/dev/null | grep -q -- "-continueOnError"; then
   CONTINUE_ON_ERROR_FLAG="-continueOnError"
 else
   echo "[entrypoint] WARNING: this image's effortless CLI predates -continueOnError."
@@ -828,6 +859,21 @@ unused_conflict_gate() {
   esac
 }
 
+# report_start_failure <headline> [process log]: record why the app did not
+# start -- the headline plus the last 80 lines of the process's log -- in
+# BOOT_FAILURE_FILE (shown at the top of the boot page) and in the build log.
+report_start_failure() {
+  {
+    echo "$1"
+    if [ -n "${2:-}" ]; then
+      echo ""
+      echo "---- last 80 lines of $2 ----"
+      tail -n 80 "$2" 2>/dev/null || echo "($2 is empty or missing)"
+    fi
+  } > "$BOOT_FAILURE_FILE"
+  { echo "[entrypoint] START FAILED: $(cat "$BOOT_FAILURE_FILE")"; } >> "$BUILD_LOG_FILE"
+}
+
 run_build() {
   echo "building" > "$BOOT_STATE_FILE"
   echo "[entrypoint] $(date -Iseconds) running effortless build..." > "$BUILD_LOG_FILE"
@@ -837,7 +883,7 @@ run_build() {
   # file would still be sitting there describing failures that may already be
   # fixed. Clearing it up front makes "errors.json exists" mean exactly one
   # thing: THIS build produced failures.
-  rm -f "$ERRORS_JSON_PATH" "$BOOT_ERRORS_FILE"
+  rm -f "$ERRORS_JSON_PATH" "$BOOT_ERRORS_FILE" "$BOOT_FAILURE_FILE"
   # The registered chmodinitdb step makes the generated reset script
   # executable before initdb runs the compatibility selector. On the first
   # build the selected script does not exist until the preceding
@@ -993,6 +1039,7 @@ start_services() {
         echo "[entrypoint] The generated API IS running on :5177 -- reachable from the host for debugging even without the portal."
       fi
     } >> "$BUILD_LOG_FILE"
+    report_start_failure "The rulebook editor was not generated: rulebook-to-vite-admin-portal produced no admin-portal folder."
     write_status_json "error"
     echo "error" > "$BOOT_STATE_FILE"
     return 0
@@ -1014,14 +1061,24 @@ start_services() {
   # just data) is simpler to keep correct than wiring a second static-file
   # server + manual rebuild step. Bound to the INTERNAL port 5175 --
   # boot-server.js owns the EXTERNAL port 5174 and proxies to this once ready.
-  setsid bash -c 'cd /app/effortless-root/admin-portal && npm install --silent && API_PROXY_TARGET=http://127.0.0.1:5177 exec npx vite --host 0.0.0.0 --port 5175' \
+  # --include=dev: vite and @vitejs/plugin-react are devDependencies, and a
+  # container with NODE_ENV=production (the Loops runner) would otherwise skip
+  # them; `npx vite` then fetched an unrelated vite major that could not load
+  # vite.config.js and exited. Run the installed binary so that cannot recur.
+  setsid bash -c 'cd /app/effortless-root/admin-portal && npm install --silent --include=dev && API_PROXY_TARGET=http://127.0.0.1:5177 exec ./node_modules/.bin/vite --host 0.0.0.0 --port 5175' \
     > /tmp/ui.log 2>&1 &
   UI_PID=$!
 
   echo "[entrypoint] waiting for internal Vite UI to accept connections..."  >> "$BUILD_LOG_FILE"
+  # Up to 5 minutes: a just-woken container on a small CPU share can spend well
+  # over a minute in npm install, and declaring a slow start a failure is far
+  # worse than waiting. A dev server that has exited is a real failure and is
+  # reported at once, not after 5 minutes.
   UI_UP=""
-  for i in $(seq 1 60); do
+  for i in $(seq 1 300); do
     if curl -sf "http://127.0.0.1:5175/" >/dev/null 2>&1; then UI_UP=1; break; fi
+    kill -0 "$UI_PID" 2>/dev/null || break
+    [ $((i % 30)) -eq 0 ] && echo "[entrypoint] still waiting for the portal's dev server (${i}s of 300s)..." >> "$BUILD_LOG_FILE"
     sleep 1
   done
 
@@ -1030,9 +1087,14 @@ start_services() {
     # failed, a syntax error in generated code, port already held). Same rule as
     # above: keep the boot page in front of the user so they see WHY.
     {
-      echo "[entrypoint] the generated Vite UI did not answer on :5175 within 60s -- see /tmp/ui.log inside the container."
+      echo "[entrypoint] the generated Vite UI did not answer on :5175 -- its own output (/tmp/ui.log) follows below."
       echo "[entrypoint] Keeping the boot page on :5174 so the log and /__boot/errors stay reachable."
     } >> "$BUILD_LOG_FILE"
+    if kill -0 "$UI_PID" 2>/dev/null; then
+      report_start_failure "The rulebook editor did not start: its dev server (npm install + vite, port 5175) was still not answering after 5 minutes." /tmp/ui.log
+    else
+      report_start_failure "The rulebook editor did not start: its dev server (npm install + vite, port 5175) exited." /tmp/ui.log
+    fi
     write_status_json "error"
     echo "error" > "$BOOT_STATE_FILE"
     return 0

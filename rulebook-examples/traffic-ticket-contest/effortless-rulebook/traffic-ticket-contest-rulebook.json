@@ -25485,12 +25485,20 @@
         "formula": "=IF(AND({{IsGuilty}}, ISBLANK({{PaidOn}}), {{AsOfDate}} > {{PaymentDueDate}}), TRUE, FALSE)"
       },
       {
+        "name": "CollectionsDeadline",
+        "datatype": "date",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Date the account moves to collections: PaymentDueDate plus the jurisdiction's grace window.",
+        "formula": "=DATEVALUE({{PaymentDueDate}}) + {{DaysLateToCollections}}"
+      },
+      {
         "name": "IsInCollections",
         "datatype": "boolean",
         "type": "calculated",
         "nullable": false,
         "Description": "True when a late payment has remained unpaid past the jurisdiction's collections window.",
-        "formula": "=IF(AND({{IsPaymentLate}}, {{AsOfDate}} > DATEVALUE({{PaymentDueDate}}) + {{DaysLateToCollections}}), TRUE, FALSE)"
+        "formula": "=IF(AND({{IsPaymentLate}}, {{AsOfDate}} > {{CollectionsDeadline}}), TRUE, FALSE)"
       },
       {
         "name": "PaymentStatus",

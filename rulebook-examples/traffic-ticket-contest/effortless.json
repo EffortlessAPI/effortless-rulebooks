@@ -19,7 +19,7 @@
       "RelativePath": "/postgres-bootstrap",
       "CommandLine": "rulebook-to-postgres -i ../effortless-rulebook/traffic-ticket-contest-rulebook.json -p mode=drop-all -p stage=dev -p drop_all=true",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.09.07.0336",
+      "LastVersionUsed": "v2026.10.06.1054",
       "LastUrl": "https://effortless-rulebook-to-postgres-v2026-09-07-0336-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
       "Description": "Generate Postgres schema + seed data from the rulebook."
     },
@@ -51,7 +51,7 @@
       "RelativePath": "/rulespeak",
       "CommandLine": "rulebook-to-rulespeak -i ../effortless-rulebook/traffic-ticket-contest-rulebook.json",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.09.11.0137",
+      "LastVersionUsed": "v2026.10.05.1648",
       "LastUrl": "https://effortless-rulebook-to-rulespeak-v2026-09-11-0137-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     },
     {
@@ -67,12 +67,12 @@
       "RelativePath": "/effortless-rulebook",
       "CommandLine": "effortless-rulebook-editor -i traffic-ticket-contest-rulebook.json -p rulebookPath=traffic-ticket-contest-rulebook.json -p dockerfilePath=docker/Dockerfile",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.09.10.1047",
+      "LastVersionUsed": "v2026.10.11.1508",
       "LastUrl": "https://effortless-effortless-rulebook-e-v2026-09-10-1047-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     }
   ],
   "ShowHidden": false,
   "ShowAllFiles": false,
-  "CurrentPath": "",
+  "CurrentPath": "/effortless-rulebook",
   "SSoTmeProjectFiles": null
 }

@@ -55,6 +55,12 @@ const REBUILD_PROMPT_DISMISS_FILE = process.env.BOOT_REBUILD_PROMPT_DISMISS_FILE
 // into the container to read logs.
 const ERRORS_FILE = process.env.BOOT_ERRORS_FILE || '/tmp/build-errors.json';
 const STATUS_FILE = process.env.BOOT_STATUS_FILE || '/tmp/boot-status.json';
+// Why the app did not start after the build (container-entrypoint.sh,
+// report_start_failure): headline, then the failing process's log tail.
+const FAILURE_FILE = process.env.BOOT_FAILURE_FILE || '/tmp/boot-failure.txt';
+const readFailure = () => {
+  try { return fs.readFileSync(FAILURE_FILE, 'utf8').trim() || null; } catch { return null; }
+};
 
 // The build pipeline itself -- effortless.json's ProjectTranspilers list, which
 // container-entrypoint.sh seeds onto disk BEFORE the first build starts. Serving
@@ -84,6 +90,14 @@ const STEP_COPY = {
   rulebooktopostgres: [
     'Design the database',
     'Reads your rulebook and works out the database from it: a table for every kind of thing you described, a function for every value that gets calculated, and a view that puts them back together.',
+  ],
+  rulebooktorbac: [
+    'Work out who can see and change what',
+    'Security module. Reads the roles, users and permissions in your rulebook and writes them down as one list of who is allowed to see or change each table. Off until the Security module is switched on in the portal\'s Modules page.',
+  ],
+  rbactopostgrespolicies: [
+    'Lock down the database to match',
+    'Security module. Turns that list into database rules, so each person only sees and changes the rows their role allows -- enforced by the database itself, not just the screens. Off until the Security module is switched on.',
   ],
   chmodinitdb: [
     'Prepare the database setup script',
@@ -120,6 +134,10 @@ const STEP_COPY = {
   rulebooktoxlsx: [
     'Export everything to an Excel workbook',
     'Writes your tables into a spreadsheet you can download and open in Excel. Enabled by default.',
+  ],
+  rulebooktoprogressreport: [
+    'Write the progress report',
+    'Delivery module. Reads the user stories, acceptance criteria and build phases in your rulebook and writes up what is done and what is left, shown under the portal\'s Progress Report tab. Off until the Delivery module is switched on.',
   ],
 };
 
@@ -419,6 +437,11 @@ const BOOT_PAGE = `<!doctype html>
   .conflict-choices button.recommended{border-color:#4ea882}
   .conflict-choices button.danger{border-color:#e05a3a}
   .dot.degraded{background:#e0a03a;animation:none}
+  .start-fail{display:none;flex-direction:column;gap:10px;margin:14px 22px;padding:18px 20px;
+    border:2px solid #ff6b52;border-radius:8px;background:rgba(255,107,82,.14)}
+  .start-fail.show{display:flex}
+  .start-fail h2{margin:0;font-size:16px;font-weight:700;color:#ff6b52}
+  .start-fail pre{margin:0;max-height:420px;overflow:auto;font-size:11.5px;line-height:1.5;white-space:pre-wrap}
   .fail-panel{display:none;flex-direction:column;gap:8px;margin:14px 22px;padding:16px 18px;
     border:1px solid #e05a3a;border-radius:8px;background:rgba(224,90,58,.08)}
   .fail-panel.show{display:flex}
@@ -462,6 +485,10 @@ const BOOT_PAGE = `<!doctype html>
     </button>
   </div>
 </div>
+<div class="start-fail" id="startFail">
+  <h2 id="startFailTitle"></h2>
+  <pre id="startFailLog"></pre>
+</div>
 <div class="fail-panel" id="failPanel">
   <h2 id="failTitle">Some build steps failed</h2>
   <p id="failIntro"></p>
@@ -498,6 +525,7 @@ const BOOT_PAGE = `<!doctype html>
   const rebuildBtn = document.getElementById('rebuildBtn');
   const conflictPanel = document.getElementById('conflictPanel');
   const failPanel = document.getElementById('failPanel');
+  const startFail = document.getElementById('startFail');
   const failTitle = document.getElementById('failTitle');
   const failIntro = document.getElementById('failIntro');
   const mainEl = document.getElementById('main');
@@ -886,8 +914,19 @@ const BOOT_PAGE = `<!doctype html>
     }).catch(() => {});
   }
 
+  // The reason the app did not start, as loud as the page can make it.
+  function renderStartFailure(text) {
+    if (!text) { startFail.classList.remove('show'); return; }
+    const [title, ...rest] = text.split('\n');
+    document.getElementById('startFailTitle').textContent = title;
+    document.getElementById('startFailLog').textContent = rest.join('\n').trim();
+    startFail.classList.add('show');
+  }
+
   function refreshStatus() {
-    return fetch('/__boot/status').then(r => r.json()).then(renderTiles).catch(() => {});
+    return fetch('/__boot/status').then(r => r.json())
+      .then((status) => { renderTiles(status); renderStartFailure(status && status.failure); })
+      .catch(() => {});
   }
 
   // Pull the structured failure record rather than asking the user to spot an
@@ -1044,7 +1083,12 @@ function proxyToInternalUI(req, res) {
       port: INTERNAL_UI_PORT,
       path: req.url,
       method: req.method,
-      headers: req.headers,
+      // Vite (5.4.12+) refuses any Host it does not know -- behind a gateway
+      // that is the gateway's internal name (e.g. runner-x.loops.cpln.local),
+      // so every request got "Blocked request. This host is not allowed".
+      // Vite is internal to this container; address it as itself and keep
+      // the outside host in x-forwarded-host.
+      headers: { ...req.headers, host: `127.0.0.1:${INTERNAL_UI_PORT}`, 'x-forwarded-host': req.headers['x-forwarded-host'] || req.headers.host },
     },
     (proxyRes) => {
       res.writeHead(proxyRes.statusCode, proxyRes.headers);
@@ -1147,7 +1191,11 @@ function serveFile(res, target, rel) {
       ext === '.xlsx' ? 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' :
       ext === '.json' ? 'application/json' :
       'application/octet-stream';
-    res.writeHead(200, { 'content-type': contentType });
+    const headers = { 'content-type': contentType };
+    // The portal links to the bare /__tools/xlsx/ directory, so without this
+    // the browser names the download after the URL ("xlsx") instead of the file.
+    if (ext === '.xlsx') headers['content-disposition'] = `attachment; filename="${path.basename(target)}"`;
+    res.writeHead(200, headers);
     res.end(data);
   });
 }
@@ -1192,6 +1240,7 @@ const server = http.createServer((req, res) => {
         note: 'no status snapshot written yet -- the first build has not finished',
       };
       status.state = readState();
+      status.failure = readFailure();
       res.writeHead(200, { 'content-type': 'application/json' });
       res.end(JSON.stringify(status));
       return;

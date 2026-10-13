@@ -40,7 +40,7 @@ containerized rulebook editor/viewer for any Effortless project:
 
 - `-p rulebookPath=...` -- where the rulebook JSON file lives, relative to
   wherever this tool is installed/run from (TOOL_DIR). Default:
-  `../effortless-rulebook.json`. `edit-rulebook.sh` is generated into that
+  `effortless-rulebook.json`. `edit-rulebook.sh` is generated into that
   file's folder; every other file (Dockerfile, effortless.editor.json,
   container-entrypoint.sh, boot-server.js, README.md) stays at TOOL_DIR --
   this keeps the rulebook's own folder clean (just the one launcher script).
