@@ -63,9 +63,10 @@ Receipt: `rulebook-examples/talismans-special-solutions` — `precedesStep`/`del
 "The Falsifiable Core: First-Order Logic with Aggregates and the Transitive-Closure Boundary" for
 the full argument.
 
-Concede: this does not make SDLAF "complete" in the naive sense. CMCC's completeness claim already
-assumes an explicit closure/recursion primitive standing beside the five — the contribution is
-naming that boundary and proving the crossings agree, not claiming SDLAF alone reaches past it.
+Do not concede that closure sits outside or "beside" SDLAF: SDLAF requires recursion in the S.
+The Schema declares a relationship transitive (`"type": "closure"`); recursion-free FO + aggregation
+is not SDLAF. The contribution is naming the boundary the theorem draws and proving, cell by cell
+across substrates, that SDLAF's declared closure crosses it and every emission agrees.
 
 ### "Isn't this just Model-Driven Engineering with extra steps?"
 

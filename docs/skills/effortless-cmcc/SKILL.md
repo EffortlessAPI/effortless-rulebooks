@@ -19,10 +19,13 @@ audience: customer
 
 ## The Falsifiable Core: First-Order Logic with Aggregates and the Transitive-Closure Boundary
 
-Most of what SDLAF does — joins, rollups, calculated fields — is expressivity plain SQL has had
-for 25+ years; nobody disputes it, and nobody should be impressed by it alone. The claim worth
-defending is sharper and has a name: **SDLAF over a finite relational structure, without
-recursion, is exactly first-order logic with aggregates** — the logic *L*<sub>aggr</sub> of Hella,
+**SDLAF requires recursion in the S.** The Schema declares relationships transitive
+(`"type": "closure"`), the way SQL has `WITH RECURSIVE` and OWL has `owl:TransitiveProperty`.
+Without recursion in the S, it is not SDLAF. Joins, rollups and calculated fields are expressivity
+plain SQL has had for 25+ years; nobody disputes them, and nobody should be impressed by them
+alone. The claim worth defending is sharper and has a name: **strip the recursion out of the S
+and what is left, over a finite relational structure, is exactly first-order logic with
+aggregates** — the logic *L*<sub>aggr</sub> of Hella,
 Libkin, Nurmonen & Wong, roughly FO + aggregation, the same class as SQL without `WITH RECURSIVE`.
 ("FO(Aggr)" is not a standard name for this class — spell it out in anything outward-facing.)
 That equivalence inherits a real theorem, not an analogy: **Hella, Libkin, Nurmonen & Wong,
@@ -35,8 +38,8 @@ is the opposite direction of this claim. Scope note: the proof is by locality ov
 relational structures; with a built-in order plus arithmetic, proving the same separation would
 resolve the open question of uniform TC⁰ vs. NL.)
 
-This is why closure is never modeled as a `formula` field in ERB — and why the rulebook declares
-it as its own **first-class `closure` field type** instead: `"type": "closure"` over a
+This is why recursion lives in the S, never in a `formula` field: the rulebook declares it as
+its own **first-class `closure` field type**: `"type": "closure"` over a
 relationship, optionally with an edge filter. Every substrate emits that one declared field —
 `WITH RECURSIVE` in Postgres, `owl:TransitiveProperty` in OWL, an explicit graph traversal in
 Python/Go/TypeScript — emissions of a declared field, no different from a COUNTIFS becoming a SQL
@@ -50,9 +53,10 @@ graph and a filtered-edge closure (`LeadsWithoutHumanGateClosure`) — never a f
 Every framework that survives contact with a real DAG hits this same wall — OCL added
 `closure()`, SQL added `WITH RECURSIVE`, OWL has transitive properties — because the wall is a
 theorem, not an implementation gap in any one of them. **This is the falsifiable, load-bearing
-part of the pitch, and it should lead, not trail**: CMCC does not claim SDLAF-without-recursion is
-complete on its own — it claims SDLAF *plus the rulebook's declared `closure` primitive* is
-complete, and it names the boundary instead of quietly stepping over it. To an
+part of the pitch, and it should lead, not trail**: SDLAF, with its recursion in the S, is
+complete — and the repo proves it empirically, closure cells graded across every substrate. Never
+describe closure as an add-on "beside" or "plus" SDLAF, and never call recursion-free FO +
+aggregation "SDLAF": that hedges on the exact claim the receipts prove. To an
 audience that already knows SQL, the rest of SDLAF will look familiar by design; the closure
 boundary is the part that isn't, and it is the part to open with.
 
@@ -183,8 +187,8 @@ finitely-computable, design-time semantic phenomenon that cannot be decomposed
 into SDLAF in a bitemporal ACID DAG. As of this writing, no such sentence has
 survived attack. (See `effortless-rationale` for the skeptic-facing version.)
 Transitive closure is the one candidate that came closest to succeeding, and it
-is *why* the conjecture is stated over "SDLAF plus the rulebook's declared closure
-primitive," not SDLAF alone — see "The Falsifiable Core" above.
+is *why* SDLAF's S carries recursion (the declared `closure` field type) — see
+"The Falsifiable Core" above.
 
 ## My Posture as effortless-claude (when CMCC is the floor)
 
