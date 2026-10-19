@@ -1,0 +1,1498 @@
+{
+  "generator": "rulebook-to-cobol",
+  "tables": [
+    {
+      "number": 1,
+      "name": "Users",
+      "snake": "users",
+      "fields": [
+        {
+          "name": "Name",
+          "snake": "name",
+          "kind": "string",
+          "type": "calculated",
+          "datatype": "string",
+          "width": 2684
+        },
+        {
+          "name": "FullName",
+          "snake": "full_name",
+          "kind": "string",
+          "type": "raw",
+          "datatype": "string",
+          "width": 64
+        },
+        {
+          "name": "Role",
+          "snake": "role",
+          "kind": "string",
+          "type": "raw",
+          "datatype": "string",
+          "width": 64
+        },
+        {
+          "name": "Email",
+          "snake": "email",
+          "kind": "string",
+          "type": "raw",
+          "datatype": "string",
+          "width": 64
+        },
+        {
+          "name": "IsRM",
+          "snake": "is_rm",
+          "kind": "bool",
+          "type": "calculated",
+          "datatype": "boolean",
+          "width": 1
+        },
+        {
+          "name": "IsUnderwriter",
+          "snake": "is_underwriter",
+          "kind": "bool",
+          "type": "calculated",
+          "datatype": "boolean",
+          "width": 1
+        },
+        {
+          "name": "IsBranchBanker",
+          "snake": "is_branch_banker",
+          "kind": "bool",
+          "type": "calculated",
+          "datatype": "boolean",
+          "width": 1
+        },
+        {
+          "name": "IsAdmin",
+          "snake": "is_admin",
+          "kind": "bool",
+          "type": "calculated",
+          "datatype": "boolean",
+          "width": 1
+        },
+        {
+          "name": "CountOfPortfolioBusinesses",
+          "snake": "count_of_portfolio_businesses",
+          "kind": "int",
+          "type": "aggregation",
+          "datatype": "integer",
+          "width": 1
+        },
+        {
+          "name": "CountOfOriginatedLoans",
+          "snake": "count_of_originated_loans",
+          "kind": "int",
+          "type": "aggregation",
+          "datatype": "integer",
+          "width": 1
+        },
+        {
+          "name": "CountOfUnderwrittenLoans",
+          "snake": "count_of_underwritten_loans",
+          "kind": "int",
+          "type": "aggregation",
+          "datatype": "integer",
+          "width": 1
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "name": "Businesses",
+      "snake": "businesses",
+      "fields": [
+        {
+          "name": "Name",
+          "snake": "name",
+          "kind": "string",
+          "type": "calculated",
+          "datatype": "string",
+          "width": 2684
+        },
+        {
+          "name": "LegalName",
+          "snake": "legal_name",
+          "kind": "string",
+          "type": "raw",
+          "datatype": "string",
+          "width": 64
+        },
+        {
+          "name": "BusinessStructure",
+          "snake": "business_structure",
+          "kind": "string",
+          "type": "raw",
+          "datatype": "string",
+          "width": 64
+        },
+        {
+          "name": "NaicsCode",
+          "snake": "naics_code",
+          "kind": "string",
+          "type": "raw",
+          "datatype": "string",
+          "width": 64
+        },
+        {
+          "name": "NaicsDescription",
+          "snake": "naics_description",
+          "kind": "string",
+          "type": "raw",
+          "datatype": "string",
+          "width": 86
+        },
+        {
+          "name": "AnnualRevenueUsd",
+          "snake": "annual_revenue_usd",
+          "kind": "float",
+          "type": "raw",
+          "datatype": "number",
+          "width": 1
+        },
+        {
+          "name": "Status",
+          "snake": "status",
+          "kind": "string",
+          "type": "raw",
+          "datatype": "string",
+          "width": 64
+        },
+        {
+          "name": "OnboardedAt",
+          "snake": "onboarded_at",
+          "kind": "string",
+          "type": "raw",
+          "datatype": "datetime",
+          "width": 64
+        },
+        {
+          "name": "RelationshipManager",
+          "snake": "relationship_manager",
+          "kind": "string",
+          "type": "relationship",
+          "datatype": "string",
+          "width": 64
+        },
+        {
+          "name": "ReferralSource",
+          "snake": "referral_source",
+          "kind": "string",
+          "type": "relationship",
+          "datatype": "string",
+          "width": 64
+        },
+        {
+          "name": "RelationshipManagerLabel",
+          "snake": "relationship_manager_label",
+          "kind": "string",
+          "type": "lookup",
+          "datatype": "string",
+          "width": 2684
+        },
+        {
+          "name": "IsCustomer",
+          "snake": "is_customer",
+          "kind": "bool",
+          "type": "calculated",
+          "datatype": "boolean",
+          "width": 1
+        },
+        {
+          "name": "IsProspect",
+          "snake": "is_prospect",
+          "kind": "bool",
+          "type": "calculated",
+          "datatype": "boolean",
+          "width": 1
+        },
+        {
+          "name": "WasReferred",
+          "snake": "was_referred",
+          "kind": "bool",
+          "type": "calculated",
+          "datatype": "boolean",
+          "width": 1
+        },
+        {
+          "name": "CountOfBeneficialOwners",
+          "snake": "count_of_beneficial_owners",
+          "kind": "int",
+          "type": "aggregation",
+          "datatype": "integer",
+          "width": 1
+        },
+        {
+          "name": "CountOfContacts",
+          "snake": "count_of_contacts",
+          "kind": "int",
+          "type": "aggregation",
+          "datatype": "integer",
+          "width": 1
+        },
+        {
+          "name": "CountOfAccounts",
+          "snake": "count_of_accounts",
+          "kind": "int",
+          "type": "aggregation",
+          "datatype": "integer",
+          "width": 1
+        },
+        {
+          "name": "CountOfLoans",
+          "snake": "count_of_loans",
+          "kind": "int",
+          "type": "aggregation",
+          "datatype": "integer",
+          "width": 1
+        },
+        {
+          "name": "CountOfInteractions",
+          "snake": "count_of_interactions",
+          "kind": "int",
+          "type": "aggregation",
+          "datatype": "integer",
+          "width": 1
+        },
+        {
+          "name": "CountOfDocuments",
+          "snake": "count_of_documents",
+          "kind": "int",
+          "type": "aggregation",
+          "datatype": "integer",
+          "width": 1
+        },
+        {
+          "name": "TotalDepositBalanceUsd",
+          "snake": "total_deposit_balance_usd",
+          "kind": "float",
+          "type": "aggregation",
+          "datatype": "number",
+          "width": 1
+        },
+        {
+          "name": "TotalLoanPrincipalUsd",
+          "snake": "total_loan_principal_usd",
+          "kind": "float",
+          "type": "aggregation",
+          "datatype": "number",
+          "width": 1
+        },
+        {
+          "name": "CountOfClassifiedLoans",
+          "snake": "count_of_classified_loans",
+          "kind": "int",
+          "type": "aggregation",
+          "datatype": "integer",
+          "width": 1
+        },
+        {
+          "name": "HasClassifiedLoan",
+          "snake": "has_classified_loan",
+          "kind": "bool",
+          "type": "calculated",
+          "datatype": "boolean",
+          "width": 1
+        },
+        {
+          "name": "BeneficialOwnersAtCddThreshold",
+          "snake": "beneficial_owners_at_cdd_threshold",
+          "kind": "int",
+          "type": "aggregation",
+          "datatype": "integer",
+          "width": 1
+        },
+        {
+          "name": "MeetsCddRule",
+          "snake": "meets_cdd_rule",
+          "kind": "bool",
+          "type": "calculated",
+          "datatype": "boolean",
+          "width": 1
+        },
+        {
+          "name": "PortfolioPriority",
+          "snake": "portfolio_priority",
+          "kind": "string",
+          "type": "calculated",
+          "datatype": "string",
+          "width": 2684
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "name": "BeneficialOwners",
+      "snake": "beneficial_owners",
+      "fields": [
+        {
+          "name": "Name",
+          "snake": "name",
+          "kind": "string",
+          "type": "calculated",
+          "datatype": "string",
+          "width": 2684
+        },
+        {
+          "name": "Business",
+          "snake": "business",
+          "kind": "string",
+          "type": "relationship",
+          "datatype": "string",
+          "width": 64
+        },
+        {
+          "name": "FullName",
+          "snake": "full_name",
+          "kind": "string",
+          "type": "raw",
+          "datatype": "string",
+          "width": 64
+        },
+        {
+          "name": "DateOfBirthEncrypted",
+          "snake": "date_of_birth_encrypted",
+          "kind": "string",
+          "type": "raw",
+          "datatype": "string",
+          "width": 64
+        },
+        {
+          "name": "SsnEncrypted",
+          "snake": "ssn_encrypted",
+          "kind": "string",
+          "type": "raw",
+          "datatype": "string",
+          "width": 64
+        },
+        {
+          "name": "AddressEncrypted",
+          "snake": "address_encrypted",
+          "kind": "string",
+          "type": "raw",
+          "datatype": "string",
+          "width": 68
+        },
+        {
+          "name": "OwnershipPercentage",
+          "snake": "ownership_percentage",
+          "kind": "float",
+          "type": "raw",
+          "datatype": "number",
+          "width": 1
+        },
+        {
+          "name": "IsControlPerson",
+          "snake": "is_control_person",
+          "kind": "bool",
+          "type": "raw",
+          "datatype": "boolean",
+          "width": 1
+        },
+        {
+          "name": "BusinessLabel",
+          "snake": "business_label",
+          "kind": "string",
+          "type": "lookup",
+          "datatype": "string",
+          "width": 2684
+        },
+        {
+          "name": "Meets25PercentThreshold",
+          "snake": "meets25_percent_threshold",
+          "kind": "bool",
+          "type": "calculated",
+          "datatype": "boolean",
+          "width": 1
+        },
+        {
+          "name": "MeetsCddThreshold",
+          "snake": "meets_cdd_threshold",
+          "kind": "bool",
+          "type": "calculated",
+          "datatype": "boolean",
+          "width": 1
+        }
+      ]
+    },
+    {
+      "number": 4,
+      "name": "Contacts",
+      "snake": "contacts",
+      "fields": [
+        {
+          "name": "Name",
+          "snake": "name",
+          "kind": "string",
+          "type": "calculated",
+          "datatype": "string",
+          "width": 2684
+        },
+        {
+          "name": "Business",
+          "snake": "business",
+          "kind": "string",
+          "type": "relationship",
+          "datatype": "string",
+          "width": 64
+        },
+        {
+          "name": "FullName",
+          "snake": "full_name",
+          "kind": "string",
+          "type": "raw",
+          "datatype": "string",
+          "width": 64
+        },
+        {
+          "name": "Title",
+          "snake": "title",
+          "kind": "string",
+          "type": "raw",
+          "datatype": "string",
+          "width": 64
+        },
+        {
+          "name": "Email",
+          "snake": "email",
+          "kind": "string",
+          "type": "raw",
+          "datatype": "string",
+          "width": 64
+        },
+        {
+          "name": "Phone",
+          "snake": "phone",
+          "kind": "string",
+          "type": "raw",
+          "datatype": "string",
+          "width": 64
+        },
+        {
+          "name": "ContactType",
+          "snake": "contact_type",
+          "kind": "string",
+          "type": "raw",
+          "datatype": "string",
+          "width": 64
+        },
+        {
+          "name": "IsAuthorizedSigner",
+          "snake": "is_authorized_signer",
+          "kind": "bool",
+          "type": "raw",
+          "datatype": "boolean",
+          "width": 1
+        },
+        {
+          "name": "BusinessLabel",
+          "snake": "business_label",
+          "kind": "string",
+          "type": "lookup",
+          "datatype": "string",
+          "width": 2684
+        },
+        {
+          "name": "IsOfficer",
+          "snake": "is_officer",
+          "kind": "bool",
+          "type": "calculated",
+          "datatype": "boolean",
+          "width": 1
+        },
+        {
+          "name": "IsApClerk",
+          "snake": "is_ap_clerk",
+          "kind": "bool",
+          "type": "calculated",
+          "datatype": "boolean",
+          "width": 1
+        }
+      ]
+    },
+    {
+      "number": 5,
+      "name": "Accounts",
+      "snake": "accounts",
+      "fields": [
+        {
+          "name": "Name",
+          "snake": "name",
+          "kind": "string",
+          "type": "calculated",
+          "datatype": "string",
+          "width": 2684
+        },
+        {
+          "name": "Business",
+          "snake": "business",
+          "kind": "string",
+          "type": "relationship",
+          "datatype": "string",
+          "width": 64
+        },
+        {
+          "name": "AccountType",
+          "snake": "account_type",
+          "kind": "string",
+          "type": "raw",
+          "datatype": "string",
+          "width": 64
+        },
+        {
+          "name": "AccountNumberLast4",
+          "snake": "account_number_last4",
+          "kind": "string",
+          "type": "raw",
+          "datatype": "string",
+          "width": 64
+        },
+        {
+          "name": "CurrentBalanceUsd",
+          "snake": "current_balance_usd",
+          "kind": "float",
+          "type": "raw",
+          "datatype": "number",
+          "width": 1
+        },
+        {
+          "name": "HasAch",
+          "snake": "has_ach",
+          "kind": "bool",
+          "type": "raw",
+          "datatype": "boolean",
+          "width": 1
+        },
+        {
+          "name": "HasWire",
+          "snake": "has_wire",
+          "kind": "bool",
+          "type": "raw",
+          "datatype": "boolean",
+          "width": 1
+        },
+        {
+          "name": "HasCard",
+          "snake": "has_card",
+          "kind": "bool",
+          "type": "raw",
+          "datatype": "boolean",
+          "width": 1
+        },
+        {
+          "name": "OpenedAt",
+          "snake": "opened_at",
+          "kind": "string",
+          "type": "raw",
+          "datatype": "datetime",
+          "width": 64
+        },
+        {
+          "name": "BusinessLabel",
+          "snake": "business_label",
+          "kind": "string",
+          "type": "lookup",
+          "datatype": "string",
+          "width": 2684
+        },
+        {
+          "name": "TreasuryServiceCount",
+          "snake": "treasury_service_count",
+          "kind": "int",
+          "type": "calculated",
+          "datatype": "integer",
+          "width": 1
+        },
+        {
+          "name": "HasAnyTreasuryService",
+          "snake": "has_any_treasury_service",
+          "kind": "bool",
+          "type": "calculated",
+          "datatype": "boolean",
+          "width": 1
+        }
+      ]
+    },
+    {
+      "number": 6,
+      "name": "Loans",
+      "snake": "loans",
+      "fields": [
+        {
+          "name": "Name",
+          "snake": "name",
+          "kind": "string",
+          "type": "calculated",
+          "datatype": "string",
+          "width": 2684
+        },
+        {
+          "name": "LoanNumber",
+          "snake": "loan_number",
+          "kind": "string",
+          "type": "raw",
+          "datatype": "string",
+          "width": 64
+        },
+        {
+          "name": "Business",
+          "snake": "business",
+          "kind": "string",
+          "type": "relationship",
+          "datatype": "string",
+          "width": 64
+        },
+        {
+          "name": "OriginatingRm",
+          "snake": "originating_rm",
+          "kind": "string",
+          "type": "relationship",
+          "datatype": "string",
+          "width": 64
+        },
+        {
+          "name": "Underwriter",
+          "snake": "underwriter",
+          "kind": "string",
+          "type": "relationship",
+          "datatype": "string",
+          "width": 64
+        },
+        {
+          "name": "LoanPurpose",
+          "snake": "loan_purpose",
+          "kind": "string",
+          "type": "raw",
+          "datatype": "string",
+          "width": 64
+        },
+        {
+          "name": "PrincipalUsd",
+          "snake": "principal_usd",
+          "kind": "float",
+          "type": "raw",
+          "datatype": "number",
+          "width": 1
+        },
+        {
+          "name": "RatePct",
+          "snake": "rate_pct",
+          "kind": "float",
+          "type": "raw",
+          "datatype": "number",
+          "width": 1
+        },
+        {
+          "name": "TermMonths",
+          "snake": "term_months",
+          "kind": "int",
+          "type": "raw",
+          "datatype": "integer",
+          "width": 1
+        },
+        {
+          "name": "UnderwritingStage",
+          "snake": "underwriting_stage",
+          "kind": "string",
+          "type": "raw",
+          "datatype": "string",
+          "width": 64
+        },
+        {
+          "name": "RiskRating",
+          "snake": "risk_rating",
+          "kind": "int",
+          "type": "raw",
+          "datatype": "integer",
+          "width": 1
+        },
+        {
+          "name": "RiskRatingLabel",
+          "snake": "risk_rating_label",
+          "kind": "string",
+          "type": "raw",
+          "datatype": "string",
+          "width": 64
+        },
+        {
+          "name": "Dscr",
+          "snake": "dscr",
+          "kind": "float",
+          "type": "raw",
+          "datatype": "number",
+          "width": 1
+        },
+        {
+          "name": "Ltv",
+          "snake": "ltv",
+          "kind": "float",
+          "type": "raw",
+          "datatype": "number",
+          "width": 1
+        },
+        {
+          "name": "GlobalCashFlowUsd",
+          "snake": "global_cash_flow_usd",
+          "kind": "float",
+          "type": "raw",
+          "datatype": "number",
+          "width": 1
+        },
+        {
+          "name": "OriginatedAt",
+          "snake": "originated_at",
+          "kind": "string",
+          "type": "raw",
+          "datatype": "datetime",
+          "width": 64
+        },
+        {
+          "name": "FundedAt",
+          "snake": "funded_at",
+          "kind": "string",
+          "type": "raw",
+          "datatype": "datetime",
+          "width": 64
+        },
+        {
+          "name": "BusinessLabel",
+          "snake": "business_label",
+          "kind": "string",
+          "type": "lookup",
+          "datatype": "string",
+          "width": 2684
+        },
+        {
+          "name": "BusinessNaicsCode",
+          "snake": "business_naics_code",
+          "kind": "string",
+          "type": "lookup",
+          "datatype": "string",
+          "width": 2684
+        },
+        {
+          "name": "OriginatingRmLabel",
+          "snake": "originating_rm_label",
+          "kind": "string",
+          "type": "lookup",
+          "datatype": "string",
+          "width": 2684
+        },
+        {
+          "name": "UnderwriterIsAdmin",
+          "snake": "underwriter_is_admin",
+          "kind": "bool",
+          "type": "lookup",
+          "datatype": "boolean",
+          "width": 1
+        },
+        {
+          "name": "IsFunded",
+          "snake": "is_funded",
+          "kind": "bool",
+          "type": "calculated",
+          "datatype": "boolean",
+          "width": 1
+        },
+        {
+          "name": "IsClassifiedAsset",
+          "snake": "is_classified_asset",
+          "kind": "bool",
+          "type": "calculated",
+          "datatype": "boolean",
+          "width": 1
+        },
+        {
+          "name": "DscrInBand",
+          "snake": "dscr_in_band",
+          "kind": "bool",
+          "type": "calculated",
+          "datatype": "boolean",
+          "width": 1
+        },
+        {
+          "name": "LtvInBand",
+          "snake": "ltv_in_band",
+          "kind": "bool",
+          "type": "calculated",
+          "datatype": "boolean",
+          "width": 1
+        },
+        {
+          "name": "SegregationOfDutiesOk",
+          "snake": "segregation_of_duties_ok",
+          "kind": "bool",
+          "type": "calculated",
+          "datatype": "boolean",
+          "width": 1
+        },
+        {
+          "name": "CountOfCovenants",
+          "snake": "count_of_covenants",
+          "kind": "int",
+          "type": "aggregation",
+          "datatype": "integer",
+          "width": 1
+        },
+        {
+          "name": "CountOfBreachedCovenants",
+          "snake": "count_of_breached_covenants",
+          "kind": "int",
+          "type": "aggregation",
+          "datatype": "integer",
+          "width": 1
+        },
+        {
+          "name": "CountOfRiskRatingHistory",
+          "snake": "count_of_risk_rating_history",
+          "kind": "int",
+          "type": "aggregation",
+          "datatype": "integer",
+          "width": 1
+        },
+        {
+          "name": "CountOfDocuments",
+          "snake": "count_of_documents",
+          "kind": "int",
+          "type": "aggregation",
+          "datatype": "integer",
+          "width": 1
+        },
+        {
+          "name": "HasBreachedCovenant",
+          "snake": "has_breached_covenant",
+          "kind": "bool",
+          "type": "calculated",
+          "datatype": "boolean",
+          "width": 1
+        },
+        {
+          "name": "OnWatchlist",
+          "snake": "on_watchlist",
+          "kind": "bool",
+          "type": "calculated",
+          "datatype": "boolean",
+          "width": 1
+        },
+        {
+          "name": "HealthScore",
+          "snake": "health_score",
+          "kind": "int",
+          "type": "calculated",
+          "datatype": "integer",
+          "width": 1
+        }
+      ]
+    },
+    {
+      "number": 7,
+      "name": "Covenants",
+      "snake": "covenants",
+      "fields": [
+        {
+          "name": "Name",
+          "snake": "name",
+          "kind": "string",
+          "type": "calculated",
+          "datatype": "string",
+          "width": 2684
+        },
+        {
+          "name": "Loan",
+          "snake": "loan",
+          "kind": "string",
+          "type": "relationship",
+          "datatype": "string",
+          "width": 64
+        },
+        {
+          "name": "CovenantType",
+          "snake": "covenant_type",
+          "kind": "string",
+          "type": "raw",
+          "datatype": "string",
+          "width": 64
+        },
+        {
+          "name": "ThresholdValue",
+          "snake": "threshold_value",
+          "kind": "float",
+          "type": "raw",
+          "datatype": "number",
+          "width": 1
+        },
+        {
+          "name": "TestFrequency",
+          "snake": "test_frequency",
+          "kind": "string",
+          "type": "raw",
+          "datatype": "string",
+          "width": 64
+        },
+        {
+          "name": "NextTestDate",
+          "snake": "next_test_date",
+          "kind": "string",
+          "type": "raw",
+          "datatype": "datetime",
+          "width": 64
+        },
+        {
+          "name": "Status",
+          "snake": "status",
+          "kind": "string",
+          "type": "raw",
+          "datatype": "string",
+          "width": 64
+        },
+        {
+          "name": "CurrentWaiverThrough",
+          "snake": "current_waiver_through",
+          "kind": "string",
+          "type": "raw",
+          "datatype": "datetime",
+          "width": 64
+        },
+        {
+          "name": "LoanLabel",
+          "snake": "loan_label",
+          "kind": "string",
+          "type": "lookup",
+          "datatype": "string",
+          "width": 2684
+        },
+        {
+          "name": "LoanBusiness",
+          "snake": "loan_business",
+          "kind": "string",
+          "type": "lookup",
+          "datatype": "string",
+          "width": 2684
+        },
+        {
+          "name": "IsBreached",
+          "snake": "is_breached",
+          "kind": "bool",
+          "type": "calculated",
+          "datatype": "boolean",
+          "width": 1
+        },
+        {
+          "name": "HasActiveWaiver",
+          "snake": "has_active_waiver",
+          "kind": "bool",
+          "type": "calculated",
+          "datatype": "boolean",
+          "width": 1
+        }
+      ]
+    },
+    {
+      "number": 8,
+      "name": "RiskRatingHistory",
+      "snake": "risk_rating_history",
+      "fields": [
+        {
+          "name": "Name",
+          "snake": "name",
+          "kind": "string",
+          "type": "calculated",
+          "datatype": "string",
+          "width": 2684
+        },
+        {
+          "name": "Loan",
+          "snake": "loan",
+          "kind": "string",
+          "type": "relationship",
+          "datatype": "string",
+          "width": 64
+        },
+        {
+          "name": "ChangedByUser",
+          "snake": "changed_by_user",
+          "kind": "string",
+          "type": "relationship",
+          "datatype": "string",
+          "width": 64
+        },
+        {
+          "name": "EffectiveDate",
+          "snake": "effective_date",
+          "kind": "string",
+          "type": "raw",
+          "datatype": "datetime",
+          "width": 64
+        },
+        {
+          "name": "PriorGrade",
+          "snake": "prior_grade",
+          "kind": "int",
+          "type": "raw",
+          "datatype": "integer",
+          "width": 1
+        },
+        {
+          "name": "NewGrade",
+          "snake": "new_grade",
+          "kind": "int",
+          "type": "raw",
+          "datatype": "integer",
+          "width": 1
+        },
+        {
+          "name": "Reason",
+          "snake": "reason",
+          "kind": "string",
+          "type": "raw",
+          "datatype": "string",
+          "width": 146
+        },
+        {
+          "name": "LoanLabel",
+          "snake": "loan_label",
+          "kind": "string",
+          "type": "lookup",
+          "datatype": "string",
+          "width": 2684
+        },
+        {
+          "name": "ChangedByUserLabel",
+          "snake": "changed_by_user_label",
+          "kind": "string",
+          "type": "lookup",
+          "datatype": "string",
+          "width": 2684
+        },
+        {
+          "name": "GradeDelta",
+          "snake": "grade_delta",
+          "kind": "int",
+          "type": "calculated",
+          "datatype": "integer",
+          "width": 1
+        },
+        {
+          "name": "IsDowngrade",
+          "snake": "is_downgrade",
+          "kind": "bool",
+          "type": "calculated",
+          "datatype": "boolean",
+          "width": 1
+        },
+        {
+          "name": "IsInitialRating",
+          "snake": "is_initial_rating",
+          "kind": "bool",
+          "type": "calculated",
+          "datatype": "boolean",
+          "width": 1
+        },
+        {
+          "name": "CrossedClassifiedThreshold",
+          "snake": "crossed_classified_threshold",
+          "kind": "bool",
+          "type": "calculated",
+          "datatype": "boolean",
+          "width": 1
+        }
+      ]
+    },
+    {
+      "number": 9,
+      "name": "Documents",
+      "snake": "documents",
+      "fields": [
+        {
+          "name": "Name",
+          "snake": "name",
+          "kind": "string",
+          "type": "calculated",
+          "datatype": "string",
+          "width": 2684
+        },
+        {
+          "name": "Business",
+          "snake": "business",
+          "kind": "string",
+          "type": "relationship",
+          "datatype": "string",
+          "width": 64
+        },
+        {
+          "name": "Loan",
+          "snake": "loan",
+          "kind": "string",
+          "type": "relationship",
+          "datatype": "string",
+          "width": 64
+        },
+        {
+          "name": "UploadedByUser",
+          "snake": "uploaded_by_user",
+          "kind": "string",
+          "type": "relationship",
+          "datatype": "string",
+          "width": 64
+        },
+        {
+          "name": "Filename",
+          "snake": "filename",
+          "kind": "string",
+          "type": "raw",
+          "datatype": "string",
+          "width": 68
+        },
+        {
+          "name": "DocumentType",
+          "snake": "document_type",
+          "kind": "string",
+          "type": "raw",
+          "datatype": "string",
+          "width": 64
+        },
+        {
+          "name": "OcrIndexed",
+          "snake": "ocr_indexed",
+          "kind": "bool",
+          "type": "raw",
+          "datatype": "boolean",
+          "width": 1
+        },
+        {
+          "name": "UploadedVia",
+          "snake": "uploaded_via",
+          "kind": "string",
+          "type": "raw",
+          "datatype": "string",
+          "width": 64
+        },
+        {
+          "name": "UploadedAt",
+          "snake": "uploaded_at",
+          "kind": "string",
+          "type": "raw",
+          "datatype": "datetime",
+          "width": 64
+        },
+        {
+          "name": "BusinessLabel",
+          "snake": "business_label",
+          "kind": "string",
+          "type": "lookup",
+          "datatype": "string",
+          "width": 2684
+        },
+        {
+          "name": "LoanLabel",
+          "snake": "loan_label",
+          "kind": "string",
+          "type": "lookup",
+          "datatype": "string",
+          "width": 2684
+        },
+        {
+          "name": "UploadedByUserLabel",
+          "snake": "uploaded_by_user_label",
+          "kind": "string",
+          "type": "lookup",
+          "datatype": "string",
+          "width": 2684
+        },
+        {
+          "name": "AttachedTo",
+          "snake": "attached_to",
+          "kind": "string",
+          "type": "calculated",
+          "datatype": "string",
+          "width": 2684
+        },
+        {
+          "name": "FromCustomerPortal",
+          "snake": "from_customer_portal",
+          "kind": "bool",
+          "type": "calculated",
+          "datatype": "boolean",
+          "width": 1
+        }
+      ]
+    },
+    {
+      "number": 10,
+      "name": "Interactions",
+      "snake": "interactions",
+      "fields": [
+        {
+          "name": "Name",
+          "snake": "name",
+          "kind": "string",
+          "type": "calculated",
+          "datatype": "string",
+          "width": 2684
+        },
+        {
+          "name": "Business",
+          "snake": "business",
+          "kind": "string",
+          "type": "relationship",
+          "datatype": "string",
+          "width": 64
+        },
+        {
+          "name": "User",
+          "snake": "user",
+          "kind": "string",
+          "type": "relationship",
+          "datatype": "string",
+          "width": 64
+        },
+        {
+          "name": "InteractionType",
+          "snake": "interaction_type",
+          "kind": "string",
+          "type": "raw",
+          "datatype": "string",
+          "width": 64
+        },
+        {
+          "name": "Subject",
+          "snake": "subject",
+          "kind": "string",
+          "type": "raw",
+          "datatype": "string",
+          "width": 64
+        },
+        {
+          "name": "Body",
+          "snake": "body",
+          "kind": "string",
+          "type": "raw",
+          "datatype": "string",
+          "width": 192
+        },
+        {
+          "name": "InteractionDate",
+          "snake": "interaction_date",
+          "kind": "string",
+          "type": "raw",
+          "datatype": "datetime",
+          "width": 64
+        },
+        {
+          "name": "DueDate",
+          "snake": "due_date",
+          "kind": "string",
+          "type": "raw",
+          "datatype": "datetime",
+          "width": 64
+        },
+        {
+          "name": "Source",
+          "snake": "source",
+          "kind": "string",
+          "type": "raw",
+          "datatype": "string",
+          "width": 64
+        },
+        {
+          "name": "BusinessLabel",
+          "snake": "business_label",
+          "kind": "string",
+          "type": "lookup",
+          "datatype": "string",
+          "width": 2684
+        },
+        {
+          "name": "UserLabel",
+          "snake": "user_label",
+          "kind": "string",
+          "type": "lookup",
+          "datatype": "string",
+          "width": 2684
+        },
+        {
+          "name": "IsSystemEvent",
+          "snake": "is_system_event",
+          "kind": "bool",
+          "type": "calculated",
+          "datatype": "boolean",
+          "width": 1
+        },
+        {
+          "name": "IsTask",
+          "snake": "is_task",
+          "kind": "bool",
+          "type": "calculated",
+          "datatype": "boolean",
+          "width": 1
+        },
+        {
+          "name": "FromCustomer",
+          "snake": "from_customer",
+          "kind": "bool",
+          "type": "calculated",
+          "datatype": "boolean",
+          "width": 1
+        },
+        {
+          "name": "IsCovenantEvent",
+          "snake": "is_covenant_event",
+          "kind": "bool",
+          "type": "calculated",
+          "datatype": "boolean",
+          "width": 1
+        }
+      ]
+    },
+    {
+      "number": 11,
+      "name": "Constraints",
+      "snake": "constraints",
+      "fields": [
+        {
+          "name": "Name",
+          "snake": "name",
+          "kind": "string",
+          "type": "calculated",
+          "datatype": "string",
+          "width": 2684
+        },
+        {
+          "name": "ConstraintKey",
+          "snake": "constraint_key",
+          "kind": "string",
+          "type": "raw",
+          "datatype": "string",
+          "width": 64
+        },
+        {
+          "name": "Entity",
+          "snake": "entity",
+          "kind": "string",
+          "type": "raw",
+          "datatype": "string",
+          "width": 64
+        },
+        {
+          "name": "Predicate",
+          "snake": "predicate",
+          "kind": "string",
+          "type": "raw",
+          "datatype": "string",
+          "width": 64
+        },
+        {
+          "name": "Deontic",
+          "snake": "deontic",
+          "kind": "string",
+          "type": "raw",
+          "datatype": "string",
+          "width": 64
+        },
+        {
+          "name": "Severity",
+          "snake": "severity",
+          "kind": "string",
+          "type": "raw",
+          "datatype": "string",
+          "width": 64
+        },
+        {
+          "name": "Message",
+          "snake": "message",
+          "kind": "string",
+          "type": "raw",
+          "datatype": "string",
+          "width": 248
+        },
+        {
+          "name": "RuleGroup",
+          "snake": "rule_group",
+          "kind": "string",
+          "type": "raw",
+          "datatype": "string",
+          "width": 64
+        },
+        {
+          "name": "SourceCitation",
+          "snake": "source_citation",
+          "kind": "string",
+          "type": "raw",
+          "datatype": "string",
+          "width": 98
+        },
+        {
+          "name": "RuleSpeakOverride",
+          "snake": "rule_speak_override",
+          "kind": "string",
+          "type": "raw",
+          "datatype": "string",
+          "width": 286
+        },
+        {
+          "name": "IsActive",
+          "snake": "is_active",
+          "kind": "bool",
+          "type": "raw",
+          "datatype": "boolean",
+          "width": 1
+        }
+      ]
+    },
+    {
+      "number": 12,
+      "name": "__meta__",
+      "snake": "__meta__",
+      "fields": [
+        {
+          "name": "MetaKey",
+          "snake": "meta_key",
+          "kind": "string",
+          "type": "raw",
+          "datatype": "string",
+          "width": 64
+        },
+        {
+          "name": "Name",
+          "snake": "name",
+          "kind": "string",
+          "type": "calculated",
+          "datatype": "string",
+          "width": 2684
+        },
+        {
+          "name": "ValueType",
+          "snake": "value_type",
+          "kind": "string",
+          "type": "raw",
+          "datatype": "string",
+          "width": 64
+        },
+        {
+          "name": "StringValue",
+          "snake": "string_value",
+          "kind": "string",
+          "type": "raw",
+          "datatype": "string",
+          "width": 1702
+        },
+        {
+          "name": "JsonValue",
+          "snake": "json_value",
+          "kind": "string",
+          "type": "raw",
+          "datatype": "string",
+          "width": 2684
+        }
+      ]
+    }
+  ],
+  "compileErrors": [],
+  "maxPasses": 84,
+  "parameters": {
+    "erbDateDiff": "calendar",
+    "erbTimezone": "UTC",
+    "erbDateTimeText": "iso8601",
+    "erbBlankLogic": "coerce",
+    "erbWholeNumber": "by-field-type"
+  }
+}

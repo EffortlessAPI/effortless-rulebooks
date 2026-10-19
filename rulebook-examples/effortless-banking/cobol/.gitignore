@@ -1,0 +1,2 @@
+# Build products of run-cobol.sh (compiled binary, interchange files)
+.build/

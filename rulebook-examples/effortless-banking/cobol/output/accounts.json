@@ -1,0 +1,72 @@
+[
+  {
+    "name": "stillwater-roasters-llc-checking-0001",
+    "business": "stillwater-roasters-llc",
+    "account_type": "Checking",
+    "account_number_last4": "0001",
+    "current_balance_usd": 184250.13,
+    "has_ach": true,
+    "has_wire": true,
+    "has_card": false,
+    "opened_at": "2024-03-13 00:00:00+00",
+    "business_label": "Stillwater Roasters LLC",
+    "treasury_service_count": 2,
+    "has_any_treasury_service": true
+  },
+  {
+    "name": "stillwater-roasters-llc-savings-0101",
+    "business": "stillwater-roasters-llc",
+    "account_type": "Savings",
+    "account_number_last4": "0101",
+    "current_balance_usd": 75000,
+    "has_ach": false,
+    "has_wire": false,
+    "has_card": false,
+    "opened_at": "2024-03-13 00:00:00+00",
+    "business_label": "Stillwater Roasters LLC",
+    "treasury_service_count": 0,
+    "has_any_treasury_service": false
+  },
+  {
+    "name": "pine-hardware-inc-checking-0200",
+    "business": "pine-hardware-inc",
+    "account_type": "Checking",
+    "account_number_last4": "0200",
+    "current_balance_usd": 612430.55,
+    "has_ach": true,
+    "has_wire": true,
+    "has_card": true,
+    "opened_at": "2019-06-22 00:00:00+00",
+    "business_label": "Pine Hardware Inc.",
+    "treasury_service_count": 3,
+    "has_any_treasury_service": true
+  },
+  {
+    "name": "ridgeway-consulting-llc-checking-0300",
+    "business": "ridgeway-consulting-llc",
+    "account_type": "Checking",
+    "account_number_last4": "0300",
+    "current_balance_usd": 92800,
+    "has_ach": true,
+    "has_wire": false,
+    "has_card": false,
+    "opened_at": "2023-09-06 00:00:00+00",
+    "business_label": "Ridgeway Consulting LLC",
+    "treasury_service_count": 1,
+    "has_any_treasury_service": true
+  },
+  {
+    "name": "sunset-auto-body-llc-checking-0400",
+    "business": "sunset-auto-body-llc",
+    "account_type": "Checking",
+    "account_number_last4": "0400",
+    "current_balance_usd": 41250,
+    "has_ach": false,
+    "has_wire": false,
+    "has_card": false,
+    "opened_at": "2022-11-03 00:00:00+00",
+    "business_label": "Sunset Auto Body LLC",
+    "treasury_service_count": 0,
+    "has_any_treasury_service": false
+  }
+]
