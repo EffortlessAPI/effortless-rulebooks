@@ -6,9 +6,9 @@
     "predicate": "SegregationOfDutiesOk",
     "deontic": "MustBeTrue",
     "severity": "hard",
-    "message": "The same user originated and underwrote this loan \u2014 segregation of duties is violated.",
+    "message": "The same user originated and underwrote this loan — segregation of duties is violated.",
     "rule_group": "Segregation of Duties",
-    "source_citation": "Internal Credit Policy \u00a74.2",
+    "source_citation": "Internal Credit Policy §4.2",
     "rule_speak_override": "A loan must not be funded by the same user who originated it: the originating relationship manager and the underwriter must be different users.",
     "is_active": true
   },
@@ -34,7 +34,7 @@
     "severity": "override",
     "message": "DSCR is below the 1.20 minimum; a credit-committee waiver is required to fund.",
     "rule_group": "Credit Policy",
-    "source_citation": "Internal Credit Policy \u00a72.1 (DSCR floor)",
+    "source_citation": "Internal Credit Policy §2.1 (DSCR floor)",
     "rule_speak_override": null,
     "is_active": true
   },
@@ -47,7 +47,7 @@
     "severity": "override",
     "message": "LTV exceeds the 0.80 ceiling; a credit-committee waiver is required to fund.",
     "rule_group": "Credit Policy",
-    "source_citation": "Internal Credit Policy \u00a72.2 (LTV ceiling)",
+    "source_citation": "Internal Credit Policy §2.2 (LTV ceiling)",
     "rule_speak_override": null,
     "is_active": true
   },
@@ -60,7 +60,7 @@
     "severity": "soft",
     "message": "This loan is a classified asset or has a breached covenant but is not flagged on the watchlist.",
     "rule_group": "Portfolio Monitoring",
-    "source_citation": "Internal Portfolio Risk Procedure \u00a76 (watchlist)",
+    "source_citation": "Internal Portfolio Risk Procedure §6 (watchlist)",
     "rule_speak_override": null,
     "is_active": true
   }

@@ -1,9 +1,9 @@
       *> =================================================================
-      *> erb_runtime_ws.cpy - working storage of the ERB COBOL runtime.
+      *> ERBRTWS - working storage of the ERB COBOL runtime.
       *>
-      *> HAND-WRITTEN, NOT GENERATED. Shipped beside every generated
-      *> erb_main.cbl and COPYed into its WORKING-STORAGE SECTION. The
-      *> procedures that use it are in erb_runtime.cpy.
+      *> HAND-WRITTEN, NOT GENERATED. Shipped beside every generated rules
+      *> module and COPYed into ERBRULES's WORKING-STORAGE SECTION. The
+      *> procedures that use it are in ERBRTPR.
       *>
       *> A formula value is dynamically typed (as in erb_runtime.ts):
       *>   K  kind      0 null, 1 boolean, 2 number, 3 text
@@ -81,8 +81,8 @@
        01 WS-ERR-COUNT         PIC 9(9) COMP-5 VALUE 0.
        01 WS-CUR-TABLE         PIC X(64) VALUE SPACES.
        01 WS-CUR-FIELD         PIC X(64) VALUE SPACES.
-       01 WS-CUR-ROW           PIC 9(5) COMP-5 VALUE 0.
-       01 WS-CUR-ROW-D         PIC Z(4)9.
+       01 WS-CUR-ROW           PIC 9(9) COMP-5 VALUE 0.
+       01 WS-CUR-ROW-D         PIC Z(8)9.
 
       *> Operation arguments set by compiled code before a PERFORM.
        01 WS-NARGS             PIC 9(4) COMP-5 VALUE 0.
@@ -94,8 +94,8 @@
        01 WS-OK2               PIC 9 VALUE 0.
        01 WS-ANDV              PIC 9 VALUE 0.
        01 WS-CHANGED           PIC 9 VALUE 0.
-       01 WS-PASS              PIC 9(5) COMP-5 VALUE 0.
-       01 WS-MAX-PASSES        PIC 9(5) COMP-5 VALUE 0.
+       01 WS-PASS              PIC 9(9) COMP-5 VALUE 0.
+       01 WS-MAX-PASSES        PIC 9(9) COMP-5 VALUE 0.
        01 WS-SETTLED           PIC 9 VALUE 0.
 
       *> Literal staging for compiled code.
@@ -141,22 +141,31 @@
        01 WS-TMP2-L            PIC 9(5) COMP-5.
        01 WS-UNIT              PIC X(16).
 
-      *> Interchange: one record per line, values separated by "|", each
-      *> tagged:  ~ null, b0/b1, i<int>, f<decimal>, s<text>. Text escapes
-      *> \\ \p (|) \t \n \r and \xHH (other control bytes), so a line holds
-      *> no control character (GnuCOBOL refuses them in LINE SEQUENTIAL
-      *> files). A line is <table number>|<value>|...|<value>|.
-       01 WS-TAB               PIC X VALUE X"09".
-       01 WS-SEP               PIC X VALUE "|".
-       01 WS-HEX               PIC X(16) VALUE "0123456789ABCDEF".
-       01 WS-LINE              PIC X(262144).
-       01 WS-LINE-L            PIC 9(7) COMP-5 VALUE 0.
-       01 WS-LINE-POS          PIC 9(7) COMP-5 VALUE 0.
-       01 WS-LINE-MAX          PIC 9(7) COMP-5 VALUE 262144.
-       01 WS-TOK               PIC X(16384).
-       01 WS-TOK-L             PIC 9(5) COMP-5 VALUE 0.
-       01 WS-EOF               PIC 9 VALUE 0.
-       01 WS-TABLE-NO          PIC 9(4) COMP-5 VALUE 0.
+      *> Sorted indexes (RT-IXKEY-A): the key being built or looked up.
+       01 WS-IXK               PIC X(8200).
+       01 WS-IXK-OK            PIC 9 VALUE 0.
+       01 WS-IXW               PIC 9(5) COMP-5 VALUE 0.
+       01 WS-IXMODE            PIC 9 VALUE 0.
+       01 WS-IXN-G.
+          05 WS-IXN            PIC S9(18)V9(12) SIGN LEADING SEPARATE.
+       01 WS-IXL4              PIC 9(4).
+       01 WS-IXLO              PIC 9(9) COMP-5.
+       01 WS-IXHI              PIC 9(9) COMP-5.
+       01 WS-IXMID             PIC 9(9) COMP-5.
+       01 WS-IXLB              PIC 9(9) COMP-5.
+       01 WS-IXP               PIC 9(9) COMP-5.
+       01 WS-SORT-EOF          PIC 9 VALUE 0.
+
+      *> TEXT(value, format): the text being rendered.
+       01 WS-TF                PIC X(400).
+       01 WS-TF-L              PIC 9(4) COMP-5 VALUE 0.
+       01 WS-TF-OP             PIC 99 VALUE 0.
+       01 WS-TF2               PIC 99.
+       01 WS-TF-SKIP           PIC 9 VALUE 0.
+       01 WS-TF-DEC            PIC 99 VALUE 0.
+       01 WS-TF-GRP            PIC 9 VALUE 0.
+       01 WS-TF-PCT            PIC 9 VALUE 0.
+       01 WS-TF-FR             PIC 9(12).
 
       *> Datetimes: a reading is a day number (FUNCTION INTEGER-OF-DATE) plus
       *> seconds into that day, and the UTC offset it was written in.
@@ -188,7 +197,6 @@
        01 WS-S-MO              PIC 99.
        01 WS-S-CLOCK           PIC 9(8).
        01 WS-ISEC              PIC 9(5) COMP-5.
-       01 WS-ENV               PIC X(100).
        01 WS-NOW-SET           PIC 9 VALUE 0.
        01 WS-NOW-TEXT          PIC X(40).
        01 WS-NOW-L             PIC 9(4) COMP-5.

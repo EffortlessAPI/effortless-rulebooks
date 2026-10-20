@@ -1,9 +1,9 @@
 [
   {
-    "name": "l-0042-2021-05-20 00:00:00+00-grade-4",
+    "name": "l-0042-2021-05-20-grade-4",
     "loan": "l-0042",
     "changed_by_user": "thomas-bell",
-    "effective_date": "2021-05-20 00:00:00+00",
+    "effective_date": "2021-05-20T00:00:00Z",
     "prior_grade": null,
     "new_grade": 4,
     "reason": "Initial rating at funding.",
@@ -15,10 +15,10 @@
     "crossed_classified_threshold": false
   },
   {
-    "name": "l-0042-2025-05-02 00:00:00+00-grade-6",
+    "name": "l-0042-2025-05-02-grade-6",
     "loan": "l-0042",
     "changed_by_user": "thomas-bell",
-    "effective_date": "2025-05-02 00:00:00+00",
+    "effective_date": "2025-05-02T00:00:00Z",
     "prior_grade": 4,
     "new_grade": 6,
     "reason": "DSCR covenant breach; downgrade to Special Mention.",
@@ -30,10 +30,10 @@
     "crossed_classified_threshold": false
   },
   {
-    "name": "l-0042-2025-08-15 00:00:00+00-grade-7",
+    "name": "l-0042-2025-08-15-grade-7",
     "loan": "l-0042",
     "changed_by_user": "thomas-bell",
-    "effective_date": "2025-08-15 00:00:00+00",
+    "effective_date": "2025-08-15T00:00:00Z",
     "prior_grade": 6,
     "new_grade": 7,
     "reason": "Sustained underperformance; downgrade to Substandard. Added to Watchlist.",
@@ -45,10 +45,10 @@
     "crossed_classified_threshold": true
   },
   {
-    "name": "l-0051-2025-03-01 00:00:00+00-grade-4",
+    "name": "l-0051-2025-03-01-grade-4",
     "loan": "l-0051",
     "changed_by_user": "priya-iyer",
-    "effective_date": "2025-03-01 00:00:00+00",
+    "effective_date": "2025-03-01T00:00:00Z",
     "prior_grade": null,
     "new_grade": 4,
     "reason": "Initial rating at funding.",
@@ -60,10 +60,10 @@
     "crossed_classified_threshold": false
   },
   {
-    "name": "l-0078-2024-08-22 00:00:00+00-grade-3",
+    "name": "l-0078-2024-08-22-grade-3",
     "loan": "l-0078",
     "changed_by_user": "priya-iyer",
-    "effective_date": "2024-08-22 00:00:00+00",
+    "effective_date": "2024-08-22T00:00:00Z",
     "prior_grade": null,
     "new_grade": 3,
     "reason": "Initial rating at funding; strong cash flow coverage.",

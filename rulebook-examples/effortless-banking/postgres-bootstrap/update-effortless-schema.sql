@@ -467,6 +467,113 @@ $drop_derived$;
 SET check_function_bodies = off;
 
 -- ============================================================================
+-- ERB BUILD PARAMETERS (docs/ERB-BUILD-PARAMETERS.md)
+-- erbBlankLogic=coerce, erbDateDiff=calendar, erbDateTimeText=iso8601, erbTimezone=UTC, erbWholeNumber=by-field-type
+-- ============================================================================
+
+CREATE OR REPLACE FUNCTION erb_build_parameters()
+RETURNS JSONB AS $$
+  SELECT '{"erbBlankLogic":"coerce","erbDateDiff":"calendar","erbDateTimeText":"iso8601","erbTimezone":"UTC","erbWholeNumber":"by-field-type"}'::jsonb;
+$$ LANGUAGE sql IMMUTABLE;
+
+-- A timestamp inside text, per erbDateTimeText, in erbTimezone. Blank renders ''.
+CREATE OR REPLACE FUNCTION erb_datetime_text(ts TIMESTAMPTZ)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN ts IS NULL THEN '' ELSE
+    to_char(ts AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS')
+    || CASE WHEN (EXTRACT(MICROSECONDS FROM ts)::bigint % 1000000) <> 0 THEN rtrim(to_char(ts AT TIME ZONE 'UTC', '.US'), '0') ELSE '' END
+    || CASE WHEN o.off < 0 THEN '-' ELSE '+' END || lpad((abs(o.off) / 3600)::text, 2, '0') || ':' || lpad(((abs(o.off) % 3600) / 60)::text, 2, '0')
+  END
+  FROM (SELECT EXTRACT(EPOCH FROM ((ts AT TIME ZONE 'UTC') - (ts AT TIME ZONE 'UTC')))::integer AS off) o;
+$$ LANGUAGE sql STABLE;
+
+-- A date inside text: YYYY-MM-DD. Blank renders ''.
+CREATE OR REPLACE FUNCTION erb_date_text(d DATE)
+RETURNS TEXT AS $$
+  SELECT COALESCE(to_char(d, 'YYYY-MM-DD'), '');
+$$ LANGUAGE sql IMMUTABLE;
+
+-- A number inside text: the shortest exact form, no trailing .0 (2, 2.5). Blank renders ''.
+CREATE OR REPLACE FUNCTION erb_number_text(n NUMERIC)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN n IS NULL THEN ''
+              WHEN n::text LIKE '%.%' THEN rtrim(rtrim(n::text, '0'), '.')
+              ELSE n::text END;
+$$ LANGUAGE sql IMMUTABLE;
+
+-- TEXT(value, date format): docs/ERB-TEXT-FUNCTION.md. fmt is a TO_CHAR pattern the
+-- translator built from the checked format. Dates format in erbTimezone.
+CREATE OR REPLACE FUNCTION erb_text_date(ts TIMESTAMPTZ, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT to_char(ts AT TIME ZONE 'UTC', fmt);
+$$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_date(d DATE, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT to_char(d::timestamp, fmt);
+$$ LANGUAGE sql IMMUTABLE;
+
+-- A number with a date format: no serial-date arithmetic, the number as & renders it.
+CREATE OR REPLACE FUNCTION erb_text_date(n NUMERIC, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN n IS NULL THEN NULL ELSE erb_number_text(n) END;
+$$ LANGUAGE sql IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_date(b BOOLEAN, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT b::text;
+$$ LANGUAGE sql IMMUTABLE;
+
+-- Text: an ISO date or datetime is formatted; any other text comes back unchanged.
+CREATE OR REPLACE FUNCTION erb_text_date(t TEXT, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT CASE
+    WHEN t IS NULL THEN NULL
+    WHEN btrim(t) ~ '^\d{4}-\d{2}-\d{2}$' THEN to_char(btrim(t)::date::timestamp, fmt)
+    WHEN btrim(t) ~ '^\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}(:\d{2}(\.\d+)?)?$' THEN to_char(btrim(t)::timestamp, fmt)
+    WHEN btrim(t) ~ '^\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}(:\d{2}(\.\d+)?)?\s*(Z|z|[+-]\d{2}(:?\d{2})?)$' THEN to_char(btrim(t)::timestamptz AT TIME ZONE 'UTC', fmt)
+    ELSE t END;
+$$ LANGUAGE sql STABLE;
+
+-- TEXT(value, number format): round half away from zero to `decimals`, optional
+-- thousands separators, optional percent. A rounded zero has no sign.
+CREATE OR REPLACE FUNCTION erb_text_number(n NUMERIC, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN n IS NULL THEN NULL ELSE
+    CASE WHEN r.v < 0 THEN '-' ELSE '' END
+    || CASE WHEN grouped THEN regexp_replace(split_part(abs(r.v)::text, '.', 1), '(\d)(?=(\d{3})+$)', '\1,', 'g')
+            ELSE split_part(abs(r.v)::text, '.', 1) END
+    || CASE WHEN decimals > 0 THEN '.' || split_part(abs(r.v)::text, '.', 2) ELSE '' END
+    || CASE WHEN percent THEN '%' ELSE '' END
+  END
+  FROM (SELECT round(n * CASE WHEN percent THEN 100 ELSE 1 END, decimals) AS v) r;
+$$ LANGUAGE sql IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_number(t TEXT, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN t IS NULL THEN NULL
+              WHEN t ~ '^\s*[+-]?(\d+(\.\d*)?|\.\d+)\s*$' THEN erb_text_number(btrim(t)::numeric, decimals, grouped, percent)
+              ELSE t END;
+$$ LANGUAGE sql IMMUTABLE;
+
+-- Not a number: returned as & renders it.
+CREATE OR REPLACE FUNCTION erb_text_number(b BOOLEAN, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT b::text;
+$$ LANGUAGE sql IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_number(ts TIMESTAMPTZ, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN ts IS NULL THEN NULL ELSE erb_datetime_text(ts) END;
+$$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_number(d DATE, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN d IS NULL THEN NULL ELSE erb_date_text(d) END;
+$$ LANGUAGE sql IMMUTABLE;
+
+
+-- ============================================================================
 -- LOOKUP FUNCTIONS
 -- These functions perform lookups via foreign key relationships
 -- ============================================================================
@@ -488,7 +595,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_users_is_rm(p_users_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(role, '') FROM users WHERE users_id = p_users_id) = 'RM')::boolean;
+  SELECT (COALESCE((SELECT NULLIF(role, '') FROM users WHERE users_id = p_users_id), '') = 'RM')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_users_is_underwriter
@@ -498,7 +605,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_users_is_underwriter(p_users_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(role, '') FROM users WHERE users_id = p_users_id) = 'Underwriter')::boolean;
+  SELECT (COALESCE((SELECT NULLIF(role, '') FROM users WHERE users_id = p_users_id), '') = 'Underwriter')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_users_is_branch_banker
@@ -508,7 +615,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_users_is_branch_banker(p_users_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(role, '') FROM users WHERE users_id = p_users_id) = 'BranchBanker')::boolean;
+  SELECT (COALESCE((SELECT NULLIF(role, '') FROM users WHERE users_id = p_users_id), '') = 'BranchBanker')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_users_is_admin
@@ -518,7 +625,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_users_is_admin(p_users_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(role, '') FROM users WHERE users_id = p_users_id) = 'Admin')::boolean;
+  SELECT (COALESCE((SELECT NULLIF(role, '') FROM users WHERE users_id = p_users_id), '') = 'Admin')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_users_count_of_portfolio_businesses
@@ -669,7 +776,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_businesses_is_customer(p_businesses_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(status, '') FROM businesses WHERE businesses_id = p_businesses_id) = 'Customer')::boolean;
+  SELECT (COALESCE((SELECT NULLIF(status, '') FROM businesses WHERE businesses_id = p_businesses_id), '') = 'Customer')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_businesses_is_prospect
@@ -679,7 +786,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_businesses_is_prospect(p_businesses_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(status, '') FROM businesses WHERE businesses_id = p_businesses_id) = 'Prospect')::boolean;
+  SELECT (COALESCE((SELECT NULLIF(status, '') FROM businesses WHERE businesses_id = p_businesses_id), '') = 'Prospect')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_businesses_was_referred
@@ -689,7 +796,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_businesses_was_referred(p_businesses_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (NOT (COALESCE((SELECT NULLIF(referral_source, '') FROM businesses WHERE businesses_id = p_businesses_id), '') IS NULL))::boolean;
+  SELECT (NOT (COALESCE(((COALESCE((SELECT NULLIF(referral_source, '') FROM businesses WHERE businesses_id = p_businesses_id), '')) IS NULL OR (COALESCE((SELECT NULLIF(referral_source, '') FROM businesses WHERE businesses_id = p_businesses_id), ''))::text = ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_businesses_count_of_beneficial_owners
@@ -789,7 +896,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_businesses_has_classified_loan(p_businesses_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_businesses_count_of_classified_loans(p_businesses_id))::NUMERIC > 0)::boolean;
+  SELECT (COALESCE((calc_businesses_count_of_classified_loans(p_businesses_id))::NUMERIC, 0) > 0)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_businesses_beneficial_owners_at_cdd_threshold
@@ -809,7 +916,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_businesses_meets_cdd_rule(p_businesses_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_businesses_beneficial_owners_at_cdd_threshold(p_businesses_id))::NUMERIC > 0)::boolean;
+  SELECT (COALESCE((calc_businesses_beneficial_owners_at_cdd_threshold(p_businesses_id))::NUMERIC, 0) > 0)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_businesses_portfolio_priority
@@ -819,7 +926,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_businesses_portfolio_priority(p_businesses_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CASE WHEN calc_businesses_has_classified_loan(p_businesses_id) THEN ('High')::text ELSE (CASE WHEN (NOT (calc_businesses_meets_cdd_rule(p_businesses_id)) OR calc_businesses_is_prospect(p_businesses_id) OR (calc_businesses_count_of_loans(p_businesses_id))::NUMERIC = 0) THEN ('Medium')::text ELSE ('Low')::text END)::text END)::text;
+  SELECT (CASE WHEN calc_businesses_has_classified_loan(p_businesses_id) THEN ('High')::text ELSE (CASE WHEN (COALESCE(NOT (COALESCE(calc_businesses_meets_cdd_rule(p_businesses_id), FALSE)), FALSE) OR COALESCE(calc_businesses_is_prospect(p_businesses_id), FALSE) OR COALESCE(COALESCE((calc_businesses_count_of_loans(p_businesses_id))::NUMERIC, 0) = 0, FALSE)) THEN ('Medium')::text ELSE ('Low')::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_beneficial_owners_business_label
@@ -850,7 +957,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_beneficial_owners_meets25_percent_threshold(p_beneficial_owners_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (((SELECT ownership_percentage FROM beneficial_owners WHERE beneficial_owners_id = p_beneficial_owners_id))::NUMERIC >= 25)::boolean;
+  SELECT (COALESCE(((SELECT ownership_percentage FROM beneficial_owners WHERE beneficial_owners_id = p_beneficial_owners_id))::NUMERIC, 0) >= 25)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_beneficial_owners_meets_cdd_threshold
@@ -860,7 +967,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_beneficial_owners_meets_cdd_threshold(p_beneficial_owners_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (((calc_beneficial_owners_meets25_percent_threshold(p_beneficial_owners_id) = 'true') OR COALESCE((SELECT is_control_person FROM beneficial_owners WHERE beneficial_owners_id = p_beneficial_owners_id), FALSE)))::boolean;
+  SELECT ((COALESCE((calc_beneficial_owners_meets25_percent_threshold(p_beneficial_owners_id) = 'true'), FALSE) OR COALESCE(COALESCE((SELECT is_control_person FROM beneficial_owners WHERE beneficial_owners_id = p_beneficial_owners_id), FALSE), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_contacts_business_label
@@ -891,7 +998,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_contacts_is_officer(p_contacts_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(contact_type, '') FROM contacts WHERE contacts_id = p_contacts_id) = 'Officer')::boolean;
+  SELECT (COALESCE((SELECT NULLIF(contact_type, '') FROM contacts WHERE contacts_id = p_contacts_id), '') = 'Officer')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_contacts_is_ap_clerk
@@ -901,7 +1008,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_contacts_is_ap_clerk(p_contacts_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(contact_type, '') FROM contacts WHERE contacts_id = p_contacts_id) = 'APClerk')::boolean;
+  SELECT (COALESCE((SELECT NULLIF(contact_type, '') FROM contacts WHERE contacts_id = p_contacts_id), '') = 'APClerk')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_accounts_business_label
@@ -932,7 +1039,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_accounts_treasury_service_count(p_accounts_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN COALESCE((SELECT has_ach FROM accounts WHERE accounts_id = p_accounts_id), FALSE) THEN (1)::text ELSE (0)::text END) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN COALESCE((SELECT has_wire FROM accounts WHERE accounts_id = p_accounts_id), FALSE) THEN (1)::text ELSE (0)::text END) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN COALESCE((SELECT has_card FROM accounts WHERE accounts_id = p_accounts_id), FALSE) THEN (1)::text ELSE (0)::text END) AS v) __safe_numeric), 0))) AS v) __safe_numeric), 0)))::integer;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN COALESCE((SELECT has_ach FROM accounts WHERE accounts_id = p_accounts_id), FALSE) THEN (1)::text ELSE (0)::text END) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN COALESCE((SELECT has_wire FROM accounts WHERE accounts_id = p_accounts_id), FALSE) THEN (1)::text ELSE (0)::text END) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN COALESCE((SELECT has_card FROM accounts WHERE accounts_id = p_accounts_id), FALSE) THEN (1)::text ELSE (0)::text END) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0)))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_accounts_has_any_treasury_service
@@ -942,7 +1049,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_accounts_has_any_treasury_service(p_accounts_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_accounts_treasury_service_count(p_accounts_id))::NUMERIC > 0)::boolean;
+  SELECT (COALESCE((calc_accounts_treasury_service_count(p_accounts_id))::NUMERIC, 0) > 0)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_loans_business_label
@@ -1006,7 +1113,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_loans_is_funded(p_loans_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(underwriting_stage, '') FROM loans WHERE loans_id = p_loans_id) = 'Funded')::boolean;
+  SELECT (COALESCE((SELECT NULLIF(underwriting_stage, '') FROM loans WHERE loans_id = p_loans_id), '') = 'Funded')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_loans_is_classified_asset
@@ -1016,7 +1123,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_loans_is_classified_asset(p_loans_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (((SELECT risk_rating FROM loans WHERE loans_id = p_loans_id))::NUMERIC >= 7)::boolean;
+  SELECT (COALESCE(((SELECT risk_rating FROM loans WHERE loans_id = p_loans_id))::NUMERIC, 0) >= 7)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_loans_dscr_in_band
@@ -1026,7 +1133,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_loans_dscr_in_band(p_loans_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT dscr FROM loans WHERE loans_id = p_loans_id), 0))::NUMERIC >= 1.20)::boolean;
+  SELECT (COALESCE((COALESCE((SELECT dscr FROM loans WHERE loans_id = p_loans_id), 0))::NUMERIC, 0) >= 1.20)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_loans_ltv_in_band
@@ -1036,7 +1143,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_loans_ltv_in_band(p_loans_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT ltv FROM loans WHERE loans_id = p_loans_id), 0))::NUMERIC <= 0.80)::boolean;
+  SELECT (COALESCE((COALESCE((SELECT ltv FROM loans WHERE loans_id = p_loans_id), 0))::NUMERIC, 0) <= 0.80)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_loans_segregation_of_duties_ok
@@ -1046,7 +1153,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_loans_segregation_of_duties_ok(p_loans_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (NOT ((SELECT NULLIF(originating_rm, '') FROM loans WHERE loans_id = p_loans_id) = (SELECT NULLIF(underwriter, '') FROM loans WHERE loans_id = p_loans_id)))::boolean;
+  SELECT (NOT (COALESCE(COALESCE((SELECT NULLIF(originating_rm, '') FROM loans WHERE loans_id = p_loans_id), '') = COALESCE((SELECT NULLIF(underwriter, '') FROM loans WHERE loans_id = p_loans_id), ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_loans_count_of_covenants
@@ -1096,7 +1203,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_loans_has_breached_covenant(p_loans_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_loans_count_of_breached_covenants(p_loans_id))::NUMERIC > 0)::boolean;
+  SELECT (COALESCE((calc_loans_count_of_breached_covenants(p_loans_id))::NUMERIC, 0) > 0)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_loans_on_watchlist
@@ -1106,7 +1213,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_loans_on_watchlist(p_loans_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_loans_is_classified_asset(p_loans_id) OR calc_loans_has_breached_covenant(p_loans_id)))::boolean;
+  SELECT ((COALESCE(calc_loans_is_classified_asset(p_loans_id), FALSE) OR COALESCE(calc_loans_has_breached_covenant(p_loans_id), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_loans_health_score
@@ -1116,7 +1223,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_loans_health_score(p_loans_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN calc_loans_dscr_in_band(p_loans_id) THEN (1)::text ELSE (0)::text END) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN calc_loans_ltv_in_band(p_loans_id) THEN (1)::text ELSE (0)::text END) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN calc_loans_is_classified_asset(p_loans_id) THEN (0)::text ELSE (1)::text END) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN calc_loans_has_breached_covenant(p_loans_id) THEN (0)::text ELSE (1)::text END) AS v) __safe_numeric), 0))) AS v) __safe_numeric), 0))) AS v) __safe_numeric), 0)))::integer;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN calc_loans_dscr_in_band(p_loans_id) THEN (1)::text ELSE (0)::text END) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN calc_loans_ltv_in_band(p_loans_id) THEN (1)::text ELSE (0)::text END) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN calc_loans_is_classified_asset(p_loans_id) THEN (0)::text ELSE (1)::text END) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN calc_loans_has_breached_covenant(p_loans_id) THEN (0)::text ELSE (1)::text END) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0)))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_covenants_loan_label
@@ -1275,7 +1382,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_covenants_is_breached(p_covenants_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(status, '') FROM covenants WHERE covenants_id = p_covenants_id) = 'Breached')::boolean;
+  SELECT (COALESCE((SELECT NULLIF(status, '') FROM covenants WHERE covenants_id = p_covenants_id), '') = 'Breached')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_covenants_has_active_waiver
@@ -1285,7 +1392,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_covenants_has_active_waiver(p_covenants_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (NOT ((((SELECT current_waiver_through::timestamptz FROM covenants WHERE covenants_id = p_covenants_id)) IS NULL OR ((SELECT current_waiver_through::timestamptz FROM covenants WHERE covenants_id = p_covenants_id))::text = '')))::boolean;
+  SELECT (NOT (COALESCE((((SELECT current_waiver_through::timestamptz FROM covenants WHERE covenants_id = p_covenants_id)) IS NULL OR ((SELECT current_waiver_through::timestamptz FROM covenants WHERE covenants_id = p_covenants_id))::text = ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_risk_rating_history_loan_label
@@ -1317,11 +1424,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_risk_rating_history_name(p_risk_rating_history_id TEXT)
 RETURNS TEXT AS $$
-  SELECT /* WARNING: Formula translation failed: Function 'TEXT' is not supported yet
-   Original Airtable formula:
-   ={{Loan}} & "-" & TEXT({{EffectiveDate}}, "yyyy-mm-dd") & "-grade-" & TEXT({{NewGrade}}, "0")
-*/
-NULL::text;
+  SELECT (CONCAT((SELECT NULLIF(loan, '') FROM risk_rating_history WHERE risk_rating_history_id = p_risk_rating_history_id), '-', erb_text_date(((SELECT effective_date::timestamptz FROM risk_rating_history WHERE risk_rating_history_id = p_risk_rating_history_id))::timestamptz, 'YYYY"-"MM"-"DD'), '-grade-', erb_text_number(((SELECT new_grade FROM risk_rating_history WHERE risk_rating_history_id = p_risk_rating_history_id))::numeric, 0, FALSE, FALSE)))::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_risk_rating_history_grade_delta
@@ -1331,7 +1434,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_risk_rating_history_grade_delta(p_risk_rating_history_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT new_grade FROM risk_rating_history WHERE risk_rating_history_id = p_risk_rating_history_id)) AS v) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (COALESCE((SELECT prior_grade FROM risk_rating_history WHERE risk_rating_history_id = p_risk_rating_history_id), (SELECT new_grade FROM risk_rating_history WHERE risk_rating_history_id = p_risk_rating_history_id))) AS v) __safe_numeric), 0)))::integer;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT new_grade FROM risk_rating_history WHERE risk_rating_history_id = p_risk_rating_history_id)) AS v OFFSET 0) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (COALESCE((SELECT prior_grade FROM risk_rating_history WHERE risk_rating_history_id = p_risk_rating_history_id), (SELECT new_grade FROM risk_rating_history WHERE risk_rating_history_id = p_risk_rating_history_id))) AS v OFFSET 0) __safe_numeric), 0)))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_risk_rating_history_is_downgrade
@@ -1341,7 +1444,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_risk_rating_history_is_downgrade(p_risk_rating_history_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_risk_rating_history_grade_delta(p_risk_rating_history_id))::NUMERIC > 0)::boolean;
+  SELECT (COALESCE((calc_risk_rating_history_grade_delta(p_risk_rating_history_id))::NUMERIC, 0) > 0)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_risk_rating_history_is_initial_rating
@@ -1351,7 +1454,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_risk_rating_history_is_initial_rating(p_risk_rating_history_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT prior_grade FROM risk_rating_history WHERE risk_rating_history_id = p_risk_rating_history_id), 0))::NUMERIC = 0)::boolean;
+  SELECT (COALESCE((COALESCE((SELECT prior_grade FROM risk_rating_history WHERE risk_rating_history_id = p_risk_rating_history_id), 0))::NUMERIC, 0) = 0)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_risk_rating_history_crossed_classified_threshold
@@ -1361,7 +1464,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_risk_rating_history_crossed_classified_threshold(p_risk_rating_history_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (((COALESCE((SELECT prior_grade FROM risk_rating_history WHERE risk_rating_history_id = p_risk_rating_history_id), 0))::NUMERIC < 7 AND ((SELECT new_grade FROM risk_rating_history WHERE risk_rating_history_id = p_risk_rating_history_id))::NUMERIC >= 7));
+  SELECT ((COALESCE(COALESCE((COALESCE((SELECT prior_grade FROM risk_rating_history WHERE risk_rating_history_id = p_risk_rating_history_id), 0))::NUMERIC, 0) < 7, FALSE) AND COALESCE(COALESCE(((SELECT new_grade FROM risk_rating_history WHERE risk_rating_history_id = p_risk_rating_history_id))::NUMERIC, 0) >= 7, FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_documents_business_label
@@ -1414,7 +1517,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_documents_attached_to(p_documents_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CASE WHEN NOT (COALESCE((SELECT NULLIF(loan, '') FROM documents WHERE documents_id = p_documents_id), '') IS NULL) THEN ('Loan')::text ELSE (CASE WHEN NOT (COALESCE((SELECT NULLIF(business, '') FROM documents WHERE documents_id = p_documents_id), '') IS NULL) THEN ('Business')::text ELSE ('Orphan')::text END)::text END)::text;
+  SELECT (CASE WHEN NOT (COALESCE(((COALESCE((SELECT NULLIF(loan, '') FROM documents WHERE documents_id = p_documents_id), '')) IS NULL OR (COALESCE((SELECT NULLIF(loan, '') FROM documents WHERE documents_id = p_documents_id), ''))::text = ''), FALSE)) THEN ('Loan')::text ELSE (CASE WHEN NOT (COALESCE(((COALESCE((SELECT NULLIF(business, '') FROM documents WHERE documents_id = p_documents_id), '')) IS NULL OR (COALESCE((SELECT NULLIF(business, '') FROM documents WHERE documents_id = p_documents_id), ''))::text = ''), FALSE)) THEN ('Business')::text ELSE ('Orphan')::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_documents_from_customer_portal
@@ -1424,7 +1527,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_documents_from_customer_portal(p_documents_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(uploaded_via, '') FROM documents WHERE documents_id = p_documents_id) = 'BusinessClientPortal')::boolean;
+  SELECT (COALESCE((SELECT NULLIF(uploaded_via, '') FROM documents WHERE documents_id = p_documents_id), '') = 'BusinessClientPortal')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_interactions_business_label
@@ -1456,11 +1559,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_interactions_name(p_interactions_id TEXT)
 RETURNS TEXT AS $$
-  SELECT /* WARNING: Formula translation failed: Function 'TEXT' is not supported yet
-   Original Airtable formula:
-   ={{Business}} & "-" & TEXT({{InteractionDate}}, "yyyy-mm-dd") & "-" & LOWER({{InteractionType}}) & "-" & SUBSTITUTE(LOWER({{Subject}}), " ", "-")
-*/
-NULL::text;
+  SELECT (CONCAT((SELECT NULLIF(business, '') FROM interactions WHERE interactions_id = p_interactions_id), '-', erb_text_date(((SELECT interaction_date::timestamptz FROM interactions WHERE interactions_id = p_interactions_id))::timestamptz, 'YYYY"-"MM"-"DD'), '-', LOWER((SELECT NULLIF(interaction_type, '') FROM interactions WHERE interactions_id = p_interactions_id)), '-', REPLACE(LOWER((SELECT NULLIF(subject, '') FROM interactions WHERE interactions_id = p_interactions_id)), ' ', '-')))::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_interactions_is_system_event
@@ -1470,7 +1569,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_interactions_is_system_event(p_interactions_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(interaction_type, '') FROM interactions WHERE interactions_id = p_interactions_id) = 'SystemEvent')::boolean;
+  SELECT (COALESCE((SELECT NULLIF(interaction_type, '') FROM interactions WHERE interactions_id = p_interactions_id), '') = 'SystemEvent')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_interactions_is_task
@@ -1480,7 +1579,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_interactions_is_task(p_interactions_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(interaction_type, '') FROM interactions WHERE interactions_id = p_interactions_id) = 'Task')::boolean;
+  SELECT (COALESCE((SELECT NULLIF(interaction_type, '') FROM interactions WHERE interactions_id = p_interactions_id), '') = 'Task')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_interactions_from_customer
@@ -1490,7 +1589,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_interactions_from_customer(p_interactions_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(source, '') FROM interactions WHERE interactions_id = p_interactions_id) = 'BusinessClientPortal')::boolean;
+  SELECT (COALESCE((SELECT NULLIF(source, '') FROM interactions WHERE interactions_id = p_interactions_id), '') = 'BusinessClientPortal')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_interactions_is_covenant_event
@@ -1500,7 +1599,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_interactions_is_covenant_event(p_interactions_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_interactions_is_system_event(p_interactions_id) AND NOT ((COALESCE(POSITION('covenant breach' IN LOWER((SELECT NULLIF(subject, '') FROM interactions WHERE interactions_id = p_interactions_id))), 0))::NUMERIC = 0)));
+  SELECT ((COALESCE(calc_interactions_is_system_event(p_interactions_id), FALSE) AND COALESCE(NOT (COALESCE(COALESCE((COALESCE(POSITION('covenant breach' IN LOWER((SELECT NULLIF(subject, '') FROM interactions WHERE interactions_id = p_interactions_id))), 0))::NUMERIC, 0) = 0, FALSE)), FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_constraints_name

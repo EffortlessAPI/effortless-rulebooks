@@ -1,28 +1,32 @@
       *> =================================================================
-      *> erb_runtime.cpy - procedures of the ERB COBOL runtime.
+      *> ERBRTPR - procedures of the ERB COBOL runtime.
       *>
-      *> HAND-WRITTEN, NOT GENERATED. COPYed at the end of every generated
-      *> erb_main.cbl's PROCEDURE DIVISION. It is the COBOL counterpart of
-      *> rulebook-to-typescript's erb_runtime.ts: when a rule changes there,
-      *> it changes here. Supported today: erbBlankLogic=coerce (the default)
-      *> only; NOW()/TODAY()/DATETIME_DIFF and date arithmetic are refused.
+      *> HAND-WRITTEN, NOT GENERATED. COPYed at the end of the generated
+      *> rules module ERBRULES's PROCEDURE DIVISION. It is the COBOL
+      *> counterpart of rulebook-to-typescript's erb_runtime.ts: when a rule
+      *> changes there, it changes here. Its storage is ERBRTWS; it also
+      *> reads the caller's control block ERB-CONTROL (ERB-NOW, ERB-CHARSET)
+      *> and reports a fatal condition there (ERB-RC, ERB-MESSAGE).
       *>
       *> Conventions: operands are popped from the value stack into RA, RB,
       *> RC; the result is built in RR and pushed. A failure calls RT-FAIL
       *> (message in WS-ERR-MSG) and pushes NULL.
+      *>
+      *> Written in free format; rulebook-to-cobol re-flows it into fixed
+      *> format (columns 8-72) for cobolDialect=ibm.
       *> =================================================================
 
       *> ----------------------------- stack -----------------------------
        RT-POP-A.
-           MOVE VS-E(VSP) TO RA
+           PERFORM RT-CP-VSP-RA
            SUBTRACT 1 FROM VSP
            .
        RT-POP-B.
-           MOVE VS-E(VSP) TO RB
+           PERFORM RT-CP-VSP-RB
            SUBTRACT 1 FROM VSP
            .
        RT-POP-C.
-           MOVE VS-E(VSP) TO RC
+           PERFORM RT-CP-VSP-RC
            SUBTRACT 1 FROM VSP
            .
        RT-PUSH-R.
@@ -32,10 +36,10 @@
                PERFORM RT-FATAL
            END-IF
            ADD 1 TO VSP
-           MOVE RR TO VS-E(VSP)
+           PERFORM RT-CP-RR-VSP
            .
        RT-PUSH-A.
-           MOVE RA TO RR
+           PERFORM RT-CP-RA-RR
            PERFORM RT-PUSH-R
            .
        RT-R-NULL.
@@ -106,7 +110,7 @@
            PERFORM RT-PUSH-R
            .
        RT-PUSH-SV.
-           MOVE SV TO RR
+           PERFORM RT-CP-SV-RR
            PERFORM RT-PUSH-R
            .
 
@@ -124,15 +128,15 @@
            .
        RT-REPORT.
       *>   A field failed: report it (on the reporting pass) and leave NULL
-      *>   on the stack in place of the value.
+      *>   on the stack in place of the value. The report is one SYSOUT
+      *>   line: ERBERR|<table>|<field>|<row>|<reason>.
            IF WS-REPORT = 1
                ADD 1 TO WS-ERR-COUNT
                MOVE WS-CUR-ROW TO WS-CUR-ROW-D
-               DISPLAY "ERBERR" WS-TAB FUNCTION TRIM(WS-CUR-TABLE)
-                   WS-TAB FUNCTION TRIM(WS-CUR-FIELD)
-                   WS-TAB FUNCTION TRIM(WS-CUR-ROW-D)
-                   WS-TAB FUNCTION TRIM(WS-ERR-FIRST)
-                   UPON SYSERR
+               DISPLAY "ERBERR|" FUNCTION TRIM(WS-CUR-TABLE)
+                   "|" FUNCTION TRIM(WS-CUR-FIELD)
+                   "|" FUNCTION TRIM(WS-CUR-ROW-D)
+                   "|" FUNCTION TRIM(WS-ERR-FIRST)
            END-IF
            IF VSP > 0
                MOVE 0 TO VS-K(VSP) VS-B(VSP) VS-I(VSP) VS-L(VSP)
@@ -143,9 +147,13 @@
            MOVE 0 TO WS-ERR
            .
        RT-FATAL.
-           DISPLAY "FATAL: " FUNCTION TRIM(WS-ERR-MSG) UPON SYSERR
-           MOVE 4 TO RETURN-CODE
-           STOP RUN
+      *>   The data cannot be computed (capacity, a cyclic dataset). The
+      *>   caller gets return code 8 and the reason in ERB-MESSAGE.
+           MOVE 8 TO ERB-RC
+           MOVE WS-ERR-MSG TO ERB-MESSAGE
+           MOVE WS-ERR-COUNT TO ERB-ERRORS
+           MOVE WS-PASS TO ERB-PASSES
+           GOBACK
            .
 
       *> ----------------------------- truthiness -----------------------------
@@ -320,12 +328,12 @@
            .
        RT-NUMZ-B.
       *>   numOrZero(RB) -> WS-NUM-B, WS-OK (the int flag) in WS-NEG
-           MOVE RA TO RC
-           MOVE RB TO RA
+           PERFORM RT-CP-RA-RC
+           PERFORM RT-CP-RB-RA
            PERFORM RT-NUMZ-A
            MOVE WS-NUM-A TO WS-NUM-B
            MOVE WS-ALLINT TO WS-NEG
-           MOVE RC TO RA
+           PERFORM RT-CP-RC-RA
            .
        RT-ORZERO-A.
       *>   orZero(RA): blank-ish -> 0; a number stays; anything else fails.
@@ -508,8 +516,8 @@
            .
        RT-ROUND-DIGITS.
       *>   RB as ROUND's digits -> WS-DIGITS
-           MOVE RA TO RC
-           MOVE RB TO RA
+           PERFORM RT-CP-RA-RC
+           PERFORM RT-CP-RB-RA
            PERFORM RT-TRUTHY-A
            IF WS-T = 0 AND RA-K NOT = 2
                MOVE 0 TO WS-DIGITS
@@ -523,7 +531,7 @@
                    COMPUTE WS-DIGITS = FUNCTION INTEGER-PART(WS-NUM-T)
                END-IF
            END-IF
-           MOVE RC TO RA
+           PERFORM RT-CP-RC-RA
            .
        RT-ROUND.
            PERFORM RT-POP-B
@@ -582,7 +590,7 @@
            IF WS-OK = 0 PERFORM RT-PUSH-NULL EXIT PARAGRAPH END-IF
            MOVE WS-NUM-A TO WS-NUM-T
            MOVE WS-ALLINT TO WS-NEG
-           MOVE RB TO RA
+           PERFORM RT-CP-RB-RA
            PERFORM RT-ORZERO-A
            IF WS-OK = 0 PERFORM RT-PUSH-NULL EXIT PARAGRAPH END-IF
            MOVE WS-NUM-A TO WS-NUM-B
@@ -638,7 +646,7 @@
            PERFORM RT-ORZERO-A
            IF WS-OK = 0 PERFORM RT-PUSH-NULL EXIT PARAGRAPH END-IF
            MOVE WS-NUM-A TO WS-NUM-T
-           MOVE RB TO RA
+           PERFORM RT-CP-RB-RA
            PERFORM RT-ORZERO-A
            IF WS-OK = 0 PERFORM RT-PUSH-NULL EXIT PARAGRAPH END-IF
            IF WS-NUM-T <= 0 OR WS-NUM-A <= 0 OR WS-NUM-A = 1
@@ -661,7 +669,7 @@
            COMPUTE WS-K2 = VSP - WS-NARGS + 1
            MOVE 0 TO WS-HAVE-BEST
            PERFORM VARYING WS-J FROM WS-K2 BY 1 UNTIL WS-J > VSP
-               MOVE VS-E(WS-J) TO RA
+               PERFORM RT-CP-VSJ-RA
                PERFORM RT-ORZERO-A
                IF WS-OK = 1
                    IF WS-HAVE-BEST = 0
@@ -689,7 +697,7 @@
            MOVE 0 TO WS-NUM-B
            MOVE 1 TO WS-NEG
            PERFORM VARYING WS-J FROM WS-K2 BY 1 UNTIL WS-J > VSP
-               MOVE VS-E(WS-J) TO RA
+               PERFORM RT-CP-VSJ-RA
                PERFORM RT-NUMZ-A
                ADD WS-NUM-A TO WS-NUM-B
                IF WS-ALLINT = 0 MOVE 0 TO WS-NEG END-IF
@@ -747,10 +755,10 @@
            .
        RT-TONUM-B.
       *>   toNumber(RB), leaving RA as it was (RC is scratch).
-           MOVE RA TO RC
-           MOVE RB TO RA
+           PERFORM RT-CP-RA-RC
+           PERFORM RT-CP-RB-RA
            PERFORM RT-TONUM-A
-           MOVE RC TO RA
+           PERFORM RT-CP-RC-RA
            .
        RT-COERCE-PAIR.
       *>   erbBlankLogic=coerce on the pair (RA, RB): a blank takes the other
@@ -849,10 +857,10 @@
            PERFORM RT-R-NULL
            MOVE 0 TO WS-ANDV
            PERFORM VARYING WS-J FROM WS-K2 BY 1 UNTIL WS-J > VSP OR WS-ANDV = 1
-               MOVE VS-E(WS-J) TO RA
+               PERFORM RT-CP-VSJ-RA
                PERFORM RT-BLANK-A
                IF WS-T = 0
-                   MOVE RA TO RR
+                   PERFORM RT-CP-RA-RR
                    MOVE 1 TO WS-ANDV
                END-IF
            END-PERFORM
@@ -984,8 +992,8 @@
            .
        RT-COUNTOP-B.
       *>   countOperand(RB) -> WS-CNTC
-           MOVE RA TO RC
-           MOVE RB TO RA
+           PERFORM RT-CP-RA-RC
+           PERFORM RT-CP-RB-RA
            PERFORM RT-TRUTHY-A
            MOVE 1 TO WS-OK
            IF WS-T = 0
@@ -999,7 +1007,7 @@
                    COMPUTE WS-CNTC = FUNCTION INTEGER-PART(RA-N)
                END-IF
            END-IF
-           MOVE RC TO RA
+           PERFORM RT-CP-RC-RA
            .
        RT-LOWER.
            PERFORM RT-POP-A
@@ -1041,7 +1049,13 @@
            PERFORM RT-PUSH-R
            .
        RT-CHARLEN-A.
-      *>   WS-CNTC := characters (not UTF-8 continuation bytes) in RA's text.
+      *>   WS-CNTC := characters in RA's text. With UTF-8 data (ERB-CHARSET
+      *>   "U") continuation bytes X"80"-X"BF" are not counted; with a
+      *>   single-byte code page such as EBCDIC every byte is a character.
+           IF ERB-CHARSET NOT = "U"
+               MOVE RA-L TO WS-CNTC
+               EXIT PARAGRAPH
+           END-IF
            MOVE 0 TO WS-CNTC
            PERFORM VARYING WS-I FROM 1 BY 1 UNTIL WS-I > RA-L
                IF RA-S(WS-I:1) < X"80" OR RA-S(WS-I:1) > X"BF"
@@ -1113,8 +1127,8 @@
            PERFORM RT-POP-A
            PERFORM RT-TEXTOP-A
            IF WS-OK = 0 PERFORM RT-PUSH-NULL EXIT PARAGRAPH END-IF
-           MOVE RA TO RR
-           MOVE RB TO RA
+           PERFORM RT-CP-RA-RR
+           PERFORM RT-CP-RB-RA
            PERFORM RT-TRUTHY-A
            IF WS-T = 0
                MOVE 1 TO WS-START
@@ -1122,8 +1136,8 @@
                PERFORM RT-NUMZ-A
                COMPUTE WS-START = FUNCTION INTEGER-PART(WS-NUM-A)
            END-IF
-           MOVE RC TO RB
-           MOVE RR TO RA
+           PERFORM RT-CP-RC-RB
+           PERFORM RT-CP-RR-RA
            PERFORM RT-COUNTOP-B
            IF WS-OK = 0 PERFORM RT-PUSH-NULL EXIT PARAGRAPH END-IF
            SUBTRACT 1 FROM WS-START
@@ -1195,7 +1209,7 @@
            PERFORM RT-PYSTR-A
            MOVE WS-TMP-L TO WS-TMP2-L
            IF WS-TMP-L > 0 MOVE WS-TMP(1:WS-TMP-L) TO WS-TMP2(201:WS-TMP-L) END-IF
-           MOVE RB TO RA
+           PERFORM RT-CP-RB-RA
            PERFORM RT-PYSTR-A
       *>   needle in WS-TMP2(201:), haystack in WS-TMP
            MOVE 0 TO WS-NUM-T
@@ -1207,7 +1221,8 @@
                    IF WS-TMP(WS-I:WS-TMP2-L) = WS-TMP2(201:WS-TMP2-L)
                        MOVE 0 TO WS-CNTC
                        PERFORM VARYING WS-J FROM 1 BY 1 UNTIL WS-J >= WS-I
-                           IF WS-TMP(WS-J:1) < X"80" OR WS-TMP(WS-J:1) > X"BF"
+                           IF ERB-CHARSET NOT = "U"
+                              OR WS-TMP(WS-J:1) < X"80" OR WS-TMP(WS-J:1) > X"BF"
                                ADD 1 TO WS-CNTC
                            END-IF
                        END-PERFORM
@@ -1415,7 +1430,7 @@
                IF WS-OK = 0 MOVE 0 TO WS-MATCH EXIT PARAGRAPH END-IF
                MOVE WS-NUM-T TO WS-NUM-A
            END-IF
-           MOVE RB TO RA
+           PERFORM RT-CP-RB-RA
            PERFORM RT-TONUM-A
            IF WS-OK = 0 MOVE 0 TO WS-MATCH EXIT PARAGRAPH END-IF
            MOVE WS-NUM-T TO WS-NUM-B
@@ -1467,20 +1482,20 @@
            PERFORM RT-BLANK-A
            IF WS-T = 1 EXIT PARAGRAPH END-IF
            IF WS-HAVE-BEST = 0
-               MOVE RA TO AB
+               PERFORM RT-CP-RA-AB
                MOVE 1 TO WS-HAVE-BEST
                EXIT PARAGRAPH
            END-IF
-           MOVE AB TO RB
+           PERFORM RT-CP-AB-RB
            IF WS-MAXMODE = 1
-               MOVE RA TO RC
-               MOVE RB TO RA
-               MOVE RC TO RB
+               PERFORM RT-CP-RA-RC
+               PERFORM RT-CP-RB-RA
+               PERFORM RT-CP-RC-RB
            END-IF
       *>   now WS-T := RA < RB, where for MAX RA is the best and RB the cell
            PERFORM RT-PYLESS
            IF WS-T = 1
-               IF WS-MAXMODE = 1 MOVE RB TO AB ELSE MOVE RA TO AB END-IF
+               IF WS-MAXMODE = 1 PERFORM RT-CP-RB-AB ELSE PERFORM RT-CP-RA-AB END-IF
            END-IF
            .
        RT-PYLESS.
@@ -1498,174 +1513,6 @@
            END-IF
            MOVE "MIN/MAX over values that cannot be ordered" TO WS-ERR-MSG
            PERFORM RT-FAIL
-           .
-
-      *> ----------------------------- interchange -----------------------------
-       RT-NEXT-TOKEN.
-      *>   WS-TOK := the next "|"-separated token of WS-LINE from WS-LINE-POS.
-           MOVE 0 TO WS-TOK-L
-           PERFORM UNTIL WS-LINE-POS > WS-LINE-L
-                      OR WS-LINE(WS-LINE-POS:1) = WS-SEP
-               ADD 1 TO WS-TOK-L
-               MOVE WS-LINE(WS-LINE-POS:1) TO WS-TOK(WS-TOK-L:1)
-               ADD 1 TO WS-LINE-POS
-           END-PERFORM
-           ADD 1 TO WS-LINE-POS
-           .
-       RT-DECODE-TOKEN.
-      *>   Pushes the value the token WS-TOK encodes.
-           IF WS-TOK-L = 0
-               MOVE "empty value in the input" TO WS-ERR-MSG
-               PERFORM RT-FATAL
-           END-IF
-           EVALUATE WS-TOK(1:1)
-               WHEN "~"
-                   PERFORM RT-PUSH-NULL
-               WHEN "b"
-                   IF WS-TOK(2:1) = "1" MOVE 1 TO WS-T ELSE MOVE 0 TO WS-T END-IF
-                   PERFORM RT-PUSH-BOOL
-               WHEN "i"
-               WHEN "f"
-                   COMPUTE WS-TMP-L = WS-TOK-L - 1
-                   MOVE WS-TOK(2:WS-TMP-L) TO WS-TMP(1:WS-TMP-L)
-                   PERFORM RT-PARSE-NUM
-                   IF WS-OK = 0
-                       MOVE "unreadable number in the input" TO WS-ERR-MSG
-                       PERFORM RT-FATAL
-                   END-IF
-                   PERFORM RT-R-FLOAT
-                   IF WS-TOK(1:1) = "i" MOVE 1 TO RR-I END-IF
-                   PERFORM RT-PUSH-R
-               WHEN "s"
-                   PERFORM RT-R-EMPTY
-                   MOVE 2 TO WS-I
-                   PERFORM UNTIL WS-I > WS-TOK-L
-                       IF RR-L >= WS-TEXT-MAX
-                           MOVE "input text longer than 8192 bytes" TO WS-ERR-MSG
-                           PERFORM RT-FATAL
-                       END-IF
-                       ADD 1 TO RR-L
-                       IF WS-TOK(WS-I:1) = "\" AND WS-I < WS-TOK-L
-                           ADD 1 TO WS-I
-                           EVALUATE WS-TOK(WS-I:1)
-                               WHEN "t" MOVE X"09" TO RR-S(RR-L:1)
-                               WHEN "n" MOVE X"0A" TO RR-S(RR-L:1)
-                               WHEN "r" MOVE X"0D" TO RR-S(RR-L:1)
-                               WHEN "p" MOVE "|" TO RR-S(RR-L:1)
-                               WHEN "x"
-                                   IF WS-I + 2 > WS-TOK-L
-                                       MOVE "bad \x escape in the input" TO WS-ERR-MSG
-                                       PERFORM RT-FATAL
-                                   END-IF
-                                   COMPUTE WS-K2 = FUNCTION ORD(WS-TOK(WS-I + 1:1)) - 1
-                                   PERFORM RT-HEXVAL
-                                   COMPUTE WS-J = WS-K2 * 16
-                                   COMPUTE WS-K2 = FUNCTION ORD(WS-TOK(WS-I + 2:1)) - 1
-                                   PERFORM RT-HEXVAL
-                                   ADD WS-K2 TO WS-J
-                                   MOVE FUNCTION CHAR(WS-J + 1) TO RR-S(RR-L:1)
-                                   ADD 2 TO WS-I
-                               WHEN OTHER MOVE WS-TOK(WS-I:1) TO RR-S(RR-L:1)
-                           END-EVALUATE
-                       ELSE
-                           MOVE WS-TOK(WS-I:1) TO RR-S(RR-L:1)
-                       END-IF
-                       ADD 1 TO WS-I
-                   END-PERFORM
-                   PERFORM RT-PUSH-R
-               WHEN OTHER
-                   MOVE "unknown value tag in the input" TO WS-ERR-MSG
-                   PERFORM RT-FATAL
-           END-EVALUATE
-           .
-       RT-LINE-PUT.
-      *>   Appends WS-TMP(1:WS-TMP-L) to the output line.
-           IF WS-LINE-L + WS-TMP-L + 4 > WS-LINE-MAX
-               MOVE "output record longer than 262144 bytes" TO WS-ERR-MSG
-               PERFORM RT-FATAL
-           END-IF
-           IF WS-TMP-L > 0
-               MOVE WS-TMP(1:WS-TMP-L) TO WS-LINE(WS-LINE-L + 1:WS-TMP-L)
-               ADD WS-TMP-L TO WS-LINE-L
-           END-IF
-           .
-       RT-ENCODE-TOP.
-      *>   Pops a value and appends "|" + its encoding to the output line.
-           PERFORM RT-POP-A
-           MOVE WS-SEP TO WS-TMP(1:1)
-           MOVE 1 TO WS-TMP-L
-           PERFORM RT-LINE-PUT
-           EVALUATE RA-K
-               WHEN 0
-                   MOVE "~" TO WS-TMP(1:1)
-                   MOVE 1 TO WS-TMP-L
-                   PERFORM RT-LINE-PUT
-               WHEN 1
-                   MOVE "b" TO WS-TMP(1:1)
-                   MOVE RA-B TO WS-TMP(2:1)
-                   MOVE 2 TO WS-TMP-L
-                   PERFORM RT-LINE-PUT
-               WHEN 2
-                   MOVE RA-N TO WS-NUM-T
-                   IF RA-I = 1
-                       PERFORM RT-FMT-INT
-                       MOVE "i" TO WS-TMP(1:1)
-                   ELSE
-                       PERFORM RT-FMT-DEC
-                       MOVE "f" TO WS-TMP(1:1)
-                   END-IF
-                   MOVE WS-NT(1:WS-NT-L) TO WS-TMP(2:WS-NT-L)
-                   COMPUTE WS-TMP-L = WS-NT-L + 1
-                   PERFORM RT-LINE-PUT
-               WHEN OTHER
-                   MOVE "s" TO WS-TMP(1:1)
-                   MOVE 1 TO WS-TMP-L
-                   PERFORM VARYING WS-I FROM 1 BY 1 UNTIL WS-I > RA-L
-                       MOVE RA-S(WS-I:1) TO WS-CH
-                       EVALUATE WS-CH
-                           WHEN "\"
-                               MOVE "\\" TO WS-TMP(WS-TMP-L + 1:2)
-                               ADD 2 TO WS-TMP-L
-                           WHEN X"09"
-                               MOVE "\t" TO WS-TMP(WS-TMP-L + 1:2)
-                               ADD 2 TO WS-TMP-L
-                           WHEN X"0A"
-                               MOVE "\n" TO WS-TMP(WS-TMP-L + 1:2)
-                               ADD 2 TO WS-TMP-L
-                           WHEN X"0D"
-                               MOVE "\r" TO WS-TMP(WS-TMP-L + 1:2)
-                               ADD 2 TO WS-TMP-L
-                           WHEN "|"
-                               MOVE "\p" TO WS-TMP(WS-TMP-L + 1:2)
-                               ADD 2 TO WS-TMP-L
-                           WHEN < " "
-                               COMPUTE WS-J = FUNCTION ORD(WS-CH) - 1
-                               MOVE "\x" TO WS-TMP(WS-TMP-L + 1:2)
-                               ADD 2 TO WS-TMP-L
-                               COMPUTE WS-K2 = WS-J / 16
-                               ADD 1 TO WS-TMP-L
-                               MOVE WS-HEX(WS-K2 + 1:1) TO WS-TMP(WS-TMP-L:1)
-                               COMPUTE WS-K2 = FUNCTION MOD(WS-J, 16)
-                               ADD 1 TO WS-TMP-L
-                               MOVE WS-HEX(WS-K2 + 1:1) TO WS-TMP(WS-TMP-L:1)
-                           WHEN OTHER
-                               ADD 1 TO WS-TMP-L
-                               MOVE WS-CH TO WS-TMP(WS-TMP-L:1)
-                       END-EVALUATE
-                   END-PERFORM
-                   PERFORM RT-LINE-PUT
-           END-EVALUATE
-           .
-       RT-HEXVAL.
-      *>   WS-K2 holds a character code; becomes its hex digit value.
-           EVALUATE TRUE
-               WHEN WS-K2 >= 48 AND WS-K2 <= 57 SUBTRACT 48 FROM WS-K2
-               WHEN WS-K2 >= 65 AND WS-K2 <= 70 SUBTRACT 55 FROM WS-K2
-               WHEN WS-K2 >= 97 AND WS-K2 <= 102 SUBTRACT 87 FROM WS-K2
-               WHEN OTHER
-                   MOVE "bad hex digit in the input" TO WS-ERR-MSG
-                   PERFORM RT-FATAL
-           END-EVALUATE
            .
 
       *> ----------------------------- datetimes -----------------------------
@@ -1804,9 +1651,9 @@
       *>   drops it). Sets WS-MATCH 1: the result is pushed.
            MOVE 1 TO WS-MATCH
            IF WS-K2 = 2
-               MOVE RA TO RC
-               MOVE RB TO RA
-               MOVE RC TO RB
+               PERFORM RT-CP-RA-RC
+               PERFORM RT-CP-RB-RA
+               PERFORM RT-CP-RC-RB
            END-IF
            PERFORM RT-PARSE-TIME-A
            IF WS-OK = 0
@@ -1814,7 +1661,7 @@
                PERFORM RT-FAIL-PUSH-NULL
                EXIT PARAGRAPH
            END-IF
-           MOVE RB TO RA
+           PERFORM RT-CP-RB-RA
            PERFORM RT-TRUTHY-A
            MOVE 0 TO WS-NUM-A
            IF WS-T = 1
@@ -1833,18 +1680,17 @@
            .
        RT-NOW.
       *>   NOW()/TODAY(): the UTC instant, "YYYY-MM-DD HH:MM:SS+00". The
-      *>   FORMULA_NOW environment variable pins it (as in erb_runtime.ts).
+      *>   caller pins it in ERB-NOW (as FORMULA_NOW does in erb_runtime.ts);
+      *>   blank means the system clock.
            IF WS-NOW-SET = 0
-               MOVE SPACES TO WS-ENV
-               ACCEPT WS-ENV FROM ENVIRONMENT "FORMULA_NOW"
-               IF WS-ENV NOT = SPACES
+               IF ERB-NOW NOT = SPACES
                    PERFORM RT-R-EMPTY
-                   COMPUTE RR-L = FUNCTION LENGTH(FUNCTION TRIM(WS-ENV))
-                   MOVE FUNCTION TRIM(WS-ENV) TO RR-S(1:RR-L)
-                   MOVE RR TO RA
+                   COMPUTE RR-L = FUNCTION LENGTH(FUNCTION TRIM(ERB-NOW))
+                   MOVE FUNCTION TRIM(ERB-NOW) TO RR-S(1:RR-L)
+                   PERFORM RT-CP-RR-RA
                    PERFORM RT-PARSE-TIME-A
                    IF WS-OK = 0
-                       MOVE "FORMULA_NOW is not an ISO-8601 datetime" TO WS-ERR-MSG
+                       MOVE "ERB-NOW is not an ISO-8601 datetime" TO WS-ERR-MSG
                        PERFORM RT-FATAL
                    END-IF
                ELSE
@@ -1879,8 +1725,8 @@
            PERFORM RT-POP-B
            PERFORM RT-POP-A
            MOVE "day" TO WS-UNIT
-           MOVE RA TO RR
-           MOVE RC TO RA
+           PERFORM RT-CP-RA-RR
+           PERFORM RT-CP-RC-RA
            PERFORM RT-TRUTHY-A
            IF WS-T = 1
                PERFORM RT-PYSTR-A
@@ -1892,15 +1738,15 @@
                    SUBTRACT 1 FROM WS-TMP-L
                END-PERFORM
            END-IF
-           MOVE RR TO RA
+           PERFORM RT-CP-RR-RA
            PERFORM RT-BLANK-A
            IF WS-T = 1 PERFORM RT-PUSH-NULL EXIT PARAGRAPH END-IF
-           MOVE RB TO RC
-           MOVE RB TO RA
+           PERFORM RT-CP-RB-RC
+           PERFORM RT-CP-RB-RA
            PERFORM RT-BLANK-A
            IF WS-T = 1 PERFORM RT-PUSH-NULL EXIT PARAGRAPH END-IF
       *>   end
-           MOVE RR TO RA
+           PERFORM RT-CP-RR-RA
            PERFORM RT-PARSE-TIME-A
            IF WS-OK = 0
                MOVE "DATETIME_DIFF: cannot read the end as a datetime" TO WS-ERR-MSG
@@ -1912,7 +1758,7 @@
            MOVE WS-T-DAYS TO WS-E-DAYS
            MOVE WS-T-SECS TO WS-E-SECS
       *>   start
-           MOVE RC TO RA
+           PERFORM RT-CP-RC-RA
            PERFORM RT-PARSE-TIME-A
            IF WS-OK = 0
                MOVE "DATETIME_DIFF: cannot read the start as a datetime" TO WS-ERR-MSG
@@ -1983,8 +1829,8 @@
            PERFORM RT-POP-A
            PERFORM RT-BLANK-A
            IF WS-T = 1 EXIT PARAGRAPH END-IF
-           MOVE RA TO RC
-           MOVE RB TO RA
+           PERFORM RT-CP-RA-RC
+           PERFORM RT-CP-RB-RA
            PERFORM RT-BLANK-A
            IF WS-T = 1 EXIT PARAGRAPH END-IF
            IF CW-EN >= CW-EDGE-MAX
@@ -1999,7 +1845,7 @@
            END-IF
            MOVE WS-TMP-L TO CW-ET-L(CW-EN)
            MOVE WS-TMP(1:WS-TMP-L) TO CW-ET(CW-EN)
-           MOVE RC TO RA
+           PERFORM RT-CP-RC-RA
            PERFORM RT-PYSTR-A
            IF WS-TMP-L > CW-WIDTH
                MOVE "a closure node id is longer than 256 bytes" TO WS-ERR-MSG
@@ -2144,4 +1990,512 @@
        RT-PUSH-CW-INF.
            MOVE CW-PI(CW-K) TO WS-T
            PERFORM RT-PUSH-BOOL
+           .
+
+      *> ----------------------------- index keys -----------------------------
+      *> Lookups and aggregation criteria find their rows through sorted
+      *> indexes. A key is the canonical form of a value under the equality
+      *> the scan used (RT-KEYEQ for a lookup, RT-CRIT-FIELD for a
+      *> criterion), so equal keys are exactly the rows the scan matched:
+      *>   "N" + the number (a boolean is 0/1), 31 characters
+      *>   "S" + the text length (4 digits) + the text
+      *> padded with spaces to the index width WS-IXW.
+       RT-IXKEY-A.
+      *>   WS-IXK := RA's key; WS-IXK-OK 0 when RA can match nothing
+      *>   (NULL in a lookup, or text longer than the index holds).
+      *>   WS-IXMODE 1 = lookup, 2 = criterion (NULL compares as "").
+           MOVE 1 TO WS-IXK-OK
+           MOVE SPACES TO WS-IXK(1:WS-IXW)
+           EVALUATE RA-K
+               WHEN 0
+                   IF WS-IXMODE = 1
+                       MOVE 0 TO WS-IXK-OK
+                   ELSE
+                       MOVE "S0000" TO WS-IXK(1:5)
+                   END-IF
+               WHEN 1
+                   MOVE RA-B TO WS-IXN
+                   MOVE "N" TO WS-IXK(1:1)
+                   MOVE WS-IXN-G TO WS-IXK(2:31)
+               WHEN 2
+                   IF RA-N = 0
+                       MOVE 0 TO WS-IXN
+                   ELSE
+                       MOVE RA-N TO WS-IXN
+                   END-IF
+                   MOVE "N" TO WS-IXK(1:1)
+                   MOVE WS-IXN-G TO WS-IXK(2:31)
+               WHEN OTHER
+                   IF RA-L + 5 > WS-IXW
+                       MOVE 0 TO WS-IXK-OK
+                   ELSE
+                       MOVE RA-L TO WS-IXL4
+                       MOVE "S" TO WS-IXK(1:1)
+                       MOVE WS-IXL4 TO WS-IXK(2:4)
+                       IF RA-L > 0
+                           MOVE RA-S(1:RA-L) TO WS-IXK(6:RA-L)
+                       END-IF
+                   END-IF
+           END-EVALUATE
+           .
+
+      *> ----------------------------- TEXT(value, format) -----------------------------
+      *> docs/ERB-TEXT-FUNCTION.md: the Excel meaning, for a fixed subset of
+      *> formats. The compiler has already split the format literal into
+      *> parts; these paragraphs render one part at a time into WS-TF.
+       RT-TF-DATE-BEGIN.
+      *>   Pops the value. NULL stays NULL; a number or boolean comes back
+      *>   as & renders it; text that is an ISO date or datetime (after
+      *>   trimming spaces) is formatted - in UTC, a datetime without an
+      *>   offset read as UTC - and any other text comes back unchanged.
+      *>   WS-TF-SKIP is 0 when the parts are to be rendered.
+           MOVE 1 TO WS-TF-SKIP
+           MOVE 0 TO WS-TF-L
+           PERFORM RT-POP-A
+           IF RA-K = 0
+               PERFORM RT-PUSH-NULL
+               EXIT PARAGRAPH
+           END-IF
+           IF RA-K NOT = 3
+               PERFORM RT-PUSH-A
+               PERFORM RT-TEXT
+               EXIT PARAGRAPH
+           END-IF
+           PERFORM RT-CP-RA-RC
+           PERFORM RT-TF-ISO-A
+           IF WS-OK = 1
+               PERFORM RT-PARSE-TIME-A
+           END-IF
+           IF WS-OK = 0
+               PERFORM RT-CP-RC-RA
+               PERFORM RT-PUSH-A
+               EXIT PARAGRAPH
+           END-IF
+           PERFORM RT-TIME-UTC
+           COMPUTE WS-YMD = FUNCTION DATE-OF-INTEGER(WS-T-DAYS)
+           COMPUTE WS-ISEC = FUNCTION INTEGER-PART(WS-T-SECS)
+           COMPUTE WS-HMS-H = WS-ISEC / 3600
+           COMPUTE WS-HMS-M = (WS-ISEC - WS-HMS-H * 3600) / 60
+           COMPUTE WS-HMS-S = WS-ISEC - WS-HMS-H * 3600 - WS-HMS-M * 60
+           MOVE 0 TO WS-TF-SKIP
+           .
+       RT-TF-ISO-A.
+      *>   WS-OK := RA's text, trimmed, is an ISO date (YYYY-MM-DD) or
+      *>   datetime (YYYY-MM-DD[T ]HH:MM[:SS[.f]] [Z | +HH[[:]MM] | -HH[[:]MM]]).
+      *>   RA is left trimmed (and a final "z" upper-cased) for RT-PARSE-TIME-A.
+           MOVE 0 TO WS-OK
+           MOVE 1 TO WS-P
+           PERFORM UNTIL WS-P > RA-L OR RA-S(WS-P:1) NOT = SPACE
+               ADD 1 TO WS-P
+           END-PERFORM
+           MOVE RA-L TO WS-Q
+           PERFORM UNTIL WS-Q < WS-P OR RA-S(WS-Q:1) NOT = SPACE
+               SUBTRACT 1 FROM WS-Q
+           END-PERFORM
+           IF WS-Q < WS-P EXIT PARAGRAPH END-IF
+           COMPUTE WS-LEN = WS-Q - WS-P + 1
+           MOVE RA-S(WS-P:WS-LEN) TO WS-TMP(1:WS-LEN)
+           MOVE WS-TMP(1:WS-LEN) TO RA-S(1:WS-LEN)
+           MOVE WS-LEN TO RA-L
+           IF RA-L < 10 EXIT PARAGRAPH END-IF
+           IF RA-S(1:4) IS NOT NUMERIC OR RA-S(5:1) NOT = "-"
+              OR RA-S(6:2) IS NOT NUMERIC OR RA-S(8:1) NOT = "-"
+              OR RA-S(9:2) IS NOT NUMERIC
+               EXIT PARAGRAPH
+           END-IF
+           IF RA-L = 10
+               MOVE 1 TO WS-OK
+               EXIT PARAGRAPH
+           END-IF
+           IF RA-L < 16 EXIT PARAGRAPH END-IF
+           IF (RA-S(11:1) NOT = "T" AND RA-S(11:1) NOT = SPACE)
+              OR RA-S(12:2) IS NOT NUMERIC OR RA-S(14:1) NOT = ":"
+              OR RA-S(15:2) IS NOT NUMERIC
+               EXIT PARAGRAPH
+           END-IF
+           MOVE 17 TO WS-I
+           IF WS-I + 2 <= RA-L
+               IF RA-S(WS-I:1) = ":" AND RA-S(WS-I + 1:2) IS NUMERIC
+                   ADD 3 TO WS-I
+                   IF WS-I < RA-L
+                       IF RA-S(WS-I:1) = "." AND RA-S(WS-I + 1:1) IS NUMERIC
+                           ADD 1 TO WS-I
+                           PERFORM UNTIL WS-I > RA-L
+                                      OR RA-S(WS-I:1) IS NOT NUMERIC
+                               ADD 1 TO WS-I
+                           END-PERFORM
+                       END-IF
+                   END-IF
+               END-IF
+           END-IF
+           IF WS-I > RA-L
+               MOVE 1 TO WS-OK
+               EXIT PARAGRAPH
+           END-IF
+           PERFORM UNTIL WS-I > RA-L OR RA-S(WS-I:1) NOT = SPACE
+               ADD 1 TO WS-I
+           END-PERFORM
+           IF WS-I > RA-L EXIT PARAGRAPH END-IF
+           COMPUTE WS-K2 = RA-L - WS-I
+           EVALUATE TRUE
+               WHEN (RA-S(WS-I:1) = "Z" OR RA-S(WS-I:1) = "z") AND WS-K2 = 0
+                   MOVE "Z" TO RA-S(WS-I:1)
+                   MOVE 1 TO WS-OK
+               WHEN RA-S(WS-I:1) NOT = "+" AND RA-S(WS-I:1) NOT = "-"
+                   CONTINUE
+               WHEN WS-K2 = 2
+                   IF RA-S(WS-I + 1:2) IS NUMERIC MOVE 1 TO WS-OK END-IF
+               WHEN WS-K2 = 4
+                   IF RA-S(WS-I + 1:4) IS NUMERIC MOVE 1 TO WS-OK END-IF
+               WHEN WS-K2 = 5
+                   IF RA-S(WS-I + 1:2) IS NUMERIC AND RA-S(WS-I + 3:1) = ":"
+                      AND RA-S(WS-I + 4:2) IS NUMERIC
+                       MOVE 1 TO WS-OK
+                   END-IF
+           END-EVALUATE
+           .
+       RT-TF-PART.
+      *>   Appends date part WS-TF-OP: 1 yyyy, 2 yy, 3 mm (month), 4 m,
+      *>   5 dd, 6 d, 7 hh, 8 h, 9 mm (minutes), 10 m (minutes), 11 ss, 12 s.
+           EVALUATE WS-TF-OP
+               WHEN 1
+                   MOVE WS-YMD-Y TO WS-TF(WS-TF-L + 1:4)
+                   ADD 4 TO WS-TF-L
+               WHEN 2
+                   MOVE WS-YMD-Y(3:2) TO WS-TF(WS-TF-L + 1:2)
+                   ADD 2 TO WS-TF-L
+               WHEN 3
+                   MOVE WS-YMD-M TO WS-TF2
+                   PERFORM RT-TF-PUT2
+               WHEN 4
+                   MOVE WS-YMD-M TO WS-TF2
+                   PERFORM RT-TF-PUT1
+               WHEN 5
+                   MOVE WS-YMD-D TO WS-TF2
+                   PERFORM RT-TF-PUT2
+               WHEN 6
+                   MOVE WS-YMD-D TO WS-TF2
+                   PERFORM RT-TF-PUT1
+               WHEN 7
+                   MOVE WS-HMS-H TO WS-TF2
+                   PERFORM RT-TF-PUT2
+               WHEN 8
+                   MOVE WS-HMS-H TO WS-TF2
+                   PERFORM RT-TF-PUT1
+               WHEN 9
+                   MOVE WS-HMS-M TO WS-TF2
+                   PERFORM RT-TF-PUT2
+               WHEN 10
+                   MOVE WS-HMS-M TO WS-TF2
+                   PERFORM RT-TF-PUT1
+               WHEN 11
+                   MOVE WS-HMS-S TO WS-TF2
+                   PERFORM RT-TF-PUT2
+               WHEN OTHER
+                   MOVE WS-HMS-S TO WS-TF2
+                   PERFORM RT-TF-PUT1
+           END-EVALUATE
+           .
+       RT-TF-PUT2.
+           MOVE WS-TF2 TO WS-TF(WS-TF-L + 1:2)
+           ADD 2 TO WS-TF-L
+           .
+       RT-TF-PUT1.
+      *>   Without a leading zero.
+           IF WS-TF2 < 10
+               MOVE WS-TF2(2:1) TO WS-TF(WS-TF-L + 1:1)
+               ADD 1 TO WS-TF-L
+           ELSE
+               PERFORM RT-TF-PUT2
+           END-IF
+           .
+       RT-TF-LITERAL.
+      *>   Appends the literal part WS-LIT-S(1:WS-LIT-L).
+           IF WS-LIT-L > 0
+               MOVE WS-LIT-S(1:WS-LIT-L) TO WS-TF(WS-TF-L + 1:WS-LIT-L)
+               ADD WS-LIT-L TO WS-TF-L
+           END-IF
+           .
+       RT-TF-PLAIN-A.
+      *>   WS-OK := RA's text is a plain decimal number.
+           MOVE 0 TO WS-OK WS-DIG-SEEN WS-DOT-SEEN
+           MOVE 1 TO WS-P
+           PERFORM UNTIL WS-P > RA-L OR RA-S(WS-P:1) NOT = SPACE
+               ADD 1 TO WS-P
+           END-PERFORM
+           MOVE RA-L TO WS-Q
+           PERFORM UNTIL WS-Q < WS-P OR RA-S(WS-Q:1) NOT = SPACE
+               SUBTRACT 1 FROM WS-Q
+           END-PERFORM
+           IF WS-Q < WS-P EXIT PARAGRAPH END-IF
+           IF RA-S(WS-P:1) = "+" OR RA-S(WS-P:1) = "-"
+               ADD 1 TO WS-P
+           END-IF
+           PERFORM VARYING WS-I FROM WS-P BY 1 UNTIL WS-I > WS-Q
+               EVALUATE TRUE
+                   WHEN RA-S(WS-I:1) IS NUMERIC
+                       MOVE 1 TO WS-DIG-SEEN
+                   WHEN RA-S(WS-I:1) = "." AND WS-DOT-SEEN = 0
+                       MOVE 1 TO WS-DOT-SEEN
+                   WHEN OTHER
+                       EXIT PARAGRAPH
+               END-EVALUATE
+           END-PERFORM
+           MOVE WS-DIG-SEEN TO WS-OK
+           .
+       RT-TF-END.
+           PERFORM RT-R-EMPTY
+           MOVE WS-TF-L TO RR-L
+           IF WS-TF-L > 0
+               MOVE WS-TF(1:WS-TF-L) TO RR-S(1:WS-TF-L)
+           END-IF
+           PERFORM RT-PUSH-R
+           .
+       RT-TF-NUMBER.
+      *>   Pops the value and renders it with WS-TF-DEC decimals, thousands
+      *>   separators when WS-TF-GRP is 1, as a percentage when WS-TF-PCT is
+      *>   1; rounded half away from zero; a rounded zero has no sign. NULL
+      *>   stays NULL; a boolean comes back as & renders it; text is
+      *>   formatted only when it is a plain decimal number ([+-]digits[.d]
+      *>   or [+-].digits, spaces around), any other text comes back as is.
+           PERFORM RT-POP-A
+           EVALUATE RA-K
+               WHEN 0
+                   PERFORM RT-PUSH-NULL
+                   EXIT PARAGRAPH
+               WHEN 1
+                   PERFORM RT-PUSH-A
+                   PERFORM RT-TEXT
+                   EXIT PARAGRAPH
+               WHEN 3
+                   PERFORM RT-TF-PLAIN-A
+                   IF WS-OK = 0
+                       PERFORM RT-PUSH-A
+                       EXIT PARAGRAPH
+                   END-IF
+                   PERFORM RT-TONUM-A
+                   IF WS-OK = 0
+                       PERFORM RT-PUSH-A
+                       EXIT PARAGRAPH
+                   END-IF
+               WHEN OTHER
+                   MOVE RA-N TO WS-NUM-T
+           END-EVALUATE
+           IF WS-TF-PCT = 1
+               COMPUTE WS-NUM-T = WS-NUM-T * 100
+                   ON SIZE ERROR
+                       MOVE "TEXT: number too large" TO WS-ERR-MSG
+                       PERFORM RT-FAIL-PUSH-NULL
+                       EXIT PARAGRAPH
+               END-COMPUTE
+           END-IF
+           MOVE WS-TF-DEC TO WS-DIGITS
+           PERFORM RT-ROUND-HALF-AWAY
+           MOVE 0 TO WS-TF-L
+           IF WS-NUM-T < 0
+               MOVE "-" TO WS-TF(1:1)
+               MOVE 1 TO WS-TF-L
+               COMPUTE WS-NUM-T = 0 - WS-NUM-T
+           END-IF
+           COMPUTE WS-NUM-A = FUNCTION INTEGER-PART(WS-NUM-T)
+           MOVE WS-NUM-A TO WS-INT-ED
+           MOVE FUNCTION TRIM(WS-INT-ED) TO WS-NT
+           COMPUTE WS-NT-L = FUNCTION LENGTH(FUNCTION TRIM(WS-INT-ED))
+           PERFORM VARYING WS-I FROM 1 BY 1 UNTIL WS-I > WS-NT-L
+               IF WS-TF-GRP = 1 AND WS-I > 1
+                   AND FUNCTION MOD(WS-NT-L - WS-I + 1, 3) = 0
+                   ADD 1 TO WS-TF-L
+                   MOVE "," TO WS-TF(WS-TF-L:1)
+               END-IF
+               ADD 1 TO WS-TF-L
+               MOVE WS-NT(WS-I:1) TO WS-TF(WS-TF-L:1)
+           END-PERFORM
+           IF WS-TF-DEC > 0
+               COMPUTE WS-NUM-B = (WS-NUM-T - WS-NUM-A) * 10 ** WS-TF-DEC
+               MOVE WS-NUM-B TO WS-TF-FR
+               ADD 1 TO WS-TF-L
+               MOVE "." TO WS-TF(WS-TF-L:1)
+               MOVE WS-TF-FR(13 - WS-TF-DEC:WS-TF-DEC)
+                   TO WS-TF(WS-TF-L + 1:WS-TF-DEC)
+               ADD WS-TF-DEC TO WS-TF-L
+           END-IF
+           IF WS-TF-PCT = 1
+               ADD 1 TO WS-TF-L
+               MOVE "%" TO WS-TF(WS-TF-L:1)
+           END-IF
+           PERFORM RT-TF-END
+           .
+
+      *> ----------------------------- register copies -----------------------------
+      *> A value moves field by field, and only the L bytes of text it holds:
+      *> a group MOVE of a register would copy all 8192 bytes of S every time.
+       RT-CP-AB-RB.
+           MOVE AB-K TO RB-K
+           MOVE AB-B TO RB-B
+           MOVE AB-I TO RB-I
+           MOVE AB-N TO RB-N
+           MOVE AB-L TO RB-L
+           IF AB-L > 0
+               MOVE AB-S(1:AB-L) TO RB-S(1:AB-L)
+           END-IF
+           .
+       RT-CP-RA-AB.
+           MOVE RA-K TO AB-K
+           MOVE RA-B TO AB-B
+           MOVE RA-I TO AB-I
+           MOVE RA-N TO AB-N
+           MOVE RA-L TO AB-L
+           IF RA-L > 0
+               MOVE RA-S(1:RA-L) TO AB-S(1:RA-L)
+           END-IF
+           .
+       RT-CP-RA-RC.
+           MOVE RA-K TO RC-K
+           MOVE RA-B TO RC-B
+           MOVE RA-I TO RC-I
+           MOVE RA-N TO RC-N
+           MOVE RA-L TO RC-L
+           IF RA-L > 0
+               MOVE RA-S(1:RA-L) TO RC-S(1:RA-L)
+           END-IF
+           .
+       RT-CP-RA-RR.
+           MOVE RA-K TO RR-K
+           MOVE RA-B TO RR-B
+           MOVE RA-I TO RR-I
+           MOVE RA-N TO RR-N
+           MOVE RA-L TO RR-L
+           IF RA-L > 0
+               MOVE RA-S(1:RA-L) TO RR-S(1:RA-L)
+           END-IF
+           .
+       RT-CP-RB-AB.
+           MOVE RB-K TO AB-K
+           MOVE RB-B TO AB-B
+           MOVE RB-I TO AB-I
+           MOVE RB-N TO AB-N
+           MOVE RB-L TO AB-L
+           IF RB-L > 0
+               MOVE RB-S(1:RB-L) TO AB-S(1:RB-L)
+           END-IF
+           .
+       RT-CP-RB-RA.
+           MOVE RB-K TO RA-K
+           MOVE RB-B TO RA-B
+           MOVE RB-I TO RA-I
+           MOVE RB-N TO RA-N
+           MOVE RB-L TO RA-L
+           IF RB-L > 0
+               MOVE RB-S(1:RB-L) TO RA-S(1:RB-L)
+           END-IF
+           .
+       RT-CP-RB-RC.
+           MOVE RB-K TO RC-K
+           MOVE RB-B TO RC-B
+           MOVE RB-I TO RC-I
+           MOVE RB-N TO RC-N
+           MOVE RB-L TO RC-L
+           IF RB-L > 0
+               MOVE RB-S(1:RB-L) TO RC-S(1:RB-L)
+           END-IF
+           .
+       RT-CP-RC-RA.
+           MOVE RC-K TO RA-K
+           MOVE RC-B TO RA-B
+           MOVE RC-I TO RA-I
+           MOVE RC-N TO RA-N
+           MOVE RC-L TO RA-L
+           IF RC-L > 0
+               MOVE RC-S(1:RC-L) TO RA-S(1:RC-L)
+           END-IF
+           .
+       RT-CP-RC-RB.
+           MOVE RC-K TO RB-K
+           MOVE RC-B TO RB-B
+           MOVE RC-I TO RB-I
+           MOVE RC-N TO RB-N
+           MOVE RC-L TO RB-L
+           IF RC-L > 0
+               MOVE RC-S(1:RC-L) TO RB-S(1:RC-L)
+           END-IF
+           .
+       RT-CP-RR-RA.
+           MOVE RR-K TO RA-K
+           MOVE RR-B TO RA-B
+           MOVE RR-I TO RA-I
+           MOVE RR-N TO RA-N
+           MOVE RR-L TO RA-L
+           IF RR-L > 0
+               MOVE RR-S(1:RR-L) TO RA-S(1:RR-L)
+           END-IF
+           .
+       RT-CP-RR-VSP.
+           MOVE RR-K TO VS-K(VSP)
+           MOVE RR-B TO VS-B(VSP)
+           MOVE RR-I TO VS-I(VSP)
+           MOVE RR-N TO VS-N(VSP)
+           MOVE RR-L TO VS-L(VSP)
+           IF RR-L > 0
+               MOVE RR-S(1:RR-L) TO VS-S(VSP)(1:RR-L)
+           END-IF
+           .
+       RT-CP-SV-RR.
+           MOVE SV-K TO RR-K
+           MOVE SV-B TO RR-B
+           MOVE SV-I TO RR-I
+           MOVE SV-N TO RR-N
+           MOVE SV-L TO RR-L
+           IF SV-L > 0
+               MOVE SV-S(1:SV-L) TO RR-S(1:SV-L)
+           END-IF
+           .
+       RT-CP-VSJ-RA.
+           MOVE VS-K(WS-J) TO RA-K
+           MOVE VS-B(WS-J) TO RA-B
+           MOVE VS-I(WS-J) TO RA-I
+           MOVE VS-N(WS-J) TO RA-N
+           MOVE VS-L(WS-J) TO RA-L
+           IF VS-L(WS-J) > 0
+               MOVE VS-S(WS-J)(1:VS-L(WS-J)) TO RA-S(1:VS-L(WS-J))
+           END-IF
+           .
+       RT-CP-VSP-RA.
+           MOVE VS-K(VSP) TO RA-K
+           MOVE VS-B(VSP) TO RA-B
+           MOVE VS-I(VSP) TO RA-I
+           MOVE VS-N(VSP) TO RA-N
+           MOVE VS-L(VSP) TO RA-L
+           IF VS-L(VSP) > 0
+               MOVE VS-S(VSP)(1:VS-L(VSP)) TO RA-S(1:VS-L(VSP))
+           END-IF
+           .
+       RT-CP-VSP-RB.
+           MOVE VS-K(VSP) TO RB-K
+           MOVE VS-B(VSP) TO RB-B
+           MOVE VS-I(VSP) TO RB-I
+           MOVE VS-N(VSP) TO RB-N
+           MOVE VS-L(VSP) TO RB-L
+           IF VS-L(VSP) > 0
+               MOVE VS-S(VSP)(1:VS-L(VSP)) TO RB-S(1:VS-L(VSP))
+           END-IF
+           .
+       RT-CP-VSP-RC.
+           MOVE VS-K(VSP) TO RC-K
+           MOVE VS-B(VSP) TO RC-B
+           MOVE VS-I(VSP) TO RC-I
+           MOVE VS-N(VSP) TO RC-N
+           MOVE VS-L(VSP) TO RC-L
+           IF VS-L(VSP) > 0
+               MOVE VS-S(VSP)(1:VS-L(VSP)) TO RC-S(1:VS-L(VSP))
+           END-IF
+           .
+       RT-CP-AB-RR.
+           MOVE AB-K TO RR-K
+           MOVE AB-B TO RR-B
+           MOVE AB-I TO RR-I
+           MOVE AB-N TO RR-N
+           MOVE AB-L TO RR-L
+           IF AB-L > 0
+               MOVE AB-S(1:AB-L) TO RR-S(1:AB-L)
+           END-IF
            .

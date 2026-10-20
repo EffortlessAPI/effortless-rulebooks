@@ -8,7 +8,7 @@
     "has_ach": true,
     "has_wire": true,
     "has_card": false,
-    "opened_at": "2024-03-13 00:00:00+00",
+    "opened_at": "2024-03-13T00:00:00Z",
     "business_label": "Stillwater Roasters LLC",
     "treasury_service_count": 2,
     "has_any_treasury_service": true
@@ -22,7 +22,7 @@
     "has_ach": false,
     "has_wire": false,
     "has_card": false,
-    "opened_at": "2024-03-13 00:00:00+00",
+    "opened_at": "2024-03-13T00:00:00Z",
     "business_label": "Stillwater Roasters LLC",
     "treasury_service_count": 0,
     "has_any_treasury_service": false
@@ -36,7 +36,7 @@
     "has_ach": true,
     "has_wire": true,
     "has_card": true,
-    "opened_at": "2019-06-22 00:00:00+00",
+    "opened_at": "2019-06-22T00:00:00Z",
     "business_label": "Pine Hardware Inc.",
     "treasury_service_count": 3,
     "has_any_treasury_service": true
@@ -50,7 +50,7 @@
     "has_ach": true,
     "has_wire": false,
     "has_card": false,
-    "opened_at": "2023-09-06 00:00:00+00",
+    "opened_at": "2023-09-06T00:00:00Z",
     "business_label": "Ridgeway Consulting LLC",
     "treasury_service_count": 1,
     "has_any_treasury_service": true
@@ -64,7 +64,7 @@
     "has_ach": false,
     "has_wire": false,
     "has_card": false,
-    "opened_at": "2022-11-03 00:00:00+00",
+    "opened_at": "2022-11-03T00:00:00Z",
     "business_label": "Sunset Auto Body LLC",
     "treasury_service_count": 0,
     "has_any_treasury_service": false

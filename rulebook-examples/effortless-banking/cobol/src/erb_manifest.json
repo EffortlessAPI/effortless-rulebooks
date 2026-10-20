@@ -1,10 +1,35 @@
 {
   "generator": "rulebook-to-cobol",
+  "dialect": "gnucobol",
+  "build": [
+    "cobc",
+    "-free",
+    "-x",
+    "-o",
+    "ERBBATCH",
+    "ERBBATCH.cbl",
+    "ERBRULES.cbl"
+  ],
+  "run": "./ERBBATCH",
+  "control": {
+    "dd": "ERBPARM",
+    "recordLength": 80,
+    "cards": [
+      "NOW=<iso-8601>",
+      "CHARSET=U|S"
+    ]
+  },
   "tables": [
     {
       "number": 1,
       "name": "Users",
       "snake": "users",
+      "copybook": "USERS",
+      "prefix": "T01",
+      "ddIn": "ERBI01",
+      "ddOut": "ERBO01",
+      "recordLength": 306,
+      "capacity": 200,
       "fields": [
         {
           "name": "Name",
@@ -12,7 +37,34 @@
           "kind": "string",
           "type": "calculated",
           "datatype": "string",
-          "width": 2684
+          "cobolName": "T01-NAME",
+          "nullable": true,
+          "width": 64,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T01-NAME-NI",
+              "pic": "X",
+              "offset": 0,
+              "bytes": 1
+            },
+            {
+              "part": "len",
+              "name": "T01-NAME-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 1,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T01-NAME",
+              "pic": "X(64)",
+              "offset": 3,
+              "bytes": 64
+            }
+          ]
         },
         {
           "name": "FullName",
@@ -20,7 +72,27 @@
           "kind": "string",
           "type": "raw",
           "datatype": "string",
-          "width": 64
+          "cobolName": "T01-FULL-NAME",
+          "nullable": false,
+          "width": 64,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "len",
+              "name": "T01-FULL-NAME-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 67,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T01-FULL-NAME",
+              "pic": "X(64)",
+              "offset": 69,
+              "bytes": 64
+            }
+          ]
         },
         {
           "name": "Role",
@@ -28,7 +100,27 @@
           "kind": "string",
           "type": "raw",
           "datatype": "string",
-          "width": 64
+          "cobolName": "T01-ROLE",
+          "nullable": false,
+          "width": 64,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "len",
+              "name": "T01-ROLE-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 133,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T01-ROLE",
+              "pic": "X(64)",
+              "offset": 135,
+              "bytes": 64
+            }
+          ]
         },
         {
           "name": "Email",
@@ -36,7 +128,27 @@
           "kind": "string",
           "type": "raw",
           "datatype": "string",
-          "width": 64
+          "cobolName": "T01-EMAIL",
+          "nullable": false,
+          "width": 64,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "len",
+              "name": "T01-EMAIL-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 199,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T01-EMAIL",
+              "pic": "X(64)",
+              "offset": 201,
+              "bytes": 64
+            }
+          ]
         },
         {
           "name": "IsRM",
@@ -44,7 +156,27 @@
           "kind": "bool",
           "type": "calculated",
           "datatype": "boolean",
-          "width": 1
+          "cobolName": "T01-IS-RM",
+          "nullable": true,
+          "width": null,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T01-IS-RM-NI",
+              "pic": "X",
+              "offset": 265,
+              "bytes": 1
+            },
+            {
+              "part": "value",
+              "name": "T01-IS-RM",
+              "pic": "X",
+              "offset": 266,
+              "bytes": 1
+            }
+          ]
         },
         {
           "name": "IsUnderwriter",
@@ -52,7 +184,27 @@
           "kind": "bool",
           "type": "calculated",
           "datatype": "boolean",
-          "width": 1
+          "cobolName": "T01-IS-UNDERWRITER",
+          "nullable": true,
+          "width": null,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T01-IS-UNDERWRITER-NI",
+              "pic": "X",
+              "offset": 267,
+              "bytes": 1
+            },
+            {
+              "part": "value",
+              "name": "T01-IS-UNDERWRITER",
+              "pic": "X",
+              "offset": 268,
+              "bytes": 1
+            }
+          ]
         },
         {
           "name": "IsBranchBanker",
@@ -60,7 +212,27 @@
           "kind": "bool",
           "type": "calculated",
           "datatype": "boolean",
-          "width": 1
+          "cobolName": "T01-IS-BRANCH-BANKER",
+          "nullable": true,
+          "width": null,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T01-IS-BRANCH-BANKER-NI",
+              "pic": "X",
+              "offset": 269,
+              "bytes": 1
+            },
+            {
+              "part": "value",
+              "name": "T01-IS-BRANCH-BANKER",
+              "pic": "X",
+              "offset": 270,
+              "bytes": 1
+            }
+          ]
         },
         {
           "name": "IsAdmin",
@@ -68,7 +240,27 @@
           "kind": "bool",
           "type": "calculated",
           "datatype": "boolean",
-          "width": 1
+          "cobolName": "T01-IS-ADMIN",
+          "nullable": true,
+          "width": null,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T01-IS-ADMIN-NI",
+              "pic": "X",
+              "offset": 271,
+              "bytes": 1
+            },
+            {
+              "part": "value",
+              "name": "T01-IS-ADMIN",
+              "pic": "X",
+              "offset": 272,
+              "bytes": 1
+            }
+          ]
         },
         {
           "name": "CountOfPortfolioBusinesses",
@@ -76,7 +268,27 @@
           "kind": "int",
           "type": "aggregation",
           "datatype": "integer",
-          "width": 1
+          "cobolName": "T01-COUNT-OF-PORTFOLIO-BUS",
+          "nullable": true,
+          "width": null,
+          "digits": 18,
+          "scale": 0,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T01-COUNT-OF-PORTFOLIO-BUS-NI",
+              "pic": "X",
+              "offset": 273,
+              "bytes": 1
+            },
+            {
+              "part": "value",
+              "name": "T01-COUNT-OF-PORTFOLIO-BUS",
+              "pic": "S9(18) COMP-3",
+              "offset": 274,
+              "bytes": 10
+            }
+          ]
         },
         {
           "name": "CountOfOriginatedLoans",
@@ -84,7 +296,27 @@
           "kind": "int",
           "type": "aggregation",
           "datatype": "integer",
-          "width": 1
+          "cobolName": "T01-COUNT-OF-ORIGINATED-LO",
+          "nullable": true,
+          "width": null,
+          "digits": 18,
+          "scale": 0,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T01-COUNT-OF-ORIGINATED-LO-NI",
+              "pic": "X",
+              "offset": 284,
+              "bytes": 1
+            },
+            {
+              "part": "value",
+              "name": "T01-COUNT-OF-ORIGINATED-LO",
+              "pic": "S9(18) COMP-3",
+              "offset": 285,
+              "bytes": 10
+            }
+          ]
         },
         {
           "name": "CountOfUnderwrittenLoans",
@@ -92,7 +324,27 @@
           "kind": "int",
           "type": "aggregation",
           "datatype": "integer",
-          "width": 1
+          "cobolName": "T01-COUNT-OF-UNDERWRITTEN",
+          "nullable": true,
+          "width": null,
+          "digits": 18,
+          "scale": 0,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T01-COUNT-OF-UNDERWRITTEN-NI",
+              "pic": "X",
+              "offset": 295,
+              "bytes": 1
+            },
+            {
+              "part": "value",
+              "name": "T01-COUNT-OF-UNDERWRITTEN",
+              "pic": "S9(18) COMP-3",
+              "offset": 296,
+              "bytes": 10
+            }
+          ]
         }
       ]
     },
@@ -100,6 +352,12 @@
       "number": 2,
       "name": "Businesses",
       "snake": "businesses",
+      "copybook": "BUSINESS",
+      "prefix": "T02",
+      "ddIn": "ERBI02",
+      "ddOut": "ERBO02",
+      "recordLength": 847,
+      "capacity": 200,
       "fields": [
         {
           "name": "Name",
@@ -107,7 +365,34 @@
           "kind": "string",
           "type": "calculated",
           "datatype": "string",
-          "width": 2684
+          "cobolName": "T02-NAME",
+          "nullable": true,
+          "width": 64,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T02-NAME-NI",
+              "pic": "X",
+              "offset": 0,
+              "bytes": 1
+            },
+            {
+              "part": "len",
+              "name": "T02-NAME-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 1,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T02-NAME",
+              "pic": "X(64)",
+              "offset": 3,
+              "bytes": 64
+            }
+          ]
         },
         {
           "name": "LegalName",
@@ -115,7 +400,27 @@
           "kind": "string",
           "type": "raw",
           "datatype": "string",
-          "width": 64
+          "cobolName": "T02-LEGAL-NAME",
+          "nullable": false,
+          "width": 64,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "len",
+              "name": "T02-LEGAL-NAME-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 67,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T02-LEGAL-NAME",
+              "pic": "X(64)",
+              "offset": 69,
+              "bytes": 64
+            }
+          ]
         },
         {
           "name": "BusinessStructure",
@@ -123,7 +428,27 @@
           "kind": "string",
           "type": "raw",
           "datatype": "string",
-          "width": 64
+          "cobolName": "T02-BUSINESS-STRUCTURE",
+          "nullable": false,
+          "width": 64,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "len",
+              "name": "T02-BUSINESS-STRUCTURE-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 133,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T02-BUSINESS-STRUCTURE",
+              "pic": "X(64)",
+              "offset": 135,
+              "bytes": 64
+            }
+          ]
         },
         {
           "name": "NaicsCode",
@@ -131,7 +456,27 @@
           "kind": "string",
           "type": "raw",
           "datatype": "string",
-          "width": 64
+          "cobolName": "T02-NAICS-CODE",
+          "nullable": false,
+          "width": 64,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "len",
+              "name": "T02-NAICS-CODE-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 199,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T02-NAICS-CODE",
+              "pic": "X(64)",
+              "offset": 201,
+              "bytes": 64
+            }
+          ]
         },
         {
           "name": "NaicsDescription",
@@ -139,7 +484,34 @@
           "kind": "string",
           "type": "raw",
           "datatype": "string",
-          "width": 86
+          "cobolName": "T02-NAICS-DESCRIPTION",
+          "nullable": true,
+          "width": 86,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T02-NAICS-DESCRIPTION-NI",
+              "pic": "X",
+              "offset": 265,
+              "bytes": 1
+            },
+            {
+              "part": "len",
+              "name": "T02-NAICS-DESCRIPTION-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 266,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T02-NAICS-DESCRIPTION",
+              "pic": "X(86)",
+              "offset": 268,
+              "bytes": 86
+            }
+          ]
         },
         {
           "name": "AnnualRevenueUsd",
@@ -147,7 +519,27 @@
           "kind": "float",
           "type": "raw",
           "datatype": "number",
-          "width": 1
+          "cobolName": "T02-ANNUAL-REVENUE-USD",
+          "nullable": true,
+          "width": null,
+          "digits": 12,
+          "scale": 2,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T02-ANNUAL-REVENUE-USD-NI",
+              "pic": "X",
+              "offset": 354,
+              "bytes": 1
+            },
+            {
+              "part": "value",
+              "name": "T02-ANNUAL-REVENUE-USD",
+              "pic": "S9(12)V9(2) COMP-3",
+              "offset": 355,
+              "bytes": 8
+            }
+          ]
         },
         {
           "name": "Status",
@@ -155,7 +547,27 @@
           "kind": "string",
           "type": "raw",
           "datatype": "string",
-          "width": 64
+          "cobolName": "T02-STATUS",
+          "nullable": false,
+          "width": 64,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "len",
+              "name": "T02-STATUS-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 363,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T02-STATUS",
+              "pic": "X(64)",
+              "offset": 365,
+              "bytes": 64
+            }
+          ]
         },
         {
           "name": "OnboardedAt",
@@ -163,7 +575,34 @@
           "kind": "string",
           "type": "raw",
           "datatype": "datetime",
-          "width": 64
+          "cobolName": "T02-ONBOARDED-AT",
+          "nullable": true,
+          "width": 64,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T02-ONBOARDED-AT-NI",
+              "pic": "X",
+              "offset": 429,
+              "bytes": 1
+            },
+            {
+              "part": "len",
+              "name": "T02-ONBOARDED-AT-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 430,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T02-ONBOARDED-AT",
+              "pic": "X(64)",
+              "offset": 432,
+              "bytes": 64
+            }
+          ]
         },
         {
           "name": "RelationshipManager",
@@ -171,7 +610,27 @@
           "kind": "string",
           "type": "relationship",
           "datatype": "string",
-          "width": 64
+          "cobolName": "T02-RELATIONSHIP-MANAGER",
+          "nullable": false,
+          "width": 64,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "len",
+              "name": "T02-RELATIONSHIP-MANAGER-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 496,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T02-RELATIONSHIP-MANAGER",
+              "pic": "X(64)",
+              "offset": 498,
+              "bytes": 64
+            }
+          ]
         },
         {
           "name": "ReferralSource",
@@ -179,7 +638,34 @@
           "kind": "string",
           "type": "relationship",
           "datatype": "string",
-          "width": 64
+          "cobolName": "T02-REFERRAL-SOURCE",
+          "nullable": true,
+          "width": 64,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T02-REFERRAL-SOURCE-NI",
+              "pic": "X",
+              "offset": 562,
+              "bytes": 1
+            },
+            {
+              "part": "len",
+              "name": "T02-REFERRAL-SOURCE-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 563,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T02-REFERRAL-SOURCE",
+              "pic": "X(64)",
+              "offset": 565,
+              "bytes": 64
+            }
+          ]
         },
         {
           "name": "RelationshipManagerLabel",
@@ -187,7 +673,34 @@
           "kind": "string",
           "type": "lookup",
           "datatype": "string",
-          "width": 2684
+          "cobolName": "T02-RELATIONSHIP-MANAGER-L",
+          "nullable": true,
+          "width": 64,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T02-RELATIONSHIP-MANAGER-L-NI",
+              "pic": "X",
+              "offset": 629,
+              "bytes": 1
+            },
+            {
+              "part": "len",
+              "name": "T02-RELATIONSHIP-MANAGER-L-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 630,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T02-RELATIONSHIP-MANAGER-L",
+              "pic": "X(64)",
+              "offset": 632,
+              "bytes": 64
+            }
+          ]
         },
         {
           "name": "IsCustomer",
@@ -195,7 +708,27 @@
           "kind": "bool",
           "type": "calculated",
           "datatype": "boolean",
-          "width": 1
+          "cobolName": "T02-IS-CUSTOMER",
+          "nullable": true,
+          "width": null,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T02-IS-CUSTOMER-NI",
+              "pic": "X",
+              "offset": 696,
+              "bytes": 1
+            },
+            {
+              "part": "value",
+              "name": "T02-IS-CUSTOMER",
+              "pic": "X",
+              "offset": 697,
+              "bytes": 1
+            }
+          ]
         },
         {
           "name": "IsProspect",
@@ -203,7 +736,27 @@
           "kind": "bool",
           "type": "calculated",
           "datatype": "boolean",
-          "width": 1
+          "cobolName": "T02-IS-PROSPECT",
+          "nullable": true,
+          "width": null,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T02-IS-PROSPECT-NI",
+              "pic": "X",
+              "offset": 698,
+              "bytes": 1
+            },
+            {
+              "part": "value",
+              "name": "T02-IS-PROSPECT",
+              "pic": "X",
+              "offset": 699,
+              "bytes": 1
+            }
+          ]
         },
         {
           "name": "WasReferred",
@@ -211,7 +764,27 @@
           "kind": "bool",
           "type": "calculated",
           "datatype": "boolean",
-          "width": 1
+          "cobolName": "T02-WAS-REFERRED",
+          "nullable": true,
+          "width": null,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T02-WAS-REFERRED-NI",
+              "pic": "X",
+              "offset": 700,
+              "bytes": 1
+            },
+            {
+              "part": "value",
+              "name": "T02-WAS-REFERRED",
+              "pic": "X",
+              "offset": 701,
+              "bytes": 1
+            }
+          ]
         },
         {
           "name": "CountOfBeneficialOwners",
@@ -219,7 +792,27 @@
           "kind": "int",
           "type": "aggregation",
           "datatype": "integer",
-          "width": 1
+          "cobolName": "T02-COUNT-OF-BENEFICIAL-OW",
+          "nullable": true,
+          "width": null,
+          "digits": 18,
+          "scale": 0,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T02-COUNT-OF-BENEFICIAL-OW-NI",
+              "pic": "X",
+              "offset": 702,
+              "bytes": 1
+            },
+            {
+              "part": "value",
+              "name": "T02-COUNT-OF-BENEFICIAL-OW",
+              "pic": "S9(18) COMP-3",
+              "offset": 703,
+              "bytes": 10
+            }
+          ]
         },
         {
           "name": "CountOfContacts",
@@ -227,7 +820,27 @@
           "kind": "int",
           "type": "aggregation",
           "datatype": "integer",
-          "width": 1
+          "cobolName": "T02-COUNT-OF-CONTACTS",
+          "nullable": true,
+          "width": null,
+          "digits": 18,
+          "scale": 0,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T02-COUNT-OF-CONTACTS-NI",
+              "pic": "X",
+              "offset": 713,
+              "bytes": 1
+            },
+            {
+              "part": "value",
+              "name": "T02-COUNT-OF-CONTACTS",
+              "pic": "S9(18) COMP-3",
+              "offset": 714,
+              "bytes": 10
+            }
+          ]
         },
         {
           "name": "CountOfAccounts",
@@ -235,7 +848,27 @@
           "kind": "int",
           "type": "aggregation",
           "datatype": "integer",
-          "width": 1
+          "cobolName": "T02-COUNT-OF-ACCOUNTS",
+          "nullable": true,
+          "width": null,
+          "digits": 18,
+          "scale": 0,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T02-COUNT-OF-ACCOUNTS-NI",
+              "pic": "X",
+              "offset": 724,
+              "bytes": 1
+            },
+            {
+              "part": "value",
+              "name": "T02-COUNT-OF-ACCOUNTS",
+              "pic": "S9(18) COMP-3",
+              "offset": 725,
+              "bytes": 10
+            }
+          ]
         },
         {
           "name": "CountOfLoans",
@@ -243,7 +876,27 @@
           "kind": "int",
           "type": "aggregation",
           "datatype": "integer",
-          "width": 1
+          "cobolName": "T02-COUNT-OF-LOANS",
+          "nullable": true,
+          "width": null,
+          "digits": 18,
+          "scale": 0,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T02-COUNT-OF-LOANS-NI",
+              "pic": "X",
+              "offset": 735,
+              "bytes": 1
+            },
+            {
+              "part": "value",
+              "name": "T02-COUNT-OF-LOANS",
+              "pic": "S9(18) COMP-3",
+              "offset": 736,
+              "bytes": 10
+            }
+          ]
         },
         {
           "name": "CountOfInteractions",
@@ -251,7 +904,27 @@
           "kind": "int",
           "type": "aggregation",
           "datatype": "integer",
-          "width": 1
+          "cobolName": "T02-COUNT-OF-INTERACTIONS",
+          "nullable": true,
+          "width": null,
+          "digits": 18,
+          "scale": 0,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T02-COUNT-OF-INTERACTIONS-NI",
+              "pic": "X",
+              "offset": 746,
+              "bytes": 1
+            },
+            {
+              "part": "value",
+              "name": "T02-COUNT-OF-INTERACTIONS",
+              "pic": "S9(18) COMP-3",
+              "offset": 747,
+              "bytes": 10
+            }
+          ]
         },
         {
           "name": "CountOfDocuments",
@@ -259,7 +932,27 @@
           "kind": "int",
           "type": "aggregation",
           "datatype": "integer",
-          "width": 1
+          "cobolName": "T02-COUNT-OF-DOCUMENTS",
+          "nullable": true,
+          "width": null,
+          "digits": 18,
+          "scale": 0,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T02-COUNT-OF-DOCUMENTS-NI",
+              "pic": "X",
+              "offset": 757,
+              "bytes": 1
+            },
+            {
+              "part": "value",
+              "name": "T02-COUNT-OF-DOCUMENTS",
+              "pic": "S9(18) COMP-3",
+              "offset": 758,
+              "bytes": 10
+            }
+          ]
         },
         {
           "name": "TotalDepositBalanceUsd",
@@ -267,7 +960,27 @@
           "kind": "float",
           "type": "aggregation",
           "datatype": "number",
-          "width": 1
+          "cobolName": "T02-TOTAL-DEPOSIT-BALANCE",
+          "nullable": true,
+          "width": null,
+          "digits": 18,
+          "scale": 12,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T02-TOTAL-DEPOSIT-BALANCE-NI",
+              "pic": "X",
+              "offset": 768,
+              "bytes": 1
+            },
+            {
+              "part": "value",
+              "name": "T02-TOTAL-DEPOSIT-BALANCE",
+              "pic": "S9(18)V9(12) COMP-3",
+              "offset": 769,
+              "bytes": 16
+            }
+          ]
         },
         {
           "name": "TotalLoanPrincipalUsd",
@@ -275,7 +988,27 @@
           "kind": "float",
           "type": "aggregation",
           "datatype": "number",
-          "width": 1
+          "cobolName": "T02-TOTAL-LOAN-PRINCIPAL-U",
+          "nullable": true,
+          "width": null,
+          "digits": 18,
+          "scale": 12,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T02-TOTAL-LOAN-PRINCIPAL-U-NI",
+              "pic": "X",
+              "offset": 785,
+              "bytes": 1
+            },
+            {
+              "part": "value",
+              "name": "T02-TOTAL-LOAN-PRINCIPAL-U",
+              "pic": "S9(18)V9(12) COMP-3",
+              "offset": 786,
+              "bytes": 16
+            }
+          ]
         },
         {
           "name": "CountOfClassifiedLoans",
@@ -283,7 +1016,27 @@
           "kind": "int",
           "type": "aggregation",
           "datatype": "integer",
-          "width": 1
+          "cobolName": "T02-COUNT-OF-CLASSIFIED-LO",
+          "nullable": true,
+          "width": null,
+          "digits": 18,
+          "scale": 0,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T02-COUNT-OF-CLASSIFIED-LO-NI",
+              "pic": "X",
+              "offset": 802,
+              "bytes": 1
+            },
+            {
+              "part": "value",
+              "name": "T02-COUNT-OF-CLASSIFIED-LO",
+              "pic": "S9(18) COMP-3",
+              "offset": 803,
+              "bytes": 10
+            }
+          ]
         },
         {
           "name": "HasClassifiedLoan",
@@ -291,7 +1044,27 @@
           "kind": "bool",
           "type": "calculated",
           "datatype": "boolean",
-          "width": 1
+          "cobolName": "T02-HAS-CLASSIFIED-LOAN",
+          "nullable": true,
+          "width": null,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T02-HAS-CLASSIFIED-LOAN-NI",
+              "pic": "X",
+              "offset": 813,
+              "bytes": 1
+            },
+            {
+              "part": "value",
+              "name": "T02-HAS-CLASSIFIED-LOAN",
+              "pic": "X",
+              "offset": 814,
+              "bytes": 1
+            }
+          ]
         },
         {
           "name": "BeneficialOwnersAtCddThreshold",
@@ -299,7 +1072,27 @@
           "kind": "int",
           "type": "aggregation",
           "datatype": "integer",
-          "width": 1
+          "cobolName": "T02-BENEFICIAL-OWNERS-AT-C",
+          "nullable": true,
+          "width": null,
+          "digits": 18,
+          "scale": 0,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T02-BENEFICIAL-OWNERS-AT-C-NI",
+              "pic": "X",
+              "offset": 815,
+              "bytes": 1
+            },
+            {
+              "part": "value",
+              "name": "T02-BENEFICIAL-OWNERS-AT-C",
+              "pic": "S9(18) COMP-3",
+              "offset": 816,
+              "bytes": 10
+            }
+          ]
         },
         {
           "name": "MeetsCddRule",
@@ -307,7 +1100,27 @@
           "kind": "bool",
           "type": "calculated",
           "datatype": "boolean",
-          "width": 1
+          "cobolName": "T02-MEETS-CDD-RULE",
+          "nullable": true,
+          "width": null,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T02-MEETS-CDD-RULE-NI",
+              "pic": "X",
+              "offset": 826,
+              "bytes": 1
+            },
+            {
+              "part": "value",
+              "name": "T02-MEETS-CDD-RULE",
+              "pic": "X",
+              "offset": 827,
+              "bytes": 1
+            }
+          ]
         },
         {
           "name": "PortfolioPriority",
@@ -315,7 +1128,34 @@
           "kind": "string",
           "type": "calculated",
           "datatype": "string",
-          "width": 2684
+          "cobolName": "T02-PORTFOLIO-PRIORITY",
+          "nullable": true,
+          "width": 16,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T02-PORTFOLIO-PRIORITY-NI",
+              "pic": "X",
+              "offset": 828,
+              "bytes": 1
+            },
+            {
+              "part": "len",
+              "name": "T02-PORTFOLIO-PRIORITY-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 829,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T02-PORTFOLIO-PRIORITY",
+              "pic": "X(16)",
+              "offset": 831,
+              "bytes": 16
+            }
+          ]
         }
       ]
     },
@@ -323,6 +1163,12 @@
       "number": 3,
       "name": "BeneficialOwners",
       "snake": "beneficial_owners",
+      "copybook": "BENEFICI",
+      "prefix": "T03",
+      "ddIn": "ERBI03",
+      "ddOut": "ERBO03",
+      "recordLength": 544,
+      "capacity": 200,
       "fields": [
         {
           "name": "Name",
@@ -330,7 +1176,34 @@
           "kind": "string",
           "type": "calculated",
           "datatype": "string",
-          "width": 2684
+          "cobolName": "T03-NAME",
+          "nullable": true,
+          "width": 129,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T03-NAME-NI",
+              "pic": "X",
+              "offset": 0,
+              "bytes": 1
+            },
+            {
+              "part": "len",
+              "name": "T03-NAME-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 1,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T03-NAME",
+              "pic": "X(129)",
+              "offset": 3,
+              "bytes": 129
+            }
+          ]
         },
         {
           "name": "Business",
@@ -338,7 +1211,27 @@
           "kind": "string",
           "type": "relationship",
           "datatype": "string",
-          "width": 64
+          "cobolName": "T03-BUSINESS",
+          "nullable": false,
+          "width": 64,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "len",
+              "name": "T03-BUSINESS-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 132,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T03-BUSINESS",
+              "pic": "X(64)",
+              "offset": 134,
+              "bytes": 64
+            }
+          ]
         },
         {
           "name": "FullName",
@@ -346,7 +1239,27 @@
           "kind": "string",
           "type": "raw",
           "datatype": "string",
-          "width": 64
+          "cobolName": "T03-FULL-NAME",
+          "nullable": false,
+          "width": 64,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "len",
+              "name": "T03-FULL-NAME-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 198,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T03-FULL-NAME",
+              "pic": "X(64)",
+              "offset": 200,
+              "bytes": 64
+            }
+          ]
         },
         {
           "name": "DateOfBirthEncrypted",
@@ -354,7 +1267,27 @@
           "kind": "string",
           "type": "raw",
           "datatype": "string",
-          "width": 64
+          "cobolName": "T03-DATE-OF-BIRTH-ENCRYPTE",
+          "nullable": false,
+          "width": 64,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "len",
+              "name": "T03-DATE-OF-BIRTH-ENCRYPTE-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 264,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T03-DATE-OF-BIRTH-ENCRYPTE",
+              "pic": "X(64)",
+              "offset": 266,
+              "bytes": 64
+            }
+          ]
         },
         {
           "name": "SsnEncrypted",
@@ -362,7 +1295,27 @@
           "kind": "string",
           "type": "raw",
           "datatype": "string",
-          "width": 64
+          "cobolName": "T03-SSN-ENCRYPTED",
+          "nullable": false,
+          "width": 64,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "len",
+              "name": "T03-SSN-ENCRYPTED-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 330,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T03-SSN-ENCRYPTED",
+              "pic": "X(64)",
+              "offset": 332,
+              "bytes": 64
+            }
+          ]
         },
         {
           "name": "AddressEncrypted",
@@ -370,7 +1323,27 @@
           "kind": "string",
           "type": "raw",
           "datatype": "string",
-          "width": 68
+          "cobolName": "T03-ADDRESS-ENCRYPTED",
+          "nullable": false,
+          "width": 68,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "len",
+              "name": "T03-ADDRESS-ENCRYPTED-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 396,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T03-ADDRESS-ENCRYPTED",
+              "pic": "X(68)",
+              "offset": 398,
+              "bytes": 68
+            }
+          ]
         },
         {
           "name": "OwnershipPercentage",
@@ -378,7 +1351,20 @@
           "kind": "float",
           "type": "raw",
           "datatype": "number",
-          "width": 1
+          "cobolName": "T03-OWNERSHIP-PERCENTAGE",
+          "nullable": false,
+          "width": null,
+          "digits": 9,
+          "scale": 2,
+          "storage": [
+            {
+              "part": "value",
+              "name": "T03-OWNERSHIP-PERCENTAGE",
+              "pic": "S9(9)V9(2) COMP-3",
+              "offset": 466,
+              "bytes": 6
+            }
+          ]
         },
         {
           "name": "IsControlPerson",
@@ -386,7 +1372,20 @@
           "kind": "bool",
           "type": "raw",
           "datatype": "boolean",
-          "width": 1
+          "cobolName": "T03-IS-CONTROL-PERSON",
+          "nullable": false,
+          "width": null,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "value",
+              "name": "T03-IS-CONTROL-PERSON",
+              "pic": "X",
+              "offset": 472,
+              "bytes": 1
+            }
+          ]
         },
         {
           "name": "BusinessLabel",
@@ -394,7 +1393,34 @@
           "kind": "string",
           "type": "lookup",
           "datatype": "string",
-          "width": 2684
+          "cobolName": "T03-BUSINESS-LABEL",
+          "nullable": true,
+          "width": 64,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T03-BUSINESS-LABEL-NI",
+              "pic": "X",
+              "offset": 473,
+              "bytes": 1
+            },
+            {
+              "part": "len",
+              "name": "T03-BUSINESS-LABEL-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 474,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T03-BUSINESS-LABEL",
+              "pic": "X(64)",
+              "offset": 476,
+              "bytes": 64
+            }
+          ]
         },
         {
           "name": "Meets25PercentThreshold",
@@ -402,7 +1428,27 @@
           "kind": "bool",
           "type": "calculated",
           "datatype": "boolean",
-          "width": 1
+          "cobolName": "T03-MEETS25-PERCENT-THRESH",
+          "nullable": true,
+          "width": null,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T03-MEETS25-PERCENT-THRESH-NI",
+              "pic": "X",
+              "offset": 540,
+              "bytes": 1
+            },
+            {
+              "part": "value",
+              "name": "T03-MEETS25-PERCENT-THRESH",
+              "pic": "X",
+              "offset": 541,
+              "bytes": 1
+            }
+          ]
         },
         {
           "name": "MeetsCddThreshold",
@@ -410,7 +1456,27 @@
           "kind": "bool",
           "type": "calculated",
           "datatype": "boolean",
-          "width": 1
+          "cobolName": "T03-MEETS-CDD-THRESHOLD",
+          "nullable": true,
+          "width": null,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T03-MEETS-CDD-THRESHOLD-NI",
+              "pic": "X",
+              "offset": 542,
+              "bytes": 1
+            },
+            {
+              "part": "value",
+              "name": "T03-MEETS-CDD-THRESHOLD",
+              "pic": "X",
+              "offset": 543,
+              "bytes": 1
+            }
+          ]
         }
       ]
     },
@@ -418,6 +1484,12 @@
       "number": 4,
       "name": "Contacts",
       "snake": "contacts",
+      "copybook": "CONTACTS",
+      "prefix": "T04",
+      "ddIn": "ERBI04",
+      "ddOut": "ERBO04",
+      "recordLength": 667,
+      "capacity": 200,
       "fields": [
         {
           "name": "Name",
@@ -425,7 +1497,34 @@
           "kind": "string",
           "type": "calculated",
           "datatype": "string",
-          "width": 2684
+          "cobolName": "T04-NAME",
+          "nullable": true,
+          "width": 194,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T04-NAME-NI",
+              "pic": "X",
+              "offset": 0,
+              "bytes": 1
+            },
+            {
+              "part": "len",
+              "name": "T04-NAME-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 1,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T04-NAME",
+              "pic": "X(194)",
+              "offset": 3,
+              "bytes": 194
+            }
+          ]
         },
         {
           "name": "Business",
@@ -433,7 +1532,27 @@
           "kind": "string",
           "type": "relationship",
           "datatype": "string",
-          "width": 64
+          "cobolName": "T04-BUSINESS",
+          "nullable": false,
+          "width": 64,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "len",
+              "name": "T04-BUSINESS-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 197,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T04-BUSINESS",
+              "pic": "X(64)",
+              "offset": 199,
+              "bytes": 64
+            }
+          ]
         },
         {
           "name": "FullName",
@@ -441,7 +1560,27 @@
           "kind": "string",
           "type": "raw",
           "datatype": "string",
-          "width": 64
+          "cobolName": "T04-FULL-NAME",
+          "nullable": false,
+          "width": 64,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "len",
+              "name": "T04-FULL-NAME-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 263,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T04-FULL-NAME",
+              "pic": "X(64)",
+              "offset": 265,
+              "bytes": 64
+            }
+          ]
         },
         {
           "name": "Title",
@@ -449,7 +1588,27 @@
           "kind": "string",
           "type": "raw",
           "datatype": "string",
-          "width": 64
+          "cobolName": "T04-TITLE",
+          "nullable": false,
+          "width": 64,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "len",
+              "name": "T04-TITLE-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 329,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T04-TITLE",
+              "pic": "X(64)",
+              "offset": 331,
+              "bytes": 64
+            }
+          ]
         },
         {
           "name": "Email",
@@ -457,7 +1616,34 @@
           "kind": "string",
           "type": "raw",
           "datatype": "string",
-          "width": 64
+          "cobolName": "T04-EMAIL",
+          "nullable": true,
+          "width": 64,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T04-EMAIL-NI",
+              "pic": "X",
+              "offset": 395,
+              "bytes": 1
+            },
+            {
+              "part": "len",
+              "name": "T04-EMAIL-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 396,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T04-EMAIL",
+              "pic": "X(64)",
+              "offset": 398,
+              "bytes": 64
+            }
+          ]
         },
         {
           "name": "Phone",
@@ -465,7 +1651,34 @@
           "kind": "string",
           "type": "raw",
           "datatype": "string",
-          "width": 64
+          "cobolName": "T04-PHONE",
+          "nullable": true,
+          "width": 64,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T04-PHONE-NI",
+              "pic": "X",
+              "offset": 462,
+              "bytes": 1
+            },
+            {
+              "part": "len",
+              "name": "T04-PHONE-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 463,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T04-PHONE",
+              "pic": "X(64)",
+              "offset": 465,
+              "bytes": 64
+            }
+          ]
         },
         {
           "name": "ContactType",
@@ -473,7 +1686,27 @@
           "kind": "string",
           "type": "raw",
           "datatype": "string",
-          "width": 64
+          "cobolName": "T04-CONTACT-TYPE",
+          "nullable": false,
+          "width": 64,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "len",
+              "name": "T04-CONTACT-TYPE-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 529,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T04-CONTACT-TYPE",
+              "pic": "X(64)",
+              "offset": 531,
+              "bytes": 64
+            }
+          ]
         },
         {
           "name": "IsAuthorizedSigner",
@@ -481,7 +1714,20 @@
           "kind": "bool",
           "type": "raw",
           "datatype": "boolean",
-          "width": 1
+          "cobolName": "T04-IS-AUTHORIZED-SIGNER",
+          "nullable": false,
+          "width": null,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "value",
+              "name": "T04-IS-AUTHORIZED-SIGNER",
+              "pic": "X",
+              "offset": 595,
+              "bytes": 1
+            }
+          ]
         },
         {
           "name": "BusinessLabel",
@@ -489,7 +1735,34 @@
           "kind": "string",
           "type": "lookup",
           "datatype": "string",
-          "width": 2684
+          "cobolName": "T04-BUSINESS-LABEL",
+          "nullable": true,
+          "width": 64,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T04-BUSINESS-LABEL-NI",
+              "pic": "X",
+              "offset": 596,
+              "bytes": 1
+            },
+            {
+              "part": "len",
+              "name": "T04-BUSINESS-LABEL-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 597,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T04-BUSINESS-LABEL",
+              "pic": "X(64)",
+              "offset": 599,
+              "bytes": 64
+            }
+          ]
         },
         {
           "name": "IsOfficer",
@@ -497,7 +1770,27 @@
           "kind": "bool",
           "type": "calculated",
           "datatype": "boolean",
-          "width": 1
+          "cobolName": "T04-IS-OFFICER",
+          "nullable": true,
+          "width": null,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T04-IS-OFFICER-NI",
+              "pic": "X",
+              "offset": 663,
+              "bytes": 1
+            },
+            {
+              "part": "value",
+              "name": "T04-IS-OFFICER",
+              "pic": "X",
+              "offset": 664,
+              "bytes": 1
+            }
+          ]
         },
         {
           "name": "IsApClerk",
@@ -505,7 +1798,27 @@
           "kind": "bool",
           "type": "calculated",
           "datatype": "boolean",
-          "width": 1
+          "cobolName": "T04-IS-AP-CLERK",
+          "nullable": true,
+          "width": null,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T04-IS-AP-CLERK-NI",
+              "pic": "X",
+              "offset": 665,
+              "bytes": 1
+            },
+            {
+              "part": "value",
+              "name": "T04-IS-AP-CLERK",
+              "pic": "X",
+              "offset": 666,
+              "bytes": 1
+            }
+          ]
         }
       ]
     },
@@ -513,6 +1826,12 @@
       "number": 5,
       "name": "Accounts",
       "snake": "accounts",
+      "copybook": "ACCOUNTS",
+      "prefix": "T05",
+      "ddIn": "ERBI05",
+      "ddOut": "ERBO05",
+      "recordLength": 551,
+      "capacity": 200,
       "fields": [
         {
           "name": "Name",
@@ -520,7 +1839,34 @@
           "kind": "string",
           "type": "calculated",
           "datatype": "string",
-          "width": 2684
+          "cobolName": "T05-NAME",
+          "nullable": true,
+          "width": 194,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T05-NAME-NI",
+              "pic": "X",
+              "offset": 0,
+              "bytes": 1
+            },
+            {
+              "part": "len",
+              "name": "T05-NAME-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 1,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T05-NAME",
+              "pic": "X(194)",
+              "offset": 3,
+              "bytes": 194
+            }
+          ]
         },
         {
           "name": "Business",
@@ -528,7 +1874,27 @@
           "kind": "string",
           "type": "relationship",
           "datatype": "string",
-          "width": 64
+          "cobolName": "T05-BUSINESS",
+          "nullable": false,
+          "width": 64,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "len",
+              "name": "T05-BUSINESS-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 197,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T05-BUSINESS",
+              "pic": "X(64)",
+              "offset": 199,
+              "bytes": 64
+            }
+          ]
         },
         {
           "name": "AccountType",
@@ -536,7 +1902,27 @@
           "kind": "string",
           "type": "raw",
           "datatype": "string",
-          "width": 64
+          "cobolName": "T05-ACCOUNT-TYPE",
+          "nullable": false,
+          "width": 64,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "len",
+              "name": "T05-ACCOUNT-TYPE-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 263,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T05-ACCOUNT-TYPE",
+              "pic": "X(64)",
+              "offset": 265,
+              "bytes": 64
+            }
+          ]
         },
         {
           "name": "AccountNumberLast4",
@@ -544,7 +1930,27 @@
           "kind": "string",
           "type": "raw",
           "datatype": "string",
-          "width": 64
+          "cobolName": "T05-ACCOUNT-NUMBER-LAST4",
+          "nullable": false,
+          "width": 64,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "len",
+              "name": "T05-ACCOUNT-NUMBER-LAST4-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 329,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T05-ACCOUNT-NUMBER-LAST4",
+              "pic": "X(64)",
+              "offset": 331,
+              "bytes": 64
+            }
+          ]
         },
         {
           "name": "CurrentBalanceUsd",
@@ -552,7 +1958,20 @@
           "kind": "float",
           "type": "raw",
           "datatype": "number",
-          "width": 1
+          "cobolName": "T05-CURRENT-BALANCE-USD",
+          "nullable": false,
+          "width": null,
+          "digits": 10,
+          "scale": 2,
+          "storage": [
+            {
+              "part": "value",
+              "name": "T05-CURRENT-BALANCE-USD",
+              "pic": "S9(10)V9(2) COMP-3",
+              "offset": 395,
+              "bytes": 7
+            }
+          ]
         },
         {
           "name": "HasAch",
@@ -560,7 +1979,20 @@
           "kind": "bool",
           "type": "raw",
           "datatype": "boolean",
-          "width": 1
+          "cobolName": "T05-HAS-ACH",
+          "nullable": false,
+          "width": null,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "value",
+              "name": "T05-HAS-ACH",
+              "pic": "X",
+              "offset": 402,
+              "bytes": 1
+            }
+          ]
         },
         {
           "name": "HasWire",
@@ -568,7 +2000,20 @@
           "kind": "bool",
           "type": "raw",
           "datatype": "boolean",
-          "width": 1
+          "cobolName": "T05-HAS-WIRE",
+          "nullable": false,
+          "width": null,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "value",
+              "name": "T05-HAS-WIRE",
+              "pic": "X",
+              "offset": 403,
+              "bytes": 1
+            }
+          ]
         },
         {
           "name": "HasCard",
@@ -576,7 +2021,20 @@
           "kind": "bool",
           "type": "raw",
           "datatype": "boolean",
-          "width": 1
+          "cobolName": "T05-HAS-CARD",
+          "nullable": false,
+          "width": null,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "value",
+              "name": "T05-HAS-CARD",
+              "pic": "X",
+              "offset": 404,
+              "bytes": 1
+            }
+          ]
         },
         {
           "name": "OpenedAt",
@@ -584,7 +2042,27 @@
           "kind": "string",
           "type": "raw",
           "datatype": "datetime",
-          "width": 64
+          "cobolName": "T05-OPENED-AT",
+          "nullable": false,
+          "width": 64,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "len",
+              "name": "T05-OPENED-AT-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 405,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T05-OPENED-AT",
+              "pic": "X(64)",
+              "offset": 407,
+              "bytes": 64
+            }
+          ]
         },
         {
           "name": "BusinessLabel",
@@ -592,7 +2070,34 @@
           "kind": "string",
           "type": "lookup",
           "datatype": "string",
-          "width": 2684
+          "cobolName": "T05-BUSINESS-LABEL",
+          "nullable": true,
+          "width": 64,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T05-BUSINESS-LABEL-NI",
+              "pic": "X",
+              "offset": 471,
+              "bytes": 1
+            },
+            {
+              "part": "len",
+              "name": "T05-BUSINESS-LABEL-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 472,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T05-BUSINESS-LABEL",
+              "pic": "X(64)",
+              "offset": 474,
+              "bytes": 64
+            }
+          ]
         },
         {
           "name": "TreasuryServiceCount",
@@ -600,7 +2105,27 @@
           "kind": "int",
           "type": "calculated",
           "datatype": "integer",
-          "width": 1
+          "cobolName": "T05-TREASURY-SERVICE-COUNT",
+          "nullable": true,
+          "width": null,
+          "digits": 18,
+          "scale": 0,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T05-TREASURY-SERVICE-COUNT-NI",
+              "pic": "X",
+              "offset": 538,
+              "bytes": 1
+            },
+            {
+              "part": "value",
+              "name": "T05-TREASURY-SERVICE-COUNT",
+              "pic": "S9(18) COMP-3",
+              "offset": 539,
+              "bytes": 10
+            }
+          ]
         },
         {
           "name": "HasAnyTreasuryService",
@@ -608,7 +2133,27 @@
           "kind": "bool",
           "type": "calculated",
           "datatype": "boolean",
-          "width": 1
+          "cobolName": "T05-HAS-ANY-TREASURY-SERVI",
+          "nullable": true,
+          "width": null,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T05-HAS-ANY-TREASURY-SERVI-NI",
+              "pic": "X",
+              "offset": 549,
+              "bytes": 1
+            },
+            {
+              "part": "value",
+              "name": "T05-HAS-ANY-TREASURY-SERVI",
+              "pic": "X",
+              "offset": 550,
+              "bytes": 1
+            }
+          ]
         }
       ]
     },
@@ -616,6 +2161,12 @@
       "number": 6,
       "name": "Loans",
       "snake": "loans",
+      "copybook": "LOANS",
+      "prefix": "T06",
+      "ddIn": "ERBI06",
+      "ddOut": "ERBO06",
+      "recordLength": 979,
+      "capacity": 200,
       "fields": [
         {
           "name": "Name",
@@ -623,7 +2174,34 @@
           "kind": "string",
           "type": "calculated",
           "datatype": "string",
-          "width": 2684
+          "cobolName": "T06-NAME",
+          "nullable": true,
+          "width": 64,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T06-NAME-NI",
+              "pic": "X",
+              "offset": 0,
+              "bytes": 1
+            },
+            {
+              "part": "len",
+              "name": "T06-NAME-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 1,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T06-NAME",
+              "pic": "X(64)",
+              "offset": 3,
+              "bytes": 64
+            }
+          ]
         },
         {
           "name": "LoanNumber",
@@ -631,7 +2209,27 @@
           "kind": "string",
           "type": "raw",
           "datatype": "string",
-          "width": 64
+          "cobolName": "T06-LOAN-NUMBER",
+          "nullable": false,
+          "width": 64,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "len",
+              "name": "T06-LOAN-NUMBER-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 67,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T06-LOAN-NUMBER",
+              "pic": "X(64)",
+              "offset": 69,
+              "bytes": 64
+            }
+          ]
         },
         {
           "name": "Business",
@@ -639,7 +2237,27 @@
           "kind": "string",
           "type": "relationship",
           "datatype": "string",
-          "width": 64
+          "cobolName": "T06-BUSINESS",
+          "nullable": false,
+          "width": 64,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "len",
+              "name": "T06-BUSINESS-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 133,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T06-BUSINESS",
+              "pic": "X(64)",
+              "offset": 135,
+              "bytes": 64
+            }
+          ]
         },
         {
           "name": "OriginatingRm",
@@ -647,7 +2265,27 @@
           "kind": "string",
           "type": "relationship",
           "datatype": "string",
-          "width": 64
+          "cobolName": "T06-ORIGINATING-RM",
+          "nullable": false,
+          "width": 64,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "len",
+              "name": "T06-ORIGINATING-RM-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 199,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T06-ORIGINATING-RM",
+              "pic": "X(64)",
+              "offset": 201,
+              "bytes": 64
+            }
+          ]
         },
         {
           "name": "Underwriter",
@@ -655,7 +2293,27 @@
           "kind": "string",
           "type": "relationship",
           "datatype": "string",
-          "width": 64
+          "cobolName": "T06-UNDERWRITER",
+          "nullable": false,
+          "width": 64,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "len",
+              "name": "T06-UNDERWRITER-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 265,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T06-UNDERWRITER",
+              "pic": "X(64)",
+              "offset": 267,
+              "bytes": 64
+            }
+          ]
         },
         {
           "name": "LoanPurpose",
@@ -663,7 +2321,27 @@
           "kind": "string",
           "type": "raw",
           "datatype": "string",
-          "width": 64
+          "cobolName": "T06-LOAN-PURPOSE",
+          "nullable": false,
+          "width": 64,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "len",
+              "name": "T06-LOAN-PURPOSE-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 331,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T06-LOAN-PURPOSE",
+              "pic": "X(64)",
+              "offset": 333,
+              "bytes": 64
+            }
+          ]
         },
         {
           "name": "PrincipalUsd",
@@ -671,7 +2349,20 @@
           "kind": "float",
           "type": "raw",
           "datatype": "number",
-          "width": 1
+          "cobolName": "T06-PRINCIPAL-USD",
+          "nullable": false,
+          "width": null,
+          "digits": 11,
+          "scale": 2,
+          "storage": [
+            {
+              "part": "value",
+              "name": "T06-PRINCIPAL-USD",
+              "pic": "S9(11)V9(2) COMP-3",
+              "offset": 397,
+              "bytes": 7
+            }
+          ]
         },
         {
           "name": "RatePct",
@@ -679,7 +2370,20 @@
           "kind": "float",
           "type": "raw",
           "datatype": "number",
-          "width": 1
+          "cobolName": "T06-RATE-PCT",
+          "nullable": false,
+          "width": null,
+          "digits": 9,
+          "scale": 2,
+          "storage": [
+            {
+              "part": "value",
+              "name": "T06-RATE-PCT",
+              "pic": "S9(9)V9(2) COMP-3",
+              "offset": 404,
+              "bytes": 6
+            }
+          ]
         },
         {
           "name": "TermMonths",
@@ -687,7 +2391,20 @@
           "kind": "int",
           "type": "raw",
           "datatype": "integer",
-          "width": 1
+          "cobolName": "T06-TERM-MONTHS",
+          "nullable": false,
+          "width": null,
+          "digits": 9,
+          "scale": 0,
+          "storage": [
+            {
+              "part": "value",
+              "name": "T06-TERM-MONTHS",
+              "pic": "S9(9) COMP-3",
+              "offset": 410,
+              "bytes": 5
+            }
+          ]
         },
         {
           "name": "UnderwritingStage",
@@ -695,7 +2412,27 @@
           "kind": "string",
           "type": "raw",
           "datatype": "string",
-          "width": 64
+          "cobolName": "T06-UNDERWRITING-STAGE",
+          "nullable": false,
+          "width": 64,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "len",
+              "name": "T06-UNDERWRITING-STAGE-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 415,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T06-UNDERWRITING-STAGE",
+              "pic": "X(64)",
+              "offset": 417,
+              "bytes": 64
+            }
+          ]
         },
         {
           "name": "RiskRating",
@@ -703,7 +2440,20 @@
           "kind": "int",
           "type": "raw",
           "datatype": "integer",
-          "width": 1
+          "cobolName": "T06-RISK-RATING",
+          "nullable": false,
+          "width": null,
+          "digits": 9,
+          "scale": 0,
+          "storage": [
+            {
+              "part": "value",
+              "name": "T06-RISK-RATING",
+              "pic": "S9(9) COMP-3",
+              "offset": 481,
+              "bytes": 5
+            }
+          ]
         },
         {
           "name": "RiskRatingLabel",
@@ -711,7 +2461,27 @@
           "kind": "string",
           "type": "raw",
           "datatype": "string",
-          "width": 64
+          "cobolName": "T06-RISK-RATING-LABEL",
+          "nullable": false,
+          "width": 64,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "len",
+              "name": "T06-RISK-RATING-LABEL-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 486,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T06-RISK-RATING-LABEL",
+              "pic": "X(64)",
+              "offset": 488,
+              "bytes": 64
+            }
+          ]
         },
         {
           "name": "Dscr",
@@ -719,7 +2489,27 @@
           "kind": "float",
           "type": "raw",
           "datatype": "number",
-          "width": 1
+          "cobolName": "T06-DSCR",
+          "nullable": true,
+          "width": null,
+          "digits": 9,
+          "scale": 2,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T06-DSCR-NI",
+              "pic": "X",
+              "offset": 552,
+              "bytes": 1
+            },
+            {
+              "part": "value",
+              "name": "T06-DSCR",
+              "pic": "S9(9)V9(2) COMP-3",
+              "offset": 553,
+              "bytes": 6
+            }
+          ]
         },
         {
           "name": "Ltv",
@@ -727,7 +2517,27 @@
           "kind": "float",
           "type": "raw",
           "datatype": "number",
-          "width": 1
+          "cobolName": "T06-LTV",
+          "nullable": true,
+          "width": null,
+          "digits": 9,
+          "scale": 2,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T06-LTV-NI",
+              "pic": "X",
+              "offset": 559,
+              "bytes": 1
+            },
+            {
+              "part": "value",
+              "name": "T06-LTV",
+              "pic": "S9(9)V9(2) COMP-3",
+              "offset": 560,
+              "bytes": 6
+            }
+          ]
         },
         {
           "name": "GlobalCashFlowUsd",
@@ -735,7 +2545,27 @@
           "kind": "float",
           "type": "raw",
           "datatype": "number",
-          "width": 1
+          "cobolName": "T06-GLOBAL-CASH-FLOW-USD",
+          "nullable": true,
+          "width": null,
+          "digits": 11,
+          "scale": 2,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T06-GLOBAL-CASH-FLOW-USD-NI",
+              "pic": "X",
+              "offset": 566,
+              "bytes": 1
+            },
+            {
+              "part": "value",
+              "name": "T06-GLOBAL-CASH-FLOW-USD",
+              "pic": "S9(11)V9(2) COMP-3",
+              "offset": 567,
+              "bytes": 7
+            }
+          ]
         },
         {
           "name": "OriginatedAt",
@@ -743,7 +2573,27 @@
           "kind": "string",
           "type": "raw",
           "datatype": "datetime",
-          "width": 64
+          "cobolName": "T06-ORIGINATED-AT",
+          "nullable": false,
+          "width": 64,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "len",
+              "name": "T06-ORIGINATED-AT-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 574,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T06-ORIGINATED-AT",
+              "pic": "X(64)",
+              "offset": 576,
+              "bytes": 64
+            }
+          ]
         },
         {
           "name": "FundedAt",
@@ -751,7 +2601,34 @@
           "kind": "string",
           "type": "raw",
           "datatype": "datetime",
-          "width": 64
+          "cobolName": "T06-FUNDED-AT",
+          "nullable": true,
+          "width": 64,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T06-FUNDED-AT-NI",
+              "pic": "X",
+              "offset": 640,
+              "bytes": 1
+            },
+            {
+              "part": "len",
+              "name": "T06-FUNDED-AT-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 641,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T06-FUNDED-AT",
+              "pic": "X(64)",
+              "offset": 643,
+              "bytes": 64
+            }
+          ]
         },
         {
           "name": "BusinessLabel",
@@ -759,7 +2636,34 @@
           "kind": "string",
           "type": "lookup",
           "datatype": "string",
-          "width": 2684
+          "cobolName": "T06-BUSINESS-LABEL",
+          "nullable": true,
+          "width": 64,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T06-BUSINESS-LABEL-NI",
+              "pic": "X",
+              "offset": 707,
+              "bytes": 1
+            },
+            {
+              "part": "len",
+              "name": "T06-BUSINESS-LABEL-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 708,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T06-BUSINESS-LABEL",
+              "pic": "X(64)",
+              "offset": 710,
+              "bytes": 64
+            }
+          ]
         },
         {
           "name": "BusinessNaicsCode",
@@ -767,7 +2671,34 @@
           "kind": "string",
           "type": "lookup",
           "datatype": "string",
-          "width": 2684
+          "cobolName": "T06-BUSINESS-NAICS-CODE",
+          "nullable": true,
+          "width": 64,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T06-BUSINESS-NAICS-CODE-NI",
+              "pic": "X",
+              "offset": 774,
+              "bytes": 1
+            },
+            {
+              "part": "len",
+              "name": "T06-BUSINESS-NAICS-CODE-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 775,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T06-BUSINESS-NAICS-CODE",
+              "pic": "X(64)",
+              "offset": 777,
+              "bytes": 64
+            }
+          ]
         },
         {
           "name": "OriginatingRmLabel",
@@ -775,7 +2706,34 @@
           "kind": "string",
           "type": "lookup",
           "datatype": "string",
-          "width": 2684
+          "cobolName": "T06-ORIGINATING-RM-LABEL",
+          "nullable": true,
+          "width": 64,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T06-ORIGINATING-RM-LABEL-NI",
+              "pic": "X",
+              "offset": 841,
+              "bytes": 1
+            },
+            {
+              "part": "len",
+              "name": "T06-ORIGINATING-RM-LABEL-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 842,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T06-ORIGINATING-RM-LABEL",
+              "pic": "X(64)",
+              "offset": 844,
+              "bytes": 64
+            }
+          ]
         },
         {
           "name": "UnderwriterIsAdmin",
@@ -783,7 +2741,27 @@
           "kind": "bool",
           "type": "lookup",
           "datatype": "boolean",
-          "width": 1
+          "cobolName": "T06-UNDERWRITER-IS-ADMIN",
+          "nullable": true,
+          "width": null,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T06-UNDERWRITER-IS-ADMIN-NI",
+              "pic": "X",
+              "offset": 908,
+              "bytes": 1
+            },
+            {
+              "part": "value",
+              "name": "T06-UNDERWRITER-IS-ADMIN",
+              "pic": "X",
+              "offset": 909,
+              "bytes": 1
+            }
+          ]
         },
         {
           "name": "IsFunded",
@@ -791,7 +2769,27 @@
           "kind": "bool",
           "type": "calculated",
           "datatype": "boolean",
-          "width": 1
+          "cobolName": "T06-IS-FUNDED",
+          "nullable": true,
+          "width": null,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T06-IS-FUNDED-NI",
+              "pic": "X",
+              "offset": 910,
+              "bytes": 1
+            },
+            {
+              "part": "value",
+              "name": "T06-IS-FUNDED",
+              "pic": "X",
+              "offset": 911,
+              "bytes": 1
+            }
+          ]
         },
         {
           "name": "IsClassifiedAsset",
@@ -799,7 +2797,27 @@
           "kind": "bool",
           "type": "calculated",
           "datatype": "boolean",
-          "width": 1
+          "cobolName": "T06-IS-CLASSIFIED-ASSET",
+          "nullable": true,
+          "width": null,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T06-IS-CLASSIFIED-ASSET-NI",
+              "pic": "X",
+              "offset": 912,
+              "bytes": 1
+            },
+            {
+              "part": "value",
+              "name": "T06-IS-CLASSIFIED-ASSET",
+              "pic": "X",
+              "offset": 913,
+              "bytes": 1
+            }
+          ]
         },
         {
           "name": "DscrInBand",
@@ -807,7 +2825,27 @@
           "kind": "bool",
           "type": "calculated",
           "datatype": "boolean",
-          "width": 1
+          "cobolName": "T06-DSCR-IN-BAND",
+          "nullable": true,
+          "width": null,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T06-DSCR-IN-BAND-NI",
+              "pic": "X",
+              "offset": 914,
+              "bytes": 1
+            },
+            {
+              "part": "value",
+              "name": "T06-DSCR-IN-BAND",
+              "pic": "X",
+              "offset": 915,
+              "bytes": 1
+            }
+          ]
         },
         {
           "name": "LtvInBand",
@@ -815,7 +2853,27 @@
           "kind": "bool",
           "type": "calculated",
           "datatype": "boolean",
-          "width": 1
+          "cobolName": "T06-LTV-IN-BAND",
+          "nullable": true,
+          "width": null,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T06-LTV-IN-BAND-NI",
+              "pic": "X",
+              "offset": 916,
+              "bytes": 1
+            },
+            {
+              "part": "value",
+              "name": "T06-LTV-IN-BAND",
+              "pic": "X",
+              "offset": 917,
+              "bytes": 1
+            }
+          ]
         },
         {
           "name": "SegregationOfDutiesOk",
@@ -823,7 +2881,27 @@
           "kind": "bool",
           "type": "calculated",
           "datatype": "boolean",
-          "width": 1
+          "cobolName": "T06-SEGREGATION-OF-DUTIES",
+          "nullable": true,
+          "width": null,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T06-SEGREGATION-OF-DUTIES-NI",
+              "pic": "X",
+              "offset": 918,
+              "bytes": 1
+            },
+            {
+              "part": "value",
+              "name": "T06-SEGREGATION-OF-DUTIES",
+              "pic": "X",
+              "offset": 919,
+              "bytes": 1
+            }
+          ]
         },
         {
           "name": "CountOfCovenants",
@@ -831,7 +2909,27 @@
           "kind": "int",
           "type": "aggregation",
           "datatype": "integer",
-          "width": 1
+          "cobolName": "T06-COUNT-OF-COVENANTS",
+          "nullable": true,
+          "width": null,
+          "digits": 18,
+          "scale": 0,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T06-COUNT-OF-COVENANTS-NI",
+              "pic": "X",
+              "offset": 920,
+              "bytes": 1
+            },
+            {
+              "part": "value",
+              "name": "T06-COUNT-OF-COVENANTS",
+              "pic": "S9(18) COMP-3",
+              "offset": 921,
+              "bytes": 10
+            }
+          ]
         },
         {
           "name": "CountOfBreachedCovenants",
@@ -839,7 +2937,27 @@
           "kind": "int",
           "type": "aggregation",
           "datatype": "integer",
-          "width": 1
+          "cobolName": "T06-COUNT-OF-BREACHED-COVE",
+          "nullable": true,
+          "width": null,
+          "digits": 18,
+          "scale": 0,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T06-COUNT-OF-BREACHED-COVE-NI",
+              "pic": "X",
+              "offset": 931,
+              "bytes": 1
+            },
+            {
+              "part": "value",
+              "name": "T06-COUNT-OF-BREACHED-COVE",
+              "pic": "S9(18) COMP-3",
+              "offset": 932,
+              "bytes": 10
+            }
+          ]
         },
         {
           "name": "CountOfRiskRatingHistory",
@@ -847,7 +2965,27 @@
           "kind": "int",
           "type": "aggregation",
           "datatype": "integer",
-          "width": 1
+          "cobolName": "T06-COUNT-OF-RISK-RATING-H",
+          "nullable": true,
+          "width": null,
+          "digits": 18,
+          "scale": 0,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T06-COUNT-OF-RISK-RATING-H-NI",
+              "pic": "X",
+              "offset": 942,
+              "bytes": 1
+            },
+            {
+              "part": "value",
+              "name": "T06-COUNT-OF-RISK-RATING-H",
+              "pic": "S9(18) COMP-3",
+              "offset": 943,
+              "bytes": 10
+            }
+          ]
         },
         {
           "name": "CountOfDocuments",
@@ -855,7 +2993,27 @@
           "kind": "int",
           "type": "aggregation",
           "datatype": "integer",
-          "width": 1
+          "cobolName": "T06-COUNT-OF-DOCUMENTS",
+          "nullable": true,
+          "width": null,
+          "digits": 18,
+          "scale": 0,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T06-COUNT-OF-DOCUMENTS-NI",
+              "pic": "X",
+              "offset": 953,
+              "bytes": 1
+            },
+            {
+              "part": "value",
+              "name": "T06-COUNT-OF-DOCUMENTS",
+              "pic": "S9(18) COMP-3",
+              "offset": 954,
+              "bytes": 10
+            }
+          ]
         },
         {
           "name": "HasBreachedCovenant",
@@ -863,7 +3021,27 @@
           "kind": "bool",
           "type": "calculated",
           "datatype": "boolean",
-          "width": 1
+          "cobolName": "T06-HAS-BREACHED-COVENANT",
+          "nullable": true,
+          "width": null,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T06-HAS-BREACHED-COVENANT-NI",
+              "pic": "X",
+              "offset": 964,
+              "bytes": 1
+            },
+            {
+              "part": "value",
+              "name": "T06-HAS-BREACHED-COVENANT",
+              "pic": "X",
+              "offset": 965,
+              "bytes": 1
+            }
+          ]
         },
         {
           "name": "OnWatchlist",
@@ -871,7 +3049,27 @@
           "kind": "bool",
           "type": "calculated",
           "datatype": "boolean",
-          "width": 1
+          "cobolName": "T06-ON-WATCHLIST",
+          "nullable": true,
+          "width": null,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T06-ON-WATCHLIST-NI",
+              "pic": "X",
+              "offset": 966,
+              "bytes": 1
+            },
+            {
+              "part": "value",
+              "name": "T06-ON-WATCHLIST",
+              "pic": "X",
+              "offset": 967,
+              "bytes": 1
+            }
+          ]
         },
         {
           "name": "HealthScore",
@@ -879,7 +3077,27 @@
           "kind": "int",
           "type": "calculated",
           "datatype": "integer",
-          "width": 1
+          "cobolName": "T06-HEALTH-SCORE",
+          "nullable": true,
+          "width": null,
+          "digits": 18,
+          "scale": 0,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T06-HEALTH-SCORE-NI",
+              "pic": "X",
+              "offset": 968,
+              "bytes": 1
+            },
+            {
+              "part": "value",
+              "name": "T06-HEALTH-SCORE",
+              "pic": "S9(18) COMP-3",
+              "offset": 969,
+              "bytes": 10
+            }
+          ]
         }
       ]
     },
@@ -887,6 +3105,12 @@
       "number": 7,
       "name": "Covenants",
       "snake": "covenants",
+      "copybook": "COVENANT",
+      "prefix": "T07",
+      "ddIn": "ERBI07",
+      "ddOut": "ERBO07",
+      "recordLength": 674,
+      "capacity": 200,
       "fields": [
         {
           "name": "Name",
@@ -894,7 +3118,34 @@
           "kind": "string",
           "type": "calculated",
           "datatype": "string",
-          "width": 2684
+          "cobolName": "T07-NAME",
+          "nullable": true,
+          "width": 129,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T07-NAME-NI",
+              "pic": "X",
+              "offset": 0,
+              "bytes": 1
+            },
+            {
+              "part": "len",
+              "name": "T07-NAME-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 1,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T07-NAME",
+              "pic": "X(129)",
+              "offset": 3,
+              "bytes": 129
+            }
+          ]
         },
         {
           "name": "Loan",
@@ -902,7 +3153,27 @@
           "kind": "string",
           "type": "relationship",
           "datatype": "string",
-          "width": 64
+          "cobolName": "T07-LOAN",
+          "nullable": false,
+          "width": 64,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "len",
+              "name": "T07-LOAN-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 132,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T07-LOAN",
+              "pic": "X(64)",
+              "offset": 134,
+              "bytes": 64
+            }
+          ]
         },
         {
           "name": "CovenantType",
@@ -910,7 +3181,27 @@
           "kind": "string",
           "type": "raw",
           "datatype": "string",
-          "width": 64
+          "cobolName": "T07-COVENANT-TYPE",
+          "nullable": false,
+          "width": 64,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "len",
+              "name": "T07-COVENANT-TYPE-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 198,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T07-COVENANT-TYPE",
+              "pic": "X(64)",
+              "offset": 200,
+              "bytes": 64
+            }
+          ]
         },
         {
           "name": "ThresholdValue",
@@ -918,7 +3209,27 @@
           "kind": "float",
           "type": "raw",
           "datatype": "number",
-          "width": 1
+          "cobolName": "T07-THRESHOLD-VALUE",
+          "nullable": true,
+          "width": null,
+          "digits": 9,
+          "scale": 2,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T07-THRESHOLD-VALUE-NI",
+              "pic": "X",
+              "offset": 264,
+              "bytes": 1
+            },
+            {
+              "part": "value",
+              "name": "T07-THRESHOLD-VALUE",
+              "pic": "S9(9)V9(2) COMP-3",
+              "offset": 265,
+              "bytes": 6
+            }
+          ]
         },
         {
           "name": "TestFrequency",
@@ -926,7 +3237,27 @@
           "kind": "string",
           "type": "raw",
           "datatype": "string",
-          "width": 64
+          "cobolName": "T07-TEST-FREQUENCY",
+          "nullable": false,
+          "width": 64,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "len",
+              "name": "T07-TEST-FREQUENCY-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 271,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T07-TEST-FREQUENCY",
+              "pic": "X(64)",
+              "offset": 273,
+              "bytes": 64
+            }
+          ]
         },
         {
           "name": "NextTestDate",
@@ -934,7 +3265,27 @@
           "kind": "string",
           "type": "raw",
           "datatype": "datetime",
-          "width": 64
+          "cobolName": "T07-NEXT-TEST-DATE",
+          "nullable": false,
+          "width": 64,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "len",
+              "name": "T07-NEXT-TEST-DATE-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 337,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T07-NEXT-TEST-DATE",
+              "pic": "X(64)",
+              "offset": 339,
+              "bytes": 64
+            }
+          ]
         },
         {
           "name": "Status",
@@ -942,7 +3293,27 @@
           "kind": "string",
           "type": "raw",
           "datatype": "string",
-          "width": 64
+          "cobolName": "T07-STATUS",
+          "nullable": false,
+          "width": 64,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "len",
+              "name": "T07-STATUS-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 403,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T07-STATUS",
+              "pic": "X(64)",
+              "offset": 405,
+              "bytes": 64
+            }
+          ]
         },
         {
           "name": "CurrentWaiverThrough",
@@ -950,7 +3321,34 @@
           "kind": "string",
           "type": "raw",
           "datatype": "datetime",
-          "width": 64
+          "cobolName": "T07-CURRENT-WAIVER-THROUGH",
+          "nullable": true,
+          "width": 64,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T07-CURRENT-WAIVER-THROUGH-NI",
+              "pic": "X",
+              "offset": 469,
+              "bytes": 1
+            },
+            {
+              "part": "len",
+              "name": "T07-CURRENT-WAIVER-THROUGH-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 470,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T07-CURRENT-WAIVER-THROUGH",
+              "pic": "X(64)",
+              "offset": 472,
+              "bytes": 64
+            }
+          ]
         },
         {
           "name": "LoanLabel",
@@ -958,7 +3356,34 @@
           "kind": "string",
           "type": "lookup",
           "datatype": "string",
-          "width": 2684
+          "cobolName": "T07-LOAN-LABEL",
+          "nullable": true,
+          "width": 64,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T07-LOAN-LABEL-NI",
+              "pic": "X",
+              "offset": 536,
+              "bytes": 1
+            },
+            {
+              "part": "len",
+              "name": "T07-LOAN-LABEL-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 537,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T07-LOAN-LABEL",
+              "pic": "X(64)",
+              "offset": 539,
+              "bytes": 64
+            }
+          ]
         },
         {
           "name": "LoanBusiness",
@@ -966,7 +3391,34 @@
           "kind": "string",
           "type": "lookup",
           "datatype": "string",
-          "width": 2684
+          "cobolName": "T07-LOAN-BUSINESS",
+          "nullable": true,
+          "width": 64,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T07-LOAN-BUSINESS-NI",
+              "pic": "X",
+              "offset": 603,
+              "bytes": 1
+            },
+            {
+              "part": "len",
+              "name": "T07-LOAN-BUSINESS-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 604,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T07-LOAN-BUSINESS",
+              "pic": "X(64)",
+              "offset": 606,
+              "bytes": 64
+            }
+          ]
         },
         {
           "name": "IsBreached",
@@ -974,7 +3426,27 @@
           "kind": "bool",
           "type": "calculated",
           "datatype": "boolean",
-          "width": 1
+          "cobolName": "T07-IS-BREACHED",
+          "nullable": true,
+          "width": null,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T07-IS-BREACHED-NI",
+              "pic": "X",
+              "offset": 670,
+              "bytes": 1
+            },
+            {
+              "part": "value",
+              "name": "T07-IS-BREACHED",
+              "pic": "X",
+              "offset": 671,
+              "bytes": 1
+            }
+          ]
         },
         {
           "name": "HasActiveWaiver",
@@ -982,7 +3454,27 @@
           "kind": "bool",
           "type": "calculated",
           "datatype": "boolean",
-          "width": 1
+          "cobolName": "T07-HAS-ACTIVE-WAIVER",
+          "nullable": true,
+          "width": null,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T07-HAS-ACTIVE-WAIVER-NI",
+              "pic": "X",
+              "offset": 672,
+              "bytes": 1
+            },
+            {
+              "part": "value",
+              "name": "T07-HAS-ACTIVE-WAIVER",
+              "pic": "X",
+              "offset": 673,
+              "bytes": 1
+            }
+          ]
         }
       ]
     },
@@ -990,6 +3482,12 @@
       "number": 8,
       "name": "RiskRatingHistory",
       "snake": "risk_rating_history",
+      "copybook": "RISKRATI",
+      "prefix": "T08",
+      "ddIn": "ERBI08",
+      "ddOut": "ERBO08",
+      "recordLength": 701,
+      "capacity": 200,
       "fields": [
         {
           "name": "Name",
@@ -997,7 +3495,34 @@
           "kind": "string",
           "type": "calculated",
           "datatype": "string",
-          "width": 2684
+          "cobolName": "T08-NAME",
+          "nullable": true,
+          "width": 190,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T08-NAME-NI",
+              "pic": "X",
+              "offset": 0,
+              "bytes": 1
+            },
+            {
+              "part": "len",
+              "name": "T08-NAME-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 1,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T08-NAME",
+              "pic": "X(190)",
+              "offset": 3,
+              "bytes": 190
+            }
+          ]
         },
         {
           "name": "Loan",
@@ -1005,7 +3530,27 @@
           "kind": "string",
           "type": "relationship",
           "datatype": "string",
-          "width": 64
+          "cobolName": "T08-LOAN",
+          "nullable": false,
+          "width": 64,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "len",
+              "name": "T08-LOAN-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 193,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T08-LOAN",
+              "pic": "X(64)",
+              "offset": 195,
+              "bytes": 64
+            }
+          ]
         },
         {
           "name": "ChangedByUser",
@@ -1013,7 +3558,27 @@
           "kind": "string",
           "type": "relationship",
           "datatype": "string",
-          "width": 64
+          "cobolName": "T08-CHANGED-BY-USER",
+          "nullable": false,
+          "width": 64,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "len",
+              "name": "T08-CHANGED-BY-USER-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 259,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T08-CHANGED-BY-USER",
+              "pic": "X(64)",
+              "offset": 261,
+              "bytes": 64
+            }
+          ]
         },
         {
           "name": "EffectiveDate",
@@ -1021,7 +3586,27 @@
           "kind": "string",
           "type": "raw",
           "datatype": "datetime",
-          "width": 64
+          "cobolName": "T08-EFFECTIVE-DATE",
+          "nullable": false,
+          "width": 64,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "len",
+              "name": "T08-EFFECTIVE-DATE-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 325,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T08-EFFECTIVE-DATE",
+              "pic": "X(64)",
+              "offset": 327,
+              "bytes": 64
+            }
+          ]
         },
         {
           "name": "PriorGrade",
@@ -1029,7 +3614,27 @@
           "kind": "int",
           "type": "raw",
           "datatype": "integer",
-          "width": 1
+          "cobolName": "T08-PRIOR-GRADE",
+          "nullable": true,
+          "width": null,
+          "digits": 9,
+          "scale": 0,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T08-PRIOR-GRADE-NI",
+              "pic": "X",
+              "offset": 391,
+              "bytes": 1
+            },
+            {
+              "part": "value",
+              "name": "T08-PRIOR-GRADE",
+              "pic": "S9(9) COMP-3",
+              "offset": 392,
+              "bytes": 5
+            }
+          ]
         },
         {
           "name": "NewGrade",
@@ -1037,7 +3642,20 @@
           "kind": "int",
           "type": "raw",
           "datatype": "integer",
-          "width": 1
+          "cobolName": "T08-NEW-GRADE",
+          "nullable": false,
+          "width": null,
+          "digits": 9,
+          "scale": 0,
+          "storage": [
+            {
+              "part": "value",
+              "name": "T08-NEW-GRADE",
+              "pic": "S9(9) COMP-3",
+              "offset": 397,
+              "bytes": 5
+            }
+          ]
         },
         {
           "name": "Reason",
@@ -1045,7 +3663,27 @@
           "kind": "string",
           "type": "raw",
           "datatype": "string",
-          "width": 146
+          "cobolName": "T08-REASON",
+          "nullable": false,
+          "width": 146,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "len",
+              "name": "T08-REASON-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 402,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T08-REASON",
+              "pic": "X(146)",
+              "offset": 404,
+              "bytes": 146
+            }
+          ]
         },
         {
           "name": "LoanLabel",
@@ -1053,7 +3691,34 @@
           "kind": "string",
           "type": "lookup",
           "datatype": "string",
-          "width": 2684
+          "cobolName": "T08-LOAN-LABEL",
+          "nullable": true,
+          "width": 64,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T08-LOAN-LABEL-NI",
+              "pic": "X",
+              "offset": 550,
+              "bytes": 1
+            },
+            {
+              "part": "len",
+              "name": "T08-LOAN-LABEL-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 551,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T08-LOAN-LABEL",
+              "pic": "X(64)",
+              "offset": 553,
+              "bytes": 64
+            }
+          ]
         },
         {
           "name": "ChangedByUserLabel",
@@ -1061,7 +3726,34 @@
           "kind": "string",
           "type": "lookup",
           "datatype": "string",
-          "width": 2684
+          "cobolName": "T08-CHANGED-BY-USER-LABEL",
+          "nullable": true,
+          "width": 64,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T08-CHANGED-BY-USER-LABEL-NI",
+              "pic": "X",
+              "offset": 617,
+              "bytes": 1
+            },
+            {
+              "part": "len",
+              "name": "T08-CHANGED-BY-USER-LABEL-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 618,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T08-CHANGED-BY-USER-LABEL",
+              "pic": "X(64)",
+              "offset": 620,
+              "bytes": 64
+            }
+          ]
         },
         {
           "name": "GradeDelta",
@@ -1069,7 +3761,27 @@
           "kind": "int",
           "type": "calculated",
           "datatype": "integer",
-          "width": 1
+          "cobolName": "T08-GRADE-DELTA",
+          "nullable": true,
+          "width": null,
+          "digits": 18,
+          "scale": 0,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T08-GRADE-DELTA-NI",
+              "pic": "X",
+              "offset": 684,
+              "bytes": 1
+            },
+            {
+              "part": "value",
+              "name": "T08-GRADE-DELTA",
+              "pic": "S9(18) COMP-3",
+              "offset": 685,
+              "bytes": 10
+            }
+          ]
         },
         {
           "name": "IsDowngrade",
@@ -1077,7 +3789,27 @@
           "kind": "bool",
           "type": "calculated",
           "datatype": "boolean",
-          "width": 1
+          "cobolName": "T08-IS-DOWNGRADE",
+          "nullable": true,
+          "width": null,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T08-IS-DOWNGRADE-NI",
+              "pic": "X",
+              "offset": 695,
+              "bytes": 1
+            },
+            {
+              "part": "value",
+              "name": "T08-IS-DOWNGRADE",
+              "pic": "X",
+              "offset": 696,
+              "bytes": 1
+            }
+          ]
         },
         {
           "name": "IsInitialRating",
@@ -1085,7 +3817,27 @@
           "kind": "bool",
           "type": "calculated",
           "datatype": "boolean",
-          "width": 1
+          "cobolName": "T08-IS-INITIAL-RATING",
+          "nullable": true,
+          "width": null,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T08-IS-INITIAL-RATING-NI",
+              "pic": "X",
+              "offset": 697,
+              "bytes": 1
+            },
+            {
+              "part": "value",
+              "name": "T08-IS-INITIAL-RATING",
+              "pic": "X",
+              "offset": 698,
+              "bytes": 1
+            }
+          ]
         },
         {
           "name": "CrossedClassifiedThreshold",
@@ -1093,7 +3845,27 @@
           "kind": "bool",
           "type": "calculated",
           "datatype": "boolean",
-          "width": 1
+          "cobolName": "T08-CROSSED-CLASSIFIED-THR",
+          "nullable": true,
+          "width": null,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T08-CROSSED-CLASSIFIED-THR-NI",
+              "pic": "X",
+              "offset": 699,
+              "bytes": 1
+            },
+            {
+              "part": "value",
+              "name": "T08-CROSSED-CLASSIFIED-THR",
+              "pic": "X",
+              "offset": 700,
+              "bytes": 1
+            }
+          ]
         }
       ]
     },
@@ -1101,6 +3873,12 @@
       "number": 9,
       "name": "Documents",
       "snake": "documents",
+      "copybook": "DOCUMENT",
+      "prefix": "T09",
+      "ddIn": "ERBI09",
+      "ddOut": "ERBO09",
+      "recordLength": 764,
+      "capacity": 200,
       "fields": [
         {
           "name": "Name",
@@ -1108,7 +3886,34 @@
           "kind": "string",
           "type": "calculated",
           "datatype": "string",
-          "width": 2684
+          "cobolName": "T09-NAME",
+          "nullable": true,
+          "width": 68,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T09-NAME-NI",
+              "pic": "X",
+              "offset": 0,
+              "bytes": 1
+            },
+            {
+              "part": "len",
+              "name": "T09-NAME-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 1,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T09-NAME",
+              "pic": "X(68)",
+              "offset": 3,
+              "bytes": 68
+            }
+          ]
         },
         {
           "name": "Business",
@@ -1116,7 +3921,34 @@
           "kind": "string",
           "type": "relationship",
           "datatype": "string",
-          "width": 64
+          "cobolName": "T09-BUSINESS",
+          "nullable": true,
+          "width": 64,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T09-BUSINESS-NI",
+              "pic": "X",
+              "offset": 71,
+              "bytes": 1
+            },
+            {
+              "part": "len",
+              "name": "T09-BUSINESS-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 72,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T09-BUSINESS",
+              "pic": "X(64)",
+              "offset": 74,
+              "bytes": 64
+            }
+          ]
         },
         {
           "name": "Loan",
@@ -1124,7 +3956,34 @@
           "kind": "string",
           "type": "relationship",
           "datatype": "string",
-          "width": 64
+          "cobolName": "T09-LOAN",
+          "nullable": true,
+          "width": 64,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T09-LOAN-NI",
+              "pic": "X",
+              "offset": 138,
+              "bytes": 1
+            },
+            {
+              "part": "len",
+              "name": "T09-LOAN-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 139,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T09-LOAN",
+              "pic": "X(64)",
+              "offset": 141,
+              "bytes": 64
+            }
+          ]
         },
         {
           "name": "UploadedByUser",
@@ -1132,7 +3991,34 @@
           "kind": "string",
           "type": "relationship",
           "datatype": "string",
-          "width": 64
+          "cobolName": "T09-UPLOADED-BY-USER",
+          "nullable": true,
+          "width": 64,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T09-UPLOADED-BY-USER-NI",
+              "pic": "X",
+              "offset": 205,
+              "bytes": 1
+            },
+            {
+              "part": "len",
+              "name": "T09-UPLOADED-BY-USER-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 206,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T09-UPLOADED-BY-USER",
+              "pic": "X(64)",
+              "offset": 208,
+              "bytes": 64
+            }
+          ]
         },
         {
           "name": "Filename",
@@ -1140,7 +4026,27 @@
           "kind": "string",
           "type": "raw",
           "datatype": "string",
-          "width": 68
+          "cobolName": "T09-FILENAME",
+          "nullable": false,
+          "width": 68,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "len",
+              "name": "T09-FILENAME-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 272,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T09-FILENAME",
+              "pic": "X(68)",
+              "offset": 274,
+              "bytes": 68
+            }
+          ]
         },
         {
           "name": "DocumentType",
@@ -1148,7 +4054,27 @@
           "kind": "string",
           "type": "raw",
           "datatype": "string",
-          "width": 64
+          "cobolName": "T09-DOCUMENT-TYPE",
+          "nullable": false,
+          "width": 64,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "len",
+              "name": "T09-DOCUMENT-TYPE-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 342,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T09-DOCUMENT-TYPE",
+              "pic": "X(64)",
+              "offset": 344,
+              "bytes": 64
+            }
+          ]
         },
         {
           "name": "OcrIndexed",
@@ -1156,7 +4082,20 @@
           "kind": "bool",
           "type": "raw",
           "datatype": "boolean",
-          "width": 1
+          "cobolName": "T09-OCR-INDEXED",
+          "nullable": false,
+          "width": null,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "value",
+              "name": "T09-OCR-INDEXED",
+              "pic": "X",
+              "offset": 408,
+              "bytes": 1
+            }
+          ]
         },
         {
           "name": "UploadedVia",
@@ -1164,7 +4103,34 @@
           "kind": "string",
           "type": "raw",
           "datatype": "string",
-          "width": 64
+          "cobolName": "T09-UPLOADED-VIA",
+          "nullable": true,
+          "width": 64,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T09-UPLOADED-VIA-NI",
+              "pic": "X",
+              "offset": 409,
+              "bytes": 1
+            },
+            {
+              "part": "len",
+              "name": "T09-UPLOADED-VIA-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 410,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T09-UPLOADED-VIA",
+              "pic": "X(64)",
+              "offset": 412,
+              "bytes": 64
+            }
+          ]
         },
         {
           "name": "UploadedAt",
@@ -1172,7 +4138,27 @@
           "kind": "string",
           "type": "raw",
           "datatype": "datetime",
-          "width": 64
+          "cobolName": "T09-UPLOADED-AT",
+          "nullable": false,
+          "width": 64,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "len",
+              "name": "T09-UPLOADED-AT-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 476,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T09-UPLOADED-AT",
+              "pic": "X(64)",
+              "offset": 478,
+              "bytes": 64
+            }
+          ]
         },
         {
           "name": "BusinessLabel",
@@ -1180,7 +4166,34 @@
           "kind": "string",
           "type": "lookup",
           "datatype": "string",
-          "width": 2684
+          "cobolName": "T09-BUSINESS-LABEL",
+          "nullable": true,
+          "width": 64,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T09-BUSINESS-LABEL-NI",
+              "pic": "X",
+              "offset": 542,
+              "bytes": 1
+            },
+            {
+              "part": "len",
+              "name": "T09-BUSINESS-LABEL-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 543,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T09-BUSINESS-LABEL",
+              "pic": "X(64)",
+              "offset": 545,
+              "bytes": 64
+            }
+          ]
         },
         {
           "name": "LoanLabel",
@@ -1188,7 +4201,34 @@
           "kind": "string",
           "type": "lookup",
           "datatype": "string",
-          "width": 2684
+          "cobolName": "T09-LOAN-LABEL",
+          "nullable": true,
+          "width": 64,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T09-LOAN-LABEL-NI",
+              "pic": "X",
+              "offset": 609,
+              "bytes": 1
+            },
+            {
+              "part": "len",
+              "name": "T09-LOAN-LABEL-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 610,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T09-LOAN-LABEL",
+              "pic": "X(64)",
+              "offset": 612,
+              "bytes": 64
+            }
+          ]
         },
         {
           "name": "UploadedByUserLabel",
@@ -1196,7 +4236,34 @@
           "kind": "string",
           "type": "lookup",
           "datatype": "string",
-          "width": 2684
+          "cobolName": "T09-UPLOADED-BY-USER-LABEL",
+          "nullable": true,
+          "width": 64,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T09-UPLOADED-BY-USER-LABEL-NI",
+              "pic": "X",
+              "offset": 676,
+              "bytes": 1
+            },
+            {
+              "part": "len",
+              "name": "T09-UPLOADED-BY-USER-LABEL-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 677,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T09-UPLOADED-BY-USER-LABEL",
+              "pic": "X(64)",
+              "offset": 679,
+              "bytes": 64
+            }
+          ]
         },
         {
           "name": "AttachedTo",
@@ -1204,7 +4271,34 @@
           "kind": "string",
           "type": "calculated",
           "datatype": "string",
-          "width": 2684
+          "cobolName": "T09-ATTACHED-TO",
+          "nullable": true,
+          "width": 16,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T09-ATTACHED-TO-NI",
+              "pic": "X",
+              "offset": 743,
+              "bytes": 1
+            },
+            {
+              "part": "len",
+              "name": "T09-ATTACHED-TO-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 744,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T09-ATTACHED-TO",
+              "pic": "X(16)",
+              "offset": 746,
+              "bytes": 16
+            }
+          ]
         },
         {
           "name": "FromCustomerPortal",
@@ -1212,7 +4306,27 @@
           "kind": "bool",
           "type": "calculated",
           "datatype": "boolean",
-          "width": 1
+          "cobolName": "T09-FROM-CUSTOMER-PORTAL",
+          "nullable": true,
+          "width": null,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T09-FROM-CUSTOMER-PORTAL-NI",
+              "pic": "X",
+              "offset": 762,
+              "bytes": 1
+            },
+            {
+              "part": "value",
+              "name": "T09-FROM-CUSTOMER-PORTAL",
+              "pic": "X",
+              "offset": 763,
+              "bytes": 1
+            }
+          ]
         }
       ]
     },
@@ -1220,6 +4334,12 @@
       "number": 10,
       "name": "Interactions",
       "snake": "interactions",
+      "copybook": "INTERACT",
+      "prefix": "T10",
+      "ddIn": "ERBI10",
+      "ddOut": "ERBO10",
+      "recordLength": 1064,
+      "capacity": 200,
       "fields": [
         {
           "name": "Name",
@@ -1227,7 +4347,34 @@
           "kind": "string",
           "type": "calculated",
           "datatype": "string",
-          "width": 2684
+          "cobolName": "T10-NAME",
+          "nullable": true,
+          "width": 259,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T10-NAME-NI",
+              "pic": "X",
+              "offset": 0,
+              "bytes": 1
+            },
+            {
+              "part": "len",
+              "name": "T10-NAME-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 1,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T10-NAME",
+              "pic": "X(259)",
+              "offset": 3,
+              "bytes": 259
+            }
+          ]
         },
         {
           "name": "Business",
@@ -1235,7 +4382,27 @@
           "kind": "string",
           "type": "relationship",
           "datatype": "string",
-          "width": 64
+          "cobolName": "T10-BUSINESS",
+          "nullable": false,
+          "width": 64,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "len",
+              "name": "T10-BUSINESS-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 262,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T10-BUSINESS",
+              "pic": "X(64)",
+              "offset": 264,
+              "bytes": 64
+            }
+          ]
         },
         {
           "name": "User",
@@ -1243,7 +4410,34 @@
           "kind": "string",
           "type": "relationship",
           "datatype": "string",
-          "width": 64
+          "cobolName": "T10-USER",
+          "nullable": true,
+          "width": 64,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T10-USER-NI",
+              "pic": "X",
+              "offset": 328,
+              "bytes": 1
+            },
+            {
+              "part": "len",
+              "name": "T10-USER-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 329,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T10-USER",
+              "pic": "X(64)",
+              "offset": 331,
+              "bytes": 64
+            }
+          ]
         },
         {
           "name": "InteractionType",
@@ -1251,7 +4445,27 @@
           "kind": "string",
           "type": "raw",
           "datatype": "string",
-          "width": 64
+          "cobolName": "T10-INTERACTION-TYPE",
+          "nullable": false,
+          "width": 64,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "len",
+              "name": "T10-INTERACTION-TYPE-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 395,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T10-INTERACTION-TYPE",
+              "pic": "X(64)",
+              "offset": 397,
+              "bytes": 64
+            }
+          ]
         },
         {
           "name": "Subject",
@@ -1259,7 +4473,27 @@
           "kind": "string",
           "type": "raw",
           "datatype": "string",
-          "width": 64
+          "cobolName": "T10-SUBJECT",
+          "nullable": false,
+          "width": 64,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "len",
+              "name": "T10-SUBJECT-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 461,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T10-SUBJECT",
+              "pic": "X(64)",
+              "offset": 463,
+              "bytes": 64
+            }
+          ]
         },
         {
           "name": "Body",
@@ -1267,7 +4501,34 @@
           "kind": "string",
           "type": "raw",
           "datatype": "string",
-          "width": 192
+          "cobolName": "T10-BODY",
+          "nullable": true,
+          "width": 192,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T10-BODY-NI",
+              "pic": "X",
+              "offset": 527,
+              "bytes": 1
+            },
+            {
+              "part": "len",
+              "name": "T10-BODY-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 528,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T10-BODY",
+              "pic": "X(192)",
+              "offset": 530,
+              "bytes": 192
+            }
+          ]
         },
         {
           "name": "InteractionDate",
@@ -1275,7 +4536,27 @@
           "kind": "string",
           "type": "raw",
           "datatype": "datetime",
-          "width": 64
+          "cobolName": "T10-INTERACTION-DATE",
+          "nullable": false,
+          "width": 64,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "len",
+              "name": "T10-INTERACTION-DATE-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 722,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T10-INTERACTION-DATE",
+              "pic": "X(64)",
+              "offset": 724,
+              "bytes": 64
+            }
+          ]
         },
         {
           "name": "DueDate",
@@ -1283,7 +4564,34 @@
           "kind": "string",
           "type": "raw",
           "datatype": "datetime",
-          "width": 64
+          "cobolName": "T10-DUE-DATE",
+          "nullable": true,
+          "width": 64,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T10-DUE-DATE-NI",
+              "pic": "X",
+              "offset": 788,
+              "bytes": 1
+            },
+            {
+              "part": "len",
+              "name": "T10-DUE-DATE-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 789,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T10-DUE-DATE",
+              "pic": "X(64)",
+              "offset": 791,
+              "bytes": 64
+            }
+          ]
         },
         {
           "name": "Source",
@@ -1291,7 +4599,34 @@
           "kind": "string",
           "type": "raw",
           "datatype": "string",
-          "width": 64
+          "cobolName": "T10-SOURCE",
+          "nullable": true,
+          "width": 64,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T10-SOURCE-NI",
+              "pic": "X",
+              "offset": 855,
+              "bytes": 1
+            },
+            {
+              "part": "len",
+              "name": "T10-SOURCE-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 856,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T10-SOURCE",
+              "pic": "X(64)",
+              "offset": 858,
+              "bytes": 64
+            }
+          ]
         },
         {
           "name": "BusinessLabel",
@@ -1299,7 +4634,34 @@
           "kind": "string",
           "type": "lookup",
           "datatype": "string",
-          "width": 2684
+          "cobolName": "T10-BUSINESS-LABEL",
+          "nullable": true,
+          "width": 64,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T10-BUSINESS-LABEL-NI",
+              "pic": "X",
+              "offset": 922,
+              "bytes": 1
+            },
+            {
+              "part": "len",
+              "name": "T10-BUSINESS-LABEL-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 923,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T10-BUSINESS-LABEL",
+              "pic": "X(64)",
+              "offset": 925,
+              "bytes": 64
+            }
+          ]
         },
         {
           "name": "UserLabel",
@@ -1307,7 +4669,34 @@
           "kind": "string",
           "type": "lookup",
           "datatype": "string",
-          "width": 2684
+          "cobolName": "T10-USER-LABEL",
+          "nullable": true,
+          "width": 64,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T10-USER-LABEL-NI",
+              "pic": "X",
+              "offset": 989,
+              "bytes": 1
+            },
+            {
+              "part": "len",
+              "name": "T10-USER-LABEL-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 990,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T10-USER-LABEL",
+              "pic": "X(64)",
+              "offset": 992,
+              "bytes": 64
+            }
+          ]
         },
         {
           "name": "IsSystemEvent",
@@ -1315,7 +4704,27 @@
           "kind": "bool",
           "type": "calculated",
           "datatype": "boolean",
-          "width": 1
+          "cobolName": "T10-IS-SYSTEM-EVENT",
+          "nullable": true,
+          "width": null,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T10-IS-SYSTEM-EVENT-NI",
+              "pic": "X",
+              "offset": 1056,
+              "bytes": 1
+            },
+            {
+              "part": "value",
+              "name": "T10-IS-SYSTEM-EVENT",
+              "pic": "X",
+              "offset": 1057,
+              "bytes": 1
+            }
+          ]
         },
         {
           "name": "IsTask",
@@ -1323,7 +4732,27 @@
           "kind": "bool",
           "type": "calculated",
           "datatype": "boolean",
-          "width": 1
+          "cobolName": "T10-IS-TASK",
+          "nullable": true,
+          "width": null,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T10-IS-TASK-NI",
+              "pic": "X",
+              "offset": 1058,
+              "bytes": 1
+            },
+            {
+              "part": "value",
+              "name": "T10-IS-TASK",
+              "pic": "X",
+              "offset": 1059,
+              "bytes": 1
+            }
+          ]
         },
         {
           "name": "FromCustomer",
@@ -1331,7 +4760,27 @@
           "kind": "bool",
           "type": "calculated",
           "datatype": "boolean",
-          "width": 1
+          "cobolName": "T10-FROM-CUSTOMER",
+          "nullable": true,
+          "width": null,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T10-FROM-CUSTOMER-NI",
+              "pic": "X",
+              "offset": 1060,
+              "bytes": 1
+            },
+            {
+              "part": "value",
+              "name": "T10-FROM-CUSTOMER",
+              "pic": "X",
+              "offset": 1061,
+              "bytes": 1
+            }
+          ]
         },
         {
           "name": "IsCovenantEvent",
@@ -1339,7 +4788,27 @@
           "kind": "bool",
           "type": "calculated",
           "datatype": "boolean",
-          "width": 1
+          "cobolName": "T10-IS-COVENANT-EVENT",
+          "nullable": true,
+          "width": null,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T10-IS-COVENANT-EVENT-NI",
+              "pic": "X",
+              "offset": 1062,
+              "bytes": 1
+            },
+            {
+              "part": "value",
+              "name": "T10-IS-COVENANT-EVENT",
+              "pic": "X",
+              "offset": 1063,
+              "bytes": 1
+            }
+          ]
         }
       ]
     },
@@ -1347,6 +4816,12 @@
       "number": 11,
       "name": "Constraints",
       "snake": "constraints",
+      "copybook": "CONSTRAI",
+      "prefix": "T11",
+      "ddIn": "ERBI11",
+      "ddOut": "ERBO11",
+      "recordLength": 1105,
+      "capacity": 200,
       "fields": [
         {
           "name": "Name",
@@ -1354,7 +4829,34 @@
           "kind": "string",
           "type": "calculated",
           "datatype": "string",
-          "width": 2684
+          "cobolName": "T11-NAME",
+          "nullable": true,
+          "width": 64,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T11-NAME-NI",
+              "pic": "X",
+              "offset": 0,
+              "bytes": 1
+            },
+            {
+              "part": "len",
+              "name": "T11-NAME-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 1,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T11-NAME",
+              "pic": "X(64)",
+              "offset": 3,
+              "bytes": 64
+            }
+          ]
         },
         {
           "name": "ConstraintKey",
@@ -1362,7 +4864,27 @@
           "kind": "string",
           "type": "raw",
           "datatype": "string",
-          "width": 64
+          "cobolName": "T11-CONSTRAINT-KEY",
+          "nullable": false,
+          "width": 64,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "len",
+              "name": "T11-CONSTRAINT-KEY-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 67,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T11-CONSTRAINT-KEY",
+              "pic": "X(64)",
+              "offset": 69,
+              "bytes": 64
+            }
+          ]
         },
         {
           "name": "Entity",
@@ -1370,7 +4892,27 @@
           "kind": "string",
           "type": "raw",
           "datatype": "string",
-          "width": 64
+          "cobolName": "T11-ENTITY",
+          "nullable": false,
+          "width": 64,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "len",
+              "name": "T11-ENTITY-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 133,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T11-ENTITY",
+              "pic": "X(64)",
+              "offset": 135,
+              "bytes": 64
+            }
+          ]
         },
         {
           "name": "Predicate",
@@ -1378,7 +4920,27 @@
           "kind": "string",
           "type": "raw",
           "datatype": "string",
-          "width": 64
+          "cobolName": "T11-PREDICATE",
+          "nullable": false,
+          "width": 64,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "len",
+              "name": "T11-PREDICATE-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 199,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T11-PREDICATE",
+              "pic": "X(64)",
+              "offset": 201,
+              "bytes": 64
+            }
+          ]
         },
         {
           "name": "Deontic",
@@ -1386,7 +4948,27 @@
           "kind": "string",
           "type": "raw",
           "datatype": "string",
-          "width": 64
+          "cobolName": "T11-DEONTIC",
+          "nullable": false,
+          "width": 64,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "len",
+              "name": "T11-DEONTIC-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 265,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T11-DEONTIC",
+              "pic": "X(64)",
+              "offset": 267,
+              "bytes": 64
+            }
+          ]
         },
         {
           "name": "Severity",
@@ -1394,7 +4976,27 @@
           "kind": "string",
           "type": "raw",
           "datatype": "string",
-          "width": 64
+          "cobolName": "T11-SEVERITY",
+          "nullable": false,
+          "width": 64,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "len",
+              "name": "T11-SEVERITY-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 331,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T11-SEVERITY",
+              "pic": "X(64)",
+              "offset": 333,
+              "bytes": 64
+            }
+          ]
         },
         {
           "name": "Message",
@@ -1402,7 +5004,27 @@
           "kind": "string",
           "type": "raw",
           "datatype": "string",
-          "width": 248
+          "cobolName": "T11-MESSAGE",
+          "nullable": false,
+          "width": 248,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "len",
+              "name": "T11-MESSAGE-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 397,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T11-MESSAGE",
+              "pic": "X(248)",
+              "offset": 399,
+              "bytes": 248
+            }
+          ]
         },
         {
           "name": "RuleGroup",
@@ -1410,7 +5032,34 @@
           "kind": "string",
           "type": "raw",
           "datatype": "string",
-          "width": 64
+          "cobolName": "T11-RULE-GROUP",
+          "nullable": true,
+          "width": 64,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T11-RULE-GROUP-NI",
+              "pic": "X",
+              "offset": 647,
+              "bytes": 1
+            },
+            {
+              "part": "len",
+              "name": "T11-RULE-GROUP-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 648,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T11-RULE-GROUP",
+              "pic": "X(64)",
+              "offset": 650,
+              "bytes": 64
+            }
+          ]
         },
         {
           "name": "SourceCitation",
@@ -1418,7 +5067,34 @@
           "kind": "string",
           "type": "raw",
           "datatype": "string",
-          "width": 98
+          "cobolName": "T11-SOURCE-CITATION",
+          "nullable": true,
+          "width": 98,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T11-SOURCE-CITATION-NI",
+              "pic": "X",
+              "offset": 714,
+              "bytes": 1
+            },
+            {
+              "part": "len",
+              "name": "T11-SOURCE-CITATION-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 715,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T11-SOURCE-CITATION",
+              "pic": "X(98)",
+              "offset": 717,
+              "bytes": 98
+            }
+          ]
         },
         {
           "name": "RuleSpeakOverride",
@@ -1426,7 +5102,34 @@
           "kind": "string",
           "type": "raw",
           "datatype": "string",
-          "width": 286
+          "cobolName": "T11-RULE-SPEAK-OVERRIDE",
+          "nullable": true,
+          "width": 286,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T11-RULE-SPEAK-OVERRIDE-NI",
+              "pic": "X",
+              "offset": 815,
+              "bytes": 1
+            },
+            {
+              "part": "len",
+              "name": "T11-RULE-SPEAK-OVERRIDE-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 816,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T11-RULE-SPEAK-OVERRIDE",
+              "pic": "X(286)",
+              "offset": 818,
+              "bytes": 286
+            }
+          ]
         },
         {
           "name": "IsActive",
@@ -1434,7 +5137,20 @@
           "kind": "bool",
           "type": "raw",
           "datatype": "boolean",
-          "width": 1
+          "cobolName": "T11-IS-ACTIVE",
+          "nullable": false,
+          "width": null,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "value",
+              "name": "T11-IS-ACTIVE",
+              "pic": "X",
+              "offset": 1104,
+              "bytes": 1
+            }
+          ]
         }
       ]
     },
@@ -1442,6 +5158,12 @@
       "number": 12,
       "name": "__meta__",
       "snake": "__meta__",
+      "copybook": "META",
+      "prefix": "T12",
+      "ddIn": "ERBI12",
+      "ddOut": "ERBO12",
+      "recordLength": 4591,
+      "capacity": 200,
       "fields": [
         {
           "name": "MetaKey",
@@ -1449,7 +5171,27 @@
           "kind": "string",
           "type": "raw",
           "datatype": "string",
-          "width": 64
+          "cobolName": "T12-META-KEY",
+          "nullable": false,
+          "width": 64,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "len",
+              "name": "T12-META-KEY-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 0,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T12-META-KEY",
+              "pic": "X(64)",
+              "offset": 2,
+              "bytes": 64
+            }
+          ]
         },
         {
           "name": "Name",
@@ -1457,7 +5199,34 @@
           "kind": "string",
           "type": "calculated",
           "datatype": "string",
-          "width": 2684
+          "cobolName": "T12-NAME",
+          "nullable": true,
+          "width": 64,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T12-NAME-NI",
+              "pic": "X",
+              "offset": 66,
+              "bytes": 1
+            },
+            {
+              "part": "len",
+              "name": "T12-NAME-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 67,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T12-NAME",
+              "pic": "X(64)",
+              "offset": 69,
+              "bytes": 64
+            }
+          ]
         },
         {
           "name": "ValueType",
@@ -1465,7 +5234,27 @@
           "kind": "string",
           "type": "raw",
           "datatype": "string",
-          "width": 64
+          "cobolName": "T12-VALUE-TYPE",
+          "nullable": false,
+          "width": 64,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "len",
+              "name": "T12-VALUE-TYPE-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 133,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T12-VALUE-TYPE",
+              "pic": "X(64)",
+              "offset": 135,
+              "bytes": 64
+            }
+          ]
         },
         {
           "name": "StringValue",
@@ -1473,7 +5262,34 @@
           "kind": "string",
           "type": "raw",
           "datatype": "string",
-          "width": 1702
+          "cobolName": "T12-STRING-VALUE",
+          "nullable": true,
+          "width": 1702,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T12-STRING-VALUE-NI",
+              "pic": "X",
+              "offset": 199,
+              "bytes": 1
+            },
+            {
+              "part": "len",
+              "name": "T12-STRING-VALUE-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 200,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T12-STRING-VALUE",
+              "pic": "X(1702)",
+              "offset": 202,
+              "bytes": 1702
+            }
+          ]
         },
         {
           "name": "JsonValue",
@@ -1481,9 +5297,177 @@
           "kind": "string",
           "type": "raw",
           "datatype": "string",
-          "width": 2684
+          "cobolName": "T12-JSON-VALUE",
+          "nullable": true,
+          "width": 2684,
+          "digits": null,
+          "scale": null,
+          "storage": [
+            {
+              "part": "ni",
+              "name": "T12-JSON-VALUE-NI",
+              "pic": "X",
+              "offset": 1904,
+              "bytes": 1
+            },
+            {
+              "part": "len",
+              "name": "T12-JSON-VALUE-LEN",
+              "pic": "S9(4) COMP",
+              "offset": 1905,
+              "bytes": 2
+            },
+            {
+              "part": "value",
+              "name": "T12-JSON-VALUE",
+              "pic": "X(2684)",
+              "offset": 1907,
+              "bytes": 2684
+            }
+          ]
         }
       ]
+    }
+  ],
+  "maxRecordLength": 4591,
+  "qsamLimitExceeded": false,
+  "textWidths": {
+    "Users.Name": "inferred",
+    "Businesses.Name": "inferred",
+    "Businesses.RelationshipManagerLabel": "inferred",
+    "Businesses.PortfolioPriority": "inferred",
+    "BeneficialOwners.Name": "inferred",
+    "BeneficialOwners.BusinessLabel": "inferred",
+    "Contacts.Name": "inferred",
+    "Contacts.BusinessLabel": "inferred",
+    "Accounts.Name": "inferred",
+    "Accounts.BusinessLabel": "inferred",
+    "Loans.Name": "inferred",
+    "Loans.BusinessLabel": "inferred",
+    "Loans.BusinessNaicsCode": "inferred",
+    "Loans.OriginatingRmLabel": "inferred",
+    "Covenants.Name": "inferred",
+    "Covenants.LoanLabel": "inferred",
+    "Covenants.LoanBusiness": "inferred",
+    "RiskRatingHistory.Name": "inferred",
+    "RiskRatingHistory.LoanLabel": "inferred",
+    "RiskRatingHistory.ChangedByUserLabel": "inferred",
+    "Documents.Name": "inferred",
+    "Documents.BusinessLabel": "inferred",
+    "Documents.LoanLabel": "inferred",
+    "Documents.UploadedByUserLabel": "inferred",
+    "Documents.AttachedTo": "inferred",
+    "Interactions.Name": "inferred",
+    "Interactions.BusinessLabel": "inferred",
+    "Interactions.UserLabel": "inferred",
+    "Constraints.Name": "inferred",
+    "__meta__.Name": "inferred"
+  },
+  "indexes": [
+    {
+      "name": "IX01",
+      "table": "Businesses",
+      "field": "RelationshipManager",
+      "mode": "criterion",
+      "rebuiltEveryPass": false
+    },
+    {
+      "name": "IX02",
+      "table": "Loans",
+      "field": "OriginatingRm",
+      "mode": "criterion",
+      "rebuiltEveryPass": false
+    },
+    {
+      "name": "IX03",
+      "table": "Loans",
+      "field": "Underwriter",
+      "mode": "criterion",
+      "rebuiltEveryPass": false
+    },
+    {
+      "name": "IX04",
+      "table": "Users",
+      "field": "Name",
+      "mode": "lookup",
+      "rebuiltEveryPass": true
+    },
+    {
+      "name": "IX05",
+      "table": "BeneficialOwners",
+      "field": "Business",
+      "mode": "criterion",
+      "rebuiltEveryPass": false
+    },
+    {
+      "name": "IX06",
+      "table": "Contacts",
+      "field": "Business",
+      "mode": "criterion",
+      "rebuiltEveryPass": false
+    },
+    {
+      "name": "IX07",
+      "table": "Accounts",
+      "field": "Business",
+      "mode": "criterion",
+      "rebuiltEveryPass": false
+    },
+    {
+      "name": "IX08",
+      "table": "Loans",
+      "field": "Business",
+      "mode": "criterion",
+      "rebuiltEveryPass": false
+    },
+    {
+      "name": "IX09",
+      "table": "Interactions",
+      "field": "Business",
+      "mode": "criterion",
+      "rebuiltEveryPass": false
+    },
+    {
+      "name": "IX10",
+      "table": "Documents",
+      "field": "Business",
+      "mode": "criterion",
+      "rebuiltEveryPass": false
+    },
+    {
+      "name": "IX11",
+      "table": "Businesses",
+      "field": "Name",
+      "mode": "lookup",
+      "rebuiltEveryPass": true
+    },
+    {
+      "name": "IX12",
+      "table": "Covenants",
+      "field": "Loan",
+      "mode": "criterion",
+      "rebuiltEveryPass": false
+    },
+    {
+      "name": "IX13",
+      "table": "RiskRatingHistory",
+      "field": "Loan",
+      "mode": "criterion",
+      "rebuiltEveryPass": false
+    },
+    {
+      "name": "IX14",
+      "table": "Documents",
+      "field": "Loan",
+      "mode": "criterion",
+      "rebuiltEveryPass": false
+    },
+    {
+      "name": "IX15",
+      "table": "Loans",
+      "field": "Name",
+      "mode": "lookup",
+      "rebuiltEveryPass": true
     }
   ],
   "compileErrors": [],

@@ -14,7 +14,7 @@
       "RelativePath": "/postgres-bootstrap",
       "CommandLine": "rulebook-to-postgres -i ../effortless-rulebook/effortless-banking-rulebook.json -p mode=drop-all -p stage=dev -p drop_all=true -p pk_type=string",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.10.06.1054",
+      "LastVersionUsed": "v2026.10.19.2040",
       "LastUrl": "https://effortless-rulebook-to-postgres-v2026-09-07-0336-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     },
     {
@@ -73,8 +73,8 @@
       "RelativePath": "/cobol",
       "CommandLine": "rulebook-to-cobol -i ../effortless-rulebook/effortless-banking-rulebook.json",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.10.19.1709",
-      "LastUrl": "https://effortless-rulebook-to-cobol-v2026-10-19-1709-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+      "LastVersionUsed": "v2026.10.19.2037",
+      "LastUrl": "https://effortless-rulebook-to-cobol-v2026-10-19-2037-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     }
   ],
   "ShowHidden": false,
